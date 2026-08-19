@@ -160,6 +160,33 @@ namespace GunMobile.Logic
             }
         }
 
+        public void FinishSettleOnline(float turnSeconds = 20f)
+        {
+            // Online: server owns turn advance + wind. Client only ends shot/settle UI state.
+            if (CountAliveTeams() <= 1)
+            {
+                Phase = BattlePhase.MatchOver;
+                return;
+            }
+
+            TurnTimeLeft = turnSeconds;
+            Phase = BattlePhase.Aiming;
+        }
+
+        public bool WouldTeamWin(int seatIndex)
+        {
+            if (seatIndex < 0 || seatIndex >= _livings.Count) return false;
+
+            int myTeam = _livings[seatIndex].Team;
+            var aliveTeams = new HashSet<int>();
+            foreach (LivingStats s in _livings)
+            {
+                if (s.Hp > 0) aliveTeams.Add(s.Team);
+            }
+
+            return aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
+        }
+
         public void TickClock(float dt)
         {
             if (Phase != BattlePhase.Aiming)

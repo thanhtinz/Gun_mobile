@@ -858,7 +858,7 @@ namespace GunMobile.Client
                             }
                             if (teams.Count <= 1)
                             {
-                                _loop.FinishSettle();
+                                _loop.SyncMatchOverIfNeeded();
                             }
                         }
                     }
@@ -1021,12 +1021,15 @@ namespace GunMobile.Client
 
             _flying = false;
             _loop.EndShot();
-            _loop.FinishSettle();
-
-            if (PhoneNet.NetBattle && _loop.Phase != BattlePhase.MatchOver)
+            if (PhoneNet.NetBattle)
             {
-                // Let server sync turn/player/wind so it can enforce "only current player acts".
+                // Server advances turn after fire; do NOT advance locally (prevents desync).
+                _loop.FinishSettleOnline();
                 PhoneNet.SendFightTurn(_loop.TurnIndex, _loop.CurrentLiving, _loop.Wind);
+            }
+            else
+            {
+                _loop.FinishSettle();
             }
 
             if (_loop.Phase == BattlePhase.MatchOver)
@@ -1047,7 +1050,7 @@ namespace GunMobile.Client
             if (PhoneNet.NetBattle && !_serverRewardReady)
             {
                 _pendingMatchOver = true;
-                PhoneNet.ReportFightOver(_loop.Livings[MeSeat()].Hp > 0);
+                PhoneNet.ReportFightOver(_loop.WouldTeamWin(MeSeat()));
                 return;
             }
 

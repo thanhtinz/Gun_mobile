@@ -1866,6 +1866,7 @@ namespace GunMobile.Net
                     bool win = aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
                     int gold = win ? 800 : 100;
                     int questGold = 0;
+                    int pveNpcId = p.PveNpcId;
 
                     if (win && p.PveRewardGold > 0)
                     {
@@ -1884,7 +1885,7 @@ namespace GunMobile.Net
                     {
                         p.Win++;
                         p.Gold += gold;
-                        p.Honor += 4;
+                        p.Honor += pveNpcId != 0 ? 12 : 4;
                         questGold = p.CompleteAcceptedQuests(_db);
                     }
                     else
