@@ -782,6 +782,24 @@ namespace GunMobile.Client
                     {
                         _loop.ApplyDamage(target, dmg);
                         SpawnDmgPopup(_pos[target], dmg, crit);
+
+                        // If this damage ends the match (e.g. surrender/disconnect),
+                        // force the battle loop into MatchOver so FinishMatch() runs.
+                        if (PhoneNet.NetBattle && _loop.Phase != BattlePhase.MatchOver)
+                        {
+                            var teams = new HashSet<int>();
+                            for (int i = 0; i < _loop.Livings.Count; i++)
+                            {
+                                if (_loop.Livings[i].Hp > 0)
+                                {
+                                    teams.Add(_loop.Livings[i].Team);
+                                }
+                            }
+                            if (teams.Count <= 1)
+                            {
+                                _loop.FinishSettle();
+                            }
+                        }
                     }
                     continue;
                 }
