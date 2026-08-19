@@ -300,14 +300,17 @@ namespace GunMobile.Client
             {
                 PhoneNet.Seat = 0;
                 PhoneNet.NetBattle = true;
-                PhoneNet.ConnectFight("127.0.0.1");
+                PhoneNet.UseExternalServer();
+                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
+                PhoneNet.ConnectFight(ip.text);
             }, new Vector2(160f, 48f));
             hostBtn.GetComponent<RectTransform>().anchorMin = hostBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.38f, 0.82f);
             var joinBtn = UiKit.Button(bg.transform, "Join", "加入 LAN", () =>
             {
                 PhoneNet.Seat = 1;
                 PhoneNet.NetBattle = true;
-                PhoneNet.ConnectHall(ip.text);
+                PhoneNet.UseExternalServer();
+                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
                 PhoneNet.ConnectFight(ip.text);
             }, new Vector2(140f, 48f));
             joinBtn.GetComponent<RectTransform>().anchorMin = joinBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.52f, 0.82f);
@@ -318,10 +321,12 @@ namespace GunMobile.Client
             solo.GetComponent<RectTransform>().anchorMin = solo.GetComponent<RectTransform>().anchorMax = new Vector2(0.64f, 0.82f);
             var srvRoom = UiKit.Button(bg.transform, "SrvRoom", "创建房间", () =>
             {
+                PhoneNet.UseExternalServer();
+                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
                 PhoneNet.CreateRoom(app.Profile.MapId > 0 ? app.Profile.MapId : 1056, app.Profile.Nick);
                 PhoneNet.Seat = 0;
                 PhoneNet.NetBattle = true;
-                PhoneNet.ConnectFight("127.0.0.1");
+                PhoneNet.ConnectFight(ip.text);
             }, new Vector2(140f, 48f));
             srvRoom.GetComponent<RectTransform>().anchorMin = srvRoom.GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 0.82f);
 
@@ -351,7 +356,7 @@ namespace GunMobile.Client
                     {
                         if (PhoneNet.Fight == null || !PhoneNet.Fight.Connected)
                         {
-                            PhoneNet.ConnectFight("127.0.0.1");
+                            PhoneNet.ConnectFight(ip.text);
                         }
 
                         PhoneNet.SendStart(local.Id);
