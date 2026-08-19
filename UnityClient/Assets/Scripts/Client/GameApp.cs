@@ -118,12 +118,12 @@ namespace GunMobile.Client
             RoomScreen.Show(_safe, this);
         }
 
-        public void ShowBattle(int mapId, int npcId = 0)
+        public void ShowBattle(int mapId, int npcId = 0, string fightStartJson = null)
         {
             Profile.MapId = mapId;
             Profile.Save();
             State = AppState.Battle;
-            BattleRuntime.Show(_safe, this, mapId, npcId);
+            BattleRuntime.Show(_safe, this, mapId, npcId, fightStartJson);
         }
 
         public void ShowModule(ModuleDef module)
@@ -345,8 +345,8 @@ namespace GunMobile.Client
                     int seed = JsonInt(msg.Json, "seed", 0);
                     if (seed != 0) PhoneNet.BattleSeed = seed;
                     PhoneNet.NetBattle = true;
-                    PhoneNet.Seat = 1;
-                    ShowBattle(mapId);
+                    // Keep PhoneNet.Seat already set by RoomScreen (host=0, join=1).
+                    ShowBattle(mapId, 0, msg.Json);
                 }
             }
         }

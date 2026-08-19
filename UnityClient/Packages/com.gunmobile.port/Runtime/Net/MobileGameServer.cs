@@ -956,6 +956,13 @@ namespace GunMobile.Net
         {
             int mapId = JI(json, "map", room.MapId);
             int seed = JI(json, "seed", Environment.TickCount);
+            // Defaults match the client-side fallback bot stats.
+            int[] atk = new int[] { 110, 110 };
+            int[] def = new int[] { 85, 85 };
+            int[] agi = new int[] { 70, 70 };
+            int[] luck = new int[] { 40, 40 };
+            int[] weaponId = new int[] { 7001, 7001 };
+            int[] preferredBallId = new int[] { 0, 0 };
             lock (_lock)
             {
                 room.MapId = mapId;
@@ -970,6 +977,15 @@ namespace GunMobile.Net
                     if (_players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
                     {
                         p.RecalcStats(_db);
+                        if (i >= 0 && i < 2)
+                        {
+                            atk[i] = p.Attack;
+                            def[i] = p.Defence;
+                            agi[i] = p.Agility;
+                            luck[i] = p.Luck;
+                            weaponId[i] = p.WeaponId;
+                            preferredBallId[i] = p.PreferredBallId;
+                        }
                         room.Hp[i] = p.Hp;
                         room.MaxHp[i] = p.Hp;
                     }
@@ -984,7 +1000,32 @@ namespace GunMobile.Net
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 room.CurrentPlayer = 0;
             }
-            string startJson = "{\"map\":" + mapId + ",\"seed\":" + seed + ",\"wind\":" + room.Wind + "}";
+            int p0Hp = room.Hp != null && room.Hp.Length > 0 ? room.Hp[0] : 1200;
+            int p0MaxHp = room.MaxHp != null && room.MaxHp.Length > 0 ? room.MaxHp[0] : p0Hp;
+            int p1Hp = room.Hp != null && room.Hp.Length > 1 ? room.Hp[1] : 1200;
+            int p1MaxHp = room.MaxHp != null && room.MaxHp.Length > 1 ? room.MaxHp[1] : p1Hp;
+
+            string startJson = "{"
+                + "\"map\":" + mapId
+                + ",\"seed\":" + seed
+                + ",\"wind\":" + room.Wind
+                + ",\"p0_atk\":" + atk[0]
+                + ",\"p0_def\":" + def[0]
+                + ",\"p0_agi\":" + agi[0]
+                + ",\"p0_luck\":" + luck[0]
+                + ",\"p0_hp\":" + p0Hp
+                + ",\"p0_maxhp\":" + p0MaxHp
+                + ",\"p0_weaponId\":" + weaponId[0]
+                + ",\"p0_preferredBallId\":" + preferredBallId[0]
+                + ",\"p1_atk\":" + atk[1]
+                + ",\"p1_def\":" + def[1]
+                + ",\"p1_agi\":" + agi[1]
+                + ",\"p1_luck\":" + luck[1]
+                + ",\"p1_hp\":" + p1Hp
+                + ",\"p1_maxhp\":" + p1MaxHp
+                + ",\"p1_weaponId\":" + weaponId[1]
+                + ",\"p1_preferredBallId\":" + preferredBallId[1]
+                + "}";
             BroadcastToRoom(room, PhoneMsg.FightStart, startJson, -1);
         }
 

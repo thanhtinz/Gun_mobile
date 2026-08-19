@@ -101,7 +101,7 @@ namespace GunMobile.Client
 
     public static class BattleRuntime
     {
-        public static void Show(RectTransform safe, GameApp app, int mapId, int npcId = 0)
+        public static void Show(RectTransform safe, GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
             var host = safe.GetComponent<BattleHost>();
             if (host == null)
@@ -109,13 +109,14 @@ namespace GunMobile.Client
                 host = safe.gameObject.AddComponent<BattleHost>();
             }
 
-            host.Run(app, mapId, npcId);
+            host.Run(app, mapId, npcId, fightStartJson);
         }
     }
 
     public sealed class BattleHost : MonoBehaviour
     {
         GameApp _app;
+        string _fightStartJson;
         MapCollision _map;
         Texture2D _foreTex;
         RawImage _fore;
@@ -127,11 +128,13 @@ namespace GunMobile.Client
         ProjectileSimulator _sim = new ProjectileSimulator();
         BattleLoop _loop = new BattleLoop();
         BallPhysics _ball = BallPhysics.Default;
+        BallPhysics[] _ballsByLiving;
         Vector2[] _pos;
         int[] _facing;
         ProjectileState _shot;
         bool _flying;
         int _shotRemaining;
+        bool _shotFromNet;
         bool _botQueued;
         float _botDelay;
         int _mapId;
@@ -162,11 +165,12 @@ namespace GunMobile.Client
         RawImage _petImg;
         RawImage _titleImg;
 
-        public void Run(GameApp app, int mapId, int npcId = 0)
+        public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
             _app = app;
             _mapId = mapId;
             _npcId = npcId;
+            _fightStartJson = fightStartJson;
             _resultOpen = false;
             ClearProp();
             StopAllCoroutines();
@@ -194,49 +198,106 @@ namespace GunMobile.Client
             BuildWorld(root.transform);
             BuildHud(root.transform);
 
-            var player = new LivingStats
-            {
-                Attack = _app.Profile.Attack,
-                Defence = _app.Profile.Defence,
-                Agility = _app.Profile.Agility,
-                Luck = _app.Profile.Luck,
-                Hp = _app.Profile.Hp,
-                MaxHp = _app.Profile.Hp,
-                Team = 1
-            };
+            LivingStats player;
             LivingStats bot;
-            NpcInfo npc = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
-            if (npc != null)
+
+            // LAN: use server-provided stats so both sides start from the same HP/attributes.
+            if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
             {
-                bot = _app.Database.MakeNpcLiving(_npcId);
-                _foeName = npc.Name;
+                player = new LivingStats
+                {
+                    Attack = JsonInt(_fightStartJson, "p0_atk", _app.Profile.Attack),
+                    Defence = JsonInt(_fightStartJson, "p0_def", _app.Profile.Defence),
+                    Agility = JsonInt(_fightStartJson, "p0_agi", _app.Profile.Agility),
+                    Luck = JsonInt(_fightStartJson, "p0_luck", _app.Profile.Luck),
+                    Hp = JsonInt(_fightStartJson, "p0_hp", _app.Profile.Hp),
+                    MaxHp = JsonInt(_fightStartJson, "p0_maxhp", _app.Profile.Hp),
+                    Team = 1
+                };
+
+                bot = new LivingStats
+                {
+                    Attack = JsonInt(_fightStartJson, "p1_atk", 110),
+                    Defence = JsonInt(_fightStartJson, "p1_def", 85),
+                    Agility = JsonInt(_fightStartJson, "p1_agi", 70),
+                    Luck = JsonInt(_fightStartJson, "p1_luck", 40),
+                    Hp = JsonInt(_fightStartJson, "p1_hp", 1200),
+                    MaxHp = JsonInt(_fightStartJson, "p1_maxhp", 1200),
+                    Team = 2
+                };
+
+                _foeName = "P2";
             }
             else
             {
-                bot = new LivingStats
+                player = new LivingStats
                 {
-                    Attack = 110,
-                    Defence = 85,
-                    Agility = 70,
-                    Luck = 40,
-                    Hp = 1200,
-                    MaxHp = 1200,
-                    Team = 2
+                    Attack = _app.Profile.Attack,
+                    Defence = _app.Profile.Defence,
+                    Agility = _app.Profile.Agility,
+                    Luck = _app.Profile.Luck,
+                    Hp = _app.Profile.Hp,
+                    MaxHp = _app.Profile.Hp,
+                    Team = 1
                 };
-                _foeName = PhoneNet.NetBattle ? "P2" : "Bot";
+
+                NpcInfo npc = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
+                if (npc != null)
+                {
+                    bot = _app.Database.MakeNpcLiving(_npcId);
+                    _foeName = npc.Name;
+                }
+                else
+                {
+                    bot = new LivingStats
+                    {
+                        Attack = 110,
+                        Defence = 85,
+                        Agility = 70,
+                        Luck = 40,
+                        Hp = 1200,
+                        MaxHp = 1200,
+                        Team = 2
+                    };
+                    _foeName = PhoneNet.NetBattle ? "P2" : "Bot";
+                }
             }
 
             int seed = PhoneNet.NetBattle && PhoneNet.BattleSeed != 0 ? PhoneNet.BattleSeed : 0;
-            _loop.Reset(new[] { player, bot }, 20f, seed);
-            _ball = BallPhysics.Default;
-            if (_app.Database != null)
+            if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
             {
-                int ballId = _app.Profile.PreferredBallId > 0
-                    ? _app.Profile.PreferredBallId
-                    : _app.Database.DefaultBallId(_app.Profile.WeaponId);
-                _ball = _app.Database.GetBall(ballId);
+                int serverSeed = JsonInt(_fightStartJson, "seed", seed);
+                if (serverSeed != 0) seed = serverSeed;
             }
 
+            _loop.Reset(new[] { player, bot }, 20f, seed);
+            _ballsByLiving = new BallPhysics[2] { BallPhysics.Default, BallPhysics.Default };
+            if (_app.Database != null)
+            {
+                if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
+                {
+                    int p0WeaponId = JsonInt(_fightStartJson, "p0_weaponId", _app.Profile.WeaponId);
+                    int p0PreferredBallId = JsonInt(_fightStartJson, "p0_preferredBallId", _app.Profile.PreferredBallId);
+                    int p1WeaponId = JsonInt(_fightStartJson, "p1_weaponId", _app.Profile.WeaponId);
+                    int p1PreferredBallId = JsonInt(_fightStartJson, "p1_preferredBallId", 0);
+
+                    int ballId0 = p0PreferredBallId > 0 ? p0PreferredBallId : _app.Database.DefaultBallId(p0WeaponId);
+                    int ballId1 = p1PreferredBallId > 0 ? p1PreferredBallId : _app.Database.DefaultBallId(p1WeaponId);
+
+                    _ballsByLiving[0] = _app.Database.GetBall(ballId0);
+                    _ballsByLiving[1] = _app.Database.GetBall(ballId1);
+                }
+                else
+                {
+                    int ballId = _app.Profile.PreferredBallId > 0
+                        ? _app.Profile.PreferredBallId
+                        : _app.Database.DefaultBallId(_app.Profile.WeaponId);
+                    _ballsByLiving[0] = _app.Database.GetBall(ballId);
+                    _ballsByLiving[1] = _ballsByLiving[0]; // Solo bot uses same ball physics.
+                }
+            }
+
+            _ball = _ballsByLiving[0];
             _sim.ApplyBall(_ball);
             _pos = new[] { new Vector2(140f, 0f), new Vector2(_map.Width - 160f, 0f) };
             _facing = new[] { 1, -1 };
@@ -540,8 +601,14 @@ namespace GunMobile.Client
 
         void Fire(int who, float angle, float power, bool fromNet)
         {
+            _shotFromNet = fromNet;
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
+            if (_ballsByLiving != null && who >= 0 && who < _ballsByLiving.Length && _ballsByLiving[who] != null)
+            {
+                _ball = _ballsByLiving[who];
+                _sim.ApplyBall(_ball);
+            }
             Vector2 p = _pos[who];
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
@@ -737,7 +804,10 @@ namespace GunMobile.Client
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);
-            PhoneNet.ReportDamage(index, dmg);
+            if (!_shotFromNet)
+            {
+                PhoneNet.ReportDamage(index, dmg);
+            }
             SpawnDmgPopup(_pos[index], dmg, crit);
         }
 
@@ -1218,6 +1288,11 @@ namespace GunMobile.Client
             }
 
             Vector2 p = _pos[me];
+            if (_ballsByLiving != null && me >= 0 && me < _ballsByLiving.Length && _ballsByLiving[me] != null)
+            {
+                _ball = _ballsByLiving[me];
+                _sim.ApplyBall(_ball);
+            }
             ProjectileState s = _sim.Launch(p.x, _map.Height - p.y - 18f, _aim.AngleDeg, _aim.Power, _facing[me]);
             for (int i = 0; i < _dots.Length; i++)
             {
