@@ -142,6 +142,8 @@ namespace GunMobile.Client
         string _foeName = "Bot";
         int _serverRewardGold;
         bool _serverRewardWin;
+        bool _serverRewardReady;
+        bool _pendingMatchOver;
         int _propAvailableMask;
         Dictionary<int, Button> _propButtons = new Dictionary<int, Button>();
         SpriteSheet _livingSheet;
@@ -177,6 +179,10 @@ namespace GunMobile.Client
             _npcId = npcId;
             _fightStartJson = fightStartJson;
             _resultOpen = false;
+            _serverRewardGold = 0;
+            _serverRewardWin = false;
+            _serverRewardReady = false;
+            _pendingMatchOver = false;
             ClearProp();
             StopAllCoroutines();
             UiKit.ClearChildren(app.transform.Find("GunMobileCanvas/SafeArea") ?? transform);
@@ -610,6 +616,11 @@ namespace GunMobile.Client
             DrawHud();
             UpdateActors();
             TickDmgPopups();
+
+            if (_loop.Phase == BattlePhase.MatchOver)
+            {
+                TryFinishMatch();
+            }
         }
 
         void FireBot()
@@ -862,9 +873,13 @@ namespace GunMobile.Client
 
                 if (msg.Id == PhoneMsg.FightReward)
                 {
-                    // Server reward after FightOver — store for result screen.
                     _serverRewardGold = JsonInt(msg.Json, "gold", 0);
-                    _serverRewardWin = JsonInt(msg.Json, "win", 0) != 0;
+                    _serverRewardWin = ParseWinFlag(msg.Json, "win");
+                    _serverRewardReady = true;
+                    if (_pendingMatchOver || _loop.Phase == BattlePhase.MatchOver)
+                    {
+                        TryFinishMatch();
+                    }
                     continue;
                 }
 
@@ -1012,10 +1027,56 @@ namespace GunMobile.Client
 
             if (_loop.Phase == BattlePhase.MatchOver)
             {
-                FinishMatch();
+                TryFinishMatch();
             }
 
             ClearProp();
+        }
+
+        void TryFinishMatch()
+        {
+            if (_resultOpen || _loop == null || _loop.Phase != BattlePhase.MatchOver)
+            {
+                return;
+            }
+
+            if (PhoneNet.NetBattle && !_serverRewardReady)
+            {
+                _pendingMatchOver = true;
+                PhoneNet.ReportFightOver(_loop.Livings[MeSeat()].Hp > 0);
+                return;
+            }
+
+            FinishMatch();
+        }
+
+        static bool ParseWinFlag(string json, string key)
+        {
+            if (string.IsNullOrEmpty(json)) return false;
+
+            string needle = "\"" + key + "\":";
+            int i = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (i < 0) return false;
+
+            int s = i + needle.Length;
+            while (s < json.Length && char.IsWhiteSpace(json[s])) s++;
+
+            if (s >= json.Length) return false;
+            if (json[s] == 't' || json[s] == 'T') return true;
+            if (json[s] == 'f' || json[s] == 'F') return false;
+
+            int e = s;
+            while (e < json.Length && (json[e] == '-' || json[e] == '.' || (json[e] >= '0' && json[e] <= '9')))
+            {
+                e++;
+            }
+
+            if (int.TryParse(json.Substring(s, e - s), out int n))
+            {
+                return n != 0;
+            }
+
+            return false;
         }
 
         void ClearProp()
@@ -1098,44 +1159,52 @@ namespace GunMobile.Client
             }
 
             _resultOpen = true;
-            bool win = _loop.Livings[MeSeat()].Hp > 0;
-            PhoneNet.ReportFightOver(win);
             bool net = PhoneNet.NetBattle;
+            bool win = net ? _serverRewardWin : (_loop.Livings[MeSeat()].Hp > 0);
+
+            if (net)
+            {
+                PhoneNet.ReportFightOver(win);
+            }
 
             int gold;
             int questGold = 0;
-            if (net && _serverRewardGold > 0)
+            if (net)
             {
-                gold = _serverRewardGold;
+                gold = _serverRewardGold > 0 ? _serverRewardGold : (win ? 800 : 100);
             }
             else
             {
-                gold = win ? (net ? 800 : 800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
-            }
-            if (win)
-            {
-                _app.Profile.Win++;
-            }
-            else
-            {
-                _app.Profile.Lose++;
+                gold = win ? (800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
             }
 
-            _app.Profile.Gold += gold;
-
-            if (!net && win)
+            if (!net)
             {
-                _app.Profile.Honor += _npcId != 0 ? 12 : 4;
-                if (_app.Profile.PendingLabyrinth != 0)
+                if (win)
                 {
-                    _app.Profile.LabyrinthFloor++;
+                    _app.Profile.Win++;
                 }
-                questGold = _app.Profile.CompleteAcceptedQuests(_app.Database);
-                _app.Profile.PendingReward = 0;
-                _app.Profile.PendingLabyrinth = 0;
-            }
+                else
+                {
+                    _app.Profile.Lose++;
+                }
 
-            _app.Profile.Save();
+                _app.Profile.Gold += gold;
+
+                if (win)
+                {
+                    _app.Profile.Honor += _npcId != 0 ? 12 : 4;
+                    if (_app.Profile.PendingLabyrinth != 0)
+                    {
+                        _app.Profile.LabyrinthFloor++;
+                    }
+                    questGold = _app.Profile.CompleteAcceptedQuests(_app.Database);
+                    _app.Profile.PendingReward = 0;
+                    _app.Profile.PendingLabyrinth = 0;
+                }
+
+                _app.Profile.Save();
+            }
             string detail = win
                 ? $"击败 {_foeName}" + (questGold > 0 ? $"\n任务奖励 +{questGold} 金" : "")
                 : $"{_foeName} 获胜";

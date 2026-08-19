@@ -247,6 +247,9 @@ namespace GunMobile.Net
         // Server-authoritative props available for the current turn player.
         // Bit mapping uses propIds = [1,2,4,5,6,7] -> bits 0..5.
         public int CurrentPropMask;
+
+        // Cached FightStart JSON for reconnecting clients.
+        public string LastFightStartJson = "";
     }
 
     /// <summary>
@@ -565,6 +568,7 @@ namespace GunMobile.Net
                                 int[] maxHpArr = null;
                                 float[] posXArr = null;
                                 int[] facingArr = null;
+                                string fightStartJson = null;
                                 lock (_lock)
                                 {
                                     if (_players.TryGetValue(playerId, out player))
@@ -582,6 +586,7 @@ namespace GunMobile.Net
                                             currentPlayer = room.CurrentPlayer;
                                             wind = room.Wind;
                                             propMask = room.CurrentPropMask;
+                                            fightStartJson = room.LastFightStartJson;
                                             hpArr = room.Hp != null ? (int[])room.Hp.Clone() : null;
                                             maxHpArr = room.MaxHp != null ? (int[])room.MaxHp.Clone() : null;
                                             posXArr = room.PosX != null ? (float[])room.PosX.Clone() : null;
@@ -594,6 +599,11 @@ namespace GunMobile.Net
                                 // Help the reconnecting client re-sync quickly.
                                 if (inBattle)
                                 {
+                                    if (!string.IsNullOrEmpty(fightStartJson))
+                                    {
+                                        Send(ns, PhoneMsg.FightStart, fightStartJson);
+                                    }
+
                                     string turnJson = "{\"turn\":" + turn +
                                                       ",\"player\":" + currentPlayer +
                                                       ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
@@ -1075,18 +1085,14 @@ namespace GunMobile.Net
             }
             string dmgJson = "{\"target\":" + player.Seat + ",\"dmg\":9999,\"crit\":false,\"surrender\":true}";
             BroadcastToRoom(room, PhoneMsg.FightDamage, dmgJson, -1);
-            // Trigger game over check
             bool gameOver;
             lock (_lock)
             {
-                int alive = 0;
-                for (int i = 0; i < room.Hp.Length; i++)
-                    if (room.Hp[i] > 0) alive++;
-                gameOver = alive <= 1;
+                gameOver = CountAliveTeams(room) <= 1;
             }
             if (gameOver)
             {
-                room.InBattle = false;
+                EndBattle(room);
             }
         }
 
@@ -1518,7 +1524,12 @@ namespace GunMobile.Net
                 sb.Append(",\"").Append(p).Append("preferredBallId\":").Append(ballId);
             }
             sb.Append("}");
-            BroadcastToRoom(room, PhoneMsg.FightStart, sb.ToString(), -1);
+            string startJson = sb.ToString();
+            lock (_lock)
+            {
+                room.LastFightStartJson = startJson;
+            }
+            BroadcastToRoom(room, PhoneMsg.FightStart, startJson, -1);
 
             // Push current turn available props to clients.
             string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
@@ -1736,8 +1747,115 @@ namespace GunMobile.Net
             }
             if (gameOver)
             {
+                EndBattle(room);
+            }
+            else
+            {
                 AdvanceTurn(room);
             }
+        }
+
+        void EndBattle(GameRoom room)
+        {
+            if (room == null) return;
+
+            List<(ServerPlayer player, int gold, bool win)> payouts = null;
+            HashSet<int> aliveTeams = null;
+            lock (_lock)
+            {
+                if (!room.InBattle) return;
+                room.InBattle = false;
+
+                aliveTeams = new HashSet<int>();
+                if (room.Hp != null && room.Livings != null)
+                {
+                    for (int i = 0; i < room.Hp.Length; i++)
+                    {
+                        if (room.Hp[i] > 0 && i < room.Livings.Length)
+                        {
+                            aliveTeams.Add(room.Livings[i].Team);
+                        }
+                    }
+                }
+
+                payouts = new List<(ServerPlayer, int, bool)>();
+                foreach (int pid in room.PlayerIds)
+                {
+                    if (!_players.TryGetValue(pid, out ServerPlayer p)) continue;
+
+                    int seat = p.Seat;
+                    int myTeam = seat >= 0 && room.Livings != null && seat < room.Livings.Length
+                        ? room.Livings[seat].Team
+                        : 1;
+                    bool win = aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
+                    int gold = win ? 800 : 100;
+
+                    if (win && p.PveRewardGold > 0)
+                    {
+                        gold += p.PveRewardGold;
+                    }
+                    if (win && p.PveLabyrinth)
+                    {
+                        p.LabyrinthFloor++;
+                    }
+
+                    p.PveNpcId = 0;
+                    p.PveRewardGold = 0;
+                    p.PveLabyrinth = false;
+
+                    if (win)
+                    {
+                        p.Win++;
+                        p.Gold += gold;
+                        p.Honor += 4;
+                    }
+                    else
+                    {
+                        p.Lose++;
+                        p.Gold += gold;
+                    }
+
+                    p.Level = Mathf.Min(70, p.Level + (win ? 1 : 0));
+                    p.RecalcStats(_db);
+                    SavePlayer(p);
+                    payouts.Add((p, gold, win));
+                }
+            }
+
+            if (payouts == null) return;
+            foreach (var item in payouts)
+            {
+                SendFightTo(item.player, PhoneMsg.FightReward,
+                    "{\"gold\":" + item.gold + ",\"win\":" + (item.win ? "1" : "0") + "}");
+                SendTo(item.player, PhoneMsg.ProfileData, item.player.ToJson());
+            }
+        }
+
+        bool PlayerTeamWon(GameRoom room, ServerPlayer player)
+        {
+            if (room == null || player == null || room.Hp == null || room.Livings == null) return false;
+
+            var aliveTeams = new HashSet<int>();
+            for (int i = 0; i < room.Hp.Length; i++)
+            {
+                if (room.Hp[i] > 0 && i < room.Livings.Length)
+                {
+                    aliveTeams.Add(room.Livings[i].Team);
+                }
+            }
+
+            int seat = player.Seat;
+            int myTeam = seat >= 0 && seat < room.Livings.Length ? room.Livings[seat].Team : 1;
+            return aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
+        }
+
+        void ResendFightReward(ServerPlayer player, GameRoom room)
+        {
+            if (player == null || room == null) return;
+            bool win = PlayerTeamWon(room, player);
+            int gold = win ? 800 : 100;
+            SendFightTo(player, PhoneMsg.FightReward,
+                "{\"gold\":" + gold + ",\"win\":" + (win ? "1" : "0") + "}");
         }
 
         int CountAliveTeams(GameRoom room)
@@ -1753,28 +1871,38 @@ namespace GunMobile.Net
 
         void AdvanceTurn(GameRoom room)
         {
+            bool ended = false;
             lock (_lock)
             {
                 if (CountAliveTeams(room) <= 1)
                 {
-                    room.InBattle = false;
-                    return;
+                    ended = true;
                 }
-                room.CurrentTurn++;
-                int n = room.Hp.Length;
-                for (int j = 1; j <= n; j++)
+                else
                 {
-                    int idx = (room.CurrentPlayer + j) % n;
-                    if (room.Hp[idx] > 0)
+                    room.CurrentTurn++;
+                    int n = room.Hp.Length;
+                    for (int j = 1; j <= n; j++)
                     {
-                        room.CurrentPlayer = idx;
-                        break;
+                        int idx = (room.CurrentPlayer + j) % n;
+                        if (room.Hp[idx] > 0)
+                        {
+                            room.CurrentPlayer = idx;
+                            break;
+                        }
                     }
+                    room.Wind = room.Rng != null ? room.Rng.Next(-3, 4) * 10 : 0;
+                    room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    room.CurrentPropMask = GeneratePropMask(room);
                 }
-                room.Wind = room.Rng != null ? room.Rng.Next(-3, 4) * 10 : 0;
-                room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-                room.CurrentPropMask = GeneratePropMask(room);
             }
+
+            if (ended)
+            {
+                EndBattle(room);
+                return;
+            }
+
             string turnJson = "{\"turn\":" + room.CurrentTurn + ",\"player\":" + room.CurrentPlayer + ",\"wind\":" + room.Wind + "}";
             BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
 
@@ -1788,34 +1916,25 @@ namespace GunMobile.Net
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)
         {
-            // Server authoritative: ignore client-provided win flag.
-            int seat = player.Seat;
-            bool win = room != null && room.Hp != null && seat >= 0 && seat < room.Hp.Length && room.Hp[seat] > 0;
-            int gold = win ? 800 : 100;
+            if (room == null || player == null) return;
+
+            bool endedNow = false;
             lock (_lock)
             {
-                // PvE bonus
-                if (win && player.PveRewardGold > 0)
+                if (room.InBattle)
                 {
-                    gold += player.PveRewardGold;
+                    endedNow = true;
                 }
-                if (win && player.PveLabyrinth)
-                {
-                    player.LabyrinthFloor++;
-                }
-                player.PveNpcId = 0;
-                player.PveRewardGold = 0;
-                player.PveLabyrinth = false;
-
-                if (win) { player.Win++; player.Gold += gold; player.Honor += 4; }
-                else { player.Lose++; player.Gold += gold; }
-                player.Level = Mathf.Min(70, player.Level + (win ? 1 : 0));
-                player.RecalcStats(_db);
-                SavePlayer(player);
-                room.InBattle = false;
             }
-            SendFightTo(player, PhoneMsg.FightReward, "{\"gold\":" + gold + ",\"win\":" + (win ? "true" : "false") + "}");
-            SendTo(player, PhoneMsg.ProfileData, player.ToJson());
+
+            if (endedNow)
+            {
+                EndBattle(room);
+                return;
+            }
+
+            // Battle already ended server-side — resend reward for late/duplicate client ack.
+            ResendFightReward(player, room);
         }
 
         void BroadcastToRoom(GameRoom room, ushort id, string json, int excludePlayerId)
