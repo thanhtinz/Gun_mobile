@@ -369,24 +369,51 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
-            Transform body = SysUi.Begin(safe, app, "排行 · CelebByDayGPList");
-            SysUi.Note(body, $"{app.Profile.Nick}  Lv.{app.Profile.Level}  {app.Profile.Win}W/{app.Profile.Lose}L  (本机战绩插入第 1 行)");
-            XmlResultTable table = SysUi.Table(app, "Request/CelebByDayGPList.xml");
-            if (table == null)
+            PhoneNet.RequestRank();
+            Transform body = SysUi.Begin(safe, app, "排行榜");
+            SysUi.Note(body, $"你: {app.Profile.Nick}  Lv.{app.Profile.Level}  {app.Profile.Win}W/{app.Profile.Lose}L");
+
+            string json = PhoneNet.LastRankJson;
+            if (string.IsNullOrEmpty(json))
             {
-                SysUi.Note(body, "Missing CelebByDayGPList.xml");
+                SysUi.Note(body, "正在加载排行...");
                 return;
             }
 
-            int n = 0;
-            foreach (var row in table.Rows)
+            int idx = json.IndexOf("[", StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", StringComparison.Ordinal);
+            if (idx < 0 || end < 0)
             {
-                SysUi.Note(body, $"{GameDatabase.Str(row, "NickName")}  Lv{GameDatabase.Int(row, "Grade")}  {GameDatabase.Str(row, "ConsortiaName")}  VIP{GameDatabase.Int(row, "VIPLevel")}");
-                n++;
-                if (n >= 50)
-                {
-                    break;
-                }
+                SysUi.Note(body, "排行数据格式错误");
+                return;
+            }
+
+            string arr = json.Substring(idx + 1, end - idx - 1);
+            int rank = 1;
+            int pos = 0;
+            while (pos < arr.Length && rank <= 50)
+            {
+                int ob = arr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = arr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = arr.Substring(ob, cb - ob + 1);
+                pos = cb + 1;
+
+                string nick = GameApp.JsonStr(entry, "nick", "?");
+                int level = GameApp.JsonInt(entry, "level", 1);
+                int win = GameApp.JsonInt(entry, "win", 0);
+                int lose = GameApp.JsonInt(entry, "lose", 0);
+                int vip = GameApp.JsonInt(entry, "vip", 0);
+                int honor = GameApp.JsonInt(entry, "honor", 0);
+
+                SysUi.Note(body, $"#{rank}  {nick}  Lv{level}  {win}W/{lose}L  VIP{vip}  荣誉{honor}");
+                rank++;
+            }
+
+            if (rank == 1)
+            {
+                SysUi.Note(body, "暂无排行数据");
             }
         }
     }

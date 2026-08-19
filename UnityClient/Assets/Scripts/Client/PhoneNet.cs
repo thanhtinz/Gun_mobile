@@ -18,6 +18,12 @@ namespace GunMobile.Client
         public static string PeerHost = "127.0.0.1";
         public static int BattleSeed;
         public static int RoomId = -1;
+        public static string LastRankJson;
+
+        public static void RequestRank()
+        {
+            Road?.Send(PhoneMsg.RankRequest, "{}");
+        }
 
         public static void Boot()
         {

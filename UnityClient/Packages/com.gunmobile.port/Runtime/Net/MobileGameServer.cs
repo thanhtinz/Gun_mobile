@@ -680,6 +680,10 @@ namespace GunMobile.Net
                     break;
                 }
 
+                case PhoneMsg.RankRequest:
+                    HandleRankRequest(player, ns);
+                    break;
+
                 case PhoneMsg.RoomList:
                     HandleRoomList(player, ns);
                     break;
@@ -1052,6 +1056,32 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandleRankRequest(ServerPlayer player, NetworkStream ns)
+        {
+            var sorted = new List<ServerPlayer>();
+            lock (_lock)
+            {
+                sorted.AddRange(_players.Values);
+            }
+            sorted.Sort((a, b) => b.Win.CompareTo(a.Win));
+            var sb = new StringBuilder("{\"ranks\":[");
+            int count = Mathf.Min(50, sorted.Count);
+            for (int i = 0; i < count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                var p = sorted[i];
+                sb.Append("{\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
+                  .Append("\",\"level\":").Append(p.Level)
+                  .Append(",\"win\":").Append(p.Win)
+                  .Append(",\"lose\":").Append(p.Lose)
+                  .Append(",\"vip\":").Append(p.VipLevel)
+                  .Append(",\"honor\":").Append(p.Honor)
+                  .Append("}");
+            }
+            sb.Append("]}");
+            Send(ns, PhoneMsg.RankData, sb.ToString());
         }
 
         void HandleRoomList(ServerPlayer player, NetworkStream ns)

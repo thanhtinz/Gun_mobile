@@ -330,6 +330,9 @@ namespace GunMobile.Client
                         PhoneNet.RoomId = JsonInt(msg.Json, "roomId", PhoneNet.RoomId);
                         PhoneNet.Seat = JsonInt(msg.Json, "seat", PhoneNet.Seat);
                         break;
+                    case PhoneMsg.RankData:
+                        PhoneNet.LastRankJson = msg.Json;
+                        break;
                 }
             }
         }
@@ -414,7 +417,7 @@ namespace GunMobile.Client
             if (newBag.Count > 0) Profile.Bag = newBag;
         }
 
-        static int JsonInt(string json, string key, int fallback)
+        public static int JsonInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json)) return fallback;
             string needle = "\"" + key + "\":";
@@ -424,7 +427,7 @@ namespace GunMobile.Client
             return int.TryParse(raw, out int n) ? n : fallback;
         }
 
-        static string JsonStr(string json, string key, string fallback)
+        public static string JsonStr(string json, string key, string fallback)
         {
             if (string.IsNullOrEmpty(json)) return fallback;
             string needle = "\"" + key + "\":\"";
