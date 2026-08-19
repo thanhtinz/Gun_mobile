@@ -83,7 +83,7 @@ Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → 
 2. `ProjectileSimulator.Launch(angle, power, facing)` rồi `FlyUntil` với `MapCollision.IsSolid`.
 3. Gió `BattleLoop.Wind` (bội số 10, −30…30), gravity **0.7 px/frame** từ `game.logic.dll` (`PcPhysics`). `SpeedScale=1` (px/frame / power). Wind scale **0.04**. BallList `Weight`/`Wind` điều chỉnh factor.
 4. `bombconfig.xml` → `BombTable` (Common / Special ball id).
-5. Nổ: `MapCollision.CutCircle` + sprite crater.
+5. Nổ: `MapCollision.CutCircle` + PNG crater (`Resource/image/bomb/crater/{id}`). Living: zip-atlas `living948.png` (TexturePacker). Aim dots + màn kết trận.
 6. `DamageCalculator` (atk/def/luck) — tinh chỉnh theo công thức server khi decompile `Fight`.
 7. Turn 20s, `SUCIDE_TIME` 120s từ `config.xml`.
 
@@ -106,7 +106,7 @@ Online thật cần protobuf socket giống Road/Fight (exe không có source C#
 ```
 UnityClient/Packages/com.gunmobile.port/Runtime/
   Core/     ZlibXml, GamePaths, XmlResultTable, PackedMornUi
-  Res/      ResLoader, TextureAtlasParser, FlashConfig, MapCollision, CharacterDefine
+  Res/      ResLoader, TextureAtlasParser, SpriteSheet, FlashConfig, MapCollision, CharacterDefine
   UI/       MobileUiBootstrap, SafeAreaFitter, UiObjectPool, MornUiBuilder, TouchAim/Move
   Logic/    ProjectileSimulator, BattleLoop, BombTable, DamageCalculator
   GunMobileBootstrap.cs
