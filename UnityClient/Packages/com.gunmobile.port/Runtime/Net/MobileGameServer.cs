@@ -259,6 +259,7 @@ namespace GunMobile.Net
         readonly object _lock = new object();
         readonly Dictionary<int, ServerPlayer> _players = new Dictionary<int, ServerPlayer>();
         readonly Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
+        const bool BattleDebug = false;
         int _nextPlayerId = 1;
         int _nextRoomId = 1;
         TcpListener _road;
@@ -1411,6 +1412,10 @@ namespace GunMobile.Net
             // Push current turn available props to clients.
             string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
             BroadcastToRoom(room, PhoneMsg.FightProp, propJson, -1);
+            if (BattleDebug)
+            {
+                Debug.Log($"[Battle] FightStart room={room.Id} curPlayer={room.CurrentPlayer} propMask={room.CurrentPropMask}");
+            }
         }
 
         void HandleFightDamage(ServerPlayer player, GameRoom room, string json)
@@ -1494,6 +1499,7 @@ namespace GunMobile.Net
             float power = JF(json, "power", 50f);
             int facing = JI(json, "facing", room.Facing[who]);
             int propId = JI(json, "prop", 0);
+            int rawPropId = propId;
 
             // Server validates propId based on the props available for the current turn player.
             // If not available, treat as no-prop (propId=0).
@@ -1506,6 +1512,11 @@ namespace GunMobile.Net
                 {
                     propId = 0;
                 }
+            }
+
+            if (BattleDebug)
+            {
+                Debug.Log($"[Battle] Fire seat={who} turn={room.CurrentTurn} propMask={propMask} rawProp={rawPropId} usedProp={propId}");
             }
 
             ApplyPropModifiers(propId, out float propDmg, out float propRadius, out float propPower, out bool propCrit);
@@ -1658,6 +1669,10 @@ namespace GunMobile.Net
 
             string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
             BroadcastToRoom(room, PhoneMsg.FightProp, propJson, -1);
+            if (BattleDebug)
+            {
+                Debug.Log($"[Battle] FightTurn room={room.Id} turn={room.CurrentTurn} curPlayer={room.CurrentPlayer} propMask={room.CurrentPropMask}");
+            }
         }
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)
