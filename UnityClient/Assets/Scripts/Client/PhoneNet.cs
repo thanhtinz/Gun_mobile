@@ -313,7 +313,7 @@ namespace GunMobile.Client
             return ok;
         }
 
-        public static void SendFire(int who, float angle, float power, int facing, int propId = 0)
+        public static void SendFire(int who, float angle, float power, int facing, int propId = 0, bool special = false)
         {
             if (Fight == null || !Fight.Connected)
             {
@@ -325,7 +325,8 @@ namespace GunMobile.Client
                 "{\"who\":" + who + ",\"angle\":" + angle.ToString(System.Globalization.CultureInfo.InvariantCulture) +
                 ",\"power\":" + power.ToString(System.Globalization.CultureInfo.InvariantCulture) +
                 ",\"facing\":" + facing +
-                ",\"prop\":" + propId + "}");
+                ",\"prop\":" + propId +
+                ",\"special\":" + (special ? "1" : "0") + "}");
         }
 
         public static void SendWalk(int who, float x, int facing)

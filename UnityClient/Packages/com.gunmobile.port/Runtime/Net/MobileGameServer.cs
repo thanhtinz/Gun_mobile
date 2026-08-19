@@ -2041,6 +2041,7 @@ namespace GunMobile.Net
             int facing = JI(json, "facing", room.Facing[who]);
             int propId = JI(json, "prop", 0);
             int rawPropId = propId;
+            bool specialShot = JI(json, "special", 0) != 0;
 
             // Server validates propId based on the props available for the current turn player.
             // If not available, treat as no-prop (propId=0).
@@ -2076,7 +2077,9 @@ namespace GunMobile.Net
                 map = room.Map;
                 if (_db != null)
                 {
-                    ball = _db.ResolveBallForShot(player.WeaponId, player.PreferredBallId, propId);
+                    ball = specialShot
+                        ? _db.ResolveSpecialBall(player.WeaponId)
+                        : _db.ResolveBallForShot(player.WeaponId, player.PreferredBallId, propId);
                 }
                 else
                 {

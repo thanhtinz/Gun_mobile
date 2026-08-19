@@ -194,6 +194,7 @@ namespace GunMobile.Client
         int[] _weaponIds;
         int[] _preferredBallIds;
         int _lastShooter;
+        bool _specialNextShot;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
@@ -475,6 +476,13 @@ namespace GunMobile.Client
                     PhoneNet.Fight?.Send(PhoneMsg.FightSurrender, "{}");
                 }, new Vector2(140f, 50f));
                 surrender.GetComponent<RectTransform>().anchorMin = surrender.GetComponent<RectTransform>().anchorMax = new Vector2(0.82f, 0.5f);
+            }
+
+            if (_app.Database != null && _app.Database.Bombs.TryGetValue(_app.Profile.WeaponId, out BombInfo weaponBomb) &&
+                weaponBomb.Special > 0 && weaponBomb.Special != weaponBomb.Common)
+            {
+                var special = UiKit.Button(bar.transform, "Special", "必杀", () => { _specialNextShot = true; }, new Vector2(140f, 50f));
+                special.GetComponent<RectTransform>().anchorMin = special.GetComponent<RectTransform>().anchorMax = new Vector2(0.71f, 0.5f);
             }
 
             var move = MobileUiBootstrap.CreateHudLayer(parent as RectTransform, "Move", TextAnchor.LowerLeft, MobileUiBootstrap.FingerButtonSize * 3f);
@@ -834,12 +842,17 @@ namespace GunMobile.Client
             _shotFromNet = fromNet;
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
+            bool specialShot = false;
             if (_app?.Database != null && _weaponIds != null && who >= 0 && who < _weaponIds.Length)
             {
                 int wid = _weaponIds[who];
                 int pref = _preferredBallIds != null && who < _preferredBallIds.Length ? _preferredBallIds[who] : 0;
                 int propForShot = who == MeSeat() ? _propId : 0;
-                _ball = _app.Database.ResolveBallForShot(wid, pref, propForShot);
+                specialShot = who == MeSeat() && _specialNextShot;
+                _specialNextShot = false;
+                _ball = specialShot
+                    ? _app.Database.ResolveSpecialBall(wid)
+                    : _app.Database.ResolveBallForShot(wid, pref, propForShot);
                 if (_ballsByLiving != null && who < _ballsByLiving.Length)
                 {
                     _ballsByLiving[who] = _ball;
@@ -859,7 +872,7 @@ namespace GunMobile.Client
             _shotRemaining = Mathf.Max(0, _ball.Amount - 1);
             if (!fromNet && PhoneNet.NetBattle)
             {
-                PhoneNet.SendFire(who, angle, power, _facing[who], _propId);
+                PhoneNet.SendFire(who, angle, power, _facing[who], _propId, specialShot);
             }
         }
 
