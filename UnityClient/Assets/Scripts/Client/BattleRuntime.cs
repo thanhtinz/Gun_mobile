@@ -684,6 +684,19 @@ namespace GunMobile.Client
 
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
+                if (msg.Id == PhoneMsg.FightTurn)
+                {
+                    // Realign online turn order from server.
+                    int turn = JsonInt(msg.Json, "turn", _loop.TurnIndex);
+                    int player = JsonInt(msg.Json, "player", _loop.CurrentLiving);
+                    float wind = JsonFloat(msg.Json, "wind", _loop.Wind);
+                    if (_loop.Phase != BattlePhase.Flying)
+                    {
+                        _loop.SyncTurn(turn, player, wind);
+                    }
+                    continue;
+                }
+
                 if (msg.Id == PhoneMsg.FightWalk)
                 {
                     int walker = JsonInt(msg.Json, "who", 1 - MeSeat());

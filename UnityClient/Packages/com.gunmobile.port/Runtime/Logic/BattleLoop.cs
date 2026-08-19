@@ -122,6 +122,17 @@ namespace GunMobile.Logic
             Phase = BattlePhase.Aiming;
         }
 
+        public void SyncTurn(int turnIndex, int currentLiving, float wind, float turnSeconds = 20f)
+        {
+            // Server authoritative sync for online play.
+            TurnIndex = Mathf.Max(0, turnIndex);
+            int maxLiving = Mathf.Max(0, _livings.Count - 1);
+            CurrentLiving = Mathf.Clamp(currentLiving, 0, maxLiving);
+            Wind = wind;
+            TurnTimeLeft = turnSeconds;
+            Phase = BattlePhase.Aiming;
+        }
+
         public void TickClock(float dt)
         {
             if (Phase != BattlePhase.Aiming)

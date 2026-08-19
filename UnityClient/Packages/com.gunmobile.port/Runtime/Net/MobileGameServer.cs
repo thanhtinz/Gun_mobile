@@ -672,6 +672,11 @@ namespace GunMobile.Net
                         room.Wind = wind;
                         room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     }
+                    // Broadcast the server-synced turn to all clients so host/join stay aligned.
+                    string turnJson = "{\"turn\":" + turn +
+                                       ",\"player\":" + who +
+                                       ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
+                    BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
                     break;
                 }
 
