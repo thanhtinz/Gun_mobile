@@ -248,6 +248,7 @@ namespace GunMobile.Net
         TcpListener _fight;
         Thread _roadThread;
         Thread _fightThread;
+        Thread _timerThread;
         volatile bool _run;
         GameDatabase _db;
         System.Random _rng = new System.Random();
@@ -281,6 +282,9 @@ namespace GunMobile.Net
                 _fightThread = new Thread(AcceptFight) { IsBackground = true, Name = "MobileFight" };
                 _roadThread.Start();
                 _fightThread.Start();
+
+                _timerThread = new Thread(TurnTimerLoop) { IsBackground = true, Name = "MobileTurnTimer" };
+                _timerThread.Start();
                 Debug.Log($"MobileGameServer listening Road:{PhonePacket.RoadPort} Fight:{PhonePacket.FightPort}");
             }
             catch (Exception e)
@@ -415,6 +419,51 @@ namespace GunMobile.Net
                     SavePlayer(player);
                     lock (_lock) { player.RoadTcp = null; player.RoadStream = null; }
                 }
+            }
+        }
+
+        void TurnTimerLoop()
+        {
+            // Online battle: if a client doesn't send FightTurn in time,
+            // server will auto-advance (skip turn) to prevent deadlocks.
+            const long turnMs = 20000; // must match client BattleLoop default (20s)
+            const int tickMs = 200;
+
+            while (_run)
+            {
+                try
+                {
+                    long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    List<GameRoom> advance = null;
+
+                    lock (_lock)
+                    {
+                        foreach (var room in _rooms.Values)
+                        {
+                            if (room == null || !room.InBattle) continue;
+                            if (room.TurnStartMs <= 0) continue;
+
+                            if (now - room.TurnStartMs >= turnMs)
+                            {
+                                advance ??= new List<GameRoom>();
+                                // Mark immediately to reduce double-advance race.
+                                room.TurnStartMs = now;
+                                advance.Add(room);
+                            }
+                        }
+                    }
+
+                    if (advance != null)
+                    {
+                        foreach (var r in advance)
+                        {
+                            AdvanceTurn(r);
+                        }
+                    }
+                }
+                catch { }
+
+                Thread.Sleep(tickMs);
             }
         }
 
