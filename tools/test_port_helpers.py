@@ -24,6 +24,7 @@ from port_helpers import (  # noqa: E402
 DATA = ROOT / "legacy" / "data"
 RELEASE = ROOT / "legacy" / "releases" / "Ok"
 SAMPLES = ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Samples~" / "StreamingAssets"
+PCDATA = ROOT / "UnityClient" / "Assets" / "StreamingAssets" / "PcData"
 
 
 def sha256_file(path: Path) -> str:
@@ -101,6 +102,23 @@ class MapAndBallistics(unittest.TestCase):
         self.assertAlmostEqual(a.x, b.x, places=5)
         self.assertAlmostEqual(a.y, b.y, places=5)
         self.assertGreater(a.t, 0.5)
+
+
+class MobilePack(unittest.TestCase):
+    def test_unity_project_exists(self):
+        self.assertTrue((ROOT / "UnityClient" / "ProjectSettings" / "ProjectVersion.txt").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scenes" / "Boot.unity").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameApp.cs").exists())
+
+    def test_packed_maps_and_index(self):
+        index = PCDATA / "content_index.json"
+        self.assertTrue(index.exists())
+        for mid in ("1056", "2001", "1005", "1010", "1029", "1048"):
+            self.assertTrue((PCDATA / "Service" / "Road" / "map" / mid / "fore.map").exists(), mid)
+            self.assertTrue((PCDATA / "Resource" / "image" / "map" / mid / "fore.png").exists(), mid)
+        self.assertTrue((PCDATA / "Flash" / "config.xml").exists())
+        self.assertTrue((PCDATA / "Request" / "bombconfig.xml").exists())
+        self.assertTrue((PCDATA / "Flash" / "ui" / "cn_trad" / "starling" / "hall_scene" / "hall_scene.png").exists())
 
 
 if __name__ == "__main__":

@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <Item rank="1" template="40002" count="10" />
+  <Item rank="1" template="100100" count="10" />
+  <Item rank="1" template="11035" count="5" />
+  <Item rank="2" template="100100" count="5" />
+  <Item rank="2" template="11035" count="3" />
+  <Item rank="3" template="100100" count="4" />
+  <Item rank="3" template="11035" count="2" />
+  <Item rank="4" template="11905" count="2" />
+  <Item rank="5" template="11102" count="3" />
+  <Item rank="6" template="11101" count="3" />
+</Result>

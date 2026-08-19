@@ -1,0 +1,65 @@
+<style name="boguadventure" version="1.0.1" source="ui/zh_cn/swf/boguadventure.swf">
+	<sets>
+		<set stylename="boguAdventure.view.waradTextTF" args="Arial,12,0xfff8d6,,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.waradTextGF" args="0x3a1901,1,4,4,30" type="flash.filters.GlowFilter"/>	
+		<set stylename="boguAdventure.view.tipTextTF" args="Arial,12,0xfdf9ed,true" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.tipTextGF" args="0x692706,1,4,4,30" type="flash.filters.GlowFilter"/>	
+		<set stylename="boguAdventure.view.openCountTF" args="Arial,16,0x41F402,true,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.openCountGF" args="0x01411E,1,4,4,30" type="flash.filters.GlowFilter"/>	
+		<set stylename="boguAdventure.view.resetTextTF" args="Arial,14,0xFAD606" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.resetTextGF" args="0x453128,1,4,4,30" type="flash.filters.GlowFilter"/>
+	
+		<set stylename="boguAdventure.view.fineMineTextTF" args="Arial,12,0xff1900" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.fineMineTextGF" args="0xffffff,1,4,4,30" type="flash.filters.GlowFilter"/>
+	
+		<set stylename="boguAdventure.view.fineMineTimesTextTF" args="Arial,12,0x605669" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.fineMineTimesTextGF" args="0xffffff,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="boguAdventure.view.activityDateTextTF" args="Arial,14,0xfff600,true" type="flash.text.TextFormat"/>
+		<set stylename="boguAdventure.view.activityDateTextGF" args="0x025c8b,1,4,4,30" type="flash.filters.GlowFilter"/>
+	</sets>
+	<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolRevive" backStyle="boguAdventure.tool.revive" x="314" y="537" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>  
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolGetAwardBtn" backStyle="boguAdventure.tool.getAwardBtn" x="34" y="550" />  
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolReset" backStyle="boguAdventure.tool.reset" x="529" y="537" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>  
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolFreeReset" backStyle="boguAdventure.tool.freeReset" x="529" y="537" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>  
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolSign" backStyle="boguAdventure.tool.sign" x="24" y="178" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>  
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.toolFindMine" backStyle="boguAdventure.tool.findMine" x="23" y="263" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>  
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="boguAdventure.rewardBtn" unSelectedStyle="boguAdventure.unRankBtn" selectedStyle="boguAdventure.rankBtn" filterString="null,lightFilter,null,grayFilter" x="70" y="0"/>
+    	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.awardFrame.waradText" autoSize="none" width="120" height="25" textFormatStyle="boguAdventure.view.waradTextTF" filterString="boguAdventure.view.waradTextGF" />
+    	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.awardFrame.tipText" x="127" y="224" textFormatStyle="boguAdventure.view.tipTextTF" filterString="boguAdventure.view.tipTextGF" />
+    	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.awardFrame.awardBtn" backStyle="boguAdventure.awardFrame.awardBtnBg" x="23" y="263" enterEnable="false" />  
+    	<component classname="com.pickgliss.ui.core.Component" stylename="boguAdventure.awardFrame.awardTip" width="65" height="65" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" />  
+    	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="boguAdventure.view.hpBox" spacing="9" x="74" y="7"/>
+    	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.view.openCountText" x="110" y="512" textFormatStyle="boguAdventure.view.openCountTF" filterString="boguAdventure.view.openCountGF" text="0" />
+    	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="boguAdventure.view.mineNum" resourceLink="boguAdventure.view.mineNum1,boguAdventure.view.mineNum2,boguAdventure.view.mineNum3,boguAdventure.view.mineNum4,boguAdventure.view.mineNum5,boguAdventure.view.mineNum6,boguAdventure.view.mineNum7,boguAdventure.view.mineNum8,boguAdventure.view.mineNum9,boguAdventure.view.mineNum0" />  
+   	 	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.view.limitResetText" x="712" y="556" textFormatStyle="boguAdventure.view.resetTextTF" filterString="boguAdventure.view.resetTextGF" text="0" />
+   	 	
+   	 	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.view.fineMineText" x="25" y="333" textFormatStyle="boguAdventure.view.fineMineTextTF" filterString="boguAdventure.view.fineMineTextGF" />
+   	 	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.view.fineMineTimesText" x="54" y="333" textFormatStyle="boguAdventure.view.fineMineTimesTextTF" filterString="boguAdventure.view.fineMineTimesTextGF" />
+   	 	
+   	 	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="boguAdventure.helpBtn" backStyle="boguAdventure.helpBtnBg" x="175" y="0" />  
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="boguAdventure.view.activityDateText" x="344" y="46" textFormatStyle="boguAdventure.view.activityDateTextTF" filterString="boguAdventure.view.activityDateTextGF" />
+   	 	
+    </components>
+	<bitmaps>
+		<bitmapData resourceLink="boguAdventure.stateView.openCountBg" x="27" y="510" />
+	</bitmaps>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="boguAdventure.view.mapContainerPos" x="219" y="137" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.helpMaskPos" x="0" y="33" />
+		<custom classname="game.model.GameNeedMovieInfo" stylename="boguAdventure.view.npcGameNeedMovieInfo" type="2" path="image/game/living/Living034.swf" classPath="game.living.Living034" />
+		<custom classname="boguAdventure.view.SimpleGameLiving" stylename="boguAdventure.view.boguNpc" gameNeedMovieInfo="boguAdventure.view.npcGameNeedMovieInfo" dir="1" actionScale="0.7" x="100" y="590" />
+		<custom classname="boguAdventure.gameView.footLight" stylename="boguAdventure.player.footLight" x="0" width="114" y="55" mouseEnabled="false" mouseChildren="false"/>
+		
+		<custom classname="flash.geom.Point" stylename="boguAdventure.awardFrame.awardTipPos1" x="217" y="156" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.awardFrame.awardTipPos2" x="374" y="156" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.awardFrame.awardTipPos3" x="532" y="156" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.view.rewardFramePos" x="776" y="0" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.view.resetNumPos" x="749" y="554" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.view.helpViewPos" x="178" y="154" />
+		<custom classname="flash.geom.Point" stylename="boguAdventure.view.rewardCellPos" x="143" y="0" />
+		
+	</customDisplay>
+</style>

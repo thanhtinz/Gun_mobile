@@ -1,0 +1,41 @@
+<style name="uigeneral" version="1.0.1" source="ui/cn_trad/swf/uigeneral.swf">
+<sets>
+	<set stylename="petsBag.form.petsTip.commonGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	<set stylename="petsBag.form.petsTip.commonTF" args="arial,12,0xffffff" type="flash.text.TextFormat"  />
+	<set type="flash.filters.GlowFilter" args="0x000000,1,2,2,10" stylename="petsBag.form.petsTip.stateGF" />
+	<set type="flash.text.TextFormat" args="arial,12,0xaaaaaa,true"  stylename="petsBag.form.petsTip.stateTF" />
+	<set type="flash.filters.GlowFilter" args="0x000000,1,2,2,10" stylename="petsBag.form.petsTip.propertyGF" />
+	<set type="flash.text.TextFormat" args="arial,12,0xfb9732,true"  stylename="petsBag.form.petsTip.propertyTF"/>
+
+</sets>
+<customDisplay>
+	<custom classname="asset.LevelIcon.LevelEffect_1" x="5" y="25" stylename="asset.LevelIcon.LevelEffect_1"/>
+	<custom classname="asset.LevelIcon.LevelEffect_2" x="-2" y="20" stylename="asset.LevelIcon.LevelEffect_2"/>
+	<custom classname="asset.LevelIcon.LevelEffect_3" x="-7" y="-2" stylename="asset.LevelIcon.LevelEffect_3"/>
+	<custom classname="asset.LevelIcon.LevelEffect_4" x="0" y="0" stylename="asset.LevelIcon.LevelEffect_4"/>
+	<custom classname="asset.LevelIcon.LevelEffect_5" x="0" y="0" stylename="asset.LevelIcon.LevelEffect_5"/>
+	<custom classname="asset.LevelIcon.LevelEffect_6" x="0" y="0" stylename="asset.LevelIcon.LevelEffect_6"/>
+	<custom classname="flash.geom.Point" stylename="team.invite.alertPos" x="335" y="143"/>
+	<custom classname="flash.geom.Point" stylename="petsSystem.petShow.petItemPos" x="206" y="237" />
+	<custom classname="flash.geom.Point" stylename="petsSystem.petShow.mainViewPos" x="296" y="93" />
+	<custom classname="flash.geom.Point" stylename="elf.propertylook.ratePos"  x="117" y="271" />
+	<custom classname="flash.geom.Point" stylename="elf.propertylook.viewPos" x="31" y="86" />
+	<custom classname="elf.view.ElfMovieItem" stylename="elf.propertylook.moviePos" x="204" y="97" />	
+</customDisplay>
+<components>
+<!-- 宠物形态tips通用配置 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petsBag.form.petsTip.commonTxt"
+			textFormatStyle="petsBag.form.petsTip.commonTF" filterString="petsBag.form.petsTip.commonGF" x="12"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petsBag.form.petsTip.valueTxt1"
+			textFormatStyle="petsBag.form.petsTip.stateTF" filterString="petsBag.form.petsTip.stateGF" x="67" y="40"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petsBag.form.petsTip.valueTxt2"
+			textFormatStyle="petsBag.form.petsTip.propertyTF" filterString="petsBag.form.petsTip.propertyGF" x="90" y="60"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petsBag.form.petsTip.valueTxt3"
+			textFormatStyle="petsBag.form.petsTip.propertyTF" filterString="petsBag.form.petsTip.propertyGF" x="67" y="80"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petsBag.form.petsTip.valueTxt4"
+			textFormatStyle="petsBag.form.petsTip.propertyTF" filterString="petsBag.form.petsTip.propertyGF" x="77" y="111"/>
+	
+</components>
+<bitmaps>
+</bitmaps>
+</style>

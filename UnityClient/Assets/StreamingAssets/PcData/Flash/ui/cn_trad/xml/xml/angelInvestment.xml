@@ -1,0 +1,59 @@
+<style name="angelInvestment" version="7.9.0" source="ui/cn_trad/swf/angelInvestment.swf">
+<sets>
+	<set stylename="angelInvestment.helpTextTF" args="Arial,12,0xFFE6A1,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="angelInvestment.helpTextGF" args="0x501c02,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="angelInvestment.dayTextTF" args="Arial,12,0xFCF16E" type="flash.text.TextFormat"/>
+	<set stylename="angelInvestment.dayTextGF" args="0x4F2200,1,2,2,10" type="flash.filters.GlowFilter"/>	
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos1" x="90" y="240"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos2" x="70" y="310"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos3" x="50" y="380"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos4" x="480" y="170"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos5" x="460" y="240"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos6" x="440" y="310"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemPos7" x="420" y="380"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.itemCellPos" x="228" y="12"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.framePricePos" x="385" y="101"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.frameDayPos" x="624" y="67"/>
+	<custom classname="flash.geom.Point" stylename="angelInvestment.frameDiscountPos" x="550" y="135"/>
+</customDisplay>
+<components>
+	<component classname="angelInvestment.view.AngelInvestmentMainView" backStyle="asset.angelInvestment.bg"
+			closestyle="core.closebt" closeInnerRectString="44,6,15,30,14" stylename="angelInvestment.mainView"
+			escEnable="true" width="854" height="466" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="angelInvestment.helpText" 
+			textFormatStyle="angelInvestment.helpTextTF" filterString="angelInvestment.helpTextGF" x="206" y="199"/>
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="angelInvestment.dayText" 
+			textFormatStyle="angelInvestment.dayTextTF" filterString="angelInvestment.dayTextGF" x="165" y="15"/>
+			
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="angelInvestment.getAll"
+			backStyle="asset.angelInvestment.getAll" x="214" y="152" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="angelInvestment.buyAll"
+			backStyle="asset.angelInvestment.buyAll"x="351" y="152" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="angelInvestment.get"
+			backStyle="asset.angelInvestment.get" enable="false" x="280" y="37" />		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="angelInvestment.buy"
+			backStyle="asset.angelInvestment.buy" x="280" y="10" />
+			
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.angelInvestment.number" 
+			resourceLink="asset.angelInvestment.1,asset.angelInvestment.2,asset.angelInvestment.3,asset.angelInvestment.4,asset.angelInvestment.5,asset.angelInvestment.6,asset.angelInvestment.7,asset.angelInvestment.8,asset.angelInvestment.9,asset.angelInvestment.0" />
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="angelInvestment.number" imageStyle="asset.angelInvestment.number" x="68" y="38" />
+	
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.angelInvestment.priceNumber" 
+			resourceLink="asset.angelInvestment.price1,asset.angelInvestment.price2,asset.angelInvestment.price3,asset.angelInvestment.price4,asset.angelInvestment.price5,asset.angelInvestment.price6,asset.angelInvestment.price7,asset.angelInvestment.price8,asset.angelInvestment.price9,asset.angelInvestment.price0" />
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="angelInvestment.priceNumber" imageStyle="asset.angelInvestment.priceNumber" x="68" y="38" />
+	
+	<component classname="com.pickgliss.ui.core.Component" stylename="angelInvestment.itemTips" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,6" tipGapV="10" tipGapH="70" x="0" y="0" />
+	
+</components>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.angelInvestment.price" x="169" y="37" />
+	<bitmapData resourceLink="asset.angelInvestment.textBg" x="374" y="67" />
+</bitmaps>
+</style>

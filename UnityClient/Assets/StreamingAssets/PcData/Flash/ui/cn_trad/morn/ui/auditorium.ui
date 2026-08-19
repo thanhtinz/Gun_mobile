@@ -1,0 +1,18 @@
+
+%AuditoriumView.xml�[<View width="446" height="413">
+  <Image skin="asset.auditorium.bg"/>
+  <Button skin="asset.auditorium.churchBtn" x="71" y="97" stateNum="1" var="btn_church" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+  <Button skin="asset.auditorium.birthdayBtn" x="71" y="199" stateNum="1" var="btn_birthday" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+  <Button skin="asset.auditorium.moonBtn" x="71" y="301" stateNum="1" var="btn_moon" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+  <Button skin="asset.ui.btn_close5" x="421" y="44" stateNum="1" var="btn_close"/>
+  <Button skin="asset.auditorium.swornBtn" x="71" y="403" stateNum="1" var="btn_sworn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+</View>#MoonEnterView.xml�<View width="503" height="280">
+  <Image skin="asset.auditorium.moonEnterView.bg"/>
+  <Button skin="asset.ui.btn_close1" x="446" y="7" stateNum="1" var="btn_close"/>
+  <Label text="现在不需要举办婚礼也可以享受二人世界的个人空间，神父将给进入露台赏月的各位情侣赠送祝福礼包，祝长长久久，永结同心." x="160" y="56" font="宋体" size="14" color="0xfff5d2" stroke="0x794617,1,4,4,15" autoSize="none" width="316" height="60" multiline="true" wordWrap="true" leading="5" letterSpacing="2"/>
+  <Label text="说明:" x="159" y="116" font="宋体" size="14" color="0xb0e239" stroke="0x38490b,1,4,4,15"/>
+  <Label x="160" y="135" font="宋体" size="14" color="0xb0e239" stroke="0x38490b,1,4,4,15" multiline="true" wordWrap="true" width="302" height="83" autoSize="left" leading="5" letterSpacing="2" var="moon_roomDesc"/>
+  <Label text="创建情侣赏月露台" x="12" y="13" color="0xffeebf" size="16" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.auditorium.moonEnterView.creatBtm" x="204" y="220" stateNum="1" var="btn_createRoom"/>
+  <Box x="38" y="82" width="78" height="78" var="good_iconBox"/>
+</View>

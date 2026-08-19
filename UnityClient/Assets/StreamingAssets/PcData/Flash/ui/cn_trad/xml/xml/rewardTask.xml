@@ -1,0 +1,110 @@
+﻿<style name="rewardTask" version="1.0.0" source="ui/cn_trad/swf/rewardTask.swf">
+<sets>
+					
+	<set stylename="rewardTask.taskDescriptionTextTF" args="Arial,14,0xFFECC2,true" type="flash.text.TextFormat" leading="6" />
+	<set stylename="rewardTask.taskDescriptionTextGF" args="0x512800,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="rewardTask.taskNumberTextTF" args="Arial,14,0xFF0000,true" type="flash.text.TextFormat"/>
+	<set stylename="rewardTask.taskNumberTextGF" args="0xFFFFFF,1,2,2,10" type="flash.filters.GlowFilter"/>	
+	
+	<set stylename="rewardTask.vipBuyNumTextTF" args="Arial,12,0xFFECC2,true" type="flash.text.TextFormat"/>
+	<set stylename="rewardTask.vipBuyNumTextGF" args="0x512800,1,2,2,10" type="flash.filters.GlowFilter"/>	
+	
+    <set stylename="reward.taskStatusTxt.tf" args="Arial,20,0xe3ffb4" type="flash.text.TextFormat"/>
+    <set stylename="reward.taskStatusTxt.gf" args="0x006255,1,4,4,30" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="rewardTask.tipsTF" args="Arial,16,0xe8ce97,true,,,,,left" type="flash.text.TextFormat" /> 
+	<set stylename="rewardTask.tipsGF" args="0x471822,1,4,4,30" type="flash.filters.GlowFilter" />
+	
+    <set type="flash.text.TextFormat" stylename="rewardTask.rewardNameTextFormat" args="Arial,14,0xffea9c"/>
+
+	<set type="flash.filters.GlowFilter" args="0x411212,2,4,4,30" stylename="rewardTask.rewardNameTextGF" />
+</sets>
+<customDisplay>
+	
+	<custom classname="flash.geom.Point" stylename="rewardTask.itemCellPos" x="228" y="12"/>
+
+</customDisplay>
+<components>
+
+	<component classname="rewardTask.view.RewardTaskMainView" stylename="rewardTask.mainView"
+		backStyle="SimpleFrameBackgound" escEnable="true" width="600" height="545" 
+		 closestyle="core.closebt" titleStyle="FrameTitleTextStyle"  
+		titleOuterRectPosString="15,11,5" closeInnerRectString="44,15,6,30,14" />	
+
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.rewardTask.tipsText"
+		textFormatStyle="rewardTask.tipsTF" filterString="rewardTask.tipsGF" x="28" y="12"/>
+	
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rewardTask.taskDescriptionText" 
+			textFormatStyle="rewardTask.taskDescriptionTextTF" filterString="rewardTask.taskDescriptionTextGF" x="56" y="95" width="500" wordWrap="true"/>	
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rewardTask.taskTargetText" 
+			textFormatStyle="rewardTask.taskDescriptionTextTF" filterString="rewardTask.taskDescriptionTextGF" x="84" y="201"/>	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rewardTask.taskStatusText" 
+			textFormatStyle="rewardTask.taskDescriptionTextTF" filterString="rewardTask.taskDescriptionTextGF" y="201" />			
+		
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rewardTask.refreshTask"
+			backStyle="asset.rewardTask.refreshTask" x="419" y="204" />
+		
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="rewardTask.hbox" spacing="7" x="59" y="326" />
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="rewardTask.vbox" spacing="29.5" x="7" y="70" />
+	<component stylename="rewardTask.rewardNameText"	classname="com.pickgliss.ui.text.FilterFrameText"
+		textFormatStyle="rewardTask.rewardNameTextFormat"filterString="rewardTask.rewardNameTextGF"
+		x="-10.5" y="72" width="90" wordWrap="true"/>
+	
+			
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.rewardTask.multiple" 
+			resourceLink="asset.rewardTask.multiple1,asset.rewardTask.multiple2,asset.rewardTask.multiple3,asset.rewardTask.multiple4,asset.rewardTask.multiple5" />
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="rewardTask.multiple" imageStyle="asset.rewardTask.multiple" x="330" y="340" />		
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rewardTask.refreshReward"
+			backStyle="asset.rewardTask.refreshReward" x="410" y="386" />
+			
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rewardTask.taskNumberText" 
+			textFormatStyle="rewardTask.taskNumberTextTF" filterString="rewardTask.taskNumberTextGF" x="35" y="439"/>	
+				
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rawardTask.addRewardTaskNum" 
+	backStyle="asset.hall.playerInfo.energyAdd"  x="220" y="439"/>
+	
+    <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rewardTask.vipBuyNumText" 
+			textFormatStyle="rewardTask.vipBuyNumTextTF" filterString="rewardTask.vipBuyNumTextGF" x="254" y="442"/>	
+  
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="rewardTask.getAwardBtnBg" 
+	resourceLink="core.BigRedButton,asset.core.quest.QuestOverBtn" imageRectString="0|178|0|47|13,30|118|6|35|13"/>
+	<component stylename="rewardTask.getAwardBtn" classname="com.pickgliss.ui.controls.BaseButton" 
+	backStyle="rewardTask.getAwardBtnBg" x="80" y="477" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rewardTask.getTaskBtn" 
+	backStyle="asset.rewardTask.getTaskBtn" x="48" y="477"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rewardTask.taskingBtn"
+	 backStyle="asset.rewardTask.taskingBtn" x="19" y="485"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rewardTask.completeBtn"
+	 backStyle="asset.rewardTask.completeBtn" x="286" y="477"/>
+	
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="reward.taskStatus" 
+			parentStyle='core.simplebt' backStyle="core.BigRedButton" 
+			backgoundInnerRectString="8,88,6,30,13" textStyle="reward.taskStatusTxt" 
+			width="150" height="50" x="329" y="483"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="reward.taskStatusTxt" 
+			textFormatStyle="reward.taskStatusTxt.tf" filterString="reward.taskStatusTxt.gf" 
+			x="0" y="0"/>
+		<component classname="magicStone.components.MagicStoneConfirmView" stylename="reardTask.reward.confirmView"  parentStyle="SimpleAlert"  />		
+	
+</components>
+
+<customs>
+		<custom classname="asset.rewardTask.view.help" stylename="asset.rewardTask.view.help" x="15" y="-56"/>
+		<custom classname="flash.geom.Point" stylename="asset.rewardTask.goodPos" x="7.5" y="7" />
+
+</customs>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.rewardTask.bg" x="12" y="37" />
+	<bitmapData resourceLink="asset.rewardTask.goodbg" x="0" y="0" />
+	<bitmapData resourceLink="asset.rewardTask.multiplex" x="302" y="344" />
+	<bitmapData resourceLink="asset.rewardTask.multiplemax" x="363" y="348" />
+</bitmaps>
+</style>

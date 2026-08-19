@@ -1,0 +1,43 @@
+
+%DCBlessingItem.xml�?<View width="80" height="80">
+  <Image skin="asset.dremlandChallenge.blessingBtn" x="6" y="8" var="img_blessingIcon"/>
+  <Button skin="asset.dremlandChallenge.buff.buyBtn" x="14" y="36" stateNum="1" var="btn_buy" visible="false"/>
+  <Container x="45" y="3" var="buff_contain" tipStyle="ddt.view.tips.DreamLandBuffTip" tipDirctions="2,1,5">
+    <Image skin="asset.dremlandChallenge.buffBg"/>
+    <Label text="30" x="1" color="0xffffff" font="宋体" var="lbl_shelterValue" width="16" height="16"/>
+    <Label text="40" x="10" y="9" color="0xffffff" font="宋体" var="lbl_powerValue"/>
+  </Container>
+</View>-buff/DCBuffBuyView.xml�o<View width="610" height="390">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="50,80,50,50" width="610" height="390"/>
+  <Image skin="asset.dremlandChallenge.buff.buyBg" x="19" y="46"/>
+  <Label text="祝福购买" x="13" y="11" color="0xffeebf" font="宋体" size="16" stroke="0x442006,1,4,4,30" bold="true"/>
+  <Image skin="asset.dremlandChallenge.buff.buyDesc" x="132" y="307"/>
+  <Button skin="asset.ui.btn_close1" x="554" y="4" stateNum="1" var="btn_close"/>
+  <Box x="36" y="62" var="btn_shelter" buttonMode="true" mouseChildren="true" mouseEnabled="true">
+    <Image skin="asset.dremlandChallenge.buff.shelterBg"/>
+    <Label text="血量+" x="53" y="133" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="防御+" x="53" y="157" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="魔抗+" x="53" y="181" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="5000" x="104" y="133" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_blood"/>
+    <Label text="5000" x="104" y="156" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_defense"/>
+    <Label text="5000" x="104" y="181" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_magicDefense"/>
+    <Label text="500" x="21" y="209" color="0xffffff" font="宋体" size="12" bold="true" letterSpacing="2" stroke="0xfff196,1,2,2,1" width="78" height="18" align="right" var="lbl_shelterMoney"/>
+    <Image skin="asset.core.getTicket" x="105" y="201"/>
+  </Box>
+  <Box x="366" y="62" var="btn_power" buttonMode="true">
+    <Image skin="asset.dremlandChallenge.buff.powerBg"/>
+    <Label text="攻击+" x="67" y="133" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="魔攻+" x="67" y="157" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="伤害+" x="67" y="181" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true"/>
+    <Label text="5000" x="118" y="133" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_attack"/>
+    <Label text="5000" x="118" y="156" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_magicAttack"/>
+    <Label text="5000" x="118" y="181" color="0xfff06e" font="宋体" size="14" stroke="0x023d5c,1,4,4,10" letterSpacing="2" bold="true" var="lbl_damage"/>
+    <Label text="500" x="32" y="209" color="0xffffff" font="宋体" size="12" bold="true" letterSpacing="2" stroke="0xfff196,1,2,2,1" width="78" height="18" align="right" var="lbl_powerMoney"/>
+    <Image skin="asset.core.getTicket" x="116" y="201"/>
+  </Box>
+  <Container x="261" y="138" tipStyle="ddt.view.tips.DreamLandBuffTip" tipDirctions="2,1,5" var="buff_tips">
+    <Image skin="asset.dremlandChallenge.buff.layerBg"/>
+    <Label text="8" x="24" y="17" color="0xffffff" bold="true" font="宋体" size="24" stroke="0xfff196,1,2,2,1" var="lbl_shelterLayer"/>
+    <Label text="8" x="53" y="46" color="0xffffff" bold="true" font="宋体" size="24" stroke="0xfff196,1,2,2,1" var="lbl_powerLayer"/>
+  </Container>
+</View>

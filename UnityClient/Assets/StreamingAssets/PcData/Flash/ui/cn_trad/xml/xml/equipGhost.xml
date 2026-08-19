@@ -1,0 +1,58 @@
+<style name="equipGhost" version="1.0.1" source="ui/cn_trad/swf/equipGhost.swf">
+	<sets>
+		<set stylename="equipGhost.goodCellTextTF" args="宋体,14,0xfcf3d3,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="equipGhost.goodCellTextGF" args="0x654512,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="equipGhost.successRatioTxtTF" args="宋体,22,0xFFF191,true,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="equipGhost.successRatioTxtGF" args="0x3a1936,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="ddt.store.equipGhost.progressTF" args="Arial,12,0xFFFFFF,,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="ddt.store.equipGhost.progressGF" args="0x360030,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="ddt.store.equipGhost.luckyTextTF" args="Arial,16,0xfff191,true,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="ddt.store.equipGhost.luckyTextGF" args="0x3a1936,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="ddt.store.equipGhost.tipsTextTF" args="Arial,12,0xFF679D" type="flash.text.TextFormat"/>
+		<set stylename="ddt.store.equipGhost.tipsTextGF" args="0x540D37,1,4,4,30" type="flash.filters.GlowFilter" />
+	</sets>
+	<customDisplays>
+		<custom classname="flash.geom.Point" stylename="equipGhost.leftBgPos" x="55" y="48"/>
+    	 <custom classname="flash.geom.Point" stylename="equipGhost.rightViewPos" x="413" y="48"/>
+    	 <custom classname="flash.geom.Point" stylename="equipGhost.spPos" x="64" y="47"/>
+    	 <custom classname="flash.geom.Point" stylename="equipGhost.helpBtnPos" x="658" y="-13"/>
+    	 <custom classname="flash.geom.Point" stylename="equipGhost.ghostPos0" x="76" y="154"/>
+         <custom classname="flash.geom.Point" stylename="equipGhost.ghostPos1" x="200" y="170"/>
+         <custom classname="flash.geom.Point" stylename="equipGhost.ghostPos2" x="288" y="154"/>
+         <custom classname="store.view.StoneCellFrame" stylename="equipGhost.LuckySymbolCell" backStyle="asset.ddtstore.GoodPanel" textStyle="equipGhost.goodCellText" x="79" y="159" textFieldX="8" textFieldY="28"  />
+		 <custom classname="store.view.StoneCellFrame" stylename="equipGhost.StrengthenStoneCell" backStyle="asset.ddtstore.GoodPanel" textStyle="equipGhost.goodCellText" x="292" y="159" textFieldX="10" textFieldY="28"/>
+		 <custom classname="store.view.StoneCellFrame" stylename="equipGhost.EquipmentCell" backStyle="asset.ddtstore.EquipmentCellBg" textStyle="ddtstore.StoreEmbedBG.EquipmentCellText" x="176" y="148" textFieldX="34" textFieldY="43" />
+ 	 <custom classname="store.fineStore.view.FineGhostProgressBar" stylename="store.view.exalt.fineGhostProgressBar" x="83" y="325"/>
+    	
+
+	</customDisplays>
+	<components>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="equipGhost.goodCellText" textFormatStyle="equipGhost.goodCellTextTF" filterString="equipGhost.goodCellTextGF" width="66"  height="32" wordWrap="true" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="equipGhost.successRatioTxt" textFormatStyle="equipGhost.successRatioTxtTF" filterString="equipGhost.successRatioTxtGF" x="158" y="366" />
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="equipGhost.ghostButton" backStyle="equipGhost.ghostBtn" enable="true" x="155" y="395"/>
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="equipGhost.continuousBtn" 
+			parentStyle="core.selectedCheck2" filterString="null,lightFilter,null,grayFilter" displacement="true" 
+			backStyle="equipGhost.continues" x="347" y="294"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="equipGhostBuyLuckSkin" resourceLink="core.bg6905,asset.equipGhost.luckyIcon" imageRectString="0|70|0|32|13,9|19|8|19|13" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="equipGhostBuyStoneSkin" resourceLink="core.bg6905,asset.equipGhost.stoneIcon" imageRectString="0|70|0|32|13,9|19|8|19|13" />
+		<component classname="ddt.view.common.BuyItemButton" stylename="equipGhostBuyLuckBtn" backStyle="equipGhostBuyLuckSkin" useLogID="94" textStyle="ddtstore.StoreIIStrengthBg.BuyButtonText" backgoundInnerRectString="13,66,8,32,13" filterString="null,lightFilter,lightFilter,grayFilter" tipStyle="core.GoodsTip" tipDirctions="7,0" x="29" y="19"/>
+		<component classname="ddt.view.common.BuyItemButton" stylename="equipGhostBuyStoneBtn" backStyle="equipGhostBuyStoneSkin" useLogID="94" textStyle="ddtstore.StoreIIStrengthBg.BuyButtonText" backgoundInnerRectString="13,66,8,32,13" filterString="null,lightFilter,lightFilter,grayFilter" tipStyle="core.GoodsTip" tipDirctions="7,0" x="29" y="19"/>
+		<component classname="ddt.view.common.BuyItemButton" stylename="equipGhost.buyLock" x="87" y="249" parentStyle="equipGhostBuyLuckBtn"/>
+		<component classname="ddt.view.common.BuyItemButton" stylename="equipGhost.buyStone" x="301" y="249" parentStyle="equipGhostBuyStoneBtn"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddt.store.equipGhost.progress" x="126" y="3" textFormatStyle="ddt.store.equipGhost.progressTF" filterString="ddt.store.equipGhost.progressGF" autoSize="none" width="100" height="18" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddt.store.equipGhost.luckyText" x="-12" y="0" textFormatStyle="ddt.store.equipGhost.luckyTextTF" filterString="ddt.store.equipGhost.luckyTextGF"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddt.store.equipGhost.tipsText" x="-5" y="21" textFormatStyle="ddt.store.equipGhost.tipsTextTF" filterString="ddt.store.equipGhost.tipsTextGF"/>
+		
+	
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="equipGhost.continues" x="-77" y="6"/>
+		<bitmapData resourceLink="asset.equipGhost.progressBar" x="63" y="1"/>
+		<bitmapData resourceLink="asset.equipGhost.progressBg" x="63" y="1"/>
+	</bitmaps>
+</style>

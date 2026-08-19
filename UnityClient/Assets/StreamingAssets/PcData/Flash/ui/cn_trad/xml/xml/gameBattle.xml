@@ -1,0 +1,19 @@
+﻿<style name="gameBattle" version="1.0.1" source="ui/cn_trad/swf/gameBattle.swf">
+	<sets>
+	</sets>
+
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="asset.gameBattle.maskPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="asset.gameBattle.sceneEffectsBarPos" x="10" y="265"/>
+	</customDisplay>
+		
+	<components>
+	
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.gameBattle.sceneEffectBarBg" x="-5" y="-5" />
+		<bitmapData resourceLink="asset.gameBattle.sceneEffectBarArrow" x="-10" y="5" />
+	
+	</bitmaps>
+</style>

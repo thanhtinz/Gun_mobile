@@ -1,31 +1,24 @@
 # Gun Mobile
 
-Repo chứa dump PC (弹弹堂 / DDTank-style) từ release [Ok](https://github.com/thanhtinz/Gun_mobile/releases/tag/Ok) và package Unity để port mobile.
+PC dump (弹弹堂 / DDTank) from release [Ok](https://github.com/thanhtinz/Gun_mobile/releases/tag/Ok) plus a Unity **2021.3** client targeting **Android and iOS**.
 
-## Có gì trong repo
+## Play / build
 
-- `legacy/releases/Ok/` — 3 zip gốc (Git LFS), checksum trong `SHA256SUMS.txt`
-- `legacy/data/` — XML/UI đã giải nén zlib (Flash config, Request tables, Morn, Starling atlas XML)
-- `UnityClient/Packages/com.gunmobile.port/` — helper đọc res, UI phone, logic đạn/turn
-- `docs/UNITY_MOBILE_PORT.md` — kế hoạch port từng phase
-- `tools/extract_legacy.py` / `tools/test_port_helpers.py`
+Open folder `UnityClient/` in Unity 2021.3 LTS (Android + iOS modules). Play `Assets/Scenes/Boot.unity`, or use menu **GunMobile → Build Android APK** / **Build iOS Xcode Project**.
 
-## Unity
+Details: `UnityClient/README.md`
 
-1. Unity 2021.3 LTS, 2D.
-2. `Packages/manifest.json`:
+## Repo layout
 
-```json
-"com.gunmobile.port": "file:../UnityClient/Packages/com.gunmobile.port"
-```
+- `legacy/releases/Ok/` — original 3 zip archives (Git LFS)
+- `legacy/data/` — decompressed Flash/Request XML
+- `UnityClient/` — Unity project (landscape, IL2CPP, `com.gunmobile.client`)
+- `UnityClient/Assets/StreamingAssets/PcData` — packed PC tables, hall/game art, 6 maps, bombs
+- `UnityClient/Assets/Scripts/Client` — login, hall (all PC modules), room, battle vs bot
+- `UnityClient/Packages/com.gunmobile.port` — zlib XML, map collision, physics, mobile HUD
+- `docs/UNITY_MOBILE_PORT.md` — port notes
 
-hoặc copy folder package vào `Packages/`.
-
-3. Copy `Samples~/StreamingAssets/*` → `Assets/StreamingAssets/`.
-4. Unzip `Archive.3.zip` `Resource/` + `Archive.2.zip` `Flash/` vào `persistentDataPath` trên máy/device.
-5. Scene trống + component `GunMobile.GunMobileBootstrap`.
-
-## Kiểm tra dump + helper
+## Test
 
 ```bash
 python3 tools/test_port_helpers.py

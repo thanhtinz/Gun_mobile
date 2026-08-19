@@ -1,0 +1,8 @@
+<Result value="true" message="Success!">
+  <Item AmuletLevel="1" AvoidInjury="60" Crit="100" Expend="100" Guard="150" Kill="100" LockPrice="200" Phase="1" Speed="10" SunderArmor="40" Tenacity="150" ViolenceInjury="100" WillFight="150" />
+  <Item AmuletLevel="10" AvoidInjury="90" Crit="150" Expend="100" Guard="200" Kill="150" LockPrice="200" Phase="2" Speed="15" SunderArmor="67" Tenacity="200" ViolenceInjury="150" WillFight="200" />
+  <Item AmuletLevel="20" AvoidInjury="120" Crit="200" Expend="200" Guard="300" Kill="200" LockPrice="200" Phase="3" Speed="20" SunderArmor="94" Tenacity="300" ViolenceInjury="200" WillFight="300" />
+  <Item AmuletLevel="30" AvoidInjury="150" Crit="350" Expend="200" Guard="450" Kill="350" LockPrice="200" Phase="4" Speed="25" SunderArmor="121" Tenacity="450" ViolenceInjury="350" WillFight="450" />
+  <Item AmuletLevel="40" AvoidInjury="180" Crit="500" Expend="300" Guard="600" Kill="500" LockPrice="200" Phase="5" Speed="30" SunderArmor="148" Tenacity="600" ViolenceInjury="500" WillFight="600" />
+  <Item AmuletLevel="50" AvoidInjury="220" Crit="625" Expend="300" Guard="750" Kill="625" LockPrice="200" Phase="6" Speed="35" SunderArmor="180" Tenacity="750" ViolenceInjury="625" WillFight="750" />
+</Result>

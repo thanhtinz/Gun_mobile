@@ -1,0 +1,11 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Points="500" TemplateID="12801" />
+  <Item ID="2" Points="800" TemplateID="12801" />
+  <Item ID="3" Points="1000" TemplateID="12801" />
+  <Item ID="4" Points="2000" TemplateID="112383" />
+  <Item ID="5" Points="3000" TemplateID="112383" />
+  <Item ID="6" Points="4000" TemplateID="112383" />
+  <Item ID="7" Points="6000" TemplateID="112383" />
+  <Item ID="8" Points="10000" TemplateID="122277" />
+  <Item ID="9" Points="30000" TemplateID="112354" />
+</Result>

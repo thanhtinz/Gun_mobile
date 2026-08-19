@@ -1,0 +1,81 @@
+<style name="tenyearanniversary" version="11.1.0" source="ui/cn_trad/swf/tenyearanniversary.swf">
+	<components>
+		<component classname="com.pickgliss.ui.image.Image"
+			stylename="tenyearanniversary.imagePreview" resourceLink="asset.tenyearanniversary.welfare.storyImg" />
+			
+		<!-- 周年庆任务相关配置 -->	
+		<component classname="com.pickgliss.ui.image.Image"
+			stylename="tenyearanniversary.task1" resourceLink="asset.tenyearanniversary.welfare.storyImg" />
+
+		<component classname="tenYearAnniversary.view.activityshop.AnniversaryShopBuyAlert"  stylename="anniversary.shopQuickBuyAlert"  parentStyle="BaseFrame" 
+		containerY="30" width="340" height="270"/>
+		
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage"
+			stylename="tenyearanniversary.quickBuy.inputbg" resourceLink="asset.tenyearanniversary.shop.buyCountBg" />
+			
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="tenYearAnniversary.welfare.storyTips" resourceLink="asset.tenyearanniversary.welfare.tipsBg" scaleGridString="16,12,100,40" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="tenYearAnniversary.welfare.storyTipText" textFormatStyle="welfare.storyTipTextTF"
+			filterString="welfare.storyTipTextGF"  multiline="true" wordWrap="true"  width="250" x="0" y="5"/>
+	</components>
+	<sets>
+		<set stylename="welfare.storyTipTextTF" args="宋体,14,0xffe715,true" indent="32"  leading="3" letterSpacing="1"  type="flash.text.TextFormat"/>
+		<set stylename="welfare.storyTipTextGF" args="0x442e02,1,4,4,10" type="flash.filters.GlowFilter"/>
+		
+		
+	</sets>
+	<customs>
+	<custom classname="ddt.command.NumberSelecter" stylename="tenyearanniversary.buy.numberSelecter" x="154"
+			y="37"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.shopBuyAlert.spriPos" x="0" y="32"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.shopBuyAlert.buyBtnPos" x="130" y="186"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.shopBuyAlert.costDescPos" x="84" y="105"/>
+	
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos1" x="54" y="46"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos2" x="559" y="46"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos3" x="880" y="46"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos4" x="1259" y="70"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos5" x="1714" y="51"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos6" x="2017" y="44"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos7" x="2393" y="39"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos8" x="2824" y="50"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos9" x="3186" y="45"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos10" x="3403" y="74"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos11" x="3750" y="66"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos12" x="4008" y="55"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos13" x="4391" y="52"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos14" x="4737" y="52"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos15" x="5045" y="55"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos16" x="5421" y="49"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos17" x="5764" y="45"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos18" x="6472" y="63"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos19" x="6863" y="56"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyPos20" x="7303" y="37"/>
+	
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos0" x="192" y="100"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos1" x="627" y="100"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos2" x="954" y="100"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos3" x="1393" y="100"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos4" x="1750" y="88"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos5" x="2110" y="70"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos6" x="2459" y="85"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos7" x="2893" y="87"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos8" x="3192" y="98"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos9" x="3485" y="89"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos10" x="3774" y="97"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos11" x="4109" y="88"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos12" x="4464" y="88"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos13" x="4803" y="81"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos14" x="5158" y="81"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos15" x="5510" y="86"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos16" x="6026" y="93"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos17" x="6539" y="90"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos18" x="6998" y="85"/>
+	<custom classname="flash.geom.Point" stylename="tenYearAnniversary.welfare.storyHeadPos19" x="7450" y="83"/>
+
+	
+	</customs>
+	<bitmaps>
+		
+	</bitmaps>
+	
+</style>

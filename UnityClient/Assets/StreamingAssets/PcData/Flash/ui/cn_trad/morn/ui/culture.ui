@@ -1,0 +1,80 @@
+
+)CultureMachining.xml�k<View width="274" height="400">
+  <Image skin="equipretrieve.trieveCell1" x="82" y="0"/>
+  <Box x="104" y="24" var="cellBox" width="65" height="67"/>
+  <Image skin="asset.culture.img17" x="0" y="265"/>
+  <Image skin="asset.culture.img8" x="42" y="272"/>
+  <LabelEx text="0/100" x="153" y="274" size="14" bold="true" color="0xffe6a3" stroke="0x662605,1,4,4,30" var="needTxt"/>
+  <Button skin="asset.culture.img2" x="75" y="308" stateNum="1" var="machiningBtn"/>
+  <Image skin="asset.culture.img9" x="4" y="110" sizeGrid="54,50,54,50" width="110" height="110"/>
+  <Image skin="asset.culture.img9" x="162" y="112" width="110" height="110"/>
+  <Box x="21" y="112" var="desBox">
+    <Label text=" LV.0" size="14" bold="true" color="0x26fe09" stroke="0x00420e,1,4,4,30" x="2" width="57" height="18" align="center" var="curLevel"/>
+    <Label text="攻击：" y="22" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30"/>
+    <Label text="+0" y="21" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="39" var="cur1Txt"/>
+    <Label text="防御：" y="43" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30"/>
+    <Label text="+0" y="42" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="39" var="cur2Txt"/>
+    <Label text="敏捷：" y="64" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30" width="43" height="16"/>
+    <Label text="+0" y="63" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="39" var="cur3Txt"/>
+    <Label text="幸运：" y="86" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30"/>
+    <Label text="+0" y="85" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="39" var="cur4Txt"/>
+    <Label text=" LV.0" size="14" bold="true" color="0x26fe09" stroke="0x00420e,1,4,4,30" x="157" width="57" height="18" align="center" y="1" var="nextLevel"/>
+    <Label text="攻击：" y="23" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30" x="155"/>
+    <Label text="+0" y="22" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="194" var="next1Txt"/>
+    <Label text="防御：" y="44" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30" x="155"/>
+    <Label text="+0" y="43" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="194" var="next2Txt"/>
+    <Label text="敏捷：" y="65" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30" width="43" height="16" x="155"/>
+    <Label text="+0" y="64" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="194" var="next3Txt"/>
+    <Label text="幸运：" y="87" size="12" bold="true" color="0xfb9331" stroke="0x6c2e00,1,4,4,30" x="155"/>
+    <Label text="+0" y="86" size="14" bold="true" color="0xf2c781" stroke="0x522301,1,4,4,30" x="194" var="next4Txt"/>
+  </Box>
+  <Button x="197" y="316" stateNum="1" imageLabel="asset.culture.img14" imageLabelRect="25,8" var="allBtn" toggle="true" checkButtonSkin="asset.ui.btn_check3"/>
+  <Image skin="asset.culture.img26" x="112" y="116"/>
+  <Box x="114" y="268" var="buyBox">
+    <Image skin="asset.culture.img6" x="5" var="cellImage"/>
+    <Button skin="asset.horse.frame.buyBtn_small" y="9" stateNum="1" var="buyBtn"/>
+  </Box>
+</View>1CultureQuenchingItem.xml�Y<View width="160" height="26">
+  <ProgressBarEx x="0" y="0" skin="asset.culture.progress" barXOffset="8" barYOffset="6" value="2" barMaskOffsetX="-2" barMaskOffsetY="0" var="progress" lableColor="0xfff3d7" label="50%" stroke="0x565656,1,4,4,20" barLabelY="5"/>
+  <Box x="4" y="3" var="notOpenBox">
+    <Image skin="asset.culture.img16"/>
+    <LabelEx text="攻击+5000" x="6" y="2" color="0xc8915b" stroke="0x592a06,1,2,2,30" width="99" height="18" align="center" var="notOpenTxt"/>
+  </Box>
+  <Box x="1" y="0" var="openBox">
+    <Image skin="asset.culture.img5"/>
+    <LabelEx text="攻击+5000" x="9" y="5" color="0x58cbe8" width="99" height="18" align="center" var="openTxt" mouseChildren="true" mouseEnabled="true" bold="false" stroke="0x542200,1,4,4,20"/>
+    <Clip x="121" y="3" clipsUrl="asset.core.unLock,asset.core.lock" index="0" var="lockImg"/>
+  </Box>
+  <Image skin="asset.culture.img24" x="2" y="-1" name="selectBox"/>
+</View>)CultureQuenching.xml�%<View width="323" height="369">
+  <Image skin="equipretrieve.trieveCell1" x="92" y="0"/>
+  <Box x="115" y="24" var="cellBox" width="65" height="67"/>
+  <Image skin="asset.culture.img4" x="2" y="110"/>
+  <Image skin="asset.culture.img22" x="172" y="110"/>
+  <List x="-1" y="130" repeatY="5" spaceY="0" width="119" height="130" var="list">
+    <CultureQuenchingItem name="render" runtime="store.culture.view.CultureQuenchingItem"/>
+  </List>
+  <List x="176" y="132" repeatY="5" spaceY="6" var="resetList">
+    <Box name="render">
+      <Image skin="asset.culture.img16"/>
+      <LabelEx text="攻击+5000" x="6" y="2" color="0x26fe09" stroke="0x542200,1,4,4,20" width="99" height="18" align="center" name="proTxt" mouseChildren="true" mouseEnabled="true"/>
+    </Box>
+  </List>
+  <Image skin="asset.culture.img17" x="11" y="266"/>
+  <LabelEx text="100/100" x="168" y="275" size="14" bold="true" color="0xffe6a3" stroke="0x662605,1,4,4,30" var="needTxt"/>
+  <Box x="90" y="303" var="box1">
+    <Button skin="asset.culture.img1" stateNum="1" var="queningBtn"/>
+    <Button x="123" y="6" stateNum="1" imageLabel="asset.culture.img14" imageLabelRect="25,8" var="allBtn" toggle="true" checkButtonSkin="asset.ui.btn_check3"/>
+  </Box>
+  <Button skin="asset.culture.img21" x="90" y="302" var="resetBtn" stateNum="1"/>
+  <Box x="18" y="303" var="box2">
+    <Button skin="asset.culture.img15" y="1" stateNum="1" var="okBtn"/>
+    <Button skin="asset.culture.img13" x="146" stateNum="1" var="giveupBtn"/>
+  </Box>
+  <Clip x="57" y="273" clipsUrl="asset.culture.img3,asset.culture.img23" index="0" var="txtClip"/>
+  <Box x="130" y="267" var="buyBox">
+    <Image skin="asset.culture.img12" x="6" y="1" var="cellImage"/>
+    <Image skin="asset.culture.img7" x="5" var="cellImage1"/>
+    <Button skin="asset.horse.frame.buyBtn_small" x="1" y="7" stateNum="1" var="buyBtn"/>
+  </Box>
+</View>

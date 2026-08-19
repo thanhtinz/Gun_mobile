@@ -1,0 +1,292 @@
+
+5partner/PartnerRingTip.xml�g<View width="250" height="232">
+  <Image x="0" y="0" sizeGrid="59,25,59,25" skin="asset.ui.scale.bg16" width="250" height="232"/>
+  <LabelEx x="133" y="124" size="12" color="0xfff40c" text="攻擊：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="133" y="149" size="12" color="0xfff40c" text="防禦：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="133" y="174" size="12" color="0xfff40c" text="敏捷：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="196" y="149" size="12" color="0xfff40c" text="50%" stroke="0x000000,1,2,2,30" bold="true" var="nextDefende"/>
+  <LabelEx x="140" y="99" size="14" color="0xfff40c" text="下級效果" stroke="0x000000,1,2,2,30" bold="true"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="21" y="86"/>
+  <LabelEx x="77" y="124" size="12" color="0x98ff00" text="50%" stroke="0x000000,1,2,2,30" var="curAttrack" bold="true"/>
+  <LabelEx x="77" y="149" size="12" color="0x98ff00" text="50%" stroke="0x000000,1,2,2,30" var="curDefende" bold="true"/>
+  <LabelEx x="77" y="174" size="12" color="0x98ff00" text="50%" stroke="0x000000,1,2,2,30" var="curAgile" bold="true"/>
+  <LabelEx x="77" y="199" size="12" color="0x98ff00" text="50%" stroke="0x000000,1,2,2,30" var="curLucky" bold="true"/>
+  <LabelEx x="196" y="124" size="12" color="0xfff40c" text="50%" stroke="0x000000,1,2,2,30" var="nextAttrack" bold="true"/>
+  <LabelEx x="133" y="199" size="12" color="0xfff40c" text="幸運：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="196" y="174" size="12" color="0xfff40c" text="50%" stroke="0x000000,1,2,2,30" var="nextAgile" bold="true"/>
+  <LabelEx x="196" y="199" size="12" color="0xfff40c" text="50%" stroke="0x000000,1,2,2,30" var="nextLucky" bold="true"/>
+  <Image skin="asset.socialContact.partner.ringIcon" x="23" y="15" width="64" height="64"/>
+  <LabelEx text="情義等級可以提升情義終身的内容" x="95" y="17" size="14" bold="true" color="0xffffff" stroke="0x000000,1,2,2,30" wordWrap="true" width="143" height="65" leading="5" letterSpacing="0" font="Arial"/>
+  <LabelEx x="14" y="124" size="12" color="0x98ff00" text="攻擊：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="14" y="149" size="12" color="0x98ff00" text="防禦：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="14" y="174" size="12" color="0x98ff00" text="敏捷：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="14" y="199" size="12" color="0x98ff00" text="幸運：" stroke="0x000000,1,2,2,30" bold="true"/>
+  <LabelEx x="16" y="99" size="14" color="0x98ff00" text="當前效果" stroke="0x000000,1,2,2,30" bold="true"/>
+</View>7friend/SwornSenceInvate.xml�5<View width="500" height="440">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="500" height="460"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="355" sizeGrid="5,5,5,5," width="453" height="84"/>
+  <Label x="18" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="社交"/>
+  <Image skin="asset.ui.scale.bg24" x="23" y="46" sizeGrid="100,90,100,90" width="453" height="303"/>
+  <Image skin="asset.socialContact.public.desBg" x="69" y="75" width="354" height="68"/>
+  <LabelEx text="所有人就位確認完畢後可進入禮堂，請先確認背包內有結義道具，成功進入禮堂將消耗此道具。" x="50" y="86" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" leading="10" letterSpacing="2" font="Arial" width="416" wordWrap="true" height="72"/>
+  <List x="47" y="148" repeatX="4" spaceX="5" var="playerList">
+    <SwornPlayerItem name="render" runtime="socialContact.view.SwornScenePlayerItem"/>
+  </List>
+  <Button skin="asset.ui.btn_close1" x="436" y="3" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Button skin="asset.socialContact.friend.enterSworn" x="147" y="376" stateNum="1" var="enterSceneBtn"/>
+</View>+SocialContactMain.xml�K<View width="890" height="563">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="903" height="580"/>
+  <Button skin="asset.ui.btn_close1" x="842" y="7" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="21" y="92" sizeGrid="5,5,5,5," width="859" height="468"/>
+  <Label x="18" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="社交"/>
+  <TabListEx y="53" var="viewTab" x="58">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.socialContact.partnerUnSelectTxt,asset.socialContact.partnerSelectTxt" x="0" y="0"/>
+    <TabButtonEx skin="asset.socialContact.menterUnSelectTxt,asset.socialContact.menterSelectTxt" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" x="128" y="0"/>
+    <TabButtonEx skin="asset.socialContact.friendUnSelectTxt,asset.socialContact.friendSelectTxt" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" x="256" width="117" height="36" y="0"/>
+  </TabListEx>
+  <Box x="579" y="63" var="box_appren">
+    <Label text="出師人數:" font="Arial" size="16" color="0xfff8d6" bold="true" stroke="0x4b270d,1,4,4,10" y="2"/>
+    <Label text="100" x="82" font="Arial" size="18" color="0xffdc38" bold="true" stroke="0x000000,1,2,2,5" var="gradueteNumText"/>
+  </Box>
+</View>/partner/PartnerMain.xml�]<View width="895" height="450">
+  <Image skin="asset.socialContact.friend.rightViewBg" x="543" y="9"/>
+  <Button skin="asset.socialContact.partner.gotoSmallGmeBtn" x="726" y="390" stateNum="1" var="drawBtn"/>
+  <Box x="552" y="27" var="taskBox">
+    <LabelEx text="今天還可通過以下管道獲取情義值:" x="7" size="14" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" align="center" var="canGetCountTxt"/>
+    <Image skin="asset.socialContact.friend.itemBg" y="36"/>
+    <LabelEx text="參加夫妻戰:" x="27" y="56" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center"/>
+    <LabelEx text="0/20次" x="126" y="56" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" var="coupleBattle"/>
+    <Image skin="asset.socialContact.friend.itemBg" x="1" y="107"/>
+    <LabelEx text="參加副本戰:" x="28" y="127" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center"/>
+    <LabelEx text="0/4次" x="152" y="127" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" var="pveCount"/>
+    <Image skin="asset.socialContact.friend.itemBg" x="2" y="179"/>
+    <LabelEx text="使用道具:" x="29" y="199" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center"/>
+    <LabelEx text="0/5次" x="152" y="199" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" var="useItemCount"/>
+  </Box>
+  <Button skin="asset.socialContact.partner.gotoButterflyBtn" x="555" y="390" stateNum="1" var="butterflyBtn"/>
+  <Image skin="asset.socialContact.partner.bg" x="0" y="0"/>
+  <Box x="5" y="0" var="infoBox">
+    <LabelEx text="结婚日期：2019-2-2" x="202" size="14" bold="true" color="0x00d2ff" stroke="0x0a5581,1,4,4,30" align="center" width="178" height="18" y="29" var="marryDateTxt"/>
+    <LabelEx text="累计成婚：30天" x="206" y="55" size="14" bold="true" color="0x00d2ff" stroke="0x0a5581,1,4,4,30" width="173" height="18" align="center" var="marryTimeTxt"/>
+    <LabelEx text="我的名字七个字" y="272" size="14" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" width="93" align="center" var="nickNameTxt1" x="170" height="20"/>
+    <Button skin="asset.socialContact.friend.infoIcon" y="269" stateNum="1" var="infoBtn1" x="141"/>
+    <LabelEx text="我的名字七个字" y="272" size="14" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" width="93" height="20" align="center" var="nickNameTxt2" x="325"/>
+    <Button skin="asset.socialContact.friend.infoIcon" x="296" y="269" stateNum="1" var="infoBtn2"/>
+    <LabelEx text="情义等级：1" x="220" y="304" size="16" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" height="22" align="center" var="swornLevelTxt"/>
+    <ProgressBarEx x="129" y="333" skin="asset.socialContact.partner.progress" value="0.5" barXOffset="2" barYOffset="2" labelSize="12" stroke="0xb74635,1,4,4,30" lableColor="0xffffff" label="555" barLabelY="2" var="partnerProgress"/>
+    <Box width="141" height="170" var="myCharacterBox"/>
+    <Box x="151" width="141" height="170" var="spouseCharacterBox" y="0"/>
+  </Box>
+  <LabelEx text="情義技能:" x="101" y="393" size="14" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" align="center"/>
+  <LabelEx text="情定終身陞級效果:" x="270" y="393" size="14" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" align="center"/>
+  <Image skin="asset.socialContact.partner.RingSystem.skill" x="184" y="371" scale="0.8" var="skillImg" tipStyle="bagAndInfo.bag.ring.RingSystemSkillTips"/>
+  <Image skin="asset.socialContact.partner.ringIcon" x="408" y="370" width="64" height="64" var="ringIcon"/>
+</View>;partner/PartnerDrawAnswer.xml�<View width="718" height="507">
+  <Image skin="asset.socialContact.draw.Bg" x="0" y="0"/>
+  <Box x="29" y="112" var="drawBox">
+    <Image skin="asset.socialContact.draw.drawBg" sizeGrid="55,53,55,53" width="448" height="292" var="drawBg" x="0" y="0"/>
+  </Box>
+  <Image skin="asset.socialContact.draw.dexTxt7" x="484" y="116"/>
+  <Button skin="asset.socialContact.draw.closeBtn" x="648" y="41" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.socialContact.public.desBg" x="24" y="428" width="202" height="30"/>
+  <LabelEx x="45" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="434" multiline="false" wordWrap="false" text="考驗倒計時:" leading="8" bold="true"/>
+  <LabelEx x="125" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="434" multiline="false" wordWrap="false" text="30分钟" leading="8" bold="true" width="56" height="18" var="dateTxt"/>
+  <Button skin="asset.socialContact.draw.answerBtn" x="499" y="307" stateNum="1" var="okBtn"/>
+  <Image skin="asset.socialContact.draw.dexTxt5" x="485" y="166"/>
+  <LabelEx x="485" size="12" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="190" multiline="false" wordWrap="true" text="奥特曼" leading="8" var="tipTxt" width="175" height="67" align="left"/>
+  <Image skin="asset.socialContact.draw.lineImg" x="488" y="255" width="170"/>
+  <Button skin="asset.socialContact.draw.useBtn" x="499" y="361" stateNum="1" var="useItemBtn"/>
+  <TextInput skin="asset.socialContact.draw.answerBg" x="494" y="268" width="146" height="30" margin="5,5" var="txtInput"/>
+</View>+mentor/MentorItem.xml�3<View width="340" height="107">
+  <Image skin="asset.socialContact.mentor.itemBg" x="0" y="0"/>
+  <Box x="15" y="-7" var="infoBox">
+    <LabelEx text="追风少年" y="33" size="16" bold="true" color="0xffeb61" stroke="0x5a3617,1,4,4,30" width="232" height="23" var="nickName"/>
+    <LabelEx text="等級：" x="1" y="76" size="14" bold="true" color="0xfff8d6" stroke="0x5a3515,1,4,4,30"/>
+    <LabelEx text="10" x="47" y="76" size="14" bold="false" color="0xfff8d6" stroke="0x5a3515,1,4,4,30" var="levelTxt"/>
+    <LabelEx text="離線時間:" y="34" size="12" bold="true" color="0xd0c588" stroke="0x533511,1,4,4,30" x="150"/>
+    <LabelEx text="10" x="222" y="34" size="12" bold="false" color="0xd0c588" stroke="0x533511,1,4,4,30" var="outTimeTxt"/>
+    <Button skin="asset.academyCommon.myAcademy.emailBtn" x="172" y="77" stateNum="1" var="emailBtn"/>
+    <Button skin="asset.academyCommon.myAcademy.friendlBtn" x="245" y="78" stateNum="1" var="friendBtn"/>
+    <Button skin="asset.academyCommon.myAcademy.delFriendlBtn" x="245" y="79" stateNum="1" var="relieveBtn" width="68" height="28"/>
+    <Image skin="asset.socialContact.mentor.myApprentice" x="100" y="3" var="myTeam1"/>
+    <Image skin="asset.socialContact.mentor.myClassmate" x="108" var="myTeam2" y="3"/>
+    <Image skin="asset.socialContact.mentor.myMaster" x="119" y="2" var="myTeam3"/>
+  </Box>
+</View>Mfriend/SocialContactFriendTaskItem.xml�<View width="323" height="57">
+  <Image skin="asset.socialContact.friend.itemBg" x="0" y="0"/>
+  <LabelEx text="组队通关副本：" x="27" y="20" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" var="desTxt"/>
+  <LabelEx text="0/4次" x="136" y="20" size="14" bold="true" color="0xffca9c" stroke="0x4f3700,1,4,4,30" align="center" var="countTxt"/>
+</View>+mentor/MentorMain.xml�e<View width="836" height="453">
+  <List x="1" y="4" var="mentorList" spaceY="5" repeatY="3">
+    <MentorItem runtime="socialContact.mentor.MentorItem" x="0" y="0" name="render"/>
+  </List>
+  <Image skin="asset.ui.scale.bg3" x="344" y="386" sizeGrid="130,15,130,15" width="490" height="66"/>
+  <Box x="351" y="9" width="476" height="344" var="scrollBox"/>
+  <Button skin="asset.ui.btn_red5" x="479" y="395" imageLabel="asset.ddtacademy.gotomain" stateNum="1" width="196" height="52" imageLabelX="10" imageLabelY="10" sizeGrid="48,20,48,20" var="gotoBtn"/>
+</View>7partner/PartnerDrawView.xml�<View width="718" height="507">
+  <Image skin="asset.socialContact.draw.Bg" x="0" y="0"/>
+  <Image skin="asset.socialContact.draw.colorPlate" x="124" y="191"/>
+  <Box x="197" y="111" var="drawBox">
+    <Image skin="asset.socialContact.draw.drawBg" sizeGrid="55,53,55,53" width="448" height="292" var="drawBg" x="0" y="0"/>
+  </Box>
+  <List x="123" y="219" repeatX="2" repeatY="7" spaceX="-6" spaceY="-7" var="colorList">
+    <Box name="render">
+      <Button skin="asset.socialContact.draw.brown" stateNum="1" name="colorplat" x="4" y="5" width="22" height="22"/>
+      <Image skin="asset.socialContact.draw.colorSelected" name="selectBox"/>
+    </Box>
+  </List>
+  <Image skin="asset.socialContact.draw.dexTxt1" x="39" y="113"/>
+  <Button skin="asset.socialContact.draw.clear" x="84" y="262" stateNum="1" var="clearAllBtn"/>
+  <Button skin="asset.socialContact.draw.closeBtn" x="648" y="41" stateNum="1" var="closeBtn"/>
+  <RadioGroup x="126" y="193" var="lineGroup">
+    <RadioButton y="6" stateNum="1" checkButtonSkin="asset.socialContact.draw.circle1" name="item0" selected="true"/>
+    <RadioButton x="11" y="3" stateNum="1" checkButtonSkin="asset.socialContact.draw.circle2" name="item1"/>
+    <RadioButton x="25" stateNum="1" checkButtonSkin="asset.socialContact.draw.circle3" name="item2"/>
+  </RadioGroup>
+  <Image skin="asset.socialContact.draw.dexTxt4" x="40" y="158"/>
+  <LabelEx x="123" size="12" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="158" multiline="false" wordWrap="false" text="奥特曼" leading="8" var="tipTxt"/>
+  <Image skin="asset.socialContact.public.desBg" x="24" y="428" width="202" height="30"/>
+  <LabelEx x="54" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="434" multiline="false" wordWrap="false" text="考驗倒計時:" leading="8" bold="true"/>
+  <LabelEx x="139" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="434" multiline="false" wordWrap="false" text="30分钟" leading="8" bold="true" width="56" height="18" var="dateTxt"/>
+  <Button skin="asset.socialContact.draw.sendImpBtn" x="340" y="411" stateNum="1" var="okBtn"/>
+  <List x="83" y="187" repeatY="2" var="toolList">
+    <Box name="render">
+      <Button skin="asset.socialContact.draw.pen" stateNum="1" x="2" y="2" name="btn"/>
+      <Image skin="asset.socialContact.draw.gongjuSelected" name="selectBox" x="0" y="1"/>
+    </Box>
+  </List>
+</View>;friend/SwornSceneToolView.xml�)<View width="201" height="151">
+  <SelectButtonEx skin="asset.sworn.photographAsset" x="134" y="8" stateNum="1" mouseEnabled="true" rollOverBgSkin="asset.sworn.btnSelectedBgAsset|-4,-5|0" bottomBgSkin="asset.sworn.btnDefaultBgAsset|-4,-5" var="photographBtn"/>
+  <Box x="-4" y="77" var="toolView">
+    <Box width="67" height="64">
+      <Image skin="asset.sworn.oneBgLeft"/>
+      <Button stateNum="1" var="arrowBtn" x="15" y="9" checkButtonSkin="asset.sworn.arrow" toggle="true" width="47" height="47"/>
+    </Box>
+    <Image skin="asset.sworn.oneBgRight" x="67" sizeGrid="24,31,24,31" width="134" height="64" y="0"/>
+    <SelectButtonEx skin="asset.sworn.startWeddingBtn" rollOverBgSkin="asset.sworn.oneSelect|-3,-8" stateNum="1" var="startBtn" x="70" y="9"/>
+    <SelectButtonEx skin="asset.sworn.exitBtn" rollOverBgSkin="asset.sworn.oneSelect|-11,-17" stateNum="1" var="exitBtn" x="138" y="16"/>
+  </Box>
+</View>=friend/SocialContactFriend.xml�<View width="895" height="467">
+  <Box var="friendBox">
+    <Image skin="asset.socialContact.friend.rightViewBg" x="543" y="17"/>
+    <Image skin="asset.socialContact.friend.leftBg" x="0" y="0"/>
+    <List x="78" y="80" repeatX="4" spaceX="-5" var="friendList">
+      <SocialContactFriendItem name="render" runtime="socialContact.view.SocialContactFriendItem"/>
+    </List>
+    <LabelEx text="义气等级：1" x="217" y="295" size="16" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" height="22" align="center" var="swornLevelTxt"/>
+    <ProgressBarEx x="134" y="333" skin="asset.socialContact.friend.progress" value="0.5" barXOffset="2" barYOffset="2" labelSize="12" stroke="0xb74635,1,4,4,30" lableColor="0xffffff" label="555" barLabelY="2" var="swornProgress"/>
+    <LabelEx text="金蘭佩：" x="81" y="398" size="14" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" align="left"/>
+    <Box x="154" y="382" width="65" height="54" var="cellBox"/>
+    <Box x="387" y="382" var="skillBox" width="57" height="52"/>
+    <Button skin="asset.socialContact.friend.relieveBtn" x="727" y="402" stateNum="1" var="cancelSwornBtn"/>
+    <Box x="554" y="35" var="taskBox">
+      <LabelEx text="今日还可获取义气值：100/100" x="5" size="14" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" align="center" var="canGetCountTxt"/>
+      <List y="31" repeatY="5" width="323" height="309" spaceY="5" var="taskList">
+        <SocialContactFriendTaskItem name="render" runtime="socialContact.view.SocialContactFriendTaskItem"/>
+      </List>
+    </Box>
+    <LabelEx text="未擁有金蘭佩，組隊戰鬥無義氣值加成，請持有情義結時舉行結拜儀式，獲取金蘭佩。" x="564" size="16" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" align="center" y="167" multiline="true" wordWrap="true" width="301" height="102" leading="5" letterSpacing="2" var="desTxt"/>
+    <Button skin="asset.socialContact.friend.swornBtn" x="566" y="402" stateNum="1" var="swornBtn"/>
+    <LabelEx text="結義技能：" x="292" y="401" size="14" bold="true" color="0xffe787" stroke="0xb74635,1,4,4,30" align="center" var="skillName"/>
+  </Box>
+  <Box x="-2" y="-10" var="selectBox">
+    <Image skin="asset.socialContact.friend.selectBg"/>
+    <Button skin="asset.socialContact.friend.selectBtn" x="285" y="234" labelColors="0xffea38" labelStroke="0xac1b14,1,4,4,30" labelSize="16" labelBold="true" var="creatBtn" stateNum="1"/>
+    <LabelEx text="未有结拜关系，结拜并举行结拜仪式后，可获得饰品金兰佩，与结义好友每日进行竞技战斗和通关副本，可获得义气值，提高金兰佩的等级，可获得属性加成等" x="146" y="113" multiline="true" wordWrap="true" width="652" size="16" bold="true" color="0xfefefe" stroke="0xb74635,1,4,4,30" leading="10" indent="20"/>
+    <LabelEx text="由我作為發起人，邀請好友發起結義" x="307" y="271" color="0xffea38" size="16" bold="true" multiline="true" wordWrap="true" stroke="0xac1b14,1,4,4,30" width="275" height="62" leading="5" align="center"/>
+  </Box>
+</View>Ifriend/SocialContactFriendLookup.xml�<View width="178" height="178">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="178" height="178"/>
+  <Image skin="asset.socialContact.friend.lookupBg" x="9" y="9" width="159" height="29"/>
+  <Image skin="asset.socialContact.friend.lookupBtn" x="13" y="15"/>
+  <List x="10" y="44" spaceY="0" repeatY="5" vScrollBarSkin="asset.ui.scroll1.vscroll" width="153" height="125" var="list">
+    <Box name="render">
+      <Image skin="asset.ui.combox.itemBg3" x="2" width="137" height="25" name="selectBox" y="0"/>
+      <Clip y="1" clipsUrl="asset.core::sex_W,asset.core::sex_M" index="0" name="sexIcon"/>
+      <LabelEx text="12" x="25" y="5" size="12" bold="true" color="0xffffff" width="98" height="18" name="nickName"/>
+    </Box>
+  </List>
+  <TextInput x="37" y="16" color="0xffffff" var="input"/>
+</View>Apartner/PartnerButterflyItem.xml�U<View width="178" height="120">
+  <Image skin="asset.socialContact.butterfly.taskBg" x="0" y="0" height="120"/>
+  <LabelEx x="6" y="11" color="0xfffc27" bold="true" size="14" stroke="0x471d02,1,4,4,30" var="taskName"/>
+  <LabelEx x="3" y="41" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" text="獎勵經驗:"/>
+  <LabelEx x="3" y="61" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" text="倒計時:"/>
+  <LabelEx x="3" y="81" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" text="所需等級:"/>
+  <LabelEx x="3" y="101" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" text="消耗心情值:"/>
+  <LabelEx x="83" y="61" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" var="timeTxt"/>
+  <LabelEx x="83" y="81" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" var="levelTxt"/>
+  <LabelEx x="83" y="41" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" var="rewardGpTxt"/>
+  <LabelEx x="83" y="101" color="0xffea9c" bold="true" size="12" stroke="0x6e2b0d,1,4,4,30" var="needMoonTxt"/>
+  <Button skin="asset.ui.btn_yellow4" x="96" y="3" stateNum="1" label="派遣" labelColors="0xffffff" labelSize="12" labelStroke="0x986f0e,1,4,4,30" var="doBtn"/>
+  <Button skin="asset.ui.btn_green6" x="100" y="4" stateNum="1" label="完成" labelColors="0xffffff" labelSize="12" labelStroke="0x167a00,1,4,4,30" width="65" height="28" var="getBtn"/>
+  <Button skin="asset.ui.btn_blue2" x="97" y="2" stateNum="1" label="召回" labelColors="0xffffff" labelSize="12" labelStroke="0x005774,1,4,4,30" var="speedBtn" width="80"/>
+</View>9partner/PartnerDrawReady.xml�w<View width="718" height="507">
+  <Image skin="asset.socialContact.draw.Bg" x="0" y="0"/>
+  <Image skin="asset.socialContact.public.desBg" x="49" y="124" width="558" height="69"/>
+  <Image skin="asset.socialContact.draw.dexTxt2" x="239" y="137"/>
+  <Image skin="asset.socialContact.friend.headBg" y="231" x="97"/>
+  <Box x="98" y="230" var="myHead" width="97" height="99"/>
+  <LabelEx y="343" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30" width="114" height="18" align="center" var="myNameTxt" x="93"/>
+  <Image skin="asset.socialContact.public.desBg" x="269" y="225" width="340" height="69"/>
+  <LabelEx x="287" size="12" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="235" multiline="false" wordWrap="false" text="你被分為" leading="8" bold="true"/>
+  <LabelEx x="289" size="12" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="264" multiline="false" wordWrap="false" text="以下是你需要绘制图案的主题：" leading="8" var="dexTxt"/>
+  <LabelEx x="481" size="12" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="263" multiline="false" wordWrap="false" text="奥特曼" leading="8" var="nameTxt"/>
+  <Image skin="asset.socialContact.public.desBg" x="135" y="425" width="351" height="30"/>
+  <Button skin="asset.socialContact.draw.startDrawBtn" x="232" y="370" stateNum="1" var="startDrawBtn"/>
+  <LabelEx x="233" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="432" multiline="false" wordWrap="false" text="考驗倒計時:" leading="8" bold="true"/>
+  <LabelEx x="328" size="12" color="0x78db16" stroke="0x214801,1,4,4,30" y="432" multiline="false" wordWrap="false" text="30分钟" leading="8" bold="true" width="113" height="18" var="dateTxt"/>
+  <Button skin="asset.socialContact.draw.lookImgBtn" x="234" y="371" stateNum="1" var="lookImgBtn"/>
+  <Clip x="389" y="234" clipsUrl="asset.socialContact.draw.dexTxt3,asset.socialContact.draw.dexTxt6" var="clipImg" index="0"/>
+  <Button skin="asset.socialContact.draw.closeBtn" x="648" y="42" stateNum="1" var="closeBtn"/>
+</View>7partner/PartnerRoomView.xml�w<View width="718" height="507">
+  <Image skin="asset.socialContact.draw.Bg" x="0" y="0"/>
+  <Image skin="asset.socialContact.draw.readyTxt" x="280" y="111"/>
+  <Image skin="asset.socialContact.public.desBg" x="62" y="166"/>
+  <LabelEx x="78" size="14" bold="true" color="0xffea38" stroke="0x5a3617,1,4,4,30" y="169" wordWrap="true" text="說明：伴侶兩人準備後，系統隨機分配角色及主題，一人按照主題繪製圖案，另一人根據提示猜主題，猜中一次即可完成考驗。" width="565" leading="8" indent="20"/>
+  <Image skin="asset.socialContact.friend.headBg" y="236" x="148"/>
+  <Box x="149" y="235" var="myHead" width="97" height="99"/>
+  <LabelEx y="348" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30" width="200" height="20" align="center" var="myNameTxt" x="100"/>
+  <Image skin="asset.socialContact.friend.headBg" y="234" x="388"/>
+  <Box x="388" y="233" var="partnerHead" width="97" height="99"/>
+  <LabelEx y="346" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30" width="200" height="20" align="center" var="partnerNameTxt" x="346"/>
+  <Button skin="asset.socialContact.draw.readyBtn" x="138" y="380" stateNum="1" var="readBtn"/>
+  <Image skin="asset.socialContact.draw.hasReadyTxt" x="151" y="389" var="myHasReadyTxt"/>
+  <Clip x="392" y="388" clipsUrl="asset.socialContact.draw.hasReadyTxt,asset.socialContact.draw.notReadyTxt" index="1" var="readyClip"/>
+  <Button skin="asset.socialContact.draw.closeBtn" x="641" y="41" stateNum="1" var="closeBtn"/>
+  <Button skin="asset.socialContact.friend.AddImg" x="390" y="235" stateNum="1" width="90" height="94" var="addBtn"/>
+</View>5friend/SwornPlayerItem.xml�<View width="98" height="178">
+  <Image skin="asset.socialContact.friend.headBg" y="1" x="0"/>
+  <Box x="1" y="0" var="headBox" width="97" height="99"/>
+  <Button skin="asset.socialContact.friend.AddImg" x="1" y="2" stateNum="1" width="90" height="94" var="addBtn"/>
+  <Box x="1" y="103" var="infoBox">
+    <LabelEx x="8" size="14" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" width="77" height="18" align="center" var="levelTxt"/>
+    <LabelEx y="20" size="12" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" width="110" height="22" align="center" var="nickNameTxt" x="-7"/>
+    <Button skin="asset.socialContact.friend.infoIcon" x="33" y="49" stateNum="1" var="infoBtn"/>
+  </Box>
+</View>Apartner/PartnerButterflyView.xml�#<View width="833" height="508">
+  <Image skin="asset.socialContact.butterfly.bg" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close6" x="750" y="35" stateNum="1" var="closeBtn"/>
+  <LabelEx x="67" y="84" size="14" color="0xffffff" bold="true" stroke="0x874c00,1,4,4,30" var="titleTxt"/>
+  <LabelEx text="EXP：" x="71" y="108" size="12" color="0xffffff" bold="true" stroke="0x874c00,1,4,4,30"/>
+  <ProgressBarEx x="120" y="108" skin="asset.socialContact.butterfly.progress" value="0.5" barXOffset="2" barYOffset="2" labelSize="12" stroke="0xb74635,1,4,4,30" lableColor="0xffffff" var="swornProgress" barLabelY="1"/>
+  <Box x="101" y="334" width="71" height="76" var="cellBox"/>
+  <Button skin="asset.socialContact.butterfly.getBtn" x="92" y="414" stateNum="1" var="getBtn"/>
+  <Box x="398" y="352" width="144" height="68" var="butterflyBox"/>
+  <Button skin="asset.socialContact.butterfly.touchBtn" x="262" y="421" stateNum="1" var="touchBtn"/>
+  <Button skin="asset.socialContact.butterfly.feedBtn" x="390" y="421" stateNum="1" var="feedBtn"/>
+  <Image skin="asset.socialContact.butterfly.moodBg" x="257" y="380"/>
+  <LabelEx text="0" x="363" size="16" bold="true" color="0x00d2ff" stroke="0x0a5581,1,4,4,30" align="left" width="122" height="18" y="385" var="moonTxt"/>
+  <List x="576" y="117" repeatY="3" vScrollBarSkin="asset.ui.scroll1.vscroll" width="197" height="360" var="list">
+    <PartnerButterflyItem name="render" runtime="socialContact.partner.ButterflyItem"/>
+  </List>
+</View>Efriend/SocialContactFriendItem.xml�y<View width="112" height="178">
+  <Image skin="asset.socialContact.friend.headBg" y="1" x="3"/>
+  <Box x="4" y="0" var="headBox" width="97" height="99"/>
+  <Button skin="asset.socialContact.friend.AddImg" x="4" y="2" stateNum="1" width="90" height="94" var="addBtn"/>
+  <Box x="1" y="103" var="infoBox">
+    <LabelEx x="7" size="14" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" width="89" height="18" align="center" var="levelTxt"/>
+    <LabelEx y="20" size="12" bold="true" color="0xffffff" stroke="0xb74635,1,4,4,30" align="center" var="nickName" width="110" height="22"/>
+    <Button skin="asset.socialContact.friend.infoIcon" x="36" y="49" stateNum="1" var="infoBtn"/>
+  </Box>
+</View>

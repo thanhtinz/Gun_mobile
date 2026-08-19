@@ -1,0 +1,98 @@
+
+3StoreFineSealLockItem.xml�Q<View width="140" height="30">
+  <Clip x="1" y="2" clipsUrl="asset.core.unLock,asset.core.lock" var="lock" index="0" buttonMode="true"/>
+  <Label text="攻擊" x="22" y="5" multiline="false" wordWrap="false" height="23" width="36" size="12" stroke="0x5d2500,1,4,4,30" color="0xffda89" var="proTypeTxt"/>
+  <Label text="+100" x="53" y="5" multiline="false" wordWrap="false" height="23" width="108" size="12" stroke="0x542801,1,4,4,30" color="0xffd200" bold="true" var="proNumTxt"/>
+</View>+StoreFineSealView.xml�-<View width="352" height="409">
+  <Image skin="store.fine.sealBg" x="0" y="0"/>
+  <Image skin="asset.ddtstore.GoodPanel" x="254" y="80"/>
+  <Label text="待封印\n 宠物" x="271" y="104" multiline="false" wordWrap="false" height="43" width="54" bold="true" size="14" stroke="0x654512,1,4,4,30" color="0xfcf3d3" leading="5" letterSpacing="2" var="petSealCellTxt"/>
+  <Image skin="asset.ddtstore.GoodPanel" x="9" y="80"/>
+  <Label text="封印石" x="26" y="112" multiline="false" wordWrap="false" height="23" width="54" bold="true" size="14" stroke="0x654512,1,4,4,30" color="0xfcf3d3" leading="5" letterSpacing="2" var="stoneName"/>
+  <Image skin="asset.ddtstore.EquipmentCellBg" x="122" y="67"/>
+  <Label text="装备" x="158" y="113" multiline="false" wordWrap="false" height="23" width="39" bold="true" size="14" stroke="0x654512,1,4,4,30" color="0xfcf3d3" leading="5" letterSpacing="2"/>
+  <Image skin="store.fine.sealEffectBg" x="14" y="191"/>
+  <List x="27" y="219" repeatX="2" repeatY="3" spaceX="16" spaceY="-5" var="lockList">
+    <StoreFineSealLockItem name="render" runtime="storefineseal.view.StoreFineSealLockItem"/>
+  </List>
+  <Button skin="store.fine.sealBtn" x="100" y="321" stateNum="1" var="sealBtn"/>
+  <Label text="註：封印寵物不消失，可通過解除封印取回，但封印效果解除；高級封印只改變屬性數值，屬性類型、技能效果無變化。" x="19" y="372" multiline="true" wordWrap="true" height="37" width="328" size="12" stroke="0x4c0000,1,4,4,30" color="0xff2c00" leading="2"/>
+  <Button skin="store.fine.unSealBtn" x="101" y="321" stateNum="1" var="unSealBtn"/>
+  <Box x="18" y="91" width="68" height="62" var="stoneBox">
+    <Label text="33/60" x="0" y="48" var="stoneNum" size="12" bold="true" color="0x000000" stroke="0xffffff,1,2,2,10" align="right" width="68" height="18"/>
+    <Button skin="asset.horse.frame.buyBtn_small" x="12" y="44" stateNum="1" var="buyBtn"/>
+  </Box>
+  <Box x="142" y="91" width="68" height="62" var="equipBox"/>
+  <Box x="263" y="91" width="68" height="62" var="petBox"/>
+  <List x="15" y="27" repeatX="2" spaceX="15" var="tabList">
+    <StoreFineSealTabBtn name="render" runtime="storefineseal.view.StoreFineSealTabBtn"/>
+  </List>
+  <Box x="28" y="273" var="skillBox" width="276" height="38">
+    <Clip clipsUrl="asset.core.unLock,asset.core.lock" var="skillLock" index="0" buttonMode="true"/>
+    <Label text="攻击:" x="24" y="3" multiline="false" wordWrap="false" size="12" stroke="0x582100,1,4,4,30" color="0xff0099" var="skillName" align="left"/>
+    <Label text="攻击攻击攻击攻击攻击攻击攻击攻击攻击攻击攻" x="60" y="3" multiline="true" wordWrap="true" height="35" width="230" size="12" stroke="0x582100,1,4,4,30" color="0xff0099" var="skillDes" leading="5"/>
+  </Box>
+  <Button x="248" y="328" stateNum="1" imageLabel="store.fine.superSeal" imageLabelRect="25,8" var="superSealBtn" toggle="true" checkButtonSkin="asset.ui.btn_check3"/>
+</View>/StoreFineSealTabBtn.xml�3<View width="76" height="29">
+  <Button label="封印" skin="asset.ui.btn_red11" stateNum="1" labelFont="12" labelColors="0xfff1b0" labelStroke="0xa72801,1,4,4,30" name="render" x="0" y="0" var="btn"/>
+  <Image skin="store.fine.seal$select" x="-3" y="-3" name="selectBox"/>
+</View>+StoreFineSealCell.xml�1<View width="47" height="46">
+  <Image skin="bagAndInfo.cell.bagCellBgAsset" x="0" y="0"/>
+  <Box x="1" y="1" width="41" height="41" var="box"/>
+</View>/StoreFineSealPetTip.xml�<View width="219" height="219">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="219" height="218" var="bg"/>
+  <Label text="远古巨龙" x="11" y="11" size="14" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="petNameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="102" sizeGrid="95,1,95,1" width="190" var="line"/>
+  <Box x="16" y="189">
+    <Label text="血量:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" var="HpName"/>
+    <Label text="封印宠物" x="35" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="Hp"/>
+  </Box>
+  <Label text="Lv.70" x="83" y="11" size="14" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="petLevelTxt"/>
+  <Image skin="asset.core.tip.GoodsTipQuality" x="11" y="77"/>
+  <Clip x="152" y="7" clipsUrl="asset.petsSystem.washBone.lev$1,asset.petsSystem.washBone.lev$2,asset.petsSystem.washBone.lev$3,asset.petsSystem.washBone.lev$4,asset.petsSystem.washBone.lev$5" index="4" var="clip_grade"/>
+  <Label text="卓越" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" x="49" y="74"/>
+  <Image skin="asset.petsCell.tip.starTxtImg" x="11" y="53"/>
+  <List x="43" y="40" repeatX="5" spaceX="-5" var="starList">
+    <Box name="render">
+      <Image skin="assets.petsSystem.star"/>
+    </Box>
+  </List>
+  <Box x="16" y="169">
+    <Label text="幸运:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" var="luckName"/>
+    <Label text="封印宠物" x="35" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="luck"/>
+  </Box>
+  <Box x="16" y="149">
+    <Label text="敏捷:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" var="agileName"/>
+    <Label text="封印宠物" x="35" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="agile"/>
+  </Box>
+  <Box x="16" y="129">
+    <Label text="防御:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" var="defenceName"/>
+    <Label text="封印宠物" x="35" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" y="0" var="defence"/>
+  </Box>
+  <Box x="16" y="109">
+    <Label text="攻击:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" x="0" y="0" width="37" height="16" var="attrackName"/>
+    <Label text="35" x="35" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" y="0" var="attrack"/>
+  </Box>
+</View>+StoreFineSealMain.xml�}<View width="700" height="409">
+  <StoreFineSealView x="-1" y="0" runtime="storefineseal.view.StoreFineSealView" var="leftView"/>
+  <Image skin="store.fine.sealMainBg" x="359" y="0"/>
+  <Label text="装备" x="371" y="6" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true"/>
+  <Label text="首先請雙擊選擇您要封印的裝備" x="409" y="8" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9"/>
+  <Label text="宠物" x="371" y="186" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true"/>
+  <Label text="然後請雙擊選擇您要封印的寵物" x="409" y="188" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9"/>
+  <Image skin="asset.core.smallBG1" x="373" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="490" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="610" y="375" width="104" height="24"/>
+  <Image skin="asset.core.ticketIcon" x="372" y="376"/>
+  <Label text="123456789" x="398" y="379" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x8b0000,1,2,2,10" var="money"/>
+  <Image skin="asset.core.giftIcon" x="489" y="375"/>
+  <Image skin="asset.core.goldIcon" x="609" y="375"/>
+  <Label text="123456789" x="515" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x21554d,1,2,2,10" var="bindMoney"/>
+  <Label text="123456789" x="636" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x5d440d,1,2,2,10" var="gold"/>
+  <List x="368" y="34" repeatX="7" repeatY="3" width="356" height="142" spaceY="2" vScrollBarSkin="asset.ui.scroll1.vscroll" spaceX="1" var="equipList">
+    <StoreFineSealCell name="render" runtime="storefineseal.view.StoreFineSealEquipCell"/>
+  </List>
+  <List x="368" y="215" repeatX="7" repeatY="3" width="356" height="144" spaceY="2" vScrollBarSkin="asset.ui.scroll1.vscroll" spaceX="1" var="petList">
+    <StoreFineSealCell name="render" runtime="storefineseal.view.StoreFineSealPetCell"/>
+  </List>
+</View>

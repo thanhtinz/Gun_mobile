@@ -1,0 +1,86 @@
+<style name="goldmine" version="7.7.0" source="ui/cn_trad/swf/goldmine.swf">
+	<sets>
+
+		<set stylename="goldmineMainFrame.mineTimesTF" args="Arial,22,0xfff32c,true" type="flash.text.TextFormat" />
+		<set stylename="goldmineMainFrame.mineTimesGF" args="0x781f10,1,4,4,20" type="flash.filters.GlowFilter" />		
+
+		<set stylename="goldmineMainFrame.nextScoreNumTF" args="Arial,18,0xffedc4,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="goldmineMainFrame.nextScoreNumGF" args="0x781f10,1,4,4,20" type="flash.filters.GlowFilter" />	
+		
+		<set stylename="goldmineMainFrame.gradientTextLabelTF" args="Arial,18,0x000000,true" type="flash.text.TextFormat"/>
+		<set stylename="goldmineMainFrame.gradientTextGF" args="0x781f10,1,4,4,20" type="flash.filters.GlowFilter"/>	
+		
+		<set stylename="goldmineMainFrame.introTextTF" args="Arial,14,0xffedc4,true" type="flash.text.TextFormat"/>
+		<set stylename="goldmineMainFrame.introTextGF" args="0x781f10,1,4,4,20" type="flash.filters.GlowFilter"/>		
+						
+	</sets>
+
+	<components>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="GoldmineInfoWord" textFormatStyle="goldmineMainFrame.introTextTF"
+			filterString="goldmineMainFrame.introTextGF" autoSize="none" x="71" y="157" width="650"
+			height="25" />	
+		<component classname="goldmine.views.GoldmineMainFrame"
+				closestyle="goldmine.closebt" backStyle="asset.goldmine.bg" 
+				closeInnerRectString="38,-10,113,38,14" stylename="goldmine.frame"
+				 x="130" y="16" escEnable="true" autoExit="true"
+				width="741" height="522" />
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="goldmine.closebt" backStyle="asset.goldmine.closeBtnBg"/>	
+		<!-- 图片数字 -->
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.goldmine.number" 
+				resourceLink="asset.goldmine.num1,asset.goldmine.num2,asset.goldmine.num3,asset.goldmine.num4,asset.goldmine.num5,asset.goldmine.num6,asset.goldmine.num7,asset.goldmine.num8,asset.goldmine.num9,asset.goldmine.num0" />
+		<component classname="com.pickgliss.ui.image.ScaleNumberFrameImage" stylename="asset.goldmine.number1" resourceLink="asset.goldmine.numAll"/>		
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateStartMonthNum1" imageStyle="asset.goldmine.number" space="-1" x="330" y="117"/>	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateStartMonthNum2" imageStyle="asset.goldmine.number" space="-1" x="345" y="117" />	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateStartDayNum1" imageStyle="asset.goldmine.number" space="-1" x="368" y="117" />			
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateStartDayNum2" imageStyle="asset.goldmine.number" space="-1" x="383" y="117" />	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateEndMonthNum1" imageStyle="asset.goldmine.number" space="-1" x="415" y="117" />	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateEndMonthNum2" imageStyle="asset.goldmine.number" space="-1" x="430" y="117" />	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateEndDayNum1" imageStyle="asset.goldmine.number" space="-1" x="453" y="117" />			
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.dateEndDayNum2" imageStyle="asset.goldmine.number" space="-1" x="468" y="117" />
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.smallMineNum" imageStyle="asset.goldmine.number1" space="0" x="108" y="240"/>	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.middleMineNum" imageStyle="asset.goldmine.number1" space="0" x="523" y="240"/>	
+		<component classname="com.pickgliss.ui.image.NumberImage" stylename="goldmineMainFrame.bigMineNum" imageStyle="asset.goldmine.number1" space="0" x="315" y="240"/>		
+
+		<!-- 我要聚财按钮 -->
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="goldmineMainFrame.mineBtn" backStyle="asset.goldmine.btnBg" filterString="null,lightFilter,null,grayFilter" x="527" y="433" autoFrame="false"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="goldmineMainFrame.mineTimesText" textFormatStyle="goldmineMainFrame.mineTimesTF" filterString="goldmineMainFrame.mineTimesGF" x="133" y="438"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="goldmineMainFrame.nextScoreNumText" textFormatStyle="goldmineMainFrame.nextScoreNumTF" filterString="goldmineMainFrame.nextScoreNumGF" x="116" y="474" autoSize="none" width="70" height="30" />
+
+		<!-- 渐变文本 -->
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="goldmineMainFrame.nextScoreLeftText" textFieldStyle="goldmineMainFrame.gradientTextLabel" colors="0xffe4df,0xff6e58" filterString="goldmineMainFrame.gradientTextGF" alphas="1,1" ratios="30,255" x="25" y="474"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="goldmineMainFrame.nextScoreRightText" textFieldStyle="goldmineMainFrame.gradientTextLabel" colors="0xffe4df,0xff6e58" filterString="goldmineMainFrame.gradientTextGF" alphas="1,1" ratios="30,255" x="183" y="474"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="goldmineMainFrame.gradientTextLabel" textFormatStyle="goldmineMainFrame.gradientTextLabelTF" autoSize="none" width="500" height="30" isAutoFitLength="true"/>		
+		
+		
+	</components>
+	
+	<costomDisplay>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.pointPos1" x="362" y="132"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.pointPos2" x="447" y="132"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.smallPos" x="43" y="168"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.middlePos" x="457" y="168"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.bigPos" x="250" y="168"/>
+		
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.lightPos1" x="40" y="121"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.shinePos1" x="-100" y="108"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.btmMcPos1" x="24" y="384"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.lightPos2" x="247" y="138"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.shinePos2" x="107" y="125"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.btmMcPos2" x="231" y="401"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.lightPos3" x="454" y="121"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.shinePos3" x="314" y="121"/>
+		<custom classname="flash.geom.Point" stylename="goldmineMainFrame.btmMcPos3" x="438" y="384"/>
+		
+
+	</costomDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.goldmine.numTo" x="398" y="126"></bitmapData><!-- 横杆图片 -->
+		<bitmapData resourceLink="asset.goldmine.numpoint" x="0" y="0"></bitmapData><!-- 点图片 -->
+		
+		<bitmapData resourceLink="asset.goldmineInfoImg" x="48" y="154"></bitmapData>
+		
+	</bitmaps>
+</style>

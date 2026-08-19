@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <Item WahsLevel="1" WahsTimes="0" Minvalue="1" Maxvalue="10000" />
+  <Item WahsLevel="2" WahsTimes="10" Minvalue="500" Maxvalue="10000" />
+  <Item WahsLevel="3" WahsTimes="50" Minvalue="700" Maxvalue="10000" />
+  <Item WahsLevel="4" WahsTimes="100" Minvalue="900" Maxvalue="10000" />
+  <Item WahsLevel="5" WahsTimes="200" Minvalue="1100" Maxvalue="10000" />
+  <Item WahsLevel="6" WahsTimes="500" Minvalue="1400" Maxvalue="10000" />
+  <Item WahsLevel="7" WahsTimes="1000" Minvalue="1600" Maxvalue="10000" />
+  <Item WahsLevel="8" WahsTimes="2000" Minvalue="1800" Maxvalue="10000" />
+  <Item WahsLevel="9" WahsTimes="5000" Minvalue="2000" Maxvalue="10000" />
+  <Item WahsLevel="10" WahsTimes="10000" Minvalue="2500" Maxvalue="10000" />
+</Result>

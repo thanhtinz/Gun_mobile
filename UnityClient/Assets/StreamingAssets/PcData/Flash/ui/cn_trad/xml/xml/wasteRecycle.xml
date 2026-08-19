@@ -1,0 +1,88 @@
+<style name="wasteRecycle" version="7.9.0" source="ui/cn_trad/swf/wasteRecycle.swf">
+<sets>
+	<set stylename="wasteRecycle.recycleTipsTF" args="Arial,13,0xff2929,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="wasteRecycle.recycleTipsGF" args="0xfffbf8,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="wasteRecycle.scoreTextTF" args="Arial,12,0xf9ff50" type="flash.text.TextFormat"/>
+	<set stylename="wasteRecycle.scoreTextGF" args="0x4b0000,1,2,2,10" type="flash.filters.GlowFilter"/>	
+
+	<set stylename="wasteRecycle.selectFrameTextTF" args="Arial,14,0xffeebf,true" letterSpacing="0" type="flash.text.TextFormat"/>
+	<set stylename="wasteRecycle.selectFrameTextGF" args="0x442006,1,4,4,30" type="flash.filters.GlowFilter"/> 
+		
+	<set stylename="wasteRecycle.limitTextTF" args="Arial,12,0xfe0100,true" type="flash.text.TextFormat" leading="5"/>
+	<set stylename="wasteRecycle.limitTextGF" args="0x2e0800,2,4,4,30" type="flash.filters.GlowFilter"/> 
+	
+	<set stylename="wasteRecycle.selectFrameScoreTextTF" args="Arial,12,0xffeebf,true" type="flash.text.TextFormat" leading="5"/>
+	<set stylename="wasteRecycle.selectFrameScoreTextGF" args="0x442006,1,4,4,30" type="flash.filters.GlowFilter"/> 
+	<!-- 帮助文字 -->
+	<set stylename="wasteRecycle.helpFramTextTF" args="Arial,12,0xf4ecb9,true" type="flash.text.TextFormat"/>
+	<set stylename="wasteRecycle.helpFramTextGF" args="0x784b29,1,4,4,30" type="flash.filters.GlowFilter"/> 
+	<set stylename="wasteRecycle.helpFramTextTF2" args="Arial,12,0xffffff,true" type="flash.text.TextFormat"/>
+	<set stylename="wasteRecycle.helpFramTextGF2" args="0x784b29,1,4,4,30" type="flash.filters.GlowFilter"/>
+	
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="wasteRecycle.bagViewPos" x="427" y="18"/>
+	<custom classname="flash.geom.Point" stylename="wasteRecycle.recycleCellPos" x="65" y="83"/>
+	<custom classname="flash.geom.Point" stylename="wasteRecycle.numberSelectPos" x="154" y="87"/>
+	<custom classname="flash.geom.Point" stylename="wasteRecycle.turnViewPos" x="74" y="227"/>
+	<custom classname="ddt.view.caddyII.LookTrophy" backStyle="SimpleFrameBackgoundOne" stylename="wasteRecycle.lookTrophy" closestyle="core.closebt" 
+				titleStyle="FrameTitleTextStyle"  titleOuterRectPosString="10,11,5" closeInnerRectString="44,6,6,30,14"
+				 containerX="10" containerY="30" width="305" height="336"   x="354" y="90"/>
+</customDisplay>
+<components>
+	<component classname="wasteRecycle.view.WasteRecycleFrame" stylename="wasteRecycle.WasteRecycleFrame" 
+		backStyle="SimpleFrameBackgoundOne" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,11,5" 
+		closestyle="core.closebt" closeInnerRectString="44,19,6,30,14" escEnable="true" width="854" height="505" />
+			
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage"
+		stylename="asset.wasteRecycle.frameBg" parentStyle="core.bg6920" width="815"
+		height="440" x="19" y="45" scaleGridString="5,10,80,20" />
+	
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wasteRecycle.recycleBtn"
+		backStyle="asset.wasteRecycle.recycleBtn" x="232" y="75" />
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wasteRecycle.startBtn"
+		backStyle="asset.wasteRecycle.startBtn" x="170" y="363" />
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wasteRecycle.awardBtn"
+		backStyle="asset.wasteRecycle.awardBtn" x="82" y="422" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.recycleTips" 
+		textFormatStyle="wasteRecycle.recycleTipsTF" filterString="wasteRecycle.recycleTipsGF" x="152" y="133"/>
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.scoreText" 
+		textFormatStyle="wasteRecycle.scoreTextTF" filterString="wasteRecycle.scoreTextGF" x="241" y="430"/>
+		
+	<component classname="wasteRecycle.view.WasteRecycleSelectFrame" stylename="wasteRecycel.selectedFrame"  parentStyle="BaseFrame" moveEnable="false" width="400" height="220" containerX="15" containerY="5"/>
+	
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="imageStyle" />
+
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.selectFrameText" textFormatStyle="wasteRecycle.selectFrameTextTF" filterString="wasteRecycle.selectFrameTextGF" x="12" y="88" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.limitText" textFormatStyle="wasteRecycle.limitTextTF" filterString="wasteRecycle.limitTextGF" x="66" y="370" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.selectFrameScoreText" textFormatStyle="wasteRecycle.selectFrameScoreTextTF" filterString="wasteRecycle.selectFrameScoreTextGF" x="91" y="133" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.continuousOpenBtnText" textFormatStyle="wasteRecycle.selectFrameScoreTextTF" filterString="wasteRecycle.selectFrameScoreTextGF" />
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton" parentStyle="core.simpleSelectBtn" 
+		stylename="wasteRecycle.continuousOpenBtn" textStyle="wasteRecycle.continuousOpenBtnText" fieldX="18" fieldY="-1" x="303" y="380" />
+	<!-- 帮助说明 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.helpFramText" textFormatStyle="wasteRecycle.helpFramTextTF" filterString="wasteRecycle.helpFramTextGF" width="305" wordWrap="true" x="0" y="0" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.helpFramText2" textFormatStyle="wasteRecycle.helpFramTextTF2" filterString="wasteRecycle.helpFramTextGF2" width="305" x="7" y="110" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wasteRecycle.helpFramText3" textFormatStyle="wasteRecycle.helpFramTextTF2" filterString="wasteRecycle.helpFramTextGF2" width="305" x="120" y="110" />
+	
+	<component classname="wasteRecycle.view.WasteRecycleHelperFrame" stylename="wasteRecycle.helperFrame" parentStyle="BaseFrame" moveEnable="false" width="400" height="500" escEnable="true" 
+	    backStyle="SimpleFrameBackgoundOne" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="16,11,5" 
+		closestyle="core.closebt" closeInnerRectString="44,6,6,30,14" />
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="wasteRecycle.helperFrameBg" 
+			parentStyle="core.Scale9CornerImage.scale9CornerImagereleaseContentTextBG" x="11" y="37" 
+			width="376" height="450" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wasteRecycle.helperFrame.helpBtn" parentStyle="core.helpButtonSmall" x="757" y="5"/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="wasteRecycle.helperFrame.List" parentStyle="core.ScrollPanel"
+			hScrollProxy="2" vScrollProxy="1" width="327" height="383" x="39" y="79" vUnitIncrement="10" />	
+</components>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.wasteRecycle.bg" x="25" y="51" />
+</bitmaps>
+</style>

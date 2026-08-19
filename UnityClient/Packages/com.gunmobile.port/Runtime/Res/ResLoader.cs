@@ -16,6 +16,7 @@ namespace GunMobile.Res
     {
         public string StreamingRoot { get; }
         public string PersistentRoot { get; }
+        public List<string> ExtraRoots { get; } = new List<string>();
 
         public ResLoader(string streamingRoot = null, string persistentRoot = null)
         {
@@ -23,24 +24,55 @@ namespace GunMobile.Res
             PersistentRoot = persistentRoot ?? Application.persistentDataPath;
         }
 
+        public IEnumerable<string> SearchRoots()
+        {
+            if (!string.IsNullOrEmpty(PersistentRoot))
+            {
+                yield return PersistentRoot;
+            }
+
+            foreach (string root in ExtraRoots)
+            {
+                if (!string.IsNullOrEmpty(root))
+                {
+                    yield return root;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(StreamingRoot))
+            {
+                yield return StreamingRoot;
+            }
+        }
+
         public bool TryReadBytes(string relative, out byte[] bytes)
         {
             relative = GamePaths.Normalize(relative);
-            string persistent = Path.Combine(PersistentRoot, relative);
-            if (File.Exists(persistent))
+            foreach (string root in SearchRoots())
             {
-                bytes = File.ReadAllBytes(persistent);
-                return true;
-            }
-
-            string streaming = Path.Combine(StreamingRoot, relative);
-            if (File.Exists(streaming))
-            {
-                bytes = File.ReadAllBytes(streaming);
-                return true;
+                string path = Path.Combine(root, relative);
+                if (File.Exists(path))
+                {
+                    bytes = File.ReadAllBytes(path);
+                    return true;
+                }
             }
 
             bytes = null;
+            return false;
+        }
+
+        public bool Exists(string relative)
+        {
+            relative = GamePaths.Normalize(relative);
+            foreach (string root in SearchRoots())
+            {
+                if (File.Exists(Path.Combine(root, relative)))
+                {
+                    return true;
+                }
+            }
+
             return false;
         }
 

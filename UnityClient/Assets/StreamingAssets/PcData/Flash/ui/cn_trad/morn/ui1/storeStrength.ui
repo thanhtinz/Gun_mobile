@@ -1,0 +1,103 @@
+
+9compose/StoreComposeCell.xml�{<View width="72" height="88">
+  <Image skin="asset.ddtstore.hecheng.bit8" x="0" y="0"/>
+  <LabelEx text="Lv0：攻击+0" x="2" y="72" size="12" color="0xffe400" stroke="0x3a4a00,1,4,4,30" var="txt"/>
+  <Image skin="store.fineforge.cellShine" x="-2" y="-4" width="77" height="80" name="selectBox" visible="false"/>
+  <Box x="10" y="11" width="50" height="50" var="cellBox"/>
+</View>)StoreLingUpGrade.xml�=<View width="352" height="409">
+  <Image skin="asset.ddtstore.ling.bit7" x="27" y="21"/>
+  <Image skin="asset.ddtstore.ling.bit8" x="96" y="260"/>
+  <Box x="183" y="246" width="46" height="45" var="itemCell1"/>
+  <Button skin="asset.ddtstore.ling.bit11" x="104" y="309" stateNum="1" var="upBtn"/>
+  <LabelEx text="提示：技能灵玉只有先解锁才能升级" x="73" y="364" size="12" color="0xffdb96" stroke="0x561111,1,2,2,10"/>
+  <StoreLingEquipCell x="125" y="118" runtime="store.view.strength.StoreLingEquipCell" var="cell"/>
+</View>Acompose/StoreComposeNeedCell.xml�3<View width="45" height="45">
+  <Image skin="asset.ddtstore.hecheng.bit7" x="0" y="0"/>
+  <Box x="1" y="1" width="42" height="42" var="cellBox"/>
+</View>9compose/StoreComposeView.xml�5<View width="334" height="381" var="list">
+  <Image skin="asset.ddtstore.hecheng.bit6" x="114" y="8"/>
+  <List x="16" y="108" spaceX="5" repeatX="4" var="stoneList">
+    <StoreComposeCell name="render" runtime="store.view.Compose.StoreComposeCell"/>
+  </List>
+  <Image skin="asset.ddtstore.hecheng.bit4" x="0" y="211"/>
+  <StoreComposeNeedCell x="63" y="226" var="item0" runtime="store.view.Compose.StoreComposeNeedCell"/>
+  <StoreComposeNeedCell x="115" y="226" var="item1" runtime="store.view.Compose.StoreComposeNeedCell"/>
+  <StoreComposeNeedCell x="167" y="226" var="item2" runtime="store.view.Compose.StoreComposeNeedCell"/>
+  <StoreComposeNeedCell x="219" y="226" var="item3" runtime="store.view.Compose.StoreComposeNeedCell"/>
+  <StoreComposeNeedCell x="271" y="226" var="item4" runtime="store.view.Compose.StoreComposeNeedCell"/>
+  <LabelEx text="消耗：" x="13" y="237" color="0xfffdbb " stroke="0x3a4a00,1,4,4,30" bold="true" size="16"/>
+  <LabelEx text="成功率：" x="105" y="285" color="0xfffdbb " stroke="0x3a4a00,1,4,4,30" bold="true" size="16"/>
+  <LabelEx text="10%" x="172" y="284" color="0xffe400" stroke="0x3a4a00,1,4,4,30" bold="true" size="16" var="rateTxt"/>
+  <Button skin="asset.ddtstore.hecheng.bit3" x="99" y="315" stateNum="1" var="makeBtn"/>
+  <LabelEx text="注：铭刻消耗宝石等级越高，成功率越高" x="46" y="368" color="0xffe400" stroke="0x3a4a00,1,4,4,30" bold="true" size="12"/>
+  <Button x="285" y="321" checkButtonSkin="asset.ui.btn_check3" stateNum="1" selected="true" toggle="true" var="checkBtn"/>
+  <Box x="248" y="320" width="30" height="30" var="checkBox"/>
+</View>+view/StoreLingBag.xml�<View width="375" height="411">
+  <Image skin="store.fine.sealMainBg" x="0" y="0"/>
+  <Label text="装备" x="12" y="6" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true" var="title1"/>
+  <Label text="首先请双击选择您要镶嵌的装备" x="50" y="8" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9" var="des1"/>
+  <Label text="灵玉" x="12" y="186" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true" var="title2"/>
+  <Label text="然后请双击选择您要操作的灵玉" x="50" y="188" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9" var="des2"/>
+  <Image skin="asset.core.smallBG1" x="14" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="131" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="251" y="375" width="104" height="24"/>
+  <Image skin="asset.core.ticketIcon" x="13" y="376"/>
+  <Label text="123456789" x="39" y="379" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x8b0000,1,2,2,10" var="money"/>
+  <Image skin="asset.core.giftIcon" x="130" y="375"/>
+  <Image skin="asset.core.goldIcon" x="250" y="375"/>
+  <Label text="123456789" x="156" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x21554d,1,2,2,10" var="bindMoney"/>
+  <Label text="123456789" x="277" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x5d440d,1,2,2,10" var="gold"/>
+  <List x="13" y="35" repeatX="7" repeatY="3" vScrollBarSkin="asset.ui.scroll1.vscroll" width="354" height="138" var="list1">
+    <StoreLingBagCell x="0" y="0" name="render" runtime="store.lling.StoreLingBagCell"/>
+  </List>
+  <List x="14" y="218" repeatX="7" repeatY="3" vScrollBarSkin="asset.ui.scroll1.vscroll" width="354" height="139" var="list2">
+    <StoreLingBagCell x="0" y="0" name="render" runtime="store.lling.StoreLingBagCell"/>
+  </List>
+</View>3view/StoreLingBagCell.xml�O<View width="47" height="46">
+  <Image skin="bagAndInfo.cell.bagCellBgAsset" x="0" y="0"/>
+  <Box x="0" y="0" width="47" height="47" var="cellBox">
+    <Label text="22" x="4" y="27" var="countTxt" align="right" width="39" height="15" visible="false" stroke="0xffffff,1,2,2,10"/>
+  </Box>
+</View>+StoreLingStoneTip.xml�?<View width="200" height="209">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="209" var="bg"/>
+  <Label text="封印属性" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="talentName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="灵石" x="54" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="profileTxt"/>
+  <Clip x="125" y="51" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="123" sizeGrid="95,1,95,1" width="165" var="line2"/>
+  <Label x="8" y="136" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="false" wordWrap="true" multiline="true" width="163" leading="5" var="desTxt"/>
+  <Box x="13" y="101" var="proBox">
+    <Label text="攻击：" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" width="43" height="16" var="proTypeTxt"/>
+    <Label text="300" x="40" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" width="37" height="18" var="proNumTxt"/>
+  </Box>
+  <Label size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" x="13" y="100" multiline="true" wordWrap="true" width="174" leading="5" var="skillTxt" isHtml="true"/>
+  <Clip x="92" y="60" clipsUrl="asset.lingstone.type1,asset.lingstone.type2,asset.lingstone.type3,asset.lingstone.type4,asset.lingstone.type5" var="typeIcon"/>
+</View>'StoreLingInsert.xml�<View width="307" height="380">
+  <Image skin="asset.ddtstore.ling.bit3" x="0" y="0"/>
+  <StoreLingInsertCell x="114" y="0" runtime="store.view.strength.StoreLingInsertCell" name="cell0"/>
+  <StoreLingInsertCell x="194" y="32" runtime="store.view.strength.StoreLingInsertCell" name="cell1"/>
+  <StoreLingInsertCell x="227" y="117" runtime="store.view.strength.StoreLingInsertCell" name="cell2"/>
+  <StoreLingEquipCell x="103" y="99" runtime="store.lling.StoreLingInsertEquipCell" var="equipCell"/>
+  <StoreLingInsertCell x="187" y="196" runtime="store.view.strength.StoreLingInsertCell" name="cell3"/>
+  <StoreLingInsertCell x="116" y="226" runtime="store.view.strength.StoreLingInsertCell" name="cell4"/>
+  <StoreLingInsertCell x="37" y="197" runtime="store.view.strength.StoreLingInsertCell" name="cell5"/>
+  <StoreLingInsertCell x="0" y="114" runtime="store.view.strength.StoreLingInsertCell" name="cell6"/>
+  <StoreLingInsertCell x="36" y="27" runtime="store.view.strength.StoreLingInsertCell" var="skillCell"/>
+  <ProgressBarEx x="120" y="303" skin="asset.ddtstore.ling.progress" barXOffset="5" barYOffset="4" value="1" label="50%" lableColor="0xfffca1" labelSize="12" stroke="0x592614,1,2,2,10" barLabelY="-1" var="progress"/>
+  <Button skin="asset.ddtstore.ling.bit15" x="194" y="298" stateNum="1" var="buildBtn"/>
+  <LabelEx text="提示：同一类型的灵石最多镶嵌3个" x="2" y="337" size="12" color="0xffdb96" stroke="0x561111,1,2,2,10"/>
+  <Button skin="asset.ddtstore.ling.bit10" x="201" y="327" stateNum="1" var="allBtn"/>
+</View>/StoreLingInsertCell.xml�<View width="80" height="80">
+  <Image skin="asset.ddtstore.ling.bit13" x="0" y="0" var="skillBg"/>
+  <Image skin="asset.ddtstore.ling.bit12" x="7" y="7" var="normalBg"/>
+  <Image skin="asset.ddtstore.ling.bit9" x="7" y="11" var="lockBit"/>
+  <Image skin="asset.ddtstore.ling.selectBg" x="-6" y="-6" var="selectedImg"/>
+  <Box x="13" y="15" width="53" height="50" var="cellBox"/>
+</View>-StoreLingEquipCell.xml�9<View width="102" height="102">
+  <Image skin="asset.ddtstore.ling.bit14" x="0" y="0"/>
+  <Box x="28" y="27" width="46" height="45" var="itemCell"/>
+</View>

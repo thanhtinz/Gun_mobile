@@ -1,0 +1,100 @@
+<style name="lotteryTicket" version="7.7.0" source="ui/cn_trad/swf/lotteryTicket.swf">
+	<sets>
+		<set stylename="lotteryTicket.activityTimeTF" args="Arial,12,0xedf98b" type="flash.text.TextFormat" />
+		<set stylename="lotteryTicket.activityTimeGF" args="0x770618,1,4,4,20" type="flash.filters.GlowFilter" />		
+
+		<set stylename="lotteryTicket.openTimeTF" args="Arial,12,0xfad4bf,true" type="flash.text.TextFormat" />
+		<set stylename="lotteryTicket.openTimeGF" args="0x370202,1,4,4,20" type="flash.filters.GlowFilter" />
+		
+		<set stylename="lotteryTicket.prizeListTF" args="Arial,14,0xfff8d6" type="flash.text.TextFormat" />
+		<set stylename="lotteryTicket.prizeListGF" args="0x632a02,1,4,4,20" type="flash.filters.GlowFilter" />
+		
+		<set stylename="lotteryTicket.prizeListInfo.TF" args="Arial,16,0xffffff,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="lotteryTicket.prizeListInfo.GF" args="0x000000,1,4,4,20" type="flash.filters.GlowFilter" />
+	</sets>
+
+	<components>
+		<component classname="lotteryTicket.view.LotteryMainView" stylename="lottery.mainframe" 
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="0" containerY="0" escEnable="true" 
+			closeInnerRectString="690,42,30,42,13" width="887" height="557" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.lotteryTicket.activityTime.txt" textFormatStyle="lotteryTicket.activityTimeTF" 
+			filterString="lotteryTicket.activityTimeGF" x="301" y="132"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.lotteryTicket.openTime.txt" textFormatStyle="lotteryTicket.openTimeTF" 
+			filterString="lotteryTicket.openTimeGF" x="700" y="134"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.lotteryTicket.prizeList.txt" textFormatStyle="lotteryTicket.prizeListTF" 
+			filterString="lotteryTicket.prizeListGF" x="30" y="97"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.lotteryTicket.prizeListInfo.txt" textFormatStyle="lotteryTicket.prizeListInfo.TF" 
+			filterString="lotteryTicket.prizeListInfo.GF" x="30" y="97" autoSize="none" width="" height="25"/>
+			
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.prizeListBtn" backStyle="asset.lotteryTicket.prizeList.btn" 
+			x="679" y="228" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.buyBtn" backStyle="asset.lotteryTicket.buy.btn" 
+			x="391" y="472" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.randomBtn" backStyle="asset.lotteryTicket.random.btn" 
+			x="62" y="491" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.okBtn" backStyle="asset.lotteryTicket.ok.btn" 
+			x="192" y="491" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.ListPanel" stylename="lotteryTicket.cellList"	parentStyle="core.ScrollPanel" 
+			vScrollbarInnerRectString="21,4,0,0,3" vScrollProxy="0" hScrollProxy="2" vUnitIncrement="3"
+			factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|lotteryTicketCellStyle,50" 
+			listStyle="com.pickgliss.ui.controls.list.List" width="242" height="298" x="324" y="166" />
+			
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="lotteryTicket.prizeList" 
+			parentStyle="core.ScrollPanel" vScrollProxy="0" width="415" height="137" x="34" y="130"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.closeBtn" backStyle="asset.lotteryTicket.close.btn" 
+			x="818" y="92" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="lotteryTicket.deleteBtn" backStyle="asset.lotteryTicket.delete" 
+			x="202" y="1" filterString="null,lightFilter,lightFilter,grayFilter"/>
+			
+	</components>
+	
+	<costomDisplay>
+		<custom classname="lotteryTicket.view.LotteryPrizeView" stylename="Lottery.lotteryPrizeView"
+			backStyle="SimpleFrameBackgoundOne" parentStyle="BaseFrame"
+			closestyle="core.closebt" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="24,10,5" closeInnerRectString="44,22,6,30,14"
+			moveInnerRectString="0,30,0,30,1" width="479" height="527" escEnable="true" />
+		<custom classname="lotteryTicket.view.LotteryTicketCell" stylename="lotteryTicketCellStyle" />
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeMoney.pos" x="161" y="136"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos0" x="52" y="186"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos1" x="115" y="186"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos2" x="179" y="186"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos3" x="244" y="186"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos4" x="52" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos5" x="115" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos6" x="179" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos7" x="244" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos8" x="52" y="299"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos9" x="115" y="299"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos10" x="179" y="299"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos11" x="244" y="299"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos12" x="52" y="356"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos13" x="115" y="356"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos14" x="179" y="356"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.select.pos15" x="244" y="356"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.ticket.pos1" x="50" y="424"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.ticket.pos2" x="116" y="424"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.ticket.pos3" x="181" y="424"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.ticket.pos4" x="249" y="424"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeInfo.pos1" x="98" y="62"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeInfo.pos2" x="98" y="297"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeInfo.pos3" x="98" y="370"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeInfo.pos4" x="98" y="438"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeZone.pos" x="3" y="5"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.prizeName.pos" x="118" y="4"/>
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.levelIcon.pos" x="331" y="1"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.lotteryTicket.helpBtn.pos" x="783" y="92"/>
+	</costomDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.lotteryTicket.bought" x="157" y="0"/>
+		
+		<bitmapData resourceLink="asset.lotteryTicket.bg1" x="17" y="43"/>
+	</bitmaps>
+</style>

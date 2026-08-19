@@ -1,0 +1,85 @@
+<style name="floatParadeframe" version="5.1.0" source="ui/cn_trad/swf/floatParadeframe.swf">
+	<sets>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.countTxt.tf" args="Arial,18,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.countTxt.gf" args="0x572525,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.dressUpTxtTF" args="Arial,14,0xfff2c6,true" letterSpacing="2"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.dressUpTxtGF" args="0x00583d,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.defaultTxtTF" args="Arial,14,0xffd33a,true"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.defaultTxtGF" args="0x330300,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.awardTxtTF" args="Arial,12,0xf0be85"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.awardTxtGF" args="0x4f2700,1,4,4,30"/>		
+		<set type="flash.text.TextFormat" stylename="floatParade.race.matchViewTipTxtTF" args="Arial,14,0xf4f3e3,true" leading="4"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.matchViewTipTxtGF" args="0x987f43,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.matchView.rightTxt.tf" args="Arial,12,0xf5edb9" leading="6"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.matchView.rightTxt.gf" args="0x693812,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.race.matchView.timeTxt.tf" args="Arial,38,0xFFCC66,true" letterSpacing='6'/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.race.matchView.timeTxt.gf" args="0x000000,1,12,12,6,1"/>
+	</sets>
+	<customs>
+		<custom classname="flash.geom.Point" stylename="floatParade.race.awardTxtPos" x="81" y="223"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.circelHelpBtnPos" x="592" y="-28"/>
+	</customs>
+	<components>
+		<component classname="floatParade.views.FloatParadeFrame" stylename="floatParade.race.floatParadeFrame" containerX="34" containerY="98" 
+		escEnable="true" backStyle="floatParade.bg" width="708" height="491" closestyle="core.roundClosebt" 
+		closeInnerRectString="42,10,60,42,14" moveInnerRectString="0,30,0,30,1" />
+		
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="floatParade.race.framebg" 
+			width="641" height="310" x="0" y="0" parentStyle="core.bg6920"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="floatParade.race.bottomBg" 
+			parentStyle="asset.core.btmBimap" x="0" y="314" width="641" height="62"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.countTxt" 
+			textFormatStyle="floatParade.race.countTxt.tf" filterString="floatParade.race.countTxt.gf" 
+			x="370" y="333"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.race.startBtn" 
+			backStyle="floatParade.frame.startBtn" x="228" y="319"/>
+	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.awardTxt" 
+			textFormatStyle="floatParade.race.awardTxtTF" filterString="floatParade.race.awardTxtGF" 
+			x="81" y="201"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="floatParade.race.dressUpTxtbtn" 
+			backStyle="core.bg6902" textStyle="floatParade.race.dressUpTxt"  filterString="null,lightFilter,null,grayFilter"
+			backgoundInnerRectString="25,30,6,12,-1" x="44" y="251"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.defaultTxt" 
+			textFormatStyle="floatParade.race.defaultTxtTF" filterString="floatParade.race.defaultTxtGF" 
+			x="77" y="257"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.dressUpTxt" 
+			textFormatStyle="floatParade.race.dressUpTxtTF"  filterString="floatParade.race.dressUpTxtGF"/>
+			
+		<component classname="floatParade.views.FloatParadeMatchView" stylename="floatParade.race.matchView" 
+			backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt"
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="24,10,5"
+			closeInnerRectString="44,12,6,30,14" moveInnerRectString="0,30,0,30,1" 
+			containerX="21" containerY="36"
+			width="552" height="505" escEnable="true"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.matchViewTipTxt" 
+			textFormatStyle="floatParade.race.matchViewTipTxtTF" filterString="floatParade.race.matchViewTipTxtGF" 
+			x="27" y="369"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.matchView.rightTxt" 
+			textFormatStyle="floatParade.race.matchView.rightTxt.tf" filterString="floatParade.race.matchView.rightTxt.gf" 
+			x="286" y="37"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.race.matchView.timeTxt" 
+			textFormatStyle="floatParade.race.matchView.timeTxt.tf" filterString="floatParade.race.matchView.timeTxt.gf" 
+			x="359" y="274"/>	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.matchView.cancelBtn" 
+			backStyle="floatParade.matchView.cancelBtnBmp" x="272" y="352"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.HelpButtonSmall" 
+			backStyle="asset.ddtcore.helpbuttonSmall" x="562" y="-41"/>		
+			
+		<component classname="floatParade.views.FloatParadeBuyConfirmView" stylename="FloatParadeBuyConfirmView"
+			parentStyle="SimpleAlert"/>
+	</components>
+	<bitmaps>
+		<bitmapData resourceLink="floatParade.award" x="33" y="200"/>
+		<bitmapData resourceLink="floatParade.currentBoat" x="-4" y="-5"/>
+		<bitmapData resourceLink="floatParade.matchView.txtIcon" x="16" y="338"/>
+		<bitmapData resourceLink="floatParade.matchView.tipTxtIcon" x="327" y="318"/>
+		<bitmapData resourceLink="floatParade.matchView.car0" x="8" y="16"/>
+		<bitmapData resourceLink="floatParade.matchView.car1" x="8" y="16"/>
+		<bitmapData resourceLink="floatParade.matchView.car2" x="8" y="16"/>
+		<bitmapData resourceLink="floatParade.doubleScoreIcon" x="291" y="-26"/>
+	</bitmaps>
+</style>

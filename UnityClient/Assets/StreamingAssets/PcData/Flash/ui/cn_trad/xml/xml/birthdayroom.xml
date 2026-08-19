@@ -1,0 +1,132 @@
+<style name="birthdayroom" version="1.0.1" source="ui/cn_trad/swf/birthdayroom.swf">
+	<sets>
+	<set stylename="birthday.room.talkTxtTF" args="宋体,14,0xffffff,true" type="flash.text.TextFormat"/>
+	<set stylename="birthday.room.talkTxtGF" args="0x6d3810,1,5,5,10" type="flash.filters.GlowFilter"/>
+		
+	<set stylename="birthday.room.remainTimeTxtTF" args="宋体,14,0xf5e858" type="flash.text.TextFormat"/>
+	<set stylename="birthday.room.remainTimeTxtGF" args="0xc83737,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+	<set stylename="birthday.room.inviteFriendBtnAsset.unselectBtnTF" args="宋体,14,0xcae1a3,,,,,,center" letterSpacing="3" type="flash.text.TextFormat"/>
+	<set stylename="birthday.room.inviteFriendBtnAsset.unselectBtnGF" args="0x0d5954,1,4,4,30" type="flash.filters.GlowFilter"/>
+
+</sets>
+<components>
+<!--房间内工具菜单-->
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolSwitchBgAsset" backStyle="asset.birthday.room.toolSwitchBgAsset" filterString="null,lightFilter,null,grayFilter" x="0" y="66"/>
+	
+	<!-- 开始庆祝 -->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtncelebrationBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.startCelebrationAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtncelebrationAsset" resourceLink="asset.birthday.room.startCelebrationAsset,birthday.room.toolBtncelebrationBg1Asset,birthday.room.toolBtncelebrationBg1Asset,asset.birthday.room.startCelebrationAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.celebrationBtn" backStyle="birthday.room.toolBtncelebrationAsset" x="35" y="71"/>
+	
+	<!--邀请伴侣-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnInvitePartnerBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.invitePartner" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnInvitePartnerBgAsset" resourceLink="asset.birthday.room.invitePartner,birthday.room.toolBtnInvitePartnerBg1Asset,birthday.room.toolBtnInvitePartnerBg1Asset,asset.birthday.room.invitePartner" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnInvitePartner" backStyle="birthday.room.toolBtnInvitePartnerBgAsset" x="35" y="71"/>
+	
+	
+	
+	<!--赠送礼品-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnSendGiftBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.sendGiftAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnSendGiftBgAsset" resourceLink="asset.birthday.room.sendGiftAsset,birthday.room.toolBtnSendGiftBg1Asset,birthday.room.toolBtnSendGiftBg1Asset,asset.birthday.room.sendGiftAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnSendGiftAsset" backStyle="birthday.room.toolBtnSendGiftBgAsset" x="93" y="71"/>
+	
+	<!-- 放烟花-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnFireBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.fireUseAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnFireBgAsset" resourceLink="asset.birthday.room.fireUseAsset,birthday.room.toolBtnFireBg1Asset,birthday.room.toolBtnFireBg1Asset,asset.birthday.room.fireUseAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnFireBtnAsset" backStyle="birthday.room.toolBtnFireBgAsset" x="152" y="71"/>
+	
+	<!--邀请宾客-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnInviteGuestBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.inviteGuestAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnInviteGuestBgAsset" resourceLink="asset.birthday.room.inviteGuestAsset,birthday.room.toolBtnInviteGuestBg1Asset,birthday.room.toolBtnInviteGuestBg1Asset,asset.birthday.room.inviteGuestAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnInviteGuestBtnAsset" backStyle="birthday.room.toolBtnInviteGuestBgAsset" x="212" y="71"/>
+	
+	<!--领取礼包-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtngetGiftBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.getGiftAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtngetGiftBgAsset" resourceLink="asset.birthday.room.getGiftAsset,birthday.room.toolBtngetGiftBg1Asset,birthday.room.toolBtngetGiftBg1Asset,asset.birthday.room.getGiftAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtngetGiftBtnAsset" backStyle="birthday.room.toolBtngetGiftBgAsset" x="212" y="71"/>
+	
+	
+	<!--房间设置
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnModifyBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birtday.room.setAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnModifyBgAsset" resourceLink="asset.birtday.room.setAsset,birthday.room.toolBtnModifyBg1Asset,birthday.room.toolBtnModifyBg1Asset,asset.birtday.room.setAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnModifyBtnAsset" backStyle="birthday.room.toolBtnModifyBgAsset" x="271" y="71"/>	
+	-->
+	<!--退出-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.toolBtnBackBg1Asset" resourceLink="asset.birthday.room.toolBtnSelectBgAsset,asset.birthday.room.exitAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.toolBtnBackBgAsset" resourceLink="asset.birthday.room.exitAsset,birthday.room.toolBtnBackBg1Asset,birthday.room.toolBtnBackBg1Asset,asset.birthday.room.exitAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.toolBtnBackBtnAsset" backStyle="birthday.room.toolBtnBackBgAsset" x="328" y="71"/>
+	
+	
+	<!--发红包-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.sendMoneyUnSelectAsset" resourceLink="asset.birthday.room.btnDefaultBgAsset,asset.birthday.room.sendMoneyAsset"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.sendMoneySelectAsset" resourceLink="asset.birthday.room.btnSelectedBgAsset,asset.birthday.room.sendMoneyAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.sendMoneyBtnBgAsset" resourceLink="birthday.room.sendMoneyUnSelectAsset,birthday.room.sendMoneySelectAsset,birthday.room.sendMoneySelectAsset,birthday.room.sendMoneyUnSelectAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.sendMoneyBtn" backStyle="birthday.room.sendMoneyBtnBgAsset" x="260" y="-107"/>
+	
+	<!--拍照-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.photographUnSelectAsset" resourceLink="asset.birthday.room.btnDefaultBgAsset,asset.birthday.room.photographAsset"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="birthday.room.photographSelectAsset" resourceLink="asset.birthday.room.btnSelectedBgAsset,asset.birthday.room.photographAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthday.room.photographBtnBgAsset" resourceLink="birthday.room.photographUnSelectAsset,birthday.room.photographSelectAsset,birthday.room.photographSelectAsset,birthday.room.photographUnSelectAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.photographBtn" backStyle="birthday.room.photographBtnBgAsset" x="260" y="-13"/>
+	
+	
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="birthday.room.talkTxt" textFormatStyle="birthday.room.talkTxtTF" filterString="birthday.room.talkTxtGF" x="30" y="60"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="birthday.room.remainTimeTxt" textFormatStyle="birthday.room.remainTimeTxtTF" filterString="birthday.room.remainTimeTxtGF" x="0" y="60"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="birthday.room.remainTimeValue" textFormatStyle="birthday.room.remainTimeTxtTF" filterString="birthday.room.remainTimeTxtGF" x="69" y="60"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="birthday.room.closeBtn" 
+	backStyle="asset.birthday.room.closeRoomBtn" x="14" y="146"/>
+	<!--举行倒计时-->
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="birthdayroom.startCountDownAsset" x="420" y="180" resourceLink=",asset.birthdayroom.startWeddingCountDown9Asset,asset.birthdayroom.startWeddingCountDown8Asset,asset.birthdayroom.startWeddingCountDown7Asset,asset.birthdayroom.startWeddingCountDown6Asset,asset.birthdayroom.startWeddingCountDown5Asset,asset.birthdayroom.startWeddingCountDown4Asset,asset.birthdayroom.startWeddingCountDown3Asset,asset.birthdayroom.startWeddingCountDown2Asset,asset.birthdayroom.startWeddingCountDown1Asset,asset.birthdayroom.startWeddingCountDown0Asset" />
+	<component classname="auditorium.birthday.room.invite.BirthdayRoomInviteView" parentStyle="BaseFrame" stylename="birthday.invite.birthdayInviteView" titleOuterRectPosString="0,11,5" containerX="10" containerY="30" width="300" height="380" />
+	<component classname="com.pickgliss.ui.controls.ListPanel" stylename="birthday.room.invitePlayerListAsset" hScrollbarStyle="core.HScrollbar" vScrollbarStyle="core.VScrollbar" hScrollbarInnerRectString="0,22,21,0,4" vScrollbarInnerRectString="21,-5,0,1,3" viewportInnerRectString="0,18,7,8,0" factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|auditorium.birthday.room.invite.BirthdayRoomInvitePlayerItem,32,236" listStyle="com.pickgliss.ui.controls.list.List" width="250" height="232" x="11" y="54" hScrollProxy="2" vUnitIncrement="10"/>
+		
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.birthday.friendButton.selected" resourceLink="core.bg6903,asset.birthday.friendAsset" imageRectString="0|69|0|40|13,2|65|7|42|13" width="69" height="49"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.birthday.consortiaButton.selected" resourceLink="core.bg6903,asset.birthday.consortiaAsset" imageRectString="0|69|0|40|13,2|65|7|42|13" width="69" height="49" x="-12" y="0" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="birthday.room.inviteFriendBtnAsset.unselectBtnStyle" textFormatStyle="birthday.room.inviteFriendBtnAsset.unselectBtnTF" filterString="birthday.room.inviteFriendBtnAsset.unselectBtnGF" width="50" height="25" />
+	<component classname="com.pickgliss.ui.controls.SelectedTextButton" stylename="birthday.room.inviteFriendBtnAsset" unSelectedStyle="core.bg6902" textStyle=",birthday.room.inviteFriendBtnAsset.unselectBtnStyle" backgoundInnerRectString=",12|13|6|11|-1" unSelectedButtonOuterRectPosString="0,3,5" selectedStyle="asset.birthday.friendButton.selected" x="16" y="14" />
+	<component classname="com.pickgliss.ui.controls.SelectedTextButton" stylename="birthday.room.inviteConsortiaBtnAsset" unSelectedStyle="core.bg6902" textStyle=",birthday.room.inviteFriendBtnAsset.unselectBtnStyle" backgoundInnerRectString=",12|13|6|11|-1" unSelectedButtonOuterRectPosString="0,3,5" selectedStyle="asset.birthday.consortiaButton.selected" x="88" y="14" />
+	
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="birthday.InviteView.guestListBg" parentStyle="core.Scale9CornerImage.scale9CornerImage14"  width="264" height="240" x="8" y="50" />
+		
+</components>
+<bitmaps>
+<!--房间内工具菜单-->
+	<bitmapData resourceLink="asset.birthday.room.toolBgAsset" x="0" y="66" />
+	<bitmapData resourceLink="asset.birthday.room.sendMoneyAsset" x="4" y="6" />
+	<bitmapData resourceLink="asset.birthday.room.photographAsset" x="4" y="6" />
+	<bitmapData resourceLink="asset.birthdayroom.toolSwitchAsset" x="6" y="76" />
+</bitmaps>	
+
+<customDisplay>
+
+<custom classname="flash.geom.Point" stylename="birthday.room.toolPos" x="670" y="474"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.celebration.adminPos" x="1408" y="732"/>
+
+<custom classname="flash.geom.Point" stylename="birthday.room.guestTool.photographPos" x="201" y="-13"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.moonTool.photographPos" x="201" y="-13"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.guestTool.pos" x="729" y="474"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.targetPos"  x="968" y="761"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos0"  x="862" y="760"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos1"  x="1041" y="788"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos2"  x="788" y="808"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos3"  x="1111" y="863"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos4"  x="746" y="897"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos5"  x="1073" y="950"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos6"  x="749" y="974"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos7"  x="1015" y="997"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos8"  x="920" y="1005"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos9"  x="821" y="998"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.guestPos10"  x="780" y="779"/>
+<custom classname="flash.geom.Point" stylename="birthday.room.paoPaoViewPos"  x="1499" y="434"/>	
+<custom classname="flash.geom.Point" stylename="birthday.room.paoPaoViewBgPos"  x="0" y="0"/>	
+
+
+<custom classname="flash.geom.Point" stylename="birthday.room.remainTimeSpriPos" x="11" y="53"/>
+</customDisplay>
+
+</style>	

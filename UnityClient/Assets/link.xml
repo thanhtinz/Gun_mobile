@@ -1,0 +1,6 @@
+<linker>
+  <assembly fullname="GunMobile.Runtime" preserve="all"/>
+  <assembly fullname="GunMobile.Client" preserve="all"/>
+  <assembly fullname="System.Xml"/>
+  <assembly fullname="System.Xml.Linq"/>
+</linker>

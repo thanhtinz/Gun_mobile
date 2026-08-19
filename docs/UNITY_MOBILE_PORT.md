@@ -28,14 +28,15 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - Không nhúng Flash/SWF. Sprite PNG/atlas + logic C#.
 - Server: giữ Road/Fight nếu cần online; hoặc replay offline 1-2 người cho milestone 1.
 
-## Phase 1 — Nền (đã làm trong repo)
+## Phase 1 — Nền (đã làm)
 
 - [x] Import 3 zip Ok lên git (LFS)
 - [x] Extract XML/UI đã giải zlib → `legacy/data/`
-- [x] `ZlibXml`, bảng `Request`, Morn packed UI, Starling atlas
-- [x] `MapCollision` đọc `fore.map` (header 8 byte + bit-mask, stride = ceil(width/8))
-- [x] HUD mobile: CanvasScaler 1560×720, SafeArea, pad đi / pad ngắm
-- [x] Mô phỏng đạn 25 fps + turn loop + damage + bomb table
+- [x] Helper zlib / map / atlas / Morn / đạn
+- [x] Unity project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
+- [x] Client: login → hall (full module list PC) → chọn map → trận vs bot, art + XML gốc
+
+Mở `UnityClient/` bằng Unity 2021.3, Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
 
 Chạy kiểm tra:
 

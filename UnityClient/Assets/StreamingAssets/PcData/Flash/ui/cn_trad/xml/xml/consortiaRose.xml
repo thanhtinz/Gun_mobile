@@ -1,0 +1,25 @@
+<style name="consortiaRose" version="1.0.1" source="ui/cn_trad/swf/consortiaRose.swf">
+	<customs>
+		<custom classname="consortiaRoseFlower.ConsortiaRoseConfig" stylename="consortia.rose.config"
+			frameRate="24" totalFrames="10"
+			row1Number="8" 	row2Number="14" row3Number="20"
+			speed1="33" 	speed2="15" 	speed3="4"
+			scale1="1" 		scale2=".6" 	scale3=".4"
+			/>
+			
+		<custom classname="flash.geom.Point" stylename="rose.ViewPos" x="112" y="8"/>
+	</customs>
+	
+	<components>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rose.detailTxt" 
+			textFormatStyle="rose.TF" filterString="rose.GF" 
+			x="68" y="27" width="650" height="20" />
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="rose.closeBtn"
+			backStyle="ast.rose.close" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0" x="724" y="4"/>
+	</components>
+	<sets>
+		<set stylename="rose.TF" args="Arial,14,0xffffff" type="flash.text.TextFormat" />
+		<set stylename="rose.GF" args="0x280063,1,4,4,30" type="flash.filters.GlowFilter" />
+	</sets>
+	
+</style>

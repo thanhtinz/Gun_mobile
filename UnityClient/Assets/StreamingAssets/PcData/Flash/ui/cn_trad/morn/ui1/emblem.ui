@@ -1,0 +1,126 @@
+
+7insert/EmblemInsertView.xml�e<View width="739" height="413">
+  <Image skin="asset.emblem.insert.bg" x="-3" y="0"/>
+  <Image skin="asset.emblem.insert.proBg" x="3" y="241"/>
+  <Image skin="asset.emblem.insert.proBg" x="349" y="241" scaleX="-1"/>
+  <EmblemInsertBag x="360" y="0" runtime="emblem.share.EmblemInsertBag" var="storeBag"/>
+  <EmblemInsertCell x="128" y="-4" runtime="emblem.insert.cell.EmblemInsertCell" name="cell0"/>
+  <EmblemInsertCell x="1" y="165" runtime="emblem.insert.cell.EmblemInsertCell" name="cell2"/>
+  <EmblemInsertCell x="241" y="166" runtime="emblem.insert.cell.EmblemInsertCell" name="cell1"/>
+  <EmblemInsertEquipCell x="121" y="90" runtime="emblem.insert.cell.EmblemInsertEquipCell" var="equipCell"/>
+  <List x="21" y="316" var="skillList" repeatY="2" width="313" height="79" spaceY="11">
+    <Box name="render">
+      <Label color="0xffe6a9" stroke="0x42220b,1,4,4,30" isHtml="true" name="skillTxt" x="0" y="0" width="313" wordWrap="true" text="0"/>
+    </Box>
+  </List>
+  <List x="24" y="257" repeatX="4" repeatY="2" spaceX="15" spaceY="10" var="proList">
+    <Box name="render">
+      <Label text="风攻击+100" color="0xfff10d" stroke="0x42220b,1,4,4,30" name="txt"/>
+    </Box>
+  </List>
+</View>/make/EmblemMakeView.xml�<View width="738" height="415">
+  <Image skin="asset.emblem.make.bg" x="0" y="0"/>
+  <Image skin="asset.emblem.make.leftBg" x="6" y="241"/>
+  <Image skin="asset.emblem.make.leftBg" x="352" y="241" scaleX="-1"/>
+  <EmblemInsertBag x="363" y="2" runtime="emblem.share.EmblemInsertBag" var="storeBag"/>
+  <Image skin="asset.emblem.make.txt2" x="19" y="234"/>
+  <Image skin="asset.emblem.make.proBg" x="4" y="10"/>
+  <Label text="风攻击" x="26" y="36" var="proTxt" stroke="0x42220b,1,4,4,30"/>
+  <EmblemMakeCell x="123" y="89" var="makeCell" runtime="emblem.make.EmblemMakeCell"/>
+  <Image skin="asset.emblem.comboxBg" x="111" y="193"/>
+  <Button skin="asset.emblem.comboxBtn" x="207" y="195" var="comboxBtn" stateNum="1"/>
+  <Label text="寒冰纹章" x="115" y="199" color="0xfffaae" size="12" bold="true" stroke="0x3f0000,1,4,4,30" var="selectedTxt" width="94" height="18" align="center"/>
+  <List x="45" y="267" repeatX="4" spaceX="27" var="needList">
+    <Box width="47" height="43" name="render">
+      <Label text="99/99" size="10" x="4" y="28" name="count" width="40" height="15" align="right" stroke="0xffffff,1,2,2,10"/>
+    </Box>
+  </List>
+  <Button skin="asset.ui.btn_yellow3" x="106" y="333" stateNum="1" sizeGrid="37,11,37,11" width="142" height="52" imageLabel="asset.emblem.make.txt1" imageLabelRect="35,8" var="makeBtn"/>
+</View>/make/EmblemMakeCell.xml�M<View width="102" height="102">
+  <Image skin="asset.emblem.make.cellBg" x="0" y="0"/>
+  <Box x="21" y="20" var="cellBox" width="60" height="60">
+    <Label text="22" x="10" y="42" var="countTxt" align="right" width="39" height="15" visible="false" stroke="0xffffff,1,2,2,10"/>
+  </Box>
+</View>EmblemMain.xml�<View width="798" height="413">
+  <Box x="57" y="0" var="viewBox">
+    <EmblemInsertView runtime="emblem.insert.view.EmblemInsertView" var="insertView"/>
+  </Box>
+  <TabListEx y="65" var="viewTab" x="0" width="92" height="290">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" x="0" y="-26" skin="asset.emblem.insertSelected2,asset.emblem.insertSelected1" rects="0,0,0,0|0,-10,0,0"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" x="0" y="67" skin="asset.emblem.makeSelected2,asset.emblem.makeSelected1" rects="0,0,0,0|0,-10,0,0" mouseChildren="true" mouseEnabled="true"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" x="0" y="161" skin="asset.emblem.aggregationSelected2,asset.emblem.aggregationSelected1" rects="0,0,0,0|0,-10,0,0"/>
+  </TabListEx>
+</View>3make/EmblemMakeSelect.xml�e<View width="129" height="121">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="129" height="121" var="bg"/>
+  <List x="4" y="8" repeatY="8" spaceY="2" var="list">
+    <Box name="render" width="121" height="25">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="68,12,68,12" name="selectBox" x="0" y="0" width="116" height="25"/>
+      <Label text="如何獲取" y="3" color="0xffd800" stroke="0x843910,1,4,4,30" underline="true" size="14" width="118" height="20" x="0" align="center" name="label"/>
+    </Box>
+  </List>
+</View>Ainsert/EmblemInsertEquipCell.xml�C<View width="102" height="102">
+  <Image skin="asset.emblem.insert.equipCellBg" x="0" y="0"/>
+  <Box x="28" y="28" var="cellBox" width="50" height="50"/>
+</View>1view/EmblemInsertBag.xml�W<View width="375" height="411">
+  <Image skin="store.fine.sealMainBg" x="0" y="0"/>
+  <Label text="裝備" x="12" y="6" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true" var="title1"/>
+  <Label text="首先請雙擊選擇您要封印的裝備" x="50" y="8" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9" var="des1"/>
+  <Label text="寵物" x="12" y="186" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true" var="title2"/>
+  <Label text="然後請雙擊選擇您要封印的寵物" x="50" y="188" multiline="false" wordWrap="false" height="23" width="260" size="12" stroke="0x61410a,1,2,2,10" color="0xffe6a9" var="des2"/>
+  <Image skin="asset.core.smallBG1" x="14" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="131" y="375" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="251" y="375" width="104" height="24"/>
+  <Image skin="asset.core.ticketIcon" x="13" y="376"/>
+  <Label text="123456789" x="39" y="379" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x8b0000,1,2,2,10" var="money"/>
+  <Image skin="asset.core.giftIcon" x="130" y="375"/>
+  <Image skin="asset.core.goldIcon" x="250" y="375"/>
+  <Label text="123456789" x="156" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x21554d,1,2,2,10" var="bindMoney"/>
+  <Label text="123456789" x="277" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x5d440d,1,2,2,10" var="gold"/>
+  <List x="13" y="35" repeatX="7" repeatY="3" vScrollBarSkin="asset.ui.scroll1.vscroll" width="354" height="138" var="list1">
+    <EmblemBagCell name="render" runtime="emblem.share.EmblemBagCell"/>
+  </List>
+  <List x="14" y="218" repeatX="7" repeatY="3" vScrollBarSkin="asset.ui.scroll1.vscroll" width="354" height="139" var="list2">
+    <EmblemBagCell name="render" runtime="emblem.share.EmblemBagCell"/>
+  </List>
+</View>-view/EmblemBagCell.xml�O<View width="47" height="46">
+  <Image skin="bagAndInfo.cell.bagCellBgAsset" x="0" y="0"/>
+  <Box x="0" y="0" width="47" height="47" var="cellBox">
+    <Label text="22" x="4" y="27" var="countTxt" align="right" width="39" height="15" visible="false" stroke="0xffffff,1,2,2,10"/>
+  </Box>
+</View>7insert/EmblemInsertCell.xml�;<View width="88" height="88">
+  <Box x="0" y="0" var="movieBox" width="88" height="88"/>
+  <Image skin="asset.emblem.insert.emblemCellBg" x="11" y="11"/>
+  <Box x="14" y="14" var="cellBox" width="60" height="60"/>
+</View>?together/EmblemTogetherView.xml�<View width="737" height="411">
+  <Image skin="asset.emblem.together.bg" x="0" y="0"/>
+  <EmblemTogetherSmallCell x="142" y="9" runtime="emblem.together.EmblemTogetherSmallCell" name="cell0"/>
+  <EmblemTogetherSmallCell x="36" y="179" runtime="emblem.together.EmblemTogetherSmallCell" name="cell2"/>
+  <EmblemTogetherSmallCell x="242" y="179" runtime="emblem.together.EmblemTogetherSmallCell" name="cell1"/>
+  <EmblemTogetherBigCell x="128" y="116" runtime="emblem.together.EmblemTogetherBigCell" var="togetherCell"/>
+  <Image skin="asset.emblem.together.storelBg" x="362" y="0"/>
+  <Label text="紋章" x="375" y="6" multiline="false" wordWrap="false" height="23" width="36" size="14" stroke="0x744a16,1,4,4,30" color="0xfffbe9" bold="true" var="title1"/>
+  <Image skin="asset.core.smallBG1" x="380" y="374" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="497" y="374" width="104" height="24"/>
+  <Image skin="asset.core.smallBG1" x="617" y="374" width="104" height="24"/>
+  <Image skin="asset.core.ticketIcon" x="379" y="375"/>
+  <Label text="123456789" x="405" y="378" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x8b0000,1,2,2,10" var="money"/>
+  <Image skin="asset.core.giftIcon" x="496" y="374"/>
+  <Image skin="asset.core.goldIcon" x="616" y="374"/>
+  <Label text="123456789" x="522" y="377" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x21554d,1,2,2,10" var="bindMoney"/>
+  <Label text="123456789" x="643" y="377" width="76" height="18" size="14" bold="true" color="0xfff2b2" stroke="0x5d440d,1,2,2,10" var="gold"/>
+  <List x="374" y="36" repeatX="7" repeatY="7" vScrollBarSkin="asset.ui.scroll1.vscroll" width="354" height="323" var="list1">
+    <EmblemBagCell name="render" runtime="emblem.share.EmblemBagCell"/>
+  </List>
+  <Button skin="asset.ui.btn_yellow3" x="114" y="326" stateNum="1" sizeGrid="43,19,43,19" width="133" height="52" imageLabel="asset.emblem.together.btnTxt" imageLabelRect="28,8" var="togetherBtn"/>
+  <CheckBox x="129" y="288" toggle="true" selected="false" stateNum="1" imageLabel="asset.emblem.together.openTxt" imageLabelRect="28,7" var="protectBtn" checkButtonSkin="asset.ui.btn_check3"/>
+  <Box x="69" y="245" var="rateBox">
+    <Image skin="asset.emblem.together.successRate"/>
+    <NumberImageEx x="110" y="5" skin="asset.emblem.together.number" align="center" width="38" height="21" count="100" space="-5" var="rate"/>
+  </Box>
+</View>Etogether/EmblemTogetherBigCell.xml�9<View width="95" height="95">
+  <Image skin="asset.emblem.together.cellBg" x="0" y="0"/>
+  <Box x="17" y="17" var="cellBox" width="60" height="60"/>
+</View>Itogether/EmblemTogetherSmallCell.xml�=<View width="68" height="68">
+  <Image skin="asset.emblem.insert.emblemCellBg" x="0" y="0"/>
+  <Box x="4" y="4" var="cellBox" width="60" height="60"/>
+</View>

@@ -1,0 +1,131 @@
+<style name="pvePowerbuff" version="1.0.1" source="ui/cn_trad/swf/pvePowerBuff.swf">
+<sets>
+	<set stylename="pvePowerBuff.mainView.otherForeTxtTF" args="Arial,12,0xbab2e0,true" type="flash.text.TextFormat" />
+	<set stylename="pvePowerBuff.mainView.otherForeTxtGF" args="0x170265,2,2,2,30"  type="flash.filters.GlowFilter" />
+	<set stylename="pvePowerBuff.mainView.otherRearTxtTF" args="Arial,12,0xecdfdf,true" type="flash.text.TextFormat" />
+	<set stylename="pvePowerBuff.mainView.otherRearTxtGF" args="0x233981,2,2,2,30"  type="flash.filters.GlowFilter" />
+	<set stylename="pvePowerBuff.mainView.selfForeTxtTF" args="Arial,14,0xf0e29f,true" type="flash.text.TextFormat" />
+	<set stylename="pvePowerBuff.mainView.selfForeTxtGF" args="0x6a3900,2,2,2,30"  type="flash.filters.GlowFilter" />
+	<set stylename="pvePowerBuff.mainView.selfRearTxtTF" args="Arial,14,0x0ad000,true" type="flash.text.TextFormat" />
+	<set stylename="pvePowerBuff.mainView.selfRearTxtGF" args="0x015001,1,2,2,30"  type="flash.filters.GlowFilter" />
+	<set stylename="pvePowerBuff.mainView.leftTimeTxtTF" args="Arial,12,0xffffff,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="pvePowerBuff.mainView.leftTimeTxtGF" args="0x5d3701,1,2,2,30"  type="flash.filters.GlowFilter" />
+	
+	<set type="flash.text.TextFormat" stylename="pvePowerBuff.character.nickNameTextTF" args="Arial,14,0xffecb9,true" />
+	<set type="flash.filters.GlowFilter" stylename="pvePowerBuff.character.nickNameTextGF" args="0x281800,1,2,2,10" />
+</sets>
+
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeAtk.pos" x="42" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeDef.pos" x="162" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeAgl.pos" x="284" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeLuck.pos" x="415" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeHp.pos" x="538" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeMAtk.pos" x="42" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeMDef.pos" x="162" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeDmg.pos" x="284" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherForeAr.pos" x="415" y="410"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearAtk.pos" x="105" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearDef.pos" x="222" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearAgl.pos" x="354" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearLuck.pos" x="471" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearHp.pos" x="566" y="375"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearMAtk.pos" x="105" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearMDef.pos" x="222" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearDmg.pos" x="354" y="410"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.otherRearAr.pos" x="471" y="410"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeAtk.pos" x="689" y="35"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeDef.pos" x="689" y="63"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeAgl.pos" x="689" y="91"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeLuck.pos" x="689" y="119"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeHp.pos" x="689" y="147"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeMAtk.pos" x="689" y="175"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeMDef.pos" x="689" y="203"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeDmg.pos" x="689" y="231"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfForeAr.pos" x="689" y="259"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearAtk.pos" x="786" y="35"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearDef.pos" x="786" y="63"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearAgl.pos" x="786" y="91"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearLuck.pos" x="786" y="119"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearHp.pos" x="786" y="147"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearMAtk.pos" x="786" y="175"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearMDef.pos" x="786" y="203"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearDmg.pos" x="786" y="231"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.selfRearAr.pos" x="786" y="259"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.refreshBtn.2.pos" x="679" y="312"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.character.level.icom.pos" x="-2" y="-80"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.character.player.pos" x="17" y="-78"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.character.0.pos" x="20" y="240"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.character.1.pos" x="180" y="196"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.character.2.pos" x="334" y="200"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.character.3.pos" x="500" y="232"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.huafei.0.pos" x="87" y="382"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.huafei.1.pos" x="244" y="339"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.huafei.2.pos" x="400" y="342"/>
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.mainView.huafei.3.pos" x="567" y="365"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.character.shuzi.mc.pos" x="-174" y="-199"/>
+	
+	<custom classname="flash.geom.Point" stylename="pvePowerBuff.character.light.mc.pos" x="60" y="-10"/>
+	
+	<custom classname="asset.pvepowerbuff.help.content" stylename="pvePowerBuff.help.content" x="40" y="90"/>
+</customDisplay>
+
+<components>
+	<!-- 祈福可获得属性加成 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="pvePowerBuff.mainView.otherForeTxt"  textFormatStyle="pvePowerBuff.mainView.otherForeTxtTF" filterString="pvePowerBuff.mainView.otherForeTxtGF" 
+		autoSize="none" x="100" y="100" width="70" height="20"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="pvePowerBuff.mainView.otherRearTxt"  textFormatStyle="pvePowerBuff.mainView.otherRearTxtTF" filterString="pvePowerBuff.mainView.otherRearTxtGF" 
+		autoSize="none" x="100" y="100" width="70" height="20"/>
+		
+	<!-- 加成后总属性 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="pvePowerBuff.mainView.selfForeTxt"  textFormatStyle="pvePowerBuff.mainView.selfForeTxtTF" filterString="pvePowerBuff.mainView.selfForeTxtGF" 
+		autoSize="none" x="100" y="100" width="70" height="20"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="pvePowerBuff.mainView.selfRearTxt"  textFormatStyle="pvePowerBuff.mainView.selfRearTxtTF" filterString="pvePowerBuff.mainView.selfRearTxtGF" 
+		autoSize="none" x="100" y="100" width="70" height="20"/>
+		
+	<!-- 刷新贤者、祈福、重新祈福 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+		stylename="pvePowerBuff.mainView.refreshBtn" backStyle="asset.pvepowerbuff.refresh.btn" tipStyle="ddt.view.tips.OneLineTip" tipGapV="5" tipGapH="100" tipDirctions="0,1,2"
+		x="679" y="316" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+		stylename="pvePowerBuff.mainView.getBuffBtn" backStyle="asset.pvepowerbuff.getbuff.btn" tipStyle="ddt.view.tips.OneLineTip" tipGapV="5" tipGapH="100" tipDirctions="0,1,2"
+		x="680" y="380" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+		stylename="pvePowerBuff.mainView.getAgainBtn" backStyle="asset.pvepowerbuff.again.btn" tipStyle="ddt.view.tips.OneLineTip" tipGapV="5" tipGapH="100" tipDirctions="0,1,2"
+		x="680" y="370" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="pvePowerBuff.mainView.leftTimeTxt"  textFormatStyle="pvePowerBuff.mainView.leftTimeTxtTF" filterString="pvePowerBuff.mainView.leftTimeTxtGF" 
+		autoSize="none" x="660" y="421" width="182" height="20"/>
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="pvePowerBuff.character.nickNameText" 
+			textFormatStyle="pvePowerBuff.character.nickNameTextTF" filterString="pvePowerBuff.character.nickNameTextGF" autoSize="none" width="120" height="22" isAutoFitLength="true" x="39" y="-76" />
+			
+	<component classname="com.pickgliss.ui.core.Component" stylename="pvePowerBuff.mainview.item.TipContent" 
+			tipStyle="ddt.view.tips.OneLineTip" x="0" y="0" tipDirctions="5" tipWidth="150" tipGapH="50" tipGapV="0"/>
+</components>
+
+<bitmaps>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.atk" x="668" y="33"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.def" x="668" y="61"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.agile" x="668" y="89"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.luck" x="668" y="117"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.hp" x="668" y="145"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.matk" x="668" y="173"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.mdef" x="668" y="201"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.damage" x="668" y="229"/>
+	<bitmapData  resourceLink="asset.pvepowerbuff.icon.armor" x="668" y="257"/>
+</bitmaps>
+</style>

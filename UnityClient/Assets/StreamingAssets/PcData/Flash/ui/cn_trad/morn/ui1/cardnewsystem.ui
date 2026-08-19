@@ -1,0 +1,204 @@
+
+-view/CardBreakView.xml��;<View width="554" height="444">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="554" height="444"/>
+  <Button skin="asset.ui.btn_close1" x="494" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label x="25" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="突破"/>
+  <Image skin="asset.newCardSystem.breakBg" x="17" y="45"/>
+  <Clip x="234" y="58" clipsUrl="asset.newCardSystem.tuceBorder0,asset.newCardSystem.tuceBorder1,asset.newCardSystem.tuceBorder2，asset.newCardSystem.tuceBorder3，asset.newCardSystem.tuceBorder4" var="tuClip"/>
+  <Image skin="asset.newCardSystem.tuceBtn" x="236" y="60"/>
+  <Label text="初级Lv.1" x="39" y="141" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="14" bold="true" height="18" align="left" var="curName"/>
+  <Label text="初级Lv.1" x="326" y="142" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="14" bold="true" height="18" align="left" var="nextName"/>
+  <Image skin="asset.newCardSystem.kahunxiao" x="182" y="322" width="27" height="27" var="hunImg"/>
+  <Label text="11111111/12345678" x="209" y="329" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" var="needTxt1"/>
+  <Image skin="asset.newCardSystem.breakDan" x="314" y="322" var="goldImg"/>
+  <Label text="999/999" x="342" y="329" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" var="needTxt2"/>
+  <Button skin="asset.newCardSystem.breakBtn" x="223" y="369" stateNum="1" var="breakBtn"/>
+  <Box x="37" y="163" var="curBox" width="220" height="144">
+    <Label text="攻击:" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName0" x="7" y="0" font="Arial" size="10"/>
+    <Label text="20200" x="53" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum0" y="1" size="10"/>
+    <Label text="攻击:" x="101" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName1" y="1" font="Arial" size="10"/>
+    <Label text="20000" x="143" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum1" y="1" align="left" size="10"/>
+    <Label text="攻击:" y="21" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName2" x="7" font="Arial" size="10"/>
+    <Label text="20" x="53" y="23" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum2" size="10"/>
+    <Label text="攻击:" x="101" y="21" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName3" font="Arial" size="10"/>
+    <Label text="20" x="144" y="22" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum3" size="10"/>
+    <Label text="攻击:" x="7" y="42" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName4" font="Arial" size="10"/>
+    <Label text="20" x="53" y="45" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum4" size="10"/>
+    <Label text="攻击:" x="101" y="42" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName5" font="Arial" size="10"/>
+    <Label text="20" x="144" y="44" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum5" size="10"/>
+    <Label text="攻击:" x="7" y="63" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName6" font="宋体" size="10"/>
+    <Label text="20" x="53" y="65" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum6" size="10"/>
+    <Label text="攻击:" x="101" y="63" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName7" font="Arial" size="10"/>
+    <Label text="20" x="144" y="65" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum7" size="10"/>
+    <Label text="攻击:" x="7" y="84" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName8" font="宋体" size="10"/>
+    <Label text="20" x="53" y="86" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum8" size="10"/>
+    <Label text="攻击:" x="101" y="84" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName9" font="Arial" size="10"/>
+    <Label text="20" x="144" y="86" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum9" size="10"/>
+    <Label text="攻击:" x="7" y="105" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName10" font="宋体" size="10"/>
+    <Label text="20" x="53" y="107" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum10" size="10"/>
+    <Label text="攻击:" x="101" y="105" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName11" font="Arial" size="10"/>
+    <Label text="20" x="144" y="107" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum11" size="10"/>
+    <Label text="攻击:" x="7" y="126" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName12" font="宋体" size="10"/>
+    <Label text="20" x="53" y="128" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum12" size="10"/>
+    <Label text="攻击:" x="101" y="126" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName13" font="Arial" size="10"/>
+    <Label text="20" x="144" y="128" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum13" size="10"/>
+  </Box>
+  <Box x="326" y="161" var="nextBox" width="228" height="144">
+    <Label text="攻击:" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName0" x="0" y="0" font="Arial" size="10"/>
+    <Label text="20000" x="44" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum0" y="1" size="10"/>
+    <Label text="攻击:" x="100" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName1" y="1" font="Arial" size="10"/>
+    <Label text="20000" x="139" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum1" y="2" size="10"/>
+    <Label text="攻击:" y="21" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName2" x="0" font="Arial" size="10"/>
+    <Label text="20" x="44" y="23" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum2" size="10"/>
+    <Label text="攻击:" x="100" y="21" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName3" font="Arial" size="10"/>
+    <Label text="20" x="139" y="23" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum3" size="10"/>
+    <Label text="攻击:" x="0" y="42" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName4" font="Arial" size="10"/>
+    <Label text="20" x="44" y="44" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum4" size="10"/>
+    <Label text="攻击:" x="100" y="42" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName5" font="Arial" size="10"/>
+    <Label text="20" x="139" y="44" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum5" size="10"/>
+    <Label text="攻击:" x="0" y="63" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName6" font="Arial" size="10"/>
+    <Label text="20" x="44" y="65" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum6" size="10"/>
+    <Label text="攻击:" x="100" y="63" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName7" font="Arial" size="10"/>
+    <Label text="20" x="139" y="65" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum7" size="10"/>
+    <Label text="攻击:" x="0" y="84" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName8" font="Arial" size="10"/>
+    <Label text="20" x="44" y="86" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum8" size="10"/>
+    <Label text="攻击:" x="100" y="84" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName9" font="Arial" size="10"/>
+    <Label text="20" x="139" y="86" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum9" size="10"/>
+    <Label text="攻击:" x="0" y="105" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName10" font="Arial" size="10"/>
+    <Label text="20" x="44" y="107" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum10" size="10"/>
+    <Label text="攻击:" x="100" y="105" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName11" font="Arial" size="10"/>
+    <Label text="20" x="139" y="107" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum11" size="10"/>
+    <Label text="攻击:" x="0" y="126" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName12" font="Arial" size="10"/>
+    <Label text="20" x="44" y="128" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum12" size="10"/>
+    <Label text="攻击:" x="100" y="126" color="0xffa862" stroke="0x572a09,1,4,4,30" bold="true" name="curName13" font="Arial" size="10"/>
+    <Label text="20" x="139" y="128" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="curNum13" size="10"/>
+  </Box>
+</View>-view/CardOtherView.xml�]<View width="435" height="451">
+  <Image skin="asset.newCardSystem.otherBg" x="0" y="0"/>
+  <CardItem x="115" y="43" var="card" runtime="cardNewSystem.view.CardItem"/>
+  <Image skin="asset.newCardSystem.tuceshuxing" x="352" y="15" var="suitImg"/>
+  <List x="28" y="364" var="proList" repeatX="4" repeatY="2" spaceX="30" spaceY="10" width="380" height="46">
+    <Box name="render" width="65">
+      <Label text="Nhanhnle" color="0xffa862" stroke="0x572a09,1,4,4,30" size="14" name="proName" font="Arial" width="80" x="0" y="0"/>
+      <Label text="500" x="60" color="0x0cff00" stroke="0x572a09,1,4,4,30" size="14" name="count" font="Arial" y="0" width="44"/>
+    </Box>
+  </List>
+</View>#item/CardItem.xml�e<View width="198" height="240">
+  <Clip x="0" y="0" clipsUrl="asset.newCardSystem.kuang0,asset.newCardSystem.kuang1,asset.newCardSystem.kuang2,asset.newCardSystem.kuang3,asset.newCardSystem.kuang4" var="borderClip" index="2"/>
+  <Image skin="asset.newCardSystem.cardItem" x="-14" y="2" smoothing="true"/>
+  <List x="21" y="12" repeatX="5" spaceX="5" var="startList">
+    <Box name="render">
+      <Image skin="asset.newCardSystem.star" smoothing="true"/>
+    </Box>
+  </List>
+  <Label text="lv:10" x="74" y="207" size="12" color="0xfff8b0" stroke="0x9f3d01,1,4,4,30" width="35" height="18" var="levelTxt" font="Arial"/>
+  <Button skin="asset.ui.btn_green1" x="45" y="170" stateNum="1" label="洗点" var="xiBtn" labelColors="0xfff6a8" labelStroke="0x204103,1,4,4,30" labelFont="Arial" width="110" height="26"/>
+</View>)item/CardProItem.xml�M<View width="138" height="20">
+  <Label text="Pha gapk" x="3" y="1" color="0xffa862" stroke="0x572a09,1,4,4,30" var="proNameTxt" font="Arial" size="12"/>
+  <Label text="0" x="41" y="1" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" var="proCount" width="39" align="right"/>
+  <Label text="(0)" x="76" y="0" color="0x0cff00" stroke="0x572a09,1,4,4,30" var="nextProCount" height="18" align="right" width="25"/>
+  <Button skin="asset.newCardSystem.addBtn" x="101" y="0" stateNum="1" var="addBtn"/>
+  <Button skin="asset.newCardSystem.deleteBtn" x="119" y="0" stateNum="1" var="deleteBtn"/>
+</View>#view/CardMain.xml�)<View width="846" height="447">
+  <Image skin="asset.newCardSystem.mainBg" x="0" y="0"/>
+  <CardLeftView x="46" y="9" runtime="cardNewSystem.view.CardLeftView" var="leftView"/>
+  <CardRightView x="427" y="6" runtime="cardNewSystem.view.CardRightView" var="rightView"/>
+</View>-view/CardRightView.xml�i<View width="415" height="436">
+  <List x="0" y="32" repeatY="4" var="suitList">
+    <CardRightItem name="render" runtime="cardNewSystem.view.CardRightItem"/>
+  </List>
+  <Button skin="asset.ui.pageNavBtn.pre2" x="106" y="411" stateNum="1" var="leftBtn"/>
+  <Image skin="asset.ui.scale.bg4" x="163" y="411"/>
+  <Button skin="asset.ui.pageNavBtn.next2" x="232" y="411" stateNum="1" var="rightBtn"/>
+  <Label text="2/1" x="168" y="415" color="0xffea9c" stroke="0x673613,1,4,4,30" width="54" height="18" align="center" var="pageTxt"/>
+  <Button skin="asset.newCardSystem.tuceImg" x="305" y="1" stateNum="1" var="breakBtn"/>
+</View>+view/CardLeftView.xml�!<View width="345" height="427">
+  <CardItem x="58" y="0" var="card" runtime="cardNewSystem.view.CardItem"/>
+  <Label text="+270" x="36" y="249" color="0x0cff00" stroke="0x572a09,1,4,4,30" var="attackNum"/>
+  <Label text="攻击" x="4" y="250" color="0xffa862" stroke="0x572a09,1,4,4,30" font="宋体" size="12" height="18"/>
+  <Label text="+270" x="126" y="250" color="0x0cff00" stroke="0x572a09,1,4,4,30" var="agilityNum"/>
+  <Label text="敏捷" x="91" y="250" color="0xffa862" stroke="0x572a09,1,4,4,30" width="43" height="16" font="宋体" size="12"/>
+  <Label text="+270" x="215" y="249" color="0x0cff00" stroke="0x572a09,1,4,4,30" var="defenceNum"/>
+  <Label text="防御" x="180" y="250" color="0xffa862" stroke="0x572a09,1,4,4,30" font="宋体" size="12"/>
+  <Label text="+0" x="300" y="249" color="0x0cff00" stroke="0x572a09,1,4,4,30" var="luckyNum"/>
+  <Label text="幸运" x="266" y="250" color="0xffa862" stroke="0x572a09,1,4,4,30" font="宋体" size="12"/>
+  <Label text="属性点:" x="0" y="276" size="14" color="0xffa862" bold="true" stroke="0x572a09,1,4,4,30"/>
+  <Label text="0" x="58" y="276" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="14" bold="true" var="pointCount"/>
+  <List x="-3" y="301" repeatX="2" repeatY="2" spaceX="8" spaceY="6" var="resetList" width="289" height="46">
+    <CardProItem name="render" runtime="cardNewSystem.view.CardProItem"/>
+  </List>
+  <Button label="确定" skin="asset.ui.btn_red10" x="289" y="298" stateNum="1" sizeGrid="24,11,24,11" width="60" height="25" labelColors="0xfff6a8" labelStroke="0x76251e,1,4,4,30" var="setBtn"/>
+  <Button label="重置" skin="asset.ui.btn_green1" x="288" y="325" stateNum="1" sizeGrid="24,11,24,11" width="63" height="25" labelColors="0xfff6a8" labelStroke="0x204103,1,4,4,30" var="resetBtn"/>
+  <Label text="升级消耗" x="-5" y="363" font="宋体" color="0xffffff" bold="true" stroke="0x572a09,1,4,4,30"/>
+  <Image skin="asset.newCardSystem.kahunxiao" x="57" y="359" width="27" height="27" var="hunImg"/>
+  <Label text="0/0" x="84" y="364" color="0xff0000" stroke="0x572a09,1,4,4,30" size="12" bold="false" var="needTxt1" width="107" height="18" align="left"/>
+  <Image skin="bagAndInfo.info.money" x="192" y="359" width="27" height="27" var="moneyImg"/>
+  <Label text="0/0" x="221" y="365" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" var="needTxt2" width="143" align="left" height="18"/>
+  <Button skin="asset.newCardSystem.upBtn" x="89" y="390" stateNum="1" var="upBtn"/>
+  <CheckBox label="十倍加点" x="239" y="275" checkButtonSkin="asset.card.btn_check4" stateNum="1" var="tenBtn" labelColors="0xffa862" labelStroke="0x572a09,1,4,4,30" labelMargin="0,1" toggle="true"/>
+</View>-item/CardRightItem.xml�s<View width="415" height="94">
+  <Image skin="asset.newCardSystem.rightItemBg" x="0" y="0"/>
+  <Label text=" Đấu Trường Gà" x="8" y="8" var="cardName" size="12" bold="true" color="0xa335ee" stroke="0x673413,1,4,4,30" font="Arial"/>
+  <Label text="攻击:10000" x="108" y="7" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="pro0" font="Arial"/>
+  <Label text="攻击:10000" x="195" y="7" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="pro1" font="Arial"/>
+  <Label text="攻击:10000" x="282" y="7" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" name="pro2" font="Arial"/>
+  <Button skin="asset.newCardSystem.jihuoBtn" x="339" y="38" stateNum="1" var="jihuoBtn"/>
+  <Button skin="asset.newCardSystem.useBtn" x="338" y="38" stateNum="1" var="useBtn"/>
+  <Image skin="asset.newCardSystem.tipIcon" x="384" y="5" var="skillTipImg"/>
+  <Image skin="asset.newCardSystem.useImg" x="334" y="32" var="useImg"/>
+</View>3view/CardProResetView.xml�m<View width="503" height="393">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="516" height="413"/>
+  <Label x="19" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="卡牌洗点" font="宋体"/>
+  <Image skin="asset.cardSystem.resetBg" x="19" y="49"/>
+  <CardItem x="26" y="93" scale="0.75" runtime="cardNewSystem.view.CardItem" var="card"/>
+  <Label text="消耗魂值:" x="26" y="60" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="12" font="宋体"/>
+  <Label text="消耗点券:" x="185" y="60" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="12" font="宋体"/>
+  <Label text="总魂值:" x="347" y="60" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="12" font="宋体"/>
+  <Label text="100" x="103" y="59" color="0xffa862" stroke="0x572a09,1,4,4,30" align="center" width="67" height="18" bold="true" var="hunTxt"/>
+  <Label text="100" x="259" y="59" color="0xffa862" stroke="0x572a09,1,4,4,30" align="center" width="67" height="18" bold="true" var="money"/>
+  <Label text="100" x="406" y="59" color="0xffa862" stroke="0x572a09,1,4,4,30" align="center" width="81" height="18" bold="true" var="allHunTxt"/>
+  <Label text="攻击" x="208" y="138" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" var="proName" width="58" height="18" font="宋体"/>
+  <Label text="0" x="247" y="138" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="75" height="18" align="center" var="attackNum"/>
+  <Label text="防禦" x="210" y="167" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" var="proName1" height="18" font="宋体"/>
+  <Label text="0" x="247" y="168" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="75" height="18" align="center" var="defenceNum"/>
+  <Label text="敏捷" x="210" y="199" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" var="proName2" height="18" font="宋体"/>
+  <Label text="0" x="247" y="200" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="75" height="18" align="center" var="agilityNum"/>
+  <Label text="幸运" x="210" y="228" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" var="proName3" height="18" font="宋体"/>
+  <Label text="0" x="247" y="229" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="75" height="18" align="center" var="luckNum"/>
+  <Label text="注：消耗點券可鎖定洗點項，洗出所有屬性均高於原屬性值，系統將直接替換" x="30" y="323" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="10" font="宋体" wordWrap="true" width="463"/>
+  <RadioGroup x="32" y="288" var="selectedGrop" direction="horizontal" space="142">
+    <RadioButton name="item0" stateNum="1" imageLabel="asset.cardSystem.reset.SelectedNomal" imageLabelRect="18,-2" toggle="true" checkButtonSkin="asset.ui.btn_check5"/>
+    <RadioButton name="item1" stateNum="1" imageLabel="asset.cardSystem.reset.SelectedAdvanced" imageLabelRect="18,-2" x="217" toggle="true" checkButtonSkin="asset.ui.btn_check5"/>
+  </RadioGroup>
+  <Label text="(消耗2000魂值，1-240)" x="111" y="286" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="12" var="txt1"/>
+  <Label text="(消耗2000魂值，10-240)" x="332" y="286" color="0xffea9c" stroke="0x673613,1,4,4,30" bold="true" size="12" var="txt2"/>
+  <Button label="洗点" skin="asset.ui.btn_yellow1" x="98" y="354" stateNum="1" sizeGrid="39,15,39,15" labelColors="0xfff6a8" labelBold="true" labelStroke="0x715008,1,4,4,30" labelSize="15" var="resetBtn" labelFont="Arial" width="100"/>
+  <Button label="替换" skin="asset.ui.btn_yellow1" x="315" y="354" stateNum="1" sizeGrid="39,15,39,15" width="100" labelColors="0xfff6a8" labelBold="true" labelStroke="0x715008,1,4,4,30" labelSize="15" var="replaceBtn" labelFont="Arial"/>
+  <Box x="376" y="137" var="nextBox">
+    <Label text="100" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="64" height="18" align="center" name="pro0" y="1" x="0"/>
+    <Label text="100" y="31" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="65" height="18" align="center" name="pro1" x="0"/>
+    <Label text="100" y="63" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="66" height="18" align="center" name="pro2" x="0"/>
+    <Label text="100" y="92" color="0xfff06e" stroke="0x4f2000,1,4,4,30" size="12" bold="true" width="66" height="18" align="center" name="pro3" x="0"/>
+    <Clip x="66" clipsUrl="asset.cardSystem.upRsset,asset.cardSystem.downRsset" name="arrow0" y="0"/>
+    <Clip x="66" clipsUrl="asset.cardSystem.upRsset,asset.cardSystem.downRsset" name="arrow1" y="30"/>
+    <Clip x="66" clipsUrl="asset.cardSystem.upRsset,asset.cardSystem.downRsset" name="arrow2" y="60"/>
+    <Clip x="66" clipsUrl="asset.cardSystem.upRsset,asset.cardSystem.downRsset" name="arrow3" y="90"/>
+  </Box>
+  <Button skin="asset.ui.btn_close1" x="459" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Box x="190" y="135" var="lockBox">
+    <Clip clipsUrl="asset.core.unLock,asset.core.lock" index="0" buttonMode="true" name="lock0"/>
+    <Clip y="29" clipsUrl="asset.core.unLock,asset.core.lock" index="0" buttonMode="true" name="lock1"/>
+    <Clip y="61" clipsUrl="asset.core.unLock,asset.core.lock" index="0" buttonMode="true" width="19" height="21" name="lock2"/>
+    <Clip y="90" clipsUrl="asset.core.unLock,asset.core.lock" index="0" buttonMode="true" name="lock3"/>
+  </Box>
+</View>%view/CardTuTip.xml�<View width="230" height="189">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="230" height="189" var="bg"/>
+  <Label text="图册总属性" x="11" y="9" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10" var="talentName" font="宋体"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="30" sizeGrid="95,1,95,1" width="210"/>
+  <List x="10" y="36" repeatX="2" repeatY="7" spaceX="10" spaceY="2" var="proList">
+    <Box name="render">
+      <Label text="HP：" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" name="proName" font="Arial"/>
+      <Label text="1000" x="29" color="0xffea9c" stroke="0x673613,1,2,2,30" bold="true" name="count" y="2" width="72" height="18" align="right"/>
+    </Box>
+  </List>
+</View>

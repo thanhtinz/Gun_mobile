@@ -1,0 +1,158 @@
+
+Granking/DCSpeedMatchRankingView.xml�<View width="585" height="547" x="207" y="20">
+  <Image skin="asset.ui.frame.bg2" width="584" height="521" sizeGrid="50,80,50,50" x="0" y="26"/>
+  <Button skin="asset.ui.btn_close1" x="531" y="31" stateNum="1" var="btn_close"/>
+  <TabListEx width="273" height="40" x="33" y="70" var="tab_ranking">
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty1.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty1.selected" x="-9" y="1" name="item0" offsets="28,8,28,8" selected="true"/>
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty2.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty2.selected" x="87" y="1" name="item1" selected="false" offsets="28,8,28,8"/>
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty3.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty3.selected" x="182" y="1" name="item2" offsets="28,8,28,8" selected="false"/>
+  </TabListEx>
+  <DCRankingTableView x="17" y="107" var="rank_table" runtime="dreamlandChallenge.view.mornui.ranking.DCRankingTableViewUI"/>
+  <Image skin="asset.dremlandChallenge.ranking.title" x="-7" y="0"/>
+  <Button skin="asset.ui.btn_red5" x="238" y="490" stateNum="1" var="btn_award" width="98" height="36" imageLabel="asset.dremlandChallenge.ranking.awardBtn" imageLabelX="25" imageLabelY="6"/>
+</View>?award/DCSpeedMatchAwardView.xml�7<View width="480" height="491" x="260" y="55">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="20,80,20,20" width="480" height="491"/>
+  <Label text="竞速榜奖励" x="15" y="11" color="0xffeebf" font="宋体" size="16" stroke="0x442006,1,4,4,30" bold="true"/>
+  <Button skin="asset.ui.btn_close1" x="424" y="3" stateNum="1" var="btn_close"/>
+  <Image skin="asset.ui.scale.bg19" x="23" y="89" sizeGrid="20,20,20,20" width="434" height="358"/>
+  <List x="32" y="98" repeatY="5" repeatX="1" var="speedMatch_list">
+    <DCAwardItemView name="render" runtime="dreamlandChallenge.view.logicView.award.DCAwardItemView" y="1"/>
+    <ScrollBar skin="asset.ui.scroll1.vscroll" x="394" name="scrollBar" height="340" width="22" y="0"/>
+  </List>
+  <TabListEx width="273" height="40" x="37" y="49" var="tab_award">
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty1.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty1.selected" x="-9" y="1" name="item0" selected="true" offsets="28,8"/>
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty2.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty2.selected" x="89" y="1" name="item1" selected="false" offsets="28,8" width="90" height="38"/>
+    <TabButtonEx skin="asset.ui.btn_yellow6|asset.dremlandChallenge.ranking.difficulty3.unSelected,asset.ui.btn_red8|asset.dremlandChallenge.ranking.difficulty3.selected" x="186" y="1" name="item2" offsets="28,8" selected="false" width="99" height="41"/>
+  </TabListEx>
+</View>3DCDuplicateChooseItem.xml�3<View width="324" height="402">
+  <Box x="14" y="236" var="box_award">
+    <Image skin="asset.dremlandChallenge.duplicate.btnBg" x="2" y="99"/>
+    <Image skin="asset.dremlandChallenge.difficultySelected.eff" var="eff_selected" visible="true" y="98" x="5"/>
+    <Button x="12" y="105" stateNum="1" var="btn_difficulty1" imageLabel="asset.dremlandChallenge.duplicate.difficulty1" skin="asset.ui.btn_blue1" width="88" height="39" imageLabelX="20" imageLabelY="6" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="2,1,5"/>
+    <Button skin="asset.ui.btn_yellow3" x="105" y="105" stateNum="1" var="btn_difficulty2" imageLabel="asset.dremlandChallenge.duplicate.difficulty2" imageLabelX="20" imageLabelY="6" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="2,1,5"/>
+    <Button skin="asset.ui.btn_red5" x="198" y="105" stateNum="1" var="btn_difficulty3" imageLabel="asset.dremlandChallenge.duplicate.difficulty3" imageLabelX="20" imageLabelY="6" width="88" height="39" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="2,1,5"/>
+    <DCRushAwardView var="dc_awardView" runtime="dreamlandChallenge.view.mornui.DCRushAwardViewUI"/>
+  </Box>
+  <Image skin="asset.dremlandChallenge.duplicate.selectedEff" var="img_borderEff" x="-12" y="-11"/>
+</View>5award/DCPointAwardView.xml�a<View width="487" height="445" name="dreamlandChallenge.view.logicView.award.DCAwardItemView" x="257" y="77">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="20,80,20,20" width="487" height="444" x="0" y="0"/>
+  <Label text="积分榜奖励" x="25" y="11" color="0xffeebf" font="宋体" size="16" stroke="0x442006,1,4,4,30" bold="true"/>
+  <Button skin="asset.ui.btn_close1" x="431" y="4" stateNum="1" var="btn_close"/>
+  <Image skin="asset.ui.scale.bg19" x="23" y="47" sizeGrid="20,20,20,20" width="437" height="353"/>
+  <List x="32" y="54" repeatY="5" repeatX="1" width="416" var="point_list">
+    <DCAwardItemView runtime="dreamlandChallenge.view.logicView.award.DCAwardItemView" name="render"/>
+    <ScrollBar skin="asset.ui.scroll1.vscroll" x="393" y="2" name="scrollBar" width="22" height="400"/>
+  </List>
+  <Label text="我的排名:" x="347" y="406" color="0xfff1bf" font="宋体" size="12" bold="true" stroke="0x632f00,1,4,4,10"/>
+  <Label x="413" y="406" color="0xfff1bf" font="宋体" size="12" bold="true" stroke="0x632f00,1,4,4,10" var="lbl_myRanking"/>
+</View>3award/DCAwardItemView.xml�c<View width="392" height="67">
+  <Clip clipsUrlSimple="asset.dremlandChallenge.award.itemBg,1" index="0" var="clip_bg"/>
+  <Label x="6" y="18" font="黑体" size="18" color="0xffe4c0" bold="true" width="99" height="30" var="lbl_type" autoSize="none" isHtml="true" margin="2,2,2,2" align="center"/>
+</View>DCAwardCell.xml=<View width="44" height="44"/>'DCRushAwardView.xml�m<View width="290" height="97">
+  <Image skin="asset.dremlandChallenge.duplicate.awardBg"/>
+  <List width="273" height="69" x="8" y="24" var="list_award" repeatX="5" spaceY="4" spaceX="4" autoHideItem="true">
+    <ScrollBar skin="asset.ui.scroll1.vscroll" x="251" y="-7" name="scrollBar" height="77" showButtons="true"/>
+    <DCAwardCell x="0" y="0" runtime="dreamlandChallenge.view.logicView.DCAwardCell" name="render"/>
+  </List>
+</View>1shop/DCPointShopView.xml�w<View width="480" height="521" x="260" y="29">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="50,80,50,50" width="480" height="521"/>
+  <Label text="积分商店" x="20" y="12" color="0xffeebf" font="宋体" size="16" stroke="0x442006,1,4,4,30" bold="true"/>
+  <Button skin="asset.ui.btn_close1" x="422" y="2" stateNum="1" var="btn_close"/>
+  <Image skin="asset.ui.scale.bg2" x="23" y="46" sizeGrid="5,10,80,20" width="435" height="407"/>
+  <List x="27" y="51" repeatX="2" var="list_shops" repeatY="4">
+    <DCPointSHopItem runtime="dreamlandChallenge.view.logicView.shop.DCPointShopItem" name="render"/>
+  </List>
+  <Label text="幻境积分" x="44" y="400" color="0xffcc00" font="宋体" size="14" bold="true" stroke="0x5b3100,1,4,4,10"/>
+  <Image skin="asset.ui.scale.bg4" x="115" y="398" sizeGrid="10,10,10,10" width="88" height="23"/>
+  <Label text="20000" x="120" y="402" width="78" height="18" align="center" color="0xfff8d6" font="宋体" size="12" bold="true" stroke="0x4b270d,1,4,4,10" var="lbl_point"/>
+  <Label text="注:幻境积分商店内道具购买为绑定" x="45" y="427" color="0xff0000" bold="true" font="宋体" size="12" stroke="0xffffff,1,2,2,10"/>
+  <PageNavigaterEx x="257" y="398" type="simple" var="nav_changePage" isLoop="true"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="457" sizeGrid="5,5,5,5" width="437" height="46"/>
+  <Button skin="asset.ui.btn_yellow1" x="206" y="464" stateNum="1" label="返回" sizeGrid="15,12,15,20" width="76" height="34" labelColors="0xfff6a8" labelSize="14" labelFont="宋体" labelBold="true" labelLeading="3" letterSpacing="3" labelStroke="0x715008,1,4,4,30" var="btn_return"/>
+</View>1shop/DCPointSHopItem.xml�i<View width="212" height="86">
+  <Image skin="asset.core.goldlinebg" sizeGrid="10,10,70,38" width="212" height="86"/>
+  <Image skin="asset.ddtcore.line" x="85" y="52" width="116" height="3"/>
+  <Image skin="asset.ddtshop.UnselectedCellBg" sizeGrid="4,4,64,64" width="70" height="70" x="8" y="8"/>
+  <Box x="8" y="8" width="70" height="70" var="box_goodCell"/>
+  <Label x="85" y="7" color="0xe8ce97" font="宋体" size="14" bold="true" width="116" height="18" align="left" stroke="0x5c3d11,1,2,2,10" var="lbl_goodName"/>
+  <Label x="85" y="30" color="0xe8ce97" font="宋体" size="14" bold="true" width="58" height="18" align="left" stroke="0x5c3d11,1,2,2,10" var="lbl_goodCost"/>
+  <Label x="160" y="30" color="0xffffff" font="宋体" size="14" bold="true" width="39" height="18" align="left" stroke="0x5c3d11,1,2,2,10" text="积分" var="lbl_point"/>
+  <Button skin="asset.ddtshop.PayPaneBuyBtn" x="158" y="57" stateNum="1" var="btn_buy"/>
+</View>=ranking/DCRankingTableView.xml�C<View width="546" height="425">
+  <Image skin="asset.ui.scale.bg19" x="2" y="2" sizeGrid="20,20,20,20" width="543" height="375"/>
+  <Image skin="asset.dremlandChallenge.ranking.bg" x="7" y="8" sizeGrid="20,60,20,20" width="534" height="365"/>
+  <Label text="排名" x="30" y="19" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="名称" x="120" y="19" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="区服" x="252" y="19" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="通关回合" x="361" y="19" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="伤害贡献" x="454" y="19" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <List x="11" y="47" repeatX="1" spaceY="2" var="rank_list" repeatY="9">
+    <DCRankingItemView name="render" runtime="dreamlandChallenge.view.logicView.ranking.DCRankingItemView"/>
+  </List>
+  <Image skin="asset.ui.frame.line1" x="83" y="13"/>
+  <Image skin="asset.ui.frame.line1" x="201" y="13"/>
+  <Image skin="asset.ui.frame.line1" x="346" y="13"/>
+  <Image skin="asset.ui.frame.line1" x="439" y="13" width="2" height="29"/>
+  <PageNavigaterEx x="173" y="339" type="simple" var="page_change" isLoop="true"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="2" y="379" sizeGrid="5,5,5,5" width="543" height="42"/>
+</View>DCMainView.xml�C<View width="697" height="552">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="50,80,50,50" width="697" height="552" x="0" y="0"/>
+  <Label text="幻境挑战" x="15" y="10" color="0xffeebf" font="宋体" size="16" stroke="0x442006,1,4,4,30" bold="true"/>
+  <Button skin="asset.ui.btn_close1" x="641" y="2" stateNum="1" var="btn_close"/>
+  <Image skin="asset.dremlandChallenge.mainBg" x="19" y="43"/>
+  <Button skin="asset.dremlandChallenge.duplicate.enterBtn" x="295" y="461" stateNum="1" var="btn_challenge" labelColors="0xe8ce97" label="(2次)" labelFont="宋体" labelSize="16" labelBold="true" labelStroke="0x572525,1,4,4,10" labelMargin="90,10,10,10"/>
+  <Label x="481" y="54" color="0xfff6a8" font="宋体" size="14" bold="true" stroke="0x76251e,1,4,4,10" var="lbl_surplusTime" align="right" width="189" height="22"/>
+  <Button skin="asset.ui.btn_green5" x="50" y="455" stateNum="1" label="副本介绍" labelColors="0xfff6a8" labelFont="宋体" labelSize="12" labelBold="true" labelStroke="0x073d4f,1,4,4,10" var="btn_dupDesc"/>
+  <Button skin="asset.ui.btn_green5" x="50" y="485" stateNum="1" label="剧情介绍" labelColors="0xfff6a8" labelFont="宋体" labelSize="12" labelBold="true" labelStroke="0x073d4f,1,4,4,10" var="btn_storyDesc"/>
+  <Button skin="asset.ui.btn_red9" x="581" y="455" stateNum="1" label="积分排行" labelFont="宋体" labelSize="12" labelBold="true" labelColors="0xe8ce97" labelStroke="0x563811,1,4,4,10" width="72" height="31" sizeGrid="5,5,5,5" var="btn_point"/>
+  <Button skin="asset.ui.btn_red9" x="581" y="487" stateNum="1" label="竞速排名" labelFont="宋体" labelSize="12" labelBold="true" labelColors="0xe8ce97" labelStroke="0x563811,1,4,4,10" width="72" height="31" sizeGrid="5,5,5,5" var="btn_speedMatch"/>
+  <Button skin="asset.dremlandChallenge.duplicate.buyCount" x="294" y="460" stateNum="1" var="btn_buyCount" visible="false"/>
+</View>Eranking/DCPointRankingItemView.xml�	<View width="524" height="30">
+  <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="524" height="30" var="scale_itemBg0" x="0" y="0"/>
+  <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" var="scale_itemBg1" width="524" height="30" x="0" y="0"/>
+  <ScaleLeftRightImageEx var="scale_itemBg2" skin="asset.core.ScaleLeftRightImage1.1,asset.core.ScaleLeftRightImage1.2,asset.core.ScaleLeftRightImage1.3" width="524" height="30" x="0" y="0"/>
+  <Clip x="13" y="3" clipsUrl="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset" var="clip_ranking" index="0"/>
+  <Label x="14" y="5" var="lbl_ranking" color="0xFFFFFF" font="宋体" size="18" stroke="0x48300C,4,4,1"/>
+  <NameTextEx x="94" y="7" textType="1" align="center" color="0xFFFFFF" font="宋体" size="14" var="ntxt_name" width="136" height="18"/>
+  <Label x="274" y="8" var="lbl_area" color="0xFFFFFF" font="宋体" size="14" width="132" height="18" align="center"/>
+  <Label x="422" y="7" var="lbl_contribute" color="0xFFFFFF" font="宋体" size="14" width="91" height="18" align="center"/>
+  <Image skin="asset.ui.frame.line2" x="73" y="5"/>
+  <Image skin="asset.ui.frame.line2" x="242" y="5"/>
+  <Image skin="asset.ui.frame.line2" x="413" y="5"/>
+</View>=ranking/DCPointRankingView.xml�3<View width="588" height="482">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" width="588" height="483" sizeGrid="50,80,50,50"/>
+  <Image skin="asset.dremlandChallenge.ranking.pointTitle" x="-5" y="-20"/>
+  <Button skin="asset.ui.btn_close1" x="531" y="2" stateNum="1" var="btn_close"/>
+  <Image skin="asset.dremlandChallenge.ranking.btnBgLine" x="282" y="426"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="422" sizeGrid="5,5,5,5" width="543" height="42"/>
+  <Button skin="asset.ui.btn_red5" x="364" y="425" stateNum="1" var="btn_award" width="98" height="36" imageLabel="asset.dremlandChallenge.ranking.awardBtn" imageLabelX="25" imageLabelY="6"/>
+  <Button skin="asset.ui.btn_red5" x="98" y="425" stateNum="1" var="btn_shop" width="98" height="36" imageLabel="asset.dremlandChallenge.ranking.pointShop" imageLabelX="12" imageLabelY="6"/>
+  <Image skin="asset.ui.scale.bg19" x="22" y="45" sizeGrid="20,20,20,20" width="543" height="375"/>
+  <Image skin="asset.dremlandChallenge.ranking.bg" x="27" y="51" sizeGrid="20,60,20,20" width="534" height="365"/>
+  <Label text="排名" x="50" y="62" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="名称" x="174" y="62" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="区服" x="352" y="62" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <Label text="积分" x="480" y="62" bold="true" color="0xfeea94" font="宋体" size="14" stroke="0x4d3500,1,4,4,10" letterSpacing="2"/>
+  <List x="31" y="90" repeatX="1" spaceY="2" var="rank_list" repeatY="9">
+    <DCPointRankingItemView name="render" runtime="dreamlandChallenge.view.logicView.ranking.DCPointRankingItemView"/>
+  </List>
+  <Image skin="asset.ui.frame.line1" x="103" y="56"/>
+  <Image skin="asset.ui.frame.line1" x="272" y="56"/>
+  <Image skin="asset.ui.frame.line1" x="443" y="56"/>
+  <PageNavigaterEx x="193" y="382" type="simple" var="page_change" isLoop="true"/>
+</View>;ranking/DCRankingItemView.xml�<View width="524" height="30">
+  <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="524" height="30" var="scale_itemBg0"/>
+  <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" var="scale_itemBg1" width="524" height="30"/>
+  <ScaleLeftRightImageEx var="scale_itemBg2" skin="asset.core.ScaleLeftRightImage1.1,asset.core.ScaleLeftRightImage1.2,asset.core.ScaleLeftRightImage1.3" width="524" height="30"/>
+  <Clip x="13" y="3" clipsUrl="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset" var="clip_ranking" index="0"/>
+  <Label x="14" y="5" var="lbl_ranking" color="0xFFFFFF" font="宋体" size="18" stroke="0x48300C,4,4,1"/>
+  <NameTextEx x="78" y="7" textType="1" align="center" color="0xFFFFFF" font="宋体" size="14" var="ntxt_name" width="108" height="18"/>
+  <Label x="197" y="8" var="lbl_area" color="0xFFFFFF" font="宋体" size="14" width="132" height="18" align="center"/>
+  <Image skin="asset.dremlandChallenge.ranking.timeIcon" x="348" y="6" var="img_timeIcon"/>
+  <Label x="370" y="8" var="lbl_count" color="0xFFFFFF" font="宋体" size="14"/>
+  <Label x="429" y="7" var="lbl_contribute" color="0xFFFFFF" font="宋体" size="14" width="91" height="18" align="center"/>
+  <Image skin="asset.ui.frame.line2" x="73" y="5"/>
+  <Image skin="asset.ui.frame.line2" x="191" y="5"/>
+  <Image skin="asset.ui.frame.line2" x="336" y="5"/>
+  <Image skin="asset.ui.frame.line2" x="429" y="5"/>
+</View>

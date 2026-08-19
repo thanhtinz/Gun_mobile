@@ -1,0 +1,623 @@
+﻿<style name="ddthall" version="1.0.1" source="ui/cn_trad/swf/ddthall.swf">
+	
+<sets>
+	<set stylename="rechargeView.goodsCount.GF" args="0xFFFFFF,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="rechargeView.goodsCount.TF" args="Arial,12,0x000000,,,,,,right" type="flash.text.TextFormat"/>
+
+	<set type="flash.text.TextFormat" args="宋体,12,0xff00a6" stylename="systemPost.postInfo.textTF" leading="8"/>
+	<set type="flash.filters.GlowFilter" args="0x1d0214,2,4,4,30" stylename="systemPost.postInfo.textGF"/>
+
+	<set stylename="worldboss.autoCountSelectFrame.TextTF" args="Arial,16,0xffeebf,true" letterSpacing="2" type="flash.text.TextFormat"/>
+	<set stylename="worldboss.autoCountSelectFrame.TextGF" args="0x442006,1,4,4,30" type="flash.filters.GlowFilter"/> 
+	<set type="flash.text.TextFormat" stylename="serverlist.ServerNameTextFormat" args="Arial,14,0xFE8504" align="center"/>
+	<set type="flash.text.TextFormat" stylename="serverlist.ServerNameTextFormatHover" args="Arial,14,0xFFFFFF" align="center"/>	
+	
+	<set stylename="hall.tip.title.TF" args="Arial,16,0xffd545,true"  type="flash.text.TextFormat"/>
+	<set stylename="hall.tip.title.GF" args="0x441300,1,2,2,10" type="flash.filters.GlowFilter"/>	
+	
+	<!-- 4.9.5新增 -->		
+	<set stylename="hall.kingBlessTip.commonTipText" args="Arial,12,0xffffff" leading="3" type="flash.text.TextFormat"/>
+	<set stylename="hall.kingBlessTip.title.TF" args="Arial,12,0xffd545,true" letterSpacing="0" type="flash.text.TextFormat"/>
+	<set stylename="hall.kingBlessTip.bottomTipText" args="Arial,12,0x00ff00" letterSpacing="0" type="flash.text.TextFormat"/>
+	
+	<!-- 弹3新增 -->
+	<set type="flash.text.TextFormat" stylename="hall.taskManuGetView.awardNumValueTxt.tf" args="Arial,14,0xffffff,true"/>
+	<set type="flash.text.TextFormat" stylename="hall.guideDialog.contentTxt.tf" args="Arial,14,0xffffff" leading="5" letterSpacing="0"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskCompleteCommitView.contentTxt.tf" args="Arial,14,0x2edb4f" leading="5" letterSpacing="0"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskCompleteCommitView.contentTxt.gf" args="0x000000,1,2,2,10"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskCompleteCommitView.commitBtnTxt.tf" args="Arial,14,0x00fffc,true"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskCompleteCommitView.commitBtnTxt.gf" args="0x000000,1,2,2,10"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.playerOperate.name.gf" args="0x000000,1,2,2,10"/>
+	<set type="flash.text.TextFormat" stylename="hall.playerOperate.name.tf" args="Arial,12,0xffffff" align="center"/>
+	<set type="flash.text.TextFormat" stylename="hall.playerOperate.operate.tf" args="Arial,12,0xffdf8d" letterSpacing="0"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.playerOperate.operate.gf" args="0x472900,1,2,2,10"/>
+	<set stylename="hall.playerInfo.energyTF" args="Arial,11,0xffffff,true" type="flash.text.TextFormat" align="center"/>
+	<set stylename="hall.playerInfo.energyGF" args="0x390606,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.playerInfo.nickNameTF" args="Arial,14,0xffecb9,true" type="flash.text.TextFormat" align="center"/>
+	<set stylename="hall.playerInfo.nickNameGF" args="0x281800,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.playerInfo.nameTF" args="Arial,16,0x5BFF09,true" type="flash.text.TextFormat"/>
+	<set stylename="hall.playerInfo.titleTF" args="Arial,14,0x00FF00,true" type="flash.text.TextFormat"/>
+	<set stylename="hall.playerInfo.titleGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.playerInfo.consortiaNameTF" args="Arial,14,0x2dcff7,true" type="flash.text.TextFormat"/>
+	<set stylename="hall.playerInfo.consortiaNameGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskTrack.cellTitleTxt.tf" args="Arial,12,0xffffff"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskTrack.cellTitleTxt.gf" args="0x000000,1,2,2,10"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskTrack.cellConditionTxt.gf" args="0x000000,1,2,2,10"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskTrack.cellConditionTxt.tf" args="Arial,12,0xfefb57" leading="5"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskManuGetView.titleTxt.tf" args="Arial,16,0xffc600"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskManuGetView.titleTxt.gf" args="0x231010,1,4,4,30"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskManuGetView.descTxt.tf" args="Arial,14,0xffffff" leading="5" letterSpacing="1"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskManuGetView.awardNumTitleTxt.gf" args="0x4f2700,1,4,4,30"/>
+	<set type="flash.text.TextFormat" stylename="hall.taskManuGetView.awardNumTitleTxt.tf" args="Arial,14,0xfff000,true"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskManuGetView.awardNumValueTxt.gf" args="0x4f2700,1,4,4,30"/>
+	<set type="flash.filters.GlowFilter" stylename="hall.taskManuGetView.descTxt.gf" args="0x231010,1,4,4,30"/>
+	
+	<set stylename="petAndHorse.risingStar.toLinkTxtTF" args="Arial,12,0xfff6c9,,,,,,left" type="flash.text.TextFormat"/>
+	<set stylename="petAndHorse.risingStar.toLinkTxtGF" args="0x402f00,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="hall.playerInfoview.roomTitleTF" args="Arial,12,0xfff587,true,,,,,left" type="flash.text.TextFormat"/>
+	<set stylename="hall.playerInfoview.roomTitleGF" args="0x0f260e,1,4,4,30" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.bombKing.areaNameTxtTF" args="Arial,12,0xffffff,true,,,,,center" type="flash.text.TextFormat"/>
+	<set stylename="hall.bombKing.areaNameTxtGF" args="0x2a1b00,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.guideDialog.mouseMsgTxtTF" args="Arial,12,0x04e513,true,,,,,left" type="flash.text.TextFormat"/>
+	<set stylename="hall.guideDialog.mouseMsgTxtGF" args="0x2a1b00,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set type="flash.filters.GlowFilter" args="0x620000,2,4,4,30" stylename="foodActivity.count.smallGF"/>
+	<set type="flash.text.TextFormat" args="宋体,12,0xffffff,,,,,,center" stylename="foodActivity.count.smallTF"/>
+	<set type="flash.text.TextFormat" args="Arial,16,0xff0000,,,,,,center" stylename="hall.signView.signTxt.textTF"/>
+		<set type="flash.filters.GlowFilter" args="0xffde00,2,4,4,30" stylename="hall.signView.signTxt.textGF" />
+	
+		<set type="flash.text.TextFormat" args="Arial,14,0xfffae7,,,,,,center" stylename="hall.PowerView.powerTxt.textTF"/>
+		<set type="flash.filters.GlowFilter" args="0x3e2408,2,4,4,30" stylename="hall.PowerView.powerTxt.textGF" />
+		
+	<set stylename="hall.playerInfo.nameVIPTF" args="Arial,16,0xF5E927,true" type="flash.text.TextFormat"/>
+	<set stylename="hall.playerInfo.nameGF" args="0x3a0079,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="hall.playerInfo.vipNameTF" args="Arial,16,0xF5E927,true" type="flash.text.TextFormat"/>
+	<set stylename="ddthall.new.selectedViewTF" args="Arial,12,0xff0000" type="flash.text.TextFormat"/>
+	<set stylename="ddthall.new.selectedViewGF" args="0x390606,1,4,4,30" type="flash.filters.GlowFilter"/>
+	<set stylename="ddthall.timeGift.surplusTimeTxtTF" args="Arial,12,0xff0000" type="flash.text.TextFormat"/>
+	<set stylename="ddthall.timeGift.surplusTimeTxtGF" args="0x390606,1,4,4,30" type="flash.filters.GlowFilter"/>
+</sets>
+<components>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.braveDoor.iconButton" backStyle="asset.ddtHall.braveDoor.icon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.vipGrowUpIcon" backStyle="asset.hall.vipGrowUpIcon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.hotSpringBtn" backStyle="asset.hall.storehouse" x="1200" y="246"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.goldmineIcon" backStyle="asset.hall.goldmineIcon"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.signBuffBtn" 
+			backStyle="asset.hall.signBuff.icon" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton"	stylename="hall.signBuff.signBtn" unSelectedStyle="asset.hall.signBuff.signBtnUnSelected"
+			selectedStyle="asset.hall.signBuff.signBtnSelected" filterString="null,lightFilter,null,grayFilter" x="30" y="41" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton"	stylename="hall.signBuff.powerBtn" unSelectedStyle="asset.hall.signBuff.powerBtnUnSelected"
+			selectedStyle="asset.hall.signBuff.powerBtnSelected" filterString="null,lightFilter,null,grayFilter" x="167" y="41" />
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="signBuff.mainFrame.bg.scale9cornerImage" width="532" height="364" x="20" y="82" parentStyle="core.bg6920"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.signView.signTxt" textFormatStyle="hall.signView.signTxt.textTF" 
+			filterString="hall.signView.signTxt.textGF" x="207" y="378" autoSize="none" width="52" height="24" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.PowerView.powerTxt" textFormatStyle="hall.PowerView.powerTxt.textTF" 
+			filterString="hall.PowerView.powerTxt.textGF" x="-53" y="10" autoSize="none" width="105" height="45"/>
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.powerView.hBox" spacing="5" x="60" y="5"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.powerView.getBtn" backStyle="asset.hall.signBuff.getBtn" filterString="null,lightFilter,lightFilter,grayFilter" x="336" y="10"/>
+	
+		<component classname="signBuff.view.SignBuffView" backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt" stylename="signBuff.mainframe" titleStyle="FrameTitleTextStyle" escEnable="true"
+			titleOuterRectPosString="15,10,5" x="-160" y="-40" closeInnerRectString="44,19,6,30,14" width="570" height="464" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.angelInvestmentIcon" backStyle="asset.hall.angelInvestmentIcon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.playerInfo.putFireworksBtn" backStyle="asset.playerInfo.putFireworksBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3" width="54" height="43"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.bombTurnTable.iconButton" backStyle="asset.ddtHall.bombTurnTable.icon"/>
+		
+	<component classname="com.pickgliss.ui.controls.alert.SimpleAlert" stylename="hall.buyEnergySimpleAlert" parentStyle="SimpleAlert" frameInnerRectString="45,60,30,90,-1" frameMiniH="200"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.buyEnergySimpleAlertCountTxt" parentStyle="simpleAlertContentText" x="65" y="75"/>
+
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rechargeView.goodsCount" filterString="rechargeView.goodsCount.GF" textFormatStyle="rechargeView.goodsCount.TF" autoSize="none" width="22" height="22" x="60" y="82"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="rechargeView.awardcellBg" height="48" width="48" x="-1" y="-1" resourceLink="asset.ddtcore.goods.cellBg" scaleGridString="8,8,55,55"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="rechargeView.awardhbox" x="27" y="235" spacing="8"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="recharge.SimpleFrameBackgound" parentStyle="SimpleFrameBackgoundOneIII" imageRectString=",20|20|70|17|4"/>
+	<component classname="recharge.view.RechargeView" stylename="recharge.rechargeView" backStyle="recharge.SimpleFrameBackgound" parentStyle="BaseFrame" titleStyle="FrameTitleTextStyle" closestyle="core.closebt" closeInnerRectString="44,10,6,30,14" containerX="15" containerY="38" titleOuterRectPosString="12,12,5" moveInnerRectString="0,30,0,30,1" width="590" height="440" moveEnable="false" escEnable="true"/>
+	<component stylename="ddt.view.rightmainbtnpanel" classname="com.pickgliss.ui.controls.ScrollPanel" parentStyle="hall.ScrollPanel" x="900" y="150" width="101" height="320" viewportInnerRectString="0,0,10,0,0"/>
+	<component stylename="ddt.view.leftmainbtnpanel" classname="com.pickgliss.ui.controls.ScrollPanel" parentStyle="hall.ScrollPanel" x="0" y="105" width="120" height="140" viewportInnerRectString="0,0,0,0,0"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="rechargeView.openRechargeBtn" backStyle="openRechargeBtnBG" filterString="null,lightFilter,null,grayFilter" x="202" y="328"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="recharge.goodsAwardBg" width="466" height="101" x="10" y="209" resourceLink="core.Scale9CornerImage.BGAsset8,core.Scale9CornerImage.BGAsset9" imageRectString=",3|3|3|5|0"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="rechargeView.scale9cornerImage" width="550" height="308" x="5" y="6" parentStyle="core.bg6920"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="rechargeView.Texthbox" x="51" y="180" spacing="34"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="openRechargeBtnBG" resourceLink="ddt.view.recharge.btnBg,ddt.view.recharge.text" imageRectString="0|160|0|49|13,14|130|6|36|13"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.goto337Btn" backStyle="asset.hall.goto337" width="105" height="58" x="215" y="348"/>
+
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.zhuanyi.btn" backStyle="asset.hall.zhuanqu.icon" x="387" y="41" />
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.consortia.btn" backStyle="asset.hall.consortia.task.btn" tipStyle="core.PayBuffTip" tipDirctions="7,6,5,1,6,4" x="1" y="233"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.bombKingButton" backStyle="bombKing.hallEnterBtn" x="0" y="133"/>
+	<component classname="com.pickgliss.ui.controls.ComboBox" stylename="hall.playerInfoview.refresh.serverCombo" selctedPropName="text" buttonStyle="hall.refreshAble.comboxButton" snapItemHeight="true" listPanelStyle="core.ComboxListpanel1" listInnerRectString="4,27,20,18,18" textStyle="core.comboxListCellTxt3" textInnerRectString="6,48,4,0,0" x="0" y="0" width="104" height="25"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.server.refreshBtn" backStyle="asset.hall.server.refresher" x="75" y="2.5"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.refreshAble.comboxButton" backStyle="hall.refresh.comboxButtonAsset" height="32" width="200" displacement="false"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="hall.refresh.comboxButtonAsset" resourceLink="asset.hall.refresher.comboBg,asset.hall.comboBtn" imageRectString=",0|28|20|20|12"/>
+
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.attest.icon" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3,6" width="28" height="28" resourceLink="asset.core.attestBuff1,asset.core.attestBuff2"/>
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="hall.systemPost.indentationBtn" selectedStyle="asset.hall.systemPost.indentationBtn" unSelectedStyle="asset.hall.systemPost.displayBtn" x="0" y="-21"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.systemPost.postInfoTxt" textFormatStyle="systemPost.postInfo.textTF" filterString="systemPost.postInfo.textGF" width="391" height="16" wordWrap="true" x="32" y="5"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.attest" resourceLink="asset.core.attestBuff1" x="263" y="234"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.playerHeadBtn" backStyle="asset.hall.playerHeadBtn" x="-99" y="28" alpha="0"/>
+
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.tips.title" textFormatStyle="hall.tip.title.TF" filterString="hall.tip.title.GF" x="10" y="10"/>
+	<!--作战实验室-->
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="hall.battleSrollPanel"
+		parentStyle="core.ScrollPanel"  
+		width='515' height='370'  vUnitIncrement="5"
+	/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="hall.hotSpringAlertPanel"
+		parentStyle="core.ScrollPanel"  
+		width='515' height='370'  vUnitIncrement="5"
+		x="9" y="10"
+	/>
+	<component classname="com.pickgliss.ui.controls.Frame" stylename="hall.battleFrame"
+		backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt" closeInnerRectString="44,6,3,30,14" 
+		titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,6,5" 
+		containerX="20"	containerY="40" 
+		width="548" height="468" 
+		escEnable='true' 
+	/>
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="hall.battleBtn"
+		parentStyle='core.simplebt'
+		x='220' y='386' 
+	/>
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="hall.hotSpringBtn"
+		parentStyle='core.simplebt'
+		x='220' y='394' 
+	/>
+	
+	<!--保存文件-->
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="saveFile.okBtn" x="307"
+			y='385' parentStyle='core.simplebt'/>
+	<component classname="hall.SaveFileWidow" backStyle="SimpleFrameBackgoundOneIII" stylename="hall.SaveFileWidow"  closestyle="core.closebt"  titleStyle="FrameTitleTextStyle" titleOuterRectPosString="14,10,5" closeInnerRectString="44,12,6,30,14" width="702" height="439"/>
+
+	<component classname="com.pickgliss.ui.image.Image" stylename="hall.womenNPC" resourceLink="asset.trainer.welcome.girl2" x="550" y="70" scaleX="-0.5" scaleY="0.5" />
+	<component classname="hotSpring.view.HotSpringAlertFrame" backStyle="SimpleFrameBackgound" stylename="hall.hotSpringAlertFrame" closestyle="core.closebt" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,6,5" containerX="10" containerY="31" width="548" height="468" closeInnerRectString="44,6,3,30,14" moveInnerRectString="0,30,0,30,1"/>
+	<component stylename="serverlist.hall.DropListCombo"
+		classname="com.pickgliss.ui.controls.ComboBox"
+		parentStyle="core.Combox3" selctedPropName="text" 
+		x="-14" y="36"
+		listInnerRectString="5,33,10,100,18"
+		width="104" height="30" />
+			<component classname="com.pickgliss.ui.image.MovieImage" stylename="LittleGameNotes" resourceLink="asset.hall.LittleGameNote" x="25" y="88"></component>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.auctionBtn"
+			backStyle="asset.hall.auction" x="2351" y="208"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.roomBtn"
+			backStyle="asset.hall.auctionbtn"  height="170" width="220" x="480" y="76" tipStyle="ddt.view.tips.HallBuildTip" tipDirctions="0,1,2"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.churchBtn"
+			backStyle="asset.hall.church" x="2740" y="210"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.framBtn"
+			backStyle="asset.hall.auctionbtn"  height="140" x="668" y="226" tipStyle="ddt.view.tips.HallBuildTip" tipDirctions="0,1,2"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.constrionBtn"
+			backStyle="asset.hall.constrion" x="1853" y="251"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.dungeonBtn"
+			backStyle="asset.hall.dungeon"  x="1469" y="45"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.storeBtn"
+			backStyle="asset.hall.store" x="1412" y="221"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.shopBtn"
+			backStyle="asset.hall.auctionbtn"  height="170" x="531" y="347" tipStyle="ddt.view.tips.HallBuildTip" tipDirctions="0,1,2"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.tofflistbtn"
+			backStyle="asset.hall.auctionbtn"  height="170" x="310" tipStyle="ddt.view.tips.HallBuildTip" tipDirctions="0,1,2"/>
+	<!-- 界面大厅右侧vbox的滚动条 -->
+	<component stylename="ddt.view.mainbtnpanel"
+		classname="com.pickgliss.ui.controls.ScrollPanel" 
+		parentStyle="hall.ScrollPanel" 
+		x="900" y="150"
+		width="100" height="325" 
+		viewportInnerRectString="0,0,10,0,0"/>
+<!-- 	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="ddt.view.leftToolPanel" spacing="-60" x="0" y="232" width="100" height="400"/>  -->
+
+	<!-- 界面大厅右侧vbox的滚动条 -->
+	<component classname="com.pickgliss.ui.controls.ScrollPanel"
+	stylename="hall.ScrollPanel" vScrollbarStyle="hall.VScrollbar" hScrollbarStyle="core.HScrollbar"
+	hScrollbarInnerRectString="0,22,21,0,4"
+	vScrollbarInnerRectString="21,0,0,0,3" viewportInnerRectString="0,22,0,0,0"
+	hScrollProxy='2' vScrollProxy='1' />
+
+	<component classname="com.pickgliss.ui.controls.Scrollbar"
+		stylename="hall.VScrollbar" thumbStyle="hall.scrollVThumb" trackStyle="hall.scrollTrackAsset"
+		decreaseButtonStyle="hall.scrollUpButton" increaseButtonStyle="hall.scrollDownButton"
+		thumbMinSize="14" decreaseButtonInnerRectString="72,25,-20,-47,9"
+		increaseButtonInnerRectString="72,25,-47,-30,10" trackInnerRectString="2,1,17,17,0"
+		orientation="0" thumbAreaInnerRectString="4,3,20,21,0" />
+
+	<component classname="com.pickgliss.ui.controls.BaseButton"
+		stylename="hall.scrollVThumb" backStyle="hall.scroll.thumbV"
+		filterString="null,lightFilter,null,grayFilter" displacement="false" />
+
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage"
+		stylename="hall.scroll.thumbV" resourceLink="asset.hall.scroll.thumbV"
+		scaleGridString="6,6,8,40" width="12" height="50" />
+
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage"
+		stylename="hall.scrollTrackAsset" resourceLink="asset.hall.scroll.track"
+		scaleGridString="4,1,12,2" />
+
+	<component classname="com.pickgliss.ui.controls.BaseButton"
+		stylename="hall.scrollUpButton" backStyle="asset.hall.scroll.arrowUp"
+		filterString="null,lightFilter,null,grayFilter" displacement="false" />
+
+	<component classname="com.pickgliss.ui.controls.BaseButton"
+		stylename="hall.scrollDownButton" backStyle="asset.hall.scroll.arrowDown"
+		filterString="null,lightFilter,null,grayFilter" displacement="false" />
+	
+	<!--精彩活动入口-->
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="asset.hall.wonderfulBtn" resourceLink="hall.wonderfulActivity.openIcon" x="12" y="5" height="58"/>
+	<!-- 弹王盟约入口按钮 -->
+	<component classname="kingBless.view.KingBlessIconBtn" stylename="asset.hall.kingBlessIconBtn" tipStyle="ddt.view.tips.KingBlessTip" tipDirctions="2,5,7" tipGapH="74" x="6" y="226"/> 
+		
+		
+	<!-- 首充奖励入口按钮 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+			stylename="hall.firstRecharge.btn" backStyle="assets.hallIcon.firstRechargeIcon" x="12" y="7"
+			tipStyle="core.PayBuffTip" tipDirctions="7,6,5,1,6,4"/>
+	<!-- 4.9.5新增 -->		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.kingBlessTips.commonText" textFormatStyle="hall.kingBlessTip.commonTipText"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.kingBlessTips.title" textFormatStyle="hall.kingBlessTip.title.TF" x="8" y="5"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.kingBlessTips.bottomText" textFormatStyle="hall.kingBlessTip.bottomTipText"/>
+	<!-- 4.9.9新增 -->
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="asset.hall.iconPanelBg" resourceLink="asset.hall.iconPanelBG" scaleGridString="10,10,13,40"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.iconPanelOpenScollBtnBg" resourceLink="asset.hall.iconPanelScollOpenBtnBg,asset.hall.iconPanelScollCloseBtnBg" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.iconPanelOpenScollBtn" backStyle="hall.iconPanelOpenScollBtnBg" filterString="null,lightFilter,null,grayFilter" x="0" y="0"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.regressBtn"
+			backStyle="asset.hall.auctionResgressbtn" x="687" y="352"/>
+	<!-- 经验赐福图标 -->		
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.expblessed.icon" 
+		tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3,6" width="24" height="27"
+		resourceLink="asset.hall.expblessed.icon" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.getTicketButton" backStyle="asset.hall.getTicket" x="133" y="9"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="duoWanYYVip.entryBtn" backStyle="asset.duoWanYYVip.entryBtn" x="10" y="0"/>
+	
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.ringStationBtn" resourceLink="assets.hallIcon.ringStationIcon" x="10" y="-5"/>
+	<component stylename="ddt.view.leftToolPanel" classname="com.pickgliss.ui.controls.ScrollPanel" parentStyle="hall.ScrollPanel" x="17" y="115" width="100" height="190" viewportInnerRectString="-20,0,10,0,0"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="superWinner.entryBtn" resourceLink="assets.hallIcon.superWinnerEntryIcon" x="7" y="10"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.godsRoads" resourceLink="asset.hall.godsRoads" x="7" y="10"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="HallMain.roomBtnBg" resourceLink="asset.hall.auctionbtn" width="220"/>
+		
+	<!-- 赶年兽按钮 -->	
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.catchBeastBtn" 
+		resourceLink="asset.hallIcon.catchBeastIcon" x="4" y="3" width="67" height="74"/>
+	<!-- 元宵灯谜按钮 -->	
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.lanternriddles" 
+		resourceLink="assets.hallIcon.lanternriddlesIcon" y="0" width="61" height="74"/>
+		
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.givingFlowerBtn" resourceLink="asset.hall.givingFlowerBtn" y="5" width="68" height="66"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.leftTopIcon.hBox" spacing="10" x="98" y="5"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.landersAwardBtn" backStyle="asset.hall.landersAward" x="906" y="101"/>
+	
+	<component classname="dayActivity.view.DdtImportantFrame" backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt" stylename="DdtImportantFrame" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="20" containerY="46" escEnable="true" closeInnerRectString="44,19,6,30,14" width="772" height="521"/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="day.ddtImportantAdv.list" parentStyle="core.ScrollPanel" viewportInnerRectString="0,0,0,-6,0" vScrollbarInnerRectString="21,-20,4,-8,3" hScrollProxy="2" vScrollProxy="2" width="737" height="460" x="22" y="86" vUnitIncrement="10"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.ddtImportantAdvBtn1" resourceLink="core.bg6900,day.ddtImportantAdvBtn1" imageRectString="114|36|0|0|9,114|36|0|0|9" width="113" height="38" x="-3" y="6"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="day.ddtImportantAdv.prePageBtn" backStyle="day.ddtImportantAdv.prePageButton" x="40" y="265" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="dayActivity.ActivityFrame.ddtImportantAdvBtn" unSelectedStyle="asset.ddtImportantAdvBtn1" selectedStyle="asset.ddtImportantAdvBtn2" filterString="null,lightFilter,null,grayFilter" x="369" y="38"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="day.ddtImportantAdv.hBox" spacing="0" x="22" y="86"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.ddtImportantAdvBtn2" resourceLink="core.bg6901,day.ddtImportantAdvBtn2" imageRectString="132|39|0|0|9,132|39|0|0|9" width="132" height="40" x="-9" y="5"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="day.ddtImportantAdv.nextPageBtn" backStyle="day.ddtImportantAdv.nextPageButton" x="695" y="265" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+	<!-- 弹3新增 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.energyTxt" textFormatStyle="hall.playerInfo.energyTF" filterString="hall.playerInfo.energyGF" x="25" y="2"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.energyAddBtn" backStyle="asset.hall.playerInfo.energyAdd" x="-19" y="96" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.nickNameText" textFormatStyle="hall.playerInfo.nickNameTF" filterString="hall.playerInfo.nickNameGF" autoSize="none" width="104" height="22" isAutoFitLength="true" x="-5" y="34"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.bloodTxt" textFormatStyle="hall.playerInfo.energyTF" filterString="hall.playerInfo.energyGF" autoSize="none" width="242" height="22" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.expTxt" textFormatStyle="hall.playerInfo.energyTF" filterString="hall.playerInfo.energyGF" autoSize="none" width="162" height="22" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.vipBtn" x="155" y="-5" resourceLink="asset.hall.playerInfo.vipOpen,asset.hall.playerInfo.vipLevel"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.vipLevel" x="212" y="-1" resourceLink="asset.hall.playerInfo.vipLevel_1,asset.hall.playerInfo.vipLevel_2,asset.hall.playerInfo.vipLevel_3,asset.hall.playerInfo.vipLevel_4,asset.hall.playerInfo.vipLevel_5,asset.hall.playerInfo.vipLevel_6,asset.hall.playerInfo.vipLevel_7,asset.hall.playerInfo.vipLevel_8,asset.hall.playerInfo.vipLevel_9,asset.hall.playerInfo.vipLevel_10,asset.hall.playerInfo.vipLevel_11,asset.hall.playerInfo.vipLevel_12,asset.hall.playerInfo.vipLevel_13,asset.hall.playerInfo.vipLevel_14,asset.hall.playerInfo.vipLevel_15"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.blood" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3,6" resourceLink="asset.hall.playerInfo.blood"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.expVIP" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3,6" resourceLink="asset.hall.playerInfo.expVIP"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.playerInfo.toolVBox" x="0" y="0" spacing="3"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.playerInfo.mailBtn" resourceLink="asset.playerInfo.mail" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3" width="42" height="43"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.celebrityBtn" backStyle="asset.playerInfo.celebrity" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.yyVIPBtn" backStyle="asset.playerInfo.yyVIP" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.landersAward" backStyle="asset.hall.landersAward" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.playerInfo.oldPlayerBtn" backStyle="asset.playerInfo.oldPlayer" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.hall.playerInfo.lblName" textFormatStyle="hall.playerInfo.nameTF"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.title" textFormatStyle="hall.playerInfo.titleTF" filterString="hall.playerInfo.titleGF" width="120" height="22"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfo.consortiaName" textFormatStyle="hall.playerInfo.consortiaNameTF" filterString="hall.playerInfo.consortiaNameGF" width="120" height="22" x="0" y="6"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="hall.playerInfo.tipsBg" parentStyle="core.commonTipBg" scaleGridString="10,10,42,42" width="117" height="79"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerTip.ItemBg" resourceLink=",asset.playerTip.itemBg,asset.playerTip.itemBg" y="2"/>
+	<component classname="com.pickgliss.ui.controls.IconButton" stylename="hall.playerTip.itemmakeFriend" backStyle="hall.playerTip.ItemBg" iconStyle="asset.playerTip.makeFriend" filterString="null,lightFilter,null,grayFilter" x="15" y="4"/>
+	<component classname="com.pickgliss.ui.controls.IconButton" stylename="hall.playerTip.privateChat" backStyle="hall.playerTip.ItemBg" iconStyle="asset.hall.playerTip.privateChat" filterString="null,lightFilter,null,grayFilter" x="13" y="26"/>
+	<component classname="com.pickgliss.ui.controls.IconButton" stylename="hall.playerTip.viewInfo" backStyle="hall.playerTip.ItemBg" iconStyle="asset.playerTip.viewInfo" filterString="null,lightFilter,null,grayFilter" x="14" y="49"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.taskTrack.taskOpenBtn" backStyle="asset.hall.taskTrack.taskOpenBtn" x="1" y="-28"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.taskTrack.moveInBtn" backStyle="asset.hall.taskTrack.moveInBtn" x="-20" y="7"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.taskTrack.moveOutBtn" backStyle="asset.hall.taskTrack.moveOutBtn" x="-20" y="7"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskTrack.cellTitleTxt" textFormatStyle="hall.taskTrack.cellTitleTxt.tf" filterString="hall.taskTrack.cellTitleTxt.gf" autoSize="none" isAutoFitLength="true" width="165" height="20" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskTrack.cellConditionTxt" textFormatStyle="hall.taskTrack.cellConditionTxt.tf" filterString="hall.taskTrack.cellConditionTxt.gf" wordWrap="true" width="170" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="hall.taskTrack.cellVBox" spacing="0" x="12" y="19"/>
+	<component classname="com.pickgliss.ui.controls.ListPanel" stylename="hall.taskTrack.list" parentStyle="core.ScrollPanel" vScrollbarInnerRectString="21,4,0,0,3" vScrollProxy="1" hScrollProxy="2" vUnitIncrement="3" factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|hall.tasktrack.HallTaskTrackListCell,20,185,false" listStyle="com.pickgliss.ui.controls.list.List" width="200" height="220" x="2" y="5"/>
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="hall.taskTrack.curTaskBtn" unSelectedStyle="asset.hall.taskTrack.curTaskUnSelected" selectedStyle="asset.hall.taskTrack.curTaskSelected" x="44" y="-28"/>
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="hall.taskTrack.canGetBtn" unSelectedStyle="asset.hall.taskTrack.canGetUnSelected" selectedStyle="asset.hall.taskTrack.canGetSelected" x="122" y="-26"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskManuGetView.titleTxt" textFormatStyle="hall.taskManuGetView.titleTxt.tf" filterString="hall.taskManuGetView.titleTxt.gf" x="149" y="11"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.redPlatformBtn"
+			backStyle="asset.hall.redPlatform" x="765" y="358"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.bluePlatformBtn"
+			backStyle="asset.hall.bluePlatform" x="638" y="328"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskManuGetView.descTxt" textFormatStyle="hall.taskManuGetView.descTxt.tf" filterString="hall.taskManuGetView.descTxt.gf" autoSize="none" wordWrap="true" width="315" height="65" x="149" y="37"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.goldPlatformBtn"
+			backStyle="asset.hall.goldPlatform" x="491" y="350"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.view.rightTopHbox" x="0" y="6" spacing="5" strictSize="75"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskManuGetView.awardNumTitleTxt" textFormatStyle="hall.taskManuGetView.awardNumTitleTxt.tf" filterString="hall.taskManuGetView.awardNumTitleTxt.gf"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskManuGetView.awardNumValueTxt" textFormatStyle="hall.taskManuGetView.awardNumValueTxt.tf" filterString="hall.taskManuGetView.awardNumValueTxt.gf"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="asset.hall.wantstrongeBtn" resourceLink="wantstrong.iconMovie"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.taskManuGetView.closeBtn" backStyle="asset.hall.taskTrack.manuGetView.closeBtn" x="471" y="10"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="asset.hall.everyDayBtn" resourceLink="everyDay.Activity"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.taskManuGetView.getBtn" backStyle="asset.hall.taskTrack.manuGetView.getBtn" x="377" y="199"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.wonderfulActivity.okBtn" backStyle="hall.wonderfulActivity.infoView.OK" x="232" y="194"/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="hall.taskCanGetListView.scrollPanel" parentStyle="core.ScrollPanel" vScrollProxy="0" width="186" height="196" x="10" y="29"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.guideDialog.contentTxt" textFormatStyle="hall.guideDialog.contentTxt.tf" autoSize="none" wordWrap="true" width="315" height="100" x="449" y="513"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskCompleteCommitView.contentTxt" textFormatStyle="hall.taskCompleteCommitView.contentTxt.tf" filterString="hall.taskCompleteCommitView.contentTxt.gf" autoSize="none" wordWrap="true" width="190" height="50" x="129" y="14"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.taskCompleteCommitView.commitBtnTxt" textFormatStyle="hall.taskCompleteCommitView.commitBtnTxt.tf" filterString="hall.taskCompleteCommitView.commitBtnTxt.gf" x="233" y="57"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerOperate.nickNameTxt" textFormatStyle="hall.playerOperate.name.tf" filterString="hall.playerOperate.name.gf" x="74" y="0" autoSize="none" width="87" height="20"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerOperate.operateTxt" textFormatStyle="hall.playerOperate.operate.tf" filterString="hall.playerOperate.operate.gf"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerOperate.upDownBtn" x="60" y="3" resourceLink="hall.player.operate.down,hall.player.operate.up"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.roomListBtn"
+			backStyle="asset.hall.room" x="1893" y="38"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.labyrinthBtn"
+			backStyle="asset.hall.labyrinth" x="2860" y="6"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.farmBtn"
+			backStyle="asset.hall.farm" x="2662" y="23"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.ringStationBtn"
+			backStyle="asset.hall.ringstation" x="3432" y="5"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.activityBtn"
+			backStyle="asset.hall.activity" x="713" y="141"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.guideBtn"
+			backStyle="asset.hall.guide" x="1093" y="230"/>
+	<component classname="hall.hallInfo.playerInfo.EnergyProgress" tipStyle="ddt.view.tips.OneLineTip"
+		tipDirctions="5,2,3" stylename="EnergyProgress" x="-108" y="96" width="94" height="18" />
+		
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.taskTrack.questLinkBtn" backStyle="asset.hall.taskTrack.questLinkBtn"/>
+	
+	<component classname="com.pickgliss.ui.controls.ComboBox" stylename="hall.playerInfoview.serverCombo" 
+		selctedPropName="text"  buttonStyle="hall.comboxButton"   snapItemHeight="true" 
+		listPanelStyle="core.ComboxListpanel1"  listInnerRectString="12,27,24,27,18" 
+		textStyle="core.comboxListCellTxt3"  textInnerRectString="10,34,3,0,0"
+		x="0" y="0" width="100" height="25" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.comboxButton"
+		backStyle="hall.comboxButtonAsset" height="32" width="200" displacement="false"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="hall.comboxButtonAsset"
+		resourceLink="asset.hall.comboBg,asset.hall.comboBtn" imageRectString=",0|16|20|20|12"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petAndHorse.risingStar.toLinkTxt" textFormatStyle="petAndHorse.risingStar.toLinkTxtTF" filterString="petAndHorse.risingStar.toLinkTxtGF" autoSize="none" width="115" height="22"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.playerInfoview.roomTitle" textFormatStyle="hall.playerInfoview.roomTitleTF" filterString="hall.playerInfoview.roomTitleGF" autoSize="none" width="150" height="22" x="95" y="1"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.dragonBoatBtn" backStyle="asset.hall.dragonBoatBtn" x="-72" y="-98"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.bombKing.areaNameTxt"  textFormatStyle="hall.bombKing.areaNameTxtTF" 
+		 	filterString="hall.bombKing.areaNameTxtGF" x="0" y="21" width="120" height="30" autoSize="none" wordWrap="true"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.playerInfo.taskIconBtn" resourceLink="asset.playerInfo.taskIcon" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3" width="42" height="43"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.guideDialog.mouseMsgTxt" textFormatStyle="hall.guideDialog.mouseMsgTxtTF" filterString="hall.guideDialog.mouseMsgTxtGF" autoSize="none" wordWrap="true" width="210" height="50" x="785" y="505"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.chatButton" tipStyle="ddt.view.tips.OneLineTip" 
+	 	backStyle="asset.hall.showChatBtn" tipDirctions="0,4,5"/>
+	 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="worldboss.autoCountSelectFrame.Text" textFormatStyle="worldboss.autoCountSelectFrame.TextTF" filterString="worldboss.autoCountSelectFrame.TextGF" x="29" y="75" />
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.wonderfulActivity.icon" resourceLink="asset.hall.wonderfulActivity.icon"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.foodActivityBtn" resourceLink="asset.hallIcon.FoodActivity" y="0" width="70" height="70"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.homeBtn" backStyle="asset.hall.home" x="3122" y="28"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.cryptBossBtn" backStyle="asset.hall.cryptBoss" x="3520" y="382"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.foodActivity.countTxt" textFormatStyle="foodActivity.count.smallTF" filterString="foodActivity.count.smallGF" autoSize="none" width="16" height="16"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.nationDayBtn" resourceLink="asset.hall.nationDay" y="5" width="74" height="59"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.gypsyBtn" backStyle="asset.hall.gypsyShop" x="184" y="219"/>
+	<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="hall.timeBox.LeftRightBG" x="-10" y="66" width="90" height="24" resourceLink="asset.timeBox.ScaleLeftRightImage9.1,asset.timeBox.ScaleLeftRightImage9.2,asset.timeBox.ScaleLeftRightImage9.3"/>
+	<component classname="midAutumnWorshipTheMoon.view.WorshipTheMoonEnterButton" backStyle="asset.hall.worshipTheMoon" stylename="worship.showFrameBtn"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.drgnBoatBuildingBtn" backStyle="asset.hall.drgnBoatBuilding" x="541" y="345"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.laurelBtn" backStyle="asset.hall.laurel" x="1016" y="399"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.halloweenBtn" backStyle="asset.hall.halloween" x="533" y="199"/>
+	<component classname="com.pickgliss.ui.controls.container.GridBox" stylename="hall.view.leftTopGridbox" x="0" y="6" spacing="5" strictSize="75"/>
+	<component classname="com.pickgliss.ui.controls.container.GridBox" stylename="hall.view.rightTopGridbox" x="0" y="6" spacing="5" strictSize="75"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="asset.hall.gradeAwardsBoxBtn" resourceLink="asset.hall.GradeAwardsBoxBtnAsset"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bossbox.gradeAwardBoxStyle" autoSize="none" filterString="timebox.TimeBoxFilter" textFormatStyle="hall.gradeAwardsBoxBtn" text="" width="88" height="20" x="-9" y="68"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.magicHouseBtn" backStyle="asset.hall.gypsyShop" x="1000" y="219"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.treasure.showIcon" backStyle="asset.hall.treasureIcon" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.storehouseBtn" backStyle="asset.hall.storehouse" x="1078" y="235"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.pyramid.showIcon" backStyle="asset.hall.pyramid.showIcon" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.happyRechargeBtn" backStyle="asset.hall.happyRecharge.enterBtn"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="hall.playerInfo.showHideBtn" resourceLink="asset.hall.playerInfo.hide,asset.hall.playerInfo.show" x="0" y="37"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.exchangeAct.icon" backStyle="asset.hall.exchangeAct.btn"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.godCardRaiseIcon" backStyle="asset.hall.GodCardRaiseIcon"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.sanxiaoBtn" backStyle="asset.hall.sanxiaoBtn" x="906" y="101"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.levelFundActivityBtn" resourceLink="levelFundActivity.enterIcon" y="0" width="59.75" height="63.65"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.draft.icon" backStyle="asset.hall.draftIcon"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.godOfWealthView.getBtn" backStyle="asset.hall.godOfWealth"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.record.playIcon" backStyle="asset.hall.recording.icon" x="14" y="141"/>
+	<component classname="LanternFestival2015.view.LanternFestivalInHallButton" backStyle="asset.hall.lantern2015" stylename="lantern2015.showFrameBtn"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.survival.enterIcon" backStyle="asset.hall.survivalIcon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.trial.enterIcon" backStyle="asset.ddthall.trialEnterIcon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.MemoryGameIcon" backStyle="asset.hall.MemoryGameIcon"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.hotspringBtn" backStyle="asset.hall.hotspring" x="1150" y="246"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.polarRegion.enterIcon" backStyle="asset.ddthall.polarRegion.icon"/>
+			
+		<component classname="com.pickgliss.ui.image.MovieImage" stylename="hall.playerInfo.loginDeviceBtn" 
+			resourceLink="loginDevice.hall.enterIcon" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,3" width="54" height="43"/>
+	
+
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.hall.playerInfo.lblNameVIP" textFormatStyle="hall.playerInfo.nameVIPTF"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.oldPlayerComeBack.iconButton" backStyle="asset.ddtHall.oldPlayerComeBack.icon"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.posterBtn" backStyle="asset.hall.rewardtask" x="1230" y="206"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.hunterIcon" backStyle="asset.hall.hunterIcon"/>
+	<component classname="supremacyContend.SupContendIconMc" stylename="hall.supremacyContendIcon" backStyle="asset.supremacyContend.icon"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.buttonView.hbox" x="-25" y="0" spacing="5" strictSize="75"/>
+	<component classname="hall.view.HallActiveButton" stylename="ddthall.new.shopIcon" backStyle="asset.hall.new.shopIcon" x="0" y="0"/>
+	<component classname="hall.view.HallActiveButton" stylename="ddthall.new.daylyIcon" backStyle="asset.hall.new.dayIcon" x="0" y="0"/>
+	<component classname="hall.view.HallActiveButton" stylename="ddthall.new.friendIcon" backStyle="asset.hall.new.friendIcon" x="0" y="0"/>
+	<component classname="hall.view.HallActiveButton" stylename="ddthall.new.activeIcon" backStyle="asset.hall.new.activityIcon" x="0" y="0"/>
+	<component classname="hall.view.HallActiveTimingButton" stylename="ddthall.new.timeGiftIcon" backStyle="asset.hall.new.timeGiftIcon" x="0" y="0"/>
+	<component classname="hall.view.HallActiveButton" stylename="ddthall.new.battleIcon" backStyle="asset.hall.new.battleIcon" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="asset.hall.newChickenBoxEntranceBtn" resourceLink="asset.hall.newChickenBoxBtn" x="6" y="264"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddthall.new.deleteBtn" backStyle="asset.hall.new.deleteBtn" x="49" y="0"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="hall.buttonBoxBg" resourceLink="asset.ui.scale.bg16" scaleGridString="16,12,100,40" width="100" height="100"/>
+	<component classname="flash.display.MovieClip" stylename="ddthall.new.zidingyi" backStyle="asset.hall.zidingyiBtn" x="387" y="25"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.cityBattle.iconButton" backStyle="asset.cityBattle.enterIcon"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="hall.playerInfo.buffBg" resourceLink="asset.ui.scale.bg16" scaleGridString="16,12,100,40" width="128" height="34"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.ddtKingWayIcom" backStyle="asset.hall.ddtKingWayIcon"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.hall.playerInfo.lblVipName" textFormatStyle="hall.playerInfo.vipNameTF"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="hall.worldKing.icon" backStyle="asset.hall.worldKing.icon"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="hall.new.buffBg" resourceLink="asset.ui.scale.bg16" scaleGridString="16,12,100,40" width="103" height="67" x="-1" y="33"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="HallMain.bankNPCBtn" backStyle="asset.hall.bankNPC" x="3264" y="189" width="165" height="198"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddthall.new.setViewCloseBtn" backStyle="asset.hall.closeBtnNormal" x="469" y="6"/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="hall.new.setButtonView" parentStyle="core.ScrollPanel" hScrollProxy="2" vScrollProxy="1" width="510" height="273" x="-11" y="35" vUnitIncrement="10"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="ddthall.new.setBtnViewBg" resourceLink="hall.new.setBtnViewBg" width="508" height="316" x="0" y="0" scaleGridString="20,20,60,40"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddthall.new.selectedVewTxt" textFormatStyle="ddthall.new.selectedViewTF" filterString="ddthall.new.selectedViewGF" autoSize="none" width="162" height="22" x="11" y="10"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddthall.new.buffBoxButton" backStyle="hall.new.buffBoxBtn" x="100" y="4"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddthall.timeGift.surplusTimeTxt" x="14" y="70" textFormatStyle="ddthall.timeGift.surplusTimeTxtTF" filterString="ddthall.timeGift.surplusTimeTxtGF"/>
+	<component classname="com.pickgliss.ui.image.MovieImage" stylename="ddthall.skipGuideBtn" resourceLink="asset.hall.skipGuide" buttonMode="true" x="110" y="145"/>
+		
+</components>
+<customs>
+	<custom classname="flash.geom.Point" stylename="ddt.hall.signView.buffPos" x="410" y="378" />
+	
+	<custom classname="starling.scene.hall.SceneMapGridData" stylename="hall.map.SceneMapGridData" numX="59"  numY="19"  mapId="1" bgImageW="3742" bgImageH="600" cellW="64" cellH="32"
+	gridsType="[[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]]" />
+
+	<custom classname="flash.geom.Point" stylename="ddt.hall.LevelIconPostPos" x="345" y="69"/>
+	<custom classname="flash.geom.Point" stylename="ddt.hall.gradeBuyPos" x="375" y="11"/>
+
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.refresh.serverlistPos" x="15" y="106"/>
+	
+	<custom classname="flash.geom.Point" stylename="hall.playerInfo.attestPos" x="165" y="-2"/>
+	<custom classname="flash.geom.Point" stylename="hall.player.weatherPos" x="0" y="-2"/>
+	<custom classname="flash.geom.Point" stylename="ddt.hall.SystemPostPos" x="0" y="329"/>
+
+	<custom classname="flash.geom.Point" stylename="hallView.magpiePos" x="16" y="141"/>
+	<custom classname="flash.geom.Point" stylename="gradeAwardsBoxButton.gradeAwardsBoxSprite" x="21" y="134"/>
+	<custom classname="flash.geom.Point" stylename="ddt.worldboss.autoOpenCount.textPos" x="19" y="42" />
+	<custom classname="flash.geom.Point" stylename="ddt.worldboss.autoOpenCount.textPos1" x="130" y="38" />
+	<custom classname="flash.geom.Point" stylename="ddt.worldboss.autoOpenCount.textPos2" x="130" y="43" />
+	<custom classname="flash.geom.Point" stylename="ddt.worldboss.autoOpenCount.textPos3" x="291" y="38" />
+	
+	<custom classname="flash.geom.Point" stylename="LittleGameNotePos" x="919" y="240" />
+	
+	<custom stylename = "serverlist.hall.ServerDropList" classname="serverlist.view.ServerDropList" x="49" y="337" />
+	
+	<custom classname="flash.geom.Point" stylename="hall.tip.rule.pos" x="5" y="32"/>
+	<custom classname="flash.geom.Point" stylename="hall.tip.context.pos" x="10" y="35"/>
+    <custom classname="flash.geom.Point" stylename="worldBoss.entranceIcon.pos" x="55" y="0" />
+    <custom classname="flash.geom.Point" stylename="hall.newChickenBox.pos" x="200" y="200"/>
+    <custom classname="asset.ddt.hall.GameLoaingMc" stylename="ddt.hall.GameLoaingMc" x="441" y="319"/>
+    <custom classname="flash.geom.Point" stylename="fightFootballTime.iconPos" x="32" y="112"/>
+    
+    <custom classname="flash.geom.Point" stylename="hall.iconPanelOpenScollPos" x="466" y="-2"/>
+    <custom classname="flash.geom.Point" stylename="hall.iconPanelOpenScollPos2" x="911" y="140"/>
+    <custom classname="flash.geom.Point" stylename="hall.leftIconPanelOpenScollPos" x="-2" y="110"/>
+    
+    <custom classname="flash.geom.Point" stylename="hall.campBattleIconPos" x="15" y="3"/>
+    
+    <custom classname="flash.geom.Point" stylename="asset.battlePos" x="15" y="3"/>
+	<custom classname="flash.geom.Point" stylename="hall.lottery.pos" x="687" y="365"/>
+	
+	<custom classname="flash.geom.Point" stylename="hall.tip.activityTxt.pos0" x="23" y="14"/>
+	<custom classname="flash.geom.Point" stylename="hall.tip.activityTxt.pos1" x="12" y="-117"/>
+	
+	<custom classname="flash.geom.Point" stylename="day.ddtImportantAdv.viewPos" x="-25" y="-89"/>
+	<custom classname="flash.geom.Point" stylename="hall.channalMcPos" x="14" y="330"/>
+
+	<!-- 弹3新增 -->
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.equipPos" x="487" y="201"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.mountsPos" x="-15" y="-60"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.mounts2Pos" x="-10" y="-50"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.hitAreaPos" x="-58" y="-171"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerTipPos" x="25" y="-87"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerOperatePos" x="76" y="153"/>
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.exploreTipPos" x="255" y="339"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerOperate.maskPos" x="-87" y="15"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerOperate.headPos" x="88" y="-36"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerOperate.tipPos" x="59" y="42"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerTool.chatGuidePos" x="68" y="408"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.playerOperate.operateBtnPos" x="88" y="24"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.dungeonTipPos" x="1643" y="159"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.roomListTipPos" x="2066" y="159"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.labyrinthTipPos" x="2943" y="159"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.farmTipPos" x="2631" y="98"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.ringStationTipPos" x="3536" y="98"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfo.buffPos" x="241" y="16"/>
+	<custom classname="flash.geom.Point" stylename="hall.wonderful.infoView.titlePos" x="127" y="56"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoPos" x="40" y="950"/>
+	<custom classname="flash.geom.Point" stylename="hall.wonderful.infoView.infoTextPos" x="157" y="97"/>
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.bagPos" x="614" y="160"/>
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.openPos" x="646" y="474"/>
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.explorePos" x="364" y="454"/>
+	<custom classname="flash.geom.Point" stylename="hall.mgStoneGuide.equipTipPos" x="302" y="261"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerTool.chatGuideInfoPos" x="18" y="315"/>
+	<custom classname="ddt.view.common.KingBlessIcon" stylename="hall.playerInfo.KingBlessIcon" tipStyle="ddt.view.tips.KingBlessTip" tipDirctions="7" tipGapV="5" tipGapH="5"/>
+	<custom classname="ddt.view.common.DeedIcon" stylename="hall.playerInfo.DeedIconIcon" tipStyle="ddt.view.tips.KingBlessTip" tipDirctions="7" tipGapV="5" tipGapH="5"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.levelIconPos" x="-110" y="15"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerTool.tofflistGuidePos" x="284" y="174"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.bloodPos" x="114" y="52"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.vipPos" x="102" y="74"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.headPos" x="118" y="-6"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.toolPos" x="126" y="96"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.headPos" x="197" y="5"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.bodyPos" x="212" y="40"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.saddlePos" x="209" y="87"/>
+	
+	<custom classname="flash.geom.Point" stylename="hall.playerInfoview.serverlistPos" x="18" y="107" />
+	
+	<custom classname="flash.geom.Point" stylename="petAndHorse.risingStar.toLinkTxtPos1" x="43" y="440"/>
+	<custom classname="flash.geom.Point" stylename="petAndHorse.risingStar.toLinkTxtPos2" x="340" y="440"/>
+	<custom classname="flash.geom.Point" stylename="petAndHorse.risingStar.toLinkTxtPos3" x="409" y="416"/>
+	<custom classname="flash.geom.Point" stylename="petAndHorse.risingStar.toLinkTxtPos4" x="13" y="248"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfo.mailBtnPos" x="527" y="525"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfo.taskIconBtnPos" x="484" y="525"/>
+	<custom classname="flash.geom.Point" stylename="dungeonList.chatButtonPos" x="50" y="490"/>
+	<custom classname="flash.geom.Point" stylename="roomList.chatButtonPos" x="30" y="505"/>
+	<custom classname="flash.geom.Point" stylename="hall.leftMouseClickMcPos" x="865" y="535"/>
+	<custom classname="flash.geom.Point" stylename="worldboss.view.autoCountPos"  x="188" y="75" />
+	
+	<custom classname="flash.geom.Point" stylename="hall.build.cryptBossTipPos" x="3568" y="398"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.homeTipPos" x="3221" y="98"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerInfo.powNumPos" x="49" y="0"/>
+	<custom classname="flash.geom.Point" stylename="hall.pets.Pos0" x="-71" y="-16"/>
+	<custom classname="flash.geom.Point" stylename="hall.pets.Pos1" x="-71" y="-68"/>
+	<custom classname="hall.player.vo.PlayerPetsInfo" stylename="hall.petsInfo" distanceDic="0:134,1:356,2:343,3:374,4:387,5:437,6:430,7:381,8:381,9:370,101:358,102:358,103:366,104:369,105:355,106:339,107:361,108:332,109:351,110:346,111:351,112:351,113:371,114:371,115:371,116:371,117:371,118:371,119:371,120:371,121:361,122:361,123:361,124:361,125:361,132:361,133:420,134:361,222:420" /> <custom classname="flash.geom.Point" stylename="hall.pets.Pos3" x="-125" y="-85"/>
+	<custom classname="flash.geom.Point" stylename="hall.pets.Pos2" x="-125" y="-27"/>
+	<custom classname="flash.geom.Point" stylename="hall.player.hpStripPos" x="-19" y="0"/>
+	<custom classname="flash.geom.Point" stylename="hall.player.hpStripBgPos" x="-20" y="-1"/>
+	<custom classname="flash.geom.Point" stylename="hall.player.addbloodActionPos" x="-14" y="-31"/>
+	<custom classname="flash.geom.Point" stylename="hall.build.posterTipPos" x="1643" y="159"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos10" x="2200" y="306"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos13" x="3198" y="192"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos15" x="3418" y="300"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos0" x="0" y="313"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos12" x="2645" y="252"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos16" x="3682" y="300"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos11" x="2434" y="156"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos2" x="1184" y="230"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos18" x="3679" y="59"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.bodyPos2" x="195" y="5"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos1" x="297" y="188"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos8" x="2002" y="299"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos7" x="1994" y="221"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos14" x="3301" y="192"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos5" x="1731" y="235"/>
+	<custom classname="flash.geom.Point" stylename="hall.playerView.mounts3Pos" x="-10" y="-50"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos9" x="2218" y="292"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos4" x="1605" y="235"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos3" x="1564" y="318"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos6" x="1787" y="300"/>
+	<custom classname="flash.geom.Point" stylename="hall_scene_widgetPos17" x="3384" y="90"/>
+	<custom classname="qqhall.blueDrill.QQHallBlueDrillPrivilegeMain" stylename="qqhall.blueDrillView" x="121" y="21" />
+		 <custom classname="starling.scene.hall.SceneMapGridData" stylename="newhall.map.SceneMapGridData" numX="32"  numY="20"  mapId="0" bgImageW="2013" bgImageH="600" cellW="64" cellH="32"
+	gridsType="[[2,2,2,2,2,2,2,2,2,2,2,2,2,1,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,1,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,2,2,2,2,2,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,1,1,0,0,0,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,1,1,0,0,0,0,0,0,0,0,0,0],[2,2,2,2,2,2,2,2,1,1,0,0,0,0,0,0,0,0,0,0]]" />
+  
+</customs>
+<bitmaps>
+	<bitmapData resourceLink="ddt.view.recharge.word" x="1" y="33"/>
+	<bitmapData resourceLink="ddt.view.recharge.award.title" x="4" y="155"/>
+	<bitmapData resourceLink="ddt.view.recharge.child" x="335" y="12"/>
+	<bitmapData resourceLink="asset.hall.expblessed.icon" x="-5" y="-4"/>
+
+	<bitmapData resourceLink="asset.hall.systemPost.speaker" x="2" y="0"/>
+	<!--低图背景1~2-->
+	
+	<bitmapData resourceLink="asset.hall.fightPowerImg" x="0" y="-2"/>
+	<!--保存文件-->
+	<bitmapData resourceLink="asset.hallSaveFile.noviceBG" x="66" y="82"/>
+
+	<bitmapData resourceLink="asset.serverlist.hallBG" x="-11" y="-2"/>
+	
+	<bitmapData resourceLink="asset.hall.iconPanelScollCloseBtnBg" x="-1" y="0"/>
+
+	<!-- 弹3新增 -->
+	<bitmapData resourceLink="asset.hall.playerInfoBg" x="3" y="7"/>
+	<bitmapData resourceLink="asset.hall.playerInfo.energyProgressbar" x="8" y="3"/>
+	<bitmapData resourceLink="asset.hall.taskTrack.manuGetView.cellBg" x="2" y="1"/>
+	<bitmapData resourceLink="asset.horse.frame.buyBtn" x="7" y="41"/>
+	<bitmapData resourceLink="foodActivity.timeBGAsset" x="2" y="67"/>
+	<bitmapData resourceLink="asset.hall.signBuff.bg1" x="27" y="88"/>
+		<bitmapData resourceLink="asset.hall.signBuff.bg2" x="27" y="88"/>
+		<bitmapData resourceLink="asset.hall.signBuff.getIcon" x="352" y="0"/>
+</bitmaps>
+</style>

@@ -1,0 +1,20 @@
+
+7CarnivalSuperLuckerMain.xml�<View width="701" height="523">
+  <Image skin="asset.superLucker.bit11" x="0" y="0"/>
+  <Button skin="asset.superLucker.bit28" x="633" y="152" stateNum="1" var="closeBtn"/>
+  <Box x="0" y="0" var="movieBox"/>
+  <LabelEx x="388" y="426" color="0xAE4918" size="12" bold="true" var="rewardTxt1" width="121" height="18" align="center"/>
+  <LabelEx x="506" y="426" color="0xAE4918" size="12" bold="true" var="nickName1" width="99" height="18" align="center"/>
+  <LabelEx x="388" y="448" color="0xAE4918" size="12" bold="true" var="rewardTxt2" width="121" height="18" align="center"/>
+  <LabelEx x="506" y="448" color="0xAE4918" size="12" bold="true" var="nickName2" width="99" align="center" height="18"/>
+  <Image skin="asset.superLucker.bit17" x="475" y="244" var="wenImg"/>
+  <Box x="453" y="233" var="headBox" width="100" height="101"/>
+  <LabelEx text="现在正在抽取的是神宠*10000000000000" x="211" y="156" width="317" height="18" color="0xFFB196" var="desTxt"/>
+  <CarnivalSuperLuckerItem x="128" y="152" runtime="activity.carnivalSuperLucker.view.CarnivalSuperLuckerItem" name="item1"/>
+  <CarnivalSuperLuckerItem x="127" y="4" name="item3" runtime="activity.carnivalSuperLucker.view.CarnivalSuperLuckerItem"/>
+  <CarnivalSuperLuckerItem x="128" y="78" name="item2" runtime="activity.carnivalSuperLucker.view.CarnivalSuperLuckerItem"/>
+  <CarnivalSuperLuckerItem x="129" y="-70" name="item4" runtime="activity.carnivalSuperLucker.view.CarnivalSuperLuckerItem"/>
+</View>7CarnivalSuperLuckerItem.xml�7<View width="222" height="58">
+  <Clip x="0" y="0" var="bgClip" clipsUrl="asset.superLucker.bit3,asset.superLucker.bit1" index="0"/>
+  <LabelEx text="京城薇儿adada" x="3" y="21" color="0xFFB196" size="14" bold="true" width="218" height="18" align="center" var="nameTxt"/>
+</View>

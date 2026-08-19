@@ -1,0 +1,82 @@
+
+%MinesMainFrame.xml�s<View width="973" height="524">
+  <Image skin="asset.mines.mainFrame.bg" x="0" y="0"/>
+  <Image skin="asset.mines.mainFrame.title" x="33" y="9"/>
+  <Button skin="asset.mines.mainFrame.closeBtn" x="888" y="26" var="closeBtn" stateNum="1"/>
+  <Button skin="asset.mines.mainFrame.helpBtn" x="846" y="29" stateNum="1" var="helpBtn"/>
+  <Tab x="241" y="37" var="tabMain">
+    <TabButtonEx skin="asset.mines.mainFrame.digBtn.unselect,asset.mines.mainFrame.digBtn.select" offsets="18,6" name="item0"/>
+    <TabButtonEx skin="asset.mines.mainFrame.shopBtn.unselect,asset.mines.mainFrame.shopBtn.select" x="134" offsets="18,6" name="item1" y="0"/>
+    <TabButtonEx skin="asset.mines.mainFrame.toolBtn.unselect,asset.mines.mainFrame.toolBtn.select" x="280" offsets="18,6" name="item2" y="0"/>
+    <TabButtonEx skin="asset.mines.mainFrame.equipmentBtn.unselect,asset.mines.mainFrame.equipmentBtn.select" x="396" offsets="18,6" name="item3"/>
+  </Tab>
+  <Box var="mainBox" x="0" y="0"/>
+  <Button skin="asset.mines.mainFrame.chatBtn" x="799" y="42" stateNum="1" var="chatBtn" tipStyle="ddt.view.tips.OneLineTip"/>
+  <Image skin="asset.mines.mainFrame.fire" x="0" y="0" mouseEnabled="false" mouseChildren="false"/>
+</View>)view/DigShowView.xml�[<View width="600" height="400">
+  <Image skin="asset.ui.frame.bg2" x="213" y="123"/>
+  <Button skin="asset.ui.btn_close1" x="729" y="132" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.ui.scale.bg2" x="231" y="167" sizeGrid="20,20,20,20" width="540" height="229"/>
+  <Image skin="asset.ui.scale.bg9" x="237" y="206" sizeGrid="20,20,20,20" width="527" height="182"/>
+  <Label x="251" y="178" var="titleLabel" text="label" color="0xffde00" size="14" stroke="0x753a06,1,4,4,10" bold="true"/>
+  <Label text="Tầng 1" x="251" y="217" var="floor1Label" color="0xffb400" size="12" stroke="0x673f01,1,4,4,10" bold="true" font="Arial"/>
+  <Label text="Tầng 1" x="251" y="250" var="floor2Label" color="0xffb400" size="12" stroke="0x673f01,1,4,4,10" bold="true" font="Arial"/>
+  <Label text="Tầng 1" x="251" y="282" var="floor3Label" color="0xffb400" size="12" stroke="0x673f01,1,4,4,10" bold="true" font="Arial"/>
+  <Label text="Tầng 1" x="251" y="315" var="floor4Label" color="0xffb400" size="12" stroke="0x673f01,1,4,4,10" bold="true" font="Arial"/>
+  <Label text="Tầng 1" x="251" y="351" var="floor5Label" color="0xffb400" size="12" stroke="0x673f01,1,4,4,10" bold="true" font="Arial"/>
+  <Label text="label" x="298" y="217" var="mines1Label" color="0xdedab3" size="11" stroke="0x673f01,1,4,4,10" font="Arial"/>
+  <Label text="label" x="297" y="250" var="mines2Label" color="0xdedab3" size="11" stroke="0x673f01,1,4,4,10" font="Arial"/>
+  <Label text="label" x="296" y="282" var="mines3Label" color="0xdedab3" size="11" stroke="0x673f01,1,4,4,10" font="Arial"/>
+  <Label text="label" x="297" y="315" var="mines4Label" color="0xdedab3" size="11" stroke="0x673f01,1,4,4,10" font="Arial" width="457" height="36" wordWrap="true"/>
+  <Label text="Cát,Đá,Than Đá,Vàng,Vàng,Kim Cương,Sắt,Lục Bảo Thạch,Hồng Bảo Thạch,Hoàng Bảo Thạch,Lam Bảo Thạch" x="296" y="351" var="mines5Label" color="0xdedab3" size="11" stroke="0x673f01,1,4,4,10" font="Arial" width="457" height="36" wordWrap="true"/>
+</View>-view/EquipmentView.xml�g<View width="600" height="400">
+  <Box x="77" y="86" var="box">
+    <Image skin="asset.mines.equipmentView.bg"/>
+    <Button skin="asset.mines.equipmentView.levelUpBtn" x="157" y="331" stateNum="1" var="levelUpBtn"/>
+    <CheckBox skin="asset.mines.ToolView.allIn" x="169" y="225" stateNum="3" var="allInCheckBtn"/>
+  </Box>
+  <Label text="100/1000" x="304" y="377" var="proLabel" color="0xffe8b0" size="12" stroke="0x711802"/>
+</View>-view/EquipmentItem.xml�	<View width="87" height="86" tipStyle="mines.view.EquipmentTip" tipDirctions="7">
+  <Box x="0" y="0" var="box">
+    <Image skin="asset.mines.equipmentView.weapon1" x="8" y="8" var="weapon"/>
+    <Image skin="asset.mines.equipmentView.selected" var="selectedPic" x="0" y="0"/>
+  </Box>
+  <Label text="LV.1" x="48" y="63" color="0xbaabc3" size="12" stroke="0x380262" var="lvLabel"/>
+</View>%view/HelpFrame.xml�<View width="600" height="400">
+  <Image skin="asset.ui.frame.bg2" x="254" y="79" sizeGrid="30,60,30,60" width="460" height="331"/>
+  <Button skin="asset.ui.btn_close1" x="652" y="85" stateNum="1" var="closeBtn"/>
+  <TextArea text="1. Vào Khu Đào Mỏ dùng hoạt bát có thể đào được đạo cụ.&lt;br>2. Đến chỗ Thương Nhân có thể bán đạo cụ đào mỏ và mua đạo cụ.&lt;br>3. Phẩm chất Cuốc (Gỗ, Sắt, Đồng, Bạc, Vàng) dùng đạo cụ đào mỏ để tăng cấp, tăng cấp sẽ đào được đạo cụ cao cấp hơn.&lt;br>4. Giáp Cổ dùng đạo cụ đào mỏ để tăng cấp, tăng cấp sẽ tăng thuộc tính.&lt;br>5. Khi đào nếu túi đầy sẽ không nhận được đạo cụ.&lt;br>6. Khi đào nếu tắt Đào Mỏ, quá trình đào kết thúc" x="286" y="149" color="0xF6EEBA" disabled="false" editable="false" indent="10" isHtml="true" width="392" height="227" leading="5" letterSpacing="1" stroke="0x693812,1,4,4,10" font="Arial"/>
+</View>#view/ShopView.xml�<View width="600" height="400">
+  <Image skin="asset.mines.shopView.bg" x="77" y="86"/>
+  <Image skin="asset.mines.shopView.dialogueBg" x="190" y="109"/>
+  <Label text="label" x="238" y="116" color="0xccd1dd" size="12" stroke="0x2b206c,1,4,4,10" var="infoLabel" width="207" height="85" wordWrap="true" autoSize="none"/>
+</View>#view/ToolView.xml�=<View width="600" height="400">
+  <Box x="77" y="86" var="box">
+    <Image skin="asset.mines.ToolView.bg"/>
+    <CheckBox skin="asset.mines.ToolView.allIn" x="31" y="204" stateNum="3" var="allInCheckBtn"/>
+    <Image skin="asset.mines.ToolView.progressLine" x="214" y="53" width="209" height="209" var="round"/>
+    <Button skin="asset.mines.ToolView.upBtn" x="157" y="318" stateNum="1" var="upBtn"/>
+    <Label text="label" x="255" y="11" color="0xffeb0c" size="16" stroke="0x701200,1,4,4,10" bold="true" var="toolName" width="125" height="25" align="center"/>
+    <Label text="label" x="230" y="277" color="0x03ba1d" size="14" stroke="0x052f01,1,4,4,10" var="nextToolName" width="186" height="26" align="center"/>
+    <Label text="500000/500000" x="259" y="241" color="0xffffff" size="14" stroke="0x660101,1,4,4,10" tipStyle="OneLineTip" width="133" height="22" align="center" var="proLabel"/>
+    <Image skin="asset.mines.ToolView.tool1" x="263" y="92" var="toolImage"/>
+  </Box>
+</View>!view/DigView.xml�/<View width="816" height="399">
+  <Image skin="asset.mines.digView.bg" x="77" y="86"/>
+  <Label text="label" x="152" y="120" stroke="0x2d0101" color="0xb49a67" size="12" width="134" height="18" var="costInfoLabel"/>
+  <Button skin="asset.mines.digView.stopBtn" x="401" y="414" var="stopBtn" stateNum="1"/>
+  <Image skin="asset.mines.digView.infoBg" x="80" y="243"/>
+  <Label x="91" y="257" size="12" color="0xffeb0c" var="infoLabel" stroke="0x502000,1,4,4,10" width="153" height="208" multiline="true" leading="6"/>
+  <ProgressBar skin="asset.mines.digView.progress" x="178" y="101" var="progress" width="89" height="17"/>
+  <Label text="label" x="182" y="102" size="10" color="0xffffff" stroke="0x003901" width="80" height="18" align="center" var="proLabel"/>
+  <Button skin="asset.mines.digView.showBtn" x="280" y="96" var="showBtn" stateNum="1"/>
+  <Label text="Số tầng:" x="411" y="102" var="floorLabel" color="0xffba00" size="16" stroke="0x520101" font="Arial"/>
+  <ComboBox labels="1,2,3,4,5" skin="asset.mines.digView.floorBtn" x="475" y="103" width="49" height="20" itemSize="16" itemColors="0xfcff00,0xfcff00,0xfcff00,0xfcff00" itemLabelStroke="0x882000,1,4,4,10" var="combox" listSkin="asset.mines.digView.floorBg" selectedIndex="0" scrollBarSkin="asset.coreM.scroll.vscroll" stateNum="1" labelColors="0xfcff00,0xfcff00,0xfcff00,0xfcff00" labelStroke="0x882000,1,4,4,10" labelSize="16"/>
+  <Button skin="asset.mines.digView.mine" x="194" y="175" stateNum="2" var="digBtn"/>
+</View>+view/MinesBagView.xml�<View width="600" height="400">
+  <Image skin="asset.mines.bag.bg" x="0" y="0"/>
+  <Button skin="asset.mines.bag.arrange" x="41" y="338" stateNum="1" var="arrangeBtn"/>
+  <Button skin="asset.mines.bag.pageUpBtn" x="181" y="337" stateNum="1" var="upBtn"/>
+  <Button skin="asset.mines.bag.pageDownBtn" x="285" y="337" stateNum="1" var="downBtn"/>
+  <Label text="label" x="216" y="346" stroke="0x9a753b,1,4,4,10" color="0xffe5b5" size="14" bold="true" align="center" width="64" height="18" var="pageLabel"/>
+</View>

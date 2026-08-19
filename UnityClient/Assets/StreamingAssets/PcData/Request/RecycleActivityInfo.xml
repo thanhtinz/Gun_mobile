@@ -1,0 +1,14 @@
+<Result value="true" message="Success!">
+  <Item TemplateID="-5000" Integral="1" Count="1" />
+  <Item TemplateID="11150" Integral="1" Count="1" />
+  <Item TemplateID="11152" Integral="20" Count="1" />
+  <Item TemplateID="11163" Integral="1" Count="1" />
+  <Item TemplateID="11165" Integral="1" Count="1" />
+  <Item TemplateID="11166" Integral="1" Count="1" />
+  <Item TemplateID="11177" Integral="15" Count="1" />
+  <Item TemplateID="11917" Integral="1" Count="1" />
+  <Item TemplateID="12214" Integral="1" Count="1" />
+  <Item TemplateID="40002" Integral="5" Count="1" />
+  <Item TemplateID="40008" Integral="5" Count="1" />
+  <Item TemplateID="100100" Integral="1" Count="1" />
+</Result>

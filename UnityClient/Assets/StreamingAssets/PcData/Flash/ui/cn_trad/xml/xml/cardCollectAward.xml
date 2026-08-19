@@ -1,0 +1,78 @@
+<style name="cardCollectAward" version="1.0.1" source="ui/cn_trad/swf/cardCollectAward.swf">
+<sets>
+		<set stylename="cardCollectAward.awardTextTF" args="微软雅黑,20,0xb12a14,true" type="flash.text.TextFormat" />
+		<set stylename="cardCollectAward.awardItem.text.tf" args="微软雅黑,14,0x522300,true" type="flash.text.TextFormat" />
+		
+		<set stylename="cardCollectAward.awardPurpleTextTF" args="微软雅黑,20,0x9065b4,true" type="flash.text.TextFormat" />
+		<set stylename="cardCollectAward.awardItem.purple.text.tf" args="微软雅黑,16,0xd8b7f7" type="flash.text.TextFormat" />
+		
+		<set stylename="selfInfo_black_txt" args="微软雅黑,20,0xffffff" type="flash.text.TextFormat" />
+		
+</sets>
+<customs>
+	<custom classname="cardCollectAward.view.CardCollectAwardFrame"
+			closestyle="core.closebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle"
+			closeInnerRectString="44,12,6,30,14" stylename="ddt.cardCollectAward.CardCollectAwardFrame"
+			 parentStyle="BaseFrame"  backStyle="SimpleFrameBackgound" 
+			 width="798" height="527"/>
+</customs>
+
+	<components>
+		<!--体验感 -->	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.firstList.title" 
+			textFormatStyle="cardCollectAward.awardTextTF"  x="38" y="5"/>
+			
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="asset.cardCollectAward.yelloBg.happyButton"
+			parentStyle="yellowBg.selectBtn"  x="33" y="130"
+			textStyle="asset.cardCollectAward.iconItem0" />
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="asset.cardCollectAward.yelloBg.generalButton"
+			parentStyle="yellowBg.selectBtn" x="107" y="130"
+			textStyle="asset.cardCollectAward.iconItem1" />	
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="asset.cardCollectAward.yelloBg.cryButton"
+			parentStyle="yellowBg.selectBtn"  x="181" y="130"
+			textStyle="asset.cardCollectAward.iconItem2" />	
+			
+		<!--最有爱的更新 ,更多期待 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.secondList.title" 
+			textFormatStyle="cardCollectAward.awardTextTF"  x="38" y="5"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="cardCollectAward.awardItem.simpleCheckBtn" 
+			parentStyle="yellowBg.selectBtn" textStyle="cardCollectAward.awardItem.text" displacement="true" 
+			fieldX="25" fieldY="2" x="26"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.awardItem.text" 
+			textFormatStyle="cardCollectAward.awardItem.text.tf"/>
+			
+		<!-- 最不给力的玩法 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.fourList.title" 
+			textFormatStyle="cardCollectAward.awardPurpleTextTF"  x="42" y="5"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="cardCollectAward.awardPurpleItem.simpleCheckBtn" 
+			parentStyle="purpleBg.selectBtn" textStyle="cardCollectAward.awardPurpleItem.text" displacement="true" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.awardPurpleItem.text" 
+			textFormatStyle="cardCollectAward.awardItem.purple.text.tf"/>
+			
+		<!-- 内容输入区 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.writeContentTxt" textFormatStyle="content_txt" wordWrap="true" type="input" mouseEnabled="true"/>
+		<component classname="com.pickgliss.ui.text.TextArea" stylename="cardCollectAward.writeContent" parentStyle="core.SimpleTextArea" textStyle="cardCollectAward.writeContentTxt" x="30" y="340" width="731" height="92" />		
+			
+		<!-- 资料区 -->
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cardCollectAward.saveAndCloseBtn" backStyle="asset.cardCollectAward.submitBtn" filterString="null,lightFilter,null,grayFilter" width="184" height="45" x="584" y="451"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cardCollectAward.saveBtn" backStyle="asset.cardCollectAward.saveBtn" filterString="null,lightFilter,null,grayFilter" width="184" height="45" x="162" y="0"/>	
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cardCollectAward.editBtn" backStyle="asset.cardCollectAward.editBtn" filterString="null,lightFilter,null,grayFilter" width="184" height="45" x="162" y="0"/>		
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cardCollectAward.writeSelfInfoTxt" textFormatStyle="selfInfo_black_txt" autoSize="none" isAutoFitLength="true"  width="160" height="26"/>
+		<component classname="com.pickgliss.ui.controls.TextInput" stylename="cardCollectAward.writeSelfInfoInput"  textStyle="cardCollectAward.writeSelfInfoTxt" textInnerRectString="10,10,3,2,0" x="0" y="5" width="160" height="26"/>
+		
+		<!-- 项选中时背景图 -->
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="cardCollectAard.itemSelected.yellowHor.Bg" resourceLink="asset.cardCollectAward.yellowBorder.selectedBg" width="52" height="31" scaleGridString="10,10,38,20"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="cardCollectAard.itemSelected.purpleHor.Bg" resourceLink="asset.cardCollectAward.purpleBorder.selectedBg" width="53" height="31" scaleGridString="10,10,38,10"/>	
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="cardCollectAard.itemSelected.yellowVer.Bg" resourceLink="asset.cardCollectAward.yellowBorderVer.selectedBg" width="46" height="58" scaleGridString="10,10,36,38" y="130"/>
+	</components>
+<bitmaps>
+	<bitmapData resourceLink="asset.cardCollectAward.bg" width="765" height="474" x="15" y="39"/>
+	<!-- <bitmapData resourceLink="asset.cardCollectAward.yellowBorder.selectedBg" width="52" height="31"/> -->
+	
+</bitmaps>
+</style>

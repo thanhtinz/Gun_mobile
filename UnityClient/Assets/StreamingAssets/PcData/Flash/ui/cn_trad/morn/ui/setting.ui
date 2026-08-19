@@ -1,0 +1,54 @@
+
+'SettingFuncView.xml�<View width="288" height="330">
+  <CheckBox label="武器特效" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="34" labelBold="true" selected="false" labelMargin="0,2" var="weaponEffectBtn"/>
+  <Image skin="asset.ddtsetting.TitleBg" x="0" y="0" sizeGrid="15,15,15,15" width="288" height="29"/>
+  <Image skin="asset.ddtsetting.DisplaySetting" x="2" y="3"/>
+  <Image skin="asset.ddtsetting.TitleBg" x="0" y="138" width="288" height="29"/>
+  <Image skin="asset.ddtsetting.FuncSetting" x="2" y="141"/>
+  <CheckBox label="跑马灯展示" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="34" labelBold="true" selected="false" labelMargin="0,2" var="speakerBtn"/>
+  <CheckBox label="情义特效" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="67" labelBold="true" selected="false" labelMargin="0,2" var="friendshipEffectBtn"/>
+  <CheckBox label="守护特效" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="67" labelBold="true" selected="false" labelMargin="0,2" var="guardEffectBtn"/>
+  <CheckBox label="拒绝查看荣耀" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="175" labelBold="true" selected="false" labelMargin="0,2" var="lookDDTHonorBtn"/>
+  <CheckBox label="允许加为好友" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="207" labelBold="true" selected="false" labelMargin="0,2" var="acceptAddingFriendsBtn"/>
+  <CheckBox label="上线提示" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="175" labelBold="true" selected="false" labelMargin="0,2" var="onlinePromptBtn"/>
+  <CheckBox label="引导功能" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="207" labelBold="true" selected="false" labelMargin="0,2" var="guideFuncBtn"/>
+  <CheckBox label="拒绝陌生人消息" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="238" labelBold="true" selected="false" labelMargin="0,2" var="rejectStrangerMessageBtn"/>
+  <CheckBox label="接受邀请" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="238" labelBold="true" selected="false" labelMargin="0,2" var="acceptInvitationBtn"/>
+  <CheckBox label="跳过开场动画" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="271" labelBold="true" selected="false" labelMargin="0,2" var="skipMovieBtn"/>
+  <Button skin="ddtsetting.keyset.keysettingBtn" x="202" y="138" stateNum="1" var="keySettingBtn"/>
+  <CheckBox label="新主城" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="159" y="268" labelBold="true" selected="false" labelMargin="0,2" var="newHallBtn"/>
+  <CheckBox label="角色光圈特效" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="4" y="97" labelBold="true" selected="false" labelMargin="0,2" var="playerLightEffectBtn"/>
+</View>+SettingVolumeView.xml�O<View width="288" height="330">
+  <Image skin="asset.ddtsetting.TitleBg" x="0" y="0" sizeGrid="15,15,15,15" width="288" height="29"/>
+  <Image skin="asset.ddtsetting.VolumnSetting" x="2" y="3"/>
+  <CheckBox label="背景音乐" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="3" y="34" labelBold="true" selected="false" labelMargin="0,2" var="backgroundMusicBtn"/>
+  <Image skin="asset.ui.scale.bg4" x="2" y="69" width="280" height="36" sizeGrid="12,12,12,12" var="musicSilderBg"/>
+  <Label text="小" x="9" y="78" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10"/>
+  <Label text="大" x="258" y="78" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10" width="19" height="18"/>
+  <CheckBox label="游戏音效" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="3" y="109" labelBold="true" selected="false" labelMargin="0,2" var="gameMusicBtn"/>
+  <Image skin="asset.ui.scale.bg4" x="2" y="144" width="280" height="36" sizeGrid="12,12,12,12" var="soundSilderBg"/>
+  <Label text="小" x="9" y="153" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10"/>
+  <Label text="大" x="258" y="153" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10" width="19" height="18"/>
+  <CheckBox label="语音" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="3" y="183" labelBold="true" selected="false" labelMargin="0,2" var="voiceChatBtn"/>
+  <Image skin="asset.ui.scale.bg4" x="2" y="218" width="280" height="36" sizeGrid="12,12,12,12" var="voiceChatSilderBg"/>
+  <Label text="小" x="9" y="227" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10"/>
+  <Label text="大" x="258" y="227" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10" width="19" height="18"/>
+  <CheckBox label="麦克风" checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="3" y="259" labelBold="true" selected="false" labelMargin="0,2" var="micBtn"/>
+  <Image skin="asset.ui.scale.bg4" x="2" y="294" width="280" height="36" sizeGrid="12,12,12,12" var="micSilderBg"/>
+  <Label text="小" x="9" y="303" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10"/>
+  <Label text="大" x="258" y="303" size="14" bold="true" color="0xE3CCA2" stroke="0x52360F,1,4,4,10" width="19" height="18"/>
+</View>'SettingMainView.xml�1<View width="324" height="488">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="25,50,25,50" x="0" y="0" width="324" height="488"/>
+  <Button skin="asset.ui.btn_close1" x="267" y="5" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.ddtsetting.tabTxtBg" x="15" y="41" sizeGrid="12,12,12,12" width="294" height="37"/>
+  <TabListEx var="tabMenu" x="37" y="42">
+    <TabButtonEx bgSizeGrid="15,15,15,15" name="item0" skin="asset.core.btmc004|asset.ddtsetting.tabtxt1.normal,asset.core.btmc005|asset.ddtsetting.tabtxt1.select" rects="10,0,100,35|10,2,96,27|0,0,135,35|17,5,96,27" selected="true"/>
+    <TabButtonEx skin="asset.core.btmc004|asset.ddtsetting.tabtxt2.normal,asset.core.btmc005|asset.ddtsetting.tabtxt2.select" x="125" bgSizeGrid="15,15,15,15" name="item1" rects="10,0,100,35|10,2,96,27|-16,0,135,35|1,5,96,27"/>
+  </TabListEx>
+  <SettingFuncView x="17" y="87" var="funcView" runtime="setting.view.SettingFuncView"/>
+  <Image skin="asset.ui.scale.bg3" x="17" y="424" sizeGrid="12,12,12,12" width="287" height="46"/>
+  <Button skin="asset.ui.btn_yellow1" x="63" y="430" stateNum="1" sizeGrid="34,16,34,16" height="35" width="77" label="确 认" labelColors="0xffea9c" labelStroke="0x734017,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1" var="confirmBtn"/>
+  <Button skin="asset.ui.btn_yellow1" x="179" y="430" stateNum="1" sizeGrid="34,16,34,16" height="35" width="77" label="取 消" labelColors="0xffea9c" labelStroke="0x734017,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1" var="cancelBtn"/>
+  <SettingVolumeView x="17" y="87" var="volumeView" visible="false" runtime="setting.view.SettingVolumeView"/>
+  <Label text="设置" x="12" y="11" color="0xFFEBBE" bold="true" size="16" stroke="0x482802,1,4,4,10"/>
+</View>

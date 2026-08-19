@@ -1,0 +1,9 @@
+{
+  "name": "GunMobile.EditorTools",
+  "rootNamespace": "GunMobile.EditorTools",
+  "references": [ "GunMobile.Client", "GunMobile.Runtime" ],
+  "includePlatforms": [ "Editor" ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true
+}

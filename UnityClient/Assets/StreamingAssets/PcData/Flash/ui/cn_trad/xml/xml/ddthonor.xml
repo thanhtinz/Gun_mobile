@@ -1,0 +1,26 @@
+<style name="ddthonor" version="1.0.1" source="ui/cn_trad/swf/ddthonor.swf">
+	<sets>
+	</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="ddthonor.mainview.characterPos" x="266" y="108"/>
+	<custom classname="flash.geom.Point" stylename="ddthonor.mainview.itemDataViewPos" x="302" y="82"/>
+	<custom classname="flash.geom.Point" stylename="ddthonor.mainview.trophiesViewPos" x="281" y="98"/>
+	<custom classname="flash.geom.Point" stylename="ddthonor.mainview.evolveViewPos" x="289" y="78"/>
+	<custom classname="flash.geom.Point" stylename="ddthonor.evolveview.cellPos" x="61" y="97"/>
+	<custom classname="flash.geom.Point" stylename="ddthonor.evolveview.nextCellPos" x="283" y="84" />
+	<custom classname="flash.geom.Point" stylename="ddthonor.evolveview.needCellPos" x="177" y="223" />
+	<custom classname="flash.geom.Point" stylename="ddthonor.evolveview.actionPos" x="259" y="57" />
+</customDisplay>
+
+<components>
+	<component classname="com.pickgliss.ui.controls.container.GridBox" stylename="ddthonor.trophiesView.gridbox" 
+		x="38" y="63" spacing="5" strictSize="70" cellHeght="70" columnNumber="5"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="ddthonor.boxview.hbox" strictSize="78" spacing="1" x="29" y="15" />
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="ddthonor.mytrophyview.hbox" strictSize="78" spacing="1" x="29" y="15" />
+	<component classname="com.pickgliss.ui.image.Image" stylename="ddthonor.boxitem.cellBg" resourceLink="asset.ddthonor.trophiesCellBg"/>
+</components>
+
+<bitmaps>
+		<bitmapData resourceLink="asset.ddthonor.borderBgShine" smoothing="true" width="82" height="82" x="-9" y="-8" />
+</bitmaps>
+</style>

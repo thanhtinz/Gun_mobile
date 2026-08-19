@@ -1,0 +1,20 @@
+<Result value="true" message="Success!">
+  <Item StockID="1001" StockName="Nhang Muỗi" BasePrice="600" FlowCoeffcient="7000" />
+  <Item StockID="1002" StockName="Trại Gà" BasePrice="550" FlowCoeffcient="10000" />
+  <Item StockID="1003" StockName="TM Gà" BasePrice="350" FlowCoeffcient="15000" />
+  <Item StockID="1004" StockName="Cảng Gà" BasePrice="300" FlowCoeffcient="15000" />
+  <Item StockID="1005" StockName="Tàu Gà" BasePrice="200" FlowCoeffcient="20000" />
+  <Item StockID="1006" StockName="Tà Thần" BasePrice="200" FlowCoeffcient="20000" />
+  <Item StockID="1007" StockName="Nicole" BasePrice="200" FlowCoeffcient="20000" />
+  <Item StockID="1008" StockName="TVĐ" BasePrice="200" FlowCoeffcient="20000" />
+  <Item StockID="1009" StockName="Người Cá" BasePrice="300" FlowCoeffcient="16000" />
+  <Item StockID="1010" StockName="Thủy Sản" BasePrice="300" FlowCoeffcient="15000" />
+  <Item StockID="1011" StockName="Viễn Chinh" BasePrice="300" FlowCoeffcient="15000" />
+  <Item StockID="1012" StockName="Oai Tử" BasePrice="400" FlowCoeffcient="16000" />
+  <Item StockID="1013" StockName="Suối Nóng" BasePrice="400" FlowCoeffcient="12000" />
+  <Item StockID="1014" StockName="Gốm Charlie" BasePrice="400" FlowCoeffcient="12000" />
+  <Item StockID="1015" StockName="Đá Rồng" BasePrice="400" FlowCoeffcient="12000" />
+  <Item StockID="1016" StockName="Grace Group" BasePrice="500" FlowCoeffcient="10000" />
+  <Item StockID="1017" StockName="TM Goblin" BasePrice="400" FlowCoeffcient="10000" />
+  <Item StockID="1018" StockName="KT Gerri" BasePrice="500" FlowCoeffcient="8000" />
+</Result>

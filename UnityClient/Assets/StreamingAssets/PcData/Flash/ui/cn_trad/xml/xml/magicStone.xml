@@ -1,0 +1,211 @@
+<style name="magicStone" version="1.0.1" source="ui/zh_cn/swf/magicStone.swf">
+<sets>
+	<set stylename="magicStone.pageTF" args="宋体,12,0xFFF8D6,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="magicStone.pageGF" args="0x4b270d,1,4,4,30"  type="flash.filters.GlowFilter" />
+	
+	<set stylename="magicStone.shopFrame.scoreTxtGF" args="0x5b3100,1,4,4,500"  type="flash.filters.GlowFilter"/>
+	<set stylename="magicStone.shopFrame.scoreTxtTF" args="宋体,14,0xffcc00,true,,,,,center" type="flash.text.TextFormat"/>
+	
+	<set stylename="magicStone.batFrame.TextTF" args="宋体,16,0xffeebf,true" letterSpacing="2" type="flash.text.TextFormat"/>
+	<set stylename="magicStone.batFrame.TextGF" args="0x442006,1,4,4,30" type="flash.filters.GlowFilter"/> 
+	
+	<set stylename="magicStone.orangeTF" args="宋体,12,0xff8400"  type="flash.text.TextFormat"/>
+	<set stylename="magicStone.orangeGF" args="0x2a0e02,1,2,2,30" type="flash.filters.GlowFilter"/> 
+	
+	<set stylename="magicStone.redTF" args="宋体,12,0xe21a1a,true" letterSpacing="2" type="flash.text.TextFormat"/>
+	<set stylename="magicStone.redGF" args="0x2a0e02,1,2,2,30" type="flash.filters.GlowFilter"/> 
+	<set stylename="magicStone.redTF2" args="宋体,12,0xff0000,true,,,,,left" type="flash.text.TextFormat"/>
+	<set stylename="magicStone.redGF2" args="0xffffff,1,2,2,500" type="flash.filters.GlowFilter"/> 
+	
+	<set stylename="magicStone.progressTxtTF" args="宋体,12,0xffe8b0,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="magicStone.progressTxtGF"  args="0x711802,1,4,4,34" type="flash.filters.GlowFilter" />
+	
+	<set stylename="magicStone.ensureAlertTxtTF" args="宋体,15,0x654600,true,,,,,center"  type="flash.text.TextFormat"  leading="10" />
+	<set stylename="magicStone.ensureAlertTxtGF" args="0xFFFFFF,1,4,4,30"  type="flash.filters.GlowFilter" />
+	
+	<set stylename="magicStone.mgStoneCell.nameTF"  args="宋体,14,0x000000,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="magicStone.mgStoneCell.nameGF" args="0xffffff,1,2,2,34"  type="flash.filters.GlowFilter" />
+	<set stylename="magicStone.mgStoneCell.nameGF2" args="0x000000,1,2,2,34"  type="flash.filters.GlowFilter" />
+	
+	<set stylename="magicStone.shopFrame.remainCountTxtTF" args="宋体,12,0x000000,true,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="magicStone.shopFrame.remainCountTxtGF" args="0xffffff,1,2,2,20,1" type="flash.filters.GlowFilter" />
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="magicStone.progressPos" x="169" y="268"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.bagListPos" x="16" y="18"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.moneyIconPos" x="291" y="370"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.bindMoneyIconPos" x="291" y="399"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.moneyTxtPos" x="320" y="373"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.bindMoneyTxtPos" x="320" y="402"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos0" x="127" y="80"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos1" x="52" y="147"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos2" x="59" y="236"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos3" x="126" y="307"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos4" x="235" y="81"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos5" x="302" y="148"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos6" x="304" y="235"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos7" x="235" y="307"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneCellPos8" x="188" y="183"/>
+	
+	<!-- 魔玉位置-->
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos0" x="190" y="79"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos1" x="72" y="143"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos2" x="156" y="143"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos3" x="226" y="143"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos4" x="311" y="143"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos5" x="137" y="203"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos6" x="244" y="203"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos7" x="114" y="263"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.mgStoneJadeCellPos8" x="276" y="263"/>
+	
+	<custom classname="magicStone.views.MagicStoneInfoView" stylename="magicStone.infoView"
+		x="0" y="0" />
+	<custom classname="magicStone.views.MagicStoneBagView" stylename="magicStone.bagView"
+		x="434" y="0" />
+<!-- 		魔石商城 -->
+	<custom classname="magicStone.views.MagicStoneShopFrame" stylename="magicStone.magicStoneShopFrame"  backStyle="SimpleFrameBackgoundOneIII" 
+		width="480" height="521" titleStyle="FrameTitleTextStyle" escEnable = "true" parentStyle="BaseFrame"  type="1" 
+		closestyle="core.closebt" closeInnerRectString="44,12,6,30,14" cancelButtonStyle="magicStone.core.simplebt"
+		moveEnable="true" buttonToBottom="13" containerX="20" containerY="40" titleOuterRectPosString="12,11,5"/>
+	<custom classname="asset.ddtshop.RightItemLightMc" stylename="magicStone.shopFrame.RightItemLightMc" 
+		x="9" y="8" width="70" height="75" />
+	<custom classname="flash.display.Sprite" stylename="magicStone.shopFrame.GoodItemContainerAll" spacing="2" x="7" y="10"/>
+	<custom classname="flash.display.Sprite" stylename="magicStone.shopFrame.navigationBarContainer" x="28" y="-122"/>
+	
+<!-- 弹出框 -->
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.numSelecterPos" x="160" y="22"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.selectedItemPos" x="175" y="100"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.totalTipPos" x="71" y="61"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.totalTxtPos" x="199" y="60"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.okBtnPos" x="42" y="129"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.batFrame.cancelBtnPos" x="242" y="129"/>
+	
+	<custom classname="magicStone.helpContent" stylename="magicStone.help.content" x="34" y="75"/>
+	
+	<custom classname="flash.geom.Point" stylename="magicStone.canNotBuyTipsPos" x="137" y="61"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.canNotBuyTipsPos2" x="105" y="61"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.combineLightMcPos" x="738" y="296"/>
+	
+	<custom classname="flash.geom.Point" stylename="magicStone.jade.movie0" x="190" y="76"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.jade.movie1" x="71" y="139"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.jade.movie2" x="137" y="201"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.jade.movie3" x="244" y="200"/>
+	<custom classname="flash.geom.Point" stylename="magicStone.jade.movie4" x="222" y="223"/>
+</customDisplay>
+<components>
+<!-- 左边视图 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.progressTxt" 
+		textFormatStyle="magicStone.progressTxtTF" filterString="magicStone.progressTxtGF" 
+		x="12" y="6" autoSize="none" width="100"  height="20" />	
+		
+<!-- 		魔石背包 -->
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage"
+			stylename="outsideScaleBg" parentStyle="core.Scale9CornerImage.SimpleTableBackgound1"/>
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage"
+			stylename="insideScaleBg" parentStyle="core.Scale9CornerImage.SimpleTableBackgound2"/>
+	<component classname="com.pickgliss.ui.image.TiledImage"
+			stylename="bgPaper" resourceLink="bagAndInfo.info.personalInfoBgAsset6"/>
+			
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="outsideBg" resourceLink="outsideScaleBg,bagAndInfo.info.paper2"
+			imageRectString=",6|6|3|5|0" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="insideBg" resourceLink="insideScaleBg,bagAndInfo.info.paper2"
+			imageRectString=",6|6|3|5|0" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+		stylename="magicStone.bagViewBg" resourceLink="outsideBg,insideBg"
+		imageRectString="0|405|0|442|13,6|4|6|6|0" />
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"   tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" 
+		stylename="magicStone.batCombBtn" backStyle="magicStone.batCombine"
+		x="137" y="375" />
+	<component classname="magicStone.components.MgStoneLockBtn" stylename="magicStone.lockBtn"  
+		backStyle="magicStone.lock"  tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0" filterString="null,lightFilter,null,grayFilter" 
+		x="15" y="381" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+		stylename="magicStone.sortBtn" backStyle="magicStone.sort"
+		x="333" y="339" />
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="magicStone.momeyBg" resourceLink="asset.core.MoneyBG"
+		tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,1,2" 
+		scaleGridString="5,10,60,15" width="100" height="26" x="290" y="369" />
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="magicStone.bindMomeyBg" resourceLink="asset.core.MoneyBG"
+		tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,1,2" 
+		scaleGridString="5,10,60,15" width="100" height="26" x="290" y="398" />
+
+	<component classname="com.pickgliss.ui.controls.BaseButton"
+		stylename="magicStone.prevBtn"  backStyle="asset.ui.pageNavBtn.pre2"
+		x="164" y="343"  filterString="null,lightFilter,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton"
+		stylename="magicStone.nextBtn" backStyle="asset.ui.pageNavBtn.next2"
+		x="272" y="343"  filterString="null,lightFilter,null,grayFilter" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="magicStone.pageTxt"  textFormatStyle="magicStone.pageTF" filterString="magicStone.pageGF" 
+		x="234" y="348" width="60" height="20"/>
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" 
+		stylename="magicStone.pageBG"  parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG"  
+		x="222" y="344" width="45" height="24" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.mgStoneCell.name" 
+		textFormatStyle="magicStone.mgStoneCell.nameTF" filterString="magicStone.mgStoneCell.nameGF" 
+		x="15" y="27" autoSize="none" width="30" height="38" />
+	<component classname="magicStone.components.MgStoneFeedBtn"
+			stylename="MgStoneFeedBtn" backStyle="magicStone.feedBtn"
+			x="19" y="344"  tipDirctions="0,1,2"
+			filterString="null,lightFilter,null,grayFilter" /><!-- 合成按钮 -->
+<!-- 		魔石商城 -->
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="magicStone.core.simplebt"
+			backStyle="core.simplebtbg" textStyle="SimpleButtonTextStyle"
+			backgoundInnerRectString="20,20,7,13,-1" filterString="null,lightFilter,null,grayFilter" x="196" y="446"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="magicStone.shopFrame.GoodItemContainerBg" 
+		x="1" y="5"		parentStyle="ddtshop.GoodItemContainerBg" />
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="magicStone.shopFrame.coinBG" 
+		x="95" y="367" width="88" height="23" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.scoreText" autoSize="none" 
+		textFormatStyle="magicStone.shopFrame.scoreTxtTF" filterString="magicStone.shopFrame.scoreTxtGF" 
+		x="-1" y="369" width="110" height="24" type="dynamic"  />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.scoreNumTxt" 
+		parentStyle="magicStone.shopFrame.pageTxt" 
+		x="98" y="371" width="83" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="magicStone.shopFrame.BtnPrePage" 
+		backStyle="asset.ui.pageNavBtn.pre2" filterString="null,lightFilter,null,grayFilter" 
+		x="221" y="488"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="magicStone.shopFrame.BtnNextPage" 
+		backStyle="asset.ui.pageNavBtn.next2" filterString="null,lightFilter,null,grayFilter" 
+		x="336" y="488"/>
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="magicStone.shopFrame.CurrentPageInput" 
+		parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG" 
+		x="275" y="490" width="62" height="23"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.pageTxt" 
+		textFormatStyle="magicStone.pageTF" filterString="magicStone.pageGF" 
+		x="273" y="494" autoSize="none" width="70" type="dynamic" height="20" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.needScoreTxt" 
+		textFormatStyle="magicStone.orangeTF" filterString="magicStone.orangeGF" 
+		x="89" y="31" autoSize="none" width="70" type="dynamic" height="20" />	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.scoreNotEnoughTxt" 
+		textFormatStyle="magicStone.redTF" filterString="magicStone.redGF" 
+		x="105" y="61" autoSize="none" width="100" type="dynamic" height="20" />	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.remainCountTxt" 
+		textFormatStyle="magicStone.shopFrame.remainCountTxtTF" filterString="magicStone.shopFrame.remainCountTxtGF" 
+		x="37" y="46"  autoSize="none" width="30" height="15"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.shopFrame.label" 
+		textFormatStyle="magicStone.redTF2" filterString="magicStone.redGF2"  autoSize="none"
+		x="22" y="397" width="390" height="23" type="dynamic" />
+<!-- 	弹出框 -->
+	<component classname="magicStone.components.MagicStoneConfirmView" stylename="magicStone.confirmView"  parentStyle="SimpleAlert"/>
+	<component classname="magicStone.components.MagicStoneBatFrame" stylename="magicStone.batFrame"
+		backStyle="SimpleFrameBackgoundOneIII" closestyle="core.closebt" closeInnerRectString="44,6,3,30,14"
+		titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,11,5" containerX="16"
+		containerY="42" width="400" height="225" moveInnerRectString="0,30,0,30,1"
+		 escEnable='true' />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.batFrame.text" 
+		textFormatStyle="magicStone.batFrame.TextTF" filterString="magicStone.batFrame.TextGF" x="13" y="24" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="magicStone.ensureAlertTxt" 
+		textFormatStyle="magicStone.ensureAlertTxtTF" filterString="magicStone.ensureAlertTxtGF" 
+		x="2" y="77"  autoSize="none"  width="270" height="38" />
+</components>
+<bitmaps>
+	<bitmapData  resourceLink="magicStone.bg" x="0" y="0"/>
+	<bitmapData  resourceLink="magicStone.spaceProgress" x="0" y="0"/>
+	<bitmapData  resourceLink="magicStone.colorStrip" x="10" y="6"/>
+</bitmaps>
+</style>

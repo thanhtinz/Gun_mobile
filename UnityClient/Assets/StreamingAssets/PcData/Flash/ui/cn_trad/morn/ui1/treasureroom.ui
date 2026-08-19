@@ -1,0 +1,16 @@
+
+)TreasureRoomView.xml�q<View width="1262" height="847">
+  <Image skin="asset.treasureRoom.view.bg" x="0" y="0"/>
+  <Image skin="asset.treasureRoom.view.bg2" x="101" y="320"/>
+  <Image skin="asset.treasureRoom.view.bg2" x="593" y="319"/>
+  <Button x="103" y="345" buttonMode="true" var="oneTreasureBtn" labelBold="true" skin="asset.treasureRoom.view.oneTreasureBtn" stateNum="1"/>
+  <Button skin="asset.treasureRoom.view.tenTreasureBtn" x="600" y="345" buttonMode="true" var="tenTreasureBtn" stateNum="1" labelBold="true"/>
+  <Label text="Chắc chắn nhận Mảnh Ưu Tú trở lên" x="555" y="411" color="0xffea00" size="12" stroke="0x221554,1,4,4,10" bold="true" var="label13" font="Arial" width="251" height="20" align="center"/>
+  <Label text="01:59:15" x="94" y="411" var="countdownText" color="0xe07700" size="14" stroke="0x221554,1,4,4,10" bold="true"/>
+  <Label x="134" y="323" color="0xfffb80" stroke="0x2d1f63,1,4,4,10" bold="true" var="feeText1"/>
+  <Label x="642" y="322" color="0xfffb80" stroke="0x2d1f63,1,4,4,10" bold="true" var="feeText2" align="left"/>
+  <Button skin="asset.treasureRoom.markBtn" x="760" y="7" stateNum="1" var="markBtn"/>
+</View>5TreasureRoomRewardView.xml�9<View width="300" height="131">
+  <Image skin="asset.treasureRoom.view.articleBg" x="0" y="10" var="bg" height="121"/>
+  <Button skin="asset.treasureRoom.view.closeBtn" x="278" y="3" stateNum="1" var="closeBtn"/>
+</View>

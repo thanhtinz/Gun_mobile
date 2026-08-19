@@ -1,0 +1,92 @@
+<style name="ddtKingFloatframe" version="5.1.0" source="ui/cn_trad/swf/ddtKingFloatframe.swf">
+	<sets>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.countTxt.tf" args="Arial,18,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.countTxt.gf" args="0x572525,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.dressUpTxtTF" args="Arial,14,0xfff2c6,true" letterSpacing="2"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.dressUpTxtGF" args="0x00583d,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.defaultTxtTF" args="Arial,14,0xffd33a,true"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.defaultTxtGF" args="0x330300,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.awardTxtTF" args="Arial,12,0xf0be85"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.awardTxtGF" args="0x4f2700,1,4,4,30"/>		
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.matchViewTipTxtTF" args="Arial,14,0xf4f3e3,true" leading="4"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.matchViewTipTxtGF" args="0x987f43,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.matchView.rightTxt.tf" args="Arial,12,0xf5edb9" leading="6"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.matchView.rightTxt.gf" args="0x693812,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.race.matchView.timeTxt.tf" args="Arial,38,0xFFCC66,true" letterSpacing='6'/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.race.matchView.timeTxt.gf" args="0x000000,1,12,12,6,1"/>
+	</sets>
+	<customs>
+		<custom classname="flash.geom.Point" stylename="ddtKing.race.awardTxtPos" x="58" y="220"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.circelHelpBtnPos" x="592" y="-28"/>
+	</customs>
+	<components>
+		<component classname="ddtKingFloat.views.DDTKingFloatFrame" stylename="ddtking.race.ddtkingFrame" containerX="34" containerY="98" 
+		escEnable="true" backStyle="floatParade.bg" width="708" height="491" closestyle="core.roundClosebt" 
+		closeInnerRectString="42,10,60,42,14" moveInnerRectString="0,30,0,30,1" />
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="ddtKing.race.framebg" 
+			width="641" height="310" x="0" y="0" parentStyle="core.bg6920"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="ddtKing.race.bottomBg" 
+			parentStyle="asset.core.btmBimap" x="0" y="314" width="641" height="62"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.countTxt" 
+			textFormatStyle="ddtKing.race.countTxt.tf" filterString="ddtKing.race.countTxt.gf" 
+			x="370" y="333"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.race.startBtn" 
+			backStyle="ddtKing.frame.startBtn" x="228" y="319"/>
+	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.awardTxt" 
+			textFormatStyle="ddtKing.race.awardTxtTF" filterString="ddtKing.race.awardTxtGF" 
+			x="58" y="201"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="ddtKing.race.dressUpTxtbtn" 
+			backStyle="core.bg6902" textStyle="ddtKing.race.dressUpTxt"  filterString="null,lightFilter,null,grayFilter"
+			backgoundInnerRectString="25,30,6,12,-1" x="44" y="251"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.defaultTxt" 
+			textFormatStyle="ddtKing.race.defaultTxtTF" filterString="ddtKing.race.defaultTxtGF" 
+			x="77" y="257"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.dressUpTxt" 
+			textFormatStyle="ddtKing.race.dressUpTxtTF"  filterString="ddtKing.race.dressUpTxtGF"/>
+			
+		<component classname="drgnBoat.views.DrgnBoatMatchView" stylename="ddtKing.race.matchView" 
+			backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt"
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="24,10,5"
+			closeInnerRectString="44,12,6,30,14" moveInnerRectString="0,30,0,30,1" 
+			containerX="21" containerY="36"
+			width="552" height="505" escEnable="true"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.matchViewTipTxt" 
+			textFormatStyle="ddtKing.race.matchViewTipTxtTF" filterString="ddtKing.race.matchViewTipTxtGF" 
+			x="27" y="369"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.matchView.rightTxt" 
+			textFormatStyle="ddtKing.race.matchView.rightTxt.tf" filterString="ddtKing.race.matchView.rightTxt.gf" 
+			x="286" y="37"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.race.matchView.timeTxt" 
+			textFormatStyle="ddtKing.race.matchView.timeTxt.tf" filterString="ddtKing.race.matchView.timeTxt.gf" 
+			x="359" y="274"/>	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.matchView.cancelBtn" 
+			backStyle="ddtKing.matchView.cancelBtnBmp" x="272" y="352"/>
+		<component classname="ddtKingFloat.views.DDTKingFloatBuyConfirmView" stylename="ddtKingBuyConfirmView1"
+			parentStyle="SimpleAlert" frameInnerRectString="60,45,50,85,-1"/>
+		<component classname="ddtKingFloat.views.DDTKingFloatMatchView" stylename="ddtking.matchView" 
+			backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt"
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="24,10,5"
+			closeInnerRectString="44,12,6,30,14" moveInnerRectString="0,30,0,30,1" 
+			containerX="21" containerY="36"
+			width="552" height="505" escEnable="true"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.HelpButtonSmall" 
+			backStyle="asset.ddtcore.helpbuttonSmall" x="562" y="-41"/>		
+			
+		<component classname="ddtKing.views.DrgnBoatBuyConfirmView" stylename="DrgnBoatBuyConfirmView"
+			parentStyle="SimpleAlert"/>
+	</components>
+	<bitmaps>
+		<bitmapData resourceLink="ddtKing.award" x="15" y="200"/>
+		<bitmapData resourceLink="ddtKing.currentBoat" x="-4" y="-5"/>
+		<bitmapData resourceLink="ddtKing.matchView.txtIcon" x="16" y="338"/>
+		<bitmapData resourceLink="ddtKing.matchView.tipTxtIcon" x="327" y="318"/>
+		<bitmapData resourceLink="ddtKing.matchView.car0" x="8" y="16"/>
+		<bitmapData resourceLink="ddtKing.matchView.car1" x="8" y="16"/>
+		<bitmapData resourceLink="ddtKing.matchView.car2" x="8" y="16"/>
+		<bitmapData resourceLink="ddtKing.doubleScoreIcon" x="291" y="-26"/>
+	</bitmaps>
+</style>

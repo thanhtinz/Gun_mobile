@@ -1,0 +1,14 @@
+<Result value="true" message="Success!">
+  <RuneAdvance AdvancedTempId="311129" RuneName="抄抄抄抄？" MainMaterials="313618" Quality="2" MaxLevelTempRunId="313623" AuxiliaryMaterials="313613|313614|313615|313616|313617|313618|313619|313620" AdvanceDesc="抄抄抄抄？" />
+  <RuneAdvance AdvancedTempId="313124" RuneName="攻伤" MainMaterials="313517" Quality="1" MaxLevelTempRunId="313613" AuxiliaryMaterials="313513" AdvanceDesc="可同时提升攻击和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313125" RuneName="防伤" MainMaterials="313517" Quality="1" MaxLevelTempRunId="313614" AuxiliaryMaterials="313514" AdvanceDesc="可同时提升防御和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313126" RuneName="敏伤" MainMaterials="313517" Quality="1" MaxLevelTempRunId="313615" AuxiliaryMaterials="313515" AdvanceDesc="可同时提升敏捷和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313127" RuneName="幸伤" MainMaterials="313517" Quality="1" MaxLevelTempRunId="313616" AuxiliaryMaterials="313516" AdvanceDesc="可同时提升幸运和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313128" RuneName="攻甲" MainMaterials="313518" Quality="1" MaxLevelTempRunId="313617" AuxiliaryMaterials="313513" AdvanceDesc="可同时提升攻击和护甲两种属性" />
+  <RuneAdvance AdvancedTempId="313129" RuneName="防甲" MainMaterials="313518" Quality="1" MaxLevelTempRunId="313618" AuxiliaryMaterials="313514" AdvanceDesc="可同时提升防御和护甲两种属性" />
+  <RuneAdvance AdvancedTempId="313130" RuneName="敏甲" MainMaterials="313518" Quality="1" MaxLevelTempRunId="313619" AuxiliaryMaterials="313515" AdvanceDesc="可同时提升敏捷和护甲两种属性" />
+  <RuneAdvance AdvancedTempId="313131" RuneName="幸甲" MainMaterials="313518" Quality="1" MaxLevelTempRunId="313620" AuxiliaryMaterials="313516" AdvanceDesc="可同时提升幸运和护甲两种属性" />
+  <RuneAdvance AdvancedTempId="313132" RuneName="伤甲" MainMaterials="313613|313614|313615|313616|313617|313618|313619|313620" Quality="2" MaxLevelTempRunId="313621" AuxiliaryMaterials="313613|313614|313615|313616|313617|313618|313619|313620" AdvanceDesc="可同时提升护甲和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313133" RuneName="超伤" MainMaterials="313613" Quality="2" MaxLevelTempRunId="313622" AuxiliaryMaterials="313613|313614|313615|313616|313617|313618|313619|313620" AdvanceDesc="可同时提升护甲和伤害两种属性" />
+  <RuneAdvance AdvancedTempId="313134" RuneName="超甲" MainMaterials="313618" Quality="2" MaxLevelTempRunId="313623" AuxiliaryMaterials="313613|313614|313615|313616|313617|313618|313619|313620" AdvanceDesc="可同时提升护甲和伤害两种属性" />
+</Result>

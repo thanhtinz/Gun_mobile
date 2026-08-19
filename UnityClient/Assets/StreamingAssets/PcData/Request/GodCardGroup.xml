@@ -1,0 +1,19 @@
+<Result value="true" message="Success!">
+  <Item GroupID="1" GroupName="3大BOSS" ExchangeTimes="5" GiftID="122338" />
+  <Item GroupID="2" GroupName="强强联合" ExchangeTimes="1" GiftID="122177" />
+  <Item GroupID="3" GroupName="部落之首" ExchangeTimes="5" GiftID="122178" />
+  <Item GroupID="4" GroupName="暗黑王者" ExchangeTimes="1" GiftID="122179" />
+  <Item GroupID="5" GroupName="小两口" ExchangeTimes="100" GiftID="122180" />
+  <Item GroupID="6" GroupName="邪恶组合" ExchangeTimes="10" GiftID="122181" />
+  <Item GroupID="7" GroupName="有钱人" ExchangeTimes="1" GiftID="122182" />
+  <Item GroupID="9" GroupName="NPC" ExchangeTimes="5" GiftID="122183" />
+  <Item GroupID="10" GroupName="萝莉控" ExchangeTimes="99" GiftID="122185" />
+  <Item GroupID="11" GroupName="会飞翔" ExchangeTimes="50" GiftID="122186" />
+  <Item GroupID="14" GroupName="自暴自弃" ExchangeTimes="199" GiftID="122189" />
+  <Item GroupID="15" GroupName="英雄救美" ExchangeTimes="199" GiftID="122190" />
+  <Item GroupID="17" GroupName="圆滚滚" ExchangeTimes="99" GiftID="122192" />
+  <Item GroupID="18" GroupName="小组长" ExchangeTimes="99" GiftID="122193" />
+  <Item GroupID="19" GroupName="自以为很酷" ExchangeTimes="200" GiftID="122194" />
+  <Item GroupID="21" GroupName="相亲相爱两兄弟" ExchangeTimes="200" GiftID="122196" />
+  <Item GroupID="22" GroupName="小人们" ExchangeTimes="200" GiftID="122197" />
+</Result>

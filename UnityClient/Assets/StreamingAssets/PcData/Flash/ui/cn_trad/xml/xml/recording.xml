@@ -1,0 +1,67 @@
+<style name="recording" version="1.0.1" source="ui/cn_trad/swf/recording.swf">
+<sets>
+	<set args="1,0,0,0,25,0,1,0,0,25,0,0,1,0,25,0,0,0,1,0" stylename="lightFilter" type="flash.filters.ColorMatrixFilter"/>
+	<set stylename="recording.view.TF1" args="Arial,14,0xffffff,true" type="flash.text.TextFormat"/>
+	<set stylename="recording.view.GF1" args="0x000000,1,2,2,10,1" type="flash.filters.GlowFilter"/>
+	<set stylename="recording.view.TF2" args="Arial,12,0x757575" type="flash.text.TextFormat"/>
+	<set stylename="recording.view.GF2" args="0x000000,1,2,2,10,1" type="flash.filters.GlowFilter"/>
+	<set stylename="recording.view.TF3" args="Arial,14,0xbebebe,true" type="flash.text.TextFormat"/>
+	<set stylename="recording.view.GF3" args="0x000000,1,2,2,10,1" type="flash.filters.GlowFilter"/>
+	<set stylename="recording.view.TF4" args="Arial,14,0x757575" type="flash.text.TextFormat"/>
+	<set stylename="recording.view.GF4" args="0x000000,1,2,2,10,1" type="flash.filters.GlowFilter"/>
+
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="recording.view.controlPos" x="16" y="639"/>
+	<custom classname="flash.geom.Point" stylename="recording.view.speakerPos" x="963" y="-9"/>
+	<custom classname="asset.recording.loading" stylename="recording.view.loading" x="435" y="292"/>
+	<custom classname="flash.geom.Point" stylename="recording.view.speaker.progressPos" x="0" y="-67"/>
+	<custom classname="flash.geom.Point" stylename="recording.rightViewPos" x="1014" y="34"/>
+</customDisplay>
+<components>
+<!-- 主界面 -->
+	<!-- 	BKingRankItem	 -->
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="recording.view.bg" 
+		x="-3" y="-4"  width="1258" height="700"  resourceLink="asset.recording.scaleBg_1,asset.recording.scaleBg_2,asset.recording.scaleBg_3,asset.recording.scaleBg_4,asset.recording.scaleBg_5,asset.recording.scaleBg_6,asset.recording.scaleBg_7,asset.recording.scaleBg_8,asset.recording.scaleBg_9"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="recording.view.gameBg" resourceLink="asset.recording.gameBg" width="1000" height="600" x="13" y="35"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="recording.view.title" textFormatStyle="recording.view.TF1" filterString="recording.view.GF1" x="12" y="12"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.view.closeBtn" backStyle="asset.recording.close"  filterString="null,lightFilter,null,null" x="1170" y="1"/>
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="recording.view.playPauseBtn" unSelectedStyle="asset.recording.pause" selectedStyle="asset.recording.play" filterString="null,lightFilter,null,null" x="0" y="0" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.view.nextBtn" backStyle="asset.recording.next"  filterString="null,lightFilter,null,null" x="46" y="4"/>
+	<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="recording.controlView.progressBigBg" width="907" x="94" y="3" resourceLink="asset.recording.controlView.progressBigBg1,asset.recording.controlView.progressBigBg2,asset.recording.controlView.progressBigBg3"/>
+	<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="recording.controlView.progressBg" width="781" x="106" y="14" resourceLink="asset.recording.controlView.progressBg1,asset.recording.controlView.progressBg2,asset.recording.controlView.progressBg3"/>
+	<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="recording.controlView.progress" width="771" x="111" y="18" resourceLink="asset.recording.controlView.progress1,asset.recording.controlView.progress2,asset.recording.controlView.progress3"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="recording.controlView.bar" resourceLink="asset.recording.controlView.bar" x="106" y="13"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="recording.controlView.time" textFormatStyle="recording.view.TF2" filterString="recording.view.GF2" x="885" y="14"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.controlView.speakerBtn" backStyle="asset.recording.speaker1"  filterString="null,lightFilter,null,null" x="0" y="14"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="recording.speaker.bar" resourceLink="asset.recording.speaker.bar" x="10" y="41"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="recording.rightView.title" textFormatStyle="recording.view.TF3" filterString="recording.view.GF3" x="0" y="14"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="recording.rightView.cellBg" resourceLink="asset.recording.rightView.cellBg1,asset.recording.rightView.cellBg2" x="0" y="0"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="recording.rightView.cellText" textFormatStyle="recording.view.TF4" filterString="recording.view.GF4" x="39" y="8"/>
+
+
+
+
+	<!--界面右边的list-->
+	<component classname="com.pickgliss.ui.controls.ListPanel" stylename="recording.listPanel" 
+		vScrollbarStyle="recording.VScrollbar" vScrollbarInnerRectString="18,24,0,0,3" 
+		viewportInnerRectString="0,0,0,0,0" factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|view.RecordListScollCell,35,117" 
+		listStyle="com.pickgliss.ui.controls.list.List" hScrollProxy="2" vUnitIncrement="10"
+		width="254" height="620" x="0" y="27"/>
+	<component classname="com.pickgliss.ui.controls.Scrollbar" stylename="recording.VScrollbar"
+		thumbStyle="recording.scrollVThumb" trackStyle="recording.scrollTrackAsset"
+		decreaseButtonStyle="recording.scrollUpButton" increaseButtonStyle="recording.scrollDownButton"
+		thumbMinSize="14" decreaseButtonInnerRectString="22,21,0,0,9"
+		increaseButtonInnerRectString="22,21,0,0,10" trackInnerRectString="2,1,17,17,0"
+		orientation="0" thumbAreaInnerRectString="4,3,20,21,0"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.scrollVThumb" backStyle="recording.scroll.thumbV" filterString="null,lightFilter,null,grayFilter"  displacement="false"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="recording.scroll.thumbV" resourceLink="asset.recording.scroll.thumbV" scaleGridString="6,6,8,40" width="12" height="50"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="recording.scrollTrackAsset" resourceLink="asset.recording.scroll.track" scaleGridString="4,1,12,2"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.scrollUpButton" backStyle="asset.recording.scroll.arrowUp"  filterString="null,lightFilter,null,grayFilter"  displacement="false"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="recording.scrollDownButton" backStyle="asset.recording.scroll.arrowDown"  filterString="null,lightFilter,null,grayFilter"  displacement="false"/>
+</components>
+<bitmaps>
+	<bitmapData resourceLink="asset.recording.speaker.progress" x="14" y="13"/>
+	<bitmapData resourceLink="asset.recording.rightView.tankIcon" x="16" y="9"/>
+</bitmaps>
+</style>

@@ -1,0 +1,10 @@
+
+1BirthdayRoomMenuView.xml�k<View width="1000" height="100">
+  <CheckBox twoURLs="asset.auditorium.menuShowNameAcAsset" stateNum="1" var="showNameBtn" x="0" y="3"/>
+  <CheckBox y="35" twoURLs="asset.auditorium.menuShowPaoAcAsset" stateNum="1" var="showPaoBtn" x="0"/>
+  <CheckBox x="0" y="67" twoURLs="asset.auditorium.menuShowFireAcAsset" stateNum="1" var="showFireBtn"/>
+  <HBoxEx x="806" y="10" autoBgSkin="asset.ui.scale.bg22|-5,-8,5,5|10,10,10,10" align="middle" right="5" var="rightHBox">
+    <Label text="撒大放送" bold="true" color="0xDF0300" stroke="0xffffff,1,4,4,10" size="16" var="groomNameTxt"/>
+    <Label text="的生日会" x="10" bold="true" size="16" stroke="0xffffff,1,4,4,10"/>
+  </HBoxEx>
+</View>

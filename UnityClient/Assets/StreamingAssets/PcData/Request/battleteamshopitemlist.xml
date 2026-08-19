@@ -1,0 +1,29 @@
+<Result value="true" message="Success!">
+  <Item ID="11025113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11035113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11036115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="1" Value="1200" />
+  <Item ID="11150116" ShopType="116" NeedLevel="7" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11161114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11162116" ShopType="116" NeedLevel="7" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11163113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11164114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11165113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11166114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11169113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11170115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11171116" ShopType="116" NeedLevel="7" Price="2100000000" Condition="2" Value="2000" />
+  <Item ID="11175116" ShopType="116" NeedLevel="7" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11176113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11177114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11186114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="1" Value="1200" />
+  <Item ID="11810115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="11917114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="15101114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="2" Value="2000" />
+  <Item ID="15102116" ShopType="116" NeedLevel="7" Price="2100000000" Condition="1" Value="1800" />
+  <Item ID="15103115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="2" Value="2000" />
+  <Item ID="15106115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="1" Value="1500" />
+  <Item ID="100100113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="101010114" ShopType="114" NeedLevel="3" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="101011115" ShopType="115" NeedLevel="5" Price="2100000000" Condition="0" Value="0" />
+  <Item ID="112108113" ShopType="113" NeedLevel="1" Price="2100000000" Condition="1" Value="1200" />
+</Result>

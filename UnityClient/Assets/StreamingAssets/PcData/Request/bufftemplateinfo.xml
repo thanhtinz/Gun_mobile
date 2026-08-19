@@ -1,0 +1,10 @@
+<Result value="true" message="Success!">
+  <BuffTemplateInfo>
+    <Item ID="291" Type="6" ShowType="1" Name="Giác" Description="Mỗi turn hồi 15% HP hiện tại, sát thương +100%, du" Pic="291" />
+    <Item ID="992" Type="6" ShowType="1" Name="Hống" Description="Tấn công -100%, phòng thủ +100%, duy trì 3 turn" Pic="292" />
+    <Item ID="993" Type="6" ShowType="1" Name="Triền" Description="Tỷ lệ bạo kích -100%, sát thương bạo +100%, duy tr" Pic="293" />
+    <Item ID="294" Type="6" ShowType="1" Name="Pháp Cầu Lam" Description="HP hồi 20%, duy trì 1 turn" Pic="294" />
+    <Item ID="295" Type="6" ShowType="1" Name="Pháp Cầu Tím" Description="Tỷ lệ bạo kích +100%, duy trì 1 turn" Pic="295" />
+    <Item ID="296" Type="6" ShowType="1" Name="Pháp Cầu Vàng" Description="Tấn công +10000, duy trì 1 turn" Pic="296" />
+  </BuffTemplateInfo>
+</Result>

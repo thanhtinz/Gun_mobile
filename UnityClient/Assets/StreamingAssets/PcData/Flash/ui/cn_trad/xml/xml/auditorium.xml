@@ -1,0 +1,78 @@
+﻿<style name="auditorium" version="1.0.1" source="ui/cn_trad/swf/auditorium.swf">
+<sets>
+	<set stylename="auditorium.characterPlayerNameAssetTF" args="Arial,16,0x5BFF09,true" type="flash.text.TextFormat" />
+	<set stylename="auditorium.fireGlodLabelAssetTF" args="黑体,12,0xFFFF00" type="flash.text.TextFormat"/>
+	<set stylename="auditorium.fireItemGlodAssetTF" args="Arial,13,0xffff00,true" type="flash.text.TextFormat" align="center" />
+	<set args="0x000000,10,2,2" stylename="auditorium.fireItemGlodAssetGF" type="flash.filters.GlowFilter" align="right"/>
+	<set stylename="auditorium.fireGlodAssetTF" args="黑体,12,0xFFFF00" type="flash.text.TextFormat"/>
+	<set stylename="auditorium.inviteItemInfoAssetTF" args="宋体,14,0xfffcd6,,,,,,center" type="flash.text.TextFormat"/>
+	<set stylename="auditorium.inviteItemInfoAssetGF" args="0x6c400b,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="auditorium.inviteItemInviteBtnAssetTF" args="宋体,12,0xe1ffc1" type="flash.text.TextFormat"/>
+	<set stylename="auditorium.inviteItemInviteBtnAssetGF" args="0x025600,1,3,3,10" type="flash.filters.GlowFilter"/>
+	<set stylename="auditorium.inviteItemInviteBtnAssetGF1" args="0.3, 0.59, 0.11, 0, 0, 0.3, 0.59, 0.11, 0, 0, 0.3, 0.59, 0.11, 0, 0, 0, 0, 0, 1, 0" type="flash.filters.ColorMatrixFilter" />
+			
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="auditorium.RoomView.sceneMapVOPosII" x="646" y="1241"/>
+	<custom classname="flash.geom.Point" stylename="auditorium.RoomView.sceneMapVOPosIII" x="856" y="990"/>
+	<custom classname="ddt.view.common.VipLevelIcon" stylename="asset.auditorium.VipIcon"/>
+	<custom classname="flash.geom.Point" stylename="auditorium.FireCell.bgPos" x="3" y="3"/>
+	<!-- 放烟花,生日,赏月通用-->
+	<custom classname="auditorium.birthday.room.birthdayFire.BirthdayFireView" stylename="birthday.birthdayFireView" x="855" y="240" />
+	<!--礼花列表窗口-->
+	<custom classname="church.view.churchFire.ChurchFireView" stylename="church.churchFire.ChurchFireView" x="855" y="192" />
+	<!--礼花列表礼花物品小图片放置点及高宽-->
+	<custom classname="flash.geom.Rectangle" stylename="asset.auditorium.fireIconRectangle" x="3" y="3" width="48" height="48" />
+	<custom classname="asset.ddtcore.listItemBG" stylename="auditorium.ChurchInvitePlayerItem.listItemBG" alpha="0.5" width="235" height="32" x="1" y="-7" />
+	<custom classname="ddt.view.common.LevelIcon" stylename="auditorium.frame.WeddingRoomInviteItemLevelIcon" x="5" y="-2"/>
+	<custom classname="ddt.view.common.SexIcon" stylename="auditorium.frame.WeddingRoomInviteItemSexIcon" x="42" y="1"/>	
+
+    <custom classname="flash.geom.Point" stylename="familyFood.room.guestPos0"  x="804" y="660"/>		
+    <custom classname="flash.geom.Point" stylename="familyFood.room.guestPos1"  x="1223" y="656"/>	
+    <custom classname="flash.geom.Point" stylename="familyFood.room.guestPos2"  x="765" y="774"/>	
+    <custom classname="flash.geom.Point" stylename="familyFood.room.guestPos3"  x="1234" y="766"/>	
+    <custom classname="flash.geom.Point" stylename="familyFood.room.guestPos4"  x="999" y="866"/>	
+    <custom classname="flash.geom.Point" stylename="familyFood.room.celebration.adminPos" x="1046" y="613"/>
+    
+    <!--人物形象-人物名称-->
+    <custom classname="flash.geom.Point" stylename="swornScene.room.celebration.adminPos" x="1083" y="597"/>
+    <custom classname="flash.geom.Point" stylename="swornScene.room.guestPos0"  x="760" y="744"/>	
+    <custom classname="flash.geom.Point" stylename="swornScene.room.guestPos1"  x="1264" y="767"/>	
+    <custom classname="flash.geom.Point" stylename="swornScene.room.guestPos2"  x="1004" y="894"/>	
+</customDisplay>
+<components>
+	<!--人物形象-人物名称-->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.auditorium.characterPlayerNameAsset" textFormatStyle="auditorium.characterPlayerNameAssetTF" />
+	<!--礼花-->
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="auditorium.fireCloseAsset" backStyle="asset.auditorium.fireCloseAsset" filterString="null,lightFilter,null,grayFilter" x="127" y="3"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="auditorium.fireGlodLabelAsset" textFormatStyle="auditorium.fireGlodLabelAssetTF" x="9" y="198" width="36" height="16"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="auditorium.fireGlodAsset" textFormatStyle="auditorium.fireGlodAssetTF" x="45" y="198" autoSize="none" width="73" height="16"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="auditorium.fireListBoxAsset" x="8" y="25" width="135" height="165" spacing="7"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="auditorium.fireItemGlodAsset" textFormatStyle="auditorium.fireItemGlodAssetTF" filterString="auditorium.fireItemGlodAssetGF" x="0" y="32" autoSize="none" width="54" height="20"/>
+	<!--举行倒计时-->
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="auditorium.startWeddingCountDownAsset" x="420" y="180" resourceLink=",asset.auditorium.startWeddingCountDown9Asset,asset.auditorium.startWeddingCountDown8Asset,asset.auditorium.startWeddingCountDown7Asset,asset.auditorium.startWeddingCountDown6Asset,asset.auditorium.startWeddingCountDown5Asset,asset.auditorium.startWeddingCountDown4Asset,asset.auditorium.startWeddingCountDown3Asset,asset.auditorium.startWeddingCountDown2Asset,asset.auditorium.startWeddingCountDown1Asset,asset.auditorium.startWeddingCountDown0Asset" />
+	
+	<!--房间管理-邀请宾客-->
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="auditorium.invite.masterRelationIcon" parentStyle="core.im.masterRelationIcon" x="42" y="1"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="auditorium.inviteItemInfoAsset" textFormatStyle="auditorium.inviteItemInfoAssetTF" filterString="auditorium.inviteItemInfoAssetGF" x="70" y="2" width="131" height="19"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="auditorium.inviteItemInviteBtnAssetTextStyle" textFormatStyle="auditorium.inviteItemInviteBtnAssetTF" filterString="auditorium.inviteItemInviteBtnAssetGF" />
+	<component classname="com.pickgliss.ui.controls.TextButton" stylename="auditorium.inviteItemInviteBtnAsset" backStyle="core.littleGreen" textStyle="auditorium.inviteItemInviteBtnAssetTextStyle" backgoundInnerRectString="11,11,4,8,-1" x="185" y="-3" />
+	<component classname="com.pickgliss.ui.image.TiledImage" stylename="auditorium.ChurchInvitePlayerItem.VerticalLine" resourceLink="asset.ddtcore.line" width="236" height="3" x="0" y="23"/>
+	
+</components>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.coreii.FatherPaopaoBg" y="28"/>
+	<!--礼花-->
+	<bitmapData resourceLink="asset.auditorium.fireBgAsset" x="0" y="0" />
+	<bitmapData resourceLink="asset.auditorium.fireCloseAsset" x="0" y="0" />
+	<bitmapData resourceLink="asset.auditorium.fireGoldIconAsset" x="122" y="200" />
+	<bitmapData resourceLink="asset.auditorium.fireItemBoxAsset" x="0" y="0" />
+	<bitmapData resourceLink="asset.auditorium.fireItemBoxAcAsset" x="3" y="3" />
+	<!--礼花物品小图标-->
+	<bitmapData resourceLink="asset.auditorium.fireIcon21002" />
+	<bitmapData resourceLink="asset.auditorium.fireIcon21006" />
+</bitmaps>
+</style> 

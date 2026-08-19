@@ -1,0 +1,38 @@
+<style name="godOfWealth" version="6.4.0" source="ui/cn_trad/swf/godOfWealth.swf">
+	<components>
+	
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="godOfWealth.closeBtn" backStyle="ast.godofwealth.closeBtn" x="571" y="63"/>
+	
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="asset.godOfWealth.btn" 
+		width="123" height="42"  x="246" y="435"
+		resourceLink="ast.god.b0,ast.god.b1,ast.god.b2,ast.god.b3,ast.god.b4,ast.god.b5,ast.god.b6,ast.god.b7,ast.god.b8"/>
+		
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="godOfWealth.detailText" textFormatStyle="godOfWealth.detail.tf"
+			filterString="godOfWealth.detail.gf" x="169" y="498" autoSize="center" 
+			width="330" height="20" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="godOfWealth.endTimeText" textFormatStyle="godOfWealth.endTime.tf"
+			filterString="godOfWealth.endTime.gf" x="361" y="465" autoSize="center" 
+			width="180" height="20" />
+	</components>
+	<sets>
+		<set stylename="godOfWealth.detail.tf" args="Arial,12,0xecba59,false,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godOfWealth.detail.gf" args="0x300000,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="godOfWealth.endTime.tf" args="Arial,14,0xffe7bd,true,,,,,left" type="flash.text.TextFormat" />
+		<set stylename="godOfWealth.endTime.gf" args="0x3a0400,1,4,4,30" type="flash.filters.GlowFilter"/>
+	</sets>
+	<customs>
+	</customs>
+	<bitmaps>
+		<bitmapData resourceLink="redpkg.help" x="13" y="41"/>
+	</bitmaps>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="godOfWealth.btnTitlePos" x="249" y="442"/>
+	
+	</customDisplay>
+</style>

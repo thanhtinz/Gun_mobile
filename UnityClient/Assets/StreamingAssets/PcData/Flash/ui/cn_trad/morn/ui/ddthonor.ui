@@ -1,0 +1,92 @@
+
+-DDTHonorTrophyView.xml�]<View width="448" height="414">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="25,50,25,50" width="448" height="414" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close1" x="390" y="5" stateNum="1" buttonMode="true" var="escBtn"/>
+  <Label text="战利品" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.ddthonor.trophyViewBg" x="17" y="43"/>
+  <PageNavigaterEx x="124" y="363" isLoop="true" type="simple" var="pageSelect" pageNumStyle="宋体,14,0xfff5cb,true,0" pageNumStroke="0x592200,1,4,4,10"/>
+</View>)DDTHonorMainView.xml�7<View width="1000" height="599">
+  <Image skin="asset.ddthonor.mainViewBg" x="0" y="0"/>
+  <Label x="200" y="385" color="0xFEF5B9" size="16" stroke="0x650202,1,4,4,10" var="createDateLabel" width="94" height="21"/>
+  <Label x="201" y="423" color="0xFEF5B9" size="16" stroke="0x650202,1,4,4,10" var="friendTotalLabel" width="94" height="21"/>
+  <Label x="200" y="460" color="0xFEF5B9" size="16" stroke="0x650202,1,4,4,10" var="charmValueLabel" width="94" height="21"/>
+  <NumberImageEx x="446" y="118" index="5" count="0" var="gradeNumberImage" skin="asset.ddthonor.gradeNumber" width="63" height="27" space="-2"/>
+  <TabListEx x="331" y="402" var="viewTab">
+    <TabButtonEx skin="asset.ddthonor.trophyBtnNormal,asset.ddthonor.trophyBtnSelect" name="item0"/>
+    <TabButtonEx skin="asset.ddthonor.honorBtnNormal,asset.ddthonor.honorBtnSelect" x="101" name="item1" selected="false" y="0"/>
+  </TabListEx>
+  <FrameClip skin="asset.ddthonor.schedule" x="542" y="85" index="99" var="expSchedule"/>
+  <Label x="511" y="120" color="0xFEF5B9" size="16" stroke="0x650202,1,4,4,10" var="expValueLabel" width="398" height="21" align="center"/>
+  <Button skin="asset.ddthonor.itemDataBtn" x="808" y="167" stateNum="1" var="itemDataBtn"/>
+  <Button skin="asset.ui.btn_close8" x="897" y="39" stateNum="1" buttonMode="true" var="escBtn"/>
+  <Label x="425" y="221" color="0xfff600" size="14" stroke="0x008103,1,4,4,10" var="fightPowerLabel" width="94" height="21" bold="true"/>
+  <Clip x="826" y="217" clipsUrlSimple="asset.ddthonor.rankTitleNum,5" var="rankTitle" index="0"/>
+  <Clip x="621" y="217" clipsUrlSimple="asset.ddthonor.militaryTitleNum,15" var="militaryTitle" index="0"/>
+  <FrameClip skin="asset.ddthonor.militaryMc" x="563" y="247" index="50" var="militaryMc"/>
+  <FrameClip skin="asset.ddthonor.rankMc" x="753" y="247" index="50" var="rankMc"/>
+  <FrameClip skin="asset.ddthonor.fightPowerMc" x="374" y="247" index="50" var="fightPowerMc"/>
+  <Image skin="asset.ddthonor.fightPowerTxt" x="398" y="274"/>
+  <NumberImageEx x="382" y="299" index="5" count="50" var="fightPowerNI" skin="asset.ddthonor.fightPowerNumber" width="53" height="20" align="right"/>
+  <Image skin="asset.ddthonor.fightPowerPercent" x="437" y="300"/>
+  <Image skin="asset.ddthonor.militaryTxt" x="589" y="274"/>
+  <Image skin="asset.ddthonor.rankTxt" x="778" y="274"/>
+  <NumberImageEx x="562" y="299" index="5" count="50" var="militaryNI" skin="asset.ddthonor.militaryNumber" width="63" height="20" align="right"/>
+  <NumberImageEx x="754" y="299" index="5" count="50" var="rankNI" skin="asset.ddthonor.rankNumber" width="60" height="21" align="right"/>
+  <Image skin="asset.ddthonor.rankPercent" x="815" y="300"/>
+  <Image skin="asset.ddthonor.militaryPercent" x="626" y="300"/>
+  <DDTHonorBorderView x="331" y="441" var="tabHonorView" runtime="ddthonor.view.DDTHonorBorderView"/>
+  <DDTHonorMyTrophyView x="331" y="441" var="tabMilitaryView" runtime="ddthonor.view.DDTHonorMyTrophyView"/>
+</View>-DDTHonorBorderTips.xml�Q<View width="206" height="86">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="12,12,12,12,1" width="206" height="86" var="imgBg"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="31"/>
+  <Label color="0xEBE500" bold="true" stroke="0x000000,1,2,2,10,1" x="9" y="9" size="14" width="164" height="18" var="titleLabel"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="获取途径：" x="12" y="37"/>
+  <Label color="0xF1C48B" bold="true" stroke="0x000000,1,2,2,10,1" x="31" y="58" width="165" height="35" multiline="true" wordWrap="true" leading="3" var="gainInfoLabel"/>
+</View>1DDTHonorItemDataView.xml�#<View width="389" height="437">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="25,50,25,50" width="389" height="437" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close1" x="330" y="5" stateNum="1" buttonMode="true" var="escBtn"/>
+  <Label text="详细数据" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.ddthonor.itemDataBg" x="18" y="44"/>
+  <PageNavigaterEx x="98" y="387" isLoop="true" type="simple" var="pageSelect" pageNumStyle="宋体,14,0xfff5cb,true,0" pageNumStroke="0x592200,1,4,4,10"/>
+  <Label text="名称" x="68" y="54" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30"/>
+  <Label text="当前数值" x="172" y="54" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30"/>
+  <Label text="荣耀经验" x="280" y="54" size="14" bold="true" color="0xffea9c" stroke="0x4f3700,1,4,4,30"/>
+  <List x="26" y="88" repeatY="10" spaceY="10" width="350" height="306" var="itemList" repeatX="1">
+    <Box name="render" height="20" width="340">
+      <Label x="231" size="12" color="0xfff600" stroke="0xaa3102,1,4,4,10" width="109" height="20" autoSize="none" align="center" name="expLabel" y="0" bold="true"/>
+      <Label size="12" color="0xf1e09e" stroke="0x744309,1,4,4,10" width="150" height="20" autoSize="none" align="left" name="nameLabel" x="0" y="0" bold="true"/>
+      <Label size="12" color="0xf1e09e" stroke="0x744309,1,4,4,10" width="101" height="20" autoSize="none" align="center" name="valueLabel" x="127" y="0" bold="true"/>
+    </Box>
+  </List>
+</View>-DDTHonorTrophyTips.xml�O<View width="206" height="188">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="12,12,12,12,1" width="206" height="188" var="imgBg"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="31"/>
+  <Image skin="asset.core.tip.GoodsTipQuality" x="12" y="43"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="7" y="116"/>
+  <Label color="0xEBE500" bold="true" stroke="0x000000,1,2,2,10,1" x="9" y="9" size="14" width="164" height="18" var="titleLabel"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="特殊效果：" x="12" y="62"/>
+  <Label color="0xF1C48B" bold="true" stroke="0x000000,1,2,2,10,1" x="29" y="81" width="165" height="35" multiline="true" wordWrap="true" leading="3" var="descLabel"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="获取途径：" x="12" y="123"/>
+  <Label x="46" y="37" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10,1" size="14" var="qualityLabel"/>
+  <Label color="0xF1C48B" bold="true" stroke="0x000000,1,2,2,10,1" x="31" y="144" width="165" height="35" multiline="true" wordWrap="true" leading="3" var="gainInfoLabel"/>
+</View>-DDTHonorEvolveView.xml�}<View width="420" height="444">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="25,50,25,50" width="420" height="444" x="0" y="1"/>
+  <Button skin="asset.ui.btn_close1" x="361" y="5" stateNum="1" buttonMode="true" var="escBtn"/>
+  <Label text="荣耀品进阶" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.ddthonor.evolveViewBg" x="16" y="40"/>
+  <Image skin="asset.ui.scale.bg3" x="18" y="350" width="383" height="75" sizeGrid="8,8,8,8"/>
+  <Button skin="asset.ddthonor.evolveViewUpgradeBtn" x="147" y="363" stateNum="1" var="upgradeBtn"/>
+  <FrameClip skin="asset.ddthonor.evolveSchedule" x="111" y="296" var="evolveSchedule"/>
+  <Label x="118" y="303" color="0xFff06e" size="12" stroke="0x6d0300,1,4,4,10" text="100/1000" width="186" height="21" align="center" var="scheduleLabel"/>
+  <Button skin="asset.ui.btn_check3" x="285" y="373" width="30" height="30" var="evolveAllBtn" imageLabel="asset.ddthonor.evolveAllBtn" imageLabelX="30" imageLabelY="5" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true" labelColors="0xffffff" labelStroke="0x692706,1,4,4,10" labelSize="14" labelBold="true" labelMargin="30,2,-35,0"/>
+</View>-DDTHonorBorderView.xml�O<View width="590" height="118">
+  <PageNavigaterEx x="381" y="87" isLoop="true" type="simple" var="pageSelect" pageNumStyle="宋体,14,0xfff5cb,true,0" pageNumStroke="0x592200,1,4,4,10"/>
+  <Button skin="asset.ui.btn_check2" x="33" y="95" stateNum="1" selected="false" buttonMode="true" var="checkShowBorder" checkButtonSkin="asset.ui.btn_check2" toggle="true"/>
+  <Label x="48" y="95" color="0xfff4d4" text="装备荣誉框" stroke="0x7c4519,1,2,2,10,1" width="86" height="18"/>
+</View>1DDTHonorMyTrophyView.xml�E<View width="590" height="118">
+  <PageNavigaterEx x="381" y="87" isLoop="true" type="simple" var="pageSelect" pageNumStyle="宋体,14,0xfff5cb,true,0" pageNumStroke="0x592200,1,4,4,10"/>
+  <Button skin="asset.ddthonor.lookTrophyBtn" x="13" y="84" stateNum="1" var="lookTrophyBtn"/>
+</View>-DDTHonorTrophyMenu.xml�u<View width="105" height="67">
+  <Button x="0" y="32" stateNum="1" checkButtonSkin="asset.ddthonor.moveBtn" var="moveBtn"/>
+  <Button stateNum="1" checkButtonSkin="asset.ddthonor.upgardeBtn" selected="false" var="upgradeBtn" disabled="true"/>
+</View>

@@ -1,0 +1,35 @@
+<style name="defendisland" version="1.0.1" source="ui/cn_trad/swf/defendisland.swf">
+	<sets>
+		<set stylename="defendisland.frame.activityTimeTextTF" args="Arial,12,0xfdec30,true" type="flash.text.TextFormat" />
+		<set stylename="defendisland.frame.activityTimeTextGF" args="0x823305,1,2,2,10" type="flash.filters.GlowFilter" />
+	</sets>
+
+	<components>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="defendisland.frame.startGameBtn" 
+			backStyle="defendisland.frame.startGame" x="291" y="458" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="defendisland.frame.cancelGameBtn" 
+			backStyle="defendisland.frame.cancelGame" x="291" y="458" filterString="null,lightFilter,lightFilter,grayFilter"/>
+				
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="defendisland.frame.activityTimeText" 
+			textFormatStyle="defendisland.frame.activityTimeTextTF" filterString="defendisland.frame.activityTimeTextGF" x="398" y="431" />
+	</components>
+
+	<customs>
+		<custom classname="defendisland.view.DefendislandFrame" closestyle="core.closebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle"
+			closeInnerRectString="44,12,6,30,14" stylename="ddt.defendisland.defendislandFrame" parentStyle="BaseFrame" backStyle="SimpleFrameBackgound" 
+			width="815" height="550" escEnable="true"  />
+		
+		<custom classname="flash.geom.Point" stylename="defendisland.frame.boss5.pos" x="591" y="81"/>
+		<custom classname="flash.geom.Point" stylename="defendisland.frame.boss4.pos" x="470" y="294"/>
+		<custom classname="flash.geom.Point" stylename="defendisland.frame.boss3.pos" x="274" y="201"/>
+		<custom classname="flash.geom.Point" stylename="defendisland.frame.boss2.pos" x="67" y="169"/>
+		<custom classname="flash.geom.Point" stylename="defendisland.frame.boss1.pos" x="45" y="43"/>
+	</customs>
+
+	<bitmaps>
+		<bitmapData resourceLink="defendisland.frame.bg" x="20" y="44" />
+		<bitmapData resourceLink="defendisland.frame.loading" x="136" y="210" />
+		
+	</bitmaps>
+</style>

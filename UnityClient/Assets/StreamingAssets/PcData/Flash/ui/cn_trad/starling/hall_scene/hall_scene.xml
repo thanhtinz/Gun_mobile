@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:79b0eeae254b2301122d1918378ff640:1/1$ -->
+<TextureAtlas imagePath="hall_scene.png">
+    <SubTexture name="hall_scene_bg_0" x="0" y="0" width="2048" height="600"/>
+    <SubTexture name="hall_scene_bg_1" x="0" y="600" width="1694" height="600"/>
+    <SubTexture name="hall_scene_bg_flower1" x="1921" y="770" width="96" height="88" frameX="0" frameY="-20" frameWidth="108" frameHeight="114"/>
+    <SubTexture name="hall_scene_bg_flower2" x="1921" y="600" width="101" height="170" frameX="-20" frameY="0" frameWidth="149" frameHeight="170"/>
+    <SubTexture name="hall_scene_bg_flower3" x="1763" y="874" width="44" height="102" frameX="-8" frameY="-9" frameWidth="52" frameHeight="112"/>
+    <SubTexture name="hall_scene_bg_light" x="478" y="1200" width="1561" height="255"/>
+    <SubTexture name="hall_scene_build_title_church" x="1694" y="874" width="69" height="38"/>
+    <SubTexture name="hall_scene_build_title_cryptBoss" x="1833" y="873" width="71" height="39" frameX="-2" frameY="-1" frameWidth="75" frameHeight="41"/>
+    <SubTexture name="hall_scene_build_title_dungeon" x="1904" y="858" width="139" height="39"/>
+    <SubTexture name="hall_scene_build_title_home" x="1833" y="834" width="71" height="39" frameX="0" frameY="0" frameWidth="73" frameHeight="39"/>
+    <SubTexture name="hall_scene_build_title_labyrinth" x="1694" y="835" width="139" height="39"/>
+    <SubTexture name="hall_scene_build_title_ringStation" x="1833" y="796" width="72" height="38"/>
+    <SubTexture name="hall_scene_build_title_roomList" x="1694" y="796" width="139" height="39"/>
+    <SubTexture name="hall_scene_church_build" x="0" y="1200" width="478" height="392" frameX="0" frameY="0" frameWidth="478" frameHeight="394"/>
+    <SubTexture name="hall_scene_image_poster" x="1694" y="600" width="227" height="196" frameX="0" frameY="-2" frameWidth="227" frameHeight="198"/>
+</TextureAtlas>

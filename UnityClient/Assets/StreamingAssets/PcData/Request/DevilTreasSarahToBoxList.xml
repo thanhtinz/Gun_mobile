@@ -1,0 +1,5 @@
+<Result value="true" message="Success!">
+  <Item ID="12711" Exchange="2,2,2,0,0" />
+  <Item ID="12712" Exchange="10,10,0,10,0" />
+  <Item ID="12713" Exchange="0,0,20,20,20" />
+</Result>

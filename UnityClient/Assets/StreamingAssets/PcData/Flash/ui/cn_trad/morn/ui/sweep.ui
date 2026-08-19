@@ -1,0 +1,86 @@
+
+SweepMain.xml�	<View width="993" height="566">
+  <Image skin="asset.sweep.img6" x="0" y="0"/>
+  <Image skin="asset.sweep.img12" x="443" y="13"/>
+  <Button skin="asset.sweep.img17" x="935" y="0" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.sweep.img5" x="49" y="53" sizeGrid="90,85,90,85" width="883" height="434" var="bg"/>
+  <TabListEx y="54" var="viewTab" x="79">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.sweep.img18,asset.sweep.img14" labelSize="22" labelColors="0xfff4cc,0xfff4cc,0xfff4cc,0xfff4cc" labelStroke="0x733d2e,1,4,4,30" labelMargin="0,8" label="常规副本"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.sweep.img18,asset.sweep.img14" x="214" labelSize="22" labelColors="0xfff4cc,0xfff4cc,0xfff4cc,0xfff4cc" labelStroke="0x733d2e,1,4,4,30" labelMargin="0,8" label="每日副本"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.sweep.img18,asset.sweep.img14" x="428" labelSize="22" labelColors="0xfff4cc,0xfff4cc,0xfff4cc,0xfff4cc" labelStroke="0x733d2e,1,4,4,30" labelMargin="0,8" label="重复扫荡"/>
+    <TabButtonEx name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.sweep.img18,asset.sweep.img14" x="642" labelSize="22" labelColors="0xfff4cc,0xfff4cc,0xfff4cc,0xfff4cc" labelStroke="0x733d2e,1,4,4,30" labelMargin="0,8" label="月卡购买"/>
+  </TabListEx>
+  <LabelEx text="剩余体力：500" x="719" y="505" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30" var="remainTxt"/>
+</View>SweepResult.xml�M<View width="649" height="401">
+  <Image skin="asset.sweep.img20" x="0" y="0"/>
+  <Image skin="asset.sweep.img21" x="269" y="13"/>
+  <Button skin="asset.sweep.img17" x="566" y="0" stateNum="1" var="closeBtn"/>
+  <List x="48" y="59" repeatY="3" width="534" spaceY="-5" height="316" var="list">
+    <SweepResultItem name="render" y="5" runtime="activity.sweep.view.SweepResultItem"/>
+    <VScrollBar skin="asset.sweep.vscroll" x="513" sliderOffset="4" name="scrollBar"/>
+  </List>
+</View>'SweepResultItem.xml�u<View width="512" height="111">
+  <LabelEx text="是否扫荡" x="227" y="6" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30" var="nickTxt"/>
+  <Image skin="asset.sweep.line2" x="3" y="33"/>
+  <Box x="45" y="40" var="cellBox">
+    <Image skin="asset.sweep.img22"/>
+    <Image skin="asset.sweep.img22" x="176"/>
+    <Image skin="asset.sweep.img22" x="352"/>
+  </Box>
+</View>%SweepMonthCard.xml�<View width="600" height="400">
+  <Image skin="asset.sweep.img1" x="0" y="0"/>
+  <Image skin="asset.sweep.img7" x="34" y="229"/>
+  <LabelEx text="有效期剩余7天" x="44" y="231" size="16" color="0xe9e745" stroke="0x000000,1,2,2,30" width="168" height="23" align="center" var="weekTxt"/>
+  <LabelEx text="1.购买周卡后解锁部分权限&lt;font color='#ff0000'>（重复扫荡不可用）&lt;/font>" x="19" y="264" size="14" color="0xf3ceb1" stroke="0x000000,1,2,2,30" width="232" height="47" multiline="true" wordWrap="true" leading="5" isHtml="true"/>
+  <Image skin="asset.sweep.img2" x="343" y="0"/>
+  <Image skin="asset.sweep.img7" x="377" y="229"/>
+  <LabelEx text="有效期剩余7天" x="387" y="231" size="16" color="0xe9e745" stroke="0x000000,1,2,2,30" width="168" height="23" align="center" var="monthTxt"/>
+  <Button skin="asset.sweep.img15" x="36" y="369" stateNum="1" label="充值10元购买" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="weekBtn"/>
+  <Button skin="asset.sweep.img15" x="381" y="369" stateNum="1" label="充值50元购买" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="monthBtn"/>
+  <LabelEx text="2.生效期间可以购买月卡升级成月卡权限" x="18" y="307" size="14" color="0xf3ceb1" stroke="0x000000,1,2,2,30" width="232" height="47" multiline="true" wordWrap="true" leading="5"/>
+  <LabelEx text="1.购买月卡后解锁全部权限" x="360" y="259" size="14" color="0xf3ceb1" stroke="0x000000,1,2,2,30" width="232" height="47" multiline="true" wordWrap="true" leading="5"/>
+  <LabelEx text="2.生效期间购买周卡可以直接增加月卡时间" x="359" y="283" size="14" color="0xf3ceb1" stroke="0x000000,1,2,2,30" width="232" height="47" multiline="true" wordWrap="true" leading="5"/>
+</View>SweepSdView.xml�#<View width="844" height="458">
+  <LabelEx text="扫荡目标" x="50" y="3" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30"/>
+  <LabelEx text="是否扫荡" x="242" y="3" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30"/>
+  <LabelEx text="付费翻牌" x="415" y="3" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30"/>
+  <LabelEx text="扫荡条件" x="621" y="3" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30"/>
+  <List x="0" y="31" repeatY="4" spaceY="5" width="834" height="344" var="list">
+    <SweepItem name="render" runtime="activity.sweep.view.SweepItem"/>
+    <VScrollBar skin="asset.sweep.vscroll" x="819" y="-2" sliderOffset="4" name="scrollBar"/>
+  </List>
+  <Button skin="asset.sweep.img15" x="322" y="395" stateNum="1" label="一键扫荡" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="okBtn"/>
+  <Image skin="asset.sweep.line1" x="25" y="26"/>
+  <Box x="18" y="408" var="checkBox" width="219" height="30">
+    <Button checkButtonSkin="asset.ui.btn_check3" stateNum="1" selected="false" var="checkBtn" toggle="true" x="10" y="0"/>
+    <LabelEx text="扫荡全选" x="38" y="7" color="0xe9e745" size="16" stroke="0x000000,1,4,4,20"/>
+    <Button x="112" checkButtonSkin="asset.ui.btn_check3" stateNum="1" selected="false" var="checkBtn1" toggle="true" y="0"/>
+    <LabelEx text="翻牌全选" x="141" y="7" color="0xe9e745" size="16" stroke="0x000000,1,4,4,20"/>
+  </Box>
+  <Box x="16" y="412" var="countBox">
+    <Button skin="asset.sweep.img8" x="70" y="2" stateNum="1" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="leftBtn"/>
+    <Button skin="asset.sweep.img9" x="175" y="1" stateNum="1" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="addBtn"/>
+    <Image skin="asset.sweep.img10" x="116"/>
+    <LabelEx text="扫荡次数" y="2" color="0xf6d7aa" size="16" stroke="0x4f2901,1,4,4,20"/>
+    <TextInput text="1" x="116" y="1" align="center" color="0xe9e745" size="16" width="54" height="27" var="input"/>
+  </Box>
+  <LabelEx text="常规副本每天仅支持扫荡一次" x="635" y="423" size="14" color="0xff1a1a" stroke="0x000000,1,4,4,30" multiline="true" wordWrap="true" width="194" height="31" align="left" var="desTxt"/>
+</View>SweepAlert.xml�Q<View width="650" height="400">
+  <Image skin="asset.sweep.img4" x="0" y="0"/>
+  <Button skin="asset.sweep.img17" x="553" y="12" stateNum="1" var="closeBtn"/>
+  <LabelEx text="扫荡全部副本需要消耗0体力" x="120" y="124" size="16" color="0xf3ceb1" stroke="0x000000,1,2,2,10" width="419" align="center" var="desTxt1" height="32"/>
+  <LabelEx text="付费翻牌需要消耗0点券" x="120" y="165" size="16" color="0xf3ceb1" stroke="0x000000,1,2,2,10" width="419" height="34" align="center" var="desTxt2"/>
+  <LabelEx text="是否确认扫荡" x="120" y="204" size="16" color="0xf3ceb1" stroke="0x000000,1,2,2,10" align="center" width="419" height="39"/>
+  <Button skin="asset.sweep.img13" x="117" y="331" stateNum="1" label="确认" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="okBtn"/>
+  <Button skin="asset.sweep.img16" x="389" y="331" stateNum="1" label="取消" labelColors="0xf8efd4" labelSize="24" labelStroke="0x79541e,1,4,4,20" var="cancelBtn"/>
+</View>SweepItem.xml�Y<View width="813" height="82">
+  <Image skin="asset.sweep.img3" x="0" y="0"/>
+  <Button x="249" y="26" checkButtonSkin="asset.ui.btn_check3" stateNum="1" selected="false" var="checkBtn" toggle="true"/>
+  <Button x="422" y="26" checkButtonSkin="asset.ui.btn_check3" stateNum="1" selected="false" var="checkBtn1" toggle="true"/>
+  <LabelEx text="1.成功通关啵咕王城" x="575" y="10" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30" name="conditionTxt0"/>
+  <LabelEx text="2.战力达到500w" x="575" y="33" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30" name="conditionTxt1"/>
+  <LabelEx text="3.需要消耗500体力" x="575" y="56" size="14" color="0xf6d7aa" stroke="0x4f2901,1,4,4,30" name="conditionTxt2"/>
+  <Image skin="asset.sweep.img19" x="256" y="22" var="hasSweepImg"/>
+  <Box x="25" y="12" width="143" height="62" var="mapBox"/>
+  <Image skin="ddt.ddtcore::doubleAwardIcon" x="93" y="15" var="doubleImg"/>
+</View>

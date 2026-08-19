@@ -1,0 +1,85 @@
+<style name="mark" version="1.0.1" source="ui/cn_trad/swf/mark.swf">
+	<sets>
+		<set stylename="fashion.rankView.rankTxtTF" args="Arial,14,0xffffff,true,,,,,center" type="flash.text.TextFormat" />
+		<!-- <set stylename="fashion.rankView.inputTxtGF" args="0x654512,1,4,4,30" type="flash.filters.GlowFilter" /> -->
+	</sets>
+	<customDisplays>
+		 <custom classname="mark.views.MarkLeftView" stylename="mark.leftView" x="7" y="50"/>
+		 <custom classname="mark.views.MarkRightView" stylename="mark.rightView" x="614" y="50"/>
+		 <custom classname="mark.MarkBagView" stylename="mark.bagView" x="0" y="0"/>
+		 <custom classname="mark.MarkMainFrame" stylename="mark.mainFrame" x="105" y="76"/>
+		 <custom classname="mark.views.MarkOtherView" stylename="mark.otherView" x="27" y="86"/>
+		 <custom classname="mark.mornUI.views.MarkChipTipUI" stylename="mark.tipView"/>
+		 
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos1" x="304" y="24"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos2" x="397" y="90"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos3" x="396" y="185"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos4" x="304" y="251"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos5" x="213" y="184"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos6" x="211" y="88"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos7" x="13" y="15"/>
+		 
+		 <custom classname="flash.geom.Point" stylename="mark.equipPos" x="315" y="146"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos1" x="174" y="27"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos2" x="266" y="92"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos3" x="265" y="188"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos4" x="175" y="254"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos5" x="82" y="187"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemOtherPos6" x="81" y="91"/>
+		 <custom classname="flash.geom.Point" stylename="mark.equipOtherPos" x="185" y="151"/>
+		 <custom classname="flash.geom.Point" stylename="mark.hammerViewPos" x="76" y="48"/>
+		 <custom classname="flash.geom.Point" stylename="mark.forceViewPos" x="66" y="38"/>
+		 <custom classname="flash.geom.Point" stylename="mark.transferViewPos" x="76" y="48"/>
+		 <custom classname="flash.geom.Point" stylename="mark.hammerQualityTxtPos" x="89" y="65"/>
+		 <custom classname="flash.geom.Point" stylename="mark.wheelPos" x="36" y="15"/>
+		 <custom classname="flash.geom.Point" stylename="mark.progressPos" x="41" y="22"/>
+		 <custom classname="flash.geom.Point" stylename="mark.flashPos" x="39" y="23"/>
+		 <custom classname="flash.geom.Point" stylename="mark.successPos" x="36" y="32"/>
+		 <custom classname="flash.geom.Point" stylename="mark.crystalCntPos" x="35" y="28"/>
+		 <custom classname="flash.geom.Point" stylename="mark.itemPos" x="5" y="15"/>
+		 <custom classname="flash.geom.Point" stylename="mark.transferQualityTxtPos" x="61" y="15"/>
+		 <custom classname="flash.geom.Point" stylename="mark.markOtherView.totalPropViewPos" x="405" y="8"/>
+		 <custom classname="flash.geom.Point" stylename="mark.tipQualityTxtPos" x="8" y="13"/>
+		 <custom classname="flash.geom.Point" stylename="mark.forceSuccessPos" x="150" y="248"/>
+		 <custom classname="flash.geom.Point" stylename="mark.suitEffectPos1" x="160" y="261"/>
+		 <custom classname="flash.geom.Point" stylename="mark.suitEffectPos2" x="-82" y="-180"/>
+		 
+		 <custom classname="flash.geom.Point" stylename="mark.seal.qualityTxtPos" x="76" y="15"/>
+		 <custom classname="flash.geom.Point" stylename="mark.sealViewPos" x="76" y="48"/>
+		 
+		 
+		 
+	</customDisplays>
+	<components>
+		 <component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="mark.hammerView.bg" parentStyle="core.bg6920" width="674" height="395" x="71" y="41" scaleGridString="5,10,80,20" />
+		 <component classname="com.pickgliss.ui.controls.container.VBox" stylename="mark.tabContainer" spacing="3" y="44" x="29"/>
+		 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="mark.hammer" selectedStyle="asset.mark.hammerSelected" unSelectedStyle="asset.mark.hammerUnselected" displacement="false" filterString="null,lightFilter,null,grayFilter"/>
+		 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="mark.force" selectedStyle="asset.mark.forceSelected" unSelectedStyle="asset.mark.forceUnselected" y="102" displacement="false" filterString="null,lightFilter,null,grayFilter"/>
+		 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="mark.transfer" selectedStyle="asset.mark.transferSelected" unSelectedStyle="asset.mark.transferUnselected" y="180" displacement="false" filterString="null,lightFilter,null,grayFilter"/>
+		 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="mark.sealTab" selectedStyle="asset.mark.sealSelected" unSelectedStyle="asset.mark.sealUnselected" y="258" displacement="false" filterString="null,lightFilter,null,grayFilter"/>
+	
+		<component classname="com.pickgliss.ui.controls.ComboBox" stylename="mark.rank" 
+			selctedPropName="text"  buttonStyle="mark.comboxButton"   snapItemHeight="true" 
+			listPanelStyle="core.ComboxListpanel1"  listInnerRectString="4,27,20,18,18" 
+			textStyle="core.comboxListCellTxt3_small"  textInnerRectString="-7,4,5,0,0"
+			x="116" y="10" width="104" height="25" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="mark.comboxButton"
+			backStyle="mark.comboxButtonAsset" height="32" width="200" displacement="false"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="mark.comboxButtonAsset"
+			resourceLink="core.comboxInputbg2,asset.hall.comboBtn" imageRectString="0|103|0|27|13,0|2|20|20|12"/>
+			
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="mark.helpBg" parentStyle="core.Scale9CornerImage.scale9CornerImagereleaseContentTextBG"  width="380" height="375" x="12" y="38"/>
+		
+		<component classname="com.pickgliss.ui.controls.ComboBox" stylename="mark.suitWay.selectCombo" selctedPropName="text" parentStyle="core.Combox2" snapItemHeight="true" x="5" y="4" width="90" listInnerRectString="5,28,10,50,18"/>
+	</components>
+	<bitmaps>
+		<bitmapData resourceLink="asset.mark.hammerUnselected" x="0" y="14" />
+		<bitmapData resourceLink="asset.mark.hammerSelected" x="-8" y="14" />
+		<bitmapData resourceLink="asset.mark.forceSelected" x="-8" y="14" />
+		<bitmapData resourceLink="asset.mark.forceUnselected" x="0" y="14" />
+		<bitmapData resourceLink="asset.mark.transferSelected" x="-10" y="14" />
+		<bitmapData resourceLink="asset.mark.transferUnselected" x="0" y="14" />
+		<bitmapData resourceLink="asset.mark.sealSelected" x="-10" y="14" />
+		<bitmapData resourceLink="asset.mark.sealUnselected" x="0" y="14" />
+	</bitmaps>
+</style>

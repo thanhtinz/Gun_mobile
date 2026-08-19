@@ -1,0 +1,83 @@
+<Result value="true" message="Success!">
+  <infos>
+    <Item Rank="Tiên sinh" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Sư phụ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đại sư phụ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đức cao vọng trọng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Nhất đại tông sư" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Yếu Triền Vạn Quán" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Phú Giáp Thiên Hạ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Lễ Kim Tài Thần" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Quang vinh đất trời" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Quang Vinh Tổ quốc" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thiên Hạ Văn Danh" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Anh Danh Viễn Dương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Danh Truyền Nhất Phương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Tài Chính Đại Thần" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Cường hóa anh tài" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Sáng ngời" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Phong Lưu Tình Thánh/Tiêu Lệ Giai Nhân" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Lực Quý Thiên Quân" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Kim Cang Bất Hoại" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Sấm sét khó bì" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chí mạng chi kích" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Tôn Ngộ Không" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Tân binh Gunny" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Hạ sĩ Gunny" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Trung úy Gunny" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thượng Tá Gunny" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Nguyên soái Gunny" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Anh tài" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="VIP" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="VIP bạc" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="VIP vàng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="VIP bạch kim" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="VIP kim cương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đạn Bá Vương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thần Đạn" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chiến sĩ quyền năng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thần tình ái" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vua nhiệm vụ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chuyền Suy Nữ Vương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Khắc tinh gà" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Quét sạch" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vua vượt ải" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Tà Thần Vương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thống trị" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Dũng sĩ vượt ải" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Càn quét dũng sĩ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Ân nhân" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Giải cứu gà con" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Quyền vương" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Quán quân" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Sát thủ rồng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Dũng sĩ" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Kẻ hủy diệt" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vệ sỹ thời gian" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vua Thi Đấu" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Bản sắc anh hùng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vạn Phu Mạc Địch" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chiến sĩ siêu cấp" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chiến sĩ cuối cùng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Dũng sĩ công hội" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Công hội tinh anh" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="V5" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Hảo hán Lương Sơn" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Cửu kinh sa trường" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Chiến đấu ngoan cường" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Mĩm cười" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất lựu đạn" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất phi tiêu" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất pháo" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất lu gạch" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất túi vũ khí" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất giỏ trái cây" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất tủ thuốc" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất sấm sét" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Đệ nhất ti vi" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Trùm vũ khí" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vua công trạng" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Thiên hạ vô song" Attack="0" Defend="0" Agility="0" Lucky="0" />
+    <Item Rank="Vua Thú Cưỡi" Attack="20" Defend="20" Agility="20" Lucky="20" />
+  </infos>
+</Result>
