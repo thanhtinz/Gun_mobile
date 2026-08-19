@@ -314,6 +314,11 @@ namespace GunMobile.Client
                     MaxHp = _app.Profile.Hp,
                     Team = 1
                 };
+                if (_app.Database != null)
+                {
+                    _app.Database.ApplyPcDamageFields(ref player, _app.Profile.Level, _app.Profile.EquipWeapon,
+                        _app.Profile.CardId, _app.Profile.TotemId, _app.Profile.MountGrade);
+                }
 
                 LivingStats bot;
                 NpcInfo npc = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
@@ -538,7 +543,7 @@ namespace GunMobile.Client
             LivingStats def = _loop.EffectiveLiving(best);
             BattleDamageMods atkMods = _loop.Effects.GetOutgoingMods(seat);
             BattleDamageMods defMods = _loop.Effects.GetMods(best);
-            int dmg = DamageCalculator.Compute(atk, def, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods);
+            int dmg = DamageCalculator.Compute(atk, def, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods, 80f);
             _loop.ApplyDamage(best, dmg);
             SpawnDmgPopup(_pos[best], dmg, crit);
             _loop.Effects.AddRange(_app.Database.BuildPetSkillEffects(skill, seat, best));
@@ -1601,6 +1606,8 @@ namespace GunMobile.Client
                 ? _app.Database.ComputeBombHurt(_ball, _propDmg)
                 : DamageCalculator.ComputeBombHurt(_ball, _propDmg);
 
+            int blastRadius = Mathf.Max(20, _ball != null ? _ball.Radii : 24);
+
             if (GameDatabase.BallIsHeal(_ball))
             {
                 if (_loop.Livings[index].Team != _loop.Livings[src].Team)
@@ -1608,8 +1615,12 @@ namespace GunMobile.Client
                     return;
                 }
 
-                int heal = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, false);
-                heal = Mathf.Max(1, heal);
+                int heal = DamageCalculator.ComputeHeal(bombHurt, dist, blastRadius);
+                if (heal <= 0)
+                {
+                    return;
+                }
+
                 _loop.ApplyHeal(index, heal);
                 SpawnHealPopup(_pos[index], heal);
                 return;
@@ -1621,7 +1632,7 @@ namespace GunMobile.Client
             LivingStats def = _loop.EffectiveLiving(index);
             BattleDamageMods atkMods = _loop.Effects.GetOutgoingMods(src);
             BattleDamageMods defMods = _loop.Effects.GetMods(index);
-            int dmg = DamageCalculator.Compute(atk, def, bombHurt, dist, crit, armorPierce, atkMods, defMods);
+            int dmg = DamageCalculator.Compute(atk, def, bombHurt, dist, crit, armorPierce, atkMods, defMods, blastRadius);
             _loop.ApplyDamage(index, dmg);
             SpawnDmgPopup(_pos[index], dmg, crit);
         }
@@ -2109,7 +2120,34 @@ namespace GunMobile.Client
             rt.offsetMin = rt.offsetMax = Vector2.zero;
             var raw = go.GetComponent<RawImage>();
             raw.texture = tex;
+            raw.uvRect = PcArt.EquipSheetUv(tex, 0);
             raw.raycastTarget = false;
+        }
+
+        void UpdateEquipSheetFrames(int seat, int frameIndex)
+        {
+            if (_livingImg == null || seat < 0 || seat >= _livingImg.Length || _livingImg[seat] == null)
+            {
+                return;
+            }
+
+            Transform root = _livingImg[seat].transform;
+            for (int ci = 0; ci < root.childCount; ci++)
+            {
+                Transform child = root.GetChild(ci);
+                RawImage img = child.GetComponent<RawImage>();
+                if (img == null || img.texture == null)
+                {
+                    continue;
+                }
+
+                int w = img.texture.width;
+                int h = img.texture.height;
+                if (w > h * 2)
+                {
+                    img.uvRect = PcArt.EquipSheetUv(img.texture as Texture2D, frameIndex);
+                }
+            }
         }
 
         void ApplyCharacterDefineFrame(int seat, string actionName, int frameIndex)
@@ -2234,6 +2272,7 @@ namespace GunMobile.Client
                     bool seatWalking = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == i && _move != null && _move.Direction != 0;
                     int frameIdx = seatWalking ? Mathf.FloorToInt(_animT * 10f) % 21 : 0;
                     ApplyCharacterDefineFrame(i, seatWalking ? "walk" : "stand", frameIdx);
+                    UpdateEquipSheetFrames(i, frameIdx);
                 }
             }
 

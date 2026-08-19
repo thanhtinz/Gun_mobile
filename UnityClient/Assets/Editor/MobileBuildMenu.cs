@@ -60,6 +60,13 @@ namespace GunMobile.EditorTools
             AssetDatabase.Refresh();
         }
 
+        [MenuItem("GunMobile/Pack Equip+Arm game.png")]
+        public static void PackEquipGame()
+        {
+            RunRepoPython("tools/pack_equip_game.py");
+            AssetDatabase.Refresh();
+        }
+
         [MenuItem("GunMobile/Bake PKM (ETC2) via Python (needs etc2comp)")]
         public static void BakePkmPython()
         {

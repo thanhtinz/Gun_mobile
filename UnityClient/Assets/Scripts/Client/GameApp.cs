@@ -332,13 +332,15 @@ namespace GunMobile.Client
                         }
                         break;
                     case PhoneMsg.MailResult:
-                    case PhoneMsg.MailListData:
-                        if (msg.Id == PhoneMsg.MailListData)
-                        {
-                            PhoneNet.LastMailListJson = msg.Json;
-                        }
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.MailListData:
+                        PhoneNet.LastMailListJson = msg.Json;
+                        if (State == AppState.Module && _currentModuleId == "mail")
                         {
                             RefreshCurrentModule();
                         }

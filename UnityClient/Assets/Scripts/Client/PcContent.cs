@@ -82,10 +82,53 @@ namespace GunMobile.Client
 
             File.WriteAllText(Path.Combine(PersistentPcData, ".ready"), copied.ToString());
             yield return CopyUnpackedEquipAssets(status);
+            yield return CopyEquipGameManifest(status);
+        }
+
+        static IEnumerator CopyEquipGameManifest(Action<string> status)
+        {
+            byte[] manifestBytes = null;
+            yield return ReadStreaming("equip_game_manifest.json", b => manifestBytes = b);
+            if (manifestBytes == null || manifestBytes.Length == 0)
+            {
+                yield break;
+            }
+
+            string json = System.Text.Encoding.UTF8.GetString(manifestBytes);
+            var files = ParseFiles(json);
+            int copied = 0;
+            for (int i = 0; i < files.Count; i++)
+            {
+                string rel = files[i];
+                string dest = Path.Combine(PersistentPcData, rel);
+                if (File.Exists(dest))
+                {
+                    continue;
+                }
+
+                byte[] data = null;
+                yield return ReadStreaming(rel, b => data = b);
+                if (data == null)
+                {
+                    continue;
+                }
+
+                Directory.CreateDirectory(Path.GetDirectoryName(dest) ?? PersistentPcData);
+                File.WriteAllBytes(dest, data);
+                copied++;
+            }
+
+            if (copied > 0)
+            {
+                status?.Invoke($"Installed {copied} equip game.png sheets.");
+            }
         }
 
         static IEnumerator CopyUnpackedEquipAssets(Action<string> status)
         {
+#if !UNITY_EDITOR
+            yield break;
+#else
             string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
             string equipSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "equip");
             string armSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "arm");
@@ -130,6 +173,7 @@ namespace GunMobile.Client
                     }
                 }
             }
+#endif
         }
 
         static void CopyDirectory(string src, string dest)

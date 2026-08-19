@@ -219,6 +219,15 @@ def main() -> None:
     except Exception as e:
         print("pet/title pack skipped:", e)
 
+    equip_ok = {}
+    try:
+        from pack_equip_game import pack as pack_equip
+
+        equip_ok = pack_equip()
+        print("equip game.png", equip_ok)
+    except Exception as e:
+        print("equip game pack skipped:", e)
+
     files = [p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file() and p.name != "content_index.json"]
     files.sort()
     index = {

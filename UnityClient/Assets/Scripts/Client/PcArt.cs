@@ -137,7 +137,7 @@ namespace GunMobile.Client
             return SwfImage.TryLoad(loader, paths.ToArray());
         }
 
-        public static Texture2D EquipLayer(ResLoader loader, ItemTemplate item, int sex)
+        public static Texture2D EquipLayer(ResLoader loader, ItemTemplate item, int sex, string frameDir = "1")
         {
             if (loader == null || item == null || string.IsNullOrEmpty(item.Pic))
             {
@@ -151,14 +151,31 @@ namespace GunMobile.Client
             {
                 if (!string.IsNullOrEmpty(slot) && IsBodySlot(slot))
                 {
-                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, p, "1", "game.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, p, frameDir, "game.png"));
+                    if (frameDir != "1")
+                    {
+                        paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, p, "1", "game.png"));
+                    }
                 }
 
                 paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "1", "1", "game.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "1", "0", "game.png"));
                 paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "00.png"));
             }
 
             return SwfImage.TryLoad(loader, paths.ToArray());
+        }
+
+        public static Rect EquipSheetUv(Texture2D tex, int frameIndex, int frameCount = 21)
+        {
+            if (tex == null || frameCount <= 1)
+            {
+                return new Rect(0f, 0f, 1f, 1f);
+            }
+
+            float fw = 1f / frameCount;
+            int i = Mathf.Clamp(frameIndex, 0, frameCount - 1);
+            return new Rect(i * fw, 0f, fw, 1f);
         }
 
         public static Texture2D PetIcon(ResLoader loader, string pic)

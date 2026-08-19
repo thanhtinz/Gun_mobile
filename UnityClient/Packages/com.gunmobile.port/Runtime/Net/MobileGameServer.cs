@@ -26,6 +26,8 @@ namespace GunMobile.Net
         public int Defence = 40;
         public int Agility = 40;
         public int Luck = 30;
+        public int BaseDamage = 50;
+        public int BaseGuard;
         public int Hp = 1200;
         public int Win;
         public int Lose;
@@ -78,12 +80,17 @@ namespace GunMobile.Net
         {
             if (db == null) return;
             int atk = 50, def = 40, agi = 40, luck = 30, hp = 1200;
+            int baseDmg = 0, baseGuard = 0;
 
             foreach (int eid in new[] { EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon })
             {
                 ItemTemplate it = db.GetItem(eid);
                 if (it == null) continue;
                 atk += it.Attack; def += it.Defence; agi += it.Agility; luck += it.Luck;
+                if (eid == EquipWeapon)
+                {
+                    baseDmg += it.Attack > 0 ? it.Attack : it.Property7;
+                }
             }
 
             if (db.Pets.TryGetValue(PetId, out PetInfo pet))
@@ -95,7 +102,12 @@ namespace GunMobile.Net
             {
                 foreach (CardInfo c in db.Cards)
                 {
-                    if (c.Id == CardId) { atk += c.AddAttack; def += c.AddDefend; agi += c.AddAgility; luck += c.AddLucky; break; }
+                    if (c.Id == CardId)
+                    {
+                        atk += c.AddAttack; def += c.AddDefend; agi += c.AddAgility; luck += c.AddLucky;
+                        baseDmg += c.AddDamage; baseGuard += c.AddGuard;
+                        break;
+                    }
                 }
             }
 
@@ -107,11 +119,12 @@ namespace GunMobile.Net
             if (db.Totems.TryGetValue(TotemId, out TotemInfo to))
             {
                 atk += to.AddAttack; def += to.AddDefence; agi += to.AddAgility; luck += to.AddLuck; hp += to.AddBlood;
+                baseDmg += to.AddDamage; baseGuard += to.AddGuard;
             }
 
             if (db.Mounts.TryGetValue(MountGrade, out MountGrade mt))
             {
-                hp += mt.AddBlood; atk += mt.AddDamage;
+                hp += mt.AddBlood; atk += mt.AddDamage; baseDmg += mt.AddDamage; baseGuard += mt.AddGuard;
             }
 
             atk += Texp / 4;
@@ -126,6 +139,8 @@ namespace GunMobile.Net
             }
 
             Attack = atk; Defence = def; Agility = agi; Luck = luck; Hp = hp;
+            BaseDamage = baseDmg > 0 ? baseDmg : atk;
+            BaseGuard = baseGuard;
         }
 
         public void AddGp(GameDatabase db, int amount)
@@ -2172,6 +2187,8 @@ namespace GunMobile.Net
                         {
                             Attack = p.Attack, Defence = p.Defence,
                             Agility = p.Agility, Luck = p.Luck,
+                            BaseDamage = p.BaseDamage, BaseGuard = p.BaseGuard,
+                            Grade = p.Level > 0 ? p.Level : 1,
                             Hp = p.Hp, MaxHp = p.Hp, Team = team
                         };
                         if (_db != null)
@@ -2519,9 +2536,7 @@ namespace GunMobile.Net
                             continue;
                         }
 
-                        bool crit = false;
-                        int heal = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit, armorPierce);
-                        heal = Mathf.Max(1, heal);
+                        int heal = DamageCalculator.ComputeHeal(bombHurt, dist, blastRadius);
                         int newHp;
                         lock (_lock)
                         {
@@ -2546,7 +2561,7 @@ namespace GunMobile.Net
                     LivingStats defLiving = EffectiveLiving(room, livings, t);
                     BattleDamageMods atkMods = room.Effects.GetOutgoingMods(who);
                     BattleDamageMods defMods = room.Effects.GetMods(t);
-                    int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, dist, crit, armorPierce, atkMods, defMods);
+                    int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, dist, crit, armorPierce, atkMods, defMods, blastRadius);
                     dmg = Mathf.Clamp(dmg, 0, hp[t]);
 
                     lock (_lock)
@@ -2702,7 +2717,7 @@ namespace GunMobile.Net
             LivingStats defLiving = EffectiveLiving(room, livings, best);
             BattleDamageMods atkMods = room.Effects.GetOutgoingMods(who);
             BattleDamageMods defMods = room.Effects.GetMods(best);
-            int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods);
+            int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods, 80f);
             dmg = Mathf.Clamp(dmg, 0, hp[best]);
             lock (_lock)
             {
@@ -2782,6 +2797,7 @@ namespace GunMobile.Net
 
             int bombHurt = _db.ComputeBombHurt(ball, propDmg);
             bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * skill.DamagePercent / 100f));
+            float blastRadius = Mathf.Max(20, ball.Radii);
 
             for (int t = 0; t < hp.Length; t++)
             {
@@ -2793,7 +2809,7 @@ namespace GunMobile.Net
                 float dx = posX[who] - posX[t];
                 float dy = posY[who] - posY[t];
                 float dist = Mathf.Sqrt(dx * dx + dy * dy);
-                int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist * 0.35f, false);
+                int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist * 0.35f, false, false, default, default, blastRadius);
                 dmg = Mathf.Clamp(dmg, 0, hp[t]);
                 if (dmg <= 0)
                 {

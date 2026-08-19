@@ -106,6 +106,8 @@ namespace GunMobile.Res
         public int Defence;
         public int Agility;
         public int Lucky;
+        public int BaseDamage;
+        public int BaseGuard;
         public string ModelId = "";
         public string ResourcesPath = "";
         public int Experience;
@@ -181,6 +183,8 @@ namespace GunMobile.Res
         public int AddDefend;
         public int AddAgility;
         public int AddLucky;
+        public int AddDamage;
+        public int AddGuard;
     }
 
     public sealed class TitleInfo
@@ -202,6 +206,8 @@ namespace GunMobile.Res
         public int AddAgility;
         public int AddLuck;
         public int AddBlood;
+        public int AddDamage;
+        public int AddGuard;
         public int ConsumeHonor;
     }
 
@@ -211,6 +217,7 @@ namespace GunMobile.Res
         public int Experience;
         public int AddBlood;
         public int AddDamage;
+        public int AddGuard;
         public int MagicAttack;
     }
 
@@ -853,16 +860,59 @@ namespace GunMobile.Res
             }
 
             ClientCombatStats(npc, out int hp, out int atk, out int def, out int agi, out int luk);
+            int baseDmg = npc.BaseDamage > 0 ? npc.BaseDamage : atk;
+            int baseGuard = npc.BaseGuard;
             return new LivingStats
             {
                 Attack = atk,
                 Defence = def,
                 Agility = agi,
                 Luck = luk,
+                BaseDamage = baseDmg,
+                BaseGuard = baseGuard,
+                Grade = npc.Level > 0 ? npc.Level : 1,
                 Hp = hp,
                 MaxHp = hp,
                 Team = 2
             };
+        }
+
+        /// <summary>Fill BaseDamage/BaseGuard/Grade from PC tables (weapon, card, totem, mount).</summary>
+        public void ApplyPcDamageFields(ref LivingStats living, int level, int weaponId, int cardId, int totemId, int mountGrade)
+        {
+            living.Grade = level > 0 ? level : 1;
+            int baseDmg = 0;
+            int baseGuard = 0;
+            ItemTemplate weapon = GetItem(weaponId);
+            if (weapon != null)
+            {
+                baseDmg += weapon.Attack > 0 ? weapon.Attack : weapon.Property7;
+            }
+
+            foreach (CardInfo c in Cards)
+            {
+                if (c.Id == cardId)
+                {
+                    baseDmg += c.AddDamage;
+                    baseGuard += c.AddGuard;
+                    break;
+                }
+            }
+
+            if (Totems.TryGetValue(totemId, out TotemInfo totem))
+            {
+                baseDmg += totem.AddDamage;
+                baseGuard += totem.AddGuard;
+            }
+
+            if (Mounts.TryGetValue(mountGrade, out MountGrade mount))
+            {
+                baseDmg += mount.AddDamage;
+                baseGuard += mount.AddGuard;
+            }
+
+            living.BaseDamage = baseDmg > 0 ? baseDmg : living.Attack;
+            living.BaseGuard = baseGuard;
         }
 
         /// <summary>
@@ -1507,6 +1557,8 @@ namespace GunMobile.Res
                     Defence = Int(row, "Defence"),
                     Agility = Int(row, "Agility"),
                     Lucky = Int(row, "Lucky"),
+                    BaseDamage = Int(row, "BaseDamage"),
+                    BaseGuard = Int(row, "BaseGuard"),
                     ModelId = Str(row, "ModelID"),
                     ResourcesPath = Str(row, "ResourcesPath"),
                     Experience = Int(row, "Experience"),
@@ -1639,7 +1691,9 @@ namespace GunMobile.Res
                     AddAttack = Int(row, "AddAttack"),
                     AddDefend = Int(row, "AddDefend"),
                     AddAgility = Int(row, "AddAgility"),
-                    AddLucky = Int(row, "AddLucky")
+                    AddLucky = Int(row, "AddLucky"),
+                    AddDamage = Int(row, "AddDamage"),
+                    AddGuard = Int(row, "AddGuard")
                 });
             }
         }
@@ -1685,6 +1739,8 @@ namespace GunMobile.Res
                     AddAgility = Int(row, "AddAgility"),
                     AddLuck = Int(row, "AddLuck"),
                     AddBlood = Int(row, "AddBlood"),
+                    AddDamage = Int(row, "AddDamage"),
+                    AddGuard = Int(row, "AddGuard"),
                     ConsumeHonor = Int(row, "ConsumeHonor")
                 };
             }
@@ -1707,6 +1763,7 @@ namespace GunMobile.Res
                     Experience = Int(row, "Experience"),
                     AddBlood = Int(row, "AddBlood"),
                     AddDamage = Int(row, "AddDamage"),
+                    AddGuard = Int(row, "AddGuard"),
                     MagicAttack = Int(row, "MagicAttack")
                 };
             }

@@ -57,11 +57,19 @@ namespace GunMobile.Logic
         public int Luck;
         public int MagicAttack;
         public int MagicDefence;
+        /// <summary>PC BaseDamage — weapon + AddDamage (game.logic Living.BaseDamage).</summary>
+        public int BaseDamage;
+        /// <summary>PC BaseGuard — armor stat for DR1 (game.logic Living.BaseGuard).</summary>
+        public int BaseGuard;
+        public int Grade;
         public int Hp;
         public int MaxHp;
         public int Team;
     }
 
+    /// <summary>
+    /// Damage from decompiled DDTank 3.0 game.logic SimpleBomb.MakeDamage / Living.MakeDamage.
+    /// </summary>
     public static class DamageCalculator
     {
         public static int Compute(
@@ -72,30 +80,88 @@ namespace GunMobile.Logic
             bool isCrit,
             bool armorPierce = false,
             BattleDamageMods attackerMods = default,
-            BattleDamageMods defenderMods = default)
+            BattleDamageMods defenderMods = default,
+            float blastRadius = 0f)
         {
             if (attackerMods.DamageMult <= 0f)
             {
                 attackerMods.DamageMult = 1f;
             }
 
-            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * attackerMods.DamageMult));
+            double baseDamage = bombHurt > 0 ? bombHurt : (attacker.BaseDamage > 0 ? attacker.BaseDamage : 140);
+            double baseGuard = defender.BaseGuard + defenderMods.DefenceFlat;
+            double defence = defender.Defence;
+            double attack = attacker.Attack + attackerMods.AttackFlat;
+            int grade = attacker.Grade > 0 ? attacker.Grade : 1;
 
-            float atk = Mathf.Max(1f, attacker.Attack + attackerMods.AttackFlat);
-            float def = Mathf.Max(0f, defender.Defence + defenderMods.DefenceFlat);
-            float denom = armorPierce ? 800f : 400f;
-            float mitigation = def / (def + denom);
             if (armorPierce)
             {
-                mitigation *= 0.55f;
+                baseGuard = 0;
+                defence = 0;
             }
 
-            float dist = Mathf.Clamp01(1f - distancePx / 220f);
-            float crit = isCrit ? 1.5f + attacker.Luck / 800f + attackerMods.CritDamageAdd : 1f;
-            float raw = bombHurt * (atk / 40f) * (1f - mitigation) * (0.55f + 0.45f * dist) * crit;
-            raw *= 1f + attacker.Agility / 800f;
-            int dmg = Mathf.Max(1, Mathf.RoundToInt(raw));
-            return Mathf.Min(dmg, defender.Hp);
+            float damagePlus = attackerMods.DamageMult;
+            float shootMinus = 1f;
+
+            double dr1Denom = 500 + baseGuard - 3 * grade;
+            double dr1 = dr1Denom <= 0 ? 0 : 0.95 * (baseGuard - 3 * grade) / dr1Denom;
+
+            double dr2 = 0;
+            double defMinusLuck = defence - attacker.Lucky;
+            if (defMinusLuck >= 0)
+            {
+                double dr2Denom = 600 + defence - attacker.Lucky;
+                dr2 = dr2Denom <= 0 ? 0 : 0.95 * defMinusLuck / dr2Denom;
+            }
+
+            double mitigation = dr1 + dr2 - dr1 * dr2;
+            double damage = baseDamage * (1 + attack * 0.001) * (1 - mitigation) * damagePlus * shootMinus;
+
+            if (blastRadius > 0f)
+            {
+                if (distancePx >= blastRadius)
+                {
+                    return 0;
+                }
+
+                damage *= 1 - distancePx / blastRadius / 4f;
+            }
+            else
+            {
+                float dist = Mathf.Clamp01(1f - distancePx / 220f);
+                damage *= 0.55f + 0.45f * dist;
+            }
+
+            damage *= 1f + attacker.Agility / 800f;
+
+            if (damage < 1)
+            {
+                damage = 1;
+            }
+
+            int baseDmg = Mathf.RoundToInt((float)damage);
+            if (isCrit)
+            {
+                baseDmg += ComputeCritical(attacker.Lucky, baseDmg);
+            }
+
+            return Mathf.Min(Mathf.Max(1, baseDmg), defender.Hp);
+        }
+
+        public static int ComputeHeal(int bombHurt, float distancePx, float blastRadius)
+        {
+            if (blastRadius <= 0f || distancePx >= blastRadius)
+            {
+                return 0;
+            }
+
+            float factor = 1f - distancePx / blastRadius / 4f;
+            return Mathf.Max(1, Mathf.RoundToInt(bombHurt * factor));
+        }
+
+        public static int ComputeCritical(int lucky, int baseDamage)
+        {
+            return Mathf.RoundToInt((0.5 + lucky * 0.0003) * baseDamage);
         }
 
         public static int ComputeBombHurt(BallPhysics ball, float propDmgMult = 1f)
@@ -110,11 +176,12 @@ namespace GunMobile.Logic
             return Mathf.Max(1, Mathf.RoundToInt(bombHurt * propDmgMult));
         }
 
-        public static bool RollCrit(int luck, int seed)
+        /// <summary>PC SimpleBomb.MakeCriticalDamage — lucky * 75 / (800 + lucky) &gt; roll.</summary>
+        public static bool RollCrit(int lucky, int seed)
         {
             var rng = new System.Random(seed);
-            int chance = Mathf.Clamp(5 + luck / 50, 5, 45);
-            return rng.Next(0, 100) < chance;
+            double threshold = lucky * 75.0 / (800 + lucky);
+            return threshold > rng.Next(100);
         }
     }
 
