@@ -254,11 +254,7 @@ namespace GunMobile.Client
                     $"{(on ? "[跟随] " : "")}{e.Name}  ★{e.StarLevel}  ATK~{e.AttackHint} HP~{e.HpHint}",
                     () =>
                     {
-                        PhoneNet.SelectPet(local.TemplateId);
-                        app.Profile.ElfId = local.TemplateId;
-                        app.Profile.RecalcStats(app.Database);
-                        app.Profile.Save();
-                        Show(safe, app);
+                        PhoneNet.SelectElf(local.TemplateId);
                     });
             }
 
@@ -292,25 +288,7 @@ namespace GunMobile.Client
 
         static void Cook(GameApp app, FarmRecipe r)
         {
-            if (!app.Profile.Consume(r.VegetableId, r.NeedCount))
-            {
-                if (app.Profile.Gold < 200)
-                {
-                    return;
-                }
-
-                app.Profile.Gold -= 200;
-                app.Profile.AddItem(r.VegetableId, r.NeedCount);
-                if (!app.Profile.Consume(r.VegetableId, r.NeedCount))
-                {
-                    return;
-                }
-            }
-
-            app.Profile.AddItem(r.FoodId, 1);
-            app.Profile.FarmHarvests++;
-            app.Profile.Save();
-            Show(app.SafeArea, app);
+            PhoneNet.CookFarm(r.FoodId);
         }
     }
 
@@ -324,16 +302,7 @@ namespace GunMobile.Client
             {
                 SysUi.Row(body, "donate", "捐献 1000 金币", () =>
                 {
-                    if (app.Profile.Gold < 1000)
-                    {
-                        return;
-                    }
-
                     PhoneNet.DonateGuild();
-                    app.Profile.Gold -= 1000;
-                    app.Profile.Honor += 80;
-                    app.Profile.Save();
-                    Show(safe, app);
                 });
             }
 
@@ -360,9 +329,6 @@ namespace GunMobile.Client
                 SysUi.Row(body, "g" + n, $"{name}  Lv{lv}  财富{riches}  会长 {GameDatabase.Str(row, "ChairmanName")}", () =>
                 {
                     PhoneNet.JoinGuild(local);
-                    app.Profile.ConsortiaName = local;
-                    app.Profile.Save();
-                    Show(safe, app);
                 });
                 n++;
             }
@@ -427,19 +393,15 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "拍卖");
-            SysUi.Note(body, "出售背包道具，获得一半参考价金币（本地）。");
+            SysUi.Note(body, "出售背包道具，价格来自 PC 表 ReclaimValue。");
             foreach (BagItem slot in app.Profile.Bag)
             {
                 BagItem local = slot;
                 ItemTemplate item = app.Database.GetItem(slot.TemplateId);
-                int price = item != null ? Mathf.Max(80, (item.Attack + item.Defence) * 12) : 80;
+                int price = app.Database != null ? app.Database.AuctionPrice(item) : 80;
                 var btn = SysUi.Row(body, "a" + slot.TemplateId, $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  卖 {price} 金", () =>
                 {
-                    if (!app.Profile.Consume(local.TemplateId, 1)) return;
-                    PhoneNet.RequestProfile();
-                    app.Profile.Gold += price;
-                    app.Profile.Save();
-                    Show(safe, app);
+                    PhoneNet.SellAuction(local.TemplateId, 1);
                 });
                 ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
@@ -453,17 +415,7 @@ namespace GunMobile.Client
             Transform body = SysUi.Begin(safe, app, "VIP " + app.Profile.VipLevel);
             SysUi.Row(body, "up", "升级 VIP  500 点券", () =>
             {
-                if (app.Profile.Gift < 500 || app.Profile.VipLevel >= 15)
-                {
-                    return;
-                }
-
                 PhoneNet.UpgradeVip();
-                app.Profile.Gift -= 500;
-                app.Profile.VipLevel++;
-                app.Profile.RecalcStats(app.Database);
-                app.Profile.Save();
-                Show(safe, app);
             });
             foreach (ShopOffer offer in app.Database.VipShop)
             {
@@ -471,16 +423,7 @@ namespace GunMobile.Client
                 string name = SysUi.ItemName(app, offer.TemplateId);
                 var btn = SysUi.Row(body, "v" + offer.Id, $"{name}  {offer.AValue1}点券", () =>
                 {
-                    if (app.Profile.VipLevel < 1 || app.Profile.Gift < local.AValue1)
-                    {
-                        return;
-                    }
-
                     PhoneNet.ShopBuy(local.Id);
-                    app.Profile.Gift -= local.AValue1;
-                    app.Profile.AddItem(local.TemplateId, 1);
-                    app.Profile.Save();
-                    Show(safe, app);
                 });
                 ShopScreen.DecorateIcon(app, btn, offer.TemplateId);
             }
@@ -501,15 +444,7 @@ namespace GunMobile.Client
             SysUi.Row(body, "draw", "抽一次", () => Draw(app));
             SysUi.Row(body, "draw10", "抽十次  2700 金", () =>
             {
-                for (int i = 0; i < 10; i++)
-                {
-                    if (!Draw(app, false))
-                    {
-                        break;
-                    }
-                }
-
-                Show(app.SafeArea, app);
+                PhoneNet.DrawLottery(10);
             });
             int shown = 0;
             foreach (LotteryDrop d in app.Database.Lottery)
@@ -526,22 +461,7 @@ namespace GunMobile.Client
         static bool Draw(GameApp app, bool refresh = true)
         {
             PhoneNet.DrawLottery(1);
-            int cost = 300;
-            if (app.Profile.Gold < cost || app.Database.Lottery.Count == 0)
-            {
-                return false;
-            }
-
-            app.Profile.Gold -= cost;
-            LotteryDrop drop = app.Database.Lottery[Random.Range(0, app.Database.Lottery.Count)];
-            app.Profile.AddItem(drop.TemplateId, drop.Count);
-            app.Profile.Save();
-            if (refresh)
-            {
-                Show(app.SafeArea, app);
-            }
-
-            return true;
+            return app.Database.Lottery.Count > 0;
         }
     }
 
@@ -683,14 +603,8 @@ namespace GunMobile.Client
                     $"{item.Name}  +{slot.Strengthen}  → +{next}  {gold}金",
                     () =>
                     {
-                        if (local.Strengthen >= 15 || app.Profile.Gold < gold) return;
+                        if (local.Strengthen >= 15) return;
                         PhoneNet.StrengthenItem(local.TemplateId);
-                        app.Profile.Gold -= gold;
-                        int chance = Mathf.Clamp(90 - local.Strengthen * 5, 20, 90);
-                        if (Random.Range(0, 100) < chance) local.Strengthen++;
-                        app.Profile.RecalcStats(app.Database);
-                        app.Profile.Save();
-                        Show(safe, app);
                     });
                 ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
@@ -704,17 +618,7 @@ namespace GunMobile.Client
             Transform body = SysUi.Begin(safe, app, "修炼  Texp " + app.Profile.Texp);
             SysUi.Row(body, "texp", "修炼一次  400 金币  Texp+25", () =>
             {
-                if (app.Profile.Gold < 400)
-                {
-                    return;
-                }
-
                 PhoneNet.TrainTexp();
-                app.Profile.Gold -= 400;
-                app.Profile.Texp += 25;
-                app.Profile.RecalcStats(app.Database);
-                app.Profile.Save();
-                Show(safe, app);
             });
         }
     }
@@ -726,17 +630,7 @@ namespace GunMobile.Client
             Transform body = SysUi.Begin(safe, app, "战魂  Lv." + app.Profile.GemLevel);
             SysUi.Row(body, "gem", "提升战魂  600 金币", () =>
             {
-                if (app.Profile.Gold < 600 || app.Profile.GemLevel >= 12)
-                {
-                    return;
-                }
-
                 PhoneNet.UpgradeGem();
-                app.Profile.Gold -= 600;
-                app.Profile.GemLevel++;
-                app.Profile.RecalcStats(app.Database);
-                app.Profile.Save();
-                Show(safe, app);
             });
             foreach (SpiritInfo s in app.Database.Spirits.Values)
             {
@@ -758,11 +652,7 @@ namespace GunMobile.Client
             {
                 SysUi.Row(body, "kb", "领取", () =>
                 {
-                    PhoneNet.DoSignIn();
-                    app.Profile.KingBlessDay = today;
-                    app.Profile.Gold += gold;
-                    app.Profile.Save();
-                    Show(safe, app);
+                    PhoneNet.ClaimKingBless();
                 });
             }
         }

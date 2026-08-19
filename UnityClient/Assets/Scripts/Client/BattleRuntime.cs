@@ -581,6 +581,12 @@ namespace GunMobile.Client
             _propDmg = 1f;
             _propRadius = 1f;
             _propCrit = false;
+            if (_app?.Database != null)
+            {
+                _app.Database.ApplyFightProp(id, out _propDmg, out _propRadius, out _propPower, out _propCrit);
+                return;
+            }
+
             switch (id)
             {
                 case 1:
@@ -1329,6 +1335,10 @@ namespace GunMobile.Client
                     if (_app.Database != null)
                     {
                         _app.Profile.Honor += _app.Database.BattleWinHonor(_app.Profile.Level, _npcId != 0);
+                        int gpGain = _npcId != 0 && _app.Database.Npcs.TryGetValue(_npcId, out NpcInfo npcInfo)
+                            ? Mathf.Max(1, npcInfo.Experience)
+                            : _app.Database.BattleWinGp(_app.Profile.Level, _npcId != 0);
+                        _app.Profile.AddGp(_app.Database, gpGain);
                     }
 
                     if (_app.Profile.PendingLabyrinth != 0)

@@ -55,21 +55,6 @@ namespace GunMobile.Client
         static void Buy(GameApp app, ShopOffer offer)
         {
             PhoneNet.ShopBuy(offer.Id);
-            bool gift = offer.APrice1 == -2;
-            int price = offer.AValue1;
-            if (gift)
-            {
-                if (app.Profile.Gift < price) return;
-                app.Profile.Gift -= price;
-            }
-            else
-            {
-                if (app.Profile.Gold < price) return;
-                app.Profile.Gold -= price;
-            }
-            app.Profile.AddItem(offer.TemplateId, 1);
-            app.Profile.Save();
-            Show(app.SafeArea, app);
         }
 
         static string StatLine(ItemTemplate item)
@@ -206,19 +191,11 @@ namespace GunMobile.Client
             if (!app.Profile.QuestAccepted(q.Id))
             {
                 PhoneNet.QuestAccept(q.Id);
-                app.Profile.AcceptedQuests.Add(q.Id);
             }
             else
             {
                 PhoneNet.QuestComplete(q.Id);
-                app.Profile.AcceptedQuests.Remove(q.Id);
-                if (!app.Profile.CompletedQuests.Contains(q.Id))
-                    app.Profile.CompletedQuests.Add(q.Id);
-                app.Profile.Gold += Mathf.Max(50, q.RewardGold);
             }
-
-            app.Profile.Save();
-            Show(app.SafeArea, app);
         }
     }
 
@@ -232,7 +209,7 @@ namespace GunMobile.Client
             app.Profile.RecalcStats(app.Database);
             PlayerProfile p = app.Profile;
             string text =
-                $"{p.Nick}  {(p.Sex == 1 ? "♂" : "♀")}  Lv.{p.Level}  VIP{p.VipLevel}\n" +
+                $"{p.Nick}  {(p.Sex == 1 ? "♂" : "♀")}  Lv.{p.Level}  GP {p.Gp}  VIP{p.VipLevel}\n" +
                 $"ATK {p.Attack}  DEF {p.Defence}  AGI {p.Agility}  LUCK {p.Luck}  HP {p.Hp}\n" +
                 $"Gold {p.Gold}  Gift {p.Gift}  Honor {p.Honor}  Texp {p.Texp}  {p.Win}W/{p.Lose}L\n" +
                 $"Weapon #{p.EquipWeapon}  Cloth #{p.EquipCloth}  Head #{p.EquipHead}\n" +

@@ -148,6 +148,10 @@ namespace GunMobile.Net
         public const ushort PveResult = 101;
         public const ushort FightState = 102;
         public const ushort FightCrater = 103;
+        public const ushort FarmCook = 104;
+        public const ushort AuctionSell = 105;
+        public const ushort ElfSelect = 106;
+        public const ushort KingBless = 107;
         public const ushort Error = 255;
     }
 }

@@ -33,6 +33,7 @@ namespace GunMobile.Client
         Text _status;
         public RectTransform SafeArea => _safe;
         public GameDatabase Database { get; private set; }
+        string _currentModuleId = "";
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoBoot()
@@ -135,6 +136,7 @@ namespace GunMobile.Client
             }
 
             State = AppState.Module;
+            _currentModuleId = module.Id;
             switch (module.Id)
             {
                 case "shop":
@@ -238,6 +240,16 @@ namespace GunMobile.Client
             }
         }
 
+        void RefreshCurrentModule()
+        {
+            if (string.IsNullOrEmpty(_currentModuleId))
+            {
+                return;
+            }
+
+            ShowModule(new ModuleDef(_currentModuleId, _currentModuleId));
+        }
+
         public void ShowStatus(string msg)
         {
             if (_status == null)
@@ -301,18 +313,22 @@ namespace GunMobile.Client
                         PhoneNet.PlayerId = JsonInt(msg.Json, "playerId", PhoneNet.PlayerId);
                         break;
                     case PhoneMsg.ProfileData:
-                        ApplyProfileFromServer(msg.Json);
-                        break;
+                    case PhoneMsg.StatResult:
+                    case PhoneMsg.QuestResult:
                     case PhoneMsg.ShopResult:
                     case PhoneMsg.EquipResult:
-                    case PhoneMsg.QuestResult:
-                    case PhoneMsg.StatResult:
                     case PhoneMsg.SignInResult:
                     case PhoneMsg.LotteryResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
-                    case PhoneMsg.FriendResult:
                     case PhoneMsg.MailResult:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.FriendResult:
                         break;
                     case PhoneMsg.ChatBroadcast:
                         string from = JsonStr(msg.Json, "from", "?");
@@ -363,6 +379,7 @@ namespace GunMobile.Client
             if (string.IsNullOrEmpty(json) || Profile == null) return;
             Profile.Gold = JsonInt(json, "gold", Profile.Gold);
             Profile.Gift = JsonInt(json, "gift", Profile.Gift);
+            Profile.Gp = JsonInt(json, "gp", Profile.Gp);
             Profile.Level = JsonInt(json, "level", Profile.Level);
             Profile.Attack = JsonInt(json, "attack", Profile.Attack);
             Profile.Defence = JsonInt(json, "defence", Profile.Defence);
@@ -392,6 +409,8 @@ namespace GunMobile.Client
             Profile.LabyrinthFloor = JsonInt(json, "labyrinthFloor", Profile.LabyrinthFloor);
             Profile.ElfId = JsonInt(json, "elfId", Profile.ElfId);
             Profile.GemLevel = JsonInt(json, "gemLevel", Profile.GemLevel);
+            Profile.KingBlessDay = JsonInt(json, "kingBlessDay", Profile.KingBlessDay);
+            Profile.FarmHarvests = JsonInt(json, "farmHarvests", Profile.FarmHarvests);
             string consortia = JsonStr(json, "consortiaName", null);
             if (consortia != null) Profile.ConsortiaName = consortia;
             ParseBagFromServer(json);

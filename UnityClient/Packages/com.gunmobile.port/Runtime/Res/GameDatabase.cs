@@ -25,6 +25,36 @@ namespace GunMobile.Res
         public string Pic = "";
         public int Quality;
         public int Level;
+        public int Property1;
+        public int Property2;
+        public int Property3;
+        public int Property4;
+        public int Property5;
+        public int Property6;
+        public int Property7;
+        public int Property8;
+        public int ReclaimValue;
+        public int FloorPrice;
+    }
+
+    public sealed class LevelGrade
+    {
+        public int Grade;
+        public int Gp;
+        public int Blood;
+    }
+
+    public sealed class FightPropTemplate
+    {
+        public int Pic;
+        public int Property1;
+        public int Property2;
+        public int Property3;
+        public int Property4;
+        public int Property5;
+        public int Property6;
+        public int Property7;
+        public int Property8;
     }
 
     public sealed class ShopOffer
@@ -221,6 +251,11 @@ namespace GunMobile.Res
         public List<SignReward> SignIn { get; } = new List<SignReward>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
+        public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
+        public Dictionary<int, FightPropTemplate> FightPropsByPic { get; } = new Dictionary<int, FightPropTemplate>();
+
+        /// <summary>Mobile battle UI prop slots (game_prop_N.png).</summary>
+        public static readonly int[] BattlePropPicIds = { 1, 2, 4, 5, 6, 7 };
 
         public static GameDatabase Load(ResLoader loader)
         {
@@ -247,7 +282,8 @@ namespace GunMobile.Res
             db.LoadSignIn(loader);
             db.LoadServerConfig(loader);
             db.LoadFightLabDrops(loader);
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} cfg={db.ServerConfig.Count}");
+            db.LoadLevels(loader);
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -352,6 +388,227 @@ namespace GunMobile.Res
             }
 
             return ConfigInt("LotteryMoney", 100);
+        }
+
+        public int LevelFromGp(int gp)
+        {
+            int level = 1;
+            foreach (LevelGrade row in Levels)
+            {
+                if (gp >= row.Gp)
+                {
+                    level = row.Grade;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return Mathf.Max(1, level);
+        }
+
+        public int GpForLevel(int level)
+        {
+            foreach (LevelGrade row in Levels)
+            {
+                if (row.Grade == level)
+                {
+                    return row.Gp;
+                }
+            }
+
+            return 0;
+        }
+
+        public int BloodForLevel(int level)
+        {
+            foreach (LevelGrade row in Levels)
+            {
+                if (row.Grade == level)
+                {
+                    return row.Blood;
+                }
+            }
+
+            return 500 + level * 30;
+        }
+
+        public int BattleWinGp(int level, bool pve)
+        {
+            int raw = ConfigPipeInt(pve ? "MissionAwardGP" : "MissionAwardGP", LevelTierIndex(level), 100);
+            if (raw >= 10000)
+            {
+                raw /= 1000;
+            }
+
+            return Mathf.Max(1, raw);
+        }
+
+        public int AuctionPrice(ItemTemplate item)
+        {
+            if (item == null)
+            {
+                return 0;
+            }
+
+            if (item.ReclaimValue > 0)
+            {
+                return item.ReclaimValue;
+            }
+
+            if (item.FloorPrice > 0)
+            {
+                return item.FloorPrice;
+            }
+
+            return Mathf.Max(80, (item.Attack + item.Defence) * 12);
+        }
+
+        public int FarmBuyVegetableCost()
+        {
+            return ConfigInt("MustFusionGold", 200);
+        }
+
+        public int KingBlessGold(int vipLevel)
+        {
+            return ConfigInt("TakeCardMoney", 486) / 2 + vipLevel * 80;
+        }
+
+        public static int FightPropBitIndex(int propPicId)
+        {
+            for (int i = 0; i < BattlePropPicIds.Length; i++)
+            {
+                if (BattlePropPicIds[i] == propPicId)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public void ApplyFightProp(int propPicId, out float dmgMul, out float radiusMul, out float powerAdd, out bool forceCrit)
+        {
+            dmgMul = 1f;
+            radiusMul = 1f;
+            powerAdd = 0f;
+            forceCrit = false;
+            if (propPicId == 0)
+            {
+                return;
+            }
+
+            if (FightPropsByPic.TryGetValue(propPicId, out FightPropTemplate prop))
+            {
+                if (prop.Property1 == 13 && prop.Property2 > 0)
+                {
+                    dmgMul = 1f + prop.Property2 / 100f;
+                }
+                else if (prop.Property1 == 15)
+                {
+                    dmgMul = 1.4f;
+                    forceCrit = prop.Property2 >= 3;
+                }
+
+                if (prop.Property4 > 0)
+                {
+                    float fromP4 = prop.Property4 / 100f;
+                    if (fromP4 > 1f)
+                    {
+                        dmgMul = Mathf.Max(dmgMul, fromP4);
+                    }
+                }
+
+                if (prop.Property5 > 0)
+                {
+                    radiusMul = Mathf.Max(1f, prop.Property5 / 500f);
+                }
+
+                if (prop.Property7 > 0)
+                {
+                    powerAdd = prop.Property7 / 15f;
+                }
+
+                return;
+            }
+
+            switch (propPicId)
+            {
+                case 1: dmgMul = 1.25f; radiusMul = 1.35f; break;
+                case 2: dmgMul = 1.2f; break;
+                case 5: powerAdd = 12f; break;
+                case 6: dmgMul = 1.4f; break;
+                case 7: forceCrit = true; break;
+            }
+        }
+
+        public int GenerateFightPropMask(System.Random rng)
+        {
+            int maxProps = ConfigInt("EscapePropMax", 3);
+            int mask = 0;
+            var pool = new List<int>();
+            string weightCfg = ServerConfig.TryGetValue("EscapePropWeight", out string w) ? w : "";
+            if (!string.IsNullOrEmpty(weightCfg))
+            {
+                foreach (string entry in weightCfg.Split('|'))
+                {
+                    if (string.IsNullOrWhiteSpace(entry))
+                    {
+                        continue;
+                    }
+
+                    string[] parts = entry.Split(',');
+                    if (parts.Length < 1)
+                    {
+                        continue;
+                    }
+
+                    if (!int.TryParse(parts[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int templateId))
+                    {
+                        continue;
+                    }
+
+                    ItemTemplate item = GetItem(templateId);
+                    if (item == null || item.CategoryId != 10)
+                    {
+                        continue;
+                    }
+
+                    if (!int.TryParse(item.Pic, NumberStyles.Integer, CultureInfo.InvariantCulture, out int pic))
+                    {
+                        continue;
+                    }
+
+                    if (FightPropBitIndex(pic) < 0)
+                    {
+                        continue;
+                    }
+
+                    pool.Add(pic);
+                }
+            }
+
+            if (pool.Count == 0)
+            {
+                pool.AddRange(BattlePropPicIds);
+            }
+
+            int picks = Mathf.Clamp(maxProps, 1, pool.Count);
+            for (int i = 0; i < picks; i++)
+            {
+                int j = rng != null ? rng.Next(i, pool.Count) : i;
+                int tmp = pool[i];
+                pool[i] = pool[j];
+                pool[j] = tmp;
+                int bit = FightPropBitIndex(pool[i]);
+                if (bit >= 0)
+                {
+                    mask |= 1 << bit;
+                }
+            }
+
+            return mask;
         }
 
         public int ComputePveWinGold(int npcId, int labyrinthFloor, bool labyrinth)
@@ -554,12 +811,13 @@ namespace GunMobile.Res
                     continue;
                 }
 
-                Items[id] = new ItemTemplate
+                int categoryId = Int(row, "CategoryID");
+                var item = new ItemTemplate
                 {
                     TemplateId = id,
                     Name = Str(row, "Name"),
                     Description = Str(row, "Description"),
-                    CategoryId = Int(row, "CategoryID"),
+                    CategoryId = categoryId,
                     Attack = Int(row, "Attack"),
                     Defence = Int(row, "Defence"),
                     Agility = Int(row, "Agility"),
@@ -570,9 +828,65 @@ namespace GunMobile.Res
                     CanUse = Bool(row, "CanUse"),
                     Pic = Str(row, "Pic"),
                     Quality = Int(row, "Quality"),
-                    Level = Int(row, "Level")
+                    Level = Int(row, "Level"),
+                    Property1 = Int(row, "Property1"),
+                    Property2 = Int(row, "Property2"),
+                    Property3 = Int(row, "Property3"),
+                    Property4 = Int(row, "Property4"),
+                    Property5 = Int(row, "Property5"),
+                    Property6 = Int(row, "Property6"),
+                    Property7 = Int(row, "Property7"),
+                    Property8 = Int(row, "Property8"),
+                    ReclaimValue = Int(row, "ReclaimValue"),
+                    FloorPrice = Int(row, "FloorPrice")
                 };
+                Items[id] = item;
+
+                if (categoryId == 10 &&
+                    int.TryParse(item.Pic, NumberStyles.Integer, CultureInfo.InvariantCulture, out int picId) &&
+                    picId > 0 &&
+                    !FightPropsByPic.ContainsKey(picId))
+                {
+                    FightPropsByPic[picId] = new FightPropTemplate
+                    {
+                        Pic = picId,
+                        Property1 = item.Property1,
+                        Property2 = item.Property2,
+                        Property3 = item.Property3,
+                        Property4 = item.Property4,
+                        Property5 = item.Property5,
+                        Property6 = item.Property6,
+                        Property7 = item.Property7,
+                        Property8 = item.Property8
+                    };
+                }
             }
+        }
+
+        void LoadLevels(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/levellist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int grade = Int(row, "Grade");
+                if (grade <= 0)
+                {
+                    continue;
+                }
+
+                Levels.Add(new LevelGrade
+                {
+                    Grade = grade,
+                    Gp = Int(row, "GP"),
+                    Blood = Int(row, "Blood")
+                });
+            }
+
+            Levels.Sort((a, b) => a.Grade.CompareTo(b.Grade));
         }
 
         void LoadShop(ResLoader loader)

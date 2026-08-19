@@ -163,6 +163,26 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.GemUpgrade, "{}");
         }
 
+        public static void CookFarm(int foodId)
+        {
+            Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");
+        }
+
+        public static void SellAuction(int templateId, int count = 1)
+        {
+            Road?.Send(PhoneMsg.AuctionSell, "{\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
+        public static void SelectElf(int elfId)
+        {
+            Road?.Send(PhoneMsg.ElfSelect, "{\"elfId\":" + elfId + "}");
+        }
+
+        public static void ClaimKingBless()
+        {
+            Road?.Send(PhoneMsg.KingBless, "{}");
+        }
+
         public static void JoinGuild(string name)
         {
             Road?.Send(PhoneMsg.GuildJoin, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");

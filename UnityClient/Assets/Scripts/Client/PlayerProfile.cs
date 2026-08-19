@@ -20,6 +20,7 @@ namespace GunMobile.Client
         public string Nick = "Player";
         public int Sex = 1;
         public int Level = 20;
+        public int Gp;
         public int Gold = 100000;
         public int Gift = 5000;
         public int Attack = 50;
@@ -249,6 +250,11 @@ namespace GunMobile.Client
             int agi = 40;
             int luk = 30;
             int hp = 1000 + Level * 10;
+            if (db != null && db.Levels.Count > 0)
+            {
+                hp = db.BloodForLevel(Level);
+            }
+
             if (db != null)
             {
                 AddStats(db.GetItem(EquipHead), ref atk, ref def, ref agi, ref luk);
@@ -399,9 +405,24 @@ namespace GunMobile.Client
                 extra += q.RewardGold;
                 Gold += q.RewardGold;
                 Honor += q.RewardOffer;
+                AddGp(db, q.RewardGp);
             }
 
             return extra;
+        }
+
+        public void AddGp(GameDatabase db, int amount)
+        {
+            if (amount <= 0)
+            {
+                return;
+            }
+
+            Gp += amount;
+            if (db != null)
+            {
+                Level = db.LevelFromGp(Gp);
+            }
         }
     }
 

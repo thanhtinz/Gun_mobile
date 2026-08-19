@@ -19,6 +19,7 @@ namespace GunMobile.Net
         public string Nick = "Player";
         public int Sex = 1;
         public int Level = 20;
+        public int Gp;
         public int Gold = 100000;
         public int Gift = 5000;
         public int Attack = 50;
@@ -50,6 +51,8 @@ namespace GunMobile.Net
         public string ConsortiaName = "";
         public int ElfId;
         public int GemLevel;
+        public int KingBlessDay = -1;
+        public int FarmHarvests;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -111,9 +114,30 @@ namespace GunMobile.Net
 
             atk += Texp / 4;
             hp += GemLevel * 120;
-            hp += Level * 30;
+            if (db.Levels.Count > 0)
+            {
+                hp += db.BloodForLevel(Level);
+            }
+            else
+            {
+                hp += Level * 30;
+            }
 
             Attack = atk; Defence = def; Agility = agi; Luck = luck; Hp = hp;
+        }
+
+        public void AddGp(GameDatabase db, int amount)
+        {
+            if (amount <= 0)
+            {
+                return;
+            }
+
+            Gp += amount;
+            if (db != null)
+            {
+                Level = db.LevelFromGp(Gp);
+            }
         }
 
         public string ToJson()
@@ -124,6 +148,7 @@ namespace GunMobile.Net
             J(sb, "nick", Nick); sb.Append(",");
             J(sb, "sex", Sex); sb.Append(",");
             J(sb, "level", Level); sb.Append(",");
+            J(sb, "gp", Gp); sb.Append(",");
             J(sb, "gold", Gold); sb.Append(",");
             J(sb, "gift", Gift); sb.Append(",");
             J(sb, "attack", Attack); sb.Append(",");
@@ -155,6 +180,8 @@ namespace GunMobile.Net
             J(sb, "consortiaName", ConsortiaName); sb.Append(",");
             J(sb, "elfId", ElfId); sb.Append(",");
             J(sb, "gemLevel", GemLevel); sb.Append(",");
+            J(sb, "kingBlessDay", KingBlessDay); sb.Append(",");
+            J(sb, "farmHarvests", FarmHarvests); sb.Append(",");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
             {
@@ -224,6 +251,7 @@ namespace GunMobile.Net
                 extra += q.RewardGold;
                 Gold += q.RewardGold;
                 Honor += q.RewardOffer;
+                AddGp(db, q.RewardGp);
             }
 
             return extra;
@@ -784,6 +812,10 @@ namespace GunMobile.Net
                 player.RoadStream = ns;
             }
             player.RecalcStats(_db);
+            if (player.Gp <= 0 && _db != null && _db.Levels.Count > 0)
+            {
+                player.Gp = _db.GpForLevel(player.Level);
+            }
             Send(ns, PhoneMsg.LoginOk, "{\"ok\":true,\"playerId\":" + player.Id + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
             return player;
@@ -1031,6 +1063,25 @@ namespace GunMobile.Net
                     break;
                 }
 
+                case PhoneMsg.FarmCook:
+                    HandleFarmCook(player, ns, json);
+                    break;
+
+                case PhoneMsg.AuctionSell:
+                    HandleAuctionSell(player, ns, json);
+                    break;
+
+                case PhoneMsg.ElfSelect:
+                    player.ElfId = JI(json, "elfId", player.ElfId);
+                    player.RecalcStats(_db);
+                    SavePlayer(player);
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    break;
+
+                case PhoneMsg.KingBless:
+                    HandleKingBless(player, ns);
+                    break;
+
                 case PhoneMsg.Ping:
                     Send(ns, PhoneMsg.Ping, "{}");
                     break;
@@ -1193,6 +1244,94 @@ namespace GunMobile.Net
             }
         }
 
+        void HandleFarmCook(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int foodId = JI(json, "foodId", 0);
+            FarmRecipe recipe = null;
+            if (_db != null)
+            {
+                foreach (FarmRecipe r in _db.Farm)
+                {
+                    if (r.FoodId == foodId)
+                    {
+                        recipe = r;
+                        break;
+                    }
+                }
+            }
+
+            if (recipe == null)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            if (!player.Consume(recipe.VegetableId, recipe.NeedCount))
+            {
+                int cost = _db != null ? _db.FarmBuyVegetableCost() : 200;
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    return;
+                }
+
+                player.Gold -= cost;
+                player.AddItem(recipe.VegetableId, recipe.NeedCount);
+                if (!player.Consume(recipe.VegetableId, recipe.NeedCount))
+                {
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    return;
+                }
+            }
+
+            player.AddItem(recipe.FoodId, 1);
+            player.FarmHarvests++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleAuctionSell(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int templateId = JI(json, "templateId", 0);
+            int count = JI(json, "count", 1);
+            if (count < 1)
+            {
+                count = 1;
+            }
+
+            ItemTemplate item = _db != null ? _db.GetItem(templateId) : null;
+            int unitPrice = _db != null ? _db.AuctionPrice(item) : 80;
+            if (!player.Consume(templateId, count))
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            player.Gold += unitPrice * count;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleKingBless(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.KingBlessDay == today)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            player.KingBlessDay = today;
+            int gold = _db != null ? _db.KingBlessGold(player.VipLevel) : 400;
+            player.Gold += gold;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -1293,8 +1432,9 @@ namespace GunMobile.Net
                     {
                         if (q.Id == questId)
                         {
-                            player.Gold += Mathf.Max(50, q.RewardGold);
-                            player.Honor += 5;
+                            player.Gold += q.RewardGold;
+                            player.Honor += q.RewardOffer;
+                            player.AddGp(_db, q.RewardGp);
                             break;
                         }
                     }
@@ -1302,6 +1442,7 @@ namespace GunMobile.Net
             }
             SavePlayer(player);
             Send(ns, PhoneMsg.QuestResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleTotemBuy(ServerPlayer player, NetworkStream ns, string json)
@@ -1449,6 +1590,7 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleTexpTrain(ServerPlayer player, NetworkStream ns)
@@ -1463,6 +1605,7 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleGemUpgrade(ServerPlayer player, NetworkStream ns)
@@ -1478,6 +1621,7 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleRankRequest(ServerPlayer player, NetworkStream ns)
@@ -1787,8 +1931,14 @@ namespace GunMobile.Net
             }
         }
 
-        static void ApplyPropModifiers(int propId, out float dmgMul, out float radiusMul, out float powerAdd, out bool forceCrit)
+        void ApplyPropModifiers(int propId, out float dmgMul, out float radiusMul, out float powerAdd, out bool forceCrit)
         {
+            if (_db != null)
+            {
+                _db.ApplyFightProp(propId, out dmgMul, out radiusMul, out powerAdd, out forceCrit);
+                return;
+            }
+
             dmgMul = 1f; radiusMul = 1f; powerAdd = 0f; forceCrit = false;
             switch (propId)
             {
@@ -1800,28 +1950,20 @@ namespace GunMobile.Net
             }
         }
 
-        static int PropBitIndex(int propId)
-        {
-            // propIds order must match client prop buttons:
-            // [1,2,4,5,6,7] -> bits [0..5]
-            switch (propId)
-            {
-                case 1: return 0;
-                case 2: return 1;
-                case 4: return 2;
-                case 5: return 3;
-                case 6: return 4;
-                case 7: return 5;
-                default: return -1;
-            }
-        }
+        int PropBitIndex(int propId) => GameDatabase.FightPropBitIndex(propId);
 
         int GeneratePropMask(GameRoom room)
         {
-            // Randomly choose 3 props among [1,2,4,5,6,7].
+            if (_db != null)
+            {
+                lock (_lock)
+                {
+                    return _db.GenerateFightPropMask(room.Rng);
+                }
+            }
+
             int mask = 0;
             int[] pool = new int[] { 1, 2, 4, 5, 6, 7 };
-            // Fisher-Yates shuffle (only need first 3)
             for (int i = 0; i < 3; i++)
             {
                 int j = room.Rng != null ? room.Rng.Next(i, pool.Length) : i;
@@ -2050,6 +2192,10 @@ namespace GunMobile.Net
                         if (_db != null)
                         {
                             p.Honor += _db.BattleWinHonor(p.Level, pve);
+                            int gpGain = pve && pveNpcId > 0 && _db.Npcs.TryGetValue(pveNpcId, out NpcInfo npcInfo)
+                                ? Mathf.Max(1, npcInfo.Experience)
+                                : _db.BattleWinGp(p.Level, pve);
+                            p.AddGp(_db, gpGain);
                         }
                         questGold = p.CompleteAcceptedQuests(_db);
                     }
@@ -2186,6 +2332,146 @@ namespace GunMobile.Net
             {
                 Debug.Log($"[Battle] FightTurn room={room.Id} turn={room.CurrentTurn} curPlayer={room.CurrentPlayer} propMask={room.CurrentPropMask}");
             }
+
+            ScheduleNpcTurnIfNeeded(room);
+        }
+
+        void ScheduleNpcTurnIfNeeded(GameRoom room)
+        {
+            if (room == null) return;
+            int npcSeat;
+            lock (_lock)
+            {
+                if (!room.InBattle || room.NpcSeat < 0 || room.CurrentPlayer != room.NpcSeat)
+                {
+                    return;
+                }
+
+                if (room.Hp == null || room.NpcSeat >= room.Hp.Length || room.Hp[room.NpcSeat] <= 0)
+                {
+                    return;
+                }
+
+                npcSeat = room.NpcSeat;
+            }
+
+            int roomId = room.Id;
+            ThreadPool.QueueUserWorkItem(_ =>
+            {
+                Thread.Sleep(900);
+                GameRoom liveRoom;
+                lock (_lock)
+                {
+                    if (!_rooms.TryGetValue(roomId, out liveRoom) || liveRoom == null || !liveRoom.InBattle)
+                    {
+                        return;
+                    }
+
+                    if (liveRoom.CurrentPlayer != npcSeat || liveRoom.Hp[npcSeat] <= 0)
+                    {
+                        return;
+                    }
+                }
+
+                AutoNpcFire(liveRoom, npcSeat);
+            });
+        }
+
+        void AutoNpcFire(GameRoom room, int npcSeat)
+        {
+            if (room == null || room.Hp == null || room.PosX == null || room.PosY == null || room.Livings == null)
+            {
+                return;
+            }
+
+            int npcTeam = npcSeat < room.Livings.Length ? room.Livings[npcSeat].Team : 2;
+            int target = -1;
+            float bestDist = float.MaxValue;
+            float npcX;
+            float npcY;
+            float wind;
+            int facing;
+            int propMask;
+            lock (_lock)
+            {
+                if (!room.InBattle || room.CurrentPlayer != npcSeat || room.Hp[npcSeat] <= 0)
+                {
+                    return;
+                }
+
+                npcX = room.PosX[npcSeat];
+                npcY = room.PosY[npcSeat];
+                wind = room.Wind;
+                facing = room.Facing[npcSeat];
+                propMask = room.CurrentPropMask;
+                for (int i = 0; i < room.Hp.Length; i++)
+                {
+                    if (i == npcSeat || room.Hp[i] <= 0 || i >= room.Livings.Length)
+                    {
+                        continue;
+                    }
+
+                    if (room.Livings[i].Team == npcTeam)
+                    {
+                        continue;
+                    }
+
+                    float dx = room.PosX[i] - npcX;
+                    float dy = room.PosY[i] - npcY;
+                    float dist = dx * dx + dy * dy;
+                    if (dist < bestDist)
+                    {
+                        bestDist = dist;
+                        target = i;
+                    }
+                }
+            }
+
+            if (target < 0)
+            {
+                return;
+            }
+
+            float tx;
+            float ty;
+            lock (_lock)
+            {
+                tx = room.PosX[target];
+                ty = room.PosY[target];
+            }
+
+            float dxShot = tx - npcX;
+            float dyShot = ty - npcY;
+            if (Mathf.Abs(dxShot) < 1f)
+            {
+                dxShot = facing >= 0 ? 1f : -1f;
+            }
+
+            float angle = Mathf.Clamp(Mathf.Atan2(-dyShot, dxShot) * Mathf.Rad2Deg, 5f, 85f);
+            float distShot = Mathf.Sqrt(dxShot * dxShot + dyShot * dyShot);
+            float power = Mathf.Clamp(distShot / 12f + 18f + wind * 0.02f, 20f, 90f);
+
+            int propId = 0;
+            if (propMask != 0 && _db != null)
+            {
+                foreach (int pic in GameDatabase.BattlePropPicIds)
+                {
+                    int bit = GameDatabase.FightPropBitIndex(pic);
+                    if (bit >= 0 && (propMask & (1 << bit)) != 0 && (pic == 2 || pic == 6 || pic == 7))
+                    {
+                        propId = pic;
+                        break;
+                    }
+                }
+            }
+
+            string fireJson = "{\"angle\":" + angle.ToString(CultureInfo.InvariantCulture) +
+                              ",\"power\":" + power.ToString(CultureInfo.InvariantCulture) +
+                              ",\"facing\":" + (dxShot >= 0 ? 1 : -1) +
+                              ",\"prop\":" + propId + "}";
+            var npcPlayer = new ServerPlayer { Seat = npcSeat, Id = -1 };
+            BroadcastToRoom(room, PhoneMsg.FightFire, fireJson, -1);
+            ServerSimulateFire(npcPlayer, room, fireJson);
         }
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)
@@ -2317,6 +2603,7 @@ namespace GunMobile.Net
             public string Nick = "Player";
             public int Sex = 1;
             public int Level = 20;
+            public int Gp;
             public int Gold = 100000;
             public int Gift = 5000;
             public int Win, Lose;
@@ -2325,7 +2612,7 @@ namespace GunMobile.Net
             public int PetId, CardId, TitleId, TotemId, MountGrade, VipLevel, Honor, Texp;
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
-            public int ElfId, GemLevel;
+            public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
             public List<int> AcceptedQuests = new List<int>();
             public List<int> CompletedQuests = new List<int>();
@@ -2339,7 +2626,7 @@ namespace GunMobile.Net
         {
             var s = new ServerPlayerSave
             {
-                Nick = p.Nick, Sex = p.Sex, Level = p.Level, Gold = p.Gold, Gift = p.Gift,
+                Nick = p.Nick, Sex = p.Sex, Level = p.Level, Gp = p.Gp, Gold = p.Gold, Gift = p.Gift,
                 Win = p.Win, Lose = p.Lose, WeaponId = p.WeaponId,
                 EquipHead = p.EquipHead, EquipHair = p.EquipHair, EquipFace = p.EquipFace,
                 EquipCloth = p.EquipCloth, EquipGlass = p.EquipGlass, EquipWeapon = p.EquipWeapon,
@@ -2347,7 +2634,7 @@ namespace GunMobile.Net
                 MountGrade = p.MountGrade, VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
-                ElfId = p.ElfId, GemLevel = p.GemLevel,
+                ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends
             };
@@ -2359,7 +2646,7 @@ namespace GunMobile.Net
         {
             var p = new ServerPlayer
             {
-                Nick = s.Nick, Sex = s.Sex, Level = s.Level, Gold = s.Gold, Gift = s.Gift,
+                Nick = s.Nick, Sex = s.Sex, Level = s.Level, Gp = s.Gp, Gold = s.Gold, Gift = s.Gift,
                 Win = s.Win, Lose = s.Lose, WeaponId = s.WeaponId,
                 EquipHead = s.EquipHead, EquipHair = s.EquipHair, EquipFace = s.EquipFace,
                 EquipCloth = s.EquipCloth, EquipGlass = s.EquipGlass, EquipWeapon = s.EquipWeapon,
@@ -2367,7 +2654,7 @@ namespace GunMobile.Net
                 MountGrade = s.MountGrade, VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName,
-                ElfId = s.ElfId, GemLevel = s.GemLevel,
+                ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
                 Friends = s.Friends ?? new List<string>()
