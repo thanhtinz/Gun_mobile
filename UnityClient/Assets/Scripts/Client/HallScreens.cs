@@ -267,6 +267,44 @@ namespace GunMobile.Client
     {
         public static readonly string[] PackedMaps = { "1056", "2001", "1005", "1010", "1029", "1048" };
 
+        static IEnumerator ConnectFightWhenLogged(GameApp app, string host)
+        {
+            // Wait until server login finished and playerId is known.
+            float t = 0f;
+            while (t < 10f)
+            {
+                if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
+                {
+                    PhoneNet.ConnectFight(host);
+                    yield break;
+                }
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            // Fallback: try anyway.
+            PhoneNet.ConnectFight(host);
+        }
+
+        static IEnumerator CreateRoomWhenLogged(GameApp app, string host, int mapId, string name)
+        {
+            float t = 0f;
+            while (t < 10f)
+            {
+                if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
+                {
+                    PhoneNet.CreateRoom(mapId, name);
+                    PhoneNet.ConnectFight(host);
+                    yield break;
+                }
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            PhoneNet.CreateRoom(mapId, name);
+            PhoneNet.ConnectFight(host);
+        }
+
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
@@ -302,7 +340,7 @@ namespace GunMobile.Client
                 PhoneNet.NetBattle = true;
                 PhoneNet.UseExternalServer();
                 PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
-                PhoneNet.ConnectFight(ip.text);
+                app.StartCoroutine(ConnectFightWhenLogged(app, ip.text));
             }, new Vector2(160f, 48f));
             hostBtn.GetComponent<RectTransform>().anchorMin = hostBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.38f, 0.82f);
             var joinBtn = UiKit.Button(bg.transform, "Join", "加入 LAN", () =>
@@ -311,7 +349,7 @@ namespace GunMobile.Client
                 PhoneNet.NetBattle = true;
                 PhoneNet.UseExternalServer();
                 PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
-                PhoneNet.ConnectFight(ip.text);
+                app.StartCoroutine(ConnectFightWhenLogged(app, ip.text));
             }, new Vector2(140f, 48f));
             joinBtn.GetComponent<RectTransform>().anchorMin = joinBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.52f, 0.82f);
             var solo = UiKit.Button(bg.transform, "Solo", "单机Bot", () =>
@@ -321,12 +359,12 @@ namespace GunMobile.Client
             solo.GetComponent<RectTransform>().anchorMin = solo.GetComponent<RectTransform>().anchorMax = new Vector2(0.64f, 0.82f);
             var srvRoom = UiKit.Button(bg.transform, "SrvRoom", "创建房间", () =>
             {
-                PhoneNet.UseExternalServer();
-                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
-                PhoneNet.CreateRoom(app.Profile.MapId > 0 ? app.Profile.MapId : 1056, app.Profile.Nick);
                 PhoneNet.Seat = 0;
                 PhoneNet.NetBattle = true;
-                PhoneNet.ConnectFight(ip.text);
+                PhoneNet.UseExternalServer();
+                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
+                int mapId = app.Profile.MapId > 0 ? app.Profile.MapId : 1056;
+                app.StartCoroutine(CreateRoomWhenLogged(app, ip.text, mapId, app.Profile.Nick));
             }, new Vector2(140f, 48f));
             srvRoom.GetComponent<RectTransform>().anchorMin = srvRoom.GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 0.82f);
 
@@ -356,7 +394,15 @@ namespace GunMobile.Client
                     {
                         if (PhoneNet.Fight == null || !PhoneNet.Fight.Connected)
                         {
-                            PhoneNet.ConnectFight(ip.text);
+                            // Avoid race: if playerId not ready yet, connect later.
+                            if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
+                            {
+                                PhoneNet.ConnectFight(ip.text);
+                            }
+                            else
+                            {
+                                app.StartCoroutine(ConnectFightWhenLogged(app, ip.text));
+                            }
                         }
 
                         PhoneNet.SendStart(local.Id);
