@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Result value="true" message="Success!">
+<Item Grades="1" Gp="0" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="2" Gp="20" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="3" Gp="45" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="4" Gp="85" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="5" Gp="135" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="6" Gp="200" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="7" Gp="285" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="8" Gp="390" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="9" Gp="520" Types1="0" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="10" Gp="680" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0" Description="培育经验+5(亲密度达到10级触发)"/>
+<Item Grades="11" Gp="870" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="12" Gp="1090" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="13" Gp="1345" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="14" Gp="1640" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="15" Gp="1980" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="16" Gp="2360" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="17" Gp="2790" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="18" Gp="3270" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="19" Gp="3805" Types1="1" Value1="0" Types2="0" Value2="0" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="20" Gp="4395" Types1="1" Value1="0" Types2="2" Value2="1005" Types3="0" Value3="0" Types4="0" Value4="0" Description="川流不息：生命值低于50%几率触发,回复自身30%生命(触发几率,生效次数受亲密度影响)(亲密度达到20级触发)"/>
+<Item Grades="21" Gp="5045" Types1="1" Value1="0" Types2="2" Value2="1006" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="22" Gp="5760" Types1="1" Value1="0" Types2="2" Value2="1007" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="23" Gp="6540" Types1="1" Value1="0" Types2="2" Value2="1008" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="24" Gp="7390" Types1="1" Value1="0" Types2="2" Value2="1009" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="25" Gp="8315" Types1="1" Value1="0" Types2="2" Value2="1010" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="26" Gp="9315" Types1="1" Value1="0" Types2="2" Value2="1011" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="27" Gp="10395" Types1="1" Value1="0" Types2="2" Value2="1012" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="28" Gp="11555" Types1="1" Value1="0" Types2="2" Value2="1013" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="29" Gp="12800" Types1="1" Value1="0" Types2="2" Value2="1014" Types3="0" Value3="0" Types4="0" Value4="0"/>
+<Item Grades="30" Gp="14135" Types1="1" Value1="0" Types2="2" Value2="1015" Types3="3" Value3="10" Types4="0" Value4="0" Description="提升召唤五星圣灵获得几率,亲密度越高提升几率越高,最高提升100%(亲密度达到30级触发)"/>
+<Item Grades="31" Gp="15560" Types1="1" Value1="0" Types2="2" Value2="1016" Types3="3" Value3="10" Types4="0" Value4="0"/>
+<Item Grades="32" Gp="17080" Types1="1" Value1="0" Types2="2" Value2="1017" Types3="3" Value3="10" Types4="0" Value4="0"/>
+<Item Grades="33" Gp="18700" Types1="1" Value1="0" Types2="2" Value2="1018" Types3="3" Value3="10" Types4="0" Value4="0"/>
+<Item Grades="34" Gp="20420" Types1="1" Value1="0" Types2="2" Value2="1019" Types3="3" Value3="10" Types4="0" Value4="0"/>
+<Item Grades="35" Gp="22245" Types1="1" Value1="0" Types2="2" Value2="1020" Types3="3" Value3="10" Types4="0" Value4="0"/>
+<Item Grades="36" Gp="24180" Types1="1" Value1="0" Types2="2" Value2="1021" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="37" Gp="26225" Types1="1" Value1="0" Types2="2" Value2="1022" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="38" Gp="28385" Types1="1" Value1="0" Types2="2" Value2="1023" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="39" Gp="30665" Types1="1" Value1="0" Types2="2" Value2="1024" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="40" Gp="33065" Types1="1" Value1="0" Types2="2" Value2="1025" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="41" Gp="35590" Types1="1" Value1="0" Types2="2" Value2="1026" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="42" Gp="38245" Types1="1" Value1="0" Types2="2" Value2="1027" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="43" Gp="41030" Types1="1" Value1="0" Types2="2" Value2="1028" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="44" Gp="43950" Types1="1" Value1="0" Types2="2" Value2="1029" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="45" Gp="47010" Types1="1" Value1="0" Types2="2" Value2="1030" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="46" Gp="50210" Types1="1" Value1="0" Types2="2" Value2="1031" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="47" Gp="53555" Types1="1" Value1="0" Types2="2" Value2="1032" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="48" Gp="57050" Types1="1" Value1="0" Types2="2" Value2="1033" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="49" Gp="60695" Types1="1" Value1="0" Types2="2" Value2="1034" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="50" Gp="64495" Types1="1" Value1="0" Types2="2" Value2="1035" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="51" Gp="68455" Types1="1" Value1="0" Types2="2" Value2="1036" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="52" Gp="72575" Types1="1" Value1="0" Types2="2" Value2="1037" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="53" Gp="76860" Types1="1" Value1="0" Types2="2" Value2="1038" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="54" Gp="81315" Types1="1" Value1="0" Types2="2" Value2="1039" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="55" Gp="85945" Types1="1" Value1="0" Types2="2" Value2="1040" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="56" Gp="90750" Types1="1" Value1="0" Types2="2" Value2="1041" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="57" Gp="95735" Types1="1" Value1="0" Types2="2" Value2="1042" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="58" Gp="100900" Types1="1" Value1="0" Types2="2" Value2="1043" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="59" Gp="106250" Types1="1" Value1="0" Types2="2" Value2="1044" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="60" Gp="111790" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="61" Gp="117525" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="62" Gp="123455" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="63" Gp="129585" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="64" Gp="135920" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="65" Gp="142460" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="66" Gp="149210" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="67" Gp="156175" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="68" Gp="163360" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="69" Gp="170765" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+<Item Grades="70" Gp="178395" Types1="1" Value1="0" Types2="2" Value2="1045" Types3="3" Value3="15" Types4="0" Value4="0"/>
+</Result>

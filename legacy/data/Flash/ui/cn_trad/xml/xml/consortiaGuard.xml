@@ -1,0 +1,140 @@
+<style name="consortiaGuard" version="1.0.1" source="ui/cn_trad/swf/consortiaGuard.swf">
+<sets>
+	<set stylename="consortiaGuard.tf" args="Arial,16,0xffd545,true" letterSpacing="2" type="flash.text.TextFormat"/>
+	<set stylename="consortiaGuard.gf" args="0x441300,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="consortiaGuard.bossHpBarTextTF" args="Arial,14,0xffffff,true,,,,,center" type="flash.text.TextFormat"/>
+	<set stylename="consortiaGuard.bossHpBarTextGF" args="0x600000,1,2,2,10" type="flash.filters.GlowFilter" />
+	
+	<set stylename="consortiaGuard.rank.titleTextTF" args="Arial,13,0xff9933" type="flash.text.TextFormat" />
+	<set stylename="consortiaGuard.rank.titleTextGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+			
+	<set stylename="consortiaGuard.rank.rankTextTF" args="Arial,13,0xfff880" type="flash.text.TextFormat" />
+	<set stylename="consortiaGuard.rank.rankTextGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+</sets>
+
+<components>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiaGurad.bossRankBtn" backStyle="asset.consortiaGurad.bossRankBtn" filterString="null,lightFilter,null,grayFilter" x="217" y="22"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiaGuard.boosRankViewBg" parentStyle="core.commonTipBg" x="0" y="0" width="400" height="300"/>
+
+	<component classname="uiUtils.ProgressBarUI" stylename="consortiaGuard.bossHpBar" backStyleName="asset.consortiaGurad.progressBack" progressStyleName="asset.consortiaGurad.progress"
+		textStyleName="consortiaGuard.bossHpBarText" offsetX="60" offsetY="30" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="consortiaGuard.bossHpBarText" autoSize="none" width="100" height="25"
+		textFormatStyle="consortiaGuard.bossHpBarTextTF" filterString="consortiaGuard.bossHpBarTextGF" x="84" y="28" />
+	
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiaGuard.rankViewBg" resourceLink="asset.core.ddtScale9CornerImage21" scaleGridString="16,12,100,40" x="15" y="0" width="200" autoSize="none" height="270"/>
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="consortiaGuard.rankViewSelectBtn" parentStyle="core.simpleSelectBtn" unSelectedStyle="asset.consortiaGurad.rankViewUnSelectBtn" selectedStyle="asset.consortiaGurad.rankViewSelectBtn" displacement='false' y="111" />
+
+	
+	<!-- 复活框 -->
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiaGuard.reviveBg" resourceLink="asset.core.ddtScale9CornerImage21" scaleGridString="16,12,100,40"  x="0" y="0" width="135" height="85"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiaGuard.promptlyFightBtn" backStyle="asset.consortiaGuard.promptlyFight" x="17" y="36"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiaGuard.promptlyReviveBtn" backStyle="asset.consortiaGuard.promptlyRevive" x="17" y="36"/>
+
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="consortiaGuard.rank.titleText" textFormatStyle="consortiaGuard.rank.titleTextTF" filterString="consortiaGuard.rank.titleTextGF" x="23" y="15" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="consortiaGuard.rank.rankText" textFormatStyle="consortiaGuard.rank.rankTextTF" filterString="consortiaGuard.rank.rankTextGF" text=" " />
+	
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="consortiaGuard.rank.nameVBox" spacing="5" x="23" y="39" />
+	<!-- 购买buff -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiaGurad.buyBuffBtn" backStyle="asset.consortiaGurad.buyBuffBtn" x="4" y="350" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="consortiaGuard.rank.nameText" parentStyle="consortiaGuard.rank.rankText" isAutoFitLength="true" autoSize="none" width="90" height="17" />
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="consortiaGuard.rank.valueVBox" spacing="5" x="118" y="39" />
+	
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="consortiaGurad.showBtn" parentStyle="ddtcorei.showBtn" x="909" y="16"/>
+</components>
+
+<customs>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankPos2" x="250" y="211"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankPos3" x="250" y="292"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossIconClickLocationPos0" x="589" y="547"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossIconClickLocationPos1" x="484" y="846"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossIconClickLocationPos2" x="987" y="512"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossIconClickLocationPos3" x="1178" y="906"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.selectPagePos" x="91" y="260"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRank.rankTextPos" x="23" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRank.nameTextPos" x="110" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRank.hurtTextPos" x="214" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRank.attacksNumTextPos" x="306" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankItem.rankTextPos" x="12" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankItem.nameTextPos" x="79" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankItem.hurtTextPos" x="185" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankItem.attacksNumTextPos" x="287" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.ConsortiaGuardBossBar.headIconBtnPos" x="9" y="10"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankPos0" x="250" y="48"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossRankPos1" x="250" y="127"/>
+
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossPos0" x="530" y="400"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossPos1" x="205" y="812"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossPos2" x="1076" y="264"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossPos3" x="1426" y="842"/>
+	
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossUI.BarPos0" x="0" y="15"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossUI.BarPos1" x="0" y="96"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossUI.BarPos2" x="0" y="179"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossUI.BarPos3" x="0" y="268"/>
+	
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.rankUI.pos" x="0" y="131"/>
+	<!-- 青龙 -->
+	<custom classname="flash.geom.Rectangle" stylename="consortiaGuard.bossRect0" x="376" y="12" width="270" height="440"/>
+	<!-- 白虎 -->
+	<custom classname="flash.geom.Rectangle" stylename="consortiaGuard.bossRect1" x="0" y="516" width="450" height="305"/>
+	<!-- 朱雀 -->
+	<custom classname="flash.geom.Rectangle" stylename="consortiaGuard.bossRect2" x="892" y="15" width="450" height="384"/>
+	<!-- 玄武 -->
+	<custom classname="flash.geom.Rectangle" stylename="consortiaGuard.bossRect3" x="1236" y="450" width="474" height="410"/>
+	
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossLocationPos0" x="559" y="527"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossLocationPos1" x="454" y="866"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossLocationPos2" x="1017" y="502"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.bossLocationPos3" x="1208" y="886"/>
+	
+	
+	
+	<custom classname="flash.geom.Point" stylename="consortiaGuardStatuePos" x="-118" y="-224"/>
+	<custom classname="flash.geom.Point" stylename="consortiaGuardBackPos" x="0" y="-250" />
+	<custom classname="flash.geom.Point" stylename="consortiaGuardProgressPos" x="1" y="-249" />
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.statuePos" x="760" y="700" />
+	
+	<custom classname="flash.geom.Point" stylename="consortiaGuard.reviveTimerPos" x="10" y="10" />
+	
+	<custom classname="starling.scene.hall.SceneMapGridData" stylename="consortiaGuard.map.SceneMapGridData" numX="28" numY="41"  mapId="0" bgImageW="1738" bgImageH="1301" cellW="64" cellH="32"
+	gridsType="[[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],
+				[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]]"/>
+</customs>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.consortiaGurad.bossHead0" x="9" y="10"/>
+	<bitmapData resourceLink="asset.consortiaGurad.bossHead1" x="9" y="10"/>
+	<bitmapData resourceLink="asset.consortiaGurad.bossHead2" x="9" y="10"/>
+	<bitmapData resourceLink="asset.consortiaGurad.bossHead3" x="9" y="10"/>
+</bitmaps>
+
+</style>

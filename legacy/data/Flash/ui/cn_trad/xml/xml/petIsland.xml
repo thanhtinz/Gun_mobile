@@ -1,0 +1,99 @@
+﻿<style name="petIsland" version="1.0.1" source="ui/cn_trad/swf/petIsland.swf">
+	<sets>
+    	<set type="flash.text.TextFormat" stylename="petIsland.view.pointsTxtTF" args="Arial,16,0xffedb0,,,,,,left"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.pointsTxtGF" args="0x730000,1,4,4,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="petIsland.view.roundTxtTF" args="Arial,16,0xfffc00,true,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.roundTxtGF" args="0x1638b6,1,6,6,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="petIsland.view.npcBloodTxtTF" args="Arial,16,0xffffff,,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.npcBloodTxtGF" args="0x600000,1,4,4,10"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.playerBloodTxtGF" args="0x106000,1,4,4,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="petIsland.view.infoTxtTF" args="Arial,12,0xe8e8e8,,,,,,left" leading="4"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.infoTxtGF" args="0x332f2e,1,4,4,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="petIsland.view.skillTimesTxtTF" args="Arial,14,0xffd156,true,,,,,left"/>
+		<set type="flash.filters.GlowFilter" stylename="petIsland.view.skillTimesTxtGF" args="0x721f02,1,4,4,10"/>
+		
+	</sets>
+
+	<components> 
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.petIsland.returnBar.returnBtn" backStyle="asset.petIsland.returnBar.returnBtn.back" x="34" y="4" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.petIsland.returnBar.returnBtn.back" resourceLink="asset.petIsland.returnBar.btnImg,asset.petIsland.returnBar.btnImg.selected,asset.petIsland.returnBar.btnImg.selected,asset.petIsland.returnBar.btnImg.selected" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="asset.petIsland.returnBar.stretchBtn" unSelectedStyle="asset.petIsland.returnBar.unselected" selectedStyle="asset.petIsland.returnBar.selected" filterString="null,lightFilter,null,grayFilter" x="0" y="0"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.roundTxt" filterString="petIsland.view.roundTxtGF" textFormatStyle="petIsland.view.roundTxtTF" autoSize="none" height="20" width="145" x="429" y="171"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.pointsPaopao" filterString="petIsland.view.pointsTxtGF" textFormatStyle="petIsland.view.pointsTxtTF" autoSize="none" height="20" width="87" x="184" y="174"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.petIsland.buyBtn" backStyle="asset.petIsland.buy" x="691" y="508" tipStyle="ddt.view.tips.OneLineTip"
+			tipGapV="6" tipGapH="6" tipDirctions="0,1,2"  />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.petIsland.buySkillTwoBtn" backStyle="asset.petIsland.crossSkill" x="779" y="508" tipStyle="ddt.view.tips.OneLineTip"
+			tipGapV="6" tipGapH="6" tipDirctions="0,1,2"  />
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.petIsland.helpBtn" backStyle="asset.petIslandl.help" x="879" y="12" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.petIsland.beginBgBtn" backStyle="asset.petIsland.beginBg" x="406" y="79" />
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.npcBloodTxt" filterString="petIsland.view.npcBloodTxtGF" textFormatStyle="petIsland.view.npcBloodTxtTF" autoSize="none" height="20" width="220" x="638" y="130"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.playerBloodTxt" filterString="petIsland.view.playerBloodTxtGF" textFormatStyle="petIsland.view.npcBloodTxtTF" autoSize="none" height="20" width="220" x="142" y="130"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.infoTxt" filterString="petIsland.view.infoTxtGF" textFormatStyle="petIsland.view.infoTxtTF" autoSize="none" height="200" width="300" x="696" y="247"/>
+		
+		<!--helePage-->
+		<component classname="com.pickgliss.ui.controls.Frame" stylename="petIsland.frame.help.main" parentStyle="BaseFrame" 
+			width="408" height="488" moveEnable="true" escEnable="true" moveInnerRectString="0,30,0,30,1"/>
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="petIsland.frame.help.bgHelp" 
+			parentStyle="core.Scale9CornerImage.scale9CornerImagereleaseContentTextBG" width="373" height="379" x="17" y="44"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="petIsland.frame.help.btnOk" 
+			parentStyle="core.simplebt" x="150" y="434" />
+			
+		<component classname="com.pickgliss.ui.core.Component" stylename="petIsland.collectionItem.itemTipContent" 
+			tipStyle="ddt.view.tips.GoodTip" tipDirctions="5" tipGapH="10" tipGapV="10"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="petIsland.view.skillTimesTxt" filterString="petIsland.view.skillTimesTxtGF" textFormatStyle="petIsland.view.skillTimesTxtTF" autoSize="none" height="20" width="40" x="746" y="513"/>
+		
+	</components>
+	
+	<customs> 
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.returnBtnPos" x="906" y="530"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.content.pos" x="47" y="84"/>
+		
+		<custom classname="petIsland.view.PetIslandReturnBar" stylename="asset.petIsland.returnMenu" x="906" y="530" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.returnBar.position"  x="906" y="966" />
+		
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.mask.position"  x="326" y="233" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.playerScore.position"  x="189" y="164" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.npcScore.position"  x="802" y="164" />
+		
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.playerScore.position1"  x="133" y="166" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.npcScore.position1"  x="746" y="166" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.round.position"  x="484" y="103" />
+		
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.prize1.position"  x="191" y="237" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.prize2.position"  x="45" y="315" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.prize3.position"  x="186" y="344" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.prize4.position"  x="46" y="423" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.prize5.position"  x="181" y="514" />
+		
+		<custom classname="flash.geom.Point" stylename="petIsland.view.skillTwoTimesTxt.position"  x="834" y="513" />
+		<custom classname="flash.geom.Point" stylename="asset.petIsland.redBallTwo"  x="827" y="510" />
+	</customs>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.petIsland.returnBar.btnImg" x="9" y="2"/>
+		<bitmapData resourceLink="asset.petIsland.returnBar.unselected" x="4" y="8"/>
+		<bitmapData resourceLink="asset.petIsland.returnBar.selected" x="4" y="8"/>
+		<bitmapData resourceLink="asset.petIsland.score" x="135" y="160"/>
+		<bitmapData resourceLink="asset.petIsland.begin" x="458" y="99"/>
+		<bitmapData resourceLink="asset.petIsland.continue" x="451" y="99"/>
+		<bitmapData resourceLink="asset.petIsland.playerBlood" x="125" y="127"/>
+		<bitmapData resourceLink="asset.petIsland.npcBlood" x="611" y="127"/>
+		
+		<bitmapData resourceLink="asset.petIsland.prizeLine1_2" x="82" y="268"/>
+		<bitmapData resourceLink="asset.petIsland.prizeLine2_3" x="69" y="344"/>
+		<bitmapData resourceLink="asset.petIsland.prizeLine3_4" x="93" y="369"/>
+		<bitmapData resourceLink="asset.petIsland.prizeLine4_5" x="80" y="442"/>
+		<bitmapData resourceLink="asset.petIsland.redBall" x="739" y="510"/>
+		
+	</bitmaps>
+</style>

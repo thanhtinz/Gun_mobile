@@ -1,0 +1,126 @@
+<style name="floatParadegame" version="5.1.0" source="ui/cn_trad/swf/floatParadegame.swf">
+	<sets>
+		<set type="flash.text.TextFormat" stylename="floatParade.rankView.titleTxt.tf" args="Arial,14,0xffba00,true"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.rankView.titleTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.countDownView.txt.tf" args="Arial,14,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.countDownView.txt.gf" args="0x781f00,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.rankView.cellTxt.tf" args="Arial,14,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.rankView.cellTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.rankView.cellNameTxt.tf" args="Arial,14,0xffffff,,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.rankView.cellNameTxt.gf" args="0x000000,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.game.playerNameTxt.tf" args="Arial,12,0xffffff,,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.game.playerNameTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.game.buffTitleTxt.tf" args="Arial,14,0xff0000,true"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.game.buffTitleTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.game.buffCountDownTxt.tf" args="Arial,14,0xff0000"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.game.buffCountDownTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.missileFrame.labelTxt.tf" args="Arial,14,0xf6eeba,true"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.missileFrame.labelTxt.gf" args="0x693816,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="floatParade.missileFrame.nameTxt.tf" args="Arial,18,0xFFFFFF,,,,,,center" />
+		<set type="flash.filters.GlowFilter" stylename="floatParade.missileFrame.nameTxt.gf" args="0x000000,1,2,2,10"  />
+		<set type="flash.text.TextFormat" stylename="floatParade.paopaoTxtTF" args="Arial,12,0x000000"  leading="6"/>
+		<set type="flash.filters.GlowFilter" stylename="floatParade.paopaoTxtGF" args="0xffffff,1,2,2,10"/>
+	</sets>	
+	<customs>
+		<custom classname="flash.geom.Point" stylename="floatParade.game.waitStartGamePromptPos" x="522" y="249"/>
+		
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.nameTitleTxtPos" x="87" y="37"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.rateTitleTxtPos" x="160" y="37"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.sprintTitleTxtPos" x="220" y="37"/>
+
+		<custom classname="flash.geom.Point" stylename="floatParade.gameStart.countDownViewPos" x="485" y="217"/>
+		
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.cellNameTxtPos" x="60" y="1"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.cellRateTxtPos" x="148" y="0"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.rankView.cellAwardCellPos" x="179" y="-6"/>
+		
+		<custom classname="flash.geom.Point" stylename="floatParade.gamePlayer.fightMcPos" x="2" y="-93"/>
+		
+		<custom classname="flash.geom.Point" stylename="floatParade.missileFrame.btnPos" x="44" y="159"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.game.npcPlayerTipsPos" x="44" y="-30"/>
+		<custom classname="flash.geom.Point" stylename="floatParade.paopaoPos" x="11" y="16"/>
+	</customs>
+	<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.moveOutBtn" 
+			backStyle="floatParade.moveOutBtnMC" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.moveInBtn" 
+			backStyle="floatParade.moveInBtnMC" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.returnBtn" 
+			backStyle="floatParade.returnBtnMC" x="35" y="4"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.leapBtn" 
+			backStyle="floatParade.leapBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="13"/>
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.invisibilityBtn" 
+			backStyle="floatParade.invisibilityBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="57"/>
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.cleanBtn"
+			backStyle="floatParade.cleanBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="100"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.missileBtn" 
+			backStyle="floatParade.missileBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="144"/>
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.countDownView.txt" 
+			textFormatStyle="floatParade.countDownView.txt.tf" filterString="floatParade.countDownView.txt.gf" 
+			x="39" y="10"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.rankViewMoveOutBtn" 
+			backStyle="floatParade.rankViewMoveOutBtnImg" x="-24" y="37"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.rankViewMoveInBtn" 
+			backStyle="floatParade.rankViewMoveInBtnImg" x="-24" y="37"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.rankView.titleTxt" 
+			textFormatStyle="floatParade.rankView.titleTxt.tf" filterString="floatParade.rankView.titleTxt.gf" 
+			x="10" y="37"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="floatParade.HelpButton" 
+			backStyle="asset.ddtcore.helpbutton" x="646" y="-2"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.rankView.cellTxt" 
+			textFormatStyle="floatParade.rankView.cellTxt.tf" filterString="floatParade.rankView.cellTxt.gf" 
+			x="0" y="0"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.rankView.cellNameTxt" 
+			textFormatStyle="floatParade.rankView.cellNameTxt.tf" filterString="floatParade.rankView.cellNameTxt.gf" 
+			autoSize="none" width="100" height="18" x="35" y="0"/>
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.game.playerNameTxt" 
+			textFormatStyle="floatParade.game.playerNameTxt.tf" filterString="floatParade.game.playerNameTxt.gf" 
+			autoSize="none" x="-220" y="-77" width="250" height="18"/>		
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.game.buffTitleTxt" 
+			textFormatStyle="floatParade.game.buffTitleTxt.tf" filterString="floatParade.game.buffTitleTxt.gf" 
+			x="4" y="2"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.game.buffCountDownTxt" 
+			textFormatStyle="floatParade.game.buffCountDownTxt.tf" filterString="floatParade.game.buffCountDownTxt.gf" 
+			x="41" y="2"/>
+
+		<component classname="floatParade.views.FloatParadeBuyConfirmView" stylename="FloatParadeBuyConfirmView1"
+			parentStyle="SimpleAlert" frameInnerRectString="60,45,50,85,-1"/>		
+
+		<component classname="floatParade.views.FloatParadeMissileFrame" backStyle="SimpleFrameBackgoundOneIII"
+			closestyle="core.closebt" stylename="floatParade.missileFrame.frame" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="15,10,5" containerX="20" containerY="47" escEnable="true"
+			closeInnerRectString="44,19,6,30,14" width="240" height="260" />
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="floatParade.missileFrame.vbox"
+			x="11" y="42" spacing="-7"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.missileFrame.labelTxt" 
+			textFormatStyle="floatParade.missileFrame.labelTxt.tf" filterString="floatParade.missileFrame.labelTxt.gf" 
+			x="24" y="3"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.missileFrame.nameTxt" 
+			autoSize="none" isAutoFitLength="true" textFormatStyle="floatParade.missileFrame.nameTxt.tf" filterString="floatParade.missileFrame.nameTxt.gf"
+			x="30" y="5"  width="100" height="25"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="floatParade.paopaoTxt" 
+			textFormatStyle="floatParade.paopaoTxtTF" filterString="floatParade.paopaoTxtGF" 
+			x="60" y="20"/>
+
+	</components>
+	<bitmaps>
+		<bitmapData resourceLink="floatParade.missile.labelBg" x="-1" y="-1"/>
+		<bitmapData resourceLink="floatParade.missile.listBg" x="1" y="35"/>
+		<bitmapData resourceLink="floatParade.missile.selectedLight" x="-11" y="-8"/>
+		<bitmapData resourceLink="floatParade.leapPromptArrow" x="0" y="-30"/>
+	</bitmaps>
+</style>

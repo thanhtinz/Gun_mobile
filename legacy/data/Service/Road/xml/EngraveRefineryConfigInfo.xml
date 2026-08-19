@@ -1,0 +1,27 @@
+<Result value="true" message="Success!">
+  <Item Grade="1" Character="1" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="1" Character="2" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="1" Character="3" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="1" Character="4" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="1" Character="5" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="2" Character="1" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="2" Character="2" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="2" Character="3" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="2" Character="4" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="2" Character="5" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="3" Character="1" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="3" Character="2" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="3" Character="3" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="3" Character="4" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="3" Character="5" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="4" Character="1" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="4" Character="2" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="4" Character="3" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="4" Character="4" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="4" Character="5" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="5" Character="1" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="5" Character="2" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="5" Character="3" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="5" Character="4" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+  <Item Grade="5" Character="5" Currency="-110" Expend="200" Material="12200" NeedMaterial="5" />
+</Result>

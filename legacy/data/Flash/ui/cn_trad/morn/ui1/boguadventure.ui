@@ -1,0 +1,45 @@
+
+7BoguAdventureAwardFrame.xml�<View width="812" height="315">
+  <Image skin="boguAdventure.frameBg" x="0" y="0"/>
+  <Image skin="boguAdventure.awardFrame.titleBg" x="330" y="10"/>
+  <Image skin="boguAdventure.awardFrame.Bg" x="180" y="76"/>
+  <Button skin="boguAdventure.awardFrame.awardBtnBg" x="219" y="234" stateNum="1" var="rewardBtn1"/>
+  <Button skin="boguAdventure.awardFrame.awardBtnBg" x="376" y="234" stateNum="1" var="rewardBtn2"/>
+  <Button skin="boguAdventure.awardFrame.awardBtnBg" x="535" y="233" stateNum="1" var="rewardBtn3"/>
+  <Button skin="boguAdventure.closeBtn" x="727" y="14" stateNum="1" var="closeBtn"/>
+  <Label color="0xf2ff5e" stroke="0x00730e,1,4,4,10" width="120" height="20" align="center" size="12" x="190" y="123" var="awardTipLabel1"/>
+  <Label color="0xf2ff5e" stroke="0x00730e,1,4,4,10" width="120" height="20" align="center" size="12" x="347" y="123" var="awardTipLabel2"/>
+  <Label color="0xf2ff5e" stroke="0x00730e,1,4,4,10" width="120" height="20" align="center" size="12" x="503" y="123" var="awardTipLabel3"/>
+</View>7BoguAdventureRewardItem.xml�U<View width="210" height="20">
+  <Label color="0x8bebff" stroke="0x0e2c4d,1,4,4,10" width="104" height="20" align="center" size="14" x="0" y="0" var="rankLabel"/>
+</View>7BoguAdventureRewardView.xml�Y<View width="214" height="387">
+  <Image skin="boguAdventure.rewardView.rankBg"/>
+  <TabListEx y="7" var="viewTab" x="5">
+    <TabButtonEx skin="boguAdventure.rewardView.unRankBtn,boguAdventure.rewardView.rankBtn" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" width="126" height="40"/>
+    <TabButtonEx skin="boguAdventure.rewardView.unRewardBtn,boguAdventure.rewardView.rewardBtn" name="item1" x="102" y="0"/>
+  </TabListEx>
+  <List x="5" y="54" repeatY="10" spaceY="12" width="203" height="291" var="rankList">
+    <Box name="render" height="18" width="204" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" x="0" y="0">
+      <Label color="0x8bebff" stroke="0x0e2c4d,1,4,4,10" width="30" height="18" align="center" size="14" y="0" name="rankLabel" x="0"/>
+      <Label color="0x8bebff" stroke="0x0e2c4d,1,4,4,10" width="99" height="18" align="left" size="14" name="nameLabel" x="33" y="0"/>
+      <Label color="0x8bebff" stroke="0x0e2c4d,1,4,4,10" width="67" height="18" align="left" size="14" name="scoreLabel" x="134" y="0"/>
+    </Box>
+  </List>
+  <Label text="積分：" x="10" y="359" color="0x62AFF7" stroke="0x092C54,1,4,4,10" bold="true" size="12"/>
+  <Label text="排名：" x="115" y="359" color="0x62AFF7" stroke="0x092C54,1,4,4,10" bold="true" size="12"/>
+  <Label x="47" y="359" color="0x62AFF7" stroke="0x092C54,1,4,4,10" bold="true" size="12" width="62" height="18" var="selfScoreLabel"/>
+  <Label x="151" y="359" color="0x62AFF7" stroke="0x092C54,1,4,4,10" bold="true" size="12" width="51" height="18" var="selfRankLabel"/>
+  <List x="6" y="54" repeatY="10" spaceY="10" width="203" height="291" var="rewardList">
+    <BoguAdventureRewardItem name="render" runtime="activity.boguAdventure.view.BoguAdventureRewardItem"/>
+  </List>
+</View>3BoguAdventureHelpView.xml�<View width="684" height="240">
+  <Image skin="boguAdventure.frameBg" x="0" y="0" width="684" height="240"/>
+  <Button skin="boguAdventure.closeBtn" x="602" y="0" stateNum="1" var="closeBtn"/>
+  <Image skin="boguAdventure.helpTitleBg" x="252" y="10"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="369" height="20" align="left" size="14" text="①免費刷新次數每日0點重置" x="100" y="58"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="486" height="20" align="left" size="14" text="②啵咕在格子中獲取的獎勵直接進入背包，達到要求領取的獎勵發送至郵件" x="100" y="84"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="516" height="20" align="left" size="14" text="③標記用來記錄疑似炸彈，啵咕無法行至標記過的格子，再次點擊標記可取消" x="100" y="110"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="503" height="20" align="left" size="14" text="④探雷器可隨機排除以啵咕位置為中心周圍一圈格子中的一顆炸彈" x="100" y="136"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="503" height="20" align="left" size="14" text="⑤復活後啵咕血量恢復至滿值，可繼續當前冒險" x="100" y="162"/>
+  <Label color="0xC8D1DA" stroke="0x2B363C,1,4,4,10" width="503" height="20" align="left" size="14" text="⑥啵咕頭頂的數字代表所在格子周圍8格內炸彈的數量" x="100" y="188"/>
+</View>

@@ -1,0 +1,126 @@
+
+)bank/BankSeeItem.xml�)<View width="334" height="383">
+  <Container x="445" y="73">
+    <Image skin="asset.bank.saveMoneyText2" x="25" y="2"/>
+    <Image skin="asset.bank.timeSelectText" x="26" y="74"/>
+    <Label x="32" y="115" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="saveType"/>
+    <Label x="177" y="114" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="InterestRate"/>
+    <Label text="本金" x="79" y="214" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="principalTitle"/>
+    <Label text="利息" x="80" y="252" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="interestTitle"/>
+    <Image skin="asset.bank.centerInput" x="119" y="209" alpha="0.35"/>
+    <Image skin="asset.bank.centerInput" x="119" y="247" alpha="0.35"/>
+    <Button skin="asset.bank.goSaveMoneyBtnBig" x="106" y="293" stateNum="1" var="goSaveBtn"/>
+    <Label text="注：存入金额，取的时候还是点券，但是利息是绑定点券" y="353" width="334" height="18" align="center" size="12" font="Arial" color="0xb2e232" stroke="0x4f270f,2,4,4,30" var="note"/>
+    <Image skin="asset.bank.centerInput" x="125" y="2" alpha="0.35"/>
+    <Label x="126" y="214" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="myMoney" width="81" height="18"/>
+    <Label x="124" y="252" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="profitMoney" width="88" height="18"/>
+    <Label text="点券" x="231" y="5" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="money1"/>
+    <Label text="点券" x="233" y="213" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="money"/>
+    <Label text="绑定点券" x="233" y="250" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="ddtMoney"/>
+    <Image skin="asset.bank.detailText" x="26" y="164"/>
+    <Label x="137" y="6" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" font="Arial" size="14" width="71" height="18" var="moneyNum" align="center"/>
+  </Container>
+</View>7bank/BankSaveRecordItem.xml�/<View width="271" height="80">
+  <Box x="141" y="122" var="box">
+    <Image skin="asset.bank.leftItemBG" x="5" y="4"/>
+    <Image skin="asset.bank.rectSelectedBg" visible="false" var="itemLine" width="270" height="100" x="0" y="0"/>
+    <Image skin="asset.bank.checking" x="6" y="11" var="saveTypeImg"/>
+    <Label text="1916-09-31" x="157" y="16" var="startTimeTxt" font="Arial" size="12" color="0xffe221" stroke="0x4c3010,2,4,4,30" width="86" height="18"/>
+    <Label x="16" y="45" var="moneyNum" font="Arial" size="12" color="0xffe221" stroke="0x4c3010,2,4,4,30" width="93" height="18"/>
+    <Label x="111" y="45" var="timeNum" font="Arial" size="12" color="0xffe221" stroke="0x4c3010,2,4,4,30" width="162" height="18"/>
+    <Label x="16" y="67" var="profitNum" font="Arial" size="12" color="0xffe221" stroke="0x4c3010,2,4,4,30" width="210" height="18"/>
+    <Image x="210" y="7" var="overTimeImg"/>
+  </Box>
+</View>!bank/BankGet.xml�M<View width="339" height="424">
+  <Container x="435" y="57">
+    <Image var="getTypeImg" x="1"/>
+    <Image skin="asset.bank.saveMoneyText2" x="1" y="40"/>
+    <Label text="利息" x="112" y="250" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="interestTitle"/>
+    <Label text="本金" x="112" y="214" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="principalTitle"/>
+    <Label text="点券" x="242" y="285" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="money1"/>
+    <Label x="152" y="214" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="myMoney" width="78" height="18"/>
+    <Label x="152" y="249" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="profitMoney" width="78" height="18"/>
+    <Label x="198" y="105" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="InterestRate" width="112" height="20" text="Lãi suất 0.15%"/>
+    <Label x="52" y="105" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="saveType" width="123" height="18" text="Không kỳ hạn"/>
+    <Label x="96" y="44" align="center" color="0xffe221" stroke="0x4f270f,2,4,4,30" size="14" width="116" height="18" var="moneyNum"/>
+    <Image skin="asset.bank.timeSelectText" x="1" y="77"/>
+    <Image skin="asset.bank.profit.end" y="212"/>
+    <Image skin="asset.bank.getMoneyText1" x="1" y="281"/>
+    <TextInput text="0" skin="asset.bank.centerInput" x="132" y="280" align="center" margin="0,5,0,0" color="0xfff0b5" size="14" font="Arial" stroke="0x4f270f,2,4,4,30" var="getInput" width="91" height="29"/>
+    <Label text="注：存入金额，取的时候还是点券，但是利息是绑定点券" y="373" width="334" height="18" align="center" size="12" font="Arial" color="0xb2e232" stroke="0x4f270f,2,4,4,30" x="12" var="note"/>
+    <Button skin="asset.bank.backViewBtn" x="284" y="315" stateNum="1" var="backViewBtn"/>
+    <Label text="（提取期限未到的存款时，取出部分有消耗）" y="183" width="334" height="18" align="center" size="12" font="Arial" color="0xb2e232" stroke="0x4f270f,2,4,4,30" x="38" var="getTip"/>
+    <Label text="点券" x="239" y="214" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="money"/>
+    <Label text="绑定点券" x="239" y="250" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="ddtMoney"/>
+    <Button skin="asset.ui.btn_green2" x="212" y="40" width="74" stateNum="1" imageLabel="asset.bank.goSaveText" imageLabelRect="9,4" var="goSaveBtn"/>
+    <Button skin="asset.ui.btn_red5" x="115" y="318" stateNum="1" width="127" height="50" imageLabel="asset.bank.getBtnText" imageLabelRect="38,7" var="getBtn" sizeGrid="56,24,56,24"/>
+    <Image skin="asset.ui.scale.bg8" x="70" y="129" sizeGrid="20,20,20,20" width="257" height="48"/>
+    <Label x="75" y="144" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" width="247" height="23" var="leftTime" isHtml="true"/>
+  </Container>
+</View>-bank/BankMainFrame.xml�?<View width="600" height="400">
+  <Image skin="asset.ui.frame.bg1" x="114" y="0" sizeGrid="142,83,143,84" width="718" height="562"/>
+  <Button skin="asset.ui.btn_close1" x="772" y="6" stateNum="1" buttonMode="true" var="close_btn"/>
+  <Label text="皇家银行" x="139" y="9" color="0xf5e3b5" stroke="0x442006,1,4,4,30" size="16" bold="true" var="mainTitle"/>
+  <Image skin="asset.bank.enterBg" x="126" y="38"/>
+  <Button skin="asset.ui.btn_yellow3" x="545" y="461" stateNum="1" sizeGrid="43,18,43,18" width="194" height="49" var="getBtn" imageLabel="asset.bank.mainGetBtnText" imageLabelRect="70,5"/>
+  <Button skin="asset.core.btmc014" x="213" y="461" stateNum="1" sizeGrid="30,16,30,16" width="194" height="49" var="saveBtn" imageLabel="asset.bank.mainSaveBtnText" imageLabelRect="65,5"/>
+</View>#bank/BankLeft.xml�%<View width="274" height="363">
+  <Container x="52" y="75" width="274" height="363">
+    <Button skin="asset.ui.pageNavBtn.pre2" x="126" y="345" stateNum="1" var="leftBtn"/>
+    <Button skin="asset.ui.pageNavBtn.next2" x="264" y="345" stateNum="1" var="rightBtn"/>
+    <Image skin="asset.ui.scale.bg4" x="181" y="346" width="82" height="22" sizeGrid="8,8,8,8"/>
+    <Label text="1/1" x="186" y="349" size="12" width="74" height="18" align="center" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" var="pageNum"/>
+  </Container>
+</View>-bank/BankSaveOrGet.xml�q<View width="600" height="400" visible="true">
+  <Image skin="asset.ui.frame.bg1" x="114" y="0" sizeGrid="142,83,143,84" width="720" height="553"/>
+  <Image skin="asset.bank.bankBg" x="130" y="39"/>
+  <Button skin="asset.ui.btn_close1" x="774" y="5" stateNum="1" var="close_btn"/>
+  <Label text="0" x="231" y="468" width="107" height="30" font="Arial" size="18" align="center" bold="true" color="0xffffff" stroke="0x974b00,2,4,4,30" var="totleSaveMoney"/>
+  <Label text="皇家银行" x="139" y="9" color="0xffeebf" stroke="0x442006,1,4,4,30" size="16" bold="true" var="saveOrGetTitle"/>
+  <Label text="拥有：" x="461" y="485" width="98" height="22" size="14" color="0xfdd430" font="Arial" stroke="0x4f270f,2,4,4,30" var="have"/>
+  <Image skin="asset.bank.money" x="335" y="470"/>
+  <Image skin="asset.bank.saveRecordText" x="212" y="62"/>
+  <Image skin="asset.bank.nowSaveMoney" x="141" y="469"/>
+  <Image skin="asset.bank.profit" x="141" y="501"/>
+  <Image skin="asset.bank.bindMoney" x="335" y="502"/>
+  <Label text="0" x="232" y="500" width="106" height="30" font="Arial" size="18" align="center" bold="true" color="0xffffff" stroke="0x974b00,2,4,4,30" var="totleProfitMoney"/>
+  <Label x="509" y="485" width="134" height="22" size="14" color="0xfdd430" font="Arial" stroke="0x4f270f,2,4,4,30" var="haveMoney"/>
+  <Label x="658" y="485" width="139" height="23" size="14" color="0xfdd430" font="Arial" stroke="0x4f270f,2,4,4,30" var="haveBindMoney"/>
+</View>#bank/BankSave.xml�Q<View width="334" height="414">
+  <Container x="442" y="62">
+    <Image skin="asset.bank.saveMoneyText2" y="1"/>
+    <Image skin="asset.bank.timeSelectText" y="47" x="0"/>
+    <Label text="Không kỳ hạn" x="16" y="74" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="saveItem0" width="108" height="18"/>
+    <Label text="Định kỳ 1 tháng" x="16" y="109" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="saveItem1" width="114" height="18"/>
+    <Label text="Định kỳ 1 tháng" x="16" y="144" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="saveItem2" width="109" height="20"/>
+    <Label text="Định kỳ 1 tháng" x="16" y="182" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="saveItem3" width="110" height="18"/>
+    <Label x="133" y="74" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="interestRate0" width="98" height="18"/>
+    <Label x="133" y="109" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="interestRate1" width="98" height="18"/>
+    <Label x="133" y="144" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="interestRate2" width="98" height="18"/>
+    <Label x="133" y="182" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="interestRate3" width="98" height="18"/>
+    <Image skin="asset.bank.detailText" x="3" y="217"/>
+    <Label text="本金" x="71" y="251" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="principalTitle"/>
+    <Label text="利息" x="72" y="289" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="interestTitle"/>
+    <Image skin="asset.bank.centerInput" x="111" y="246" alpha="0.35"/>
+    <Image skin="asset.bank.centerInput" x="111" y="284" alpha="0.35"/>
+    <Label text="注：存入金额，取的时候还是点券，但是利息是绑定点券" y="371" width="334" height="18" align="center" size="12" font="宋体" color="0xb2e232" stroke="0x4f270f,2,4,4,30" x="4" var="note"/>
+    <Button skin="asset.bank.backViewBtn" x="255" y="315" stateNum="1" var="backViewBtn"/>
+    <RadioGroup x="237" y="67" var="selectedGrop" direction="vertical" space="9">
+      <RadioButton skin="asset.bank.bitSelectedBtn" name="item0" stateNum="3"/>
+      <RadioButton skin="asset.bank.bitSelectedBtn" y="35" stateNum="3" name="item1"/>
+      <RadioButton skin="asset.bank.bitSelectedBtn" y="70" name="item2"/>
+      <RadioButton skin="asset.bank.bitSelectedBtn" y="108" name="item3"/>
+    </RadioGroup>
+    <Label x="115" y="250" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="benjin" text="0"/>
+    <Label x="115" y="288" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="interestRateTxt" text="0"/>
+    <TextInput skin="asset.bank.centerInput" x="104" align="center" margin="0,5,0,0" color="0xfff0b5" size="14" font="Arial" stroke="0x4f270f,2,4,4,30" var="saveInput" width="122" height="29" text="0" y="0"/>
+    <Label x="265" y="72" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="Multiple0"/>
+    <Label x="265" y="107" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="Multiple1"/>
+    <Label x="265" y="180" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="Multiple3"/>
+    <Label x="265" y="143" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="12" var="Multiple2"/>
+    <Label y="31" width="229" height="18" align="left" size="12" font="Arial" color="0xb2e232" stroke="0x4f270f,2,4,4,30" x="120" text="(Phải là bội số nguyên của 100)" var="saveTips"/>
+    <Button skin="asset.ui.btn_yellow3" x="91" y="318" stateNum="1" width="130" height="49" imageLabel="asset.bank.saveBtnText" imageLabelRect="38,7" sizeGrid="56,24,56,24" var="saveConfirmBtn"/>
+  </Container>
+  <Label text="点券" x="673" y="309" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="money"/>
+  <Label text="绑定点券" x="673" y="349" align="left" color="0xfff0b5" stroke="0x4f270f,2,4,4,30" size="14" var="ddtMoney"/>
+</View>

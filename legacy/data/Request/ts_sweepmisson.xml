@@ -1,0 +1,11 @@
+<Result value="true" message="Success!">
+  <Item ID="10000002" PveId="10000002" Name="穷途末路" MissionId="10000002" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000002" DropId="10000002" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000003" PveId="10000003" Name="强取宝物" MissionId="10000003" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000003" DropId="10000003" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000004" PveId="10000004" Name="绝命沙丘" MissionId="10000004" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000004" DropId="10000004" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000005" PveId="10000005" Name="大漠狂沙" MissionId="10000005" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000005" DropId="10000005" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000006" PveId="10000006" Name="陵墓" MissionId="10000006" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000006" DropId="10000006" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000007" PveId="10000007" Name="魔神蚩尤" MissionId="10000007" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000007" DropId="10000007" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000008" PveId="10000008" Name="僵尸围城" MissionId="10000008" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000008" DropId="10000008" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000009" PveId="10000009" Name="蒸汽工坊" MissionId="10000009" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000009" DropId="10000009" CardCount="2" ExtraInfo="0" />
+  <Item ID="10000001" PveId="10000001" Name="入城惊魂" MissionId="10000001" Type="3" CostCount="1" OpenDay="0" CostEnergy="12" CanExtraCard="true" ConditionIDs="1,8" LvLimit="30,100" MapId="10000001" DropId="10000001" CardCount="2" ExtraInfo="0" />
+</Result>

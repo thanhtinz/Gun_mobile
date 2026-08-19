@@ -1,0 +1,124 @@
+
+/BirthdayRoomPwdView.xml�<View width="260" height="140">
+  <Image skin="asset.ui.frame.bg2" width="260" height="140" sizeGrid="80,50,100,50"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="19" y="82" sizeGrid="5,5,5,5" width="221" height="41"/>
+  <Button skin="asset.ui.btn_yellow1" x="43" y="84" stateNum="1" label="确定" width="79" height="38" buttonMode="true" labelBold="true" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" var="btn_confirm"/>
+  <Button skin="asset.ui.btn_yellow1" x="140" y="84" stateNum="1" label="取消" width="79" height="38" buttonMode="true" labelBold="true" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" var="btn_cancel"/>
+  <Button skin="asset.ui.btn_close1" x="204" y="1" stateNum="1" var="btn_close"/>
+  <Label text="请输入密码:" x="26" y="53"/>
+  <TextInput skin="asset.ui.scale.bg4" x="99" y="48" sizeGrid="10,10,10,10" width="138" height="29" align="left" margin="7,6" var="input_password" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="6" asPassword="true"/>
+  <Label text="提示" x="16" y="9" color="0xffeebf" bold="true" size="16" stroke="0x442006,1,4,4,30"/>
+</View>5BirthdayRoomCreateView.xml�9<View width="450" height="480" x="523" y="48">
+  <Image skin="asset.birthdayroomlist.rightbg2" x="0" y="0"/>
+  <Button skin="asset.birthdayroomlist.joinBtn" x="287" y="92" stateNum="1" var="button_join"/>
+  <Button skin="asset.birthdayroomlist.luxuryBtn" x="15" y="266" stateNum="1" var="button_luxury"/>
+  <Button skin="asset.birthdayroomlist.normalBtn" x="15" y="366" stateNum="1" var="button_normal"/>
+</View>9BirthdayRoomJoinListView.xml��9<View width="390" height="420" x="558" y="89">
+  <Image skin="asset.birthdayroomlist.listTitleBg"/>
+  <Image skin="asset.church.main.pagePreBg" x="1" y="360" width="387" height="48" sizeGrid="10,10,10,10"/>
+  <PageNavigaterEx x="46" y="371" isLoop="true" type="complexity" var="page_select"/>
+  <Image skin="asset.ui.scale.bg2" y="72" sizeGrid="10,10,10,10" width="390" height="285" x="0"/>
+  <FrameClip skin="asset.birthdayroomlist.listTitle" y="76" width="384" height="32" x="4"/>
+  <Image skin="asset.ui.frame.line1" x="81" y="78" width="2" height="25"/>
+  <Image skin="asset.ui.frame.line1" x="299" y="78" width="2" height="25"/>
+  <List x="5" y="111" repeatX="1" spaceX="0" spaceY="5" width="376" height="244" var="list_room" repeatY="7">
+    <Box name="item0" width="378" height="30" x="0" y="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="379" height="31"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item1" width="378" height="30" y="34" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" width="379"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item2" width="378" height="30" y="68" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="379" height="31"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item3" width="378" height="30" y="102" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" width="379"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item4" width="378" height="30" y="136" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="379" height="31"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item5" width="378" height="30" y="170" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" width="379"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+    <Box name="item6" width="378" height="30" y="204" x="0" buttonMode="true">
+      <ScaleLeftRightImageEx skin="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="379" height="31"/>
+      <Image skin="asset.ui.frame.line2" x="77" y="4"/>
+      <Label x="81" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="209" height="20" autoSize="none" align="center" name="name" text="啦啦啦啦啦啦啦房间"/>
+      <Image skin="asset.ui.frame.line2" x="295" y="4"/>
+      <Label x="302" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="71" height="20" autoSize="none" align="center" name="member" text="100/200"/>
+      <Label x="6" y="5" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="64" height="20" autoSize="none" align="center" name="id" text="9564"/>
+      <Image skin="asset.ui.scale.bg18" width="385" height="39" name="selectBox" sizeGrid="10,10,10,10" x="-4" y="-5"/>
+      <Image skin="asset.birthdayroom.roomListItemLockAsset" x="272" y="4" name="img_lock"/>
+    </Box>
+  </List>
+  <Image skin="asset.ui.frame.line1" x="386" y="105" rotation="90" height="382" width="2"/>
+  <Label text="ID" x="6" y="80" stroke="0x4F3900,1,4,4,10" size="16" bold="true" color="0xFFEA9E" width="72" height="23" align="center"/>
+  <Label text="房间名称" x="87" y="80" stroke="0x4F3900,1,4,4,10" size="16" bold="true" color="0xFFEA9E" width="210" height="23" align="center"/>
+  <Label text="房间类型" x="304" y="80" stroke="0x4F3900,1,4,4,10" size="16" bold="true" color="0xFFEA9E" width="81" height="23" align="center"/>
+</View>/BirthdayCreateFrame.xml�<View width="310" height="400" x="345" y="100">
+  <Image skin="asset.ui.frame.bg2" x="44" y="-1" width="310" height="400" sizeGrid="20,40,20,40"/>
+  <Image skin="asset.ddtcore.frameBg" x="65" y="60" width="268" height="130" sizeGrid="10,10,10,10"/>
+  <Image skin="asset.church.roomCreateRoomNameTitleAsset" x="74" y="49"/>
+  <Button label="设置密码" skin="asset.ui.btn_check1" x="79" y="131" labelMargin="15,0,-70,0" var="btn_password" stateNum="1" checkButtonSkin="asset.ui.btn_check1" buttonMode="true" toggle="true" labelColors="0xFFFEF4" labelStroke="0xaa2828,1,4,4,30" labelSize="14" labelBold="true"/>
+  <TextInput skin="asset.ui.scale.bg4" x="165" y="125" sizeGrid="10,10,10,10" width="155" height="29" align="left" margin="7,6" var="input_password" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="6" asPassword="true" editable="false" restrict="0-9a-zA-Z"/>
+  <Button label="允许邀请宾客" skin="asset.ui.btn_check1" x="80" y="161" labelMargin="15,0,-98,0" var="btn_allowInvite" stateNum="1" checkButtonSkin="asset.ui.btn_check1" buttonMode="true" toggle="true" labelColors="0xFFFEF4" labelStroke="0xaa2828,1,4,4,30" labelSize="14" labelBold="true"/>
+  <TextInput skin="asset.church.main.txtCreateRoomNameBG" x="75" y="77" sizeGrid="10,10,10,10" width="175" align="left" margin="7,8" var="input_roomname" stroke="0x4b270d,1,4,4,10" size="16" color="0xfff8d6" height="36" maxChars="20"/>
+  <Image skin="asset.ddtcore.frameBg" x="66" y="203" width="268" height="122" sizeGrid="10,10,10,10"/>
+  <Image skin="church.roomtype" x="74" y="191"/>
+  <Clip x="127" y="221" clipsUrl="asset.birthdayroomlist.normalcreate,asset.birthdayroomlist.luxurycreate" index="0" var="clip_roomtype"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="66" y="327" sizeGrid="5,5,5,5" width="265" height="49"/>
+  <Button label="确 定" x="158" y="333" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_confirm" buttonMode="true"/>
+  <Button skin="asset.ui.btn_close1" x="297" y="4" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="举办生日会" x="60" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Label text="的生日会" x="255" y="86" color="0xfff8d6" size="16" bold="true" stroke="0x4b270d,1,4,4,10"/>
+</View>1BirthdayRoomListView.xml�C<View width="1000" height="600">
+  <Image skin="asset.birthdayroomlist.bg"/>
+  <Image skin="asset.birthdayroomlist.rightbg" x="510" y="53"/>
+  <Image skin="asset.birthdayroomlist.leftbg" x="-9" y="51"/>
+  <HBox x="45" y="280" space="20" var="hbox_awardList" align="top"/>
+  <Label x="58" y="170" wordWrap="true" multiline="true" width="386" height="117" font="宋体" color="0xffeefc" leading="10" size="14" text="租用生日礼堂，和朋友们度过快乐时光，拍照留下美好瞬间。弹弹堂还给各位尊贵的寿星和宾客准备了豪华大礼包，\n开启礼包有机会获得                  (每月22号更新)\n称号卡、装饰品、以及各种特色服饰散件、泡泡等，\n还有机会获得生日会专属项链真•星宿之佑！" stroke="0x4e1a5b,1,4,4,20" align="center"/>
+  <Button skin="asset.ddtcore.helpbuttonShort" x="894" y="69" stateNum="1" buttonMode="true" var="btn_help"/>
+  <Box x="206" y="217" var="titleBox" width="119" height="21"/>
+</View>

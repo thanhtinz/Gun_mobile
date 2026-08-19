@@ -1,0 +1,7 @@
+<Result value="true" message="Success!">
+  <Item SegmentID="1" SegmentName="Tên cấp bậc" NeedScore="800" Icon="icon1" GiftBagId="1120807" />
+  <Item SegmentID="2" SegmentName="Sơ Cấp" NeedScore="1200" Icon="icon2" GiftBagId="1120808" />
+  <Item SegmentID="3" SegmentName="Bất Khuất" NeedScore="1500" Icon="icon3" GiftBagId="1120809" />
+  <Item SegmentID="4" SegmentName="Dũng Cảm" NeedScore="1800" Icon="icon4" GiftBagId="1120810" />
+  <Item SegmentID="5" SegmentName="Vĩnh Hằng" NeedScore="2100" Icon="icon5" GiftBagId="1120811" />
+</Result>

@@ -1,0 +1,815 @@
+
+#SceneClothTip.xml�%<View width="200" height="169">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="169" var="bg"/>
+  <Label text="封印属性" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="talentName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label x="54" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" text="活动道具" width="56" height="16"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="profileTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="121" sizeGrid="95,1,95,1" width="165" var="line2"/>
+  <Label text="剩余时间：" x="12" y="130" size="12" color="0xfbfd00" stroke="0x000000,1,2,2,10" bold="true" var="timeLimitTxt"/>
+  <Label text="所需性别：男" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" width="99" height="23" x="12" y="99" var="sexTxt"/>
+</View>1video/VideoGiftFrame.xml�s<View width="830" height="600">
+  <Image skin="aseet.videoGift.mainBg" x="10" y="0"/>
+  <Button skin="aseet.videoGift.closeBtn" x="763" y="76" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Box var="videoBox" x="81" y="124"/>
+  <Box x="723" y="97" var="giftBox">
+    <Button skin="aseet.videoGift.giftBg" stateNum="1" buttonMode="true" var="giftBtn"/>
+    <Box x="24" y="188" var="cellBox"/>
+    <Image skin="aseet.videoGift.gotImg" var="gotImg" x="15" y="195" visible="false"/>
+  </Box>
+  <Image skin="aseet.videoGift.playBtn" x="354" y="238" var="playImg" buttonMode="false" mouseChildren="false" mouseEnabled="false"/>
+</View>9necklace/NecklaceProTips.xml�9<View width="222" height="70">
+  <List x="2" y="26" repeatY="3" var="proList" repeatX="2" spaceX="15" spaceY="0">
+    <Box name="render" x="0" y="0" width="95" height="18">
+      <Label text="攻击：" size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt" x="0" y="0"/>
+      <Label text="300" x="40" size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" height="18" name="proNumTxt" y="0"/>
+    </Box>
+  </List>
+  <Image skin="asset.core.tip.HRuleAsset" x="0" y="84" sizeGrid="95,1,95,1" width="220" var="line2" visible="false"/>
+  <Label text="项链精铸" size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt" x="2" y="3"/>
+</View>WforcesCharm/ForcesCharmSelectWeaponView.xml�a<View width="480" height="420">
+  <Image skin="asset.ui.frame.bg2" width="468" height="400" x="1" y="2" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="411" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="武器吞噬" x="17" y="13" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="nameTxt"/>
+  <Image skin="asset.ui.scale.goldLine" x="22" y="93" width="426" height="237" sizeGrid="5,5,5,5"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="335" sizeGrid="5,5,5,5" width="426" height="47"/>
+  <Button skin="asset.ui.btn_yellow1" x="184" y="342" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="39" width="96" label="确 定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Image skin="asset.uigeneral.rewardSelect.img1" x="40" y="53"/>
+  <Label text="选择需要吞噬的武器" x="158" y="60" size="16" bold="true" color="0xfffaae" stroke="0x7c4519,1,4,4,30" var="desTxt"/>
+  <List x="31" y="99" repeatX="2" repeatY="3" spaceY="-4" vScrollBarSkin="asset.ui.scroll1.vscroll" width="409" height="225" var="weaponList" spaceX="-5">
+    <Box name="render">
+      <Image skin="asset.ddtstore.ShortcutTextBg" sizeGrid="5,5,5,5" width="190" height="70" x="3" y="5"/>
+      <Image skin="catchInsect.battle.buyItemLight" sizeGrid="10,10,10,10" width="197" height="79" name="selectBox"/>
+      <Box x="11" y="10" name="cellBox">
+        <Image skin="catchInsect.battle.buyItemBg" sizeGrid="5,5,5,5" width="58" height="58"/>
+      </Box>
+      <Label text="+5武器名字很长" x="71" y="25" size="14" color="0xffea9c" stroke="0x411212,1,4,4,30" width="130" name="nameLab"/>
+    </Box>
+  </List>
+  <Button skin="asset.ddtcore.helpbuttonSmall" x="371" y="6" stateNum="1" buttonMode="true" var="helpBtn"/>
+</View>SforcesRelic/ForcesRelicEquipCellOther.xml�}<View width="100" height="100">
+  <Image skin="asset.fb.other.relic.ballbg" sizeGrid="5,5,5,5" x="0" y="1"/>
+  <Image skin="asset.fb.other.relic.ball1" x="2" y="2" var="ballImg"/>
+  <Box x="13" y="17" var="maskBox" width="80" height="3">
+    <Image skin="asset.fb.other.relic.line1" x="9" y="0" var="line" width="50"/>
+  </Box>
+  <Label text="0/0" x="3" y="35" bold="true" color="0xffffff" font="宋体" size="12" stroke="0x3e3a62,1,4,4,10" mouseEnabled="false" align="center" width="88" var="numLab"/>
+</View>+PlayerElementTips.xml�{<View width="242" height="277">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="242" height="277" var="bg"/>
+  <Label text="元素属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="161" sizeGrid="95,1,95,1" width="190" var="line"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="190"/>
+  <Label text="火攻击:0000000" x="11" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="huoAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="shuiAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="81" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="fengAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="99" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="tuAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="124" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="huoDefLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="124" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="shuiDefLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="124" y="81" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="fengDefLabel" width="112" height="16"/>
+  <Label x="12" y="167" size="12" color="0xffffff" bold="false" stroke="0x000000,1,2,2,10" var="skillLabel1" width="209" height="58" multiline="true" wordWrap="true" leading="1" isHtml="true"/>
+  <Label x="12" y="224" size="12" color="0xffffff" bold="false" stroke="0x000000,1,2,2,10" var="skillLabel2" width="208" height="42" leading="1" multiline="true" wordWrap="true" isHtml="true"/>
+  <Label text="火攻击:0000000" x="124" y="99" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="tuDefLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="119" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="guangAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="124" y="119" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="guangDefLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="139" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="anAtkLabel" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="124" y="139" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="anDefLabel" width="112" height="16"/>
+</View>5petseal/PetSealTipItem.xml�<View width="80" height="20">
+  <Label text="攻击：" x="0" y="0" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="proTypeTxt" width="43" height="16"/>
+  <Label text="300" x="40" y="0" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="proNumTxt" width="37" height="18"/>
+</View>?culture/CultureQuenchingTip.xml�k<View width="138" height="148">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="213" height="63" var="bg"/>
+  <Label text="淬炼" x="11" y="11" size="14" color="0xf3c981" stroke="0x000000,1,2,2,10" bold="true" var="cardName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="33" sizeGrid="95,1,95,1" width="180"/>
+  <List x="11" y="42" repeatY="5" var="proList" width="118" height="80">
+    <Box name="render" x="0" y="0" width="173">
+      <Label text="攻击+1000" size="12" color="0xe78a2e" stroke="0x000000,1,2,2,10" name="proName" bold="true" multiline="true" wordWrap="true" x="0" y="0" width="177" leading="3"/>
+    </Box>
+  </List>
+  <Label text="淬炼属性生效：100%" x="11" y="141" size="12" bold="true" color="0xeaf902" stroke="0x000000,1,2,2,30" var="rateTxt"/>
+</View>WforcesCharm/ForcesChatItemQuickBuyAlert.xml�q<View width="510" height="260">
+  <Image skin="asset.ui.frame.bg2" width="500" height="250" x="1" y="2" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="441" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="18" y="186" sizeGrid="5,5,5,5" width="465" height="47"/>
+  <Button skin="asset.ui.btn_yellow1" x="104" y="190" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="39" width="96" label="确 定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Button skin="asset.ui.btn_yellow1" x="304" y="190" stateNum="1" var="cancleBtn" sizeGrid="34,16,34,16" height="39" width="96" label="取 消" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Label text="势力聊天道具快捷购买" x="25" y="9" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="titleLab"/>
+  <Image skin="asset.ddtstore.TipsTextBg" x="148" y="148" sizeGrid="5,5,5,5"/>
+  <Label x="202" y="155" color="0xFFF4D4" size="14" stroke="0x7c4519,20" isHtml="true" align="left" leading="5" var="costLab" text="你总共需要支付： {0}{1}" bold="true" height="23"/>
+  <Box x="48" y="71">
+    <Image skin="catchInsect.battle.buyItemBg"/>
+    <Box name="cellBox"/>
+  </Box>
+  <Label text="购买数量:" x="134" y="101" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="82" height="24"/>
+  <TextInput text="1" skin="catchInsect.battle.buyInputBg" x="267" y="94" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.core.numberSelecterUp" x="368" y="98" stateNum="1" var="addBtn"/>
+  <Button skin="asset.core.numberSelecterDown" x="211" y="97" stateNum="1" var="subtractBtn"/>
+</View>9pet/PetSkillBarChoseView.xml�_<View width="160" height="160">
+  <Box var="box">
+    <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="150" height="150" var="bg"/>
+  </Box>
+</View>Klabyrin/LabyrinthTeamGameBuffView.xml�G<View width="180" height="165">
+  <Box x="-5" y="31" var="viewBox">
+    <Image skin="asset.game.damageView.bg" sizeGrid="10,50,10,10" x="0" y="0" width="185" height="122"/>
+    <Label text="秘境buff" x="51" y="6" size="16" bold="true" color="0x24f2ff" stroke="0x442006,1,4,4,30" var="titleLab" align="center"/>
+    <List x="11" y="30" width="148" height="75" spaceY="6" var="buffList" repeatX="5" spaceX="3" sliderOffset="35">
+      <VScrollBar skin="asset.ui.scroll1.vscroll" x="146" y="-6" name="scrollBar" width="22" height="98" scrollSize="5"/>
+      <Box x="-2" y="3" name="render" width="28" height="28">
+        <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="28" height="28"/>
+      </Box>
+    </List>
+  </Box>
+  <Button skin="asset.chat.fastNormal" x="109" y="5" stateNum="1" buttonMode="true" var="switchBtn" label="查看增益" labelColors="0xffeebf,0xffeebf" labelSize="12" labelBold="true"/>
+</View>-PetAvatarEnergyBar.xml�<View width="220" height="60" buttonMode="true">
+  <Box var="barBox" x="0" y="0">
+    <Image skin="asset.pab.barBg" x="0" y="0" sizeGrid="59,25,59,25" width="201" height="46" visible="true"/>
+    <Image skin="asset.pab.barBg2" x="4" y="7" sizeGrid="59,25,59,25"/>
+    <ProgressBar skin="asset.pab.progress" x="4" y="7" var="energyProgress" value="0" width="190"/>
+    <Image skin="asset.pab.txt2" x="76" y="10" sizeGrid="59,25,59,25"/>
+    <Image skin="asset.pab.txt1" x="2" y="4" sizeGrid="59,25,59,25"/>
+  </Box>
+</View>?kingArena/KingArenaWaitView.xml�k<View width="428" height="160">
+  <Image skin="asset.ui.frame.bg2" width="428" height="160" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Label x="50" y="54" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" isHtml="true" align="center" wordWrap="true" width="332" height="77" leading="5" var="descLabel"/>
+  <Label text="挑战等待" x="16" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Label x="50" y="110" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" isHtml="true" align="center" wordWrap="true" width="332" height="43" leading="5" var="downCountLabel"/>
+</View>ORewardSelectBox/RewardSelectBoxItem.xml�<View width="192" height="61">
+  <Image skin="asset.uigeneral.rewardSelect.img2" x="0" y="0"/>
+  <Label x="60" y="15" size="14" bold="true" color="0xfee99b" stroke="0x411212,1,4,4,30" var="nickTxt" width="79" wordWrap="true"/>
+  <CheckBox skin="asset.ui.btn_check3" x="154" y="16" selected="false" var="checkBtn" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true" labelColors="0xffffff" labelStroke="0x692706,1,4,4,10" labelSize="14" labelBold="true" labelMargin="30,2,-35,0"/>
+</View>1tank/VehicleTankInfo.xml�9<View width="154" height="60">
+  <Image skin="asset.game.tank.proBg"/>
+  <Box x="12" y="4" var="hpBox" width="134" height="18">
+    <Image skin="asset.game.tank.pro1" width="134" y="1" name="progress"/>
+    <Label text="1/99" x="0" color="0xffffff" stroke="0x720000,1,2,2,10" align="center" width="131" height="18" y="0" name="txt"/>
+  </Box>
+  <Box x="12" y="23" var="bombBox">
+    <Image skin="asset.game.tank.pro2" width="134" y="1" name="progress" x="0"/>
+    <Label text="1/99" x="0" color="0xffffff" stroke="0x720000,1,2,2,10" align="center" width="131" height="18" y="0" name="txt"/>
+  </Box>
+  <Box x="12" y="42" var="energyBox">
+    <Image skin="asset.game.tank.pro3" width="134" y="1" name="progress"/>
+    <Label text="1/99" x="0" color="0xffffff" stroke="0x720000,1,2,2,10" align="center" width="131" height="18" y="0" name="txt"/>
+  </Box>
+</View>'XukongBlackView.xml�!<View width="473" height="480">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="473" height="480" var="bg" alpha="0.5"/>
+  <Label text="物品运输中，请等待，\n物品达到后在邮箱中签收。" x="121" y="162" size="16" color="0xfee6b2" stroke="0x753608,1,4,4,30" wordWrap="true" multiline="true" width="227" height="65" align="center" leading="10"/>
+</View>)emblem/EmblemTip.xml�<View width="200" height="321">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="321" var="bg"/>
+  <Label text="封印属性" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="talentName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="纹章" x="54" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="profileTxt"/>
+  <Clip x="119" y="51" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="243" sizeGrid="95,1,95,1" width="165" var="line2"/>
+  <Label x="13" y="254" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="false" wordWrap="true" multiline="true" width="163" leading="5" var="desTxt"/>
+  <Label text="永久有效" x="12" y="294" size="12" color="0xfbfd00" stroke="0x000000,1,2,2,10" bold="true" var="timeLimitTxt"/>
+  <List x="12" y="101" repeatY="5" var="proList">
+    <Box name="render">
+      <Label text="攻击：" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" width="43" height="16" name="proTypeTxt"/>
+      <Label text="300" x="40" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" width="37" height="18" name="proNumTxt" y="0"/>
+    </Box>
+  </List>
+</View>=invite/InviteOldFriendView.xml�C<View width="398" height="219">
+  <Image skin="asset.ui.frame.bg1" x="300" y="190" sizeGrid="25,50,25,50" width="398" height="219"/>
+  <Button skin="asset.ui.btn_close1" x="639" y="194" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ui.scale.bg2" x="321" y="235" sizeGrid="10,10,10,10" width="354" height="101"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="321" y="340" sizeGrid="5,5,5,5" width="354" height="48"/>
+  <Label text="注：召回邀请每次发送消耗50活力。" x="337" y="311" bold="true" color="0xff0000" size="12" backgroundColor="0x0" stroke="0xffffff,1,4,4,10"/>
+  <Label text="寄语" x="336" y="247" bold="true" color="0xfff6a8" size="14" backgroundColor="0x0" stroke="0x714108,1,4,4,10"/>
+  <Button label="取 消" x="532" y="345" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="cancelBtn" buttonMode="true"/>
+  <Button label="确 定" x="386" y="345" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="confirmBtn" buttonMode="true"/>
+  <TextInput skin="asset.ui.scale.bg4" x="333" y="274" sizeGrid="10,10,10,10" width="329" height="29" align="left" margin="7,6" var="strLabel" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="20" text="我们都很想念你~快回来玩吧，我的伙伴！" mouseChildren="false" mouseEnabled="false"/>
+  <Label text="召唤" x="317" y="202" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+</View>?horse/HorseCoreTotalTipView.xml�/<View width="180" height="250">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="160" height="233" var="bg"/>
+  <Label text="晶核总属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="140"/>
+  <List x="12" y="44" var="proList" repeatX="1" spaceX="25" spaceY="4">
+    <Box name="render">
+      <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+    </Box>
+  </List>
+</View>/cardTip/CardMainTip.xml�<View width="153" height="198">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="153" height="208" var="bg"/>
+  <Label text="等级:" x="11" y="11" size="12" color="0x0cff00" stroke="0x010000,1,2,2,10" var="talentName" bold="true"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="37" sizeGrid="95,1,95,1" width="130"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="125" sizeGrid="95,1,95,1" width="130" var="line"/>
+  <List x="16" y="45" repeatY="4" var="proList">
+    <Box name="render">
+      <Label text="攻击：" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="43" height="16" name="proName" bold="true"/>
+      <Label text="300" x="40" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="69" height="18" name="proNum" y="0" bold="true"/>
+    </Box>
+  </List>
+  <Label text="lv.01" x="48" y="11" size="12" color="0xffff00" bold="true" stroke="0x010000,1,2,2,10" var="levelTxt" wordWrap="true" multiline="true" leading="3" width="93" height="19"/>
+  <Label x="10" y="133" size="12" color="0xffff00" bold="true" stroke="0x010000,1,2,2,10" wordWrap="true" multiline="true" leading="3" width="127" height="31" var="upTxt" text="已满级"/>
+  <Label text="技能描述技能描述技能描述技能描述技能描述" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10" x="10" y="154" width="126" height="48" wordWrap="true" var="skillDes" leading="3"/>
+  <Label size="12" color="0xff0000" bold="true" stroke="0x000000,1,2,2,10" x="10" y="154" width="126" height="33" wordWrap="true" var="noSkill" text="未激活上阵卡牌"/>
+</View>?hatBattle/HatBattleInfoView.xml�7<View width="147" height="86">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="147" height="86" var="bg"/>
+  <Image skin="asset.game.hatBattle.infoTxt" x="9" y="12"/>
+  <Label text="0" x="100" y="13" color="0xffffff" size="16" bold="true" var="beatNum"/>
+  <Label text="0" x="100" y="49" color="0xffffff" size="16" bold="true" var="lostNum"/>
+  <Button skin="asset.game.hatBattle.resetPosBtn" x="75" y="-32" var="resetBtn" stateNum="1"/>
+</View>cwonderfulactivity/firstkill/FirstKillItemView.xml�G<View width="452" height="90">
+  <Image skin="asset.wf.firstskill.itemBg"/>
+  <Label x="8" y="5" size="14" color="0xffe16c" bold="true" stroke="0x2c033f,1,4,4,10" var="dungeonLabel" width="150" height="40" align="center" multiline="true" wordWrap="true" leading="5"/>
+  <Image skin="asset.wf.firstskill.line" x="164" y="4" height="80"/>
+  <List x="198" y="11" repeatX="3" repeatY="1" spaceX="20" var="rewardList">
+    <FirstKillItemCell name="render" runtime="uigeneral.wonderfulactivity.firstkill.FirstKillItemCell"/>
+  </List>
+  <Label x="7" y="49" size="12" color="0xffe16c" stroke="0x2c033f,1,4,4,10" var="remainLabel" width="150" height="33" align="center" multiline="true" wordWrap="true" leading="5" text="奖励剩余:50"/>
+</View>GRewardSelectBox/RewardSelectBox.xml�<View width="468" height="400">
+  <Image skin="asset.ui.frame.bg2" width="468" height="400" x="1" y="2" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="411" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="礼包名称" x="17" y="13" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="nameTxt"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="93" sizeGrid="5,5,5,5" width="426" height="221"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="318" sizeGrid="5,5,5,5" width="426" height="64"/>
+  <Button skin="asset.ui.btn_yellow1" x="248" y="332" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="39" width="96" label="确 定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Button skin="asset.ui.btn_yellow1" x="86" y="332" stateNum="1" var="cancelBtn" sizeGrid="34,16,34,16" height="39" width="96" label="下次再选" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Image skin="asset.uigeneral.rewardSelect.img1" x="40" y="53"/>
+  <Label text="从以下奖励中选择一个" x="138" y="60" size="16" bold="true" color="0xfbf4a8" stroke="0x7b4519,1,4,4,30" var="desTxt"/>
+  <Label text="已选择2/3个" x="348" y="340" size="16" bold="true" color="0xffe169" stroke="0xb00000,1,4,4,30" var="selectTxt"/>
+  <List x="31" y="102" repeatX="2" repeatY="3" spaceX="5" spaceY="10" vScrollBarSkin="asset.ui.scroll1.vscroll" width="409" height="203" var="list">
+    <RewardSelectBoxItem name="render" runtime="uigeneral.rewardSelect.RewardSelectBoxItem"/>
+  </List>
+</View>'elf/ElfEquipTip.xml�[<View width="180">
+  <Image skin="asset.elfEquip.tipBg" x="0" y="0" sizeGrid="59,25,59,25" width="180" height="323" var="bg"/>
+  <Label text="纹章:寒冰" x="11" y="11" size="14" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="equipName"/>
+  <Image skin="asset.elfEquip.lineMiddle" x="12" y="85" sizeGrid="95,1,95,1" width="150"/>
+  <Image skin="asset.elfEquip.lineMiddle" x="9" y="173" sizeGrid="95,1,95,1" width="150" var="line"/>
+  <Image skin="asset.elfEquip.lineName" x="38" y="51"/>
+  <Label text="精良" x="48" y="35" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="false" var="quaLabel"/>
+  <List x="13" y="94" var="proList" spaceY="2" width="91" height="173" repeatY="6">
+    <Box name="render" height="25">
+      <Label text="攻击：" size="12" color="0x99ff33" stroke="0x000000,1,2,2,10" width="43" height="18" name="proName" bold="true"/>
+      <Label text="300" x="40" size="12" color="0x99ff33" stroke="0x000000,1,2,2,10" width="51" height="18" name="proNum" y="0" bold="true"/>
+    </Box>
+  </List>
+  <Label text="灵宝技能灵宝技能灵宝技能灵宝技能灵宝技能" size="12" color="0x2feef0" bold="true" stroke="0x000000,1,2,2,10" x="10" y="184" width="163" wordWrap="true" var="skillDesLabel" leading="3" multiline="true" margin="(10,5,10,5)"/>
+  <Image skin="asset.elfEquip.lineMiddle" x="9" y="223" sizeGrid="95,1,95,1" width="150" var="line2"/>
+  <Label text="蕴含强大魔法的晶体，装备后发挥" size="12" bold="true" stroke="0x000000,1,2,2,10" x="8" y="234" width="169" wordWrap="true" var="equipDesLabel" leading="3" color="0xffffff" height="31"/>
+  <Label text="品质" x="11" y="36" size="12" color="0xa1eaff" stroke="0x0,1,2,2,10" bold="true"/>
+  <Image skin="asset.elfEquip.lineName" x="38" y="76"/>
+  <Label text="灵宝" x="48" y="60" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="false"/>
+  <Label text="类型" x="11" y="61" size="12" color="0xa1eaff" stroke="0x0,1,2,2,10" bold="true"/>
+  <Image skin="asset.elfEquip.lineMiddle" x="9" y="273" sizeGrid="95,1,95,1" width="150" var="line3"/>
+  <Label text="永久有效" x="21" y="281" size="12" color="0xfbfd00" stroke="0x000000,1,2,2,10" bold="true" var="timeLabel"/>
+</View>IkingArena/KingArenaFightWaitView.xml�<View width="428" height="224">
+  <Image skin="asset.ui.frame.bg2" width="428" height="224" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Label text="挑战" x="16" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="364" y="6" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ui.scale.bg11" x="20" y="147" width="384" height="56" sizeGrid="16,16,16,16"/>
+  <Label x="48" y="51" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" isHtml="true" align="center" wordWrap="true" width="332" height="77" leading="5" var="descLabel"/>
+  <Label x="48" y="107" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" isHtml="true" align="center" wordWrap="true" width="332" height="43" leading="5" var="downCountLabel"/>
+  <Button label="确 定" x="103" y="157" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="14" labelBold="true" var="confirmBtn" buttonMode="true"/>
+  <Button label="取 消" x="254" y="157" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="14" labelBold="true" var="cancelBtn" buttonMode="true"/>
+</View>7elf/ElfPropertyLookView.xml�1<View width="424" height="444">
+  <Image skin="asset.elf.poperty.lookBg"/>
+  <Button skin="asset.elf.property.goodFelingBtn" x="31" y="4" stateNum="1" var="goodFelingBtn"/>
+  <Box x="111" y="67" width="200" height="83" var="movieBox"/>
+  <Clip index="0" clipsUrl="asset.elf.quality.0,asset.elf.quality.1,asset.elf.quality.2,asset.elf.quality.3" var="qualityClip" width="58" height="59" smoothing="true" x="285" y="33"/>
+  <Image skin="asset.elf.property.proBg" x="63" y="206"/>
+  <LabelEx text="生命" x="98" y="190" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="水抗" x="179" y="224" color="0x4FD78D" size="12" width="34" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiDefLabel"/>
+  <LabelEx text="土抗" x="179" y="290" color="0x4FD78D" size="12" width="34" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="风抗" x="25" y="290" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="火抗" x="25" y="224" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="huoDefLabel"/>
+  <LabelEx text="攻击" x="102" y="334" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="attackLabel1"/>
+  <LabelEx text="000" x="173" y="309" color="0xFFF5A1" size="12" width="42" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="tuLabel" align="center"/>
+  <LabelEx text="000" x="173" y="242" color="0xFFF5A1" size="12" width="42" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiLabel" align="center"/>
+  <LabelEx text="000" x="22" y="242" color="0xFFF5A1" size="12" width="37" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="center" var="huoLabel"/>
+  <LabelEx text="000" x="19" y="308" color="0xFFF5A1" size="12" width="44" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="center" var="fengLabel"/>
+  <LabelEx text="000" x="133" y="335" color="0xFFF5A1" size="12" width="95" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="attackLabel"/>
+  <LabelEx text="000" x="128" y="191" color="0xFFF5A1" size="12" width="40" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="hpLabel"/>
+  <LabelEx text="生命:" x="287" y="206" color="0x4FD78D" size="12" width="37" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="000000" x="323" y="207" color="0xFFF5A1" size="12" width="55" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="hpProLabel"/>
+  <List x="45" y="378" width="328" height="59" repeatX="5" repeatY="1" var="skillList">
+    <ElfPropertyLookSkillCell name="render" runtime="uigeneral.elf.ElfPropertyLookSkillCell"/>
+  </List>
+  <LabelEx text="火抗:" x="287" y="248" color="0x4FD78D" size="12" width="36" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="huoDefLabel2"/>
+  <LabelEx text="000000" x="323" y="248" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="huoProLabel"/>
+  <LabelEx text="水抗:" x="287" y="269" color="0x4FD78D" size="12" width="39" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiDefLabel2"/>
+  <LabelEx text="000000" x="323" y="270" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiProLabel"/>
+  <LabelEx text="攻击:" x="287" y="227" color="0x4FD78D" size="12" width="40" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="attackLabel2"/>
+  <LabelEx text="000000" x="323" y="292" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="fengProLabel"/>
+  <LabelEx x="287" y="290" color="0x4FD78D" size="12" width="43" height="17" stroke="0x0A0007,1,2,2,10" bold="true" text="风抗:"/>
+  <LabelEx text="000000" x="323" y="313" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="tuProLabel"/>
+  <LabelEx text="土抗:" x="287" y="311" color="0x4FD78D" size="12" width="39" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="000000" x="323" y="227" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="attackProLabel"/>
+  <Button skin="asset.elf.ui.lef2Btn" x="15" y="396" stateNum="1" var="leftBtn"/>
+  <Button skin="asset.elf.ui.right2Btn" x="377" y="396" stateNum="1" var="rightBtn"/>
+  <Box x="134" y="6" var="star">
+    <Image skin="asset.elf.bigStar" name="star0"/>
+    <Image skin="asset.elf.bigStar" x="29" name="star1"/>
+    <Image skin="asset.elf.bigStar" x="58" name="star2"/>
+    <Image skin="asset.elf.bigStar" x="87" name="star3"/>
+    <Image skin="asset.elf.bigStar" x="116" name="star4"/>
+  </Box>
+  <LabelEx x="87" y="37" color="0xffffff" bold="true" size="16" width="239" height="24" stroke="0x004f66,1,4,4,10" align="center" var="nameLabel"/>
+  <LabelEx x="38" y="125" color="0xffffff" bold="true" size="16" width="62" height="24" stroke="0x004f66,1,4,4,10" align="right" var="levelLabel"/>
+  <Box x="25" y="51" var="elfEquipBox">
+    <Image skin="asset.elf.ui.cell1Bg"/>
+    <Box width="48" height="48" var="elfEquipIcon" x="9" y="9" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+  </Box>
+</View>PetGetView.xml�<View width="409" height="425">
+  <Image skin="asset.ui.frame.bg2" width="356" height="419" x="25" y="6" sizeGrid="20,50,25,20"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="45" y="350" sizeGrid="5,5,5,5" width="316" height="54"/>
+  <Image skin="assets.petsSystem.showPetBg" x="38" y="44"/>
+  <Image skin="assets.petsSystem.showPetTitle" x="0" y="0"/>
+  <Button skin="assets.petsSystem.showPetabandon" x="226" y="359" stateNum="1" var="abandonBtn" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Button skin="assets.petsSystem.showPetconfirm" x="93" y="359" stateNum="1" var="confirmBtn" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Image skin="asset.petsSystem.washBone.levBg" x="260" y="73"/>
+  <Clip x="270" y="79" index="0" var="clip_grade" clipsUrl="asset.petsSystem.washBone.lev$1,asset.petsSystem.washBone.lev$2,asset.petsSystem.washBone.lev$3,asset.petsSystem.washBone.lev$4,asset.petsSystem.washBone.lev$5"/>
+  <Image skin="assets.petsSystem.star" x="138" y="307.5" name="star1"/>
+  <Image skin="assets.petsSystem.star" x="166" y="307.5" name="star2"/>
+  <Image skin="assets.petsSystem.star" x="194" y="307.5" name="star3"/>
+  <Image skin="assets.petsSystem.star" x="250" y="307.5" name="star5"/>
+  <Image skin="assets.petsSystem.star" x="222" y="307.5" name="star4"/>
+</View>-petseal/PetSealTip.xml�O<View width="200" height="264">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="264" var="bg"/>
+  <Label text="封印属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10" var="talentName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="37" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="88" sizeGrid="95,1,95,1" width="165" var="line"/>
+  <List x="14" y="46" repeatY="5" var="proList">
+    <PetSealTipItem name="render" runtime="uigeneral.sealpettips.PetSealTipItem"/>
+  </List>
+  <Box x="14" y="148" var="skillBox">
+    <Label text="攻击：" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="skillNameTxt"/>
+    <Label text="进入战斗后立即获得免伤盾" x="38" y="1" size="12" color="0xff9933" bold="false" stroke="0x000000,1,2,2,10" var="skillDesTxt" wordWrap="true" multiline="true" leading="3" width="119"/>
+  </Box>
+  <Box x="14" y="233" var="petNameBox">
+    <Label text="封印宠物:" size="12" color="0x46e84e" bold="true" stroke="0x000000,1,2,2,10"/>
+    <Label text="封印宠物" x="66" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="sealPetName"/>
+  </Box>
+</View>'honor/HonorIcon.xml�<View width="65" height="69">
+  <Box x="0" y="39" var="tipBox">
+    <Image skin="asset.ui.scale.bg16" width="65" height="30"/>
+    <Button skin="asset.honor.goodImg" x="6" y="4" stateNum="1" width="21" height="22" var="goodBtn"/>
+    <Button skin="asset.honor.footImg" x="36" y="4" stateNum="1" var="footBtn"/>
+  </Box>
+  <Image skin="asset.honor.honorImg" x="11" y="1" var="honorBtn"/>
+</View>3PetAvatarEnergyBarTip.xml�E<View width="180" height="145">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="163" height="145" var="bg"/>
+  <Label text="化身能量" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+  <Label text="50" x="93" y="11" size="14" color="0xffcc00" stroke="0xff1e00,1,2,2,10" align="right" isHtml="true" width="25" var="curNum"/>
+  <Label text="化身描述描述描述描述化身描述描述描述描述化身描述描述描述描述化身描述描述描述描述" size="12" stroke="0x000000,1,2,2,10" x="9" y="38" width="149" wordWrap="true" var="descNum" leading="3" color="0xffffff" indent="12"/>
+  <Label text="/100" x="122" y="11" size="14" color="0x000000" stroke="0xffffff,1,2,2,10" isHtml="true" width="40" var="totalNum"/>
+</View>%TeamInviteView.xml�<View width="330" height="244">
+  <Image skin="asset.ui.frame.bg2" width="330" height="244" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Image skin="asset.ui.scale.bg11" x="19" y="44" width="128" height="178" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg14" x="42" y="54" width="82" height="84" sizeGrid="12,12,12,12,1"/>
+  <Clip x="45" y="58" index="4" clipsUrlSimple="asset.team.division,4" var="clip_division"/>
+  <Label x="22" y="138" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" var="label_name" width="125" height="23" align="center" bold="true"/>
+  <Label x="22" y="168" bold="true" color="0xFFF073" size="18" stroke="0x782A14,1,4,4,10" text="赛季荣誉：" width="119" height="29"/>
+  <Label x="159" y="52" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" text="战队等级："/>
+  <Label x="159" y="88" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" text="战队标签："/>
+  <Label x="159" y="124" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" text="战队人数："/>
+  <Label x="159" y="160" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" text="战队胜率："/>
+  <Label x="159" y="196" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" text="战队场次："/>
+  <Label x="236" y="53" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_level"/>
+  <Label x="24" y="196" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_rank" width="118" height="18"/>
+  <Label x="236" y="89" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_tag"/>
+  <Label x="236" y="125" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_num"/>
+  <Label x="236" y="161" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_rate"/>
+  <Label x="236" y="197" bold="true" color="0xFFF073" size="14" stroke="0x65431E,1,4,4,10" var="label_count"/>
+  <Button skin="asset.ui.btn_close1" x="271" y="4" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="战队资料" x="16" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+</View>1soulMark/SoulMarkTip.xml�%<View width="200" height="321">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="321" var="bg"/>
+  <Label text="未命名的碎片" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="灵魂印记" x="42" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt"/>
+  <Clip x="119" y="51" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="243" sizeGrid="95,1,95,1" width="165" var="line2"/>
+  <Label text="印记描述" x="12" y="254" size="12" color="0xf3f00b" stroke="0xa40a0a,1,2,2,10" bold="true" var="descTxt" multiline="true" wordWrap="true" width="177"/>
+  <List x="12" y="101" repeatY="5" var="proList" repeatX="2" spaceX="25" spaceY="4">
+    <Box name="render">
+      <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+    </Box>
+  </List>
+  <List x="12" y="151" repeatY="5" var="lhProList" repeatX="2" spaceX="25" spaceY="4">
+    <Box name="render">
+      <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+    </Box>
+  </List>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="253" sizeGrid="95,1,95,1" width="165" var="line3"/>
+</View>/resetName/ResetName.xml�c<View width="354" height="182">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="0" y="0" width="354" height="182"/>
+  <Button skin="asset.ui.btn_close1" x="289" y="6" stateNum="1" var="btn_close"/>
+  <Label text="魔玉方案改名" x="23" y="11" color="0xffeebf" font="宋体" size="16" bold="true" stroke="0x442006,1,4,4,30" letterSpacing="1" var="title"/>
+  <Image skin="asset.ui.scale.bg2" x="20" y="45" sizeGrid="10,10,10,10" width="311" height="70"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="119" sizeGrid="5,5,5,5" width="311" height="40"/>
+  <Button skin="asset.ui.btn_yellow1" x="136" y="122" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="35" width="77" label="确定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <TextInput x="174" y="69" var="textInput" color="0xfff4d4" size="14" bold="true" align="center" editable="true" skin="asset.ui.img_input2" width="128" height="30" margin="0,5"/>
+  <Label text="请输入新的方案名：" x="38" y="74" size="14" bold="true" color="0xfff4d4" stroke="0x7c4519,1,4,4,30"/>
+</View>cwonderfulactivity/firstkill/FirstKillItemCell.xml�S<View width="65" height="65">
+  <Image skin="asset.wf.firstskill.cellBg" width="65" height="65"/>
+</View>UforcesCharm/ForcesBattleGameDamageView.xml�7<View width="180" height="165">
+  <Button skin="asset.game.viewDamage" x="94" y="1" stateNum="1" buttonMode="true" var="switchBtn"/>
+  <Box x="0" y="31" var="viewBox">
+    <Image skin="asset.game.damageView.bg" sizeGrid="10,50,10,10"/>
+    <Label text="累计伤害" x="51" y="6" size="16" bold="true" color="0x24f2ff" stroke="0x442006,1,4,4,30" var="titleLab" align="center"/>
+    <Label text="0" x="6" y="30" size="14" color="0xffffff" stroke="0x442006,1,4,4,30" var="damageLab" width="160" height="45" align="center" bold="true"/>
+    <Label text="具有25%的伤害加成" x="6" y="91" size="14" color="0xffeebf" stroke="0x442006,1,4,4,30" var="descLab" width="160" align="center" height="30" visible="false"/>
+  </Box>
+</View>/cardTip/CardBookTip.xml�o<View width="160" height="198">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="160" height="198" var="bg"/>
+  <Label text="啵咕王城卡" x="11" y="11" size="14" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="cardName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="85" sizeGrid="95,1,95,1" width="130"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="173" sizeGrid="95,1,95,1" width="130" var="line"/>
+  <Label text="品质" size="14" color="0x99FF33" bold="true" stroke="0x000000,1,2,2,10" x="10" y="61" width="35" height="23" wordWrap="true" var="skillDes"/>
+  <Image skin="asset.core.tip.GoodsType" x="12" y="39"/>
+  <Label text="怪物卡" x="56" y="36" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="cardType"/>
+  <Label text="铜" x="44" y="60" color="0xf0ff00" size="18" bold="true" var="profileTxt"/>
+  <List x="13" y="94" repeatY="4" var="proList">
+    <Box name="render">
+      <Label text="攻击：" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="43" height="16" name="proName" bold="true"/>
+      <Label text="300" x="40" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="51" height="18" name="proNum" y="0" bold="true"/>
+    </Box>
+  </List>
+</View>McatchInsect/CatchInsectQuickBuyBox.xml�w<View width="160" height="55">
+  <LabelEx text="x100" x="11" y="13" color="0xfff600" stroke="0x000000,1,4,4,30" align="left" size="18" font="宋体" var="rateLab" height="28"/>
+  <Button skin="catchInsect.battle.buyBtn" x="59" y="9" stateNum="1" var="quickBuyBtn" labelSize="26" labelBold="true" labelColors="0xfff725" labelStroke="0xaf5505,1,4,4,30" labelMargin="0,-4"/>
+</View>1chat/ChatFastMsgItem.xml�W<View width="210" height="20">
+  <Image skin="asset.chat.FastReplyItemBg" width="210" height="20" name="selectBox"/>
+  <Label width="210" height="20" color="0xffffff" size="14" var="label" text="1"/>
+  <Button skin="asset.chat.FastReplyDeleteBtn" x="189" y="2" stateNum="1" var="deleteBtn"/>
+</View>[wonderfulactivity/firstkill/FirstKillView.xml�%<View width="492" height="475">
+  <Image skin="asset.wf.firstskill.bg"/>
+  <Label x="179" y="71" size="12" color="0xfffaad" bold="true" stroke="0x6b1666,1,4,4,10" var="dateLabel" width="232" height="16"/>
+  <List x="9" y="184" repeatX="1" repeatY="3" width="472" height="275" var="list">
+    <FirstKillItemView name="render" runtime="uigeneral.wonderfulactivity.firstkill.FirstKillItemView"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="452" y="2" name="scrollBar" width="18" height="263" scrollSize="5"/>
+  </List>
+</View>?forcesRelic/ForcesRelicTips.xml�7<View width="220" height="360">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="220" height="355" var="bg"/>
+  <Label text="未命名的碎片" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="势力圣物" x="42" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="typeLab"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt"/>
+  <List x="14" y="100" var="proList" height="140">
+    <Box name="render">
+      <Label text="攻击:" size="12" color="0xffe400" bold="true" stroke="0x000000,1,2,2,10" height="22" name="proLab"/>
+    </Box>
+  </List>
+</View>OvoiceChat/VoiceChatReceptionSetting.xml�Y<View width="290" height="118">
+  <Image skin="asset.voiceChat.userListBg" x="137" y="0" var="userListBg" visible="false"/>
+  <List x="155" y="17" width="127" height="82" repeatY="4" spaceY="3" var="userList" visible="false">
+    <VoiceChatReceptionUser name="render" runtime="uigeneral.voiceChat.VoiceChatReceptionUser"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="107" y="-6" name="scrollBar" width="18" height="100" scrollSize="5"/>
+  </List>
+  <CheckBox toggle="true" stateNum="1" selected="false" var="voiceSettingBtn" twoURLs="asset.voiceChat.voiceStopState,asset.voiceChat.voiceState" x="32" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" y="0"/>
+  <CheckBox toggle="true" stateNum="1" x="69" selected="false" var="micSettingBtn" twoURLs="asset.voiceChat.micStopState,asset.voiceChat.micState" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" y="0"/>
+  <Button skin="asset.voiceChat.userListBtn" x="106" stateNum="1" var="userListBtn" y="0"/>
+  <CheckBox toggle="true" stateNum="1" selected="true" var="chatSettingBtn" twoURLs="asset.voiceChat.chatStopState,asset.voiceChat.chatState" x="0" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" y="4"/>
+</View>7emblem/EmblemGoodProTip.xml�U<View width="200" height="110">
+  <Image skin="asset.ui.scale.bg16" x="-2" y="0" sizeGrid="59,25,59,25" width="200" height="110" var="bg"/>
+  <List x="23" y="23" repeatY="2" var="proList" repeatX="2" spaceY="0" spaceX="-15" width="160" height="36">
+    <Box name="render" x="0" y="0" width="95" height="18">
+      <Label text="攻击：" size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt" x="0" y="0"/>
+      <Label text="300" x="40" size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" height="18" name="proNumTxt" y="0"/>
+    </Box>
+  </List>
+  <Label size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" x="13" y="60" multiline="true" wordWrap="true" width="177" leading="5" var="skillTxt" isHtml="true"/>
+  <Label size="12" color="0x25ef27" bold="true" stroke="0x000000,1,2,2,10" x="11" y="6" multiline="false" wordWrap="false" text="纹章" leading="5"/>
+</View>1chat/ChatFastMsgView.xml�1<View width="239" height="191">
+  <Image skin="asset.chat.FastReplyBg" x="0" y="0" width="239" height="191"/>
+  <TextInput text="&lt;自定义>" skin="asset.chat.FastReplyInputBg" x="7" y="161" margin="3,3" width="195" height="22" var="inputText"/>
+  <Button skin="asset.chat.FastReplyEnterBtn" x="205" y="162" stateNum="1" var="inputBtn"/>
+  <TabListEx x="4" y="5" var="viewTab">
+    <TabButtonEx skin="asset.chat.fastNormal,asset.chat.fastSelect" label="副本" labelSize="14" labelColors="0xbebebe,0xffffff" labelBold="true" selected="true" labelMargin="1,3" name="item0" x="0"/>
+    <TabButtonEx skin="asset.chat.fastNormal,asset.chat.fastSelect" x="57" label="日常" labelSize="14" labelColors="0xbebebe,0xffffff" labelBold="true" selected="true" labelMargin="1,3" name="item1" y="0"/>
+    <TabButtonEx skin="asset.chat.fastNormal,asset.chat.fastSelect" x="114" label="其他" labelSize="14" labelColors="0xbebebe,0xffffff" labelBold="true" selected="true" labelMargin="1,3" name="item2" y="0"/>
+    <TabButtonEx skin="asset.chat.fastNormal,asset.chat.fastSelect" x="171" label=" 自定义" labelSize="14" labelColors="0xbebebe,0xffffff" labelBold="true" selected="true" labelMargin="-2,3" name="item3" y="0" width="53" height="23"/>
+  </TabListEx>
+  <List x="9" y="33" width="223" height="122" spaceY="1" var="selfMsgList" visible="false">
+    <VScrollBar skin="asset.chat.fast.vscroll" x="208" y="-2" name="scrollBar" width="18" height="186" showButtons="false"/>
+    <ChatFastMsgItem name="render" x="0" y="0" runtime="uigeneral.chat.ChatFastMsgItem"/>
+  </List>
+  <List x="9" y="33" width="223" height="150" spaceY="1" var="msgList" visible="false">
+    <VScrollBar skin="asset.chat.fast.vscroll" x="208" y="-2" name="scrollBar" width="18" height="186" showButtons="false"/>
+    <ChatFastMsgItem name="render" runtime="uigeneral.chat.ChatFastMsgItem"/>
+  </List>
+</View>#XkBankGetView.xml�s<View width="400" height="300">
+  <Image skin="asset.ui.frame.bg2" width="400" height="377" x="1" y="0" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="345" y="3" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="物品取出" x="17" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="nameTxt"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="300" sizeGrid="5,5,5,5" width="360" height="53"/>
+  <Button skin="asset.ui.btn_yellow1" x="63" y="309" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="39" width="96" label="确 定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Button skin="asset.ui.btn_yellow1" x="235" y="309" stateNum="1" var="cancelBtn" sizeGrid="34,16,34,16" height="39" width="96" label="取 消" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <Box name="cell0" x="30" y="57" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell1" x="120" y="57" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell2" x="210" y="57" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell3" x="300" y="57" width="71" height="71">
+    <Label text="1" x="34" y="49" width="30" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell4" x="30" y="138" width="71" height="71">
+    <Label text="1" x="34" y="49" width="30" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell5" x="120" y="138" width="71" height="71">
+    <Label text="1" x="33" y="49" width="31" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell6" x="210" y="138" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell7" x="300" y="138" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell8" x="30" y="217" width="71" height="71">
+    <Label text="1" x="34" y="49" width="30" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+  <Box name="cell9" x="120" y="217" width="71" height="71">
+    <Label text="1" x="30" y="49" width="34" height="16" align="right" size="14" name="countTxt" color="0xffffff"/>
+  </Box>
+</View>%honor/HonorTip.xml�7<View width="174" height="186">
+  <Image skin="asset.ui.scale.bg16" width="174" sizeGrid="59,25,59,25" x="0" y="0" height="188" var="bg"/>
+  <Label text="誉满天下" x="14" y="12" size="14" bold="true" color="0xffffff" stroke="0x000000,1,4,4,10" var="nickName"/>
+  <Label text="(lv.5)" x="78" y="15" color="0xf9ce84" size="12" bold="true" stroke="0x000000,1,2,2,30" var="levelTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="4" y="39" sizeGrid="95,1,95,1" width="140"/>
+  <List x="17" y="44" repeatY="6" spaceY="0" var="proList">
+    <Box name="render">
+      <Label text="血量：" color="0xfa9634" size="12" bold="true" stroke="0x000000,1,2,2,30" name="proName" y="1" align="left"/>
+      <Label text="+10000" x="78" color="0x10fa02" size="12" bold="true" stroke="0x000000,1,2,2,30" name="proValue" align="left" width="62" height="18"/>
+    </Box>
+  </List>
+  <Image skin="asset.core.tip.HRuleAsset" x="4" y="157" sizeGrid="95,1,95,1" width="140" var="line"/>
+  <Label text="见证了弹弹堂的成长" color="0xfa9634" size="12" bold="true" stroke="0x000000,1,2,2,30" x="16" y="163" var="dexTxt"/>
+</View>GcatchInsect/CatchInsectRateView.xml�/<View width="200" height="250">
+  <LabelEx text="今日剩余捕捉次数：{0}" x="21" y="9" color="0xffffff" stroke="0x000000,1,4,4,30" align="left" size="14" font="宋体" var="timesLab" height="28"/>
+  <Button skin="catchInsect.rateBtn" x="19" y="39" stateNum="1" var="rateBtn1" labelSize="26" labelBold="true" labelColors="0xfff725" labelStroke="0xaf5505,1,4,4,30" labelMargin="0,-4"/>
+  <LabelEx text="x100" x="151" y="53" color="0xfff600" stroke="0x000000,1,4,4,30" align="left" size="18" font="宋体" var="rateLab" height="28"/>
+  <Box x="16" y="92" var="rateBox">
+    <Image skin="asset.ui.scale.bg16" width="177" height="119" sizeGrid="8,8,8,8"/>
+    <LabelEx text="请输入倍率(1-500)" x="23" y="9" color="0xCCCCCC" stroke="0x000000,1,4,4,30" align="left" size="14" font="宋体" var="descLab" height="28" bold="true"/>
+    <Button skin="catchInsect.rateInputConfirmBtn" x="42" y="73" stateNum="1" var="confirmBtn" labelSize="26" labelBold="true" labelColors="0xfff725" labelStroke="0xaf5505,1,4,4,30" labelMargin="0,-4" clickInterval="1500" showClickTooQuickTip="true"/>
+    <TextInput text="1" skin="catchInsect.rateInputBg" x="22" y="35" width="127" height="30" margin="5,5,5,5" color="0xffffff" size="14" bold="true" align="center" var="numInputText" restrict="0-9"/>
+  </Box>
+</View>Afarmhouse/WeaponhousebuffTip.xml�k<View width="158" height="114">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="158" height="114" var="bg"/>
+  <Label text="武器房激活" x="11" y="9" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true"/>
+  <Label text="武器房激活" x="11" y="27" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true"/>
+  <Label text="武器房激活" x="11" y="45" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true"/>
+  <Label text="武器房激活" x="11" y="63" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true"/>
+  <Label text="攻击+10" x="85" y="9" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="attackText"/>
+  <Label text="防御+10" x="85" y="27" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="defenceText"/>
+  <Label text="敏捷+10" x="85" y="45" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="agilityText"/>
+  <Label text="幸运+10" x="85" y="63" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="luckText"/>
+  <Label text="有效期：" x="11" y="88" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true"/>
+  <Label text="23时59分59秒" x="62" y="89" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="validText"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="8" y="83" sizeGrid="95,1,95,1" width="140"/>
+</View>5horse/HorseCoreTipView.xml�#<View width="200" height="345">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="345" var="bg"/>
+  <Label text="未命名的晶核" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="坐骑晶核" x="42" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt"/>
+  <Clip x="119" y="51" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+  <List x="12" y="101" var="proList" repeatX="1" spaceX="25" spaceY="4" height="136">
+    <Box name="render">
+      <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+    </Box>
+  </List>
+</View>7soulMark/SoulMarkProTip.xml�%<View width="180" height="255">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" height="253" var="bg" width="178"/>
+  <Label text="淬炼" x="11" y="11" size="14" color="0xf3c981" stroke="0x000000,1,2,2,10" bold="true" var="nameTxt" height="18"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="33" sizeGrid="95,1,95,1" width="150"/>
+  <List x="11" y="42" repeatY="5" var="proList" repeatX="2" spaceX="25" spaceY="4">
+    <Box name="render" x="0" y="0">
+      <Label text="攻击+1000" size="12" color="0xe78a2e" stroke="0x000000,1,2,2,10" name="proName" bold="true" x="0" y="0" leading="3" height="16"/>
+    </Box>
+  </List>
+  <Label text="淬炼属性生效：100%" x="11" y="171" size="12" bold="true" color="0xeaf902" stroke="0x000000,1,2,2,30" var="descTxt" wordWrap="true" width="145"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="163" sizeGrid="95,1,95,1" width="150" var="line1"/>
+  <List x="11" y="177" repeatY="5" var="lhProList" repeatX="2" spaceX="25" spaceY="4">
+    <Box name="render">
+      <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+    </Box>
+  </List>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="193" sizeGrid="95,1,95,1" width="165" var="line3"/>
+</View>Ebreakthrough/FBbreakthroughTip.xml�<View width="200" height="95">
+  <Image skin="asset.ui.scale.bg16" x="0" y="-1" sizeGrid="59,25,59,25" width="200" height="98" var="bg"/>
+  <Label text="突破" x="11" y="11" size="14" color="0xdf3030" bold="true" stroke="0x000000,0.96,2,1,10" var="tupoText"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="35" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="62" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Label text="真伤" x="12" y="42" size="12" color="0xffffff" stroke="0x000000,1,2,1,10" bold="true" var="proText"/>
+  <Label text="袭lv.4" x="54" y="11" size="14" color="0xdf3030" bold="true" stroke="0x000000,0.96,2,1,10" var="talentName"/>
+  <Label text="+10" x="54" y="42" size="12" color="0xffffff" stroke="0x000000,1,2,1,10" bold="true" var="profileTxt"/>
+  <Label text="4首饰属性为袭" x="13" y="69" size="12" color="0xffffff" stroke="0x000000,0.96,2,1,10" bold="true" var="decTxt"/>
+</View>?hatBattle/HatBattleGameRank.xml�[<View width="179" height="205">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="179" height="203" var="bg"/>
+  <Image skin="asset.game.hatBattle.rankTxt" x="4" y="5"/>
+  <Box x="4" y="36" width="167" height="145">
+    <Image skin="asset.core.tip.HRuleAsset" sizeGrid="95,1,95,1" width="170" x="0" y="22"/>
+    <Image skin="asset.core.tip.HRuleAsset" sizeGrid="95,1,95,1" width="170" x="0" y="50"/>
+    <Image skin="asset.core.tip.HRuleAsset" sizeGrid="95,1,95,1" width="170" x="0" y="78"/>
+    <Image skin="asset.core.tip.HRuleAsset" sizeGrid="95,1,95,1" width="170" x="0" y="106"/>
+    <Image skin="asset.core.tip.HRuleAsset" sizeGrid="95,1,95,1" width="170" x="0" y="134"/>
+  </Box>
+  <List x="8" y="37" repeatY="6" spaceY="10" var="rankList">
+    <Box name="render" x="0" y="0" width="155" height="18">
+      <Label text="好吧" x="17" width="86" height="18" size="12" bold="true" color="0xffffff" name="nickName"/>
+      <Label text="1" height="18" size="12" bold="true" color="0xffffff" name="rankTxt"/>
+      <Label text="0" x="105" height="18" size="12" bold="true" color="0xffffff" width="21" name="beat"/>
+      <Label text="0" x="136" height="18" size="12" bold="true" color="0xffffff" width="19" name="lost"/>
+    </Box>
+  </List>
+  <Button skin="asset.game.hatBattle.rankRightBtn" x="-15" y="79" stateNum="1" var="coBtn" visible="false"/>
+</View>;gameverify/GameVerifyView.xml�o<View width="502" height="365">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" width="502" height="362" sizeGrid="20,50,25,20"/>
+  <Image skin="asset.ui.scale.bg11" x="17" y="297" width="468" height="47" sizeGrid="10,10,10,10"/>
+  <Image skin="asset.ui.scale.bg1" x="17" y="78" sizeGrid="10,10,10,10" width="468" height="162" var="bg"/>
+  <Label x="17" y="53" width="356" height="36" color="0xf2be31" size="18" bold="true" stroke="0x603623,1,4,4,10" var="questionLabel"/>
+  <Label text="倒计时：" x="377" y="53" width="110" height="36" color="0x4fbbff" size="18" bold="true" stroke="0x042b60,1,4,4,10"/>
+  <Label x="447" y="53" width="43" height="36" color="0x4fbbff" size="18" bold="true" stroke="0x042b60,1,4,4,10" var="downCountLabel"/>
+  <CheckBox checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="51" y="254" labelBold="true" selected="false" labelMargin="0,2" var="selectBtn1" label="A.啊"/>
+  <CheckBox checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="273" y="254" labelBold="true" selected="false" labelMargin="0,2" var="selectBtn2" label="B.啊"/>
+  <CheckBox checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="162" y="254" labelBold="true" selected="false" labelMargin="0,2" var="selectBtn3" label="C.啊"/>
+  <CheckBox checkButtonSkin="asset.ui.btn_check3" toggle="true" stateNum="1" labelSize="14" labelColors="0xF2F6D5" labelStroke="0x6F4628,1,4,4,10" x="384" y="254" labelBold="true" selected="false" labelMargin="0,2" var="selectBtn4" label="D.啊"/>
+  <HBox x="205" y="100" var="oneBox" height="65" align="middle" space="5"/>
+  <HBox x="205" y="164" align="middle" var="twoBox" height="65" space="5"/>
+  <Label text="验证码" x="18" y="12" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button label="确 定" x="212" y="303" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+</View>=horse/HorseCoreHoleTipView.xml�y<View width="500" height="400">
+  <Image skin="asset.ui.scale.bg16" x="10" y="10" sizeGrid="59,25,59,25" width="200" height="345" var="bg"/>
+  <Label text="晶核槽等级{0}\n当前激活属性加成2%\n已激活月本坐骑技能:\n{1}\n{2}\n{3}" x="22" y="267" size="12" color="0xf3f00b" stroke="0xa40a0a,1,2,2,10" var="descTxt" multiline="true" wordWrap="true" width="177" bold="true" leading="2"/>
+  <Image skin="asset.latentEnergy.rightArrows" x="227" y="116" var="nextArrow" visible="false"/>
+  <Box x="290" y="10" var="nextBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="200" height="345" var="bg2"/>
+    <Label text="晶核槽等级{0}\n当前激活属性加成2%\n已激活月本坐骑技能:\n{1}\n{2}\n{3}" x="12" y="257" size="12" color="0xf3f00b" stroke="0xa40a0a,1,2,2,10" var="nextDescTxt" multiline="true" wordWrap="true" width="177" bold="true" leading="2"/>
+    <Box x="8" y="10" var="coreBox2">
+      <Label text="未命名的晶核" x="3" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt2"/>
+      <Image skin="asset.core.tip.HRuleAsset" x="4" y="26" sizeGrid="95,1,95,1" width="165"/>
+      <Image skin="asset.core.tip.HRuleAsset" x="1" y="81" sizeGrid="95,1,95,1" width="165"/>
+      <Image skin="asset.core.tip.GoodsType" x="2" y="60"/>
+      <Label text="坐骑晶核" x="34" y="57" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+      <Image skin="asset.core.tip::GoodsTipQuality" y="34"/>
+      <Label text="精良" x="45" y="31" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt2"/>
+      <Clip x="111" y="41" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+      <List x="4" y="91" var="proList2" repeatX="1" spaceX="25" spaceY="4" height="136">
+        <Box name="render">
+          <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+        </Box>
+      </List>
+      <Image skin="asset.core.tip.HRuleAsset" x="0" y="200" sizeGrid="95,1,95,1" width="165" var="nextLine2"/>
+    </Box>
+  </Box>
+  <Box x="18" y="20" var="coreBox">
+    <Label text="未命名的晶核" x="3" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="4" y="26" sizeGrid="95,1,95,1" width="165"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="1" y="81" sizeGrid="95,1,95,1" width="165" var="line1"/>
+    <Image skin="asset.core.tip.GoodsType" x="2" y="60"/>
+    <Label text="坐骑晶核" x="34" y="57" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+    <Image skin="asset.core.tip::GoodsTipQuality" y="34"/>
+    <Label text="精良" x="45" y="31" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt"/>
+    <Clip x="111" y="41" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="2" y="233" sizeGrid="95,1,95,1" width="165" var="line2"/>
+    <List x="4" y="91" var="proList" repeatX="1" spaceX="25" spaceY="4" height="136">
+      <Box name="render">
+        <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+      </Box>
+    </List>
+  </Box>
+</View>1PlayerExPropertyTips.xml�K<View width="180" height="150">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="160" height="88" var="bg"/>
+  <Label text="拓展属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="140"/>
+  <Label text="火攻击:0000000" x="11" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="realDamageLab" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="realDenfenceLab" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="81" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="realDamagePerLab" width="112" height="16"/>
+  <Label text="火攻击:0000000" x="11" y="99" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="realDenfencePerLab" width="112" height="16"/>
+</View>+honor/HonorReport.xml�q<View width="462" height="277">
+  <Image skin="asset.honor.reportBg" x="0" y="0"/>
+  <Image skin="asset.honor.reportPhoneImg" x="132" y="13"/>
+  <Label text="正在举报：XXX" x="160" y="17" size="14" color="0xff0e0e" stroke="0x202020,1,4,4,30" bold="true" width="197" height="18" align="left" var="titleTxt"/>
+  <Label text="请选择举报内容：" x="18" y="55" size="14" color="0xffffff" stroke="0x202020,1,4,4,30" bold="true"/>
+  <RadioGroup x="78" y="101" var="tabGroup">
+    <RadioButton label="虚假广告" stateNum="1" labelColors="0xffffff" labelSize="14" labelStroke="0x202020,1,4,4,30" labelBold="true" name="item0" selected="true" toggle="true" checkButtonSkin="asset.honor.btn_check" x="0"/>
+    <RadioButton label="频道刷屏" stateNum="1" labelColors="0xffffff" labelSize="14" labelStroke="0x202020,1,4,4,30" labelBold="true" name="item1" x="111" checkButtonSkin="asset.honor.btn_check"/>
+    <RadioButton label="挂机脚本" stateNum="1" labelColors="0xffffff" labelSize="14" labelStroke="0x202020,1,4,4,30" labelBold="true" name="item2" x="222" checkButtonSkin="asset.honor.btn_check"/>
+  </RadioGroup>
+  <Button skin="asset.ui.btn_red5" x="250" y="231" stateNum="1" imageLabel="asset.honor.reportTxt" imageLabelRect="8,6" var="okBtn"/>
+  <Button skin="asset.ui.btn_yellow1" x="93" y="231" stateNum="1" imageLabel="asset.honor.cancel" imageLabelSizeGrid="27,17,27,17" width="98" height="42" imageLabelRect="22,6" var="cancelBtn"/>
+  <TextInput x="19" y="151" multiline="true" wordWrap="true" width="418" height="66" color="0xffe400" stroke="0x202020,1,4,4,30" leading="5" text="请输入您要举报的内容" var="input"/>
+</View>GguildCheer/GuildCheerBattleView.xml�<View width="432" height="54">
+  <Image skin="asset.uigeneral.guildCheer.bit1$bar" x="0" y="25"/>
+  <ProgressBar skin="asset.uigeneral.guildCheer.bit2" x="0" y="25" value="0.5" var="redBar"/>
+  <Label text="550000" x="118" y="31" size="14" color="0xffffff" stroke="0xaf3310,1,4,4,30" width="77" height="18" align="left" var="redScore"/>
+  <Label text="5555" x="204" y="31" size="14" color="0xffffff" stroke="0x3044bb,1,4,4,30" align="right" width="73" height="18" var="blueScore"/>
+  <Image skin="asset.uigeneral.guildCheer.bit3" x="168" y="0"/>
+  <Label text="00:00" x="189" y="3" size="14" color="0xffffff" var="timeTxt"/>
+  <Image skin="asset.uigeneral.guildCheer.bit5" x="5" y="31"/>
+  <Image skin="asset.uigeneral.guildCheer.bit4" x="373" y="31"/>
+  <Label text="红队公会" x="28" y="32" size="12" color="0xffed3e" stroke="0xaf3310,1,4,4,30" width="82" height="18" align="center" var="redName"/>
+  <Label text="蓝队公会" x="288" y="32" size="12" color="0x53fff5" stroke="0x3044bb,1,4,4,30" align="center" width="82" height="18" var="blueName"/>
+  <Button skin="asset.uigeneral.guildCheer.bit6" x="397" y="22" stateNum="1" var="cheerBtn"/>
+</View>YcatchInsect/CatchInsectQuickBuyAlertView.xml�<View width="440" height="320">
+  <Image skin="asset.ui.frame.bg2" width="428" height="316" x="40" y="0" sizeGrid="20,50,25,20"/>
+  <Label text="购买道具" x="56" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="404" y="6" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ui.scale.bg11" x="60" y="237" width="384" height="56" sizeGrid="16,16,16,16"/>
+  <Label x="152" y="217" color="0xFFF4D4" size="14" stroke="0x7c4519,20" isHtml="true" align="left" leading="5" var="costLab" text="你总共需要支付： {0}绑定点券" bold="true" height="23"/>
+  <Button label="确 定" x="143" y="247" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="14" labelBold="true" var="confirmBtn" buttonMode="true"/>
+  <Button label="取 消" x="294" y="247" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="14" labelBold="true" var="cancelBtn" buttonMode="true"/>
+  <List x="159" y="54" repeatX="2" repeatY="1" spaceX="45" var="rewardList">
+    <Box name="render" visible="false">
+      <Image skin="catchInsect.battle.buyItemBg" name="bg" x="6" y="7"/>
+      <Box name="cellBox" x="6" y="7"/>
+      <Image skin="catchInsect.battle.buyItemLight" name="selectBox" visible="false"/>
+    </Box>
+  </List>
+  <TextInput text="1" skin="catchInsect.battle.buyInputBg" x="145" y="144" width="228" height="36" margin="5,5,5,5" color="0xfff8D6" size="14" bold="true" align="center" var="numInputText" restrict="0-9" gradientStroke="0x4B270D,30"/>
+  <RadioGroup skin="asset.ui.btn_check9" x="158" y="181" var="conditionGroup" labelColors="0xfaef5c,0xfaef5c,0xfaef5c,0xfaef5c" labelSize="14" labels="点券, 绑定点券 " labelBold="true" space="70" direction="horizontal" labelStroke="0x781906,1,4,4,10" labelMargin="0,3" width="200" height="50" selectedIndex="0"/>
+</View>IinfoRegister/InfoRegisterTipView.xml�c<View width="740" height="288">
+  <Image skin="asset.inforegister.bg" x="0" y="0"/>
+  <Image skin="asset.inforegister.bg" scaleX="-1" x="740" y="0"/>
+  <Image skin="asset.inforegister.title" x="264" y="-24"/>
+  <Button skin="asset.ui.btn_close10" x="720" y="-15" stateNum="1" var="closeBtn"/>
+  <LabelEx text="您的身份未完善，将影响正常游戏！" x="205" y="69" color="0xfbcaa5" stroke="0x80451a,1,4,4,10" width="329" height="25" size="20" bold="true"/>
+  <LabelEx text="还可领取超值礼包！" x="393" y="127" color="0xffcd36" stroke="0x6c3711,1,4,4,10" width="183" height="33" size="20" bold="true"/>
+  <Button skin="asset.inforegister.smallInputBtn" x="299" y="216" stateNum="1" var="inputBtn"/>
+  <LabelEx text="请尽快完善身份信息，" x="189" y="128" color="0xfbcaa5" stroke="0x80451a,1,4,4,10" width="209" height="30" size="20" bold="true"/>
+</View>ChatBattle/HatBattleSettlement.xml�o<View width="346" height="234">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="346" height="234" var="bg"/>
+  <Image skin="asset.game.hatBattle.settlementTitle" x="20" y="10"/>
+  <Image skin="asset.game.hatBattle.settlementTxt1" x="42" y="96"/>
+  <Image skin="asset.game.hatBattle.settlementRankTxt" x="53" y="161"/>
+  <Image skin="asset.game.hatBattle.settlementTxt2" x="206" y="161" var="rankImg"/>
+</View>1daliantu/FaceBoxView.xml�S<View width="800" height="530">
+  <Box x="0" y="0" width="800" height="511" var="imgBox"/>
+  <Image skin="asset.pairBox.face.timeBg" x="67" y="456"/>
+  <Label color="0x33ff00" height="20" align="left" size="14" text="剩余时间: " font="宋体" x="73" y="460" bold="true" stroke="0x000000,1,4,4,20" var="timeLab"/>
+  <Button skin="asset.pairBox.face.goBtn" x="281" y="365" stateNum="1" var="gotoBtn"/>
+  <Button x="594" y="455" checkButtonSkin="asset.pairBox.face.check" stateNum="1" toggle="true" var="noMoreSelect"/>
+  <Button skin="asset.pairBox.face.closeBtn" x="712" y="42" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.pairBox.face.noMoreTip" x="631" y="460"/>
+</View>Aelf/ElfPropertyLookSkillCell.xml�<View width="66" height="66" tipStyle="ddt.view.tips.PetSkillCellTip" tipDirctions="1,2,3,4">
+  <Image skin="asset.elf.ui.cell1Bg" y="0" x="0"/>
+  <Box width="48" height="48" var="icon" x="9" y="9" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+</View>?TicketTipClip/TicketTipClip.xml�<View width="115" height="80">
+  <List x="0" y="0" repeatY="5" var="proList">
+    <Box name="render" x="0" y="0" width="115" height="16">
+      <Label text="攻击：+5000" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="115" height="16" name="proName" bold="true" x="0" y="0"/>
+    </Box>
+  </List>
+</View>EstoreStrength/StoreStrengthTip.xml�<View width="177" height="200" name="render">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="200" var="bg"/>
+  <Label text="灵玉" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="150"/>
+  <Label x="9" y="83" size="12" color="0xffffff" bold="false" stroke="0x000000,1,2,2,10" var="skillLabel" width="177" multiline="true" wordWrap="true" leading="3" isHtml="true" letterSpacing="1"/>
+  <List x="10" y="45" repeatY="7" var="proList">
+    <Box name="render" x="0" y="0">
+      <Label text="火攻击:" size="12" color="0xffe400" bold="true" stroke="0x000000,1,2,2,10" height="18" name="proTxt" x="0" y="0" width="63"/>
+      <Label text="火攻击:0000000" size="12" color="0xffe400" bold="true" stroke="0x000000,1,2,2,10" height="18" name="numTxt" x="68" y="0" width="63"/>
+    </Box>
+  </List>
+  <Label text="灵玉属性生效：100%" x="11" y="172" size="12" bold="true" color="0xeaf902" stroke="0x000000,1,2,2,30" var="rateTxt"/>
+</View>QforcesRelic/ForcesRelicLookOtherView.xml�s<View width="424" height="444">
+  <Image skin="asset.fb.other.relic.bit1" sizeGrid="5,5,5,5" width="434" x="-7"/>
+  <Box x="-5" y="394" width="427" height="38">
+    <Image skin="asset.fb.other.relic.bit3" width="427" sizeGrid="5,5,5,5"/>
+    <LabelEx x="101" y="13" color="0xff9933" size="14" stroke="0x501802,1,2,2,10" bold="true" text="激活套装:" align="center"/>
+    <LabelEx x="181" y="13" color="0xfcff00" size="14" stroke="0x501802,1,2,2,10" bold="true" var="suitLab1" text="奇袭套装" align="center" mouseEnabled="true"/>
+    <LabelEx x="271" y="13" color="0xfcff00" size="14" stroke="0x501802,1,2,2,10" bold="true" var="suitLab2" text="遁甲套装" align="center" mouseEnabled="true"/>
+  </Box>
+  <ForcesRelicEquipCellOther x="160" y="6" var="cell1" runtime="uigeneral.forcesRelic.ForcesRelicEquipCellOther"/>
+  <ForcesRelicEquipCellOther x="308" y="71" var="cell2" runtime="uigeneral.forcesRelic.ForcesRelicEquipCellOther"/>
+  <ForcesRelicEquipCellOther x="275" y="249" var="cell3" runtime="uigeneral.forcesRelic.ForcesRelicEquipCellOther"/>
+  <ForcesRelicEquipCellOther x="13" y="74" var="cell5" runtime="uigeneral.forcesRelic.ForcesRelicEquipCellOther"/>
+  <ForcesRelicEquipCellOther x="44" y="248" var="cell4" runtime="uigeneral.forcesRelic.ForcesRelicEquipCellOther"/>
+  <LabelEx x="145" y="168" color="0xff9933" size="14" stroke="0x501802,1,2,2,10" bold="true" text="暂无势力圣物数据....." align="center" var="noDataLab" visible="false"/>
+  <Image skin="asset.fb.other.relic.allPro" sizeGrid="5,5,5,5" x="178" y="335" mouseEnabled="true" var="allProImg"/>
+</View>IvoiceChat/VoiceChatReceptionUser.xml�<View width="104" height="18">
+  <Label color="0xFBAE00" size="12" stroke="0x000000,1,2,2,30" x="19" width="83" height="17" y="1" var="nameLabel" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+  <Clip clipsUrl="asset.voiceChat.communicateState0,asset.voiceChat.communicateState1,asset.voiceChat.communicateState2" var="state" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" mouseEnabled="true" mouseChildren="true" buttonMode="true"/>
+</View>KforcesRelic/ForcesRelicManualTips.xml�<View width="160" height="245">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="145" height="93" var="bg"/>
+  <Label text="品质类型" x="14" y="11" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="34" sizeGrid="95,1,95,1" width="120"/>
+  <List x="11" y="40" var="proList" spaceX="5" height="154">
+    <Box name="render">
+      <Label text="攻击：0" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" bold="true" multiline="true" wordWrap="false" isHtml="true" leading="5" name="proLab" width="82"/>
+    </Box>
+  </List>
+</View>

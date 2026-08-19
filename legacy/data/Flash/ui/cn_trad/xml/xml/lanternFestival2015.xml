@@ -1,0 +1,64 @@
+<style name="lanternFestival2015" version="6.4.0" source="ui/cn_trad/swf/lanternFestival2015.swf">
+	<components>
+	
+	<component classname="LanternFestival2015.view.LanternFestivalCookFrame"
+			closestyle="core.roundClosebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle" 
+			closeInnerRectString="42,2,18,42,14" stylename="lantern.CookFrame"
+			 x="-160" y="-140" escEnable="true"
+			width="556" height="438" />
+<!-- 	剩余数量 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="lf2015.numRemain.Txt" 
+		textFormatStyle="lf2015.tf"  type="dynamic"
+		autoSize="none" wordWrap="true" x="33" y="-3" width="30" height="20" />
+		
+<!-- 	要包的汤圆数量 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="lf2015.numWantMake.Txt" 
+		textFormatStyle="lf2015.numWantMake.tf" filterString="lf2015.numWantMake.gf"
+		 type="dynamic"
+		autoSize="none" wordWrap="true" x="224" y="326" width="60" height="20" />
+		
+<!-- 	金币数量 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="lf2015.numGoldCoin.Txt" 
+		textFormatStyle="lf2015.numGoldCoin.tf" filterString="lf2015.numGoldCoin.gf"
+		 type="dynamic"
+		autoSize="none" wordWrap="true" x="383" y="270" width="60" height="20" />
+		
+<!-- 	金币标题 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="lf2015.titleGoldCost.Txt" 
+		textFormatStyle="lf2015.titleGoldCost.tf" filterString="lf2015.titleGoldCost.gf"
+		 type="dynamic"
+		autoSize="none" wordWrap="true" x="338" y="270" width="60" height="20" />
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="lf2015.btn.cook" 
+		backStyle="lantern2015.btn.cook" x="313" y="371"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="lf2015.btn.make" 
+		backStyle="lantern2015.btn.make" x="114" y="371"/>
+	</components>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="lantern.helpBtn" backStyle="assets.lantern.helpBtn" x="489" y="34"/>
+	<sets>
+		
+		<set stylename="lf2015.tf" args="Arial,12,0xfefefe,false,,,,,center" type="flash.text.TextFormat"/>
+<!-- 		<set stylename="lf2015.gf" args="0x000000,1,2,2,20" type="flash.filters.GlowFilter"/> -->
+
+		<set stylename="lf2015.numWantMake.tf" args="Arial,12,0xe7c783,true,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="lf2015.numWantMake.gf" args="0x300d03,1,2,2,20" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="lf2015.numGoldCoin.tf" args="Arial,14,0xffef3b,true,,,,,right" type="flash.text.TextFormat"/>
+		<set stylename="lf2015.numGoldCoin.gf" args="0x400202,1,4,4,40" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="lf2015.titleGoldCost.tf" args="Arial,14,0xfcf3a7,true,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="lf2015.titleGoldCost.gf" args="0x4e1010,1,4,4,40" type="flash.filters.GlowFilter"/>
+	</sets>
+	
+	<customs>
+		<custom classname="flash.geom.Point" stylename="lantern2015.HelpContentPos" x="31" y="69"/>
+		<custom classname="flash.geom.Point" stylename="lantern2015.helpBtnPos" x="572" y="6"/>
+	</customs>
+	<bitmaps>
+		<bitmapData  resourceLink="lantern2015.times.bg"  x="39" y="-4"/>
+		<bitmapData resourceLink="lantern2015.hall.bg"  x="39" y="-4"/>
+	</bitmaps>
+	<customDisplay>
+<!-- 		<custom classname="flash.geom.Point" stylename="lf2015.pos" x="138" y="96"/> -->
+	</customDisplay>
+</style>

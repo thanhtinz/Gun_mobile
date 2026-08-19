@@ -1,0 +1,178 @@
+
+7DevilTurnBoxConvertItem.xml�<View width="444" height="64">
+  <Image skin="asset.ui.scale.bg15" x="0" y="0" width="64" height="64" sizeGrid="12,12,12,12,1"/>
+  <Button skin="asset.ui.btn_yellow3" x="336" y="12" width="105" height="40" stateNum="1" imageLabel="asset.deviturn.boxConvert.btnTxt" imageLabelX="30" imageLabelY="8" var="convertBtn"/>
+  <List x="63" y="5" width="273" height="54" repeatX="3" var="beadList">
+    <Box name="render">
+      <Clip clipsUrl="asset.deviturn.bead1,asset.deviturn.bead2,asset.deviturn.bead3,asset.deviturn.bead4,asset.deviturn.bead5" name="icon"/>
+      <Label x="52" y="15" color="0xE8CE97" size="18" mouseChildren="false" mouseEnabled="false" stroke="0x5C3D11,1,2,2,10" bold="true" width="36" height="22" align="left" name="count"/>
+    </Box>
+  </List>
+</View>+DevilTurnShopView.xml�<View width="530" height="305">
+  <Image skin="asset.ui.frame.bg2" width="530" height="305" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="467" y="5" var="closeBtn" stateNum="1"/>
+  <Label text="宝物商城" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.ui.scale.bg2" x="20" y="45" width="489" height="206" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg14" x="28" y="55" width="473" height="188" sizeGrid="12,12,12,12,1"/>
+  <Image skin="asset.ui.scale.bg10" x="24" y="51" width="482" height="197" sizeGrid="16,16,16,16"/>
+  <PageNavigaterEx x="319" y="257" isLoop="true" type="simple" var="selectPage" pageNumStroke="0x592200,1,4,4,10" pageNumStyle="宋体,14,0xfff5cb,true,0"/>
+  <List x="35" y="61" width="463" height="175" repeatX="2" repeatY="2" spaceX="10" spaceY="10" var="shopList">
+    <DevilTurnShopItem name="render" runtime="devilTurn.view.DevilTurnShopItem"/>
+  </List>
+  <Image skin="asset.ui.scale.bg4" x="55" y="257" width="84" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="60" y="261" width="74" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="myMoneyText"/>
+</View>3DevilTurnTreasureView.xml�7<View width="600" height="400">
+  <Button skin="asset.deviturn.donateBtn2" x="444" y="328" stateNum="1" enableClickMoveDownEffect="false" var="sacrificeBtn2" showClickTooQuickTip="true"/>
+  <Image skin="asset.deviturn.scoreBg" x="617" y="381"/>
+  <Label x="0" y="0" color="0x8f59bc" size="14" backgroundColor="0x0" width="317" height="18" var="activateTimeText"/>
+  <Button label="宝箱兑换" skin="asset.deviturn.Btn" x="7" y="384" stateNum="1" buttonMode="true" labelBold="true" labelColors="0xffd83d" labelStroke="0x2b1163,1,2,2,30" labelSize="14" width="93" height="36" var="boxConversionBtn"/>
+  <Button label="宝物商店" skin="asset.deviturn.Btn" x="108" y="384" stateNum="1" buttonMode="true" labelBold="true" labelColors="0xffd83d" labelStroke="0x2b1163,1,2,2,30" labelSize="14" width="93" height="36" var="shopBtn"/>
+  <Button skin="asset.deviturn.donateBtn1" x="238" y="328" stateNum="1" var="sacrificeBtn1" buttonMode="true" enableClickMoveDownEffect="false" showClickTooQuickTip="true"/>
+  <Label text="购买灵魂石" x="256" y="376" bold="true" color="0xffffff" size="14" backgroundColor="0x0" stroke="0x701457,1,4,4,10" width="96" height="21" wordWrap="true" autoSize="none" multiline="true" align="center" mouseChildren="false" mouseEnabled="false" var="freeCountText"/>
+  <Label x="217" y="413" color="0xd62542" size="12" backgroundColor="0x0" width="181" height="17" autoSize="none" align="center" var="freeDateText"/>
+  <Label text="宝藏探险" x="460" y="376" bold="true" color="0xffffff" size="14" backgroundColor="0x0" stroke="0x3a2568,1,4,4,10" width="104" height="35" wordWrap="true" autoSize="none" multiline="true" align="center" mouseChildren="false" mouseEnabled="false"/>
+  <Clip x="617" y="51" clipsUrl="asset.deviturn.rankbg1,asset.deviturn.rankbg2" index="1" var="rankBg"/>
+  <List x="619" y="86" repeatY="10" width="211" height="291" var="rankList" spaceY="9">
+    <Box name="render" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2">
+      <Label x="38" size="14" color="0xa873ca" width="109" height="20" autoSize="none" align="center" name="name" y="0"/>
+      <Label x="145" size="14" color="0xdfaa2c" width="65" height="20" autoSize="none" align="center" name="score" y="0"/>
+      <Label size="14" color="0xedcfff" width="40" height="20" autoSize="none" align="center" name="rank" x="0" y="0"/>
+    </Box>
+  </List>
+  <List repeatY="10" width="211" height="291" var="rankAwardList" spaceY="11" x="621" y="87" visible="false">
+    <Box name="render">
+      <Label size="12" color="0xdfaa2c" width="154" height="18" autoSize="none" align="left" name="score" x="55" y="0"/>
+      <Label size="12" color="0xedcfff" width="53" height="18" autoSize="none" align="center" name="rank" x="0" y="0"/>
+    </Box>
+  </List>
+  <TabListEx x="613" y="0" var="rankTab">
+    <TabButtonEx skin="asset.deviturn.rankBtn.normal,asset.deviturn.rankBtn.select" offsets="20,9" name="item0" width="110" height="45" buttonMode="true"/>
+    <TabButtonEx skin="asset.deviturn.rankBtn.normal,asset.deviturn.rankBtn.select" x="111" offsets="20,9" name="item1" width="110" height="45"/>
+  </TabListEx>
+  <Label text="跨区排名" x="637" y="15" color="0xffd83d" stroke="0x2b1163,1,2,2,30" size="14" bold="true" mouseEnabled="false" mouseChildren="false"/>
+  <Label text="排名奖励" x="748" y="14" color="0xffd83d" stroke="0x2b1163,1,2,2,30" size="14" bold="true" mouseEnabled="false" mouseChildren="false"/>
+  <Label text="积分：" x="625" y="391" color="0xdfaa2c" size="14" backgroundColor="0x0" width="40" height="21"/>
+  <Label text="排名：" x="742" y="391" color="0xdfaa2c" size="14" backgroundColor="0x0" width="40" height="21"/>
+  <Label x="665" y="391" color="0xdfaa2c" size="14" backgroundColor="0x0" width="73" height="21" var="scoreText" text="0"/>
+  <Label text="0" x="782" y="391" color="0xdfaa2c" size="14" backgroundColor="0x0" width="37" height="21" var="scoreRankText"/>
+  <FrameClip skin="asset.deviturn.totalAward" x="350" y="93" index="85" mouseChildren="false" mouseEnabled="false" var="jackpotMovie"/>
+  <NumberImageEx index="5" count="0" var="jackpot" space="1" skin="asset.deviturn.num" x="347" y="169" width="130" height="28" align="center" mouseChildren="false" mouseEnabled="false"/>
+  <Image skin="asset.deviturn.totalAwardTxt" x="390" y="134"/>
+  <Image skin="asset.deviturn.bead1" x="6" y="326" width="40" height="40" smoothing="true" tipStyle="core.GoodsTip" tipDirctions="7,6,2,1,5,4,0,3,6" var="beadTips1"/>
+  <Image skin="asset.deviturn.bead2" x="46" y="326" width="40" height="40" tipDirctions="7,6,2,1,5,4,0,3,6" smoothing="true" tipStyle="core.GoodsTip" var="beadTips2"/>
+  <Image skin="asset.deviturn.bead3" x="86" y="326" width="40" height="40" smoothing="true" tipDirctions="7,6,2,1,5,4,0,3,6" tipStyle="core.GoodsTip" var="beadTips3"/>
+  <Image skin="asset.deviturn.bead4" x="127" y="326" width="40" height="40" tipDirctions="7,6,2,1,5,4,0,3,6" smoothing="true" tipStyle="core.GoodsTip" var="beadTips4"/>
+  <Image skin="asset.deviturn.bead5" x="166" y="326" width="40" height="40" smoothing="true" tipDirctions="7,6,2,1,5,4,0,3,6" tipStyle="core.GoodsTip" var="beadTips5"/>
+  <Label text="0" x="10" y="346" color="0xfff9b1" size="14" backgroundColor="0x0" width="34" height="19" var="beadCountText1" stroke="0x000000,1,2,2,30" align="right" mouseChildren="false" mouseEnabled="false"/>
+  <Label text="0" x="49" y="346" color="0xfff9b1" size="14" backgroundColor="0x0" width="34" height="19" var="beadCountText2" stroke="0x000000,1,2,2,30" align="right" mouseEnabled="false" mouseChildren="false"/>
+  <Label text="0" x="89" y="346" color="0xfff9b1" size="14" backgroundColor="0x0" width="34" height="19" var="beadCountText3" stroke="0x000000,1,2,2,30" align="right" mouseEnabled="false" mouseChildren="false"/>
+  <Label text="0" x="129" y="346" color="0xfff9b1" size="14" backgroundColor="0x0" width="34" height="19" var="beadCountText4" stroke="0x000000,1,2,2,30" align="right" mouseChildren="false" mouseEnabled="false"/>
+  <Label text="0" x="170" y="346" color="0xfff9b1" size="14" backgroundColor="0x0" width="34" height="19" var="beadCountText5" stroke="0x000000,1,2,2,30" align="right" mouseEnabled="false" mouseChildren="false"/>
+  <List x="11" y="236" width="228" height="94" var="boxList" repeatX="3" spaceX="-10">
+    <DevilTurnBox runtime="devilTurn.view.DevilTurnBox" name="render"/>
+  </List>
+  <Button label="连续探险" skin="asset.deviturn.check" x="476" y="310" var="continueCheckBtn" stateNum="1" checkButtonSkin="asset.deviturn.check" buttonMode="true" toggle="true" labelColors="0xb253d8" labelSize="12" labelBold="true" labelMargin="10,0,-65,0"/>
+  <Button label="购买100次" skin="asset.deviturn.check" x="263" y="310" var="buyTenBtn" stateNum="1" checkButtonSkin="asset.deviturn.check" buttonMode="true" toggle="true" labelColors="0xb253d8" labelSize="12" labelBold="true" labelMargin="10,0,-65,0"/>
+  <Label text="剩余次数：20次" x="452" y="414" width="116" height="18" align="center" size="12" color="0xffe556" stroke="0x1b0728,1,4,4,20" var="countTxt"/>
+</View>!DevilTurnBox.xml�O<View width="70" height="70">
+  <Label size="14" color="0xffce26" width="70" height="18" var="dateText" align="center"/>
+  <Button skin="asset.deviturn.box.openBtn" x="16" y="50" stateNum="1" var="openBtn" visible="false"/>
+</View>+DevilTurnShopItem.xml�<View width="225" height="82">
+  <Image skin="asset.ui.scale.bg11" width="225" height="82" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg15" width="68" height="68" x="7" y="7" sizeGrid="12,12,12,12,1"/>
+  <Image skin="asset.deviturn.shop.line" x="82" y="52"/>
+  <Label x="78" size="12" color="0xE8CE97" width="108" height="20" autoSize="none" y="8" bold="true" stroke="0x573504,1,2,2,10" var="nameText"/>
+  <Label x="132" size="14" color="0xfec55d" stroke="0x573504,1,4,4,10" width="84" height="20" autoSize="none" y="30" bold="true" align="right" var="goodsText"/>
+  <Button skin="asset.ddtshop.BuyBtn" x="147" y="57" stateNum="1" var="buyBtn" visible="false"/>
+  <Label x="78" size="12" color="0xE8CE97" width="108" height="20" autoSize="none" y="30" bold="true" stroke="0x573504,1,2,2,10" var="priceText"/>
+  <Label x="110" size="12" color="0xCAC6BB" width="108" height="20" autoSize="none" y="60" bold="true" stroke="0x573504,1,2,2,10" var="buyTipsText" text="今日已购完" align="right" visible="false"/>
+</View>-DevilTurnGoodsView.xml�<View width="761" height="238">
+  <Image skin="asset.deviturn.getGoodsBg" x="-0.5"/>
+  <Image skin="asset.deviturn.getGoodsTitle" x="334.5" y="17"/>
+  <Button label="确 定" skin="asset.deviturn.Btn" x="333.5" y="183" stateNum="1" buttonMode="true" labelBold="true" labelColors="0xffd83d" labelStroke="0x2b1163,1,2,2,30" labelSize="14" width="93" height="36" var="closeBtn"/>
+</View>+DevilTurnMainView.xml�<View width="874" height="506">
+  <Image skin="asset.deviturn.bg"/>
+  <TabListEx x="15" y="14" var="viewTab">
+    <TabButtonEx skin="asset.deviturn.normal|asset.deviturn.tabtxt2.normal,asset.deviturn.select|asset.deviturn.tabtxt2.select" x="140" y="0" offsets="15,-4" name="item1"/>
+    <TabButtonEx skin="asset.deviturn.normal|asset.deviturn.tabtxt1.normal,asset.deviturn.select|asset.deviturn.tabtxt1.select" x="0" y="0" name="item0" offsets="15,-4"/>
+  </TabListEx>
+  <Button skin="asset.ui.btn_close1" x="805" y="9" stateNum="1" var="closeBtn"/>
+  <DevilTurnTreasureView x="14" y="62" runtime="devilTurn.view.DevilTurnTreasureView" var="treasureView"/>
+  <DevilTurnMallView x="16" y="61" runtime="devilTurn.view.DevilTurnMallView" var="mallView" visible="false"/>
+</View>+DevilTurnMallItem.xml�y<View width="504" height="60">
+  <Clip clipsUrl="asset.deviturn.mall.itemBg1,asset.deviturn.mall.itemBg2" index="0"/>
+  <Label x="4" y="23" width="122" height="18" size="14" color="0xFFF553" bold="true" stroke="0x652874,1,4,4,10" align="center" var="countText"/>
+  <Image skin="asset.deviturn.mall.get" x="394" y="8" var="getImage" visible="false"/>
+  <Button skin="asset.deviturn.mall.getBtn" x="387" y="12" stateNum="1" var="getBtn"/>
+</View>7DevilTurnBoxConvertView.xml�k<View width="523" height="384">
+  <Image skin="asset.ui.frame.bg2" width="523" height="384" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="460" y="5" var="closeBtn" stateNum="1"/>
+  <Label text="宝珠兑换" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.ui.scale.bg2" x="19" y="46" width="483" height="283" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.deviturn.boxConvert.bg" x="22" y="49"/>
+  <List x="41" y="70" repeatY="3" width="447" height="250" spaceY="22" var="beadList">
+    <DevilTurnBoxConvertItem name="render" runtime="devilTurn.view.DevilTurnBoxConvertItem"/>
+  </List>
+  <Image skin="asset.deviturn.bead1" x="18" y="333" width="32" height="32" smoothing="true"/>
+  <Image skin="asset.ui.scale.bg4" x="49" y="336" width="60" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="53" y="340" width="53" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="beadText1"/>
+  <Image skin="asset.deviturn.bead2" x="117" y="333" width="32" height="32" smoothing="true"/>
+  <Image skin="asset.ui.scale.bg4" x="148" y="336" width="60" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="152" y="340" width="53" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="beadText2"/>
+  <Image skin="asset.deviturn.bead3" x="217" y="333" width="32" height="32" smoothing="true"/>
+  <Image skin="asset.ui.scale.bg4" x="248" y="336" width="60" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="252" y="340" width="53" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="beadText3"/>
+  <Image skin="asset.deviturn.bead4" x="316" y="333" width="32" height="32" smoothing="true"/>
+  <Image skin="asset.ui.scale.bg4" x="347" y="336" width="60" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="351" y="340" width="53" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="beadText4"/>
+  <Image skin="asset.deviturn.bead5" x="409" y="333" width="32" height="32" smoothing="true"/>
+  <Image skin="asset.ui.scale.bg4" x="440" y="336" width="60" height="27" sizeGrid="8,8,8,8"/>
+  <Label x="444" y="340" width="53" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" align="center" var="beadText5"/>
+</View>+DevilTurnMallView.xml�e<View width="842" height="427">
+  <Image skin="asset.deviturn.mall.bg"/>
+  <Label text="活动期间内，达成目标次数可领取对应奖励." x="436" y="55" width="387" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10"/>
+  <Label x="437" y="79" width="111" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" var="countText" text="0"/>
+  <List x="302" y="150" repeatY="4" spaceY="4" var="awardList">
+    <VScrollBar skin="asset.ui.scroll3.vscroll" width="12" height="254" x="508" y="1" sliderOffset="1" name="scrollBar"/>
+    <DevilTurnMallItem name="render" runtime="devilTurn.view.DevilTurnMallItem"/>
+  </List>
+  <Label x="544" y="19" width="218" height="18" size="14" color="0xfff5cb" bold="true" stroke="0x592200,1,4,4,10" var="expireDateText"/>
+</View>+DevilTurnDiceView.xml�E<View width="605 " height="394">
+  <Image skin="asset.ui.frame.bg2" width="605" height="394" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="545" y="5" var="closeBtn" stateNum="1"/>
+  <Label text="开启宝箱" x="15" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Image skin="asset.deviturn.dice.bg" x="8" y="37"/>
+  <Button label="掷骰子" x="267" y="337" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="startBtn" buttonMode="true"/>
+  <Image skin="asset.deviturn.dice.shine" x="268" y="58" var="shine" mouseChildren="false" mouseEnabled="false"/>
+  <Label x="56" y="212" color="0xfeffe2" size="16" bold="true" stroke="0x000000,1,4,4,30" var="rateText"/>
+  <Button label="领取" x="179" y="337" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="getBtn" buttonMode="true" visible="false"/>
+  <Button label="继续" x="353" y="337" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="continueBtn" buttonMode="true" visible="false" tipDirctions="0,1,2" tipStyle="ddt.view.tips.OneLineTip"/>
+  <Button label="放弃" x="179" y="337" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="abandonBtn" buttonMode="true" visible="false"/>
+  <Image skin="asset.devilturn.dice.coverBack" x="191" y="208"/>
+  <Image skin="asset.devilturn.dice.coverFront" x="213" y="210" var="coverFrontImg"/>
+  <Image skin="asset.deviturn.dice.range" x="53" y="150" var="rangeImg1"/>
+  <Image skin="asset.devilturn.dice.num1" x="63" y="174" var="rangeNum1"/>
+  <Image skin="asset.devilturn.dice.num2" x="105" y="174" var="rangeNum2"/>
+  <Image skin="asset.devilturn.dice.num3" x="147" y="174" var="rangeNum3"/>
+  <Image skin="asset.devilturn.dice.num4" x="190" y="174" var="rangeNum4"/>
+  <Image skin="asset.devilturn.dice.num5" x="231" y="174" var="rangeNum5"/>
+  <Image skin="asset.devilturn.dice.num6" x="274" y="174" var="rangeNum6"/>
+  <Image skin="asset.devilturn.dice.num7" x="316" y="174" var="rangeNum7"/>
+  <Image skin="asset.devilturn.dice.num8" x="358" y="174" var="rangeNum8"/>
+  <Image skin="asset.devilturn.dice.num9" x="400" y="174" var="rangeNum9"/>
+  <Image skin="asset.devilturn.dice.num10" x="439" y="174" var="rangeNum10"/>
+  <Image skin="asset.devilturn.dice.num11" x="481" y="174" var="rangeNum11"/>
+  <Image skin="asset.devilturn.dice.num12" x="523" y="174" var="rangeNum12"/>
+  <Image skin="asset.deviturn.dice.range" x="95" y="150" var="rangeImg2"/>
+  <Image skin="asset.deviturn.dice.range" x="137" y="150" var="rangeImg3"/>
+  <Image skin="asset.deviturn.dice.range" x="179" y="150" var="rangeImg4"/>
+  <Image skin="asset.deviturn.dice.range" x="221" y="150" var="rangeImg5"/>
+  <Image skin="asset.deviturn.dice.range" x="263" y="150" var="rangeImg6"/>
+  <Image skin="asset.deviturn.dice.range" x="305" y="150" var="rangeImg7"/>
+  <Image skin="asset.deviturn.dice.range" x="347" y="150" var="rangeImg8"/>
+  <Image skin="asset.deviturn.dice.range" x="389" y="150" var="rangeImg9"/>
+  <Image skin="asset.deviturn.dice.range" x="431" y="150" var="rangeImg10"/>
+  <Image skin="asset.deviturn.dice.range" x="473" y="150" var="rangeImg11"/>
+  <Image skin="asset.deviturn.dice.range" x="515" y="150" var="rangeImg12"/>
+  <Image skin="asset.devilturn.dice.indexImg" x="65" y="139" var="indexImg"/>
+</View>

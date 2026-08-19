@@ -1,0 +1,45 @@
+<style name="levelFund" version="5.2.0" source="ui/cn_trad/swf/levelFund.swf">
+	<sets>
+		<set stylename="levelFund.levelFundViewItem.levelTxtTF" args="Arial,16,0xe8ce97,true,,,,,left" type="flash.text.TextFormat" /> 
+		<set stylename="levelFund.levelFundViewItem.levelTxtGF" args="0x471822,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="levelFund.levelFundViewItem.buyMultipleTxtTF" args="Arial,16,0xe8ce97,true,,,,,left" type="flash.text.TextFormat" /> 
+		<set stylename="levelFund.levelFundViewItem.buyMultipleTxtGF" args="0x471822,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="levelFund.levelFundViewItem.getAwardBtnTxtTF" args="Arial,14,0xffe674,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="levelFund.levelFundViewItem.getAwardBtnTxtGF" args="0x671906,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="levelFund.levelFundView.buyLevelTxtTF" args="Arial,14,0xfffaad,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="levelFund.levelFundView.buyLevelTxtGF" args="0x532100,1,4,4,30" type="flash.filters.GlowFilter" />
+	</sets>
+	
+	<customs>
+		<custom classname="flash.geom.Point" stylename="levelFund.levelFundViewPos" x="26" y="26"/>
+		<custom classname="flash.geom.Point" stylename="levelFund.levelFundView.getAwardCompleteIconPos1" x="563" y="121"/>
+		<custom classname="flash.geom.Point" stylename="levelFund.levelFundView.getAwardCompleteIconPos2" x="388" y="121"/>
+		<custom classname="flash.geom.Point" stylename="levelFund.levelFundView.getAwardCompleteIconPos3" x="174" y="121"/>
+		<custom classname="flash.geom.Point" stylename="levelFund.levelFundViewItem.moneyPos" x="10" y="8"/>
+	</customs>
+	
+	<components>
+		<component classname="levelFund.view.LevelFundFrame" stylename="levelFund.LevelFundFrame" width="738" height="495" moveEnable="false" backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt" titleStyle="FrameTitleTextStyle"  titleOuterRectPosString="15,11,5" closeInnerRectString="44,15,6,30,14" moveInnerRectString="0,30,0,30,1"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="levelFund.levelFundView.buyLevelTxt" filterString="levelFund.levelFundView.buyLevelTxtGF" textFormatStyle="levelFund.levelFundView.buyLevelTxtTF" autoSize="none" width="100" height="25" x="470" y="91"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="levelFund.levelFundViewItem.levelTxt" filterString="levelFund.levelFundViewItem.levelTxtGF" textFormatStyle="levelFund.levelFundViewItem.levelTxtTF" autoSize="none" width="200" height="25" x="40" y="10"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="levelFund.levelFundViewItem.buyMultipleTxt" filterString="levelFund.levelFundViewItem.buyMultipleTxtGF" textFormatStyle="levelFund.levelFundViewItem.buyMultipleTxtTF" autoSize="none" width="150" height="25" x="330" y="10"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="levelFund.levelFundViewItem.getAwardBtn" textStyle="levelFund.levelFundViewItem.getAwardBtnTxtStyle" autoSize="none" autoSizeAble="false"
+			backStyle="core.bg6915" filterString="null,lightFilter,null,grayFilter" backgoundInnerRectString="20,30,6,16,13" x="550" y="3" width="80" height="30"
+		/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="levelFund.levelFundViewItem.getAwardBtnTxtStyle" textFormatStyle="levelFund.levelFundViewItem.getAwardBtnTxtTF" filterString="levelFund.levelFundViewItem.getAwardBtnTxtGF"  multiline="false" wordWrap="false" />
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="levelFund.levelFundView.buyFundBtn1" backStyle="levelFund.levelFundView.buy1" filterString="null,lightFilter,null,grayFilter" x="495" y="120"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="levelFund.levelFundView.buyFundBtn2" backStyle="levelFund.levelFundView.buy3" filterString="null,lightFilter,null,grayFilter" x="286" y="120"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="levelFund.levelFundView.buyFundBtn3" backStyle="levelFund.levelFundView.buy5" filterString="null,lightFilter,null,grayFilter" x="40" y="120"/>
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="levelFund.levelFundViewPanel" parentStyle="core.ScrollPanel" x="3" y="233" width="693" height="202" vScrollProxy="0" vScrollbarInnerRectString="21,14,8,2,3" viewportInnerRectString="0,22,6,0,0" />
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="levelFund.levelFundFrame.bg" x="15" y="41"/>
+		<bitmapData resourceLink="levelFund.levelFundViewItem.line" x="0" y="0"/>
+		
+	</bitmaps>
+</style>

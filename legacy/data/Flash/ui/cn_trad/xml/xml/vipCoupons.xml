@@ -1,0 +1,43 @@
+<style name="vipCoupons" version="1.0.1" source="ui/cn_trad/swf/vipCoupons.swf">
+
+<sets>
+	<!-- 赠言 内容文本样式  -->
+	<set type="flash.text.TextFormat" args="Arial,12,0xcfb280"  stylename="vipCoupons.sendToOtherTF" leading="8" />
+	<set type="flash.filters.GlowFilter" args="0x452802,2,4,4,30" stylename="ipCoupons.sendToOtherGF" />
+	
+	
+</sets>
+
+<customDisplay>
+<!-- 好友列表 -->
+<custom classname="vipCoupons.view.VIPCouponsNameInput" stylename="vipCoupons.sendNameInput.friendList"
+		parentStyle="ddtshop.ClearingInterface.nameInput" x="191" y="84" width="190" height="31"/>
+		
+</customDisplay>
+
+<components>
+
+	<!-- 面板 -->
+	<component classname="vipCoupons.view.VIPCouponsFrame" stylename="vipCoupons.mainFrame" 
+	parentStyle="BaseFrame" titleStyle="FrameTitleTextStyle" backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt"
+	escEnable="true" containerX="0" containerY="0" width="435" height="515" titleOuterRectPosString="24,10,5" closeInnerRectString="44,22,6,30,14"/>
+	
+	<!-- 背景 -->
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="vipCoupons.mainPageBg" resourceLink="asset.vipCoupons.bg,asset.core.btmBimap"
+			 x="201" y="5"  imageRectString="398|405|37|14|9,398|49|441|-183|9"/>
+		
+	<!-- 赠送按钮 -->		 
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="vipCoupons.sendBtnImage" 
+		resourceLink="core.bg6908,asset.vipCoupons.sendBtnTxt" width="140" height="43" imageRectString=",131|49|-5|1|9"/>		
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="vipCoupons.sendBtn" 
+		 backStyle="vipCoupons.sendBtnImage" x="146" y="450"/>	
+		 
+		 
+	<!-- 内容输入 区-->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="vipCoupons.sendToOtherTxt"
+		textFormatStyle="vipCoupons.sendToOtherTF" filterString="ipCoupons.sendToOtherGF"  
+		type="input" autoSize="none" width="280" height="155" x="79" y="168" wordWrap="true"/>		  
+</components>
+</style>

@@ -1,0 +1,105 @@
+
+%HomeTempleView.xml�w<View width="845" height="446">
+  <HomeTemplePromoteView var="leftView2" runtime="homeTemple.view.HomeTemplePromoteView"/>
+  <HomeTempleBlessView var="leftView1" runtime="homeTemple.view.HomeTempleBlessView"/>
+  <TabListEx x="134" y="8" var="viewTab">
+    <TabButtonEx skin="asset.homeTemple.tabBtn2.normal,asset.homeTemple.tabBtn2.select" x="141" y="0" offsets="15,-4" name="item1" selected="false"/>
+    <TabButtonEx skin="asset.homeTemple.tabBtn1.normal,asset.homeTemple.tabBtn1.select" x="0" y="0" name="item0" offsets="15,-4" selected="true"/>
+  </TabListEx>
+</View>3HomeTemplePromoteView.xml�;<View width="845" height="446">
+  <Image skin="asset.homeTemple.viewbg2"/>
+  <Image skin="asset.homeTemple.lv" x="619" y="264"/>
+  <NumberImageEx index="5" count="1" var="lvNum" x="645" y="261" width="77" align="left" mouseChildren="false" mouseEnabled="false" clipsUrlSimple="asset.homeTemple.n,9"/>
+  <Button skin="asset.homeTemple.promoteBtn" x="640" y="377" stateNum="1" var="promoteBtn"/>
+  <LabelEx text="123123" x="603" y="134" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel1" size="14"/>
+  <LabelEx text="123123" x="740" y="134" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel2" size="14"/>
+  <LabelEx text="123123" x="740" y="173" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel4" size="14"/>
+  <LabelEx text="123123" x="603" y="212" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel5" size="14"/>
+  <LabelEx text="123123" x="603" y="173" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel3" size="14"/>
+  <LabelEx text="123123" x="740" y="212" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="proLabel6" size="14"/>
+  <Image skin="asset.homeTemple.consume" x="618" y="290"/>
+  <LabelEx x="700" y="293" color="0xFFF270" bold="true" stroke="0x200e02,1,2,2,10" width="100" height="18" var="goodsCount1" size="14" text="8888"/>
+  <LabelEx x="700" y="326" color="0xFFF270" bold="true" stroke="0x200e02,1,2,2,10" width="100" height="18" var="goodsCount2" size="14" text="8888"/>
+  <Image skin="asset.homeTemple.goodsIcon3" x="598" y="32"/>
+  <Image skin="asset.homeTemple.goodsIcon2" x="711" y="31"/>
+  <Button skin="asset.homeTemple.buyBtn" x="771" y="77" stateNum="1" var="buyBtn"/>
+  <Image skin="asset.homeTemple.goodsSimpleIcon2" x="658" y="282" tipStyle="core.GoodsTip" tipDirctions="7,6,2,1,5,4,0,3,6" var="goodsIcon1"/>
+  <Image skin="asset.homeTemple.goodsSimpleIcon3" x="658" y="313" tipStyle="core.GoodsTip" tipDirctions="7,6,2,1,5,4,0,3,6" var="goodsIcon2"/>
+  <LabelEx x="561" y="134" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" width="36" height="18" size="14" text="血量"/>
+  <LabelEx x="701" y="134" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="魔抗" align="center"/>
+  <LabelEx x="561" y="173" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="韌性" align="center"/>
+  <LabelEx x="701" y="173" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="免傷"/>
+  <LabelEx x="701" y="212" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="守護"/>
+  <LabelEx x="561" y="211" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="必抗" align="center"/>
+  <LabelEx text="123123" x="187" y="284" color="0xF9F821" bold="true" stroke="0x290E00,1,4,4,10" width="179" height="21" align="center" var="levelLabel" size="14"/>
+  <Box x="241" y="199" var="effect1Container" width="72" height="72" mouseChildren="false" mouseEnabled="false"/>
+  <Box x="563" y="261" var="effect2Container" width="46" height="46" mouseChildren="false" mouseEnabled="false"/>
+  <Box x="249" y="60" var="effectImage1" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b1"/>
+  </Box>
+  <Box x="389" y="131" var="effectImage2" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b2"/>
+  </Box>
+  <Box x="389" y="300" var="effectImage3" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b3"/>
+  </Box>
+  <Box x="249" y="355" var="effectImage4" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b4"/>
+  </Box>
+  <Box x="106" y="299" width="55" height="57" var="effectImage5" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b5"/>
+  </Box>
+  <Box x="107" y="129" var="effectImage6" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3">
+    <Image skin="asset.homeTemple.b6"/>
+  </Box>
+  <FrameClip skin="asset.homeTemple.bEffect" x="278" y="236" mouseChildren="false" mouseEnabled="false" autoPlay="true"/>
+</View>/HomeTempleBlessView.xml�[<View width="845" height="446">
+  <Image skin="asset.homeTemple.viewbg1"/>
+  <Image skin="asset.homeTemple.lv" x="626" y="270"/>
+  <NumberImageEx index="5" count="1" var="lvNum" x="649" y="267" width="77" align="left" mouseChildren="false" mouseEnabled="false" clipsUrlSimple="asset.homeTemple.n,9"/>
+  <Button skin="asset.homeTemple.immolationBtn" x="642" y="379" stateNum="1" var="immolationBtn"/>
+  <LabelEx text="123123" x="603" y="134" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="hpLabel" size="14"/>
+  <LabelEx text="123123" x="740" y="134" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="mdLabel" size="14"/>
+  <LabelEx text="123123" x="740" y="173" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="luckLabel" size="14"/>
+  <LabelEx text="123123" x="603" y="212" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="attackLabel" size="14"/>
+  <LabelEx text="123123" x="603" y="173" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="defenseLabel" size="14"/>
+  <LabelEx text="123123" x="740" y="212" color="0xfff6c9" bold="true" stroke="0x200e02,1,2,2,10" width="76" height="18" align="center" var="armorLabel" size="14"/>
+  <Image skin="asset.homeTemple.now" x="551" y="331"/>
+  <LabelEx x="641" y="335" color="0xFFF270" bold="true" stroke="0x200e02,1,2,2,10" width="36" height="18" var="goodsCount1" size="14" text="8888"/>
+  <LabelEx x="717" y="335" color="0xFFF270" bold="true" stroke="0x200e02,1,2,2,10" width="36" height="18" var="goodsCount2" size="14" text="8888"/>
+  <Button x="737" y="349" width="30" height="30" var="selectAllBtn" toggle="true" imageLabel="asset.homeTemple.selectAllBtn" imageLabelX="27" imageLabelY="8" stateNum="1" checkButtonSkin="asset.ui.btn_check3"/>
+  <Image skin="asset.homeTemple.goodsIcon1" x="598" y="32"/>
+  <Image skin="asset.homeTemple.goodsIcon2" x="711" y="31"/>
+  <Button skin="asset.homeTemple.buyBtn" x="771" y="77" stateNum="1" var="buyBtn"/>
+  <Image skin="asset.homeTemple.goodsSimpleIcon1" x="604" y="323" tipStyle="core.GoodsTip" tipDirctions="7,6,2,1,5,4,0,3,6" var="goodsIcon1"/>
+  <Image skin="asset.homeTemple.goodsSimpleIcon2" x="676" y="323" tipDirctions="7,6,2,1,5,4,0,3,6" tipStyle="core.GoodsTip" var="goodsIcon2"/>
+  <LabelEx x="563" y="134" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" width="36" height="18" size="14" text="血量"/>
+  <LabelEx x="701" y="133" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="魔抗" align="center"/>
+  <LabelEx x="563" y="171" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="防禦" align="center"/>
+  <LabelEx x="701" y="173" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="幸運"/>
+  <LabelEx x="701" y="213" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="護甲"/>
+  <LabelEx x="563" y="210" color="0xFFE28B" bold="true" stroke="0x341403,1,4,4,10" size="14" text="攻擊" align="center"/>
+  <LabelEx text="123123" x="201" y="301" color="0xF9F821" bold="true" stroke="0x290E00,1,4,4,10" height="20" align="center" var="levelLabel" size="14" width="153"/>
+  <Box x="233" y="62" var="effectAction1" width="87" height="74" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a1" mouseChildren="false" mouseEnabled="false" x="42" y="37"/>
+  </Box>
+  <Box x="353" y="128" var="effectAction2" width="87" height="74" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a2" mouseChildren="false" mouseEnabled="false" x="42" y="38"/>
+  </Box>
+  <Box x="355" y="274" width="87" height="74" var="effectAction3" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a3" mouseChildren="false" mouseEnabled="false" x="44" y="40"/>
+  </Box>
+  <Box x="234" y="341" var="effectAction4" width="87" height="74" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a4" mouseChildren="false" mouseEnabled="false" x="43" y="35"/>
+  </Box>
+  <Box x="113" y="273" var="effectAction5" width="87" height="74" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a5" mouseChildren="false" mouseEnabled="false" x="43" y="38"/>
+  </Box>
+  <Box x="114" y="132" var="effectAction6" width="87" height="74" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="1,2,3,4">
+    <FrameClip skin="asset.homeTemple.a6" mouseChildren="false" mouseEnabled="false" x="43" y="36"/>
+  </Box>
+  <Box x="277" y="237" var="effect1Container" width="38" height="33" mouseChildren="false" mouseEnabled="false"/>
+  <FrameClip skin="asset.homeTemple.ColorStrip" mouseChildren="false" mouseEnabled="false" x="617" y="288" var="progress" index="99"/>
+  <LabelEx text="80%" x="623" y="287" color="0xffe69a" size="12" stroke="0x3e0b05,1,2,2,10" width="178" height="16" align="center" var="proValueLabel" tipStyle="ddt.view.tips.OneLineTip" mouseChildren="true" mouseEnabled="true" tipDirctions="3,4,5"/>
+  <Box x="590" y="288" var="effect2Container" width="32" height="24" mouseChildren="false" mouseEnabled="false"/>
+</View>

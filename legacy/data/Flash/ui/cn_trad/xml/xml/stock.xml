@@ -1,0 +1,22 @@
+<style name="stock" version="1.0.1" source="ui/cn_trad/swf/stock.swf">
+	<sets>
+		<set stylename="fashion.rankView.rankTxtTF" args="Arial,14,0xffffff,true,,,,,center" type="flash.text.TextFormat" />
+		<!-- <set stylename="fashion.rankView.inputTxtGF" args="0x654512,1,4,4,30" type="flash.filters.GlowFilter" /> -->
+	</sets>
+	<customDisplays>
+		 <custom classname="stock.StockMainFrame" stylename="stock.mainFrame" x="67" y="34"/>
+		 <custom classname="stock.views.StockMarketView" stylename="stock.marketView"/>
+		 <custom classname="stock.views.StockAccountView" stylename="stock.accountView"/>
+		 <custom classname="stock.views.StockShopView" stylename="stock.shopView"/>
+		 <custom classname="stock.views.StockAwardView" stylename="stock.awardView"/>
+		 <custom classname="stock.views.StockSellFrame" stylename="stock.sellFrame" x="316" y="74"/>
+		 <custom classname="stock.views.StockBuyFrame" stylename="stock.buyFrame" x="316" y="68"/>
+		 <custom classname="stock.views.StockLoanFrame" stylename="stock.loanFrame" x="303" y="128"/>
+		 <custom classname="stock.views.StockBuySubmitFrame" stylename="stock.submitFrame" x="323" y="195"/>
+		 <custom classname="stock.views.StockHelpFrame" stylename="stock.helpFrame" x="321" y="27"/>
+		 
+		 <custom classname="flash.geom.Point" stylename="stock.awardCellPos" x="202" y="4"/>
+	</customDisplays>
+	<components>
+	</components>
+</style>

@@ -1,0 +1,13 @@
+<style name="homeTemple" version="6.8.0" source="ui/vietnam/swf/homeTemple.swf">
+<sets>
+</sets>
+<customs>
+	<custom classname="home.temple.upgradeNum" stylename="home.temple.upgradeAnimation" scaleX="0" scaleY="0" alpha="0" x="264" y="295"/>
+	<custom classname="homeTemple.view.HomeTempleView" stylename="homeTemple.view" x="5" y="46"/>
+</customs>
+<components>
+</components>
+<bitmaps>
+</bitmaps>
+</style>
+

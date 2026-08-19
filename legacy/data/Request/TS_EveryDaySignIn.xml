@@ -1,0 +1,30 @@
+<Result value="true" message="Success!">
+  <Item ID="1" TemplateID="11150" Count="500" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="2" TemplateID="12801" Count="8" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="3" TemplateID="11917" Count="10000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="4" TemplateID="11169" Count="3000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="5" TemplateID="40003" Count="1000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="6" TemplateID="11035" Count="1000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="7" TemplateID="-1100" Count="20000000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="8" TemplateID="11177" Count="2888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="9" TemplateID="100100" Count="4888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="10" TemplateID="11166" Count="18888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="11" TemplateID="11170" Count="1000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="12" TemplateID="12268" Count="2888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="13" TemplateID="40006" Count="1000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="14" TemplateID="-1100" Count="30000000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="15" TemplateID="11154" Count="288" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="16" TemplateID="46788" Count="1" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="17" TemplateID="11188" Count="50" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="18" TemplateID="11171" Count="588" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="19" TemplateID="12215" Count="1888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="20" TemplateID="12216" Count="388" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="21" TemplateID="12217" Count="188" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="22" TemplateID="12252" Count="500000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="23" TemplateID="12251" Count="2000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="24" TemplateID="12250" Count="100" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="25" TemplateID="12262" Count="19999" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="26" TemplateID="12268" Count="38888" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="27" TemplateID="12264" Count="1000" ValidTime="0" IsBind="1" Rate="1" />
+  <Item ID="28" TemplateID="-1100" Count="50000000" ValidTime="0" IsBind="1" Rate="1" />
+</Result>

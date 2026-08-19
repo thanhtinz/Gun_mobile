@@ -1,0 +1,74 @@
+<style name="questionAward" version="1.0.0" source="ui/portugal/swf/questionAward.swf">
+<sets>
+	<set stylename="questionAward.selectBtn.textTF" args="Arial,16,0xFFFFFE,true" type="flash.text.TextFormat"/>
+	<set stylename="questionAward.selectBtn.textGF" args="0x441300,0.7,4,4,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="questionAward.questionTitle.textTF" args="Arial,20,0xFFF4D4,true" type="flash.text.TextFormat" />
+	<set stylename="questionAward.questionTitle.textGF" args="0x7c4519,1,4,4,10" type="flash.filters.GlowFilter" />
+	
+	<set stylename="questionAward.inputView.textTF" args="Arial,14,0xffecc2" type="flash.text.TextFormat" leading="8"/>
+	<set stylename="questionAward.inputView.textGF" args="0x512800,1,4,4,20" type="flash.filters.GlowFilter" />
+	
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="questionAward.firstPage.titleTxtPos" x="138" y="116"/>
+</customDisplay>
+<components>
+	<component classname="questionAward.view.QuestionAwardFrame"
+		stylename="questionAward.Frame" backStyle="SimpleFrameBackgoundOne"
+		closestyle="core.closebt" closeInnerRectString="44,20,7,30,14"
+		titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5"
+		escEnable="false" width ="527" height="422"/>
+	 <!-- 勾选 框 -->
+	 	<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+	 		stylename="questionAward.selectBtnBase" unSelectedStyle="asset.questionAward.unSelectedIcon"
+			selectedStyle="asset.questionAward.selectedIcon"  textStyle="questionAward.selectBtn.text"/>
+	 <!-- 单选按钮 -->
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+			stylename="questionAward.singleSelectBtn" parentStyle="questionAward.selectBtnBase"
+			fieldX="34" fieldY="5" />	
+			
+	<!-- 多选按钮--> 	
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+			stylename="questionAward.multiSelectBtn" parentStyle="questionAward.selectBtnBase" fieldX="34" fieldY="5" />	
+	 	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="questionAward.selectBtn.text" 
+			textFormatStyle="questionAward.selectBtn.textTF"  filterString="questionAward.selectBtn.textGF"
+			multiline="false" wordWrap="false" x="101" y="56" />
+			
+	<component classname="com.pickgliss.ui.controls.container.VBox"
+			stylename="questionAward.singleSelect.vBox" spacing="10" x="88" y="137" />	
+		
+	<component classname="com.pickgliss.ui.controls.ScrollPanel"
+			stylename="questionAward.itemSelectvBox.scrollPanel" parentStyle="core.ScrollPanel"
+			viewportInnerRectString="0,0,0,-6,0" vScrollbarInnerRectString="21,10 ,0,-8,3"
+			vScrollProxy="1" width="390" height="225" x="81" y="119"
+			vUnitIncrement="10" />			
+			
+	<!-- 输入区 -->
+	<component classname="com.pickgliss.ui.text.TextArea" stylename="questionAward.inputView" maxChars="50" 
+	parentStyle="core.SimpleTextArea" backgoundStyle="asset.questionAward.inputBor.Bg" 
+	textStyle="questionAward.inputViewTxt" x="80" y="137" editable="true" 
+	 width="341" height="92" />			
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="questionAward.inputViewTxt" 
+			textFormatStyle="questionAward.inputView.textTF" filterString="questionAward.inputView.textGF"
+			multiline="true" wordWrap="true" width="329" height="62"/>		
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="questionAward.titleTxt" 
+			textFormatStyle="questionAward.questionTitle.textTF" filterString="questionAward.questionTitle.textGF"
+			x="76" y="89" />			
+			
+	<component clasname="com.pickgliss.ui.controls.TextButton" stylename="questionAward.nextButton" parentStyle="core.simplebt"
+			 x="223" y="362" />		
+			 
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="questionAward.firstPage.answerBtn" 
+	backStyle="asset.questionAward.startAnswerBtn" x="150" y="177"/>		 	
+</components>
+	
+<bitmaps>
+	<bitmapData resourceLink="asset.questionAward.Bg" x="-30" y="56"/>
+	
+</bitmaps>
+
+</style>

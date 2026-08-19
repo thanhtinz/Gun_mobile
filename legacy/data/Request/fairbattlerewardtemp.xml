@@ -1,0 +1,18 @@
+<Result value="true" message="Success!">
+  <item Prestige="0" Level="1" Name="新兵" PrestigeForWin="20" PrestigeForLose="4" Title="新兵" />
+  <item Prestige="2000" Level="2" Name="下士" PrestigeForWin="21" PrestigeForLose="5" Title="下士" />
+  <item Prestige="8000" Level="3" Name="中士" PrestigeForWin="22" PrestigeForLose="5" Title="中士" />
+  <item Prestige="20000" Level="4" Name="上士" PrestigeForWin="23" PrestigeForLose="5" Title="上士" />
+  <item Prestige="35000" Level="5" Name="少尉" PrestigeForWin="25" PrestigeForLose="6" Title="少尉" />
+  <item Prestige="51000" Level="6" Name="中尉" PrestigeForWin="26" PrestigeForLose="6" Title="中尉" />
+  <item Prestige="67000" Level="7" Name="上尉" PrestigeForWin="27" PrestigeForLose="6" Title="上尉" />
+  <item Prestige="87000" Level="8" Name="少校" PrestigeForWin="30" PrestigeForLose="8" Title="少校" />
+  <item Prestige="108000" Level="9" Name="中校" PrestigeForWin="31" PrestigeForLose="8" Title="中校" />
+  <item Prestige="129000" Level="10" Name="上校" PrestigeForWin="32" PrestigeForLose="8" Title="上校" />
+  <item Prestige="155000" Level="11" Name="少将" PrestigeForWin="34" PrestigeForLose="10" Title="少将" />
+  <item Prestige="181000" Level="12" Name="中将" PrestigeForWin="36" PrestigeForLose="10" Title="中将" />
+  <item Prestige="201000" Level="13" Name="上将" PrestigeForWin="37" PrestigeForLose="10" Title="上将" />
+  <item Prestige="251000" Level="14" Name="次帅" PrestigeForWin="40" PrestigeForLose="11" Title="次帅" />
+  <item Prestige="301000" Level="15" Name="元帅" PrestigeForWin="45" PrestigeForLose="12" Title="元帅" />
+  <item Prestige="391000" Level="16" Name="大元帅" PrestigeForWin="0" PrestigeForLose="0" Title="大元帅" />
+</Result>

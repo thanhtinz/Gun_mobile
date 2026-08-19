@@ -1,0 +1,7 @@
+<Result value="true" message="Success!">
+  <Item ID="1001" Describe="记录着危险、迷人、未知地域的地图" Name="世界" Sort="1" Reserved=" " />
+  <Item ID="1002" Describe="不惧危险，追寻未知的英雄们" Name="探险家" Sort="2" Reserved=" " />
+  <Item ID="1003" Describe="危险！来源于各种怪物。" Name="怪物" Sort="3" Reserved=" " />
+  <Item ID="1004" Describe="弹弹世界大事记" Name="传记" Sort="4" Reserved=" " />
+  <Item ID="1005" Describe="节日的来临。" Name="盛典" Sort="5" Reserved=" " />
+</Result>

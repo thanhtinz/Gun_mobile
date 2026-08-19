@@ -1,0 +1,32 @@
+<style name="ddtKingLetters" version="1.0.1" source="ui/cn_trad/swf/ddtKingLetters.swf">
+<sets>
+	
+</sets>
+<customDisplays>
+	<custom classname="flash.geom.Point" stylename="ddtkingletter.cell" x="506" y="230"/>
+	<custom classname="flash.geom.Point" stylename="ddtkingletter.close" x="630" y="47"/>
+</customDisplays>
+<components>
+<!-- 时间文字 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtkingletter.time" 
+		textFormatStyle="ddtkingletter.tf" filterString="ddtkingletter.gf"
+		type="dynamic"
+		autoSize="none" wordWrap="true" x="219" y="116" width="230" height="22" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtkingletter.detail" 
+		textFormatStyle="ddtkingletter.tf" filterString="ddtkingletter.gf"
+		type="dynamic"
+		autoSize="none" wordWrap="true" x="186" y="146" width="280" height="22" />
+
+<!-- 兑换合成按钮 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtkingletter.btn"
+			backStyle="ast.dkletter.btn"  x="488" y="288"/>
+</components>
+<sets>
+	<set stylename="ddtkingletter.gf" args="0x7c4519,2,4,4,30"  type="flash.filters.GlowFilter"/>
+	<set stylename="ddtkingletter.tf" args="Arial,14,0xfff4d4,true,,,,,left,,,,15" type="flash.text.TextFormat" leading="10"/>
+</sets>
+
+<bitmaps>
+</bitmaps>
+</style>

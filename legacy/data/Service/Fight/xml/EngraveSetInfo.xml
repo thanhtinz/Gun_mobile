@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <Item SetId="1001" Name="船长祝福" HelpExplain="&quot;装备两个碎片时：血量&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+300&lt;/font&gt;、护甲&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+10&lt;/font&gt;；" />
+  <Item SetId="1002" Name="巫师礼赞" HelpExplain="&quot;装备两个碎片时：攻击&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;、敏捷&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;；" />
+  <Item SetId="1003" Name="虚空力量" HelpExplain="&quot;装备两个碎片时：魔攻&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;、魔抗&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;；" />
+  <Item SetId="1004" Name="指挥艺术" HelpExplain="&quot;装备两个碎片时：攻击&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;、伤害&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+10&lt;/font&gt;；" />
+  <Item SetId="1005" Name="啵咕印记" HelpExplain="&quot;装备四个碎片时：血量&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+400&lt;/font&gt;、护甲&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+20&lt;/font&gt;；" />
+  <Item SetId="1006" Name="邪神印记" HelpExplain="&quot;装备两个碎片时：敏捷&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;、魔攻&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;；" />
+  <Item SetId="1007" Name="堡垒印记" HelpExplain="&quot;装备两个碎片时：攻击&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+25&lt;/font&gt;、护甲&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+12&lt;/font&gt;；" />
+  <Item SetId="1008" Name="龙巢印记" HelpExplain="&quot;装备两个碎片时：伤害&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+10&lt;/font&gt;、魔抗&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+50&lt;/font&gt;；" />
+  <Item SetId="1009" Name="运动印记" HelpExplain="&quot;装备两个碎片时：攻击&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+80&lt;/font&gt;、速度&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+6&lt;/font&gt;；" />
+  <Item SetId="1010" Name="小鸡印记" HelpExplain="&quot;装备两个碎片时：敏捷&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+40&lt;/font&gt;、伤害&lt;font color=&quot;&quot;#00ff66&quot;&quot;&gt;+10&lt;/font&gt;；" />
+</Result>

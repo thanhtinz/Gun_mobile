@@ -1,0 +1,54 @@
+<Result value="true" message="Success!">
+  <Item NewsId="1" NewsContent="{0} gửi thông báo sẽ mở rộng phạm vi kinh doanh công ty." />
+  <Item NewsId="30" NewsContent="{0} công bố nghị quyết hội đồng quản trị mới: sắp tới sẽ mở rộng phạm vi kinh doanh." />
+  <Item NewsId="31" NewsContent="{0} công bố doanh số năm ước tính: doanh số có khả năng tăng nhẹ." />
+  <Item NewsId="32" NewsContent="{0} cho biết do mở rộng phạm vi kinh doanh, có thể năm nay sẽ không chia lợi nhuận cho các cổ đông." />
+  <Item NewsId="33" NewsContent="Hội Giám Định Chứng Khoán Gunny công bố số lượng người đầu tư vào thị trường cổ phiếu ở Maylander tăng rất nhiều so với năm ngoái." />
+  <Item NewsId="34" NewsContent="{0} đã từng đưa các nhân viên đi thám hiểm, và được xưng là Rừng Thần Bí của Bộ Lạc Tà Thần." />
+  <Item NewsId="35" NewsContent="Chủ tịch Hội Giám Định Chứng Khoán Gunny cho biết, tình hình cổ phiếu năm nay ổn định, không loại trừ khả năng xuất hiện hiện tượng giảm đột ngột." />
+  <Item NewsId="36" NewsContent="Chuyên gia giao dịch chứng khoán cho biết đã thấy được sự phát triển của Chứng Khoán Gunny, có lẽ sẽ bị giảm mạnh." />
+  <Item NewsId="37" NewsContent="Ngân Hàng Hoàng Gia sẽ từng bước rút khỏi chính sách nới lỏng tiền tệ." />
+  <Item NewsId="38" NewsContent="Ngân Hàng Hoàng Gia gửi thông báo số tiền tiết kiệm kỳ trước tăng cao, có thể liên quan đến tiền lì xì tết." />
+  <Item NewsId="39" NewsContent="Nhân viên quan sát tinh tượng của Maylander phân tích rằng mấy tháng tới sẽ có bão lớn." />
+  <Item NewsId="40" NewsContent="Thuyền thương mại của thương hội Maylander khi vận chuyển ở phía bắc thì lần lượt bị mất tích, có lẽ đang xảy ra việc kỳ bí nào đó." />
+  <Item NewsId="41" NewsContent="Quản lý đội thuyền Maylander cho chiến sĩ đi trinh thám việc kỳ bí này, cần tăng thêm chiến hạm số lượng lớn." />
+  <Item NewsId="42" NewsContent="Theo tin tức cho thấy, các chiến sĩ ở Maylander phát hiện có một vùng sương mù đen luẩn quẩn không tan ở phía bắc." />
+  <Item NewsId="43" NewsContent="Thương hội trưởng gần đây ra thông báo: Chiêu mộ dũng sĩ thám hiểm vùng thần bí." />
+  <Item NewsId="44" NewsContent="Nghe nói Thành Trời sắp tái xuất? Không biết có ảnh hưởng thị trường chứng khoán Maylander không?" />
+  <Item NewsId="45" NewsContent="Cảng Gà gần đây xuất hiện nhiều nhân vật thần bí." />
+  <Item NewsId="46" NewsContent="Gunny phiên bản mới được nhiều công ty hỗ trợ, phản ứng tốt. Trang phục Nicole trở thành bên thắng cuộc lớn nhất." />
+  <Item NewsId="47" NewsContent="Do cúm gia cầm bùng nổ gần đây, nhiều ngành công nghiệp có liên quan chịu ảnh hưởng lớn." />
+  <Item NewsId="48" NewsContent="Do thời tiết xấu, nhiều hoạt động ngành công nghiệp liên quan đến biển bị ảnh hưởng nghiêm trọng." />
+  <Item NewsId="49" NewsContent="Do các hoạt động thám hiểm tăng mạnh, năm nay trong đại lục sẽ phát triển thêm nhiều xưởng đóng tàu, nhu cầu thị trường dồi dào." />
+  <Item NewsId="50" NewsContent="Nghe nói gần đây các nhà đấu giá bán đấu giá các vật phẩm thần bí do các dũng sĩ thám hiểm tìm được." />
+  <Item NewsId="51" NewsContent="Giá cả thị trường nông nghiệp tăng, shop nông trại Gà đã tăng thêm nhiều hạt giống cây trồng." />
+  <Item NewsId="52" NewsContent="Ngân Hàng Hoàng Gia thêm gói tiết kiệm Xu nhận Xu Khóa dẫn đến nhiều nguồn vốn chảy vào thị trường chứng khoán. " />
+  <Item NewsId="2" NewsContent="Theo phân tích đáng tin, giá cổ phiếu {0} quá cao." />
+  <Item NewsId="3" NewsContent="Nhiều người cho rằng giá {0} đang ở mức dao động cao, nên theo dõi thêm." />
+  <Item NewsId="4" NewsContent="Chuyên gia nhắc nhở, giá {0} đang khá cao, khó xác định diễn biến tiếp theo." />
+  <Item NewsId="5" NewsContent="Chuyên gia nhắc nhở, giá {0} đang khá cao, có thể liên quan đế thông báo mới nhất của công ty đó." />
+  <Item NewsId="6" NewsContent="{0} gần đây nhiều đại cổ đông chuyển nhượng cổ phiếu." />
+  <Item NewsId="7" NewsContent="Giá {0} vẫn đang ở mức cao, dự đoán giá trị công ty cũng khá cao." />
+  <Item NewsId="8" NewsContent="Nhà phân tích Ngân Hàng Hoàng Gia cho biết, giá {0} đang gần đường kháng cự." />
+  <Item NewsId="9" NewsContent="Theo phân tích, {0} bị đánh giá thấp." />
+  <Item NewsId="10" NewsContent="Theo phân tích, {0} có khả năng tăng giá." />
+  <Item NewsId="11" NewsContent="Ngân Hàng Hoàng Gia phân tích, giá {0} đã gần tiến đến giá hỗ trợ." />
+  <Item NewsId="12" NewsContent="Theo phân tích, {0} có triển vọng tăng giá." />
+  <Item NewsId="13" NewsContent="Nhóm phân tích Tập Đoàn Grace cho rằng, {0} vẫn có khả năng tăng giá." />
+  <Item NewsId="14" NewsContent="Theo tin nội bộ, {0} sắp tới sẽ có điều chỉnh lớn về nội bộ." />
+  <Item NewsId="15" NewsContent="Nhiều nhà phân tích nhận định, giá {0} đang trong thời kỳ dao động nhỏ." />
+  <Item NewsId="16" NewsContent="{0} gần đây có nhiều giao dịch lớn, có thể dẫn đến thay đổi cơ cấu cổ đông." />
+  <Item NewsId="17" NewsContent="{0} gần đây có giao dịch lớn." />
+  <Item NewsId="18" NewsContent="{0} gần đây lượng giao dịch cao, khá năng động." />
+  <Item NewsId="19" NewsContent="{0} nhiều giao dịch năng động." />
+  <Item NewsId="20" NewsContent="{0} tăng rõ rệt." />
+  <Item NewsId="21" NewsContent="{0} xu hướng tăng rõ rệt." />
+  <Item NewsId="22" NewsContent="Chứng Khoán Gunny phân tích, {0} đã tăng khá rõ rệt, có thể tiếp tục tăng." />
+  <Item NewsId="23" NewsContent="{0} đang đầu tư nhiều phương diện." />
+  <Item NewsId="24" NewsContent="{0} sau khi tăng liên tục, diễn biến sắp tới khó xác định." />
+  <Item NewsId="25" NewsContent="Có phân tích cho rằng, {0} đang có xu thế tăng liên tục." />
+  <Item NewsId="26" NewsContent="Một chuyên gia cho biết, {0} đang bị đầu cơ." />
+  <Item NewsId="27" NewsContent="{0} đang liên tục rớt giá, tình hình có thể sẽ xoay chuyển." />
+  <Item NewsId="28" NewsContent="Theo phân tích, {0} do cổ đông đổi tiền mặt khiến giá cổ phiếu giảm." />
+  <Item NewsId="29" NewsContent="Có phân tích cho rằng, {0} đang trong tình trạng rớt giá liên tục." />
+</Result>

@@ -1,0 +1,436 @@
+
+-TeamCreateInfoView.xml�%<View width="398" height="359" enableEscKey="true">
+  <Image skin="asset.ui.frame.bg1" x="0" y="0" sizeGrid="25,50,25,50" width="398" height="359"/>
+  <Button skin="asset.ui.btn_close1" x="339" y="4" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ui.scale.bg2" x="21" y="45" sizeGrid="10,10,10,10" width="354" height="240"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="21" y="289" sizeGrid="5,5,5,5" width="354" height="48"/>
+  <Label text="* 战队名称在2~6个字符以内" x="32" y="83" bold="true" color="0xfff6a8" size="14" backgroundColor="0x0" stroke="0x714108,1,4,4,10" var="teamText2"/>
+  <Label text="* 战队标签在2~4个字符以内" x="32" y="169" bold="true" color="0xfff6a8" size="14" backgroundColor="0x0" stroke="0x714108,1,4,4,10" var="teamText3"/>
+  <Label text="* 所输入的文字不得有特殊、违禁字符" x="32" y="56" bold="true" color="0xfff6a8" size="14" backgroundColor="0x0" stroke="0x714108,1,4,4,10" var="teamText1"/>
+  <Image skin="asset.teamcreate.info.tag" x="44" y="201"/>
+  <Image skin="asset.teamcreate.info.name" x="44" y="114"/>
+  <Label text="消耗点券:" x="134" y="260" color="0xfff000" bold="true" stroke="0x6f4320,1,4,4,30" size="14" var="teamText4"/>
+  <Label x="209" y="260" color="0xfff000" bold="true" stroke="0x6f4320,1,4,4,30" size="14" var="label_coin"/>
+  <Button label="取 消" x="249" y="294" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_cancel" buttonMode="true"/>
+  <Button label="创 建" x="72" y="294" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_create" buttonMode="true"/>
+  <Button label="檢 測" skin="asset.ui.btn_yellow4" x="287" y="107" stateNum="1" buttonMode="true" labelBold="false" labelColors="0xFFF6AB" labelStroke="0x6F4209,1,4,4,30" labelSize="14" width="69" height="33" var="btn_checkName"/>
+  <Button label="檢 測" skin="asset.ui.btn_yellow4" x="287" y="195" stateNum="1" buttonMode="true" labelBold="false" labelColors="0xFFF6AB" labelStroke="0x6F4209,1,4,4,30" labelSize="14" width="69" height="33" var="btn_checkTag"/>
+  <Label x="168" y="144" size="12" color="0xd79a30" stroke="0x934913,1,4,4,10" var="label_checkName"/>
+  <TextInput skin="asset.ui.scale.bg4" x="132" y="110" sizeGrid="10,10,10,10" width="141" height="29" align="left" margin="7,6" var="input_name" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="6"/>
+  <Label text="战队创建" x="17" y="12" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="teamText5"/>
+  <Clip x="135" y="230" clipsUrl="asset.ui.btn_right1,asset.ui.btn_close7" index="0" var="clip_checkTag" visible="false"/>
+  <Label x="168" y="234" size="12" color="0xd79a30" stroke="0x934913,1,4,4,10" var="label_checkTag"/>
+  <Clip x="135" y="141" clipsUrl="asset.ui.btn_right1,asset.ui.btn_close7" index="0" var="clip_checkName" visible="false"/>
+  <TextInput skin="asset.ui.scale.bg4" x="132" y="198" sizeGrid="10,10,10,10" width="141" height="29" align="left" margin="7,6" var="input_tag" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="4"/>
+</View>%TeamDonateView.xml�5<View width="380" height="230">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="380" height="230"/>
+  <Label text="战队捐献" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="teamText1"/>
+  <Button skin="asset.ui.btn_close1" x="324" y="5" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Label text="您目前拥有           点券，请输入捐献的数量" x="24" y="63" bold="true" color="0xEEE3C5" size="14" backgroundColor="0x0" stroke="0x784218,1,4,4,10" var="teamText2" width="333" height="22"/>
+  <Label text="点券 =          战队等级活跃" x="140" y="103" bold="true" color="0xEEE3C5" size="14" backgroundColor="0x0" stroke="0x784218,1,4,4,10" var="teamText3" width="220" height="22"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="18" y="158" sizeGrid="5,5,5,5" width="347" height="54"/>
+  <Button label="确 定" x="79" y="166" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_submit" buttonMode="true"/>
+  <Button label="取 消" x="229" y="166" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_cancel" buttonMode="true"/>
+  <Label text="Lưu ý: Năng động này không tính vào năng động cửa hàng, mùa đấu, tuần" x="25" y="126" color="0xE83632" size="12" backgroundColor="0x0" stroke="0xffffff,1,2,2,10" bold="true" var="teamText4" font="Arial" width="334" height="38" wordWrap="true"/>
+  <Label x="192" y="102" color="0xE83632" size="14" backgroundColor="0x0" stroke="0xffffff,1,4,4,10" bold="true" width="70" height="19" align="center" var="label_active"/>
+  <Label x="99" y="103" bold="true" color="0xFFF073" size="14" stroke="0x782A14,1,4,4,10" var="label_count" width="47" height="20" text="X 10"/>
+  <Image skin="asset.ui.combox.inputBg1" x="26" y="97" sizeGrid="5,5,5,5" width="69" height="28"/>
+  <TextInput x="30" y="102" sizeGrid="5,5,5,5" width="62" height="20" align="center" text="0" color="0xEEE5BB" font="16" bold="true" gradientStroke="0x3B2B00,1,4,4,10" var="input_text" multiline="false" wordWrap="false"/>
+</View>+Rank/TeamRankView.xml�+<View width="822" height="420" name="scrollBar">
+  <Image skin="asset.team.rank.scaleBg" x="-4" y="351" sizeGrid="10,52,26,10,1" width="228" height="75"/>
+  <Image skin="asset.ui.scale.bg11" x="2" y="1" width="214" height="348" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.rank.headBg" x="614" y="16"/>
+  <Image skin="asset.ui.scale.bg10" x="218" y="0" width="608" height="426" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg11" x="612" y="121" width="205" height="292" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.rank.seasonNonorBg" x="610" y="311"/>
+  <Image skin="asset.team.rank.seasonNonorText" x="620" y="315"/>
+  <Image skin="asset.team.rank.mineRank" x="3" y="350"/>
+  <Image skin="asset.team.rank.theServer" x="264" y="15"/>
+  <Image skin="asset.team.rank.theServerRank" x="36" y="370"/>
+  <Image skin="asset.team.rank.crossServerRank" x="36" y="391"/>
+  <Image skin="asset.team.rank.crossServer" x="392" y="14"/>
+  <Label text="战队标签:" x="624" y="172" color="0xffe8aa" bold="false" size="14" stroke="0x724c20,1,4,4,30" width="87" height="22" var="teamText6" align="right"/>
+  <Label text="战队人数:" x="624" y="204" color="0xffe8aa" bold="false" size="14" stroke="0x724c20,1,4,4,30" width="87" height="22" var="teamText7" align="right"/>
+  <Label text="战队等级:" x="624" y="140" color="0xffe8aa" bold="false" size="14" stroke="0x724c20,1,4,4,30" width="87" height="22" var="teamText5" align="right"/>
+  <Label text="场次:" x="624" y="268" color="0xffe8aa" bold="false" size="14" stroke="0x724c20,1,4,4,30" width="87" height="22" var="teamText9" align="right"/>
+  <Label x="140" y="371" bold="true" color="0xffdb00" font="宋体" size="14" var="label_currentRank" stroke="0x674220,1,4,4,10" width="37" height="18"/>
+  <Label x="140" y="394" align="left" bold="true" color="0xffdb00" font="宋体" size="14" stroke="0x674220,1,4,4,10" var="label_totolRank" width="32" height="18"/>
+  <Button skin="asset.ui.btn_check3" x="234" y="11" stateNum="1" toggle="true" var="btn_theServer" buttonMode="true" checkButtonSkin="asset.ui.btn_check3" selected="true" labelColors="0xffffff" labelStroke="0x692706,1,4,4,10" labelSize="14" labelBold="true" labelMargin="30,2,-35,0"/>
+  <Button x="361" y="11" stateNum="1" toggle="true" var="btn_crossServer" checkButtonSkin="asset.ui.btn_check3" skin="asset.ui.btn_check3" selected="false" buttonMode="true" labelColors="0xffffff" labelStroke="0x692706,1,4,4,10" labelSize="14" labelBold="true" labelMargin="30,2,-35,0"/>
+  <Label text="胜率:" x="624" y="236" color="0xffe8aa" bold="false" size="14" stroke="0x724c20,1,4,4,30" width="87" height="22" var="teamText8" align="right"/>
+  <Image skin="asset.ui.scale.bg12" x="228" y="44" width="383" height="372" sizeGrid="12,52,10,12,1"/>
+  <Image skin="asset.ui.frame.line1" x="306" y="52"/>
+  <Image skin="asset.ui.frame.line1" x="422" y="52"/>
+  <Image skin="asset.ui.frame.line1" x="510" y="52"/>
+  <Label text="排名" x="239" y="57" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" width="64" height="22" align="center" var="teamText1"/>
+  <Label text="战队名称" x="310" y="57" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" width="112" height="22" align="center" var="teamText2"/>
+  <Label text="战队积分" x="426" y="57" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" width="81" height="22" align="center" var="teamText3"/>
+  <Label text="区服" x="515" y="57" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" width="70" height="22" align="center" var="teamText4"/>
+  <List x="235" y="96" repeatX="1" repeatY="8" width="370" height="310" var="list_rank" selectEnable="true">
+    <TeamRankItem name="render" runtime="team.view.rank.TeamRankItem" buttonMode="true"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="346" y="2" name="scrollBar" width="18" height="293" sliderOffset="1.5" showButtons="true" autoHide="false" scrollSize="5"/>
+  </List>
+  <List x="7" y="10" var="list_left" selectEnable="true" repeatX="1" repeatY="5" spaceY="4">
+    <TeamRankLeftItem name="render" runtime="team.view.rank.TeamRankLeftItem" buttonMode="true"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="206" y="19" name="scrollBar" width="18" height="293" sliderOffset="1.5" showButtons="true" scrollSize="5"/>
+  </List>
+  <TeamRankRightView x="610" y="2" var="teamInfoBox" runtime="team.view.rank.TeamRankRightView"/>
+</View>%TeamActiveView.xml�k<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" x="0" y="0" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg11" x="4" y="78" width="280" height="295" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg10" x="0.5" y="76" width="285" height="303" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.active.record" x="286" y="53"/>
+  <Image skin="asset.team.active.socre" x="100" y="46"/>
+  <NumberImageEx x="195" y="46" index="5" count="0" var="ex_active" space="2" skin="asset.team.num" width="94" height="21"/>
+  <Label x="564" y="15" bold="true" color="0xFFF073" size="12" stroke="0x782A14,1,4,4,10" var="label_createDate" width="173" height="22"/>
+  <Label x="565" y="42" bold="true" color="0xFFF073" size="12" stroke="0x782A14,1,4,4,10" var="label_count" width="138" height="22"/>
+  <Button skin="asset.ui.btn_help1" x="707" y="39" buttonMode="false" tipStyle="ddt.view.tips.OneLineTip" var="btn_memberTips" tipDirctions="1,2,3" enableClickMoveDownEffect="false" stateNum="1"/>
+  <Image skin="asset.team.active.menber" x="123" y="85"/>
+  <List x="311" y="131" repeatX="1" repeatY="5" spaceX="0" spaceY="6" width="401" height="225" var="list_active">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="379" y="1" name="scrollBar" width="18" height="222" scrollSize="5"/>
+    <Box name="render">
+      <Clip clipsUrl="asset.ui.scale.bg8,asset.ui.scale.bg9" width="375" height="40" sizeGrid="12,12,12,12" index="0" name="itemBg"/>
+      <Label x="5" y="10" size="14" bold="true" color="0xFFEA9F" stroke="0x503603,1,4,4,10" width="364" height="20" autoSize="none" name="label"/>
+    </Box>
+  </List>
+  <Image skin="asset.ui.scale.bg12" x="9" y="111" sizeGrid="12,52,10,12,1" width="269" height="258"/>
+  <List x="17" y="161" repeatX="1" repeatY="5" spaceX="0" spaceY="2" width="251" height="201" var="list_member">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="232" y="1" name="scrollBar" width="18" height="195" scrollSize="5"/>
+    <Box name="render" x="0" y="-1" mouseEnabled="false">
+      <Clip height="36" clipsUrl="asset.ui.scale.bg6,asset.ui.scale.bg7" sizeGrid="10,10,10,10" index="0" width="233" mouseChildren="false" mouseEnabled="false" name="itemBg" y="2"/>
+      <NameTextEx x="5" y="9" size="14" bold="false" width="122" height="24" autoSize="none" align="center" isVip="true" textType="2" name="name" mouseEnabled="false" mouseChildren="false"/>
+      <Label x="140" y="12" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="90" height="20" autoSize="none" align="center" name="active" mouseChildren="false" mouseEnabled="false"/>
+      <Image skin="asset.ui.frame.line2" x="131" y="10" mouseChildren="false" mouseEnabled="false"/>
+      <Image skin="asset.team.captain" name="img_captain" visible="false" x="1" y="0"/>
+    </Box>
+  </List>
+  <Label text="名称" x="26" y="124" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" var="teamText1" width="111" height="22" align="center"/>
+  <Image skin="asset.ui.frame.line1" x="146" y="120"/>
+  <Label text="周活跃" x="154" y="124" bold="false" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" var="teamText2" width="111" height="22" align="center"/>
+  <Button skin="asset.ui.btn_red5" x="623" y="88" stateNum="1" width="98" height="36" sizeGrid="10,10,10,10" var="btn_activeAlert" imageLabel="asset.team.active.actvieBtn" imageLabelX="16" imageLabelY="7"/>
+  <Label x="105" y="17" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" var="label_name"/>
+  <Label x="209" y="17" bold="true" color="0xFFD500" size="16" stroke="0x664222,1,4,4,10" var="label_tag"/>
+  <Label x="300" y="18" bold="true" color="0xfec55d" size="14" stroke="0x4e2f10,1,4,4,10" var="label_grade"/>
+  <ProgressBar barSkin="asset.team.main.progress" bgSkin="asset.team.main.progressBg" sizeGrid="4,2,4,2" x="350" y="20" var="progress_grade" skin="asset.team.main.progress" width="180" barLabelY="-1" barMaskOffsetX="1" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3"/>
+  <Clip x="12" y="6" clipsUrlSimple="asset.team.division,5" index="5" var="clip_division"/>
+  <Label x="541" y="97" width="73" height="18" size="14" bold="true" align="right" tipDirctions="1,2,3" tipStyle="ddt.view.tips.OneLineTip" color="0xFFFFFF" stroke="0xC82300,1,4,4,10" var="label_date" visible="false" mouseEnabled="true"/>
+  <Button skin="asset.ui.btn_yellow3" x="297" y="39" stateNum="1" imageLabel="asset.team.active.donate" imageLabelX="14" imageLabelY="6" width="88" height="36" var="btn_donate"/>
+</View>'TeamBattleFrame.xml�;<View width="920" height="595" x="0" y="0">
+  <Image skin="asset.teamBattle.bg" x="0" y="0"/>
+  <Image skin="asset.teamBattle.img" x="116" y="126"/>
+  <Button skin="asset.teamBattle.btn" x="592" y="467" stateNum="1" var="battleBtn"/>
+  <Button skin="asset.team.icon" x="513" y="470" stateNum="1" var="gotoTeamBtn"/>
+  <Button skin="asset.ui.btn_close8" x="793" y="60" stateNum="1" var="closeBtn"/>
+  <Label text="S1赛季：2017.2.18-2017.2.20" x="143" y="310" width="296" height="30" var="teamBattleTime" size="16" bold="true" color="0xfeff85" stroke="0x893000,1,4,4,10,1" align="center"/>
+  <TextArea text="1、參賽選手最低等級為26級，參賽時間為賽季期間每週六、周日的10:00~22:00&lt;br>2、只能邀請戰隊內成員，戰鬥默認為跨區作戰，優先匹配隊伍分相近的隊伍。&lt;br>3、戰隊賽中，勝方獲得排位分和個人活躍點，負方損失排位分以及獲得少量的個人活躍點。&lt;br>4、當玩家退出戰隊，保留玩家的個人排位分，個人活躍點清除。&lt;br>5、賽季結束根據玩家所在戰隊排位段位發放獎勵。" x="506" y="193" size="12" bold="true" color="0x855e20" isHtml="true" leading="2" width="293" height="249" editable="false"/>
+</View>+TeamChat/TeamChat.xml�/<View width="600" height="400">
+  <Image skin="asset.ui.frame.bg3" x="-62" y="-25" sizeGrid="95,55,95,55" width="560" height="430"/>
+  <Button skin="asset.ui.btn_close4" x="414" y="-15" stateNum="1" var="minBtn"/>
+  <Button skin="asset.ui.btn_close2" x="450" y="-15" stateNum="1" var="closeBtn"/>
+  <Button skin="asset.chatFrame.record" x="107" y="362" stateNum="1" var="showRecordBtn"/>
+  <Button skin="asset.ui.btn_yellow1" x="380" y="355" stateNum="1" label="发 送" labelColors="0xfff6a8" labelBold="true" labelStroke="0x715008,1,4,4,30" width="85" labelMargin="0,0,0,1" labelSize="14" height="37" var="sendBtn"/>
+  <Label text="战队聊天" x="-42" y="-11" size="12" font="宋体" color="0xffffff" bold="true" var="teamText1"/>
+  <Image skin="asset.chatFrame::worningbg" x="105" y="15"/>
+  <Image skin="asset.chatFrame.textArea.bg" x="99" y="13" sizeGrid="40,35,40,35" width="383" height="246"/>
+  <Image skin="asset.chatFrame.worning" x="110" y="19"/>
+  <Label text="Khi trò chuyện đừng tin những thông tin trúng thưởng, điện thoại lạ, không dùng auto lậu" x="131" y="11" color="0xffffff" size="10" var="teamText2" font="Arial" wordWrap="true" width="341" height="38"/>
+  <TextInput skin="asset.chatFrame.textArea.bg" x="99" y="269" width="384" height="76" margin="2,2" var="textInput" size="12" color="0xffffff" leading="3" wordWrap="true" maxChars="146"/>
+  <TextArea x="108" y="43" width="362" height="207" vScrollBarSkin="asset.ui.scroll1.vscroll" leading="5" letterSpacing="1" maxChars="1000" isHtml="true" var="outputText" color="0xffffff" size="12"/>
+  <Image skin="asset.chatFrame.textArea.bg" x="-48" y="15" sizeGrid="40,35,40,35" width="143" height="374"/>
+  <List x="-41" y="21" repeatY="10" spaceY="5" var="member_list">
+    <Box width="99" height="25" name="render">
+      <LevelIconEx level="20" x="0" y="0" name="levelIcon" width="29" height="29"/>
+      <NameTextEx x="53" y="1" text="吴大幅的点点滴滴" size="14" width="78" height="22" name="nameText"/>
+      <Clip x="35" y="0" clipsUrl="asset.core.sex_M,asset.core.sex_W" index="1" name="sexIcon"/>
+    </Box>
+  </List>
+</View>!TeamQuitView.xml�<View width="358" height="232" enableEscKey="true">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="358" height="232"/>
+  <Button skin="asset.ui.btn_close1" x="299" y="6" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="164" sizeGrid="5,5,5,5" width="317" height="48"/>
+  <Label text="Nhập &quot;Quit&quot; trong khung để xác nhận" x="101" y="90" bold="true" color="0xEEEEEE" size="12" backgroundColor="0x0" stroke="0x6C4514,1,4,4,10" var="teamText3" width="233" height="22" font="Arial"/>
+  <Label text="你确定要退出战队吗？" x="102" y="62" bold="true" color="0xff0000" size="14" backgroundColor="0x0" stroke="0xffffff,1,2,2,10" var="teamText2"/>
+  <Button label="取 消" x="219" y="170" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="12" labelBold="true" var="btn_cancel" buttonMode="true"/>
+  <Button label="确 定" x="68" y="170" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="12" labelBold="true" var="btn_confirm" buttonMode="true"/>
+  <TextInput skin="asset.ui.scale.bg4" x="112" y="121" sizeGrid="10,10,10,10" width="141" height="29" align="left" margin="7,6" var="input_quit" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="6"/>
+  <Label text="离开战队" x="17" y="12" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="teamText1"/>
+  <Image skin="asset.core.warningAsset" x="29" y="55"/>
+</View>%TeamRecordView.xml�	<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg11" x="6" y="25" width="249" height="354" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.record.bg" x="259" y="28"/>
+  <Image skin="asset.team.record.data" x="262" y="8"/>
+  <Image skin="asset.team.record.fight" x="8" y="8"/>
+  <Image skin="asset.team.record.kill" x="325" y="299"/>
+  <Image skin="asset.team.record.kill" x="567" y="299"/>
+  <Image skin="asset.team.record.survival" x="395" y="299"/>
+  <Image skin="asset.team.record.survival" x="637" y="299"/>
+  <Image skin="asset.team.record.victory2" x="265" y="29"/>
+  <Image skin="asset.team.record.fail2" x="635" y="57"/>
+  <Label x="299" y="102" width="163" height="22" align="center" size="14" bold="true" color="0x56beec" stroke="0x002a36,1,4,4,10" var="label_winName"/>
+  <Label x="292" y="127" width="175" height="22" align="center" size="14" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="label_winZone"/>
+  <Label text="等级" x="282" y="155" align="left" size="12" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="teamText1"/>
+  <Label text="积分" x="439" y="155" align="center" size="12" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="teamText3"/>
+  <Label text="姓名" x="355" y="155" align="left" size="12" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="teamText2"/>
+  <Label x="423" y="306" width="36" height="22" align="left" size="14" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="label_winSurvival"/>
+  <Label x="534" y="102" width="169" height="22" align="center" size="14" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="label_failName"/>
+  <Label x="525" y="127" width="185" height="22" align="center" size="14" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="label_failZone"/>
+  <Label text="等级" x="523" y="155" height="18" align="left" size="12" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="teamText4"/>
+  <Label text="积分" x="680" y="155" align="center" size="12" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="teamText6"/>
+  <Label text="姓名" x="597" y="155" align="left" size="12" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="teamText5"/>
+  <Label x="594" y="306" width="31" height="22" align="left" size="14" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="label_failKill"/>
+  <List x="13" y="34" width="236" height="302" repeatX="1" repeatY="4" spaceX="0" spaceY="3" var="list_tab">
+    <TeamRecordItem name="render" runtime="team.view.main.TeamRecordItem" buttonMode="true"/>
+  </List>
+  <List x="282" y="176" repeatX="1" repeatY="4" spaceX="0" spaceY="2" var="list_win">
+    <Box name="render">
+      <LevelIconEx size="big" level="50" x="0" y="0" width="67" height="40.66666666666663" name="lv" visible="false"/>
+      <Label x="36" y="4" color="0xB2DBEF" size="14" align="center" stroke="0x002A38,1,4,4,10" width="113" height="22" name="name"/>
+      <Label x="154" y="4" color="0xB2DBEF" size="14" align="center" stroke="0x002A38,1,4,4,10" width="41" height="22" name="score"/>
+    </Box>
+  </List>
+  <List x="523" y="176" repeatX="1" repeatY="4" spaceX="0" spaceY="2" var="list_fail">
+    <Box name="render">
+      <LevelIconEx size="big" level="50" x="0" y="0" width="67" height="40.66666666666663" name="lv" visible="false"/>
+      <Label x="36" y="6" color="0xECC8BC" size="14" align="center" stroke="0x3A0B01,1,4,4,10" width="113" height="18" name="name"/>
+      <Label x="154" y="6" color="0xECC8BC" size="14" align="center" stroke="0x3A0B01,1,4,4,10" width="41" height="18" name="score"/>
+    </Box>
+  </List>
+  <Label x="352" y="306" width="42" height="22" align="left" size="14" bold="true" color="0x56beec" stroke="#002a36,1,4,4,10" var="label_winKill"/>
+  <Label x="664" y="306" width="35" height="22" align="left" size="14" bold="true" color="0xff9981" stroke="#002a36,1,4,4,10" var="label_failSurvival"/>
+  <PageNavigaterEx x="38" y="343" isLoop="true" type="simple" var="page_select"/>
+</View>3item/TeamShopViewItem.xml�<View width="205" height="100">
+  <Image skin="asset.ui.scale.bg15" x="0" y="0" width="205" height="100" sizeGrid="12,12,12,12,1"/>
+  <Image skin="asset.ui.scale.bg14" x="7" y="7" width="65" height="65" sizeGrid="12,12,12,12,1"/>
+  <Image skin="asset.team.shop.line" x="77" y="65" width="120" height="1"/>
+  <Label x="79" y="12" width="119" height="18" align="left" size="14" bold="true" color="0xe8ce97" stroke="0x5c3d11,1,4,4,10" var="label_name"/>
+  <Label x="80" y="41" width="115" height="20" align="left" size="12" bold="true" color="0xe8ce97" stroke="0x5c3d11,1,4,4,10" var="label_coin"/>
+  <Label x="4" y="73" width="122" height="22" align="left" size="11" bold="true" color="0xffd870" stroke="0x781616,1,4,4,10" var="label_tip"/>
+  <Button label="购 买" skin="asset.ui.btn_red6" x="128" y="72" labelColors="0xFEF3BD" labelStroke="0x4A280D,1,4,4,10" var="btn_buy" stateNum="1"/>
+</View>%TeamGovernView.xml�}<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" x="0" y="0" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg14" x="8" y="37" width="226" height="337" sizeGrid="12,12,12,12,1"/>
+  <Image skin="asset.ui.scale.bg11" x="238" y="98" width="498" height="281" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg10" x="4" y="34" width="231" height="346" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg10" x="236" y="3" width="504" height="374" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.govern.line" x="240" y="92"/>
+  <Image skin="asset.ui.scale.bg12" x="247" y="104" width="239" height="264" sizeGrid="12,52,10,12,1"/>
+  <Image skin="asset.ui.scale.bg12" x="489" y="104" width="241" height="264" sizeGrid="12,52,10,12,1"/>
+  <Image skin="asset.team.govern.invite" x="12" y="11"/>
+  <Label x="323" y="28" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" var="label_name"/>
+  <Label x="489" y="28" bold="true" color="0xfec55d" size="14" stroke="0x4e2f10,1,4,4,10" var="label_grade"/>
+  <Label x="406" y="28" bold="true" color="0xFFD500" size="16" stroke="0x664222,1,4,4,10" var="label_tag"/>
+  <Image skin="asset.team.main.fightTotal" x="324" y="57"/>
+  <NumberImageEx skin="asset.team.num" x="404" y="57" count="0" width="123" height="100" align="left" var="ex_time"/>
+  <Clip x="249" y="14" clipsUrlSimple="asset.team.division,5" index="5" var="clip_division"/>
+  <Label x="576" y="33" bold="true" color="0xFFF073" size="12" stroke="0x782A14,1,4,4,10" var="label_createDate" align="left" width="152" height="22"/>
+  <Label x="576" y="63" bold="true" color="0xFFF073" size="12" stroke="0x782A14,1,4,4,10" align="left" width="149" height="22" var="label_count"/>
+  <Label text="邀请列表" x="257" y="117" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" var="teamText1"/>
+  <Label text="当前队员" x="497" y="117" bold="true" color="0xFFEA9E" size="14" stroke="0x4F3900,1,4,4,10" var="teamText2"/>
+  <List x="254" y="153" repeatX="1" repeatY="4" width="223" height="213" spaceX="0" spaceY="4" vScrollBarSkin="asset.ui.scroll1.vscroll" var="list_invite" autoHideItem="true">
+    <TeamGovernInviteItem name="render" mouseEnabled="false" runtime="team.view.main.TeamGovernInviteItem"/>
+  </List>
+  <List x="498" y="150" repeatX="1" repeatY="4" width="223" height="213" spaceX="0" spaceY="1" vScrollBarSkin="asset.ui.scroll1.vscroll" var="list_member" autoHideItem="true">
+    <Box name="render" mouseEnabled="false">
+      <Image skin="asset.team.govern.item" y="3" mouseChildren="false" mouseEnabled="false"/>
+      <Label x="76" y="32" color="0xFFEF71" stroke="0x673800,1,4,4,10" width="126" height="18" mouseChildren="false" mouseEnabled="false" name="date" align="right"/>
+      <NameTextEx x="5" y="7" textType="2" size="14" width="164" height="20" mouseChildren="false" mouseEnabled="false" name="name"/>
+      <Button skin="asset.ui.btn_close7" x="181" name="close" stateNum="1"/>
+      <Image skin="asset.team.captain" x="0" y="26" name="img_captain" visible="false" mouseChildren="false" mouseEnabled="false"/>
+    </Box>
+  </List>
+  <List x="13" y="44" repeatX="1" repeatY="8" width="211" height="330" spaceX="0" spaceY="1" vScrollBarSkin="asset.ui.scroll1.vscroll" var="list_friend" autoHideItem="true">
+    <Box name="render" mouseEnabled="false">
+      <Clip x="0" y="0" clipsUrl="asset.ui.scale.bg8,asset.ui.scale.bg9" sizeGrid="12,12,12,12" width="195" height="40" mouseChildren="false" mouseEnabled="false" name="bg"/>
+      <NameTextEx x="6" y="9" textType="2" size="14" width="115" height="24" mouseChildren="false" mouseEnabled="false" name="name"/>
+      <Button label="邀 请" skin="asset.ui.btn_green1" x="126" y="7" labelColors="0xE1FFBF" labelStroke="0x035501,1,4,4,10" name="invite" stateNum="1"/>
+    </Box>
+  </List>
+  <Button label="online" skin="asset.ui.btn_check3" x="132" y="4" width="30" height="30" var="btn_online" labelSize="12" labelFont="Arial" labelMargin="30,22,20,20" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true" labelColors="0xffffff" labelStroke="0x692706,1,4,4,10" labelBold="true"/>
+  <Label x="369" y="117" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" width="77" height="20" var="label_invite"/>
+  <Label x="635" y="117" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" width="83" height="20" var="label_current"/>
+  <Button skin="asset.team.govern.addPlayer" x="709" y="64" stateNum="1" var="btn_addPlayer"/>
+</View>5Rank/TeamRankRightView.xml�'<View height="420" width="211">
+  <Label x="122" y="135" bold="true" color="0xffdb00" size="12" var="label_teamLevel" stroke="0x674220,1,4,4,10" text="12"/>
+  <Label x="122" y="168" bold="true" color="0xffdb00" size="12" var="label_teamLabel" stroke="0x674220,1,4,4,10" text="1212"/>
+  <Label x="122" y="199" bold="true" color="0xffdb00" size="12" var="label_teamNumber" stroke="0x674220,1,4,4,10" text="121212"/>
+  <Label x="122" y="235" bold="true" color="0xffdb00" size="12" var="label_teamWinPer" stroke="0x674220,1,4,4,10" text="121212"/>
+  <Label x="122" y="265" bold="true" color="0xffdb00" size="12" var="label_teamScreenings" stroke="0x674220,1,4,4,10" text="121212"/>
+  <Label x="28" y="344" bold="true" color="0xffdb00" size="14" var="label_teamHonor" stroke="0x674220,1,4,4,10" align="center" width="140" height="22" text="12121212"/>
+  <Button label="私聊" skin="asset.ui.btn_red1" x="25" y="92" stateNum="1" width="68" height="26" labelColors="0xFFF6A7" labelStroke="0x77241E,1,4,4,10" var="btn_priChat" buttonMode="true" disabled="true"/>
+  <Button label="添加好友" skin="asset.ui.btn_blue3" x="114" y="92" width="68" height="26" stateNum="1" labelColors="0xFFF7A6" labelSize="12" labelStroke="0x102E38,1,4,4,10" var="btn_addFriend" buttonMode="true" disabled="true"/>
+  <Image skin="asset.team.rank.headerIcon" x="144" y="1" var="image_headIcon"/>
+  <Label x="89" y="56" bold="true" color="0xffea9c" size="14" var="label_headerName" stroke="0x4f3700,1,4,4,10" width="102" autoSize="none" wordWrap="false" multiline="false" height="22"/>
+  <Button skin="asset.ui.btn_red5" x="43" y="368" imageLabel="asset.team.rank.applyBtn" stateNum="1" width="109" height="43" imageLabelY="5" var="btn_apply" imageLabelRect="12,8"/>
+</View>7TeamCaptainTransferView.xml�W<View width="320" height="195">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="320" height="195"/>
+  <Button skin="asset.ui.btn_close1" x="261" y="5" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="126" sizeGrid="5,5,5,5" width="280" height="49"/>
+  <Label text="Hãy chọn thành viên đội:" x="24" y="68" bold="true" color="0xfffebf" size="12" backgroundColor="0x0" stroke="0x632f00,1,4,4,10" var="text2" font="Arial"/>
+  <Button label="取 消" x="190" y="132" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_cancel" buttonMode="true"/>
+  <Button label="确 定" x="55" y="132" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_confirm" buttonMode="true"/>
+  <Label text="队长转移" x="17" y="12" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="text1" font="Arial"/>
+  <Label text="Chú ý: Chỉ được chuyển cho người cùng đội" x="32" y="103" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10" var="text3" font="Arial"/>
+  <ComboBox x="169" y="65" imageLabel="asset.ui.combox.btn3" width="122" height="25" stateNum="1" skin="asset.ui.scale.bg4" imageLabelX="100" imageLabelY="3" sizeGrid="10,10,10,10" var="comboBox_selectName" listSizeGrid="10,10,10,10" listSkin="asset.ui.scale.bg16" labelColors="0xe8ce97" labelFont="14" labelStroke="0x4c361b,1,4,4,10" itemColors="0xe8ce97,0xe8ce97,0xe8ce97,0xe8ce97" itemLabelStroke="0x4c361b,1,4,4,10" itemLabelMargin="10,4,0,2" labelMargin="5,0,0,2" labelSize="14" itemSize="14" itemHeight="25"/>
+</View>%TeamMemberView.xml�u<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg12" x="7" y="7" sizeGrid="12,52,10,12,1" width="732" height="373"/>
+  <List x="14" y="55" repeatX="1" repeatY="8" spaceX="0" spaceY="1" width="718" height="320" var="list_member">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="696" y="3" name="scrollBar" width="18" height="304" scrollSize="5"/>
+    <Box name="render" x="0" y="-2">
+      <Clip height="39" clipsUrl="asset.ui.scale.bg6,asset.ui.scale.bg7" sizeGrid="10,10,10,10" index="0" width="695" name="itemBg" y="2"/>
+      <NameTextEx x="3" y="9" size="12" bold="true" width="152" height="22" autoSize="none" align="center" textType="2" name="name"/>
+      <Image skin="asset.ui.frame.line2" x="156" y="9"/>
+      <Label x="160" y="10" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="102" height="20" autoSize="none" align="center" name="score"/>
+      <Image skin="asset.ui.frame.line2" x="264" y="9"/>
+      <Image skin="asset.ui.frame.line2" x="400" y="9"/>
+      <Image skin="asset.ui.frame.line2" x="517" y="9"/>
+      <Image skin="asset.ui.frame.line2" x="595" y="9"/>
+      <Label x="269" y="10" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="125" height="20" autoSize="none" align="center" name="time"/>
+      <Label x="404" y="10" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="111" height="20" autoSize="none" align="center" name="totalActive"/>
+      <Label x="521" y="10" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="73" height="20" autoSize="none" align="center" name="weekActive"/>
+      <Label x="599" y="10" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="91" height="20" autoSize="none" align="center" name="date"/>
+      <Image skin="asset.team.captain" name="img_captain" visible="false"/>
+    </Box>
+  </List>
+  <Image skin="asset.ui.frame.line1" x="158" y="15"/>
+  <Image skin="asset.ui.frame.line1" x="278" y="15"/>
+  <Image skin="asset.ui.frame.line1" x="624" y="15"/>
+  <Image skin="asset.ui.frame.line1" x="412" y="15"/>
+  <Image skin="asset.ui.frame.line1" x="530" y="15"/>
+  <Button label="Điểm hạng cá nhân" x="158" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="11" stateNum="1" labelBold="true" width="116" height="26" var="socreBtn" labelFont="Arial"/>
+  <Button label="Số trận xếp hạng mùa đấu" x="278" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="11" stateNum="1" labelBold="true" width="134" height="25" var="sessionBtn" labelFont="Arial"/>
+  <Button label="战队成员" x="21" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="12" stateNum="1" labelBold="true" width="137" height="26" var="memberBtn"/>
+  <Button label="Tổng năng động mùa đấu" x="413" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="11" stateNum="1" labelBold="true" width="118" height="25" var="totalActiveBtn" labelFont="Arial"/>
+  <Button label="Năng động tuần" x="534" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="11" stateNum="1" labelBold="true" width="92" height="24" var="weekActiveBtn" labelFont="Arial"/>
+  <Button label="离线时间" x="627" y="16" labelColors="0xFFEA9E" labelStroke="0x4F3900,1,4,4,10" labelSize="12" stateNum="1" labelBold="true" width="84" height="24" var="dateBtn"/>
+</View>3Rank/TeamRankLeftItem.xml�+<View width="202" height="63">
+  <Clip x="0" y="0" clipsUrl="asset.team.rank.leftItemBg0,asset.team.rank.leftItemBg1" var="image_itemBg" index="0" mouseEnabled="true"/>
+  <Clip x="5" y="1" clipsUrl="asset.team.rank.leftItem0,asset.team.rank.leftItem1,asset.team.rank.leftItem2,asset.team.rank.leftItem3,asset.team.rank.leftItem4,asset.team.rank.leftItemSelected0,asset.team.rank.leftItemSelected1,asset.team.rank.leftItemSelected2,asset.team.rank.leftItemSelected3,asset.team.rank.leftItemSelected4" var="image_itemContent"/>
+</View>/item/TeamRecordItem.xml�O<View width="236" height="73">
+  <Clip clipsUrl="asset.ui.select.img1,asset.ui.select.img1s" name="selectBg" x="0" y="0"/>
+  <Clip x="-5" y="-12" clipsUrl="asset.team.record.victory1,asset.team.record.fail1" index="0" var="clip_icon"/>
+  <Image skin="asset.team.record.historyVS" x="61" y="12" var="img_vs"/>
+  <Label x="104" y="27" color="0xFFF37B" size="14" bold="true" align="left" stroke="0x502B0E,1,4,4,10" width="124" height="18" var="label_name"/>
+  <Label x="81" y="4" color="0xA4FD7B" size="14" bold="true" align="right" stroke="0x243200,1,4,4,10" width="150" height="18" var="label_score"/>
+  <Label x="107" y="51" color="0xFFF37B" size="14" align="right" stroke="0x502B0E,1,4,4,10" width="121" height="18" var="label_date"/>
+</View>;item/TeamGovernInviteItem.xml�<View width="204" height="49">
+  <Image skin="asset.team.govern.item" y="0" x="0" mouseChildren="false" mouseEnabled="false"/>
+  <Label x="5" y="29" color="0xFFEF71" stroke="0x673800,1,4,4,10" width="126" height="18" var="label_date" mouseChildren="false" mouseEnabled="false"/>
+  <NameTextEx x="5" y="5" textType="2" size="14" width="164" height="18" var="label_name" mouseEnabled="false" mouseChildren="false"/>
+  <Button skin="asset.ui.btn_close7" x="181" y="-3" var="btn_close" stateNum="1"/>
+  <Button skin="asset.ui.btn_right1" x="179" y="25" var="btn_right" stateNum="1"/>
+  <Button label="查 看" skin="asset.ui.btn_yellow4" x="122" y="22" stateNum="1" width="56" height="27" labelColors="0xEEE295" labelStroke="0x8C702B,1" var="lookPlayerBtn" visible="false"/>
+</View>/TeamActiveAlertView.xml�K<View width="583" height="421" buttonMode="true">
+  <Image skin="asset.ui.frame.bg1" width="583" height="421" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Button skin="asset.ui.btn_close1" x="517" y="4" var="btn_close" stateNum="1"/>
+  <Label text="活跃点途径" x="23" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="label_title"/>
+  <Image skin="asset.ui.scale.bg13" x="21" y="45" width="540" height="355" sizeGrid="24,24,24,24,1"/>
+  <List x="37" y="63" repeatX="1" repeatY="4" spaceX="0" spaceY="7" width="500" height="328" var="list_active">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="491" y="-6" name="scrollBar" width="18" height="323" scrollSize="5"/>
+    <Box name="render" mouseEnabled="false">
+      <Clip clipsUrl="asset.ui.scale.bg8,asset.ui.scale.bg9" width="490" height="75" sizeGrid="12,12,12,12" index="0" mouseChildren="false" mouseEnabled="false" name="itemBg"/>
+      <Label x="7" y="27" size="12" bold="false" color="0xFFEA9F" stroke="0x503603,1,4,4,10" width="262" height="41" autoSize="none" mouseChildren="false" mouseEnabled="false" name="label_desc" wordWrap="true" multiline="true"/>
+      <Label x="276" y="48" size="12" bold="true" color="0xFDD803" stroke="0x4E3800,1,4,4,10" autoSize="none" mouseChildren="false" mouseEnabled="false" name="label_score" height="20"/>
+      <Button skin="asset.ui.btn_yellow3" x="401" y="28" stateNum="1" imageLabel="asset.team.active.jumpBtn" imageLabelX="10" imageLabelY="5" width="81" height="34" name="btn_jump"/>
+      <Image skin="asset.team.active.reward" x="273" y="27" mouseChildren="false" mouseEnabled="false"/>
+      <Label x="173" y="6" width="225" height="16" color="0xFFEB9A" stroke="0x4E3800,1,4,4,10" align="right" mouseChildren="false" mouseEnabled="false" name="label_limit"/>
+      <ProgressBar skin="asset.team.active.progress" x="404" y="9" name="progress_active" visible="false" value="1" mouseChildren="false" mouseEnabled="false" sizeGrid="2,1,2,1" barMaskOffsetX="1"/>
+    </Box>
+  </List>
+</View>!TeamShopView.xml�<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" x="0" y="0" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg11" x="6" y="5" width="234" height="372" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.team.shop.bg" x="244" y="7"/>
+  <List x="15" y="14" var="list_select">
+    <Box name="item0" x="0" y="0" buttonMode="true">
+      <Clip clipsUrl="asset.ui.select.img2,asset.ui.select.img2s" index="0" name="selectBg"/>
+      <Clip x="10" y="23" clipsUrl="asset.team.shop.item1,asset.team.shop.item1s" index="0" name="selectBg0"/>
+      <Image skin="asset.team.shop.lv" x="145" y="50"/>
+      <Label x="143" y="50" width="69" height="21" align="right" size="18" bold="true" color="0xFFD800" stroke="0x664220,1,4,4,10" name="lv"/>
+    </Box>
+    <Box x="0" y="79" name="item1" buttonMode="true">
+      <Clip clipsUrl="asset.ui.select.img2,asset.ui.select.img2s" index="0" name="selectBg"/>
+      <Clip x="10" y="23" clipsUrl="asset.team.shop.item2,asset.team.shop.item2s" index="0" name="selectBg0"/>
+      <Image skin="asset.team.shop.lv" x="147" y="50"/>
+      <Label x="145" y="50" width="69" height="21" align="right" size="18" bold="true" color="0xFFD800" stroke="0x664220,1,4,4,10" name="lv"/>
+    </Box>
+    <Box x="0" y="158" name="item2" buttonMode="true">
+      <Clip clipsUrl="asset.ui.select.img2,asset.ui.select.img2s" index="0" name="selectBg"/>
+      <Clip x="10" y="23" clipsUrl="asset.team.shop.item3,asset.team.shop.item3s" index="0" name="selectBg0"/>
+      <Image skin="asset.team.shop.lv" x="147" y="50"/>
+      <Label x="145" y="50" width="69" height="21" align="right" size="18" bold="true" color="0xFFD800" stroke="0x664220,1,4,4,10" name="lv"/>
+    </Box>
+    <Box y="237" name="item3" x="0" buttonMode="true">
+      <Clip clipsUrl="asset.ui.select.img2,asset.ui.select.img2s" index="0" name="selectBg"/>
+      <Clip x="10" y="23" clipsUrl="asset.team.shop.item4,asset.team.shop.item4s" index="0" name="selectBg0"/>
+      <Image skin="asset.team.shop.lv" x="147" y="50"/>
+      <Label x="145" y="50" width="69" height="21" align="right" size="18" bold="true" color="0xFFD800" stroke="0x664220,1,4,4,10" name="lv"/>
+    </Box>
+  </List>
+  <List x="274" y="117" width="433" height="214" repeatX="2" repeatY="2" spaceX="10" spaceY="10" var="list_shop">
+    <TeamShopViewItem x="4" y="0" name="render" runtime="team.view.main.TeamShopViewItem"/>
+  </List>
+  <NumberImageEx skin="asset.team.num" x="632" y="87" width="85" height="25" count="0" space="0" align="center" var="ex_active"/>
+  <PageNavigaterEx x="399" y="336" isLoop="true" type="simple" var="page_select"/>
+</View>+Rank/TeamRankItem.xml�S<View width="345" height="39">
+  <Clip x="0" y="-1" clipsUrl="asset.ui.scale.bg6,asset.ui.scale.bg7" var="image_rankItemBg" width="345" sizeGrid="10,10,10,10" frame="1" name="itemBg"/>
+  <Image skin="asset.ui.frame.line2" x="71" y="8"/>
+  <Image skin="asset.ui.frame.line2" x="187" y="8" width="2" height="23"/>
+  <Image skin="asset.ui.frame.line2" x="275" y="8"/>
+  <Label x="3" y="13" align="center" width="66" height="15" bold="true" color="0xFFFFFF" gradientStroke="0x48300C,1,4,4,1000" var="label_rank" stroke="0x000000,1,2,2,10"/>
+  <Label x="190" y="10" align="center" width="85" height="20" bold="true" color="0xFFFFFF" var="label_integral" stroke="0x000000,1,2,2,10"/>
+  <Label x="277" y="11" align="center" width="66" height="20" bold="true" color="0xFFFFFF" gradientStroke="0x48300C,1,4,4,1000" var="label_server" stroke="0x000000,1,2,2,10"/>
+  <Clip x="12" y="7" var="image_rankIcon" width="55" height="21"/>
+  <NameTextEx x="73" y="8" var="label_name" align="center" bold="true" color="0xFFFFFF" width="113" height="20" textType="1" size="14"/>
+</View>%TeamCreateView.xml�c<View width="600" height="400">
+  <Image skin="asset.teamcreate.bg" x="0" y="0"/>
+  <Button skin="asset.teamcreate.createBtn" x="526" y="259" stateNum="1" var="btn_create" buttonMode="true"/>
+  <Button skin="asset.teamcreate.rankBtn" x="116" y="259" stateNum="1" var="btn_rank" buttonMode="true"/>
+</View>!TeamInfoView.xml�%<View width="743" height="385">
+  <Image skin="asset.ui.scale.bg2" width="743" height="385" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.team.main.leftBg" x="5" y="77"/>
+  <Image skin="asset.ui.scale.bg11" x="299" y="79" width="438" height="300" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg10" x="293.5" y="76" width="447" height="307" sizeGrid="16,16,16,16"/>
+  <Image skin="asset.ui.scale.bg12" x="302" y="112" sizeGrid="12,52,10,12,1" width="432" height="264"/>
+  <Label text="名称" x="312" y="127" bold="false" color="0xFFEA9E" size="12" stroke="0x4F3900,1,4,4,10" width="120" height="22" align="center" var="teamText1"/>
+  <Image skin="asset.ui.frame.line1" x="435" y="120"/>
+  <Label text="个人排位分" x="435" y="127" bold="false" color="0xFFEA9E" size="12" stroke="0x4F3900,1,4,4,10" align="center" width="112" height="22" var="teamText2"/>
+  <Label text="总活跃" x="549" y="127" bold="false" color="0xFFEA9E" size="12" stroke="0x4F3900,1,4,4,10" align="center" width="59" height="22" var="teamText3"/>
+  <Label text="离线时间" x="616" y="127" bold="false" color="0xFFEA9E" size="12" stroke="0x4F3900,1,4,4,10" width="108" height="22" align="center" var="teamText4"/>
+  <Image skin="asset.ui.frame.line1" x="546" y="120"/>
+  <Image skin="asset.ui.frame.line1" x="611" y="120" width="2" height="29"/>
+  <Image skin="asset.team.active.menber" x="498" y="89"/>
+  <FrameClip skin="asset.team.mian.shading" x="2" y="132"/>
+  <Button label="离开战队" skin="asset.ui.btn_red1" x="658" y="44" stateNum="1" buttonMode="true" labelColors="0xFFF6A7" labelStroke="0x77241E,1,4,4,10" width="78" height="28" var="btn_exit"/>
+  <Button label="聊天室" skin="asset.ui.btn_blue3" x="647" y="85" buttonMode="true" stateNum="1" labelColors="0xFFF7A6" labelStroke="0x102E38,1,4,4,10" width="80" height="26" var="btn_chat"/>
+  <Label x="92" y="338" bold="true" color="0xFFF073" size="14" stroke="0x782A14,1,4,4,10" var="label_rate"/>
+  <Button skin="asset.team.main.fightBtn" x="203" y="303" stateNum="1" buttonMode="true" var="btn_fight" tipDirctions="2,1,3" tipStyle="ddt.view.tips.OneLineTip"/>
+  <List x="310" y="163" vScrollBarSkin="asset.ui.scroll1.vscroll" width="415" height="203" repeatX="1" repeatY="5" spaceX="0" spaceY="2" var="list_member">
+    <Box name="render">
+      <Clip height="36" clipsUrl="asset.ui.scale.bg6,asset.ui.scale.bg7" sizeGrid="10,10,10,10" index="0" width="400" x="0" y="0" name="itemBg"/>
+      <NameTextEx x="7" y="7" size="14" bold="true" width="130" height="24" autoSize="none" align="center" name="name"/>
+      <Label x="149" y="8" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="84" height="24" autoSize="none" align="center" name="score"/>
+      <Image skin="asset.ui.frame.line2" x="142" y="8"/>
+      <Label x="243" y="8" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="58" height="24" autoSize="none" align="center" name="active"/>
+      <Image skin="asset.ui.frame.line2" x="237" y="8"/>
+      <Label x="308" y="8" size="14" color="0xffffff" stroke="0x000000,1,4,4,10" width="87" height="24" autoSize="none" align="center" name="date"/>
+      <Image skin="asset.ui.frame.line2" x="303" y="8"/>
+      <Image skin="asset.team.captain" x="0" y="-2" name="img_captain" visible="false"/>
+    </Box>
+  </List>
+  <Clip x="46" y="100" clipsUrlSimple="asset.team.divisionBig,5" var="clip_divisionBig" index="4" width="210" height="210"/>
+  <Clip x="95" y="91" clipsUrlSimple="asset.team.divisionTitle,5" index="0" var="clip_divisionTitle"/>
+  <Label x="92" y="313" bold="true" color="0xFFF073" size="14" stroke="0x782A14,1,4,4,10" var="label_score"/>
+  <Label x="105" y="17" bold="true" color="0xFFEA9E" size="16" stroke="0x4F3900,1,4,4,10" var="label_name"/>
+  <Label x="209" y="17" bold="true" color="0xFFD500" size="16" stroke="0x664222,1,4,4,10" var="label_tag"/>
+  <Label x="300" y="18" bold="true" color="0xfec55d" size="14" stroke="0x4e2f10,1,4,4,10" var="label_grade"/>
+  <Image skin="asset.team.main.fightTotal" x="104" y="46"/>
+  <NumberImageEx skin="asset.team.num" x="185" y="46" var="ex_member" width="146" height="26" count="0" space="0" align="left"/>
+  <Clip x="12" y="6" clipsUrlSimple="asset.team.division,5" index="2" var="clip_division"/>
+  <ProgressBar barSkin="asset.team.main.progress" bgSkin="asset.team.main.progressBg" sizeGrid="4,2,4,2" x="350" y="20" var="progress_grade" skin="asset.team.main.progress" width="180" barLabelY="-1" value="0" barMaskOffsetX="1" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3"/>
+  <Label x="569" y="14" bold="true" color="0xFFF073" size="12" stroke="0x782A14,1,4,4,10" var="label_createDate" width="167" height="22"/>
+  <Button skin="asset.ui.btn_help1" x="534" y="14" buttonMode="false" tipStyle="ddt.view.tips.OneLineTip" var="btn_helpTips" tipDirctions="2,1,3" enableClickMoveDownEffect="false" stateNum="1"/>
+  <FrameClip skin="asset.team.divisionEffect" x="46" y="100" index="4" var="clip_divisionEffect"/>
+  <Button label="Chuyển đội trưởng" skin="asset.ui.btn_red1" x="539" y="44" stateNum="1" buttonMode="true" labelColors="0xFFF6A7" labelStroke="0x77241E,1,4,4,10" width="116" height="28" var="btn_CaptainTransfer" labelFont="Arial"/>
+</View>

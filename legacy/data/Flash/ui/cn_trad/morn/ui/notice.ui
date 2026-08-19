@@ -1,0 +1,21 @@
+
+'view/NoticeMain.xml•<View width="710" height="570" name="render">
+  <Image skin="asset.notice.bg" x="0" y="0"/>
+  <Button skin="asset.notice.closeBtn" x="638" y="126" var="closeBtn" stateNum="1"/>
+  <Image skin="asset.notice.leftBg" x="87" y="168" sizeGrid="18,21,18,21" width="117" height="319"/>
+  <Image skin="asset.notice.rightBg" x="215" y="168" sizeGrid="18,16,18,16" width="428" height="324"/>
+  <Image skin="asset.notice.flower" x="52" y="429"/>
+  <TabListEx y="162" var="viewTab" x="38">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.notice.curSelected,asset.notice.curUnSelected" rects="0,0,0,0|0,-5,0,0" width="48" height="131"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.notice.lastSelected,asset.notice.lastUnSelected" labelMargin="20,10,0,0" rects="0,0,0,0|0,-5,0,0" y="141" width="46" height="133"/>
+  </TabListEx>
+  <Panel x="222" y="182" width="410" height="301" vScrollBarSkin="asset.notice.scroll1.vscroll" var="panel">
+    <Label var="desTxt" isHtml="true" wordWrap="true" multiline="true" x="0" y="7" width="386" text="test"/>
+  </Panel>
+  <List x="87" y="177" repeatY="7" spaceY="1" vScrollBarSkin="asset.notice.scroll1.vscroll" width="111" height="300" var="list">
+    <NoticeLeftItem name="render" runtime="notice.view.NoticeLeftItem" buttonMode="true"/>
+  </List>
+</View>/view/NoticeLeftItem.xml„!<View width="100" height="42">
+  <Clip x="0" y="0" clipsUrl="asset.notice.leftItemBgSelected,asset.notice.leftItemBgUnSelected" index="0" var="bgClip"/>
+  <Label text="label" x="12" y="9" size="14" color="0xfef0d3" width="78" height="18" align="center" var="txt"/>
+</View>

@@ -1,0 +1,160 @@
+<style name="cityBattle" version="1.0.1" source="ui/cn_trad/swf/cityBattle.swf">
+	<sets>
+		<set stylename="contention.info.TF" args="Arial,12,0xfbf4a6,,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="contention.info.GF" args="0x5a2d00,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="contention.itemRank.TF" args="Arial,14,0xFFFFFF,,,,,,center" type="flash.text.TextFormat"/>
+		<set stylename="contention.itemRank.GF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="joinView.info.TF" args="Arial,12,0xfbf4a6,,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="joinView.info.GF" args="0x582F00,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="contention.totalScore.TF" args="Arial,12,0xfbf4a6,,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="contention.totalScore.GF" args="0x582F00,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="welfare.myscore.TF" args="Arial,16,0xeee48f,true,,,,,left" type="flash.text.TextFormat"/>
+		<set stylename="welfare.myscore.GF" args="0x612929,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set type="flash.text.TextFormat" stylename="welfare.winnerPrizeInfo.TF" args="Arial,10,0xFF0000,true"/>
+		<set type="flash.filters.GlowFilter" stylename="welfare.winnerPrizeInfo.GF" args="0xFFFFFF,1,3,3,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="contention.inspire.TF" args="Arial,12,0xFbf4a7,true"/>
+		<set type="flash.filters.GlowFilter" stylename="contention.inspire.GF" args="0x582d00,1,3,3,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="cityBattle.blueSide.TF" args="Arial,16,0xF1ba0ff,true"/>
+		<set type="flash.filters.GlowFilter" stylename="cityBattle.blueSide.GF" args="0x013b82,1,3,3,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="cityBattle.redSide.TF" args="Arial,16,0xff4e1b,true"/>
+		<set type="flash.filters.GlowFilter" stylename="cityBattle.redSide.GF" args="0x760a02,1,3,3,10"/>
+		
+		<set type="flash.text.TextFormat" stylename="cityBattle.activityTime.TF" args="Arial,13,0xffffff,true"/>
+		<set type="flash.filters.GlowFilter" stylename="cityBattle.activityTime.GF" args="0x000000,1,3,3,10"/>
+		<set stylename="contention.inspire.off.TF" args="Arial,12,0xFF0000,,,,,,left" type="flash.text.TextFormat"/>
+		
+		
+	</sets>
+	
+	<customDisplay>
+			
+		<custom classname="flash.geom.Point" stylename="castellan.building1Pos" x="85" y="124"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building2Pos" x="519" y="128"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building3Pos" x="203" y="271"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building4Pos" x="392" y="242"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building5Pos" x="85" y="396"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building6Pos" x="282" y="397"/>
+		<custom classname="flash.geom.Point" stylename="castellan.building7Pos" x="507" y="361"/>
+		
+		<custom classname="flash.geom.Point" stylename="castellan.control1Pos" x="27" y="100"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control2Pos" x="0" y="96"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control3Pos" x="10" y="90"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control4Pos" x="0" y="128"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control5Pos" x="8" y="96"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control6Pos" x="9" y="98"/>
+		<custom classname="flash.geom.Point" stylename="castellan.control7Pos" x="6" y="99"/>
+		
+		<custom classname="flash.geom.Point" stylename="castellan.character1Pos" x="39" y="-20"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character2Pos" x="33" y="-38"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character3Pos" x="48" y="-28"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character4Pos" x="173" y="-4"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character5Pos" x="44" y="-45"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character6Pos" x="201" y="-33"/>
+		<custom classname="flash.geom.Point" stylename="castellan.character7Pos" x="186" y="-33"/>
+		
+		<custom classname="flash.geom.Point" stylename="contention.inspire.txt.pos1" x="159" y="85"/>
+		<custom classname="flash.geom.Point" stylename="contention.inspire.txt.pos2" x="167" y="113"/>
+		<custom classname="flash.geom.Point" stylename="contention.inspire.txt.pos3" x="172" y="141"/>
+		
+			
+		<custom classname="flash.geom.Point" stylename="quickExchange.restTitlePos" x="116" y="107"/>
+		<custom classname="flash.geom.Point" stylename="quickExchange.restPos" x="243" y="107"/>
+		
+		<custom classname="flash.geom.Point" stylename="welfare.boxPos" x="167" y="135"/>
+		
+		<custom classname="flash.geom.Point" stylename="contention.redTotalScore.txtPos" x="574" y="107"/>
+		<custom classname="ddt.view.bossbox.AwardsGoodsList" stylename="welfare.winnerPrize.goodsList" x="36" y="60"/>
+	</customDisplay>
+	
+	<components>
+		<component classname="cityBattle.view.CityBattleMainFrame" stylename="cityBattle.mainFrame" backStyle="SimpleFrameBackgoundOne" parentStyle="BaseFrame"	closestyle="core.closebt" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="24,10,5" closeInnerRectString="44,22,6,30,14"	moveInnerRectString="0,30,0,30,1" width="727" height="560" escEnable="true" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="joinCity.closeBtn" backStyle="asset.joinCity.closeBtn" 
+			x="703" y="8"  filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cityBattle.redSide.txt" textFormatStyle="cityBattle.redSide.TF" filterString="cityBattle.redSide.GF" x="555" y="59"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cityBattle.blueSide.txt" textFormatStyle="cityBattle.blueSide.TF" filterString="cityBattle.blueSide.GF" x="555" y="59"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cityBattle.activityTime.txt" textFormatStyle="cityBattle.activityTime.TF" filterString="cityBattle.activityTime.GF" x="406" y="41"/>
+		
+		<!--cityBattleMainFrame-->
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="cityBattle.castellanTerritorial.btn" unSelectedStyle="asset.cityBattle.unselect.tab1" selectedStyle="asset.cityBattle.select.tab1" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="cityBattle.territorialContention.btn" unSelectedStyle="asset.cityBattle.unselect.tab2" selectedStyle="asset.cityBattle.select.tab2" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="cityBattle.territorialWelfare.btn" unSelectedStyle="asset.cityBattle.unselect.tab3" selectedStyle="asset.cityBattle.select.tab3" filterString="null,lightFilter,null,grayFilter"/>
+		
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="cityBattle.view.hBox" spacing="20" x="28" y="43"/>
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cityBattle.joinBlueBtn" x="92" y="117" backStyle="asset.cityBattle.joinBlue" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cityBattle.joinRedBtn" x="465" y="329" backStyle="asset.cityBattle.joinRed" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cityBattle.randomBtn" x="183" y="448" backStyle="asset.cityBattle.randomJoin" />
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="joinView.info.txt" textFormatStyle="joinView.info.TF" filterString="joinView.info.GF" autoSize="none" width="400" height="24" x="232" y="524"/>
+		
+		<!--contentionView-->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.info.txt" textFormatStyle="contention.inspire.TF" filterString="contention.inspire.GF" x="35" y="505"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.currentSocre.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" x="643" y="499"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.currentRank.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" x="641" y="523"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.rank.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" autoSize="none" width="100" height="24" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.name.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" autoSize="none" width="100" height="24" x="50" y="0"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.score.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" autoSize="none" width="100" height="24" x="100" y="0"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.itemRank.txt" textFormatStyle="contention.itemRank.TF" filterString="contention.itemRank.GF" autoSize="none" width="77" height="24" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.itemScore.txt" textFormatStyle="contention.itemRank.TF" filterString="contention.itemRank.GF" autoSize="none" width="83" height="24" x="191" y="0"/>
+		<component classname="com.pickgliss.ui.FilterFrameTextWithTips" stylename="contention.itemName.txt" parentStyle="contention.itemScore.txt" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="3" autoSize="none"  width="105" height="22" x="81" y="0" />
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="contention.inspireBtn" x="300" y="496" backStyle="asset.cityBattle.inspireBtn" />
+		
+		<component classname="cityBattle.view.ContentionInspireFrame" stylename="contention.inspireFrame" backStyle="SimpleFrameBackgoundOne" closestyle="core.closebt" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="15,10,5" containerX="20" containerY="40" closeInnerRectString="44,19,6,30,14" x="733" y="342" width="280" height="310"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.inspireInfo.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" autoSize="none" width="100" height="24" x="48" y="18"/>
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="cityBattle.inspireFrame.vBox" spacing="9" x="-18" y="58"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="contention.inspireSelected.btn" parentStyle="ddtshop.CartItemSelectBtn"
+ 			textStyle="contention.inspireSelected.txt" fieldX="28" fieldY="-1" 	x="22" y="33" />
+ 		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.inspire.txt" textFormatStyle="contention.inspire.off.TF" filterString="contention.info.GF" x="178" y="107"/>
+		
+ 		
+ 		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.inspireSelected.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="contention.inspireEnter" parentStyle="core.simplebt" x="85" y="192"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="contention.totalScore.txt" textFormatStyle="welfare.myscore.TF" filterString="welfare.myscore.GF" x="178" y="107"/>
+		<!--welfareView-->
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="welfare.myscore.txt" textFormatStyle="welfare.myscore.TF" filterString="welfare.myscore.GF" x="153" y="105"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="welfare.exchangebtn" backStyle="asset.cityBattle.exchange" x="-2" y="38"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="welfare.exchange.txt" textFormatStyle="contention.info.TF" filterString="contention.info.GF" autoSize="none" width="100" height="24" x="0" y="0"/>
+		<component classname="cityBattle.view.QuickExchangeFrame" stylename="welfare.exchangeFrame" backStyle="SimpleFrameBackgoundOneIII" parentStyle="BaseFrame" containerY="30" width="340" height="225"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="welfare.winnerPrizeInfo.txt" textFormatStyle="welfare.winnerPrizeInfo.TF" filterString="welfare.winnerPrizeInfo.GF" x="39" y="50"/>
+		<component classname="cityBattle.view.WinnerPrizeView" backStyle="SimpleFrameBackgoundOneIII" stylename="welfare.winnerPrizeView" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,12,5" closestyle="core.closebt" closeInnerRectString="44,6,6,30,14" escEnable='true' width="395" height="372"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="welfare.okButton" parentStyle="core.simplebt" x="156" y="319"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage"  stylename="welfare.prizeGoodsBg" parentStyle="bossbox.scale9GoodsImage" x="24" y="49" width="348" height="262"/>
+		
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.cityBattle.bg1" x="19" y="91"/>
+		<bitmapData resourceLink="asset.cityBattle.bg2" x="19" y="91"/>
+		<bitmapData resourceLink="asset.cityBattle.bg3" x="19" y="91"/>
+		
+		<bitmapData resourceLink="asset.cityBattle.bg" x="-55" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.lock" x="18" y="14"/>
+		
+		<bitmapData resourceLink="asset.cityBattle.buildingName1" x="20" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName2" x="5" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName3" x="9" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName4" x="-12" y="11"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName5" x="13" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName6" x="29" y="-17"/>
+		<bitmapData resourceLink="asset.cityBattle.buildingName7" x="33" y="-17"/>
+		
+		<bitmapData resourceLink="asset.cityBattle.unselect.tab1" x="10"/>
+<bitmapData resourceLink="asset.cityBattle.unselect.tab2" x="10"/>
+<bitmapData resourceLink="asset.cityBattle.unselect.tab3" x="10"/>
+	</bitmaps>
+</style>

@@ -1,0 +1,101 @@
+<style name="sevenday" version="7.8.0" source="ui/cn_trad/swf/sevenday.swf">
+<sets>
+	<set stylename="sevenday.text1TF" args="宋体,14,0xFFF6C9,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="sevenday.text1GF" args="0x5C2500,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="sevenday.text2TF" args="宋体,14,0xFFF6EE,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="sevenday.text2GF" args="0x68270E,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="sevendayTaskCell.task1TF" args="宋体,14,0xFFEA9C,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="sevendayTaskCell.task1GF" args="0x4F3700,2,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="sevenday.progressTF" args="宋体,14,0xFFFAAD,true" type="flash.text.TextFormat" leading="5" />
+	<set stylename="sevenday.progressGF" args="0x471E00,2,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	<set stylename="sevendayTaskCell.dogoto1TF"  args="宋体,14,0x00A600,true,,true,,,left"  type="flash.text.TextFormat"/>
+	<set stylename="sevendayTaskCell.goto1TF"  args="宋体,14,0xFFD800,true,,true,,,left"  type="flash.text.TextFormat"/>
+    <set stylename="sevendayTaskCell.goto1GF" args="0x5D2100,1,2,2,10"  type="flash.filters.GlowFilter"/>	
+</sets>
+<components>
+      <!-- 七天小标题 -->
+     <component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="ddt.sevenday.smalltitle" resourceLink="asset.sevenday.target0,asset.sevenday.target1,asset.sevenday.target2,asset.sevenday.target3,asset.sevenday.target4,asset.sevenday.target5,asset.sevenday.target6" x="134" y="48"/>
+     <component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="sevendayTaskCell.icon" resourceLink="asset.sevenday.uncomplete,asset.sevenday.iscomplete" />
+     <component classname="sevenday.view.SevendayMainFrame" backStyle="SimpleFrameBackgound"
+			closestyle="core.closebt" stylename="seventdyas.frame" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="15,10,5" containerX="20" containerY="40"
+			closeInnerRectString="44,19,6,30,14" width="707" height="529" />
+	 <component classname="com.pickgliss.ui.controls.container.HBox" stylename="sevendayHBox"  spacing="-8" x="0" y="3" />
+	 <component classname="com.pickgliss.ui.controls.container.HBox" stylename="ddt.sevenday.getHBox"  spacing="27" x="80" y="283" />
+	 <component classname="com.pickgliss.ui.controls.container.HBox" stylename="ddt.sevenday.giftHbox"  spacing="25" x="92" y="291" />
+	 <component classname="com.pickgliss.ui.controls.container.VBox" stylename="ddt.sevenday.taskvbox"  x="-2"  y="147" spacing="8" width="330" height="158"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn0" selectedStyle="asset.sevenday1selectedbtn" unSelectedStyle="asset.sevenday1unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn1" selectedStyle="asset.sevenday2selectedbtn" unSelectedStyle="asset.sevenday2unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn2" selectedStyle="asset.sevenday3selectedbtn" unSelectedStyle="asset.sevenday3unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn3" selectedStyle="asset.sevenday4selectedbtn" unSelectedStyle="asset.sevenday4unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn4" selectedStyle="asset.sevenday5selectedbtn" unSelectedStyle="asset.sevenday5unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn5" selectedStyle="asset.sevenday6selectedbtn" unSelectedStyle="asset.sevenday6unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.dayBtn6" selectedStyle="asset.sevenday7selectedbtn" unSelectedStyle="asset.sevenday7unselectedbtn" filterString="null,lightFilter,null,grayFilter"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.basebtn" selectedStyle="asset.sevenday.basetargetselectedbtn" unSelectedStyle="asset.sevenday.basetargetunselectedbtn" x="18" y="86"/>
+	 <component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddt.sevenday.superbtn" selectedStyle="asset.sevenday.supertargetselectedbtn" unSelectedStyle="asset.sevenday.supertargetunselectedbtn" x="125" y="86"/>
+	 <component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddt.sevenday.getbtn"  backStyle="asset.sevenday.getbtn" x="145" y="351"/>
+
+	 <component classname="com.pickgliss.ui.core.Component" stylename="ddt.sevenday.content0" 
+		tipStyle="ddt.view.tips.MultipleLineTip" tipDirctions="4" tipGapH="0" tipGapV="-60"  x="226" y="394"/>
+	 <component classname="com.pickgliss.ui.core.Component" stylename="ddt.sevenday.content1" 
+		tipStyle="ddt.view.tips.MultipleLineTip" tipDirctions="4" tipGapH="0" tipGapV="-60"  x="392" y="392"/>
+	 <component classname="com.pickgliss.ui.core.Component" stylename="ddt.sevenday.content2" 
+		tipStyle="ddt.view.tips.MultipleLineTip" tipDirctions="4" tipGapH="0" tipGapV="-60" x="562" y="391"/>
+	
+	
+	
+	
+	 <!-- 文字 -->
+	 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevenday.text1" 
+			textFormatStyle="sevenday.text1TF" filterString="sevenday.text1GF" x="551" y="46"/>
+	 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevenday.text2" 
+			textFormatStyle="sevenday.text2TF" filterString="sevenday.text2GF" x="397" y="113"/>
+	 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevenday.text3" 
+			textFormatStyle="sevenday.text2TF" filterString="sevenday.text2GF" x="457" y="134"/>
+   	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevenday.text4" 
+			textFormatStyle="sevenday.text2TF" filterString="sevenday.text2GF" x="395" y="153"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="sevendayTaskCell.goto" textFormatStyle="sevendayTaskCell.goto1TF,sevendayTaskCell.dogoto1TF"
+			filterString="sevendayTaskCell.goto1GF,sevendayTaskCell.goto1GF" multiline="false" wordWrap="false" x="278"   />
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="sevendayTaskCell.dogoto" textFormatStyle="sevendayTaskCell.dogoto1TF"
+			filterString="sevendayTaskCell.goto1GF" multiline="false" wordWrap="false" x="278"   />
+	<!-- 任务字体 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevendayTaskCell.task" 
+			textFormatStyle="sevendayTaskCell.task1TF" filterString="sevendayTaskCell.task1GF" x="38" />
+			
+	<!-- 进度条 -->
+	<component classname="com.pickgliss.ui.core.Component"
+			stylename="sevenday.thunck" x="97" y="182" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="sevenday.LevelProgressText" 
+			textFormatStyle="sevenday.progressTF" filterString="sevenday.progressGF" x="34" y="181"/>
+	<component classname="sevenday.view.SevendayTaskProgress"
+			stylename="ddt.sevenday.taskprogress" x="-9" y="257" width="108" height="18" />
+	<!-- 帮助按钮 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="sevenday.button.helpBtn" backStyle="assets.sevenday.helpBtn" x="773" y="-32"/>
+</components>
+<bitmaps>
+      <bitmapData resourceLink="asset.sevenday.bg" x="-3" y="42"/>
+      <bitmapData resourceLink="asset.sevenday.title" x="153" y="-73"/>
+      <bitmapData resourceLink="asset.sevenday.progressframe" x="15" y="168"/>
+      
+      
+      <bitmapData resourceLink="asset.sevenday.isgetgift"/>
+      <bitmapData resourceLink="asset.sevenday.uncomplete"  />
+      <bitmapData resourceLink="asset.sevenday.iscomplete"/>
+      <bitmapData resourceLink="asset.sevenday.gift1"/>
+      <bitmapData resourceLink="asset.sevenday.gift2" />
+      <bitmapData resourceLink="asset.sevenday.gift3"/>
+</bitmaps>
+<customDisplay>
+     <custom classname="flash.geom.Point" stylename="ddt.sevendayTaskCell.iconPos" x="196" y="-10"/>
+     <custom classname="flash.geom.Point" stylename="ddt.sevenday.progressTextPos" x="37" y="181"/>
+     <custom classname="flash.geom.Point" stylename="sevenday.helpBtnPos" x="591" y="-34"/>
+     <custom classname="asset.sevenday.helpText" stylename="asset.sevenday.helpText" x="180" y="192"/>
+</customDisplay>
+</style>

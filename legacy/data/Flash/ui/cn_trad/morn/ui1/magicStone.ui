@@ -1,0 +1,67 @@
+
+7MagicStoneTransformItem.xml�<View width="133" height="21">
+  <Clip x="0" y="0" clipsUrl="asset.core.unLock,asset.core.lock" var="lockClip"/>
+  <Image skin="asset.magicStone.bit26" x="58" y="-2"/>
+  <LabelEx text="攻击" x="21" y="1" size="14" bold="true" color="0xfff2b0" stroke="0x5a390b,1,4,4,30" var="paoNameTxt"/>
+  <LabelEx text="144" x="62" y="1" size="14" bold="true" color="0xfff2b0" stroke="0x5a390b,1,4,4,30" align="center" width="67" height="18" var="proCountTxt"/>
+</View>%MagicStoneView.xml�%<View width="436" height="449">
+  <Image skin="asset.magicStone.bit15" x="0" y="0"/>
+  <Image skin="asset.magicStone.bit6" x="33" y="43"/>
+</View>+MagicJadeSkillTip.xml�#<View width="182" height="105">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="182" height="105" var="bg"/>
+  <Label text="技能效果：" x="6" y="45" size="12" color="0xe87400" bold="true" stroke="0x000000,1,2,2,10" var="talentName"/>
+  <Label text="被灼烧后，增加50000血量，增加防御力攻击,增加防御力攻击,增加防御力攻击" x="68" y="45" size="12" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="skillDes" width="107" multiline="true" wordWrap="true" leading="5"/>
+  <Label text="宠物等级：60级" x="10" y="13" size="14" color="0x9900ff" bold="true" stroke="0x000000,1,2,2,10" var="skillName"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="11" y="36" sizeGrid="95,1,95,1" width="150" var="line1"/>
+</View>/MagicStoneTransform.xml�<View width="436" height="449">
+  <Image skin="asset.magicStone.bit15" x="0" y="0"/>
+  <Image skin="asset.magicStone.bit9" x="39" y="51"/>
+  <Image skin="asset.magicStone.bit22" x="29" y="129"/>
+  <List x="55" y="173" spaceY="10" repeatY="2" repeatX="2" spaceX="57" var="proList">
+    <MagicStoneTransformItem name="render" runtime="magicStone.views.MagicStoneTransformItem"/>
+  </List>
+  <LabelEx text="转换消耗：" x="125" y="319" size="12" bold="true" color="0xffd800" stroke="0x4e2f10,1,4,4,30" width="74" height="23" multiline="true" wordWrap="true" leading="5" var="needDesTxt"/>
+  <LabelEx text="0/0" x="191" y="319" size="12" bold="true" color="0xffd800" stroke="0x4e2f10,1,4,4,30" width="74" height="23" multiline="true" wordWrap="true" leading="5" var="needCountTxt" align="center"/>
+  <Box x="265" y="314" var="cellBox" width="32" height="25"/>
+  <Button skin="asset.magicStone.bit25" x="145" y="358" stateNum="1" var="xilianBtn"/>
+  <Box x="177" y="66" var="transCellBox">
+    <Image skin="asset.magicStone.bit21"/>
+  </Box>
+  <Box x="55" y="232" var="skillBox">
+    <Clip x="0" y="2" clipsUrl="asset.core.unLock,asset.core.lock" var="skillLock"/>
+    <Image skin="asset.magicStone.bit26" x="58" y="0"/>
+    <LabelEx text="元素" x="21" y="3" size="14" bold="true" color="0xfff2b0" stroke="0x5a390b,1,4,4,30"/>
+    <LabelEx text="功" x="62" y="3" size="14" bold="true" color="0xfff2b0" stroke="0x5a390b,1,4,4,30" align="center" width="67" height="18" var="skillName"/>
+  </Box>
+  <Button skin="asset.magicStone.bit16" x="145" y="358" stateNum="1" var="transBtn" width="145" height="54"/>
+</View>#MagicJadeView.xml�c<View width="436" height="449">
+  <Image skin="asset.magicStone.bit15" x="0" y="0"/>
+  <Image skin="asset.magicStone.bit10" x="12" y="57"/>
+  <Image skin="asset.magicStone.bit24" x="15" y="335" sizeGrid="17,47,17,47" width="405" height="96"/>
+  <Image skin="asset.magicStone.bit17" x="26" y="371"/>
+  <Image skin="asset.magicStone.bit11" x="167" y="361" name="skill1"/>
+  <Image skin="asset.magicStone.bit13" x="107" y="361" name="skill0"/>
+  <Image skin="asset.magicStone.bit12" x="231" y="361" name="skill2"/>
+  <Image skin="asset.magicStone.bit14" x="293" y="361" name="skill3"/>
+  <Image skin="asset.magicStone.bit23" x="357" y="360" var="proImg"/>
+  <Button skin="asset.magicStone.resetName" x="386" y="25" stateNum="1" var="resetNameBtn"/>
+</View>%MagicResetName.xml�]<View width="354" height="182">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="0" y="0" width="354" height="182"/>
+  <Button skin="asset.ui.btn_close1" x="289" y="6" stateNum="1" var="btn_close"/>
+  <Label text="魔玉方案改名" x="23" y="11" color="0xffeebf" font="宋体" size="16" bold="true" stroke="0x442006,1,4,4,30" letterSpacing="1"/>
+  <Image skin="asset.ui.scale.bg2" x="20" y="45" sizeGrid="10,10,10,10" width="311" height="70"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="119" sizeGrid="5,5,5,5" width="311" height="40"/>
+  <Button skin="asset.ui.btn_yellow1" x="136" y="122" stateNum="1" var="okBtn" sizeGrid="34,16,34,16" height="35" width="77" label="确定" labelColors="0xffea9c" labelStroke="0x714108,1,4,4,30" labelSize="14" labelBold="true" labelMargin="0,-1"/>
+  <TextInput x="174" y="69" var="textInput" color="0xfff4d4" size="14" bold="true" align="center" editable="true" skin="asset.magicStone.centerInput" width="128" height="30" margin="0,5"/>
+  <Label text="请输入新的方案名：" x="38" y="74" size="14" bold="true" color="0xfff4d4" stroke="0x7c4519,1,4,4,30"/>
+</View>%MagicStoneMain.xmlA<View width="600" height="400"/>'MagicJadeProTip.xml�q<View width="153" height="300">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="153" height="300" var="bg"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="37" sizeGrid="95,1,95,1" width="130"/>
+  <List x="16" y="45" repeatY="18" var="proList">
+    <Box name="render">
+      <Label text="攻击：" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="43" height="16" name="proName" bold="true"/>
+      <Label text="300" x="40" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" width="69" height="18" name="proNum" y="0" bold="true"/>
+    </Box>
+  </List>
+  <Label size="16" color="0xff0000" bold="true" stroke="0x000000,1,2,2,10" x="8" y="10" width="126" height="33" wordWrap="true" text="属性总览"/>
+</View>

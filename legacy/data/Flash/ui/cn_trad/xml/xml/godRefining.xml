@@ -1,0 +1,93 @@
+<style name="godRefining" version="7.7.0" source="ui/cn_trad/swf/godRefining.swf">
+	<sets>
+		<set stylename="ddtstore.godRefining.successTipTextTF" args="Arial,16,0xfcf3a7,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefining.successTipTextGF" args="0x4e2f10,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="ddtstore.godRefining.successNumTextTF" args="Arial,16,0xFFEF38,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefining.successNumTextGF" args="0x430105,1,2,2,10" type="flash.filters.GlowFilter" />
+		<set stylename="ddtstore.godRefining.tipTextTF" args="Arial,12,0xFFD801,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefining.tipTextGF" args="0x4C2F0D,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="ddtstore.godRefining.needNumTextTF" args="Arial,12,0xFEE9A8,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefining.needNumTextGF" args="0x4C2F0F,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="ddtstore.godRefiningResetView.levelTextTF" args="Arial,16,0xfbf4a7,true" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefiningResetView.levelTextGF" args="0x4C310f,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="ddtstore.godRefiningResetView.damageTitleTextTF" args="Arial,12,0xefd596,true" type="flash.text.TextFormat" />
+		<set stylename="ddtstore.godRefiningResetView.damageContentTextTF" args="Arial,14,0xfdf138,true" type="flash.text.TextFormat" />
+		
+	</sets>
+	
+	<components>
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="ddtstore.godRefining.TabSelectedBtnContainer" spacing="1" y="-10" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddtstore.godRefining.fineQuenchBtn" 
+			selectedStyle="asset.godRefining.fineQuenchBtn" unSelectedStyle="asset.godRefining.unFineQuenchBtn" 
+			x="-4" y="-6" displacement="false" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddtstore.godRefining.composeBtn" 
+			selectedStyle="asset.godRefining.composeBtn" unSelectedStyle="asset.godRefining.unComposeBtn" 
+			x="-3" y="-6" displacement="false" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="ddtstore.godRefining.resetBtn" 
+			selectedStyle="asset.godRefining.resetBtn" unSelectedStyle="asset.godRefining.unResetBtn" 
+			x="-7" y="-6" displacement="false" />
+			
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="ddtstore.godRefining.fineQuenchViewBg" x="68" y="59" parentStyle="ddtstore.BagStoreFrame.StrengthenBg"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="ddtstore.godRefining.composeViewBg" x="68" y="59" parentStyle="ddtstore.BagStoreFrame.ComposeBg"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="ddtstore.godRefining.resetViewBg" x="68" y="59" parentStyle="ddtstore.BagStoreFrame.EmbedBg"/>
+		<component classname="ddt.view.common.BuyItemButton" stylename="ddtstore.godRefining.BuyLuckyComposeBtn" useLogID="100" x="185" y="150" parentStyle="ddtstore.StoreIIComposeBG.BuyLuckyComposeBtn"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefining.successTipText" x="220" y="340" width="100" height="25" textFormatStyle="ddtstore.godRefining.successTipTextTF" filterString="ddtstore.godRefining.successTipTextGF" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefining.successNumText" x="280" y="340" width="100" height="25" textFormatStyle="ddtstore.godRefining.successNumTextTF" filterString="ddtstore.godRefining.successNumTextGF" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefining.tipText" x="175" y="385" width="200" height="25" textFormatStyle="ddtstore.godRefining.tipTextTF" filterString="ddtstore.godRefining.tipTextGF" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefining.needNumText" x="323" y="295" width="100" height="25" textFormatStyle="ddtstore.godRefining.needNumTextTF" filterString="ddtstore.godRefining.needNumTextGF" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddtstore.godRefining.startFineQuenchBtn" backStyle="asset.godRefining.startFineQuenchBtn" x="180" y="410"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddtstore.godRefining.startComposeBtn" backStyle="asset.godRefining.startComposeBtn" x="180" y="360"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefiningResetView.levelText" x="125" y="280" width="100" height="25" textFormatStyle="ddtstore.godRefiningResetView.levelTextTF" filterString="ddtstore.godRefiningResetView.levelTextGF" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefiningResetView.damageTitleText" x="125" y="315" width="100" height="25" textFormatStyle="ddtstore.godRefiningResetView.damageTitleTextTF" filterString="ddtstore.godRefiningResetView.levelTextGF" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtstore.godRefiningResetView.damageContentText" x="232" y="315" width="100" height="25" textFormatStyle="ddtstore.godRefiningResetView.damageContentTextTF" filterString="ddtstore.godRefiningResetView.levelTextGF" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddtstore.godRefining.startResetBtn" backStyle="asset.godRefining.startResetBtn" x="300" y="307"/>
+	</components>
+	
+	<customDisplay>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.VboxPos" x="10" y="51"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.fineQuenchViewPos" x="0" y="0"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.composeViewPos" x="0" y="0"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.resetViewPos" x="0" y="0"/>
+    	 <custom classname="asset.ddtstore.ContentBg" stylename="ddtstore.godRefining.ContentBg" x="60" y="52" width="748" height="427" />
+    	 
+    	 <custom classname="flash.geom.Point" stylename="godRefiningRightView.bagListPos" x="18" y="38"/>
+    	 <custom classname="flash.geom.Point" stylename="godRefiningRightView.proBagListPos" x="18" y="212"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.rightViewPos" x="423" y="60"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefiningComposeView.tipTextPos" x="172" y="325"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefiningComposeView.needNumTextPos" x="128" y="243"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefiningResetView.buyLuckyComposeBtnPos" x="280" y="232"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefiningResetView.tipTextPos" x="160" y="405"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.itemCellPos" x="211" y="222"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.stoneCellPos0" x="99" y="133"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.stoneCellPos1" x="99" y="215"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.stoneCellPos2" x="99" y="298"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.clipCellPos" x="299" y="206"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.composeItemCellPos" x="302" y="172"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.composeClipCellPos" x="104" y="154"/>
+    	 
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.resetItemCellPos" x="147" y="147"/>
+    	 <custom classname="flash.geom.Point" stylename="ddtstore.godRefining.resetClipCellPos" x="277" y="138"/>
+    	 
+    	 
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.godRefining.unFineQuenchBtn" x="10" y="0"/>
+		<bitmapData resourceLink="asset.godRefining.unComposeBtn" x="11" y="0"/>
+		<bitmapData resourceLink="asset.godRefining.unResetBtn" x="13" y="0"/>
+		<bitmapData resourceLink="asset.godRefining.fineQuenchCellBg" x="90" y="125"/>
+		<bitmapData resourceLink="asset.godRefining.composeViewCellBg" x="96" y="137"/>
+		<bitmapData resourceLink="asset.godRefining.resetViewCellBg" x="112" y="117"/>
+		
+		<bitmapData resourceLink="asset.godRefining.fineQuenchTitleBmp" x="88" y="76"/>
+		<bitmapData resourceLink="asset.godRefining.composeTitleBmp" x="88" y="76"/>
+		<bitmapData resourceLink="asset.godRefining.resetTitleBmp" x="88" y="76"/>
+		
+	</bitmaps>
+</style>

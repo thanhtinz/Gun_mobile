@@ -1,0 +1,132 @@
+
+1CarnivalExchangeView.xml�<View width="484" height="353">
+  <Image skin="asset.carnival.bit29" x="0" y="0"/>
+  <Button skin="asset.carnival.bit12" x="443" y="19" stateNum="1" var="closeBtn"/>
+  <List x="23" y="54" repeatY="3" spaceY="5" var="list">
+    <CarnivalExchangeItem name="render" runtime="activity.carnival.view.CarnivalExchangeItem"/>
+  </List>
+  <Image skin="asset.carnival.bit30" x="33" y="297" scale="0.5"/>
+  <Image skin="asset.carnival.bit13" x="75" y="305" sizeGrid="11,12,11,12" width="90" height="26"/>
+  <LabelEx text="8000" x="79" y="308" size="14" bold="true" color="0xff2a00" width="83" height="18" align="center" var="hasCountTxt"/>
+  <Button skin="asset.carnival.bit5" x="289" y="306" stateNum="1" var="leftBtn"/>
+  <Button skin="asset.carnival.bit3" x="421" y="306" stateNum="1" var="rightBtn"/>
+  <Image skin="asset.carnival.bit13" x="330" y="305" sizeGrid="11,12,11,12" width="90" height="26"/>
+  <LabelEx text="8000" x="334" y="308" size="14" bold="true" color="0xff2a00" width="83" height="18" align="center" var="pageTxt"/>
+</View>'CarnivalBuyView.xml�1<View width="409" height="236">
+  <Image skin="asset.carnival.bit18" x="0" y="0"/>
+  <Button skin="asset.carnival.bit12" x="373" y="16" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.carnival.bit24" x="21" y="56" sizeGrid="21,22,21,22" width="366" height="97"/>
+  <TextInput text="500" skin="asset.carnival.bit13" x="174" y="81" width="128" height="22" color="0x8b5800" bold="true" align="center" margin="0,3" var="input"/>
+  <Button skin="asset.carnival.bit26" x="130" y="80" stateNum="1" var="leftBtn"/>
+  <Button skin="asset.carnival.bit25" x="306" y="80" stateNum="1" var="rightBtn"/>
+  <LabelEx text="你总共需要消耗：" x="159" y="115" size="14" bold="true" color="0x8b5800"/>
+  <LabelEx text="9000" x="280" y="113" size="16" bold="true" color="0xff2a00" var="needTxt"/>
+  <Button skin="asset.carnival.bit33" x="151" y="172" stateNum="1" var="buyBtn"/>
+  <Box x="35" y="67" var="cellBox">
+    <Image skin="asset.carnival.bit2" width="70" height="70"/>
+  </Box>
+</View>!CarnivalMain.xml�3<View width="1000" height="570">
+  <Image skin="asset.carnival.bit34" x="-1" y="0"/>
+  <Button skin="asset.carnival.bit11" x="969" y="114" stateNum="1" var="closeBtn"/>
+  <LabelEx text="当前已有100人参加" x="53" y="244" size="14" color="0xffffff" stroke="0xb72822,1,4,4,30" width="235" height="18" align="center" font="黑体" var="trunDesTxt"/>
+  <LabelEx text="还剩35次即可开启大奖" x="51" y="321" size="12" color="0xffc9af" stroke="0xb72822,1,4,4,30" width="235" height="18" align="center" bold="true" var="trunDesTxt1"/>
+  <Button skin="asset.carnival.bit35" x="439" y="498" stateNum="1" var="rechargeBtn"/>
+  <TabListEx y="112" var="viewTab" x="718">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.carnival.bit16,asset.carnival.bit17" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.carnival.bit36,asset.carnival.bit37" labelMargin="20,10,0,0" x="119" selected="false" toggle="false"/>
+  </TabListEx>
+  <Image skin="asset.carnival.bit8" x="713" y="472"/>
+  <LabelEx text="本次抽奖次数：" x="721" y="484" size="12" bold="true" color="0xb90d00"/>
+  <LabelEx text="111" x="813" y="484" size="12" bold="true" color="0xb90d00" var="myScoreTxt"/>
+  <LabelEx text="排名：" x="859" y="484" size="12" bold="true" color="0xb90d00"/>
+  <LabelEx text="未上榜" x="899" y="484" size="12" bold="true" color="0xb90d00" var="myRankTxt"/>
+  <Box x="714" y="148" var="rankBox">
+    <Image skin="asset.carnival.bit19"/>
+    <LabelEx text="排名" x="2" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="62" height="18"/>
+    <Image skin="asset.carnival.bit7" x="64" y="2"/>
+    <LabelEx text="角色名称" x="66" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="88" height="18"/>
+    <Image skin="asset.carnival.bit7" x="158" y="2"/>
+    <LabelEx text="抽奖次数" x="160" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="77" height="18"/>
+    <List y="29" repeatY="10" spaceY="0" var="rankList">
+      <Box name="render">
+        <Clip clipsUrl="asset.carnival.bit20,asset.carnival.bit6"/>
+        <LabelEx text="1" x="2" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="62" height="18" name="rankTxt"/>
+        <Image skin="asset.carnival.bit7" x="64" y="0"/>
+        <LabelEx text="角色名称" x="66" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="88" height="18" name="nameTxt"/>
+        <Image skin="asset.carnival.bit7" x="158" y="0"/>
+        <LabelEx text="抽奖次数" x="160" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="77" height="18" name="countTxt"/>
+        <Clip x="19" y="2" clipsUrl="asset.carnival.bit39,asset.carnival.bit40,asset.carnival.bit41" name="rankClip"/>
+      </Box>
+    </List>
+  </Box>
+  <Box x="711" y="148" var="rateBox">
+    <Image skin="asset.carnival.bit19"/>
+    <LabelEx text="排名" x="2" y="5" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="92" height="18"/>
+    <Image skin="asset.carnival.bit7" x="93" y="2"/>
+    <LabelEx text="大奖概率" x="96" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="141" height="18"/>
+    <List y="29" repeatY="10" spaceY="0" var="rateList">
+      <Box name="render">
+        <Clip clipsUrl="asset.carnival.bit20,asset.carnival.bit6"/>
+        <LabelEx text="1" x="2" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="89" height="18" name="rankTxt"/>
+        <Image skin="asset.carnival.bit7" x="93" y="0"/>
+        <LabelEx text="5%" x="94" y="7" color="0xb63800" size="12" bold="true" font="宋体" align="center" width="143" height="18" name="rateTxt"/>
+        <Clip x="31" y="2" clipsUrl="asset.carnival.bit39,asset.carnival.bit40,asset.carnival.bit41" name="rankClip"/>
+      </Box>
+    </List>
+  </Box>
+  <LabelEx text="注：大奖概率会随着参与人数和您的投资次数，排名等变化" x="715" y="514" size="12" bold="true" color="0xff9d63" stroke="0x6f0a08,1,4,4,30" multiline="true" wordWrap="true" width="227" height="37" leading="5"/>
+  <LabelEx text="X9999" x="134" y="506" font="arial" size="18" color="0xffffff" stroke="0xb72822,1,2,2,40" var="itemCountTxt"/>
+  <Button skin="asset.carnival.bit28" x="190" y="503" stateNum="1" var="exchangeBtn"/>
+  <Box x="303" y="100" var="drawBox">
+    <Image skin="asset.carnival.bit4"/>
+    <Box x="202" y="55" width="38" height="37" name="itemBox0"/>
+    <Box x="252" y="90" width="38" height="37" name="itemBox1"/>
+    <Box x="285" y="141" width="38" height="37" name="itemBox2"/>
+    <Box x="285" y="197" width="38" height="37" name="itemBox3"/>
+    <Box x="255" y="243" width="38" height="37" name="itemBox4"/>
+    <Box x="204" y="274" width="38" height="37" name="itemBox5"/>
+    <Box x="147" y="275" width="38" height="37" name="itemBox6"/>
+    <Box x="98" y="241" width="38" height="37" name="itemBox7"/>
+    <Box x="66" y="194" width="38" height="37" name="itemBox8"/>
+    <Box x="59" y="137" width="38" height="37" name="itemBox9"/>
+    <Box x="95" y="85" width="38" height="37" name="itemBox10"/>
+    <Box x="145" y="55" width="38" height="37" name="itemBox11"/>
+  </Box>
+  <Image skin="asset.carnival.bit42" y="435" x="302"/>
+  <Box x="449" y="235" width="100" height="100" var="zhizhenBox"/>
+  <Button skin="asset.carnival.bit9" x="455" y="286" stateNum="1" var="continueBtn"/>
+  <Button skin="asset.carnival.bit15" x="454" y="244" stateNum="1" width="90" height="42" var="startBtn"/>
+  <List x="64" y="389" repeatY="3" var="recordList" width="217" height="90">
+    <Box name="render" x="0" y="0">
+      <LabelEx color="0xfbf5e4" size="12" stroke="0xb72822,1,4,4,30" width="196" height="40" name="txt" x="0" y="0" multiline="true" wordWrap="true" leading="6"/>
+    </Box>
+    <VScrollBar skin="asset.carnival.vscroll" x="199" y="-1" width="16" height="90" sliderOffset="-1" name="scrollBar"/>
+  </List>
+  <LabelEx text="剩余抽奖次数：" x="436" y="477" color="0xffc9af" size="12" bold="true" stroke="0xb72822,1,4,4,30"/>
+  <LabelEx text="50" x="526" y="476" color="0xffc9af" size="12" bold="true" stroke="0xb72822,1,4,4,30" align="center" width="43" height="18" var="remainCountTxt"/>
+  <Image skin="asset.carnival.bit30" x="78" y="491" scale="0.7"/>
+  <Box x="109" y="265" var="turnBox1">
+    <Image skin="asset.carnival.bit2" width="53" height="53"/>
+  </Box>
+  <Box x="179" y="265" var="turnBox2">
+    <Image skin="asset.carnival.bit2" width="53" height="53"/>
+  </Box>
+  <Box x="89" y="146" var="poolBox">
+    <Image skin="asset.carnival.bit2" width="53" height="53"/>
+  </Box>
+  <LabelEx text="X99" x="150" y="159" font="arial" size="18" color="0xffffff" stroke="0xb72822,1,2,2,40" var="poolCountTxt"/>
+  <Button skin="asset.carnival.bit43" x="454" y="286" stateNum="1" var="stopBtn" labelBold="true"/>
+  <Button x="342" y="527" stateNum="1" var="checkBtn" checkButtonSkin="asset.carnival.bit32" selected="true" toggle="true"/>
+  <LabelEx text="接受幸运大奖直播" x="375" y="535" size="12" color="0xfff600" stroke="0xb72822,1,4,4,30" width="105" height="18" align="left" bold="false"/>
+  <LabelEx text="每充值1000点券可送一次抽奖次数" x="485" y="536" size="12" color="0xff9d63" stroke="0x6f0a08,1,4,4,30" width="216" height="18" align="left" bold="true"/>
+  <LabelEx text="活动时间" x="635" y="120" size="12" bold="true" color="0xff0000" stroke="0x390000,1,4,4,30" underline="true" mouseChildren="true" mouseEnabled="true" var="activeTimeTxt"/>
+</View>1CarnivalExchangeItem.xml�s<View width="434" height="78">
+  <Image skin="asset.carnival.bit24" x="0" y="0" sizeGrid="21,22,21,22" width="434" height="78"/>
+  <LabelEx text="需要" x="137" y="30" size="14" bold="true" color="0x8b5800"/>
+  <Image skin="asset.carnival.bit30" x="189" y="12" scale="0.7"/>
+  <LabelEx text="8000" x="252" y="30" size="16" bold="true" color="0xff2a00" var="needTxt"/>
+  <Button skin="asset.carnival.bit27" x="316" y="24" stateNum="1" var="exchangeBtn"/>
+  <Box x="18" y="9" var="cellBox">
+    <Image skin="asset.carnival.bit2" width="60" height="60"/>
+  </Box>
+</View>

@@ -1,0 +1,20 @@
+<Result value="true" message="Success!">
+  <Item ID="1" ItemID="11680" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="1" />
+  <Item ID="2" ItemID="11025" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="2" />
+  <Item ID="3" ItemID="11032" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="4" ItemID="11030" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="5" ItemID="11031" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="6" ItemID="11033" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="7" ItemID="40002" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="8" ItemID="11026" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="15" />
+  <Item ID="9" ItemID="11570" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="8" />
+  <Item ID="10" ItemID="11102" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="5" />
+  <Item ID="11" ItemID="112109" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="1" />
+  <Item ID="12" ItemID="8506" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="300" />
+  <Item ID="13" ItemID="8504" Type="2" NeedGold="0" NeedKey="-1" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="300" />
+  <Item ID="14" ItemID="13496" Type="1" NeedGold="5000" NeedKey="10000" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="0" />
+  <Item ID="15" ItemID="13368" Type="1" NeedGold="5000" NeedKey="10000" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="0" />
+  <Item ID="16" ItemID="11160" Type="1" NeedGold="2000" NeedKey="10000" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="0" />
+  <Item ID="17" ItemID="11161" Type="1" NeedGold="2000" NeedKey="10000" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="0" />
+  <Item ID="18" ItemID="11562" Type="1" NeedGold="5000" NeedKey="70000" Item1="-1" Item1Count="0" Item2="-1" Item2Count="0" Item3="-1" Item3Count="0" Item4="-1" Item4Count="0" GetKeys="0" />
+</Result>

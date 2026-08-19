@@ -1,0 +1,22 @@
+<Result value="true" message="Success!">
+  <Item ID="3001" Condition="200" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="0" TypeID="2" />
+  <Item ID="3002" Condition="500" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="0" TypeID="2" />
+  <Item ID="3003" Condition="1000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="0" TypeID="2" />
+  <Item ID="3004" Condition="2000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3005" Condition="5000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3006" Condition="15000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3007" Condition="30000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3008" Condition="50000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3009" Condition="100000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="3010" Condition="200000" Description="Nạp tích lũy {0} Xu nhận thưởng                   " RegetType="1" TypeID="2" />
+  <Item ID="4001" Condition="200" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="0" TypeID="3" />
+  <Item ID="4002" Condition="500" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="0" TypeID="3" />
+  <Item ID="4003" Condition="1000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4004" Condition="2000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4005" Condition="5000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4006" Condition="15000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4007" Condition="30000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4008" Condition="50000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4009" Condition="100000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+  <Item ID="4010" Condition="200000" Description="Tiêu tích lũy {0} Xu nhận thưởng                  " RegetType="1" TypeID="3" />
+</Result>

@@ -1,0 +1,235 @@
+
+3pet/PeakBattlePetItem.xml�!<View width="87" height="106">
+  <Image skin="asset.petsSystem.pro.petItemBg" x="7" y="18"/>
+  <Box x="0" y="79" width="76.8" height="16.2" var="starBox">
+    <Image skin="assets.petsSystem.star" scale="0.6" width="28" height="27" name="star0" x="0" y="0"/>
+    <Image skin="assets.petsSystem.star" x="15" scale="0.6" name="star1" y="0" width="28" height="27"/>
+    <Image skin="assets.petsSystem.star" x="30" scale="0.6" name="star2"/>
+    <Image skin="assets.petsSystem.star" x="45" scale="0.6" name="star3" y="0" width="28" height="27"/>
+    <Image skin="assets.petsSystem.star" x="60" scale="0.6" name="star4"/>
+  </Box>
+  <Image skin="assets.petsSystem.pro.outFightIcon" x="33" y="-2" var="img_outFight" visible="false"/>
+  <Image skin="asset.petsSystem.shine" x="0" y="9" width="82" height="76" name="selectBox" sizeGrid="10,10,10,10"/>
+  <Box x="8" y="20" width="62" height="55" var="petBox"/>
+  <Label x="11" y="19" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" width="34" height="18" align="center" var="levelTxt"/>
+</View>9pet/PeakBattlePetProView.xml�{<View width="437" height="182">
+  <Box x="0" y="3" width="200" height="172" var="box_petShow" mouseChildren="true" visible="true">
+    <Image skin="assets.petsSystem.Lv" x="7" y="144" width="31" height="18"/>
+    <Label x="37" y="143" var="lbl_grade" color="0xffd500" font="宋体" size="16" bold="true" align="left" width="30" height="18" stroke="0x633100,1,4,4,10"/>
+    <Button label="出戰" skin="asset.ui.btn_red9" x="128" y="5" stateNum="1" labelColors="0xfff3bc" labelSize="12" labelStroke="0x641a01,1,4,4,30" sizeGrid="39,13,39,13" var="battleBtn"/>
+    <Button label="召回" skin="asset.ui.btn_green5" x="128" y="4" stateNum="1" labelColors="0xfff3bc" labelSize="12" labelStroke="0x014b46,1,4,4,10" sizeGrid="39,13,39,13" var="notBattleBtn"/>
+    <Image skin="assets.petsSystem.star" x="3" y="8" width="28" height="27" scale="0.9" name="star0"/>
+    <Image skin="assets.petsSystem.star" x="23" y="8" width="28" height="27" scale="0.9" name="star1"/>
+    <Image skin="assets.petsSystem.star" x="43" y="8" width="28" height="27" scale="0.9" name="star2"/>
+    <Image skin="assets.petsSystem.star" x="63" y="8" width="28" height="27" scale="0.9" name="star3"/>
+    <Image skin="assets.petsSystem.star" x="83" y="8" width="28" height="27" scale="0.9" name="star4"/>
+    <Box x="60" y="144" var="proBox" mouseChildren="true">
+      <ProgressBarEx skin="asset.petsSystem.yellow.progress" value="0.5" var="curPetProgress"/>
+      <Label text="0" x="3" y="1" var="progressTxt" width="119" height="18" align="center" stroke="0x795618,1,4,4,30" font="12" color="0xfffce0"/>
+    </Box>
+    <PetsWashBoneGrade x="124" y="36" var="petsWashBoneGrade" runtime="peakBattle.room.PetsWashBoneGrade"/>
+  </Box>
+  <Box x="236" y="0">
+    <Label text="屬性" x="61" color="0xffcc00" stroke="0x3a372e,1,4,4,10" size="14" bold="true" y="0"/>
+    <Label text="成長" x="149" color="0xffcc00" stroke="0x3a372e,1,4,4,10" size="14" bold="true" y="0"/>
+    <Label x="151" y="31" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="HpAdd" text="6"/>
+    <Label x="150" y="66" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="attrckAdd" text="6"/>
+    <Label x="150" y="99" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="defendAdd" text="6"/>
+    <Label x="150" y="131" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="agileAdd" text="6"/>
+    <Label x="150" y="164" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="luckAdd" text="6"/>
+    <Box y="31" var="hpTipBox" tipStyle="ddt.view.tips.PetTxtTip" x="0" width="108" height="22">
+      <Label text="血量" y="3" color="0xffcc00" stroke="0x4f2000,1,4,4,30" size="12" bold="true"/>
+      <Label x="58" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="Hp" text="99"/>
+    </Box>
+    <Box y="66" var="attrackTipBox" tipStyle="ddt.view.tips.PetTxtTip">
+      <Label text="攻擊" y="2" color="0xffcc00" stroke="0x4f2000,1,4,4,30" size="12" bold="true"/>
+      <Label x="58" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="attrck" text="99"/>
+    </Box>
+    <Box y="99" var="defendTipBox" tipStyle="ddt.view.tips.PetTxtTip">
+      <Label text="防禦" y="2" color="0xffcc00" stroke="0x4f2000,1,4,4,30" size="12" bold="true"/>
+      <Label x="59" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="defend" text="99"/>
+    </Box>
+    <Box y="131" var="agileTipBox" tipStyle="ddt.view.tips.PetTxtTip">
+      <Label text="敏捷" y="2" color="0xffcc00" stroke="0x4f2000,1,4,4,30" size="12" bold="true"/>
+      <Label x="59" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="agile" text="99"/>
+    </Box>
+    <Box y="164" var="luckTipBox" tipStyle="ddt.view.tips.PetTxtTip">
+      <Label text="幸運" y="1" color="0xffcc00" stroke="0x4f2000,1,4,4,30" size="12" bold="true"/>
+      <Label x="58" color="0xfff6c9" stroke="0x6f5100,1,4,4,30" size="14" bold="true" width="50" height="18" align="center" var="luck" text="99"/>
+    </Box>
+  </Box>
+  <Label x="3" y="-29" color="0xffcc00" stroke="0x130f0a,1,4,4,10" size="14" bold="true" var="PetName" text="此处节节高"/>
+</View>=room/PeakBattleRoomProView.xml�?<View width="206" height="229">
+  <Image skin="asset.peakBattle.rightProBg" x="0" y="0"/>
+  <List x="13" y="40" repeatX="2" repeatY="6" spaceX="7" var="list" spaceY="8">
+    <Box name="render">
+      <LabelEx text="攻击 :" size="13" color="0xff9000" stroke="0x000000,1,2,2,10" name="proName" align="center" autoSize="none" wordWrap="true" width="39" asPassword="false"/>
+      <Image skin="asset.peakBattle.inputBg" x="39" sizeGrid="12,9,12,9" width="46" height="20"/>
+      <LabelEx text="999999" x="41" y="1" size="12" color="0xffda92" stroke="0x000000,1,2,2,10" align="center" width="42" height="18" name="proTxt"/>
+    </Box>
+  </List>
+  <Button skin="asset.peakBattle.changeBtn" x="135" y="6" stateNum="1" var="setBtn"/>
+</View>=pet/PeakBattlePetSkillView.xml�<View width="475" height="154">
+  <Image skin="asset.petsSystem.pro.skillBg" x="0" y="0"/>
+  <Button label="更換" skin="asset.ui.btn_red9" x="181" y="13" stateNum="1" labelColors="0xfff3bc" labelSize="12" labelStroke="0x641a01,1,4,4,30" sizeGrid="39,13,39,13" width="50" height="22" var="exchangeSkillBtn"/>
+  <Button label="更換" skin="asset.ui.btn_red9" x="410" y="12" stateNum="1" labelColors="0xfff3bc" labelSize="12" labelStroke="0x641a01,1,4,4,30" sizeGrid="39,13,39,13" width="50" height="22" var="exchangeTalentSkillBtn"/>
+  <List x="14" y="37" repeatX="4" repeatY="2" spaceX="5" var="petSkillList">
+    <PeakBattlePetSkillItem name="render" runtime="peakBattle.room.PeakBattlePetSkillItem"/>
+  </List>
+  <List x="245" y="36" repeatX="4" repeatY="2" spaceX="5" var="petTalentSkillList">
+    <PeakBattlePetSkillItem name="render" runtime="peakBattle.room.PeakBattlePetTalentItem"/>
+  </List>
+</View>/view/PeakBattleMain.xml�<View width="1009" height="622">
+  <Image skin="asset.peakBattle.bg" x="0" y="-1"/>
+  <Button skin="asset.peakBattle.battleBtn" x="412" y="515" stateNum="1" var="goBattleBtn"/>
+  <TabListEx y="93" var="viewTab" x="687">
+    <TabButtonEx skin="asset.peakBattle.rankUnSelectedBtn1,asset.peakBattle.rankSelectedBtn1" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" bgSizeGrid="20,15,20,15" y="0" x="0"/>
+    <TabButtonEx skin="asset.peakBattle.rewardUnSelectedBtn,asset.peakBattle.rewardSelectedBtn" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" x="117" y="0" width="117" height="36" rects="8,0,0,0|0,0,0,0"/>
+  </TabListEx>
+  <Image skin="asset.peakBattle.myRankImg" x="648" y="554"/>
+  <Image skin="asset.peakBattle.myScoreImg" x="806" y="554"/>
+  <Image skin="asset.peakBattle.myRankAndScoreBg" x="726" y="545" sizeGrid="21,,19,21,19" width="82" height="40"/>
+  <LabelEx text="1" x="735" y="556" width="62" height="18" size="14" bold="true" color="0xfffad0" align="center" var="myRankTxt"/>
+  <Image skin="asset.peakBattle.myRankAndScoreBg" x="884" y="546" sizeGrid="21,,19,21,19" width="82" height="40"/>
+  <LabelEx text="0" x="896" y="557" width="62" height="18" size="14" bold="true" color="0xfffad0" align="center" var="myScoreTxt"/>
+  <Image skin="asset.peakBattle.line" x="644" y="125" width="328" height="20"/>
+  <PeakBattleReward x="651" y="133" var="rewardView" runtime="peakBattle.view.PeakBattleReward"/>
+  <PeakRankTab x="651" y="131" var="rankView" runtime="peakBattle.view.PeakBattleRankTab"/>
+  <Button skin="asset.ui.btn_close10" x="952" y="44" stateNum="1" var="closeBtn"/>
+</View>)view/PeakRankTab.xml�a<View width="316" height="410">
+  <Image skin="asset.peakBattle.rightViewBg" x="0" y="0" sizeGrid="49,60,49,18" width="316" height="410"/>
+  <LabelEx text="排名" x="23" y="16" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30"/>
+  <Image skin="asset.peakBattle.listLine" x="71" y="12"/>
+  <Image skin="asset.peakBattle.listLine" x="158" y="11" width="2" height="25"/>
+  <Image skin="asset.peakBattle.listLine" x="238" y="11"/>
+  <List x="13" y="47" repeatY="10" spaceY="5" var="rankList">
+    <Box name="render">
+      <Image skin="asset.peakBattle.rankListBg" sizeGrid="9,8,9,8" width="290" height="30"/>
+      <Clip x="5" y="2" clipsUrl="asset.peakBattle.peakRank1,asset.peakBattle.peakRank2,asset.peakBattle.peakRank3" index="0" name="rankClip"/>
+      <LabelEx text="1" x="13" y="5" align="center" size="16" color="0xfff5a2" bold="true" stroke="0xb95a1a,1,4,4,30" width="32" height="18" name="rankTxt"/>
+      <LabelEx text="这里有几个字" x="62" y="7" align="center" size="12" color="0x80400b" bold="true" width="84" height="18" name="nickNameTxt"/>
+      <Image skin="asset.peakBattle.listLine" x="60" y="2"/>
+      <Image skin="asset.peakBattle.listLine" x="147" y="2"/>
+      <LabelEx text="4399_520区" x="148" y="8" align="center" size="12" color="0x80400b" bold="true" width="79" height="18" name="areaTxt" mouseChildren="true" mouseEnabled="true" tipStyle="ddt.view.tips.OneLineTip"/>
+      <Image skin="asset.peakBattle.listLine" x="227" y="2"/>
+      <LabelEx text="5000" x="230" y="8" align="center" size="12" color="0x80400b" bold="true" width="60" height="18" name="scoreTxt"/>
+    </Box>
+  </List>
+  <LabelEx text="昵稱" x="81" y="16" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30"/>
+  <LabelEx text="區服" x="174" y="15" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30"/>
+  <LabelEx text="積分" x="255" y="15" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30"/>
+</View>3pet/PetsWashBoneGrade.xml�i<View width="74" height="43">
+  <Image skin="asset.petsSystem.washBone.levBg"/>
+  <Clip x="10" y="4" index="0" var="clip_grade" clipsUrl="asset.petsSystem.washBone.lev$1,asset.petsSystem.washBone.lev$2,asset.petsSystem.washBone.lev$3,asset.petsSystem.washBone.lev$4,asset.petsSystem.washBone.lev$5"/>
+</View>3view/PeakBattleReward.xml�Q<View width="316" height="414">
+  <TabListEx y="0" var="viewTab" x="3">
+    <TabButtonEx skin="asset.peakBattle.rankUnSelectedBtn2,asset.peakBattle.rankSelectedBtn2" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" rects="0,4,0,0|0,0,0,0" mouseEnabled="true"/>
+    <TabButtonEx skin="asset.peakBattle.scoreRewardUnSelectedBtn,asset.peakBattle.scoreRewardSelectedBtn" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" bgSizeGrid="20,15,20,15" x="106" width="102" height="36" rects="0,4,0,0|-3,0,0,0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" bgSizeGrid="20,15,20,15" x="212" width="102" height="36" skin="asset.peakBattle.breakRewardUnSelectedBtn,asset.peakBattle.breakRewardSelectedBtn" rects="0,4,0,0|-3,0,0,0"/>
+  </TabListEx>
+  <Image skin="asset.peakBattle.rightViewBg" x="0" y="30" sizeGrid="49,60,49,18" width="316" height="384"/>
+  <LabelEx text="排名" x="9" y="46" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30" var="titleTxt" width="99" height="18" align="center"/>
+  <Image skin="asset.peakBattle.listLine" x="111" y="42"/>
+  <LabelEx text="獎勵" x="183" y="46" size="14" bold="true" color="0xffffff" stroke="0xa57638,1,4,4,30"/>
+  <List x="14" y="75" repeatY="10" spaceY="3" var="rankRewardList">
+    <Box name="render">
+      <Image skin="asset.peakBattle.rankListBg" sizeGrid="9,8,9,8" width="290" height="30"/>
+      <LabelEx text="1000-2000" x="5" y="4" align="center" size="16" color="0xfff5a2" bold="true" stroke="0xb95a1a,1,4,4,30" width="89" height="18" name="textTxt"/>
+      <Image skin="asset.peakBattle.listLine" x="99" y="2" width="2" height="25"/>
+      <Box x="104" y="4" width="176" height="21" name="rewardBox"/>
+    </Box>
+  </List>
+  <List x="14" y="75" repeatY="10" spaceY="3" var="breakRewardList">
+    <Box name="render">
+      <Image skin="asset.peakBattle.rankListBg" sizeGrid="9,8,9,8" width="290" height="30"/>
+      <LabelEx text="1000-2000" x="5" y="4" align="center" size="16" color="0xfff5a2" bold="true" stroke="0xb95a1a,1,4,4,30" width="89" height="18" name="textTxt"/>
+      <Image skin="asset.peakBattle.listLine" x="99" y="2" width="2" height="25"/>
+      <Box x="104" y="4" width="176" height="21" name="rewardBox"/>
+    </Box>
+  </List>
+  <List x="14" y="75" repeatY="10" spaceY="3" var="scoreRewardList">
+    <Box name="render">
+      <Image skin="asset.peakBattle.rankListBg" sizeGrid="9,8,9,8" width="290" height="30"/>
+      <LabelEx text="1000-2000" x="5" y="4" align="center" size="16" color="0xfff5a2" bold="true" stroke="0xb95a1a,1,4,4,30" width="89" height="18" name="textTxt"/>
+      <Image skin="asset.peakBattle.listLine" x="99" y="2" width="2" height="25"/>
+      <Box x="104" y="4" width="176" height="21" name="rewardBox"/>
+    </Box>
+  </List>
+</View>Apet/PeakBattlePetSkillChange.xml�<View width="386" height="302">
+  <Image skin="asset.ui.frame.bg2" x="1" y="0" sizeGrid="25,50,25,50" width="386" height="302"/>
+  <Button skin="asset.ui.btn_close1" x="322" y="7" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="22" y="44" sizeGrid="5,5,5,5," width="322" height="236"/>
+  <List x="20" y="46" repeatY="3" repeatX="4" width="350" height="223" spaceX="-3" spaceY="-5" var="selectList">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="326" y="-2" name="scrollBar" width="18" height="228"/>
+    <PeakBattlePetSkillSelect x="0" y="0" name="render" runtime="peakBattle.room.PeakBattlePetSkillSelect"/>
+  </List>
+  <Label x="18" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title"/>
+</View>=pet/PeakBattlePetSkillItem.xml�M<View width="49" height="53">
+  <Image skin="asset.petsSystem.skillItemBg" x="1" y="7"/>
+  <Image skin="asset.petsSystem.addSkill" x="7" y="14" var="addImg"/>
+  <Label text="暫未\n開啟" x="0" y="13" color="0x69492f" stroke="0xbc9c82,1,2,2,10" size="12" bold="false" width="49" align="center" var="labelTxt" wordWrap="true" multiline="true"/>
+  <Box x="0" y="6" width="46" height="46" var="skillBox"/>
+  <Label text="Q" x="31" y="0" color="0x000000" stroke="0xffffff,1,2,2,10" size="14" bold="false" width="18" height="16" align="right" var="skillPos" wordWrap="false" multiline="true" visible="false"/>
+</View>Cpet/PeakBattlePetTalentChange.xml�<View width="386" height="302">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="386" height="302"/>
+  <Button skin="asset.ui.btn_close1" x="321" y="7" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="21" y="44" sizeGrid="5,5,5,5," width="322" height="236"/>
+  <List x="19" y="46" repeatY="3" repeatX="4" width="350" height="223" spaceX="-3" spaceY="-5" var="selectList">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="326" y="-2" name="scrollBar" width="18" height="228"/>
+    <PeakBattlePetSkillSelect x="0" y="0" name="render" runtime="peakBattle.room.PeakBattlePetTalentSelect"/>
+  </List>
+  <Label x="18" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title"/>
+</View>;room/PeakBattleSetProView.xml�}<View width="414" height="214">
+  <Image skin="asset.peakBattle.setProBg" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close6" x="377" y="-15" stateNum="1" var="closeBtn"/>
+  <Button label="確定" skin="asset.ui.btn_red10" x="309" y="59" stateNum="1" sizeGrid="24,11,24,11" width="60" height="25" labelColors="0xfff6a8" labelStroke="0x76251e,1,4,4,30" var="firstSetBtn"/>
+  <Button label="重置" skin="asset.ui.btn_green1" x="309" y="85" stateNum="1" sizeGrid="24,11,24,11" width="60" height="25" labelColors="0xfff6a8" labelStroke="0x204103,1,4,4,30" var="firstResetBtn"/>
+  <Label text="0" x="132" y="36" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" width="53" height="18" align="left" var="firstCount"/>
+  <Label text="0" x="165" y="134" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" width="53" height="18" align="left" var="secondCount"/>
+  <CheckBox label="百倍加點" x="285" y="30" checkButtonSkin="asset.ui.btn_check3" stateNum="1" var="tenBtn1" labelColors="0xffa862" labelStroke="0x572a09,1,4,4,30" labelMargin="0,2" toggle="true"/>
+  <CheckBox label="百倍加點" x="285" y="126" checkButtonSkin="asset.ui.btn_check3" stateNum="1" var="tenBtn2" labelColors="0xffa862" labelStroke="0x572a09,1,4,4,30" labelMargin="0,2" toggle="true"/>
+  <List x="12" y="62" var="firstProList" repeatX="2" repeatY="2" spaceX="5" spaceY="5">
+    <PeakBattleProItem name="render" runtime="peakBattle.room.PeakBattleProItem"/>
+  </List>
+  <List x="12" y="158" var="secondProList" repeatX="2" repeatY="2" spaceX="5" spaceY="5">
+    <PeakBattleProItem name="render" runtime="peakBattle.room.PeakBattleProItem"/>
+  </List>
+</View>5room/PeakBattleProItem.xml�<View width="140" height="20">
+  <Label text="攻击:" y="1" color="0xffa862" stroke="0x572a09,1,4,4,30" x="2" var="proNameTxt"/>
+  <Image skin="asset.peakBattle.inputBg" x="48" sizeGrid="12,9,12,9" width="92" height="20" y="0"/>
+  <Label text="0" x="50" y="1" color="0xfffc00" stroke="0x572a09,1,4,4,30" size="12" bold="false" width="53" height="18" align="center" var="proCount"/>
+  <Button skin="asset.peakBattle.addBtn" x="100" stateNum="1" width="19" height="20" y="0" var="addBtn"/>
+  <Button skin="asset.peakBattle.deleteBtn" x="119" stateNum="1" y="0" var="deleteBtn"/>
+</View>?room/PeakBattleSkillSetView.xml�'<View width="208" height="228">
+  <Image skin="asset.peakBattle.setSkillBg" x="0" y="0"/>
+  <List x="18" y="19" repeatX="3" repeatY="4" spaceX="5" spaceY="5" width="172" height="195" var="skillList">
+    <Box name="render">
+      <Image skin="asset.peakBattle.inputBg" sizeGrid="12,9,12,9" width="45" height="45"/>
+    </Box>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="154" y="3" width="18" height="192" name="scrollBar"/>
+  </List>
+  <Button skin="asset.ui.btn_close6" x="174" y="-16" stateNum="1" var="closeBtn"/>
+</View>Apet/PeakBattlePetSkillSelect.xml�-<View width="83" height="79">
+  <Image skin="asset.petsSystem.skillItemBg" x="7" y="7" sizeGrid="22,22,22,22" width="67" height="67" var="bg"/>
+  <Box x="11" y="11" width="67" height="67" var="skillBox"/>
+  <Image skin="asset.petsSystem.shine" x="0" y="0" sizeGrid="28,14,28,14" height="79" width="83" var="shineImg"/>
+  <Button label="裝備" skin="asset.ui.btn_yellow4" x="6" y="40" stateNum="1" labelColors="0xfff3bc" labelSize="12" labelStroke="0x714108,1,4,4,10" sizeGrid="39,13,39,13" var="equipBtn"/>
+  <Button label="卸下" skin="asset.ui.btn_blue2" x="7" y="43" stateNum="1" labelColors="0xfff6a8" labelSize="12" labelStroke="0x005573,1,4,4,30" sizeGrid="43,12,43,12" var="giveupBtn" width="70" height="31"/>
+</View>9pet/PeakBattlePetSetView.xml�'<View width="648" height="554">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="0" y="0" width="648" height="554"/>
+  <Button skin="asset.ui.btn_close1" x="584" y="6" stateNum="1" var="btn_close"/>
+  <Label text="寵物系統" x="21" y="11" color="0xffeebf" size="16" bold="true" stroke="0x442006,1,4,4,30" letterSpacing="1"/>
+  <TabListEx x="23" y="45">
+    <TabButtonEx skin="asset.core.btmc004|asset.petsSystem.property.unSelectedTxt,asset.core.btmc005|asset.petsSystem.property.selectedTxt" x="0" y="0" bgSizeGrid="15,15,15,15" rects="10,2,100,38|20,9,0,0|0,0,120,40|16,9,0,0" width="120" height="40" selected="true" name="item0"/>
+  </TabListEx>
+  <Image skin="asset.petsSystem.pro.bg" x="19" y="84"/>
+  <PageNavigaterEx x="23" y="491" var="page_petsBag" type="simple" pageNumBgSize="4,4,4,4,1" pageNumSize="50,22" pageNumAlign="center" isLoop="true" width="160" prevButtonStyle="asset.petsSystem.leftBtn" nextButtonStyle="asset.petsSystem.rightBtn" pageNumBgStyle="asset.petsSystem.pageBg" pageNumStyle="宋体,12,0xfff8d6" pageNumStroke="0x5a3638,1,4,4,10"/>
+  <Image skin="asset.petsSystem.line" x="39" y="192"/>
+  <Image skin="asset.petsSystem.line" x="39" y="288"/>
+  <Image skin="asset.petsSystem.line" x="38" y="383"/>
+  <PeakBattlePetProView x="159" y="132" runtime="peakBattle.room.PeakBattlePetProView" var="proView"/>
+  <PeakBattlePetSkillView x="145" y="357" runtime="peakBattle.room.PeakBattlePetSkillView" var="skillView"/>
+  <List x="39" y="90" var="pageList" repeatY="4" spaceY="-10">
+    <PeakBattlePetItem name="render" runtime="peakBattle.room.PeakBattlePetItem"/>
+  </List>
+</View>

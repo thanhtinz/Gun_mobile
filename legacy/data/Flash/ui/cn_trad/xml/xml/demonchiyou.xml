@@ -1,0 +1,235 @@
+<style name="demonchiyou" version="1.0.1" source="ui/cn_trad/swf/demonchiyou.swf">
+	<sets>
+		<set stylename="demonChiYou.consortiaNameTf.format" args="Arial,12,0x74faff,,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.leftTimeTf.format" args="Arial,12,0xffcc52" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rollTipTf.format" args="Arial,12,0xff1800,true,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.selectItemNameTf.format" args="Arial,12,0xffdd94" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.selectItemRollCostTf.format" args="Arial,12,0xfdba2b,,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardResultItemGoodNameTf.format" args="Arial,12,0xefc255" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardResultItemTopPointTf.format" args="Arial,12,0xf3e4c3" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardTotalInfoTf.format" args="Arial,14,0xfff1bf,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardTotalNumTf.format" args="Arial,12,0xfff2b2,true,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardTotalMoneyTf.format" args="Arial,14,0xfff1bf,true,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardItem.goodNameTf.format" args="Arial,16,0xfcdb93,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardItem.goodOrglCostTf.format" args="Arial,14,0xfcdb93,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="demonChiYou.rewardBuyCardItem.goodDisCountCostTf.format" args="Arial,14,0xff9c00,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		
+		<set stylename="demonChiYou.consortiaNameTf.filter" args="0x1a0903,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.leftTimeTf.filter" args="0x3a1208,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rollTipTf.filter" args="0xfffdfc,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.selectItemNameTf.filter" args="0x281310,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.selectItemRollCostTf.filter" args="0x281300,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardResultItemGoodNameTf.filter" args="0x1f0804,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardResultItemOwnerNameTf.filter" args="0x1f0804,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardResultItemTopPointTf.filter" args="0x1f0804,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardBuyCardTotalInfoTf.filter" args="0x632f00,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardBuyCardTotalNumTf.filter" args="0x8b0000,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardBuyCardItem.goodNameTf.filter" args="0x553609,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.rewardBuyCardItem.goodDisCountCostTf.filter" args="0x3e1d05,1,4,4,10" type="flash.filters.GlowFilter"/>
+		
+		
+		<set stylename="demonChiYou.ranking.numTF" args="Arial,14,0xFFFFFF,,,,,,center" type="flash.text.TextFormat" />
+		<set args="0x000000,1,2,2,10" stylename="demonChiYou.ranking.filter" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.ranking.numTFII" args="Arial,12,0xFFFFFF,,,,,,center" type="flash.text.TextFormat" />
+		<set args="0x4b270d,2,2,2,10" stylename="demonChiYou.ranking.filterII" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.ranking.numTitleTF" args="Arial,14,0xffea9c,true,,,,,center" type="flash.text.TextFormat" />
+		<set args="0x4f3700,2,2,2,10" stylename="demonChiYou.ranking.numTitleTFfilter" type="flash.filters.GlowFilter"/>
+		<set stylename="demonChiYou.ranking.sure" args="Arial,20,0xfff1b0,true,,,,,center" letterSpacing="10" type="flash.text.TextFormat" />
+		<set stylename="demonChiYou.ranking.sureGF" args="0x771c00,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		
+		  <set stylename="demonChiYou.totalInfo.timeTF" args="Arial,13,0xfff4c6,,,,,,center" type="flash.text.TextFormat" />
+		  <set stylename="demonChiYou.totalInfo.timeTxtTF" args="Arial,13,0xffffff,,,,,,left" type="flash.text.TextFormat" />
+		  <set args="0x000000,1,2,2,10" stylename="demonChiYou.ranking.filter" type="flash.filters.GlowFilter"/>
+		    <set stylename="demonChiYou.totalInfo.yourselfTF" args="Arial,13,0xff9933,,,,,,left" type="flash.text.TextFormat" />
+   <set stylename="demonChiYou.totalInfo.selfHonorTF" args="Arial,13,0xff0000,,,,,,left" type="flash.text.TextFormat" />
+     <set stylename="demonChiYou.rankingTxt.No1TF" args="Arial,13,0xfff880,,,,,,left" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.No2TF" args="Arial,13,0x0ec1d6,,,,,,left" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.No3TF" args="Arial,13,0x12b806,,,,,,left" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.NoOtherTFLeft" args="Arial,13,0xffffff,,,,,,left" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.No11TF" args="Arial,13,0xfff880,,,,,,right" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.No12TF" args="Arial,13,0x0ec1d6,,,,,,right" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.No13TF" args="Arial,13,0x12b806,,,,,,right" type="flash.text.TextFormat"/>
+  <set stylename="demonChiYou.rankingTxt.NoOtherTFRight" args="Arial,13,0xffffff,,,,,,right" type="flash.text.TextFormat"/>
+	</sets>
+	
+	<customDisplay>
+			<custom classname="flash.geom.Point" stylename="demonChiYou.selectItemGoodPos" x="4" y="4"/>	
+			<custom classname="flash.geom.Point" stylename="demonChiYou.selectItemDicePos" x="159" y="10"/>
+			<custom classname="flash.geom.Point" stylename="demonChiYou.numMC.pos"  x="-50" y="0" />
+			<custom classname="flash.geom.Point" stylename="demonChiYou.rewardBuyCardRankPos1" x="285" y="44"/>
+			<custom classname="flash.geom.Point" stylename="demonChiYou.rewardBuyCardRankPos2" x="226" y="70"/>
+			<custom classname="flash.geom.Point" stylename="demonChiYou.rewardBuyCardItemGoodPos" x="11" y="11"/>
+			<custom classname="starling.scene.hall.SceneMapGridData" stylename="demonChiYou.map.SceneMapGridData" numX="40"  numY="47"  mapId="2" bgImageW="2500" bgImageH="1500" cellW="64" cellH="32"
+	gridsType="[[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]]" />
+	</customDisplay>
+	
+	<components>
+		<component classname="demonChiYou.view.DemonChiYouRewardSelectFrame" stylename="demonChiYou.DemonChiYouRewardSelectFrame" parentStyle="BaseFrame" 
+			closestyle="core.roundClosebt"  backStyle="DemonChiYou.Pic1" escEnable="true" width="694" height="494" closeInnerRectString="30,-8,33,30,14"/>
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.rewardBox1" 
+			resourceLink="DemonChiYou.Pic2"  x="141"  y="60"/>
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.rewardBox2" 
+			resourceLink="DemonChiYou.Pic3"  x="303"  y="60"/>	
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.rewardBox3" 
+			resourceLink="DemonChiYou.Pic4"  x="454"  y="66"/>
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.rewardBox4" 
+			resourceLink="DemonChiYou.Pic11"  x="592"  y="77"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.consortiaNameTf1" textFormatStyle="demonChiYou.consortiaNameTf.format"
+			filterString="demonChiYou.consortiaNameTf.filter" autoSize="none" x="103"  y="150" width ="152" height ="22" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.consortiaNameTf2" textFormatStyle="demonChiYou.consortiaNameTf.format"
+			filterString="demonChiYou.consortiaNameTf.filter" autoSize="none" x="262"  y="150" width ="152" height ="22" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.consortiaNameTf3" textFormatStyle="demonChiYou.consortiaNameTf.format"
+			filterString="demonChiYou.consortiaNameTf.filter" autoSize="none" x="413"  y="150" width ="152" height ="22" />
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.leftTimeImage" 
+			resourceLink="DemonChiYou.Pic13"  x="220"  y="183"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.leftTimeTf" textFormatStyle="demonChiYou.leftTimeTf.format"
+			filterString="demonChiYou.leftTimeTf.filter" x="556"  y="182" />	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rollTipTf" textFormatStyle="demonChiYou.rollTipTf.format"
+			filterString="demonChiYou.rollTipTf.filter" x="242"  y="201" />		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.selectItemNameTf" textFormatStyle="demonChiYou.selectItemNameTf.format"
+			filterString="demonChiYou.selectItemNameTf.filter" x="66"  y="26" />	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.selectItemRollCostTf" textFormatStyle="demonChiYou.selectItemRollCostTf.format"
+			filterString="demonChiYou.selectItemRollCostTf.filter" x="152"  y="43" />		
+			
+			
+			
+		<component classname="demonChiYou.view.DemonChiYouRewardResultFrame" stylename="demonChiYou.DemonChiYouRewardResultFrame" parentStyle="BaseFrame" 
+			closestyle="core.roundClosebt"  backStyle="DemonChiYou.Pic20" escEnable="true" width="694" height="494" closeInnerRectString="30,-8,33,30,14"/>	
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.resultTitleImage" 
+			resourceLink="DemonChiYou.Pic15"  x="194"  y="52"/>		
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.resultTitleLostImage" 
+			resourceLink="DemonChiYou.Pic5"  x="267"  y="52"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardResultItemGoodNameTf" textFormatStyle="demonChiYou.rewardResultItemGoodNameTf.format"
+			filterString="demonChiYou.rewardResultItemGoodNameTf.filter" x="14"  y="-3" />		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardResultItemOwnerNameTf"  textFormatStyle="demonChiYou.rewardResultItemTopPointTf.format"
+			filterString="demonChiYou.rewardResultItemOwnerNameTf.filter" x="120"  y="-3" />			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardResultItemTopPointTf" textFormatStyle="demonChiYou.rewardResultItemTopPointTf.format"
+			filterString="demonChiYou.rewardResultItemTopPointTf.filter" x="311"  y="-3" />		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardResultItemMyPointTf" textFormatStyle="demonChiYou.rewardResultItemTopPointTf.format"
+			filterString="demonChiYou.rewardResultItemTopPointTf.filter" x="411"  y="-3" />	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardResultItemCongratulateTf" textFormatStyle="demonChiYou.rewardResultItemTopPointTf.format"
+			filterString="demonChiYou.rewardResultItemTopPointTf.filter" x="506"  y="-3" />		
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.rewardResultItemHasBuy" 
+			resourceLink="DemonChiYou.Pic6"  x="66"  y="-14"/>		
+			
+		<component classname="demonChiYou.view.DemonChiYouRewardBuyCardFrame" stylename="demonChiYou.DemonChiYouRewardBuyCardFrame" parentStyle="BaseFrame" escEnable='true' backStyle="ddtshop.CheckoutViewFrameBg" width="423" height="542"></component>	
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="demonChiYou.CheckOutViewBg" parentStyle="core.ddtshop.CheckOutViewBg" x="18" y="100" width="386" height="300"></component>
+		<component classname="com.pickgliss.ui.controls.ScrollPanel"
+			stylename="demonChiYou.rewardBuyCard.scrollPanel" parentStyle="core.ScrollPanel"
+			hScrollProxy="2" vScrollProxy="1" width="374" height="286" x="25" y="107" vUnitIncrement="45" />	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardTotalInfoTf" textFormatStyle="demonChiYou.rewardBuyCardTotalInfoTf.format"
+			filterString="demonChiYou.rewardBuyCardTotalInfoTf.filter" x="38"  y="423" />	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardTotalNumTf" textFormatStyle="demonChiYou.rewardBuyCardTotalNumTf.format"
+			filterString="demonChiYou.rewardBuyCardTotalNumTf.filter" autoSize="none" x="61"  y="425" width ="42" height ="22" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardTotalMoneyTf" textFormatStyle="demonChiYou.rewardBuyCardTotalMoneyTf.format"
+			filterString="demonChiYou.rewardBuyCardTotalInfoTf.filter" autoSize="none" x="268"  y="423" width ="74" height ="22" />
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="demonChiYou.rewardBuyCard.TotalMoneyPanel.InputBg" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG"  x="267" y="418" width="74" height="28"></component>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="demonChiYou.rewardBuyCard.commitBtn" parentStyle="ddtshop.PurchaseBtn" x="134" y="472" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.TotalMoneyPanelBg" parentStyle="ddtshop.CheckOutViewBg1" x="18" y="404" width="386" height="60"></component>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="demonChiYou.rewardBuyCard.CartItemBg" parentStyle="core.goldlinebg" width="351" height="80" />
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="demonChiYou.rewardBuyCard.goldline" resourceLink="asset.ddtcore.line" rotation="90" width="80" x="204" y ="0"></component>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="demonChiYou.rewardBuyCard.ItemCellBg" parentStyle="core.GoodItemCellBg" x="7" y="7" width="68" height="68" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="demonChiYou.rewardBuyCard.CartItemCloseBtn" backStyle="core.smallClosebt" filterString="null,lightFilter,null,grayFilter" x="323" y="3" />
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardItem.goodNameTf" textFormatStyle="demonChiYou.rewardBuyCardItem.goodNameTf.format"
+			filterString="demonChiYou.rewardBuyCardItem.goodNameTf.filter"  x="79"  y="29" />
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardItem.goodOrglCostTf" textFormatStyle="demonChiYou.rewardBuyCardItem.goodOrglCostTf.format"
+			filterString="demonChiYou.rewardBuyCardItem.goodNameTf.filter"  x="226"  y="18" />	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="demonChiYou.rewardBuyCardItem.goodDisCountCostTf" textFormatStyle="demonChiYou.rewardBuyCardItem.goodDisCountCostTf.format"
+			filterString="demonChiYou.rewardBuyCardItem.goodDisCountCostTf.filter"  x="226"  y="44" />	
+
+						
+			
+		<!-- 排行榜 -->
+		<component classname="demonChiYou.view.WorldBossRankingFram" backStyle="demonChiYou.rankingFrame.SimpleFrameBackgound" stylename="demonChiYou.ranking.frame" closestyle="core.closebt" closeInnerRectString="44,6,3,30,14" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="7,9,5" width="400" height="480" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.rankingFrame.SimpleFrameBackgound" parentStyle="SimpleFrameBackgoundOneIII" imageRectString=",17|17|50|17|4,"/>
+		<custom classname="flash.geom.Point" stylename="demonChiYou.ranking.itemPos" x="25" y="32" />
+		
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.ranking.frameBg" resourceLink="core.bg006"/>
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="demonChiYou.ranking.btn" backStyle="core.bg6899"  width="120" height="40" x="127" y="420" textStyle="demonChiYou.ranking.btnText" backgoundInnerRectString="27,55,6,12,-1"  filterString="null,lightFilter,lightFilter,grayFilter" />
+    	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.btnText" textFormatStyle="demonChiYou.ranking.sure" filterString="demonChiYou.ranking.sureGF" autoSize="none" width="100" height="24" x="0" y="0"/>
+    	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.num" textFormatStyle="demonChiYou.ranking.numTF" autoSize="none" x="0" y="6"  height="24" width="60" filterString="demonChiYou.ranking.filter"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.name" textFormatStyle="demonChiYou.ranking.numTF" autoSize="none" x="69"  y="6" height="24" width="140" filterString="demonChiYou.ranking.filter"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.damage" textFormatStyle="demonChiYou.ranking.numTFII"  autoSize="none" x="208" y="8"  height="24" width="140"  filterString="demonChiYou.ranking.filterII"/>
+	
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYou.RankingItem.bg"  resourceLink="demonChiYou.RankingItem.ScaleLeftRightImage2,demonChiYou.RankingItem.ScaleLeftRightImage3" />
+		<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="demonChiYou.RankingItem.ScaleLeftRightImage2" resourceLink="asset.core.ScaleLeftRightImage2.1,asset.core.ScaleLeftRightImage2.2,asset.core.ScaleLeftRightImage2.3" width="350" height="25" />
+		<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="demonChiYou.RankingItem.ScaleLeftRightImage3" resourceLink="asset.core.ScaleLeftRightImage3.1,asset.core.ScaleLeftRightImage3.2,asset.core.ScaleLeftRightImage3.3" width="350" height="25" />	
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.RankingItem.bgLine" resourceLink="demonChiYou.RankingItem.VlineI,demonChiYou.RankingItem.VlineII" x="51" y="3"/>
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.RankingItem.VlineI" resourceLink="asset.corel.formLineBig" x="41" y="46"/>
+		<component classname="com.pickgliss.ui.image.Image" stylename="demonChiYou.RankingItem.VlineII" parentStyle="demonChiYou.RankingItem.VlineI" x="182"/>
+		<component classname="com.pickgliss.ui.image.MovieImage" stylename="demonChiYou.RankingFrame.RankingTitleBg" resourceLink="worldboss.rankingList.bg" x="21" y="45"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="demonChiYou.ranking.numTitle" textFormatStyle="demonChiYou.ranking.numTitleTF"  autoSize="none" x="7" y="55" width="100" height="20"  filterString="demonChiYou.ranking.numTitleTFfilter"/> 
+	 	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.nameTitle"  parentStyle="demonChiYou.ranking.numTitle"   x="114" y="55" /> 
+	 	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.ranking.souceTitle" parentStyle="demonChiYou.ranking.numTitle"   x="254" y="55" />     
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.ranking.ViewItemSeperators" x="-13" y="4" resourceLink="asset.corel.formLine,asset.corel.formLine" imageRectString="80|2|0|23|13,221|2|0|23|13"/>
+		
+		<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="demonChiYouAward.rankingItemBg1" parentStyle="core.ScaleleftrightImage.lineBg2" width="450" height="25" />
+		<component classname="com.pickgliss.ui.image.ScaleLeftRightImage" stylename="demonChiYouAward.rankingItemBg2" parentStyle="core.ScaleleftrightImage.lineBg3" width="450" height="25" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYouAward.rankingItemBg" resourceLink="demonChiYouAward.rankingItemBg1,demonChiYouAward.rankingItemBg2" />
+		
+		
+		<!-- 排行榜 -->
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="demonChiYou.totalInfoBg" resourceLink="asset.core.ddtScale9CornerImage21" scaleGridString="16,12,100,40"  x="42" y="-2" width="200"autoSize="none" height="324"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="demonChiYou.showTotalBtn" x="28" y="132" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYou.showTotalBtnIMG" resourceLink="demonChiYou.totalInfo.show,demonChiYou.totalInfo.hide"  />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.time" textFormatStyle="demonChiYou.totalInfo.timeTF" x="102" y="6" autoSize="none" width="160" height="24" filterString="demonChiYou.ranking.filter" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.selfHonor" textFormatStyle="demonChiYou.totalInfo.selfHonorTF" x="135" y="52" autoSize="none" width="120" height="24"  filterString="demonChiYou.ranking.filter" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.selfHonorText" textFormatStyle="demonChiYou.totalInfo.selfHonorTF" x="51" y="52" autoSize="none" width="120" height="24"  filterString="demonChiYou.ranking.filter" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.yourself" textFormatStyle="demonChiYou.totalInfo.yourselfTF" x="153" y="32" autoSize="none" width="120" height="24"  filterString="demonChiYou.ranking.filter" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.yourselfTxt" parentStyle="demonChiYou.totalInfo.yourself" x="51" y="32" filterString="demonChiYou.ranking.filter" width="190" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.totalInfo.timeTxt" textFormatStyle="demonChiYou.totalInfo.timeTxtTF" x="51" y="6" autoSize="none" width="160" height="24"  filterString="demonChiYou.ranking.filter"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No1" textFormatStyle="demonChiYou.rankingTxt.No1TF" filterString="demonChiYou.ranking.filter" x="50" y="76" autoSize="none" width="80" height="24" isAutoFitLength="true"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No2" textFormatStyle="demonChiYou.rankingTxt.No2TF" parentStyle="demonChiYou.rankingTxt.No1" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No3" textFormatStyle="demonChiYou.rankingTxt.No3TF" parentStyle="demonChiYou.rankingTxt.No1" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No11" textFormatStyle="demonChiYou.rankingTxt.No11TF" parentStyle="demonChiYou.rankingTxt.No1"  autoSize="none" width="190" height="24" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No12" textFormatStyle="demonChiYou.rankingTxt.No12TF" parentStyle="demonChiYou.rankingTxt.No1"  autoSize="none" width="190" height="24"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.No13" textFormatStyle="demonChiYou.rankingTxt.No13TF" parentStyle="demonChiYou.rankingTxt.No1"  autoSize="none" width="190" height="24"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.NoOtherLeft" textFormatStyle="demonChiYou.rankingTxt.NoOtherTFLeft"  parentStyle="demonChiYou.rankingTxt.No1" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.rankingTxt.NoOtherRight" textFormatStyle="demonChiYou.rankingTxt.NoOtherTFRight"  parentStyle="demonChiYou.rankingTxt.No1" autoSize="none" width="190" height="24"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="demonChiYou.resurrect.txtProp" textFormatStyle="demonChiYou.rankingTxt.No1TF" filterString="demonChiYou.ranking.filter" x="20" y="14"autoSize="none" width="100" height="24" />
+	
+		<!-- 退出场景按钮 -->
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYou.switchBtnIMG" resourceLink="demonChiYou.menu.switchBtn1,demonChiYou.menu.switchBtn2,demonChiYou.menu.switchBtn1"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="demonChiYou.switchBtn" backStyle="demonChiYou.switchBtnIMG" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="demonChiYou.returnBtnOver" resourceLink="demonChiYou.menu.selected,demonChiYou.menu.return"/>
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYou.returnBtnIMG" resourceLink="demonChiYou.menu.return,demonChiYou.returnBtnOver,demonChiYou.menu.return"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="demonChiYou.returnBtn" backStyle="demonChiYou.returnBtnIMG" x="45" y="6" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="demonChiYou.switchIMG" resourceLink="demonChiYou.menu.close,demonChiYou.menu.open" x="10" y="10"/>
+
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="demonChiYou.sceneHelpBtn" backStyle="DemonChiYou.Pic21" filterString="null,lightFilter,null,grayFilter" x="0" y="0" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="demonChiYou.rewardResult.buyBtn" backStyle="DemonChiYou.Pic12" filterString="null,lightFilter,null,grayFilter" x="547" y="61" />
+
+	</components>
+
+	<bitmaps>
+		<bitmapData resourceLink="DemonChiYou.Pic14"	x="14" y="40"/>
+		<bitmapData resourceLink="demonChiYou.menu.switchBtn2" x="0" y="1" />
+		<bitmapData resourceLink="demonChiYou.menu.selected" x="-11" y="-1" />
+	</bitmaps>
+
+</style>

@@ -1,0 +1,46 @@
+<style name="mines" version="1.0.1" source="ui/cn_trad/swf/mines.swf">
+	<sets>
+		<set stylename="mines.equipmentTip.nameText.tf" args="Arial,15,0x28f129,true" type="flash.text.TextFormat" />
+		<set stylename="mines.equipmentTip.nameText.gf" args="0x000000,1,2,2,15" type="flash.filters.GlowFilter" />
+		
+		<set stylename="mines.equipmentTip.myPropertyText.tf" args="Arial,13,0xff8000,false" type="flash.text.TextFormat" />
+		<set stylename="mines.equipmentTip.myPropertyText.gf" args="0x000000,1,2,2,15" type="flash.filters.GlowFilter" />
+		
+		<set stylename="mines.equipmentTip.propertyListText.tf" args="Arial,12,0xd5f5ff,false" type="flash.text.TextFormat" />
+		<set stylename="mines.equipmentTip.propertyListText.gf" args="0x000000,1,2,2,15" type="flash.filters.GlowFilter" />
+	</sets>
+	<customs>
+		<custom classname="flash.geom.Point" stylename="mines.equipmentView.progressPos" x="28" y="286"/>
+		<custom classname="flash.geom.Point" stylename="mines.mainFrame.bagViewPos" x="535" y="81"/>
+		<custom classname="flash.geom.Point" stylename="mines.digView.mcPos" x="367" y="245"/>
+		
+		<custom classname="flash.geom.Point" stylename="mines.toolView.cellPos" x="188" y="285"/>
+		<custom classname="flash.geom.Point" stylename="mines.equipmentView.cellPos" x="339" y="282"/>
+		
+		<custom classname="flash.geom.Point" stylename="mines.equipmentView.linePos" x="4" y="59"/>
+		
+		<custom classname="flash.geom.Point" stylename="mines.digView.arrowPos" x="50" y="449"/>
+	</customs>
+	<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="mines.cell.exchangeBtn" backStyle="asset.mines.shopView.exchangeBtn" x="4" y="40"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="mines.cell.buyBtn" backStyle="asset.mines.shopView.buyBtn" x="4" y="40"/>
+		<component classname="mines.view.MinesExchangeFrame" stylename="mines.cell.exchangeFrame" backStyle="SimpleFrameBackgoundOneIII" parentStyle="BaseFrame" containerY="30" width="340" height="225"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="mines.equipmentTip.nameText" 
+			textFormatStyle="mines.equipmentTip.nameText.tf" filterString="mines.equipmentTip.nameText.gf" 
+			autoSize="none" width="120" height="20" x="10" y="10"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="mines.equipmentTip.myPropertyText" 
+			textFormatStyle="mines.equipmentTip.myPropertyText.tf" filterString="mines.equipmentTip.myPropertyText.gf" 
+			autoSize="none" width="120" height="20" x="86" y="36"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="mines.equipmentTip.propertyListText" 
+			textFormatStyle="mines.equipmentTip.propertyListText.tf" filterString="mines.equipmentTip.propertyListText.gf" 
+			x="10" y="65"/>
+			
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.mines.equipmentView.property" x="10" y="36"/>
+	</bitmaps>
+</style>

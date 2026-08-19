@@ -1,0 +1,36 @@
+<Result value="true" message="Success!">
+  <items rewardLevel="1">
+    <item templateId="71294" count="1" validate="365" strenthLevel="15" attack="50" defend="50" luck="50" agility="50" isBind="true" />
+    <item templateId="13672" count="1" validate="120" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="15079" count="1" validate="365" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="11810" count="50" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="2">
+    <item templateId="71292" count="1" validate="100" strenthLevel="12" attack="50" defend="50" luck="50" agility="50" isBind="true" />
+    <item templateId="13672" count="1" validate="90" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="15079" count="1" validate="90" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="11810" count="30" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="3">
+    <item templateId="71292" count="1" validate="30" strenthLevel="12" attack="50" defend="50" luck="50" agility="50" isBind="true" />
+    <item templateId="13672" count="1" validate="30" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="15079" count="1" validate="30" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="11810" count="20" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="4">
+    <item templateId="71292" count="1" validate="15" strenthLevel="12" attack="50" defend="50" luck="50" agility="50" isBind="true" />
+    <item templateId="13672" count="1" validate="10" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="15079" count="1" validate="10" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="11810" count="10" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="5">
+    <item templateId="11163" count="50" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+    <item templateId="11810" count="5" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="6">
+	<item templateId="11810" count="1" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+  <items rewardLevel="7">
+	<item templateId="11810" count="1" validate="0" strenthLevel="0" attack="0" defend="0" luck="0" agility="0" isBind="true" />
+  </items>
+</Result>

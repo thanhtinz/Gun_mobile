@@ -1,0 +1,88 @@
+<style name="oldPlayerComeBack" version="2.0.1" source="ui/portugal/swf/oldPlayerComeBack.swf">
+	<sets>
+		<set stylename="oldPlayerComeBack.diceCountTxt.tf" args="Arial,14,0xFFFFFF" type="flash.text.TextFormat"/>
+		<set stylename="oldPlayerComeBack.diceCountTxt.gf" args="0xA64904,1,2,2,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="oldPlayerComeBack.diceDecTxt.tf" args="Arial,14,0xFFFFFF" type="flash.text.TextFormat"/>
+		<set stylename="oldPlayerComeBack.diceDecTxt.gf" args="0x4B250F,0.7,2,2,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="oldPlayerComeBack.taskView.Txt.tf" args="Arial,16,0xFFECC2" type="flash.text.TextFormat"/>
+		<set stylename="oldPlayerComeBack.taskView.Txt.gf" args="0x512800,1,2,2,10" type="flash.filters.GlowFilter"/>
+	
+	</sets>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="oldPlayerComeBack.viewPos" x="95" y="-12" />
+		<custom classname="flash.geom.Point" stylename="oldPlayerComeBack.diceViewPos" x="-22" y="-6" />
+		<custom classname="flash.geom.Point" stylename="oldPlayerComeBack.taskViewPos" x="-11" y="-20" />
+	</customDisplay>
+	<components>
+		<component classname="oldPlayerComeBack.view.OldPlayerComeBackFrame"
+		stylename="oldPlayerComeBack.frame" closestyle="oldPlayerComeBack.closebt"
+		backStyle="asset.oldPlayerComeBack.mainBg" containerX="20" 
+		containerY="40" escEnable="true" closeInnerRectString="45,7,1,45,14" width="810" height="566" />
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="oldPlayerComeBack.closebt"
+			backStyle="asset.oldPlayerComeBack.closeBtn"/>
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="oldPlayerComeBack.dispatchTaskBtn"
+			backStyle="asset.oldPlayerComeBack.dispatchTaskBtn"  x="299" y="186"/>	
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="oldPlayerComeBack.rollDiceBtn"
+			backStyle="asset.oldPlayerComeBack.rollDiceBtn" x="267" y="281"/>		
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.diceCountTxt" 
+			textFormatStyle="oldPlayerComeBack.diceCountTxt.tf" filterString="oldPlayerComeBack.diceCountTxt.gf" 
+			width="125" height="25" x="310" y="259"/>		
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.diceDecTxt" 
+			textFormatStyle="oldPlayerComeBack.diceDecTxt.tf" filterString="oldPlayerComeBack.diceDecTxt.gf" 
+			width="125" height="25" x="152" y="358"/>	
+			
+	<component classname="oldPlayerComeBack.view.task.OldPlayerTaskFrame"
+		stylename="oldPlayerComeBack.taskViewFrame" closestyle="core.closebt"
+		backStyle="SimpleFrameBackgoundOne" containerX="20"  titleStyle="FrameTitleTextStyle"
+		titleOuterRectPosString="15,10,5"
+		containerY="40" escEnable="true" closeInnerRectString="44,7,1,30,14" width="756" height="460" />
+	
+		<component classname="com.pickgliss.ui.controls.container.VBox" 
+		stylename="oldPlayerComeBack.taskView.taskContainer" x="142" y="70" spacing="0"/>
+				
+		<component classname="com.pickgliss.ui.controls.ScrollPanel"
+			stylename="oldPlayerComeBack.taskView.scrollPanel" parentStyle="core.ScrollPanel"
+			viewportInnerRectString="0,0,0,-6,0" vScrollbarInnerRectString="21,-2 ,0,-8,3"
+			vScrollProxy="0" width="706" height="345" x="21" y="62"
+			vUnitIncrement="10" />		
+				
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.taskView.awardTxt" 
+			textFormatStyle="oldPlayerComeBack.taskView.Txt.tf" filterString="oldPlayerComeBack.taskView.Txt.gf" 
+			 x="13" y="17"/>	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.taskView.complateCountTxt" 
+			textFormatStyle="oldPlayerComeBack.taskView.Txt.tf" filterString="oldPlayerComeBack.taskView.Txt.gf" 
+			x="244" y="17"/>	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.taskView.complateProgressTxt" 
+			textFormatStyle="oldPlayerComeBack.taskView.Txt.tf" filterString="oldPlayerComeBack.taskView.Txt.gf" 
+			x="370" y="17"/>	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="oldPlayerComeBack.taskView.awardValueTxt" 
+			textFormatStyle="oldPlayerComeBack.taskView.Txt.tf" filterString="oldPlayerComeBack.taskView.Txt.gf" 
+			 x="512" y="18"/>	
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="oldPlayerComeBack.taskView.getBtn"
+			backStyle="asset.oldPlayerComeBack.receiveAwardBtn" x="573" y="8"/>		
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="oldPlayerComeBack.taskView.goToBtn"
+			backStyle="asset.oldPlayerComeBack.jumpBtn" x="600" y="11"/>	
+			
+									
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.oldPlayerComeBack.mainBg"/>
+		<bitmapData resourceLink="asset.oldPlayerComeBack.moveMc"/>
+		<bitmapData resourceLink="asset.oldPlayerComeBack.taskBg" x="-2" y="3"/>
+		<bitmapData resourceLink="asset.oldPlayerComeBack.receivedBtn" x="607" y="6"/>
+	
+	</bitmaps>
+</style>

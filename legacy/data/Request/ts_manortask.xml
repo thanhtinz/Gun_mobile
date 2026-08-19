@@ -1,0 +1,25 @@
+<Result value="true" message="Success!">
+  <Item TemplateId="1" TaskType="1" TaskName="訪親問友" Condition1="3" Condition2="" Condition3="5" RewardItemId1="40009" RewardCount1="10" RewardItemId2="" RewardCount2="" TaskDescp="前往好友家園巡邏，敲醒3名偷懶的員工。" />
+  <Item TemplateId="2" TaskType="1" TaskName="訪親問友" Condition1="5" Condition2="" Condition3="5" RewardItemId1="12248" RewardCount1="5" RewardItemId2="" RewardCount2="" TaskDescp="前往好友家園巡邏，敲醒5名偷懶的員工。" />
+  <Item TemplateId="3" TaskType="2" TaskName="大豐收" Condition1="333001" Condition2="3" Condition3="1" RewardItemId1="12572" RewardCount1="2" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="4" TaskType="2" TaskName="大豐收" Condition1="333006" Condition2="1" Condition3="1" RewardItemId1="11166" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="5" TaskType="2" TaskName="大豐收" Condition1="333007" Condition2="1" Condition3="1" RewardItemId1="11164" RewardCount1="8" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="6" TaskType="2" TaskName="大豐收" Condition1="333008" Condition2="1" Condition3="1" RewardItemId1="12221" RewardCount1="8" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="7" TaskType="2" TaskName="大豐收" Condition1="333406" Condition2="1" Condition3="5" RewardItemId1="11177" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="8" TaskType="2" TaskName="大豐收" Condition1="333407" Condition2="1" Condition3="5" RewardItemId1="11150" RewardCount1="2" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="9" TaskType="2" TaskName="大豐收" Condition1="333408" Condition2="1" Condition3="5" RewardItemId1="12240" RewardCount1="10" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="10" TaskType="2" TaskName="大豐收" Condition1="333706" Condition2="1" Condition3="10" RewardItemId1="11180" RewardCount1="2" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="11" TaskType="2" TaskName="大豐收" Condition1="333707" Condition2="1" Condition3="10" RewardItemId1="11175" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="12" TaskType="2" TaskName="大豐收" Condition1="333708" Condition2="1" Condition3="10" RewardItemId1="12214" RewardCount1="5" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="13" TaskType="2" TaskName="大豐收" Condition1="333806" Condition2="1" Condition3="15" RewardItemId1="11917" RewardCount1="10" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="14" TaskType="2" TaskName="大豐收" Condition1="333807" Condition2="1" Condition3="15" RewardItemId1="20150" RewardCount1="15" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="15" TaskType="2" TaskName="大豐收" Condition1="333808" Condition2="1" Condition3="15" RewardItemId1="40010" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="16" TaskType="2" TaskName="大豐收" Condition1="333808" Condition2="1" Condition3="15" RewardItemId1="40010" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="17" TaskType="2" TaskName="大豐收" Condition1="333808" Condition2="1" Condition3="15" RewardItemId1="40010" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="18" TaskType="2" TaskName="大豐收" Condition1="333808" Condition2="1" Condition3="15" RewardItemId1="40010" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="19" TaskType="2" TaskName="大豐收" Condition1="333808" Condition2="1" Condition3="15" RewardItemId1="40010" RewardCount1="3" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="20" TaskType="2" TaskName="大豐收" Condition1="333002" Condition2="2" Condition3="3" RewardItemId1="12572" RewardCount1="8" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="21" TaskType="2" TaskName="大豐收" Condition1="333003" Condition2="3" Condition3="6" RewardItemId1="12572" RewardCount1="10" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="22" TaskType="2" TaskName="大豐收" Condition1="333004" Condition2="5" Condition3="9" RewardItemId1="12572" RewardCount1="15" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+  <Item TemplateId="23" TaskType="2" TaskName="大豐收" Condition1="333005" Condition2="5" Condition3="13" RewardItemId1="12572" RewardCount1="20" RewardItemId2="" RewardCount2="" TaskDescp="提交所需物品可獲得獎勵。" />
+</Result>

@@ -1,0 +1,14 @@
+<style name="xisaimagicpot" version="1.0.1" source="ui/cn_trad/swf/xisaimagicpot.swf">
+	<sets>
+		
+	</sets>
+	<components>
+		<component classname="com.pickgliss.ui.core.Component" stylename="xisaimagicpot.compponent.potClickArea" width="110" height="85" x="25" y="11"/>
+    </components>
+	<bitmaps>
+		
+	</bitmaps>
+	<customDisplay>
+		
+	</customDisplay>
+</style>

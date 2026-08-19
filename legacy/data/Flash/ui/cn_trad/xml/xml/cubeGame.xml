@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style name="cubeGame" version="1.0.1" source="ui/cn_trad/swf/cubeGame.swf">
+
+<sets>
+	<set stylename="cubeGameInfoView.commonTF" args="Arial,18,0xfff3bc,true" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameInfoView.commonGF" args="0x623617,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="cubeEffectContinaer.commonTF" args="Arial,20,0xfff3bc,true" type="flash.text.TextFormat" leading="8"/>
+	<set stylename="cubeEffectContinaer.commonGF" args="0x623617,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="cubeEffectContinaer.dialogTF" args="Arial,12,0x000000,true" type="flash.text.TextFormat" leading="5"/>
+	<set stylename="cubeEffectContinaer.dialogGF" args="0x623617,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="cubeGameRankView.commonTF" args="Arial,14,0xfff3bc" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameRankView.commonGF" args="0x372e27,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="cubeGameRankView.rank1TF" args="Arial,14,0xffe65d" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameRankView.rank2TF" args="Arial,14,0xe34aff" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameRankView.bottomTF" args="Arial,12,0xfff3bc" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameRankView.bottomGF" args="0x332a24,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="cubeGameRankView.pageTxtTF" args="Arial,12,0xfff8d6,,,,,,center" type="flash.text.TextFormat"/>
+	<set stylename="cubeGameRankView.pageTxtGF" args="0x4b270d,1,4,4,10"  type="flash.filters.GlowFilter"/>
+</sets>
+
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="cubeGame.princessPos" x="713" y="550"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.heroPos" x="640" y="550"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.frontBgPos" x="0" y="531"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.cubeContainerPos" x="-14" y="147"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.cubeContainer.scoreEndPos" x="660" y="-132"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.cubeContainer.scoreStartPos" x="0" y="403"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.passEffectPos" x="231" y="92"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.passEffectFromPos" x="525" y="200"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.overEffectPos" x="247" y="215"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.overEffectFromPos" x="418" y="243"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.cooldownPos" x="384" y="272"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.againBtnPos" x="352" y="282"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.msgTxtPos" x="38" y="57"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.alertPos" x="300" y="160"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.nextBtnPos" x="120" y="126"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.dialogTxtPos" x="6" y="6"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.princessDialogPos" x="663" y="382"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.heroDialogPos" x="563" y="348"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.princessDialogBgSize" x="100" y="50"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.heroDialogBgSize" x="100" y="85"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.destroyAddEffectPos" x="65" y="4"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.destroyStartEffectPos" x="283" y="281"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.destroyEndEffectPos" x="283" y="200"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.effectContainer.extraAddEffectPos" x="137" y="4"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.bulletPos" x="646" y="489"/>
+	<custom classname="flash.geom.Point" stylename="cubeGame.rankViewPos" x="767" y="0"/>
+	<custom classname="flash.geom.Point" stylename="cubeGameInfoView.leftWoodBgPos" x="10" y="1"/>
+	<custom classname="flash.geom.Point" stylename="cubeGameInfoView.rightWoodBgPos" x="570" y="1"/>
+	<custom classname="flash.geom.Point" stylename="cubeGameInfoView.waveImgPos" x="31" y="14"/>
+	<custom classname="flash.geom.Point" stylename="cubeGameInfoView.scoreImgPos" x="594" y="14"/> 
+</customDisplay>
+
+<components>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameInfoView.levelTxt" 
+			textFormatStyle="cubeGameInfoView.commonTF" filterString="cubeGameInfoView.commonGF" autoSize="none" width="100"  height="20" x="85" y="14"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameInfoView.waveTxt" 
+			textFormatStyle="cubeGameInfoView.commonTF" filterString="cubeGameInfoView.commonGF" autoSize="none" width="100"  height="20" x="204" y="14"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameInfoView.scoreTxt" 
+			textFormatStyle="cubeGameInfoView.commonTF" filterString="cubeGameInfoView.commonGF" autoSize="none" width="100"  height="20" x="652" y="14"/>
+
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="cubeEffectContainer.againBtn" backStyle="asset.cubeGameRankView.gameAgain" x="495" y="50" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="cubeEffectContainer.nums" 
+				resourceLink="asset.cubeEffectContainer.num1,asset.cubeEffectContainer.num2,asset.cubeEffectContainer.num3,asset.cubeEffectContainer.num4,asset.cubeEffectContainer.num5,asset.cubeEffectContainer.num6,asset.cubeEffectContainer.num7,asset.cubeEffectContainer.num8,asset.cubeEffectContainer.num9" />
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="cubeEffectContinaer.alertBg" resourceLink="asset.core.framesmallBg" scaleGridString="80,70,500,250" width="350" height="180"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeEffectContinaer.msgTxt" 
+			textFormatStyle="cubeEffectContinaer.commonTF" filterString="cubeEffectContinaer.commonGF" autoSize="none" width="300" height="90" wordWrap="true"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeEffectContinaer.dialogTxt" 
+			textFormatStyle="cubeEffectContinaer.dialogTF" autoSize="none" width="90" height="100" wordWrap="true"/>
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="cubeEffectContinaer.numbers" imageStyle="cubeEffectContinaer.number.imageStyle"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="cubeEffectContinaer.number.imageStyle" 
+				resourceLink="asset.cubeEffectViewr.num1,asset.cubeEffectViewr.num2,asset.cubeEffectViewr.num3,asset.cubeEffectViewr.num4,asset.cubeEffectViewr.num5,asset.cubeEffectViewr.num6,asset.cubeEffectViewr.num7,asset.cubeEffectViewr.num8,asset.cubeEffectViewr.num9,asset.cubeEffectViewr.num0" />	
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="cubeGameRankView.totalBtn" backStyle="asset.cubeGameRankView.totalBtn" x="137" y="61" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="cubeGameRankView.todayBtn" backStyle="asset.cubeGameRankView.todayBtn" x="34" y="61" />
+	<!-- <component classname="uiUtils.SelectPageUI" stylename="cubeGameRankView.selectPageUI" parentStyle="uiUtils.SelectPageUI" x="0" y="411" isLoop="false" spacing="1"/> -->
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="cubeGameRankView.list" spacing="8" y="125" x="17" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.rankTxt" textFormatStyle="cubeGameRankView.commonTF" filterString="cubeGameRankView.commonGF" autoSize="center" height="30" x="18" y="0"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.nameTxt" parentStyle="cubeGameRankView.rankTxt" x="92"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.scoreTxt" parentStyle="cubeGameRankView.rankTxt" x="173"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="cubeGameRankView.restartBtn" backStyle="asset.cubeGameRankView.restartBtn" x="10" y="545" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="cubeGameRankView.returnBtn" backStyle="asset.cubeGameRankView.returnBtn" x="144" y="545" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.myTotalRankTxt" textFormatStyle="cubeGameRankView.bottomTF" filterString="cubeGameRankView.bottomGF" autoSize="left" width="100" height="30" x="88" y="455"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.myTodayRankTxt" parentStyle="cubeGameRankView.myTotalRankTxt" x="76" y="522"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.historyScoreTxt" parentStyle="cubeGameRankView.myTotalRankTxt" y="477"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.todayScoreTxt" parentStyle="cubeGameRankView.myTotalRankTxt" y="499"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cubeGameRankView.rightPageBtn" backStyle="asset.core.PageUI.rightBtn" width="54" height="25" x="149" y="416" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cubeGameRankView.leftPageBtn" backStyle="asset.core.PageUI.leftBtn" width="54" height="25" x="49" y="416" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cubeGameRankView.firstBtn" backStyle="asset.core.PageUI.firstBtn" width="54" height="25" x="12" y="416" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="cubeGameRankView.endBtn" backStyle="asset.core.PageUI.endBtn" width="54" height="25" x="185" y="416" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="cubeGameRankView.pageTxt" textFormatStyle="cubeGameRankView.pageTxtTF" filterString="cubeGameRankView.pageTxtGF" x="77" y="419" autoSize="none" width="80" height="25"/>
+
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="cubeMapView.numbers" imageStyle="cubeMapView.number.imageStyle"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="cubeMapView.number.imageStyle" 
+				resourceLink="asset.cubeMapView.numC1,asset.cubeMapView.numC2,asset.cubeMapView.numC3,asset.cubeMapView.numC4,asset.cubeMapView.numC5,asset.cubeMapView.numC6,asset.cubeMapView.numC7,asset.cubeMapView.numC8,asset.cubeMapView.numC9,asset.cubeMapView.numC0" />
+
+</components>
+<bitmaps>
+	<bitmapData resourceLink="ant"/>
+	<bitmapData resourceLink="antKing"/>
+	<bitmapData resourceLink="bogu"/>
+	<bitmapData resourceLink="boguBoss"/>
+	<bitmapData resourceLink="grayTribe"/>
+	<bitmapData resourceLink="grayTribeBoss"/>
+	<bitmapData resourceLink="bean"/>
+	<bitmapData resourceLink="beanDouble"/>
+</bitmaps>
+</style>
+

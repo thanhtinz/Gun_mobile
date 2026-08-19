@@ -1,0 +1,47 @@
+<Result value="true" message="Success!">
+  <item ID="101" TemplateId="11971" AddHurt="0" AddGuard="3" MagicAttack="40" MagicDefence="10" AddBlood="150" Name="Cartão ilustração Formiga de Fogo" />
+  <item ID="102" TemplateId="11972" AddHurt="0" AddGuard="3" MagicAttack="10" MagicDefence="30" AddBlood="200" Name="Cartão ilustração formiga azul" />
+  <item ID="103" TemplateId="11973" AddHurt="2" AddGuard="0" MagicAttack="50" MagicDefence="20" AddBlood="200" Name="Cartão ilustração Urso idiota" />
+  <item ID="104" TemplateId="11974" AddHurt="0" AddGuard="2" MagicAttack="40" MagicDefence="10" AddBlood="300" Name="Cartão ilustração Pastor Feliz de Cavalo" />
+  <item ID="105" TemplateId="11975" AddHurt="0" AddGuard="3" MagicAttack="40" MagicDefence="30" AddBlood="220" Name="Cartão Ilustração pequeno Asno" />
+  <item ID="106" TemplateId="11976" AddHurt="0" AddGuard="0" MagicAttack="50" MagicDefence="40" AddBlood="350" Name="Cartão Ilustração Compreensão" />
+  <item ID="107" TemplateId="11977" AddHurt="5" AddGuard="0" MagicAttack="60" MagicDefence="60" AddBlood="300" Name="Cartão Ilustração Cavalo de Batalha" />
+  <item ID="108" TemplateId="11978" AddHurt="5" AddGuard="0" MagicAttack="60" MagicDefence="60" AddBlood="300" Name="Cartão Ilustração Cavalo de Alpaca" />
+  <item ID="109" TemplateId="11979" AddHurt="3" AddGuard="0" MagicAttack="30" MagicDefence="50" AddBlood="400" Name="Cartão Ilustração Cavalo de Tigre" />
+  <item ID="110" TemplateId="11980" AddHurt="0" AddGuard="3" MagicAttack="50" MagicDefence="30" AddBlood="400" Name="Cartão Ilustração Cavalo de Alce" />
+  <item ID="111" TemplateId="11981" AddHurt="3" AddGuard="0" MagicAttack="50" MagicDefence="30" AddBlood="400" Name="Cartão Ilustração Cavalo de Dinossauro" />
+  <item ID="112" TemplateId="11982" AddHurt="5" AddGuard="0" MagicAttack="60" MagicDefence="60" AddBlood="300" Name="Besouro" />
+  <item ID="113" TemplateId="11983" AddHurt="5" AddGuard="0" MagicAttack="50" MagicDefence="40" AddBlood="600" Name="Cartão Ilustração Cavalo de Cartão ilustração " />
+  <item ID="114" TemplateId="11984" AddHurt="4" AddGuard="0" MagicAttack="60" MagicDefence="0" AddBlood="300" Name="Garça Imperial" />
+  <item ID="115" TemplateId="11985" AddHurt="3" AddGuard="1" MagicAttack="40" MagicDefence="30" AddBlood="300" Name="Cabrita" />
+  <item ID="116" TemplateId="11986" AddHurt="3" AddGuard="2" MagicAttack="40" MagicDefence="30" AddBlood="600" Name="Dentes de Sabre" />
+  <item ID="117" TemplateId="11987" AddHurt="7" AddGuard="0" MagicAttack="60" MagicDefence="0" AddBlood="700" Name="Dragão de Duas Cabeças" />
+  <item ID="118" TemplateId="11990" AddHurt="20" AddGuard="14" MagicAttack="12" MagicDefence="25" AddBlood="200" Name="Cartão Ilustração Cavalo de Trenó de Natal" />
+  <item ID="119" TemplateId="11989" AddHurt="2" AddGuard="2" MagicAttack="20" MagicDefence="20" AddBlood="500" Name="Nuvem " />
+  <item ID="120" TemplateId="11988" AddHurt="6" AddGuard="6" MagicAttack="50" MagicDefence="20" AddBlood="700" Name="Bode Azul" />
+  <item ID="121" TemplateId="12900" AddHurt="0" AddGuard="20" MagicAttack="20" MagicDefence="50" AddBlood="650" Name="Tartaruga" />
+  <item ID="122" TemplateId="201643" AddHurt="5" AddGuard="5" MagicAttack="60" MagicDefence="0" AddBlood="300" Name="Bode Branco" />
+  <item ID="123" TemplateId="12904" AddHurt="5" AddGuard="5" MagicAttack="30" MagicDefence="30" AddBlood="600" Name="Pequena Raposa Branca" />
+  <item ID="124" TemplateId="12901" AddHurt="5" AddGuard="5" MagicAttack="50" MagicDefence="50" AddBlood="500" Name="Pato grasnador" />
+  <item ID="125" TemplateId="12902" AddHurt="5" AddGuard="5" MagicAttack="20" MagicDefence="20" AddBlood="500" Name="Cóc Vàng" />
+  <item ID="126" TemplateId="12906" AddHurt="6" AddGuard="2" MagicAttack="12" MagicDefence="10" AddBlood="600" Name="Tigre Vermelho" />
+  <item ID="127" TemplateId="12905" AddHurt="2" AddGuard="8" MagicAttack="10" MagicDefence="15" AddBlood="500" Name="Tigre Azul" />
+  <item ID="128" TemplateId="12907" AddHurt="5" AddGuard="10" MagicAttack="5" MagicDefence="15" AddBlood="500" Name="Dragão Branco" />
+  <item ID="129" TemplateId="12908" AddHurt="6" AddGuard="12" MagicAttack="6" MagicDefence="18" AddBlood="600" Name="Dragão Vermelho" />
+  <item ID="130" TemplateId="12909" AddHurt="50" AddGuard="75" MagicAttack="120" MagicDefence="20" AddBlood="3000" Name="Coelho Chinês" />
+  <item ID="131" TemplateId="12910" AddHurt="75" AddGuard="50" MagicAttack="20" MagicDefence="120" AddBlood="3000" Name="Đà Điểu" />
+  <item ID="132" TemplateId="12911" AddHurt="6" AddGuard="6" MagicAttack="50" MagicDefence="15" AddBlood="700" Name="Coelho Rosa" />
+  <item ID="133" TemplateId="12912" AddHurt="20" AddGuard="20" MagicAttack="20" MagicDefence="20" AddBlood="600" Name="Tri - Chifres de Dragão" />
+  <item ID="134" TemplateId="12913" AddHurt="20" AddGuard="20" MagicAttack="10" MagicDefence="20" AddBlood="700" Name="Panda" />
+  <item ID="135" TemplateId="12914" AddHurt="60" AddGuard="60" MagicAttack="70" MagicDefence="70" AddBlood="3000" Name="Moto Espacial" />
+  <item ID="136" TemplateId="12915" AddHurt="5" AddGuard="5" MagicAttack="40" MagicDefence="10" AddBlood="500" Name="Fabot Azul" />
+  <item ID="137" TemplateId="12916" AddHurt="2" AddGuard="3" MagicAttack="10" MagicDefence="30" AddBlood="500" Name="Bóng Polly" />
+  <item ID="141" TemplateId="12918" AddHurt="40" AddGuard="80" MagicAttack="40" MagicDefence="100" AddBlood="3000" Name="Cá Voi Xanh" />
+  <item ID="142" TemplateId="12919" AddHurt="20" AddGuard="20" MagicAttack="20" MagicDefence="20" AddBlood="800" Name="Bênção do Cão Real" />
+  <item ID="143" TemplateId="12920" AddHurt="25" AddGuard="25" MagicAttack="25" MagicDefence="25" AddBlood="1000" Name="Fénix" />
+  <item ID="144" TemplateId="12921" AddHurt="20" AddGuard="20" MagicAttack="20" MagicDefence="20" AddBlood="1000" Name="Bò Sữa Trái Tim" />
+  <item ID="147" TemplateId="12924" AddHurt="25" AddGuard="25" MagicAttack="25" MagicDefence="25" AddBlood="600" Name="Feralatica" />
+  <item ID="148" TemplateId="12925" AddHurt="50" AddGuard="50" MagicAttack="100" MagicDefence="100" AddBlood="3000" Name="Sói Máy" />
+  <item ID="222" TemplateId="12903" AddHurt="5" AddGuard="30" MagicAttack="5" MagicDefence="30" AddBlood="600" Name="Lesma dourado" />
+  <item ID="223" TemplateId="201644" AddHurt="5" AddGuard="5" MagicAttack="30" MagicDefence="30" AddBlood="600" Name="Touro Dourado" />
+</Result>

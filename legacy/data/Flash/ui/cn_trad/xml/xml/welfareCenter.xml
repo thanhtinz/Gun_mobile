@@ -1,0 +1,233 @@
+<style name="welfareCenter" version="1.0.1" source="ui/cn_trad/swf/welfareCenter.swf">
+	<sets>
+		<set stylename="callbacklotterydraw.nextCDTimeTf.format" args="Arial,12,0xfcef85" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbacklotterydraw.goodNameTf.format" args="Arial,14,0x0,true,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbacklotterydraw.discountTf.format" args="Arial,12,0xfff947,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbacklotterydraw.priceTf.format" args="Arial,12,0xfa400e" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbacklotterydraw.newPriceTf.format" args="Arial,12,0x6cfd2c" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbacklotterydraw.freshRewardTf.format" args="Arial,14,0xfdf577" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+
+		<set stylename="callbacklotterydraw.nextCDTimeTf.filter" args="0x421109,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbacklotterydraw.goodNameTf.filter" args="0xffffff,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbacklotterydraw.discountTf.filter" args="0x620707,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbacklotterydraw.priceTf.filter" args="0x1f0a02,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbacklotterydraw.newPriceTf.filter" args="0x2d0f04,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbacklotterydraw.freshRewardTf.filter" args="0x5c290a,1,4,4,10" type="flash.filters.GlowFilter"/>
+	
+		<set stylename="callbackfund.openTimeTf.format" args="Arial,12,0xfffaad,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbackfund.contentTf.format" args="Arial,14,0xffde6c,true" type="flash.text.TextFormat" leading="8" letterSpacing="0" />
+		<set stylename="callbackfund.bindQuanTf.format" args="Arial,14,0xfff949,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="callbackfund.leftDayTf.format" args="Arial,14,0x43ff50,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		
+		<set stylename="callbackfund.openTimeTf.filter" args="0x681809,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbackfund.contentTf.filter" args="0x451607,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbackfund.bindQuanTf.filter" args="0x420707,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="callbackfund.leftDayTf.filter" args="0x40080c,1,4,4,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="luckeylotterydraw.nextCDTimeTf.format" args="Arial,12,0xfcef85" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="luckeylotterydraw.goodNameTf.format" args="Arial,14,0x0,true,,,,,center" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="luckeylotterydraw.discountTf.format" args="Arial,12,0xfff947,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="luckeylotterydraw.priceTf.format" args="Arial,12,0xfa400e" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="luckeylotterydraw.newPriceTf.format" args="Arial,12,0x6cfd2c" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="luckeylotterydraw.freshRewardTf.format" args="Arial,14,0xfdf577" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+
+		<set stylename="luckeylotterydraw.nextCDTimeTf.filter" args="0x421109,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="luckeylotterydraw.goodNameTf.filter" args="0xffffff,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="luckeylotterydraw.discountTf.filter" args="0x620707,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="luckeylotterydraw.priceTf.filter" args="0x1f0a02,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="luckeylotterydraw.newPriceTf.filter" args="0x2d0f04,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set stylename="luckeylotterydraw.freshRewardTf.filter" args="0x5c290a,1,4,4,10" type="flash.filters.GlowFilter"/>
+		<set args="0.3,0.59,0.11,0,0,0.3,0.59,0.11,0,0,0.3,0.59,0.11,0,0,0,0,0,1,0" stylename="welfareCenter.gift.btnFilter" type="flash.filters.ColorMatrixFilter"/>
+		<set args="1, 0, 0, 0, -50, 0, 1, 0, 0, -50, 0, 0, 1, 0, -50, 0, 0, 0, 1, 0" stylename="welfareCenter.boxFilter" type="flash.filters.ColorMatrixFilter"/>
+	
+		[]
+	</sets>
+	
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardShow.pos" x="358" y="285"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardShuffle.pos" x="358" y="218"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.hasGetMask" x="7" y="20"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.ticketIcon1" x="86" y="100"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.ticketIcon2" x="86" y="115"/>
+		<custom classname="flash.geom.Point" stylename="luckeylotterydraw.cardShow.pos" x="358" y="285"/>
+		<custom classname="flash.geom.Point" stylename="luckeylotterydraw.cardShuffle.pos" x="358" y="218"/>
+		<custom classname="flash.geom.Point" stylename="luckeylotterydraw.hasGetMask" x="7" y="20"/>
+		<custom classname="flash.geom.Point" stylename="luckeylotterydraw.ticketIcon1" x="86" y="100"/>
+		<custom classname="flash.geom.Point" stylename="luckeylotterydraw.ticketIcon2" x="86" y="115"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.backFundViewPos" x="106" y="18"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.backLotteryViewPos" x="97" y="26"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftViewPos" x="122" y="56"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.ProgressPos" x="75" y="48"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.arrowPos1" x="188" y="159"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.arrowPos2" x="309" y="159"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.arrowPos3" x="437" y="159"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.arrowPos4" x="563" y="159"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.boxShinePos" x="34" y="-7"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.ItemShinePos" x="40" y="1"/>
+		<custom classname="flash.geom.Point" stylename="welfareCenter.gradeGiftView.timeTextPos" x="17" y="17"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardBackSidePos1" x="45" y="96"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardBackSidePos2" x="165" y="96"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardBackSidePos3" x="289" y="96"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardBackSidePos4" x="410" y="96"/>
+		<custom classname="flash.geom.Point" stylename="callbacklotterydraw.cardBackSidePos5" x="534" y="96"/>
+	</customDisplay>
+	<components>
+		<component classname="callBackLotteryDraw.view.CallBackLotteryDrawFrame" stylename="callbacklotterydraw.CallBackLotteryDrawFrame" parentStyle="BaseFrame" 
+			closestyle="core.roundClosebt"  backStyle="callbacklotterydraw.pic1" width="694"  height="363"  escEnable="true" closeInnerRectString="30,19,6,30,14"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.nextCDTimeTf" textFormatStyle="callbacklotterydraw.nextCDTimeTf.format"
+			filterString="callbacklotterydraw.nextCDTimeTf.filter" x="45"  y="53"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.goodNameTf" textFormatStyle="callbacklotterydraw.goodNameTf.format"
+			filterString="callbacklotterydraw.goodNameTf.filter"  autoSize="none" width="100" height="20"  x="11"  y="15"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.discountTf" textFormatStyle="callbacklotterydraw.discountTf.format"
+			filterString="callbacklotterydraw.discountTf.filter" autoSize="none" width="65" height="20"  x="57"  y="-9"/>		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.priceTf" textFormatStyle="callbacklotterydraw.priceTf.format"
+			filterString="callbacklotterydraw.priceTf.filter"  x="18"  y="99"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.newPriceTf" textFormatStyle="callbacklotterydraw.newPriceTf.format"
+			filterString="callbacklotterydraw.newPriceTf.filter"  x="18"  y="115"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbacklotterydraw.freshRewardTf" textFormatStyle="callbacklotterydraw.freshRewardTf.format"
+			filterString="callbacklotterydraw.freshRewardTf.filter" x="0"  y="0"/>		
+			
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callbacklotterydraw.startDrawBtn" backStyle="callbacklotterydraw.pic4" x="287" y="282"/>	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callbacklotterydraw.buyBtn" backStyle="callbacklotterydraw.pic3"  x="18" y="151"/>	
+		
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="callbacklotterydraw.freshBtnBg" resourceLink="asset.core.btmc009" width="70" height="31" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="callbacklotterydraw.freshBtnImage" resourceLink="callbacklotterydraw.freshBtnBg,callbacklotterydraw.freshRewardTf"
+			imageRectString=",0|70|0|20|17" width="70" height="31" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callbacklotterydraw.freshBtnBtn"
+			backStyle="callbacklotterydraw.freshBtnImage" x="0" y="0" />
+	
+		<component classname="com.pickgliss.ui.image.Image" stylename="callBackFund.bg" 
+			resourceLink="callbackfund.pic1"  x="14"  y="40"/>
+			
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="callBackFund.quickBuyBg" resourceLink="asset.core.btmc003" width="96" height="40" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="callBackFund.quickBuyImage" resourceLink="callBackFund.quickBuyBg,callbackfund.pic5"
+			imageRectString=",0|39|0|26|17" width="96" height="40" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callBackFund.quickBuyBtn"
+			backStyle="callBackFund.quickBuyImage" x="289" y="303" />
+			
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="callBackFund.quickReceiveBg" resourceLink="asset.core.btmc003" width="96" height="40" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="callBackFund.quickReceiveImage" resourceLink="callBackFund.quickReceiveBg,callbackfund.pic2"
+			imageRectString=",0|78|0|24|17" width="96" height="40" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callBackFund.quickReceiveBtn"
+			backStyle="callBackFund.quickReceiveImage" x="269" y="302" />	
+			
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="callBackFund.tomorrowComeBg" resourceLink="asset.core.btmc003" width="96" height="40" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="callBackFund.tomorrowComeImage" resourceLink="callBackFund.tomorrowComeBg,callbackfund.pic4"
+			imageRectString=",0|78|0|24|17" width="96" height="40" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callBackFund.tomorrowComeBtn"
+			backStyle="callBackFund.tomorrowComeImage" x="270" y="302" />		
+			
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="callBackFund.receiveOverBg" resourceLink="asset.core.btmc003" width="96" height="40" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="callBackFund.receiveOverImage" resourceLink="callBackFund.receiveOverBg,callbackfund.pic7"
+			imageRectString=",0|78|0|24|17" width="96" height="40" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="callBackFund.receiveOverBtn"
+			backStyle="callBackFund.receiveOverImage" x="268" y="300" />	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbackfund.openTimeTf" textFormatStyle="callbackfund.openTimeTf.format"
+			filterString="callbackfund.openTimeTf.filter" x="256"  y="127"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbackfund.contentTf" textFormatStyle="callbackfund.contentTf.format"
+			filterString="callbackfund.contentTf.filter" autoSize="none" width="450" height="93"  x="119"  y="146"/>		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbackfund.bindQuanTf" textFormatStyle="callbackfund.bindQuanTf.format"
+			filterString="callbackfund.bindQuanTf.filter" x="392"  y="312"/>				
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="callbackfund.leftDayTf" textFormatStyle="callbackfund.leftDayTf.format"
+			filterString="callbackfund.leftDayTf.filter" x="381"  y="313"/>	
+		<component classname="com.pickgliss.ui.image.Image" stylename="callBackFund.inputBg" 
+			resourceLink="callbackfund.pic6"  x="377"  y="306"/>	
+		
+		<component classname="welfareCenter.callBackLotteryDraw.view.LuckeyLotteryDrawFrame" stylename="luckeylotterydraw.LuckeyLotteryDrawFrame" parentStyle="BaseFrame" 
+			closestyle="core.roundClosebt"  backStyle="luckeylotterydraw.pic2" width="694"  height="363"  escEnable="true" closeInnerRectString="30,-6,30,30,14"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.nextCDTimeTf" textFormatStyle="luckeylotterydraw.nextCDTimeTf.format"
+			filterString="luckeylotterydraw.nextCDTimeTf.filter" x="25"  y="55"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.goodNameTf" textFormatStyle="luckeylotterydraw.goodNameTf.format"
+			filterString="luckeylotterydraw.goodNameTf.filter"  autoSize="none" width="100" height="20"  x="11"  y="15"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.discountTf" textFormatStyle="luckeylotterydraw.discountTf.format"
+			filterString="luckeylotterydraw.discountTf.filter" autoSize="none" width="65" height="20"  x="58"  y="-9"/>		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.priceTf" textFormatStyle="luckeylotterydraw.priceTf.format"
+			filterString="luckeylotterydraw.priceTf.filter"  x="18"  y="99"/>			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.newPriceTf" textFormatStyle="luckeylotterydraw.newPriceTf.format"
+			filterString="luckeylotterydraw.newPriceTf.filter"  x="18"  y="115"/>				
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="luckeylotterydraw.freshRewardTf" textFormatStyle="luckeylotterydraw.freshRewardTf.format"
+			filterString="luckeylotterydraw.freshRewardTf.filter" x="0"  y="0"/>		
+			
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="luckeylotterydraw.startDrawBtn" backStyle="luckeylotterydraw.pic4" x="281" y="290"/>	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="luckeylotterydraw.buyBtn" backStyle="luckeylotterydraw.pic3"  x="18" y="151"/>	
+		
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="luckeylotterydraw.freshBtnBg" resourceLink="asset.core.btmc009" width="70" height="31" scaleGridString="10,10,20,20"/>	
+		<component classname="com.pickgliss.ui.image.MutipleImage"
+			stylename="luckeylotterydraw.freshBtnImage" resourceLink="luckeylotterydraw.freshBtnBg,luckeylotterydraw.freshRewardTf"
+			imageRectString=",0|70|0|20|17" width="70" height="31" />	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="luckeylotterydraw.freshBtnBtn"
+			backStyle="luckeylotterydraw.freshBtnImage" x="0" y="0" />
+			
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="welfareCenter.gift.icon0" 
+			resourceLink="asset.welfareCeneter.iconItemBg,asset.welfareCeneter.iconItem0" 
+			imageRectString="0|89|0|89|13,12|64|12|64|13" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="welfareCenter.gift.icon1" 
+			resourceLink="asset.welfareCeneter.iconItemBg,asset.welfareCeneter.iconItem1" 
+			imageRectString="0|89|0|89|13,13|64|12|64|13" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="welfareCenter.gift.icon2" 
+			resourceLink="asset.welfareCeneter.iconItemBg,asset.welfareCeneter.iconItem2" 
+			imageRectString="0|89|0|89|13,13|64|12|64|13" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="welfareCenter.gift.icon3" 
+			resourceLink="asset.welfareCeneter.iconItemBg,asset.welfareCeneter.iconItem3" 
+			imageRectString="0|89|0|89|13,12|64|12|64|13" />
+		
+		<component classname="welfareCenter.view.WelfareCenterFrame" stylename="welfareCenter.frame" parentStyle="BaseFrame" 
+			backStyle="SimpleFrameBackgound" escEnable="true" width="805" height="413" />
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage"stylename="welfareCenter.frameBg" parentStyle="core.bg6920" scaleGridString="5,10,80,20"
+		 	width="758" height="344" x="22" y="46" />
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="welfareCenter.frame.vBox" spacing="5" x="31" y="56" />
+		
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="welfareCenter.gift.awardBg" resourceLink="asset.welfareCeneter.gift.awardBg" 
+			scaleGridString="7,7,20,20" width="460" height="90" x="146" y="178" />
+			
+		<component classname="welfareCenter.view.OldPlayerGradeGiftBox" stylename="welfareCenter.gift.btn0" backStyle="asset.welfareCeneter.gift.btn0" 
+			x="154" y="88" width="54" height="25"  filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="welfareCenter.view.OldPlayerGradeGiftBox" stylename="welfareCenter.gift.btn1" backStyle="asset.welfareCeneter.gift.btn1" 
+			x="275" y="88" width="54" height="25"  filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="welfareCenter.view.OldPlayerGradeGiftBox" stylename="welfareCenter.gift.btn2" backStyle="asset.welfareCeneter.gift.btn2" 
+			x="401" y="88" width="54" height="25"  filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="welfareCenter.view.OldPlayerGradeGiftBox" stylename="welfareCenter.gift.btn3" backStyle="asset.welfareCeneter.gift.btn3" 
+			x="519" y="88" width="54" height="25" />
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="welfareCenter.gift.hBox" 
+			spacing="26" x="161" y="193"/>
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="callBackFund.downView.rewardsHBox" spacing="5" x="65" y="229"/>
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="callBackFund.dailyView.rewardsHBox" spacing="5" x="356" y="229"/>
+	
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="callbacklotterydraw.pic6" x="0" y="0"/>
+		<bitmapData resourceLink="callbacklotterydraw.pic8" x="54" y="-12" width="68" />
+		<bitmapData resourceLink="callbacklotterydraw.pic7" x="0" y="26"/>
+		<bitmapData resourceLink="luckeylotterydraw.pic6" x="0" y="0"/>
+		<bitmapData resourceLink="luckeylotterydraw.pic8" x="54" y="-12" width="68"/>
+		<bitmapData resourceLink="luckeylotterydraw.pic7" x="0" y="26"/>
+		<bitmapData resourceLink="callbacklotterydraw.pic1" x="23" y="32"/>
+		<bitmapData resourceLink="asset.welfareCeneter.gift.isGain" x="9" y="0"/>
+	</bitmaps>
+
+</style>

@@ -1,0 +1,34 @@
+﻿<style name="labyrinth" version="1.0.1" source="ui/vietnam/swf/labyrinth.swf">
+<sets>
+
+	<set args="0x042962,1,4,4,10" stylename="labyrinth.sweepViewItem.expLabelGF" type="flash.filters.GlowFilter"/>
+	<set stylename="labyrinth.sweepViewItem.expLabelTF" args="宋体,12,0xffeb8e,true,,,,,left" type="flash.text.TextFormat"/>
+	
+	<set args="0x042962,1,4,4,10" stylename="labyrinth.sweepViewItem.levelLabelGF" type="flash.filters.GlowFilter"/>
+	<set stylename="labyrinth.sweepViewItem.levelLabelTF" args="宋体,14,0xf6eeba,true,,,,,left" type="flash.text.TextFormat"/>
+		
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="labyrinth.view.firstRewardViewPos" x="262" y="265" />
+	<custom classname="flash.geom.Point" stylename="labyrinth.view.rewardViewPos" x="262" y="348" />
+	<custom classname="flash.geom.Point" stylename="labyrinth.view.leftViewPos" x="20" y="27" />
+	<custom classname="flash.geom.Point" stylename="labyrinth.view.playerPos" x="751" y="35" />
+	<custom classname="flash.geom.Point" stylename="labyrinth.shopView.cellPos" x="16" y="16" />
+	<custom classname="flash.geom.Point" stylename="labyrinth.view.tryAgainPos" x="-11" y="-22" />
+</customDisplay>
+<components>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="labyrinth.view.rewardHbox" spacing="10" x="0" y="2" />
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="labyrinth.awardView.hbox" spacing="10" x="148" y="4" />
+
+	<component classname="com.pickgliss.ui.controls.ListPanel" stylename="labyrinth.sweepView.list" hScrollbarStyle="core.HScrollbar" vScrollbarStyle="core.VScrollbar" hScrollbarInnerRectString="0,22,21,0,4" vScrollbarInnerRectString="21,4,0,0,3" viewportInnerRectString="2,0,0,0,0" factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|labyrinth.view.LabyrinthSweepItem,70,212" listStyle="com.pickgliss.ui.controls.list.List" width="245" height="209" x="12" y="54" hScrollProxy="2" vUnitIncrement="10"/>
+	
+	
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="labyrinth.sweepViewItem.expLabel" textFormatStyle="labyrinth.sweepViewItem.expLabelTF" filterString="labyrinth.sweepViewItem.expLabelGF" autoSize="none" multiline="true" wordWrap="true" x="0" y="22" width="220" height="48" type="dynamic" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="labyrinth.sweepViewItem.levelLabel" textFormatStyle="labyrinth.sweepViewItem.levelLabelTF" filterString="labyrinth.sweepViewItem.levelLabelGF" autoSize="none" x="0" y="-2" width="180" height="24" type="dynamic" />
+	
+</components>
+
+<bitmaps>
+</bitmaps>
+</style> 

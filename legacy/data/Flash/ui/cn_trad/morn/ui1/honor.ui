@@ -1,0 +1,69 @@
+
+%HonorTabRecord.xml�}<View width="604" height="368">
+  <Image skin="asset.honor.recordBg" x="0" y="0"/>
+  <Label text="1025" x="185" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true" y="37" width="32" height="16" var="praiseTxt"/>
+  <Label text="1025" x="445" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true" y="38" width="32" height="16" var="footTxt"/>
+  <Label text="點贊/踩日誌" x="52" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true" y="82" size="16"/>
+  <Label text="時間" x="471" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true" y="84" size="16" width="38" height="20"/>
+  <List x="30" y="121" repeatY="9" spaceY="7" width="544" height="216" var="recordList">
+    <Box name="render" y="0" x="0">
+      <Label text="荣誉点来源：" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" size="12" name="nickName" width="124" align="center"/>
+      <Label text="赞了你" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="140" size="12" name="actionTxt"/>
+      <Label text="一分钟前" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="421" size="12" width="83" name="timeTxt" y="0" align="center"/>
+    </Box>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="504" y="0" width="18" height="214" name="scrollBar"/>
+  </List>
+</View>HonorMain.xml�[<View width="649" height="480">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="-1" y="-5" width="649" height="480"/>
+  <HonorTabHonor x="20" y="81" var="honorTab" runtime="honor.view.HonorTabHonor"/>
+  <Image skin="asset.honor.honorTitle" x="-46" y="-44"/>
+  <Button skin="asset.ui.btn_close1" x="578" y="1" stateNum="1" var="btn_close"/>
+  <TabListEx var="tab_menu" x="43" y="42">
+    <TabButtonEx x="0" y="0" bgSizeGrid="15,15,15,15" selected="true" name="item0" skin="asset.honor.tab1UnSelect,asset.honor.tab1Select"/>
+    <TabButtonEx skin="asset.honor.tab2UnSelect,asset.honor.tab2Select" x="101" y="0" bgSizeGrid="15,15,15,15" width="120" height="40" name="item1" selected="false"/>
+  </TabListEx>
+  <Label text="好人卡结束时间：XX天XX小时XX分" y="54" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" x="319" var="goodPeopleTxt"/>
+</View>#HonorTabHonor.xml�<View width="604" height="368">
+  <Image skin="asset.honor.honorBg" x="0" y="0"/>
+  <Label text="榮譽" x="28" y="30" size="16" bold="true" color="0xffd800" stroke="0x5d2100,1,4,4,30"/>
+  <Label text="Lv.20" x="83" y="30" size="16" bold="true" color="0xffd800" stroke="0x5d2100,1,4,4,30" var="levelTxt"/>
+  <ProgressBarEx x="144" y="32" skin="asset.honor.progress" labelSize="12" bold="true" lableColor="0xfddcac" barLabelY="1" stroke="0x592904,1,4,4,30" var="progress" value="0.8" label="max"/>
+  <Box x="39" y="85" var="curBox">
+    <Label text="當級效果" x="72" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true"/>
+    <Label text="生 命 值：" y="32" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="強化加成：" y="55" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="進階成功率：" y="78" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="啟靈成功率：" y="101" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="鑄金成功率：" y="124" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="熔煉成功率：" y="147" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="0" x="79" y="32" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="hpTxt"/>
+    <Label text="0" x="79" y="55" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="strengTxt"/>
+    <Label text="0" x="79" y="79" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="superTxt"/>
+    <Label text="0" x="79" y="102" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="qilingTxt"/>
+    <Label text="0" x="79" y="125" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="goldTxt"/>
+    <Label text="0" x="79" y="148" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="fusionRateTxt"/>
+  </Box>
+  <Box x="367" y="83" var="nextBox">
+    <Label text="下級效果" x="53" color="0xfff06e" stroke="0x4f2000,1,4,4,30" bold="true" name="nameTxt" y="0"/>
+    <Label text="生 命 值：" y="32" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="強化加成：" y="55" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="進階成功率：" y="78" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="啟靈成功率：" y="101" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="鑄金成功率：" y="124" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="熔煉成功率：" y="147" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true"/>
+    <Label text="0" x="83" y="32" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="hpTxt"/>
+    <Label text="0" x="83" y="55" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="strengTxt"/>
+    <Label text="0" x="83" y="79" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="superTxt"/>
+    <Label text="0" x="83" y="102" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="qilingTxt"/>
+    <Label text="0" x="83" y="125" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="goldTxt"/>
+    <Label text="0" x="83" y="148" color="0xfcb875" stroke="0x572a04,1,4,4,30" bold="true" name="fusionRateTxt"/>
+  </Box>
+  <Label text="荣誉点来源:" y="269" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="24" size="12"/>
+  <Label text="1.帮助低战力玩家通关副本获得，每日上限15点；" y="287" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="21" size="12" wordWrap="true" width="385" height="36"/>
+  <Button skin="asset.ui.btn_red5" x="482" y="295" stateNum="1" imageLabel="asset.honor.getTxt" imageLabelRect="20,6" var="getBtn"/>
+  <Label text="3.被其他玩家点赞获得，每日上限50点；" y="334" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="20" size="12"/>
+  <Label text="2.携带低战力玩家参竞技胜利获得，每日上限10点；" y="311" color="0xe8b64c" stroke="0x4b0000,1,4,4,30" bold="true" x="22" size="12" width="385" height="36" wordWrap="true"/>
+  <Box x="413" y="285" var="rewardBox">
+    <Image skin="asset.honor.cellBg"/>
+  </Box>
+</View>

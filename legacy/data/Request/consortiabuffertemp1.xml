@@ -1,0 +1,42 @@
+<Result value="true" message="Success!">
+  <Item id="1" name="ávido" descript="EXP de Combate. O ganho de moedas ao virar uma carta aumenta em {0}%" type="1" level="1" value="10" riches="1000" metal="0" pic="1" group="10" />
+  <Item id="2" name="ávido" descript="EXP de Combate. O ganho de moedas ao virar uma carta aumenta em {0}%" type="1" level="2" value="15" riches="3000" metal="0" pic="1" group="10" />
+  <Item id="3" name="ávido" descript="EXP de Combate. O ganho de moedas ao virar uma carta aumenta em {0}%" type="1" level="3" value="20" riches="5000" metal="0" pic="1" group="10" />
+  <Item id="4" name="Ataque de Força" descript="Dano aumenta em {0}" type="1" level="2" value="20" riches="1000" metal="0" pic="2" group="2" />
+  <Item id="5" name="Ataque de Força" descript="Dano aumenta em {0}" type="1" level="3" value="40" riches="3000" metal="0" pic="2" group="2" />
+  <Item id="6" name="Ataque de Força" descript="Dano aumenta em {0}" type="1" level="4" value="60" riches="5000" metal="0" pic="2" group="2" />
+  <Item id="7" name="Explosão de Habilidades Potenciais" descript="Aumenta o Ataque e a Agilidade Defensiva em {0}" type="1" level="4" value="50" riches="1000" metal="0" pic="3" group="5" />
+  <Item id="8" name="Explosão de Habilidades Potenciais" descript="Aumenta o Ataque e a Agilidade Defensiva em {0}" type="1" level="5" value="100" riches="3000" metal="0" pic="3" group="5" />
+  <Item id="9" name="Explosão de Habilidades Potenciais" descript="Aumenta o Ataque e a Agilidade Defensiva em {0}" type="1" level="6" value="150" riches="5000" metal="0" pic="3" group="5" />
+  <Item id="10" name="Habilidade de Fortalecimento Corporal" descript="Aumenta a Vida Máxima do personagem em {0}%" type="1" level="5" value="20" riches="1000" metal="0" pic="4" group="4" />
+  <Item id="11" name="Habilidade de Fortalecimento Corporal" descript="Aumenta a Vida Máxima do personagem em {0}%" type="1" level="6" value="35" riches="3000" metal="0" pic="4" group="4" />
+  <Item id="12" name="Habilidade de Fortalecimento Corporal" descript="Aumenta a Vida Máxima do personagem em {0}%" type="1" level="7" value="50" riches="5000" metal="0" pic="4" group="4" />
+  <Item id="13" name="Habilidade de Fortalecimento Físico" descript="Valor Máximo de Vigor aumenta em {0}" type="1" level="7" value="10" riches="1000" metal="0" pic="5" group="7" />
+  <Item id="14" name="Habilidade de Fortalecimento Físico" descript="Valor Máximo de Vigor aumenta em {0}" type="1" level="8" value="20" riches="3000" metal="0" pic="5" group="7" />
+  <Item id="15" name="Habilidade de Fortalecimento Físico" descript="Valor Máximo de Vigor aumenta em {0}" type="1" level="10" value="30" riches="5000" metal="0" pic="5" group="7" />
+  <Item id="16" name="pilhar" descript="Honra pela luta x {0}" type="1" level="8" value="2" riches="1000" metal="0" pic="6" group="9" />
+  <Item id="17" name="pilhar" descript="Honra pela luta x {0}" type="1" level="9" value="3" riches="3000" metal="0" pic="6" group="9" />
+  <Item id="18" name="Empurrar para dentro" descript="Requisitos por atender as Missões Atléticas diminuem em {0}" type="2" level="1" value="1" riches="100" metal="800" pic="7" group="8" />
+  <Item id="19" name="Empurrar para dentro" descript="Requisitos por atender as Missões Atléticas diminuem em {0}" type="2" level="5" value="2" riches="300" metal="1400" pic="7" group="8" />
+  <Item id="20" name="A Mão de Deus" descript="Efeito de tratamento aumenta em {0}" type="2" level="2" value="500" riches="100" metal="800" pic="8" group="1" />
+  <Item id="21" name="A Mão de Deus" descript="Efeito de tratamento aumenta em {0}" type="2" level="3" value="1000" riches="300" metal="1400" pic="8" group="1" />
+  <Item id="22" name="A Mão de Deus" descript="Efeito de tratamento aumenta em {0}" type="2" level="6" value="1500" riches="500" metal="2000" pic="8" group="1" />
+  <Item id="23" name="batida final" descript="Aumenta o poder do ataque crítico em {0}" type="2" level="2" value="500" riches="100" metal="800" pic="9" group="3" />
+  <Item id="24" name="batida final" descript="Aumenta o poder do ataque crítico em {0}" type="2" level="4" value="1000" riches="300" metal="1400" pic="9" group="3" />
+  <Item id="25" name="batida final" descript="Aumenta o poder do ataque crítico em {0}" type="2" level="5" value="1500" riches="500" metal="2000" pic="9" group="3" />
+  <Item id="26" name="Tratamento Sagrado" descript="Vida aumenta em {0}% quando se usa um item de restauração de vida" type="2" level="3" value="20" riches="100" metal="800" pic="10" group="11" />
+  <Item id="27" name="Tratamento Sagrado" descript="Vida aumenta em {0}% quando se usa um item de restauração de vida" type="2" level="4" value="35" riches="300" metal="1400" pic="10" group="11" />
+  <Item id="28" name="Tratamento Sagrado" descript="Vida aumenta em {0}% quando se usa um item de restauração de vida" type="2" level="6" value="50" riches="500" metal="2000" pic="10" group="11" />
+  <Item id="29" name="Sorriso Frio" descript="Diminui o ímpeto do alvo em {0}% enquanto ataca" type="2" level="7" value="10" riches="100" metal="800" pic="11" group="12" />
+  <Item id="30" name="Sorriso Frio" descript="Diminui o ímpeto do alvo em {0}% enquanto ataca" type="2" level="8" value="20" riches="300" metal="1400" pic="11" group="12" />
+  <Item id="31" name="Sorriso Frio" descript="Diminui o ímpeto do alvo em {0}% enquanto ataca" type="2" level="9" value="30" riches="500" metal="2000" pic="11" group="12" />
+  <Item id="32" name="Piscadela Saltitante" descript="O vigor consumido diminui em {0}% enquanto se move" type="2" level="7" value="10" riches="100" metal="800" pic="12" group="6" />
+  <Item id="33" name="Piscadela Saltitante" descript="O vigor consumido diminui em {0}% enquanto se move" type="2" level="8" value="30" riches="300" metal="1400" pic="12" group="6" />
+  <Item id="34" name="Piscadela Saltitante" descript="O vigor consumido diminui em {0}% enquanto se move" type="2" level="10" value="50" riches="500" metal="2000" pic="12" group="6" />
+  <Item id="35" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="1" value="500" riches="0" metal="0" pic="13" group="13" />
+  <Item id="36" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="2" value="2000" riches="0" metal="0" pic="13" group="13" />
+  <Item id="37" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="3" value="5000" riches="0" metal="0" pic="13" group="13" />
+  <Item id="38" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="4" value="8000" riches="0" metal="0" pic="13" group="13" />
+  <Item id="39" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="5" value="10000" riches="0" metal="0" pic="13" group="13" />
+  <Item id="40" name="Amor Além do Ouro" descript="aumenta o HP do casal em {0}" type="0" level="6" value="15000" riches="0" metal="0" pic="13" group="13" />
+</Result>

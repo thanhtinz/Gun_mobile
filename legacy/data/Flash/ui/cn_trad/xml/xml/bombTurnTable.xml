@@ -1,0 +1,59 @@
+<style name="bombTurnTable" version="1.0.1" source="ui/cn_trad/swf/bombTurnTable.swf">
+<sets>
+		<set stylename="bombTurnTable.explanation.textTF" args="Arial,12,0xfff1f1,false,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="bombTurnTable.explanation.textGF" args="0x590d00,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="bombTurnTable.lotteryTicket.textTF" args="Arial,14,0xffffff,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="bombTurnTable.lotteryTicket.textGF" args="0xef0000,1,4,4,30" type="flash.filters.GlowFilter" />
+</sets>
+<components>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" 
+	stylename="ddt.bombTurnTable.helpButton" backStyle="asset.bombTurnTable.helpBtn"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddt.bombTurnTable.lotteryIconBtn" 
+	backStyle="asset.bombTurnTable.lotteryBtn"
+	x="14" y="14" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddt.bombTurnTable.lotteryIconBtn.continuous" 
+	backStyle="asset.bombTurnTable.lotteryBtn.continuous"
+	x="14" y="68" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="ddt.bombTurnTable.lotteryIconBtn.stop" 
+	backStyle="asset.bombTurnTable.lotteryBtn.stop"
+	x="14" y="68" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<!-- <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombTurnTable.explanation.textStyle" 
+	filterString="bombTurnTable.explanation.textGF" textFormatStyle="bombTurnTable.explanation.textTF"
+	x="283" y="508" /> -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombTurnTable.explanation.textStyle" 
+	filterString="bombTurnTable.lotteryTicket.textGF" textFormatStyle="bombTurnTable.lotteryTicket.textTF" autoSize="none" width="70" height="22"
+	x="275" y="503" /> 
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombTurnTable.lotteryTicket.textStyle" 
+	filterString="bombTurnTable.lotteryTicket.textGF" textFormatStyle="bombTurnTable.lotteryTicket.textTF" autoSize="none" width="70" height="22"
+	x="275" y="481" />
+	
+	
+	
+</components>
+<customs>
+	<custom  classname="BombTurnTable.view.BombTurnTableFrame" closestyle="ddt.bombTurnTable.closeBtn" stylename="bombTurnTable.bombTurnTableFrame"
+			escEnable="true" width="558" height="539"/>
+	<custom  classname="com.pickgliss.ui.controls.SimpleBitmapButton" backStyle="asset.bombTurnTable.closeBtn" x="434" y="109"
+			 stylename="ddt.bombTurnTable.closeBtn" width="42" height="42"/>
+	<custom  classname="flash.geom.Point" stylename="bombTurnTable.lotteryBtn.postion" x="213" y="216" ></custom>
+	<custom classname="asset.bombTurnTable.helpDes" stylename="asset.bombTurnTable.helpDes" x="36" y="72"/>
+</customs>
+<bitmaps>
+	<bitmapData resourceLink="asset.bombTurnTable.white"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer.bg"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer1" x="48" y="-38"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer2" x="50" y="-43"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer.border1" x="0" y="-15"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer.border2" x="-12" y="-14"/>
+	<bitmapData resourceLink="asset.bombTurnTable.pointer.border3" x="-22" y="-19"/>
+	<bitmapData resourceLink="asset.bombTurnTable.awardBook.bg" x="164" y="87"/>
+	<bitmapData resourceLink="asset.bombTurnTable.degrade" x="-25"/>
+	<bitmapData resourceLink="asset.bombTurnTable.upgrade" x="8"/>
+</bitmaps>
+</style>

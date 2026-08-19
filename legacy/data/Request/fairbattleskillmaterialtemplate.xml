@@ -1,0 +1,68 @@
+<Result value="true" message="Success!">
+  <Skill SkillID="20000">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="1" />
+  </Skill>
+  <Skill SkillID="20010">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="2" />
+  </Skill>
+  <Skill SkillID="20020">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="3" />
+  </Skill>
+  <Skill SkillID="20030">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="4" />
+  </Skill>
+  <Skill SkillID="20040">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="5" />
+  </Skill>
+  <Skill SkillID="20050">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="6" />
+  </Skill>
+  <Skill SkillID="20060">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="7" />
+  </Skill>
+  <Skill SkillID="20070">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="8" />
+  </Skill>
+  <Skill SkillID="20080">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="9" />
+  </Skill>
+  <Skill SkillID="20090">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="10" />
+  </Skill>
+  <Skill SkillID="20100">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="11" />
+  </Skill>
+  <Skill SkillID="20110">
+    <SkillDetail TemplateID="12548" Count="50" OrderID="12" />
+  </Skill>
+  <Skill SkillID="20500">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="13" />
+  </Skill>
+  <Skill SkillID="20510">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="14" />
+  </Skill>
+  <Skill SkillID="20520">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="15" />
+  </Skill>
+  <Skill SkillID="20530">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="16" />
+  </Skill>
+  <Skill SkillID="20540">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="17" />
+  </Skill>
+  <Skill SkillID="20550">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="18" />
+  </Skill>
+  <Skill SkillID="20560">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="19" />
+  </Skill>
+  <Skill SkillID="20570">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="20" />
+  </Skill>
+  <Skill SkillID="20580">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="21" />
+  </Skill>
+  <Skill SkillID="20590">
+    <SkillDetail TemplateID="12548" Count="100" OrderID="22" />
+  </Skill>
+</Result>

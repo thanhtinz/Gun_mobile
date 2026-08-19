@@ -1,0 +1,62 @@
+
+)ChrismasBossRank.xml�[<View width="200" height="306">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="306"/>
+  <Label text="挑戰剩餘時間：" x="8" y="16" color="0xffffff" size="13" width="112"/>
+  <Label text="00:00:00" x="110" y="16" color="0xfff4c6" size="13" var="remainTimeTxt"/>
+  <Label text="當前造成傷害：" x="8" y="43" color="0xff9933" size="13" width="95"/>
+  <Label text="0" x="115" y="43" color="0xff9933" size="13" var="myDamageTxt"/>
+  <Label text="我的排名：" x="8" y="66" color="0xE6E600" size="13"/>
+  <Label text="0" x="130" y="67" color="0xE6E600" size="13" var="myRankTxt"/>
+  <Label x="10" y="91" color="0xfff880" size="13" text="獲取排名..." var="notRankTxt"/>
+  <List x="7" y="91" repeatY="10" spaceY="2" var="rankList">
+    <Box name="render" x="0" y="0" height="17">
+      <Label color="0xfff880" size="13" text="1" name="rankTxt"/>
+      <Label color="0xfff880" size="13" text="客观你敢和认" name="nameTxt" x="21" y="0" width="93" height="18" mouseChildren="true" mouseEnabled="true"/>
+      <Label color="0xfff880" size="13" text="555555555" name="rate" x="114" y="0" width="70" height="18"/>
+    </Box>
+  </List>
+</View>#ChristmasBuff.xml�I<View width="158" height="136">
+  <Button skin="christmas.bindMoney.buffBtn" x="3" y="0" stateNum="1" var="bindMoneyBtn"/>
+  <Button skin="christmas.money.buffBtn" x="86" y="0" stateNum="1" var="moneyBtn"/>
+  <Box x="13" y="95" var="buffBox">
+    <Image skin="christmas.attackBuff" var="buffItem"/>
+    <Label text="0" x="7" y="23" var="buffCount" width="29" height="18" align="right" color="0xffffff"/>
+  </Box>
+</View>/ChristmasResureTime.xml�#<View width="483" height="84">
+  <Image skin="asset.christmas.timeBg" x="0" y="0" height="84"/>
+  <NumberImageEx x="260" y="13" count="20" width="89" height="53" clipsUrl="asset.christmas.num0,asset.christmas.num1,asset.christmas.num2,asset.christmas.num3,asset.christmas.num4,asset.christmas.num5,asset.christmas.num6,asset.christmas.num7,asset.christmas.num8,asset.christmas.num9" align="center" var="numClip"/>
+  <Image skin="asset.christmas.txt" x="30" y="25"/>
+  <Image skin="asset.christmas.second" x="360" y="13"/>
+</View>!ChristmasAdd.xml�7<View width="401" height="300">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="401" height="300"/>
+  <Button skin="asset.ui.btn_close1" x="349" y="3" stateNum="1" var="closeBtn"/>
+  <Label x="11" y="11" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="提示"/>
+  <Image skin="asset.ui.scale.bg3" x="11" y="235" sizeGrid="138,17,138,17" width="376" height="48"/>
+  <Label text="（每個血塊獲得10倍效果）" x="93" y="130" color="0xffffff" stroke="0xa92928,1,4,4,30" var="desTxt"/>
+  <Image skin="asset.christmas.txtBg" x="18" y="158"/>
+  <Button label="確 定" skin="asset.ui.btn_yellow1" x="65" y="242" stateNum="1" sizeGrid="27,17,27,17" width="85" height="36" labelColors="0xfff6a8" labelFont="14" labelStroke="0x715008,1,4,4,30" labelMargin="0,-2" var="yesBtn"/>
+  <Button label="取  消" skin="asset.ui.btn_yellow1" x="240" y="241" stateNum="1" sizeGrid="27,17,27,17" width="85" height="36" labelColors="0xfff6a8" labelFont="14" labelStroke="0x715008,1,4,4,30" labelMargin="0,-2" var="noBtn"/>
+  <Label x="38" y="165" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text="花費0點券" wordWrap="false" width="312" leading="5" letterSpacing="2" align="center" height="26" var="moneyTxt"/>
+  <TextInput text="0" skin="christmas.input.png" x="177" y="54" align="center" margin="0,5" sizeGrid="32,13,32,13" width="115" height="27" color="0xfcf6d6" size="14" stroke="0x7b4519,1,4,4,30" var="countInput"/>
+  <Image skin="asset.chrismas.addImg" x="54" y="57"/>
+  <TextInput text="1" skin="christmas.input.png" x="190" y="89" align="center" margin="0,5" sizeGrid="32,13,32,13" width="90" height="27" color="0xfcf6d6" size="14" stroke="0x7b4519,1,4,4,30" var="rateInput"/>
+  <Label x="285" y="92" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text="倍" wordWrap="false" leading="5" letterSpacing="2" align="center"/>
+  <Label x="105" y="92" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text="雪塊增幅" leading="5" letterSpacing="2" align="center"/>
+  <CheckBox x="86" y="93" checkButtonSkin="asset.ui.btn_check5" selected="true" toggle="true" stateNum="1" mouseChildren="false" mouseEnabled="false"/>
+  <Button skin="asset.chrismas.maxImg" x="298" y="55" stateNum="1" var="maxBtn"/>
+</View>)ChristmasBuyBuff.xml�/<View width="492" height="233">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="492" height="233"/>
+  <Button skin="asset.ui.btn_close1" x="438" y="2" stateNum="1" var="closeBtn"/>
+  <Label x="11" y="4" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="購買buff"/>
+  <Image skin="asset.ui.scale.bg3" x="23" y="169" sizeGrid="138,17,138,17" width="447" height="48"/>
+  <Button label="確 定" skin="asset.ui.btn_yellow1" x="85" y="177" stateNum="1" sizeGrid="27,17,27,17" width="85" height="36" labelColors="0xfff6a8" labelFont="14" labelStroke="0x715008,1,4,4,30" labelMargin="0,-2" var="yesBtn"/>
+  <Button label="取 消" skin="asset.ui.btn_yellow1" x="270" y="177" stateNum="1" sizeGrid="27,17,27,17" width="85" height="36" labelColors="0xfff6a8" labelFont="14" labelStroke="0x715008,1,4,4,30" labelMargin="0,-2" var="noBtn"/>
+  <Label x="40" y="46" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text=" pontos1000 de ligação de consumo，compre 1 pilha de 5% de bônus de dano final buff." wordWrap="true" leading="5" letterSpacing="2" align="center" var="choose1" width="407" height="62"/>
+  <Label x="34" y="95" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text="Cada camada 1000 é vinculada a cupons e 10 camadas de lustre podem ser adquiridas por vez." wordWrap="true" leading="5" letterSpacing="2" align="center" var="choose2" width="446"/>
+  <RadioGroup x="25" y="54" var="group">
+    <CheckBox x="1" checkButtonSkin="asset.ui.btn_check5" selected="true" toggle="true" stateNum="1" mouseChildren="true" mouseEnabled="true" name="item0"/>
+    <CheckBox y="47" checkButtonSkin="asset.ui.btn_check5" selected="false" toggle="true" stateNum="1" mouseChildren="true" mouseEnabled="true" name="item1" x="0"/>
+  </RadioGroup>
+  <Label x="164" y="146" size="12" bold="true" color="0x7b4519" stroke="0xfcf6d6,1,2,2,10" text="今日不在提醒" wordWrap="false" leading="5" letterSpacing="2" align="center"/>
+  <CheckBox x="263" checkButtonSkin="asset.ui.btn_check2" selected="false" toggle="true" stateNum="1" mouseChildren="true" mouseEnabled="true" y="149" var="noAlertBtn"/>
+</View>

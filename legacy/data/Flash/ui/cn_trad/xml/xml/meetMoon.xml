@@ -1,0 +1,31 @@
+﻿<style name="meetMoon" version="1.0.1" source="ui/cn_trad/swf/meetMoon.swf">
+	<sets>
+		<set stylename="meet.moon.timeTxtTF" args="宋体,20,0xffffff,true" letterSpacing="0" type="flash.text.TextFormat"/>
+		<set stylename="meet.moon.timeTxtGF" args="0x8400ff,1,4,4,30" type="flash.filters.GlowFilter"/> 
+	</sets>
+<components>
+	<!--退出-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.meet.moon.toolBtnBackBgAsset" resourceLink="asset.meet.moon.exitAsset" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.meet.moon.toolBtnBackBtnAsset" backStyle="asset.meet.moon.toolBtnBackBgAsset" x="936" y="550"/>
+	
+	<!--拍照-->
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.meet.moon.photographUnSelectAsset" resourceLink="asset.meet.moon.btnDefaultBgAsset,asset.meet.moon.photographAsset"/>
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="asset.meet.moon.photographSelectAsset" resourceLink="asset.meet.moon.btnSelectedBgAsset,asset.meet.moon.photographAsset" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.meet.moon.photographBtnBgAsset" resourceLink="asset.meet.moon.photographUnSelectAsset,asset.meet.moon.photographSelectAsset,asset.meet.moon.photographSelectAsset,asset.meet.moon.photographUnSelectAsset" filterString="null,null,null,grayFilter" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.meet.moon.photographBtn" backStyle="asset.meet.moon.photographBtnBgAsset" x="922" y="471"/>
+	
+	<!--跨区祝福-->
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="asset.meet.moon.areaBlessBtn" backStyle="asset.meet.moon.areaBlessing" x="14" y="12"/>
+	
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="meet.moon.timeBg" resourceLink="asset.meet.moon.timeBg" x="864" y="10"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="meet.moon.timeTxt" textFormatStyle="meet.moon.timeTxtTF" filterString="meet.moon.timeTxtGF" x="883" y="17" />
+</components>
+<bitmaps>
+<!--房间内工具菜单-->
+	<bitmapData resourceLink="asset.meet.moon.photographAsset" x="4" y="6" />
+</bitmaps>	
+
+<customDisplay>
+</customDisplay>
+
+</style>	

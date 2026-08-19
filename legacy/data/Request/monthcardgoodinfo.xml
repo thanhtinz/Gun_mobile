@@ -1,0 +1,9 @@
+<Result value="true" message="Success!">
+  <Item ID="1" GoodID="11164" Money="900" Count="1" Day="30" />
+  <Item ID="2" GoodID="100100" Money="900" Count="3" Day="30" />
+  <Item ID="3" GoodID="11166" Money="900" Count="3" Day="30" />
+  <Item ID="4" GoodID="11163" Money="900" Count="3" Day="30" />
+  <Item ID="5" GoodID="11177" Money="900" Count="1" Day="30" />
+  <Item ID="6" GoodID="40005" Money="900" Count="2" Day="30" />
+  <Item ID="7" GoodID="11810" Money="900" Count="3" Day="30" />
+</Result>
