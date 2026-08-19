@@ -650,8 +650,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.FightFire:
                 case PhoneMsg.FightWalk:
+                    // Enforce: only the room.CurrentPlayer is allowed to act.
+                    bool allow;
+                    lock (_lock)
+                    {
+                        allow = room.InBattle && player.Seat == room.CurrentPlayer;
+                    }
+                    if (!allow) return;
                     BroadcastToRoom(room, id, json, player.Id);
                     break;
+
+                case PhoneMsg.FightTurn:
+                {
+                    int turn = JI(json, "turn", room.CurrentTurn);
+                    int who = JI(json, "player", room.CurrentPlayer);
+                    float wind = JF(json, "wind", room.Wind);
+                    lock (_lock)
+                    {
+                        room.CurrentTurn = turn;
+                        room.CurrentPlayer = who;
+                        room.Wind = wind;
+                        room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                    }
+                    break;
+                }
 
                 case PhoneMsg.FightDamage:
                     HandleFightDamage(player, room, json);

@@ -829,6 +829,12 @@ namespace GunMobile.Client
             _loop.EndShot();
             _loop.FinishSettle();
 
+            if (PhoneNet.NetBattle && _loop.Phase != BattlePhase.MatchOver)
+            {
+                // Let server sync turn/player/wind so it can enforce "only current player acts".
+                PhoneNet.SendFightTurn(_loop.TurnIndex, _loop.CurrentLiving, _loop.Wind);
+            }
+
             if (_loop.Phase == BattlePhase.MatchOver)
             {
                 FinishMatch();

@@ -185,6 +185,17 @@ namespace GunMobile.Client
             Fight?.Send(PhoneMsg.FightDamage, "{\"target\":" + target + ",\"dmg\":" + dmg + "}");
         }
 
+        public static void SendFightTurn(int turn, int player, float wind)
+        {
+            if (Fight == null || !Fight.Connected) return;
+            Fight.Send(
+                PhoneMsg.FightTurn,
+                "{\"turn\":" + turn +
+                ",\"player\":" + player +
+                ",\"wind\":" + wind.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                "}");
+        }
+
         public static void ReportFightOver(bool win)
         {
             Fight?.Send(PhoneMsg.FightOver, "{\"win\":" + (win ? "1" : "0") + "}");
