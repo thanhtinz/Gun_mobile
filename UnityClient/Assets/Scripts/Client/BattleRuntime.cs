@@ -115,6 +115,20 @@ namespace GunMobile.Client
 
     public sealed class BattleHost : MonoBehaviour
     {
+        struct SeatLook
+        {
+            public int Sex;
+            public int Level;
+            public int EquipHead;
+            public int EquipHair;
+            public int EquipFace;
+            public int EquipCloth;
+            public int EquipGlass;
+            public int EquipWeapon;
+            public int PetId;
+            public int TitleId;
+        }
+
         GameApp _app;
         string _fightStartJson;
         MapCollision _map;
@@ -141,6 +155,9 @@ namespace GunMobile.Client
         int _npcId;
         string _foeName = "Bot";
         string[] _playerNames;
+        SeatLook[] _seatLooks;
+        RawImage[] _petImgs;
+        RawImage[] _titleImgs;
         int _serverRewardGold;
         bool _serverRewardWin;
         int _serverQuestGold;
@@ -170,8 +187,6 @@ namespace GunMobile.Client
         bool _propCrit;
         float _walkSendT;
         int _lastWalkDir;
-        RawImage _petImg;
-        RawImage _titleImg;
         float _nextFightReconnectAt;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
@@ -252,6 +267,25 @@ namespace GunMobile.Client
                         }
                     }
                     _foeName = foes.Count > 0 ? string.Join(", ", foes) : "Team";
+                }
+
+                _seatLooks = new SeatLook[playerCount];
+                for (int i = 0; i < playerCount; i++)
+                {
+                    string px = "p" + i + "_";
+                    _seatLooks[i] = new SeatLook
+                    {
+                        Sex = JsonInt(_fightStartJson, px + "sex", 1),
+                        Level = JsonInt(_fightStartJson, px + "level", 20),
+                        EquipHead = JsonInt(_fightStartJson, px + "equipHead", 0),
+                        EquipHair = JsonInt(_fightStartJson, px + "equipHair", 0),
+                        EquipFace = JsonInt(_fightStartJson, px + "equipFace", 0),
+                        EquipCloth = JsonInt(_fightStartJson, px + "equipCloth", 0),
+                        EquipGlass = JsonInt(_fightStartJson, px + "equipGlass", 0),
+                        EquipWeapon = JsonInt(_fightStartJson, px + "equipWeapon", JsonInt(_fightStartJson, px + "weaponId", 7001)),
+                        PetId = JsonInt(_fightStartJson, px + "petId", 0),
+                        TitleId = JsonInt(_fightStartJson, px + "titleId", 0)
+                    };
                 }
             }
             else
@@ -807,9 +841,10 @@ namespace GunMobile.Client
                     int turn = JsonInt(msg.Json, "turn", _loop.TurnIndex);
                     int player = JsonInt(msg.Json, "player", _loop.CurrentLiving);
                     float wind = JsonFloat(msg.Json, "wind", _loop.Wind);
+                    float timeLeft = JsonFloat(msg.Json, "timeLeft", 20f);
                     // If we were mid-flight during reconnect, still resync when turn index changes.
                     if (_loop.Phase != BattlePhase.Flying || turn != _loop.TurnIndex)
-                        _loop.SyncTurn(turn, player, wind);
+                        _loop.SyncTurn(turn, player, wind, timeLeft);
                     continue;
                 }
 
@@ -1406,31 +1441,14 @@ namespace GunMobile.Client
             int actorCount = _loop != null ? _loop.Livings.Count : 2;
             _livingImg = new RawImage[actorCount];
             _hpFill = new RawImage[actorCount];
+            _petImgs = new RawImage[actorCount];
+            _titleImgs = new RawImage[actorCount];
             for (int i = 0; i < actorCount; i++)
             {
                 var go = new GameObject("Living" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
                 go.transform.SetParent(_world, false);
                 var raw = go.GetComponent<RawImage>();
                 raw.raycastTarget = false;
-                if (_livingSheet != null)
-                {
-                    raw.texture = _livingSheet.Texture;
-                    SheetFrame fr = _walkFrames.Count > 0 ? _walkFrames[Mathf.Min(6, _walkFrames.Count - 1)] : _livingSheet.Frames[0];
-                    raw.uvRect = fr.Uv;
-                }
-                else
-                {
-                    PcSkin.Apply(raw, PcSkin.Game, "game_defaultCharacter");
-                    if (raw.texture == Texture2D.whiteTexture || raw.texture == null)
-                    {
-                        PcSkin.Apply(raw, PcSkin.Default, "image_deafult_player");
-                    }
-                    if (raw.texture == Texture2D.whiteTexture || raw.texture == null)
-                    {
-                        raw.texture = Texture2D.whiteTexture;
-                    }
-                }
-
                 raw.color = Color.white;
                 _livingImg[i] = raw;
 
@@ -1442,91 +1460,23 @@ namespace GunMobile.Client
                 hpRt.offsetMin = hpRt.offsetMax = Vector2.zero;
                 var hp = hpGo.GetComponent<RawImage>();
                 hp.texture = Texture2D.whiteTexture;
-                PcSkin.Apply(hp, PcSkin.Game, i == 0 ? "game_HPStrip1" : "game_HPStrip2");
+                int team = i < _loop.Livings.Count ? _loop.Livings[i].Team : ((i % 2) + 1);
+                PcSkin.Apply(hp, PcSkin.Game, team == 1 ? "game_HPStrip1" : "game_HPStrip2");
                 hp.raycastTarget = false;
                 _hpFill[i] = hp;
+
+                DecorateActor(i);
             }
 
             NpcInfo npcArt = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
             _npcSprite = PcArt.NpcLiving(_app.Loader, npcArt);
-            if (_npcSprite == null && PhoneNet.NetBattle)
+            if (_npcSprite != null && !PhoneNet.NetBattle && actorCount > 1)
             {
-                _npcSprite = PcArt.DefaultLiving(_app.Loader);
-            }
-
-            // Apply NPC/opponent sprite to all non-self actors
-            for (int ai = 0; ai < actorCount; ai++)
-            {
-                if (ai == MeSeat()) continue;
-                if (_npcSprite != null && _livingImg[ai] != null)
+                int botSeat = 1;
+                if (_livingImg[botSeat] != null)
                 {
-                    _livingImg[ai].texture = _npcSprite;
-                    _livingImg[ai].uvRect = new Rect(0f, 0f, 1f, 1f);
-                    _livingImg[ai].color = Color.white;
-                }
-            }
-
-            if (_app.Database != null)
-            {
-                Texture2D weap = PcArt.EquipLayer(_app.Loader, _app.Database.GetItem(_app.Profile.EquipWeapon), _app.Profile.Sex);
-                if (weap != null && _livingImg[0] != null)
-                {
-                    var wgo = new GameObject("Weapon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-                    wgo.transform.SetParent(_livingImg[0].transform, false);
-                    var wrt = wgo.GetComponent<RectTransform>();
-                    wrt.anchorMin = new Vector2(0.55f, 0.15f);
-                    wrt.anchorMax = new Vector2(1.15f, 0.85f);
-                    wrt.offsetMin = wrt.offsetMax = Vector2.zero;
-                    var wraw = wgo.GetComponent<RawImage>();
-                    wraw.texture = weap;
-                    wraw.raycastTarget = false;
-                }
-            }
-
-            if (_app.Database != null && _app.Database.Pets.TryGetValue(_app.Profile.PetId, out PetInfo pet))
-            {
-                Texture2D petTex = PcArt.PetIcon(_app.Loader, pet.Pic);
-                if (petTex != null && _livingImg[0] != null)
-                {
-                    var pgo = new GameObject("Pet", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-                    pgo.transform.SetParent(_livingImg[0].transform, false);
-                    var prt = pgo.GetComponent<RectTransform>();
-                    prt.anchorMin = new Vector2(-0.35f, 0.05f);
-                    prt.anchorMax = new Vector2(0.25f, 0.7f);
-                    prt.offsetMin = prt.offsetMax = Vector2.zero;
-                    _petImg = pgo.GetComponent<RawImage>();
-                    _petImg.texture = petTex;
-                    _petImg.raycastTarget = false;
-                }
-            }
-
-            if (_app.Database != null && _app.Database.Titles.TryGetValue(_app.Profile.TitleId, out TitleInfo title))
-            {
-                Texture2D banner = PcArt.TitleBanner(_app.Loader, title.Pic);
-                if (banner != null && _livingImg[0] != null)
-                {
-                    var tgo = new GameObject("Title", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-                    tgo.transform.SetParent(_livingImg[0].transform, false);
-                    var trt = tgo.GetComponent<RectTransform>();
-                    trt.anchorMin = new Vector2(-0.2f, 1.2f);
-                    trt.anchorMax = new Vector2(1.2f, 1.55f);
-                    trt.offsetMin = trt.offsetMax = Vector2.zero;
-                    _titleImg = tgo.GetComponent<RawImage>();
-                    _titleImg.texture = banner;
-                    _titleImg.raycastTarget = false;
-                }
-            }
-
-            if (_livingImg[0] != null)
-            {
-                RawImage lv = PcSkin.Slice(_livingImg[0].transform, "Lv", PcSkin.Game, "level_" + Mathf.Clamp(_app.Profile.Level, 1, 70), false);
-                if (lv != null)
-                {
-                    var lrt = lv.rectTransform;
-                    lrt.anchorMin = new Vector2(0.35f, 1.55f);
-                    lrt.anchorMax = new Vector2(0.65f, 1.85f);
-                    lrt.offsetMin = lrt.offsetMax = Vector2.zero;
-                    lv.raycastTarget = false;
+                    _livingImg[botSeat].texture = _npcSprite;
+                    _livingImg[botSeat].uvRect = new Rect(0f, 0f, 1f, 1f);
                 }
             }
 
@@ -1570,6 +1520,149 @@ namespace GunMobile.Client
             }
         }
 
+        SeatLook GetSeatLook(int seat)
+        {
+            if (_seatLooks != null && seat >= 0 && seat < _seatLooks.Length)
+            {
+                return _seatLooks[seat];
+            }
+
+            if (seat == MeSeat() || (!PhoneNet.NetBattle && seat == 0))
+            {
+                return new SeatLook
+                {
+                    Sex = _app.Profile.Sex,
+                    Level = _app.Profile.Level,
+                    EquipHead = _app.Profile.EquipHead,
+                    EquipHair = _app.Profile.EquipHair,
+                    EquipFace = _app.Profile.EquipFace,
+                    EquipCloth = _app.Profile.EquipCloth,
+                    EquipGlass = _app.Profile.EquipGlass,
+                    EquipWeapon = _app.Profile.EquipWeapon,
+                    PetId = _app.Profile.PetId,
+                    TitleId = _app.Profile.TitleId
+                };
+            }
+
+            return new SeatLook { Sex = 1, Level = 20, EquipWeapon = 7001 };
+        }
+
+        void DecorateActor(int seat)
+        {
+            if (_livingImg == null || seat < 0 || seat >= _livingImg.Length || _livingImg[seat] == null)
+            {
+                return;
+            }
+
+            Transform root = _livingImg[seat].transform;
+            RawImage body = _livingImg[seat];
+            SeatLook look = GetSeatLook(seat);
+            bool useSheetAnim = _livingSheet != null && !PhoneNet.NetBattle && seat == 0 && _npcId == 0;
+
+            if (useSheetAnim)
+            {
+                body.texture = _livingSheet.Texture;
+                SheetFrame fr = _walkFrames.Count > 0 ? _walkFrames[Mathf.Min(6, _walkFrames.Count - 1)] : _livingSheet.Frames[0];
+                body.uvRect = fr.Uv;
+            }
+            else
+            {
+                Texture2D living = PcArt.DefaultLiving(_app.Loader);
+                if (living != null)
+                {
+                    body.texture = living;
+                    body.uvRect = new Rect(0f, 0f, 1f, 1f);
+                }
+                else
+                {
+                    PcSkin.Apply(body, PcSkin.Game, "game_defaultCharacter");
+                    if (body.texture == Texture2D.whiteTexture || body.texture == null)
+                    {
+                        PcSkin.Apply(body, PcSkin.Default, "image_deafult_player");
+                    }
+                }
+            }
+
+            if (_app.Database == null || useSheetAnim)
+            {
+                return;
+            }
+
+            AddEquipLayer(root, "Cloth", look.EquipCloth, look.Sex, new Vector2(0f, 0f), new Vector2(1f, 1f));
+            AddEquipLayer(root, "Head", look.EquipHead, look.Sex, new Vector2(0.1f, 0.55f), new Vector2(0.9f, 1.05f));
+            AddEquipLayer(root, "Weapon", look.EquipWeapon, look.Sex, new Vector2(0.5f, 0.1f), new Vector2(1.2f, 0.7f));
+
+            if (_app.Database.Pets.TryGetValue(look.PetId, out PetInfo pet))
+            {
+                Texture2D petTex = PcArt.PetIcon(_app.Loader, pet.Pic);
+                if (petTex != null)
+                {
+                    var pgo = new GameObject("Pet", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    pgo.transform.SetParent(root, false);
+                    var prt = pgo.GetComponent<RectTransform>();
+                    prt.anchorMin = new Vector2(-0.35f, 0.05f);
+                    prt.anchorMax = new Vector2(0.25f, 0.7f);
+                    prt.offsetMin = prt.offsetMax = Vector2.zero;
+                    var petImg = pgo.GetComponent<RawImage>();
+                    petImg.texture = petTex;
+                    petImg.raycastTarget = false;
+                    if (_petImgs != null && seat < _petImgs.Length) _petImgs[seat] = petImg;
+                }
+            }
+
+            if (_app.Database.Titles.TryGetValue(look.TitleId, out TitleInfo title))
+            {
+                Texture2D banner = PcArt.TitleBanner(_app.Loader, title.Pic);
+                if (banner != null)
+                {
+                    var tgo = new GameObject("Title", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    tgo.transform.SetParent(root, false);
+                    var trt = tgo.GetComponent<RectTransform>();
+                    trt.anchorMin = new Vector2(-0.2f, 1.2f);
+                    trt.anchorMax = new Vector2(1.2f, 1.55f);
+                    trt.offsetMin = trt.offsetMax = Vector2.zero;
+                    var titleImg = tgo.GetComponent<RawImage>();
+                    titleImg.texture = banner;
+                    titleImg.raycastTarget = false;
+                    if (_titleImgs != null && seat < _titleImgs.Length) _titleImgs[seat] = titleImg;
+                }
+            }
+
+            RawImage lv = PcSkin.Slice(root, "Lv", PcSkin.Game, "level_" + Mathf.Clamp(look.Level, 1, 70), false);
+            if (lv != null)
+            {
+                var lrt = lv.rectTransform;
+                lrt.anchorMin = new Vector2(0.35f, 1.55f);
+                lrt.anchorMax = new Vector2(0.65f, 1.85f);
+                lrt.offsetMin = lrt.offsetMax = Vector2.zero;
+                lv.raycastTarget = false;
+            }
+        }
+
+        void AddEquipLayer(Transform parent, string name, int templateId, int sex, Vector2 anchorMin, Vector2 anchorMax)
+        {
+            if (_app.Database == null || templateId <= 0)
+            {
+                return;
+            }
+
+            Texture2D tex = PcArt.EquipLayer(_app.Loader, _app.Database.GetItem(templateId), sex);
+            if (tex == null)
+            {
+                return;
+            }
+
+            var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            go.transform.SetParent(parent, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = anchorMin;
+            rt.anchorMax = anchorMax;
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            var raw = go.GetComponent<RawImage>();
+            raw.texture = tex;
+            raw.raycastTarget = false;
+        }
+
         void UpdateActors()
         {
             if (_livingImg == null || _map == null || _pos == null)
@@ -1590,17 +1683,14 @@ namespace GunMobile.Client
             for (int i = 0; i < _livingImg.Length; i++)
             {
                 bool dead = _loop.Livings[i].Hp <= 0;
-                if (i == 0)
+                if (_petImgs != null && i < _petImgs.Length && _petImgs[i] != null)
                 {
-                    if (_petImg != null)
-                    {
-                        _petImg.gameObject.SetActive(!dead);
-                    }
+                    _petImgs[i].gameObject.SetActive(!dead);
+                }
 
-                    if (_titleImg != null)
-                    {
-                        _titleImg.gameObject.SetActive(!dead);
-                    }
+                if (_titleImgs != null && i < _titleImgs.Length && _titleImgs[i] != null)
+                {
+                    _titleImgs[i].gameObject.SetActive(!dead);
                 }
 
                 if (dead)
@@ -1622,15 +1712,21 @@ namespace GunMobile.Client
                 }
 
                 SheetFrame frame = PickFrame(i == me && (walking || firing));
-                if (i != me && _npcSprite != null)
+                bool useNpcSprite = !PhoneNet.NetBattle && i != me && _npcSprite != null;
+                bool useSheet = !useNpcSprite && _livingSheet != null && _livingImg[i].texture == _livingSheet.Texture;
+                if (useNpcSprite)
                 {
                     _livingImg[i].uvRect = new Rect(0f, 0f, 1f, 1f);
                     frame = new SheetFrame { Uv = _livingImg[i].uvRect, Size = FitSprite(_npcSprite.width, _npcSprite.height, 96f, 120f) };
                 }
-                else
+                else if (useSheet)
                 {
                     _livingImg[i].uvRect = frame.Uv;
                     frame = new SheetFrame { Uv = frame.Uv, Size = FitSprite(frame.Size.x, frame.Size.y, 80f, 100f) };
+                }
+                else
+                {
+                    frame = new SheetFrame { Uv = new Rect(0f, 0f, 1f, 1f), Size = FitSprite(_livingImg[i].texture != null ? _livingImg[i].texture.width : 72, _livingImg[i].texture != null ? _livingImg[i].texture.height : 90, 80f, 100f) };
                 }
                 float sx = _world.rect.width / Mathf.Max(1, _map.Width);
                 float sy = _world.rect.height / Mathf.Max(1, _map.Height);

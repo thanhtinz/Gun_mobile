@@ -654,9 +654,7 @@ namespace GunMobile.Net
                                     // State snapshot: HP + x + facing, so reconnect can resume close to server state.
                                     if (inBattle)
                                     {
-                                        string turnJson = "{\"turn\":" + turn +
-                                                          ",\"player\":" + currentPlayer +
-                                                          ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
+                                        string turnJson = BuildTurnJson(snapRoom);
                                         Send(ns, PhoneMsg.FightTurn, turnJson);
 
                                         string propJson = "{\"player\":" + currentPlayer +
@@ -1132,9 +1130,7 @@ namespace GunMobile.Net
                     }
 
                     // Broadcast the server's authoritative turn state.
-                    string turnJson = "{\"turn\":" + serverTurn +
-                                       ",\"player\":" + serverPlayer +
-                                       ",\"wind\":" + serverWind.ToString(CultureInfo.InvariantCulture) + "}";
+                    string turnJson = BuildTurnJson(room);
                     BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
                     break;
                 }
@@ -1443,6 +1439,24 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.RankData, sb.ToString());
         }
 
+        const float BattleTurnSeconds = 20f;
+
+        float TurnTimeLeftSeconds(GameRoom room)
+        {
+            if (room == null || room.TurnStartMs <= 0) return BattleTurnSeconds;
+            long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            return Mathf.Max(0f, BattleTurnSeconds - (now - room.TurnStartMs) / 1000f);
+        }
+
+        string BuildTurnJson(GameRoom room)
+        {
+            float tl = TurnTimeLeftSeconds(room);
+            return "{\"turn\":" + room.CurrentTurn +
+                   ",\"player\":" + room.CurrentPlayer +
+                   ",\"wind\":" + room.Wind.ToString(CultureInfo.InvariantCulture) +
+                   ",\"timeLeft\":" + tl.ToString(CultureInfo.InvariantCulture) + "}";
+        }
+
         void HandleRoomList(ServerPlayer player, NetworkStream ns)
         {
             var sb = new StringBuilder("{\"rooms\":[");
@@ -1599,27 +1613,43 @@ namespace GunMobile.Net
                 sb.Append(",\"").Append(p).Append("maxhp\":").Append(room.MaxHp[i]);
                 sb.Append(",\"").Append(p).Append("team\":").Append(ls.Team);
 
-                // Weapon/ball info
+                // Weapon/ball + appearance
                 int wid = 7001, ballId = 0;
+                int sex = 1, level = 20;
+                int equipHead = 0, equipHair = 0, equipFace = 0, equipCloth = 0, equipGlass = 0, equipWeapon = 7001;
+                int petId = 0, titleId = 0;
+                string nick = "Player";
                 lock (_lock)
                 {
                     if (i < room.PlayerIds.Count && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer sp))
                     {
                         wid = sp.WeaponId;
                         ballId = sp.PreferredBallId;
+                        sex = sp.Sex;
+                        level = sp.Level;
+                        equipHead = sp.EquipHead;
+                        equipHair = sp.EquipHair;
+                        equipFace = sp.EquipFace;
+                        equipCloth = sp.EquipCloth;
+                        equipGlass = sp.EquipGlass;
+                        equipWeapon = sp.EquipWeapon;
+                        petId = sp.PetId;
+                        titleId = sp.TitleId;
+                        nick = sp.Nick ?? "Player";
                     }
                 }
                 sb.Append(",\"").Append(p).Append("weaponId\":").Append(wid);
                 sb.Append(",\"").Append(p).Append("preferredBallId\":").Append(ballId);
-
-                string nick = "Player";
-                lock (_lock)
-                {
-                    if (i < room.PlayerIds.Count && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer spNick))
-                    {
-                        nick = spNick.Nick ?? "Player";
-                    }
-                }
+                sb.Append(",\"").Append(p).Append("sex\":").Append(sex);
+                sb.Append(",\"").Append(p).Append("level\":").Append(level);
+                sb.Append(",\"").Append(p).Append("equipHead\":").Append(equipHead);
+                sb.Append(",\"").Append(p).Append("equipHair\":").Append(equipHair);
+                sb.Append(",\"").Append(p).Append("equipFace\":").Append(equipFace);
+                sb.Append(",\"").Append(p).Append("equipCloth\":").Append(equipCloth);
+                sb.Append(",\"").Append(p).Append("equipGlass\":").Append(equipGlass);
+                sb.Append(",\"").Append(p).Append("equipWeapon\":").Append(equipWeapon);
+                sb.Append(",\"").Append(p).Append("petId\":").Append(petId);
+                sb.Append(",\"").Append(p).Append("titleId\":").Append(titleId);
                 sb.Append(",\"").Append(p).Append("nick\":\"").Append((nick ?? "Player").Replace("\"", "")).Append("\"");
             }
             sb.Append("}");
@@ -2049,7 +2079,7 @@ namespace GunMobile.Net
                 return;
             }
 
-            string turnJson = "{\"turn\":" + room.CurrentTurn + ",\"player\":" + room.CurrentPlayer + ",\"wind\":" + room.Wind + "}";
+            string turnJson = BuildTurnJson(room);
             BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
 
             string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
