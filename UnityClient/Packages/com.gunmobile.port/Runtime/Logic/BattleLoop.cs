@@ -133,6 +133,23 @@ namespace GunMobile.Logic
             Phase = BattlePhase.Aiming;
         }
 
+        public void SyncLivingHp(int[] hp, int[] maxHp = null)
+        {
+            if (hp == null) return;
+
+            int n = Mathf.Min(hp.Length, _livings.Count);
+            for (int i = 0; i < n; i++)
+            {
+                LivingStats s = _livings[i];
+                s.Hp = Mathf.Max(0, hp[i]);
+                if (maxHp != null && i < maxHp.Length && maxHp[i] > 0)
+                {
+                    s.MaxHp = maxHp[i];
+                }
+                _livings[i] = s;
+            }
+        }
+
         public void TickClock(float dt)
         {
             if (Phase != BattlePhase.Aiming)

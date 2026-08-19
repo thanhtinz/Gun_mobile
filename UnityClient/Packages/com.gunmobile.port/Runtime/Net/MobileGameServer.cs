@@ -561,6 +561,10 @@ namespace GunMobile.Net
                                 int currentPlayer = 0;
                                 float wind = 0f;
                                 int propMask = 0;
+                                int[] hpArr = null;
+                                int[] maxHpArr = null;
+                                float[] posXArr = null;
+                                int[] facingArr = null;
                                 lock (_lock)
                                 {
                                     if (_players.TryGetValue(playerId, out player))
@@ -578,6 +582,10 @@ namespace GunMobile.Net
                                             currentPlayer = room.CurrentPlayer;
                                             wind = room.Wind;
                                             propMask = room.CurrentPropMask;
+                                            hpArr = room.Hp != null ? (int[])room.Hp.Clone() : null;
+                                            maxHpArr = room.MaxHp != null ? (int[])room.MaxHp.Clone() : null;
+                                            posXArr = room.PosX != null ? (float[])room.PosX.Clone() : null;
+                                            facingArr = room.Facing != null ? (int[])room.Facing.Clone() : null;
                                         }
                                     }
                                 }
@@ -594,6 +602,27 @@ namespace GunMobile.Net
                                     string propJson = "{\"player\":" + currentPlayer +
                                                        ",\"mask\":" + propMask + "}";
                                     Send(ns, PhoneMsg.FightProp, propJson);
+
+                                    // State snapshot: HP + x + facing, so reconnect can resume close to server state.
+                                    int pc = hpArr != null ? hpArr.Length : 0;
+                                    if (pc > 0 && posXArr != null && facingArr != null && maxHpArr != null)
+                                    {
+                                        var sb = new StringBuilder(512);
+                                        sb.Append("{\"playerCount\":").Append(pc);
+                                        sb.Append(",\"turn\":").Append(turn);
+                                        sb.Append(",\"player\":").Append(currentPlayer);
+                                        sb.Append(",\"wind\":").Append(wind.ToString(CultureInfo.InvariantCulture));
+
+                                        for (int i = 0; i < pc; i++)
+                                        {
+                                            sb.Append(",\"p").Append(i).Append("_hp\":").Append(hpArr[i]);
+                                            sb.Append(",\"p").Append(i).Append("_maxhp\":").Append(maxHpArr[i]);
+                                            sb.Append(",\"p").Append(i).Append("_x\":").Append(posXArr[i].ToString(CultureInfo.InvariantCulture));
+                                            sb.Append(",\"p").Append(i).Append("_facing\":").Append(facingArr[i]);
+                                        }
+                                        sb.Append("}");
+                                        Send(ns, PhoneMsg.FightState, sb.ToString());
+                                    }
                                 }
                             }
                             else if (player != null)

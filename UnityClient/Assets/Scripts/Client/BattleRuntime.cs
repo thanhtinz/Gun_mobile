@@ -785,6 +785,41 @@ namespace GunMobile.Client
                     continue;
                 }
 
+                if (msg.Id == PhoneMsg.FightState)
+                {
+                    // Server snapshot: HP + position + facing, used for reconnect continuity.
+                    int pc = JsonInt(msg.Json, "playerCount", _loop.Livings.Count);
+                    int n = Mathf.Min(pc, _loop.Livings.Count);
+
+                    int[] hp = new int[n];
+                    int[] maxHp = new int[n];
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        hp[i] = JsonInt(msg.Json, "p" + i + "_hp", _loop.Livings[i].Hp);
+                        maxHp[i] = JsonInt(msg.Json, "p" + i + "_maxhp", _loop.Livings[i].MaxHp);
+
+                        float x = JsonFloat(msg.Json, "p" + i + "_x", _pos[i].x);
+                        int facing = JsonInt(msg.Json, "p" + i + "_facing", _facing[i]);
+
+                        if (_pos != null && i >= 0 && i < _pos.Length)
+                        {
+                            _pos[i].x = x;
+                        }
+                        if (_facing != null && i >= 0 && i < _facing.Length)
+                        {
+                            _facing[i] = facing;
+                        }
+                        if (_map != null && i < _pos.Length)
+                        {
+                            PlaceOnGround(i);
+                        }
+                    }
+
+                    _loop.SyncLivingHp(hp, maxHp);
+                    continue;
+                }
+
                 if (msg.Id == PhoneMsg.FightDamage)
                 {
                     int target = JsonInt(msg.Json, "target", -1);
