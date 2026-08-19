@@ -45,6 +45,8 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] `MobileGameServer` — full Road+Fight replacement, all hall systems server-authoritative
 - [x] Client wired: every screen sends PhoneMsg → server validates → ProfileData sync back
 - [x] VIP/Texp/Gem/KingBless/Mail/Auction all server-notified
+- [x] Server bag sync (ProfileData→Bag), room create/join, turn advancement
+- [x] Auto-reconnect, damage clamping, server turn broadcast
 
 ### SWF living / bomb trên điện thoại
 
