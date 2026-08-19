@@ -131,6 +131,7 @@ namespace GunMobile.Client
         int[] _facing;
         ProjectileState _shot;
         bool _flying;
+        int _shotRemaining;
         bool _botQueued;
         float _botDelay;
         int _mapId;
@@ -150,6 +151,7 @@ namespace GunMobile.Client
         float _blastT;
         float _animT;
         bool _resultOpen;
+        List<DmgPopup> _dmgPopups = new List<DmgPopup>();
         int _propId;
         float _propPower;
         float _propDmg = 1f;
@@ -477,6 +479,7 @@ namespace GunMobile.Client
 
             DrawHud();
             UpdateActors();
+            TickDmgPopups();
         }
 
         void FireBot()
@@ -543,6 +546,7 @@ namespace GunMobile.Client
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
             _flying = true;
+            _shotRemaining = Mathf.Max(0, _ball.Amount - 1);
             if (!fromNet && PhoneNet.NetBattle)
             {
                 PhoneNet.SendFire(who, angle, power, _facing[who]);
@@ -662,7 +666,6 @@ namespace GunMobile.Client
 
         void EndShot(bool explode, int mx, int my)
         {
-            _flying = false;
             int radius = Mathf.Max(24, Mathf.RoundToInt((_ball.Radii > 0 ? _ball.Radii / 2 : 38) * _propRadius));
             if (explode)
             {
@@ -678,8 +681,6 @@ namespace GunMobile.Client
                 }
             }
 
-            _loop.EndShot();
-            _loop.FinishSettle();
             if (explode && _blastImg != null)
             {
                 _blastT = 0.35f;
@@ -688,6 +689,23 @@ namespace GunMobile.Client
                 rt.sizeDelta = new Vector2(72f, 72f);
                 _blastImg.gameObject.SetActive(true);
             }
+
+            if (_shotRemaining > 0)
+            {
+                _shotRemaining--;
+                float spread = UnityEngine.Random.Range(-8f, 8f);
+                _shot = _sim.Launch(
+                    _pos[_loop.CurrentLiving].x + spread,
+                    _map.Height - _pos[_loop.CurrentLiving].y - 18f,
+                    _aim != null ? _aim.AngleDeg + UnityEngine.Random.Range(-5f, 5f) : 50f,
+                    Mathf.Clamp((_aim != null ? _aim.Power : 60f) + UnityEngine.Random.Range(-6f, 6f), 20f, 100f),
+                    _facing[_loop.CurrentLiving]);
+                return;
+            }
+
+            _flying = false;
+            _loop.EndShot();
+            _loop.FinishSettle();
 
             if (_loop.Phase == BattlePhase.MatchOver)
             {
@@ -719,6 +737,47 @@ namespace GunMobile.Client
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);
+            SpawnDmgPopup(_pos[index], dmg, crit);
+        }
+
+        struct DmgPopup { public Text Label; public float T; }
+
+        void SpawnDmgPopup(Vector2 mapPos, int dmg, bool crit)
+        {
+            var go = new GameObject("Dmg", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+            go.transform.SetParent(_world, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = MapAnchor(mapPos.x, mapPos.y - 30f);
+            rt.sizeDelta = new Vector2(140f, 50f);
+            rt.pivot = new Vector2(0.5f, 0f);
+            var txt = go.GetComponent<Text>();
+            txt.font = UiKit.Font;
+            txt.fontSize = crit ? 38 : 30;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = crit ? new Color(1f, 0.2f, 0.1f) : new Color(1f, 0.9f, 0.3f);
+            txt.text = (crit ? "暴击 " : "-") + dmg;
+            txt.raycastTarget = false;
+            _dmgPopups.Add(new DmgPopup { Label = txt, T = 1.2f });
+        }
+
+        void TickDmgPopups()
+        {
+            for (int i = _dmgPopups.Count - 1; i >= 0; i--)
+            {
+                var p = _dmgPopups[i];
+                p.T -= Time.deltaTime;
+                if (p.T <= 0f)
+                {
+                    Destroy(p.Label.gameObject);
+                    _dmgPopups.RemoveAt(i);
+                    continue;
+                }
+
+                _dmgPopups[i] = p;
+                var rt = p.Label.rectTransform;
+                rt.anchoredPosition += new Vector2(0f, 60f * Time.deltaTime);
+                p.Label.color = new Color(p.Label.color.r, p.Label.color.g, p.Label.color.b, Mathf.Clamp01(p.T / 0.4f));
+            }
         }
 
         void FinishMatch()

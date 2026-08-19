@@ -41,6 +41,7 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Shop/bag icon từ `Resource/image/equip|arm|unfrightprop` (dump PC, không vẽ mới)
 - [x] HUD trận `gameprop.png` + sảnh podium `hall_new_rankbg`
 - [x] LAN đồng bộ đi bộ `FightWalk` (92) + mộ `game_tombAsset` + pet/title PNG PC
+- [x] Multi-shot (Amount>1) + damage popup + equip layer preview + arm/equip game.png
 
 ### SWF living / bomb trên điện thoại
 

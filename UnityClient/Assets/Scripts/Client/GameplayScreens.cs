@@ -259,6 +259,8 @@ namespace GunMobile.Client
             rt.anchorMax = new Vector2(0.55f, 0.82f);
             rt.offsetMin = rt.offsetMax = Vector2.zero;
 
+            BuildLivingPreview(bg.transform, app, p);
+
             TryIcon(app, bg.transform, p.EquipCloth, "cloth", new Vector2(0.72f, 0.55f));
             TryIcon(app, bg.transform, p.EquipHead, "head", new Vector2(0.72f, 0.78f));
             TryIcon(app, bg.transform, p.EquipWeapon, "weapon", new Vector2(0.88f, 0.55f));
@@ -316,6 +318,72 @@ namespace GunMobile.Client
             rt.anchorMin = rt.anchorMax = anchor;
             rt.sizeDelta = size;
             go.GetComponent<RawImage>().texture = tex;
+        }
+
+        static void BuildLivingPreview(Transform parent, GameApp app, PlayerProfile p)
+        {
+            var container = new GameObject("LivingPreview", typeof(RectTransform));
+            container.transform.SetParent(parent, false);
+            var crt = container.GetComponent<RectTransform>();
+            crt.anchorMin = new Vector2(0.55f, 0.25f);
+            crt.anchorMax = new Vector2(0.7f, 0.78f);
+            crt.offsetMin = crt.offsetMax = Vector2.zero;
+
+            Texture2D body = PcArt.DefaultLiving(app.Loader);
+            if (body != null)
+            {
+                var bgo = new GameObject("Body", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                bgo.transform.SetParent(container.transform, false);
+                UiKit.Stretch(bgo);
+                bgo.GetComponent<RawImage>().texture = body;
+                bgo.GetComponent<RawImage>().raycastTarget = false;
+            }
+
+            Texture2D cloth = PcArt.EquipLayer(app.Loader, app.Database.GetItem(p.EquipCloth), p.Sex);
+            if (cloth != null)
+            {
+                var cgo = new GameObject("Cloth", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                cgo.transform.SetParent(container.transform, false);
+                UiKit.Stretch(cgo);
+                cgo.GetComponent<RawImage>().texture = cloth;
+                cgo.GetComponent<RawImage>().raycastTarget = false;
+            }
+
+            Texture2D head = PcArt.EquipLayer(app.Loader, app.Database.GetItem(p.EquipHead), p.Sex);
+            if (head != null)
+            {
+                var hgo = new GameObject("Head", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                hgo.transform.SetParent(container.transform, false);
+                var hrt = hgo.GetComponent<RectTransform>();
+                hrt.anchorMin = new Vector2(0.1f, 0.55f);
+                hrt.anchorMax = new Vector2(0.9f, 1.05f);
+                hrt.offsetMin = hrt.offsetMax = Vector2.zero;
+                hgo.GetComponent<RawImage>().texture = head;
+                hgo.GetComponent<RawImage>().raycastTarget = false;
+            }
+
+            Texture2D weap = PcArt.EquipLayer(app.Loader, app.Database.GetItem(p.EquipWeapon), p.Sex);
+            if (weap != null)
+            {
+                var wgo = new GameObject("Weapon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                wgo.transform.SetParent(container.transform, false);
+                var wrt = wgo.GetComponent<RectTransform>();
+                wrt.anchorMin = new Vector2(0.5f, 0.1f);
+                wrt.anchorMax = new Vector2(1.2f, 0.7f);
+                wrt.offsetMin = wrt.offsetMax = Vector2.zero;
+                wgo.GetComponent<RawImage>().texture = weap;
+                wgo.GetComponent<RawImage>().raycastTarget = false;
+            }
+
+            RawImage lv = PcSkin.Slice(container.transform, "Lv", PcSkin.Game, "level_" + Mathf.Clamp(p.Level, 1, 70), false);
+            if (lv != null)
+            {
+                var lrt = lv.rectTransform;
+                lrt.anchorMin = new Vector2(0.3f, 1.05f);
+                lrt.anchorMax = new Vector2(0.7f, 1.2f);
+                lrt.offsetMin = lrt.offsetMax = Vector2.zero;
+                lv.raycastTarget = false;
+            }
         }
     }
 
