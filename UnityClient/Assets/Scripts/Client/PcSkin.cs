@@ -11,7 +11,9 @@ namespace GunMobile.Client
     public static class PcSkin
     {
         public static SpriteSheet Hall { get; private set; }
+        public static SpriteSheet HallBuild { get; private set; }
         public static SpriteSheet Game { get; private set; }
+        public static SpriteSheet GameProp { get; private set; }
         public static SpriteSheet Default { get; private set; }
 
         public static void Warm(ResLoader loader)
@@ -30,6 +32,15 @@ namespace GunMobile.Client
                     GamePaths.PathCombine(star, "hall_scene.xml"));
             }
 
+            if (HallBuild == null)
+            {
+                string star = GamePaths.Starling(GamePaths.DefaultLanguage, "hall_scene");
+                HallBuild = SpriteSheet.TryLoadStarling(
+                    loader,
+                    GamePaths.PathCombine(star, "hall_newyear_scene_build.png"),
+                    GamePaths.PathCombine(star, "hall_newyear_scene_build.xml"));
+            }
+
             if (Game == null)
             {
                 string game = GamePaths.Starling(GamePaths.DefaultLanguage, "game");
@@ -37,6 +48,15 @@ namespace GunMobile.Client
                     loader,
                     GamePaths.PathCombine(game, "game.png"),
                     GamePaths.PathCombine(game, "game.xml"));
+            }
+
+            if (GameProp == null)
+            {
+                string game = GamePaths.Starling(GamePaths.DefaultLanguage, "game");
+                GameProp = SpriteSheet.TryLoadStarling(
+                    loader,
+                    GamePaths.PathCombine(game, "gameprop.png"),
+                    GamePaths.PathCombine(game, "gameprop.xml"));
             }
 
             if (Default == null)

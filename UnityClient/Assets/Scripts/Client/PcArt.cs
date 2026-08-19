@@ -73,6 +73,71 @@ namespace GunMobile.Client
             return SwfImage.TryLoad(loader, paths);
         }
 
+        public static Texture2D ItemIcon(ResLoader loader, ItemTemplate item, int sex)
+        {
+            if (loader == null || item == null)
+            {
+                return null;
+            }
+
+            string pic = string.IsNullOrEmpty(item.Pic) ? "" : item.Pic.Trim();
+            if (string.IsNullOrEmpty(pic) || pic == "default")
+            {
+                return null;
+            }
+
+            string side = sex == 2 ? "f" : "m";
+            string slot = EquipFolder(item.CategoryId);
+            var paths = new System.Collections.Generic.List<string>();
+            if (!string.IsNullOrEmpty(slot))
+            {
+                paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic, "icon_1.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic.ToLowerInvariant(), "icon_1.png"));
+                if (side == "m")
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", "f", slot, pic, "icon_1.png"));
+                }
+            }
+
+            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic, "00.png"));
+            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic, "1", "icon.png"));
+            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic.ToLowerInvariant(), "00.png"));
+            return SwfImage.TryLoad(loader, paths.ToArray());
+        }
+
+        public static Texture2D EquipLayer(ResLoader loader, ItemTemplate item, int sex)
+        {
+            if (loader == null || item == null || string.IsNullOrEmpty(item.Pic))
+            {
+                return null;
+            }
+
+            string pic = item.Pic;
+            string side = sex == 2 ? "f" : "m";
+            string slot = EquipFolder(item.CategoryId);
+            return SwfImage.TryLoad(
+                loader,
+                !string.IsNullOrEmpty(slot)
+                    ? GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic, "1", "game.png")
+                    : null,
+                GamePaths.PathCombine("Resource", "image", "arm", pic, "1", "1", "game.png"),
+                GamePaths.PathCombine("Resource", "image", "arm", pic, "00.png"));
+        }
+
+        public static string EquipFolder(int categoryId)
+        {
+            switch (categoryId)
+            {
+                case 1: return "head";
+                case 2: return "glass";
+                case 3: return "hair";
+                case 4: return "face";
+                case 5: return "cloth";
+                case 6: return "suits";
+                default: return "";
+            }
+        }
+
         static string Stem(NpcInfo npc)
         {
             string path = npc != null ? npc.ResourcesPath : "";

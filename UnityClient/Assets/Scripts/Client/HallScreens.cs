@@ -58,26 +58,34 @@ namespace GunMobile.Client
             UiKit.ClearChildren(safe);
             PcSkin.Warm(app.Loader);
             var bg = UiKit.Panel(safe, "Hall", Color.black);
-            var hallBg = PcSkin.Slice(bg.transform, "HallBg", PcSkin.Hall, "hall_scene_bg_0", true);
-            if (hallBg == null)
+            SpriteSheet build = PcSkin.HallBuild;
+            if (build != null)
             {
-                PcSkin.Backdrop(
-                    bg.transform,
-                    app.Loader,
-                    GamePaths.PathCombine("Flash", "ui", "cn_trad", "starling", "hall_scene", "hall_scene.png"));
+                Place(bg.transform, build, "Sea", "hall_new_sea", new Vector2(0.5f, 0.22f), new Vector2(1400f, 280f));
+                Place(bg.transform, build, "Road", "hall_new_road", new Vector2(0.5f, 0.34f), new Vector2(980f, 220f));
+                Place(bg.transform, build, "Town", "hall_new_build1", new Vector2(0.55f, 0.58f), new Vector2(720f, 140f));
+                Place(bg.transform, build, "Tree1", "hall_new_tree1", new Vector2(0.22f, 0.62f), new Vector2(420f, 80f));
+                Place(bg.transform, build, "Tree2", "hall_new_tree2", new Vector2(0.8f, 0.6f), new Vector2(320f, 72f));
+                Place(bg.transform, build, "Boat", "hall_new_boat", new Vector2(0.72f, 0.16f), new Vector2(280f, 56f));
+                Building(bg.transform, build, "FightB", "hall_new_fight", "hall_new_fight_name", new Vector2(0.22f, 0.42f), new Vector2(220f, 240f), app.ShowRoom);
+                Building(bg.transform, build, "DunB", "hall_new_dungeon", "hall_new_dungeon_name", new Vector2(0.5f, 0.46f), new Vector2(230f, 170f), () => Open(app, "dungeon"));
+                Building(bg.transform, build, "AudB", "hall_new_auditorium", "hall_new_auditorium_name", new Vector2(0.78f, 0.48f), new Vector2(210f, 180f), () => Open(app, "consortia"));
+                Building(bg.transform, build, "SecB", "hall_new_secret", "hall_new_secret_name", new Vector2(0.36f, 0.52f), new Vector2(90f, 150f), () => Open(app, "labyrinth"));
             }
+            else
+            {
+                var hallBg = PcSkin.Slice(bg.transform, "HallBg", PcSkin.Hall, "hall_scene_bg_0", true);
+                if (hallBg == null)
+                {
+                    PcSkin.Backdrop(
+                        bg.transform,
+                        app.Loader,
+                        GamePaths.PathCombine("Flash", "ui", "cn_trad", "starling", "hall_scene", "hall_scene.png"));
+                }
 
-            Place(bg.transform, "Church", "hall_scene_church_build", new Vector2(0.18f, 0.38f), new Vector2(280f, 230f));
-            Place(bg.transform, "Poster", "hall_scene_image_poster", new Vector2(0.88f, 0.62f), new Vector2(160f, 140f));
-            Place(bg.transform, "Flower", "hall_scene_bg_flower2", new Vector2(0.72f, 0.28f), new Vector2(70f, 110f));
-
-            Hotspot(bg.transform, "roomList", "hall_scene_build_title_roomList", new Vector2(0.5f, 0.42f), () => app.ShowRoom());
-            Hotspot(bg.transform, "dungeon", "hall_scene_build_title_dungeon", new Vector2(0.32f, 0.55f), () => Open(app, "dungeon"));
-            Hotspot(bg.transform, "labyrinth", "hall_scene_build_title_labyrinth", new Vector2(0.68f, 0.5f), () => Open(app, "labyrinth"));
-            Hotspot(bg.transform, "boss", "hall_scene_build_title_cryptBoss", new Vector2(0.22f, 0.62f), () => Open(app, "worldboss"));
-            Hotspot(bg.transform, "church", "hall_scene_build_title_church", new Vector2(0.12f, 0.55f), () => Open(app, "church"));
-            Hotspot(bg.transform, "home", "hall_scene_build_title_home", new Vector2(0.82f, 0.4f), () => Open(app, "character"));
-            Hotspot(bg.transform, "ring", "hall_scene_build_title_ringStation", new Vector2(0.6f, 0.62f), () => Open(app, "rank"));
+                PlaceOld(bg.transform, "Church", "hall_scene_church_build", new Vector2(0.18f, 0.38f), new Vector2(280f, 230f));
+                Hotspot(bg.transform, "roomList", "hall_scene_build_title_roomList", new Vector2(0.5f, 0.42f), app.ShowRoom);
+            }
 
             PlayerProfile p = app.Profile;
             UiKit.Label(bg.transform, "Info",
@@ -113,9 +121,9 @@ namespace GunMobile.Client
             }
         }
 
-        static void Place(Transform parent, string name, string frame, Vector2 anchor, Vector2 size)
+        static void Place(Transform parent, SpriteSheet sheet, string name, string frame, Vector2 anchor, Vector2 size)
         {
-            RawImage raw = PcSkin.Slice(parent, name, PcSkin.Hall, frame, false);
+            RawImage raw = PcSkin.Slice(parent, name, sheet, frame, false);
             if (raw == null)
             {
                 return;
@@ -125,6 +133,39 @@ namespace GunMobile.Client
             rt.anchorMin = rt.anchorMax = anchor;
             rt.pivot = new Vector2(0.5f, 0.5f);
             rt.sizeDelta = size;
+        }
+
+        static void PlaceOld(Transform parent, string name, string frame, Vector2 anchor, Vector2 size)
+        {
+            Place(parent, PcSkin.Hall, name, frame, anchor, size);
+        }
+
+        static void Building(Transform parent, SpriteSheet sheet, string name, string frame, string title, Vector2 anchor, Vector2 size, UnityEngine.Events.UnityAction click)
+        {
+            var btn = UiKit.Button(parent, name, "", click, size);
+            var rt = btn.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = anchor;
+            rt.sizeDelta = size;
+            var img = btn.GetComponent<Image>();
+            img.color = new Color(1f, 1f, 1f, 0.02f);
+            RawImage raw = PcSkin.Slice(btn.transform, "Art", sheet, frame, true);
+            if (raw != null)
+            {
+                raw.raycastTarget = false;
+            }
+
+            if (!string.IsNullOrEmpty(title))
+            {
+                RawImage cap = PcSkin.Slice(btn.transform, "Name", sheet, title, false);
+                if (cap != null)
+                {
+                    var crt = cap.rectTransform;
+                    crt.anchorMin = new Vector2(0.15f, 0.02f);
+                    crt.anchorMax = new Vector2(0.85f, 0.18f);
+                    crt.offsetMin = crt.offsetMax = Vector2.zero;
+                    cap.raycastTarget = false;
+                }
+            }
         }
 
         static void Hotspot(Transform parent, string name, string frame, Vector2 anchor, UnityEngine.Events.UnityAction click)

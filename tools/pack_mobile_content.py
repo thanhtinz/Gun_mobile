@@ -28,6 +28,8 @@ STARLING_PREFIXES = (
     "Flash/ui/cn_trad/starling/game/game.xml",
     "Flash/ui/cn_trad/starling/game/gameprop.png",
     "Flash/ui/cn_trad/starling/game/gameprop.xml",
+    "Flash/ui/cn_trad/starling/hall_scene/hall_newyear_scene_build.png",
+    "Flash/ui/cn_trad/starling/hall_scene/hall_newyear_scene_build.xml",
 )
 FLASH_FILES = (
     "Flash/config.xml",
@@ -47,6 +49,8 @@ STARTER_ART = (
     "Resource/image/equip/f/head/head2/icon_1.png",
     "Resource/image/equip/m/cloth/cloth1/icon_1.png",
     "Resource/image/equip/f/cloth/cloth1/icon_1.png",
+    "Resource/image/equip/m/cloth/cloth2/icon_1.png",
+    "Resource/image/equip/f/cloth/cloth2/icon_1.png",
     "Resource/image/arm/axe/00.png",
     "Resource/image/arm/axe/1/icon.png",
     "Resource/image/arm/axe/1/1/game.png",

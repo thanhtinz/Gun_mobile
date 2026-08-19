@@ -780,6 +780,23 @@ namespace GunMobile.Client
                 _livingImg[1].color = Color.white;
             }
 
+            if (_app.Database != null)
+            {
+                Texture2D weap = PcArt.EquipLayer(_app.Loader, _app.Database.GetItem(_app.Profile.EquipWeapon), _app.Profile.Sex);
+                if (weap != null && _livingImg[0] != null)
+                {
+                    var wgo = new GameObject("Weapon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    wgo.transform.SetParent(_livingImg[0].transform, false);
+                    var wrt = wgo.GetComponent<RectTransform>();
+                    wrt.anchorMin = new Vector2(0.55f, 0.15f);
+                    wrt.anchorMax = new Vector2(1.15f, 0.85f);
+                    wrt.offsetMin = wrt.offsetMax = Vector2.zero;
+                    var wraw = wgo.GetComponent<RawImage>();
+                    wraw.texture = weap;
+                    wraw.raycastTarget = false;
+                }
+            }
+
             Texture2D bullet = PcArt.Bullet(_app.Loader, _ball.Id > 0 ? _ball.Id : _ball.FlyingPartical);
             var shotGo = new GameObject("Shot", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
             shotGo.transform.SetParent(_world, false);

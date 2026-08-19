@@ -111,6 +111,7 @@ namespace GunMobile.Client
                 AddItem(7001, 1);
                 AddItem(1102, 1);
                 AddItem(1103, 1);
+                AddItem(5102, 1);
             }
 
             if (EquipWeapon == 0)
@@ -122,6 +123,11 @@ namespace GunMobile.Client
             if (EquipHead == 0 && Find(1102) != null)
             {
                 EquipHead = 1102;
+            }
+
+            if (EquipCloth == 0 && Find(5102) != null)
+            {
+                EquipCloth = 5102;
             }
 
             if (Friends == null)

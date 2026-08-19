@@ -37,6 +37,7 @@ namespace GunMobile.Client
                 ShopOffer local = offer;
                 var btn = UiKit.Button(scroll.content, "s" + offer.Id, cap, () => Buy(app, local), new Vector2(0f, 72f));
                 btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
+                DecorateIcon(app, btn, offer.TemplateId);
                 shown++;
                 if (shown >= 200)
                 {
@@ -116,6 +117,29 @@ namespace GunMobile.Client
             var label = UiKit.Label(parent, "row", text, 22, Color.white);
             label.gameObject.AddComponent<LayoutElement>().preferredHeight = 48f;
         }
+
+        public static void DecorateIcon(GameApp app, Button btn, int templateId)
+        {
+            Texture2D tex = PcArt.ItemIcon(app.Loader, app.Database.GetItem(templateId), app.Profile.Sex);
+            if (tex == null || btn == null)
+            {
+                return;
+            }
+
+            var go = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            go.transform.SetParent(btn.transform, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.01f, 0.08f);
+            rt.anchorMax = new Vector2(0.12f, 0.92f);
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            go.GetComponent<RawImage>().texture = tex;
+            go.GetComponent<RawImage>().raycastTarget = false;
+            var cap = btn.transform.Find("Caption") as RectTransform;
+            if (cap != null)
+            {
+                cap.offsetMin = new Vector2(72f, 0f);
+            }
+        }
     }
 
     public static class BagScreen
@@ -155,6 +179,7 @@ namespace GunMobile.Client
                     }
                 }, new Vector2(0f, 72f));
                 btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
+                ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
         }
 
@@ -268,37 +293,14 @@ namespace GunMobile.Client
 
         static void TryIcon(GameApp app, Transform parent, int templateId, string slot, Vector2 anchor)
         {
-            ItemTemplate item = app.Database.GetItem(templateId);
-            if (item == null || string.IsNullOrEmpty(item.Pic))
+            Texture2D tex = PcArt.ItemIcon(app.Loader, app.Database.GetItem(templateId), app.Profile.Sex);
+            if (tex == null)
             {
-                return;
+                tex = PcArt.EquipLayer(app.Loader, app.Database.GetItem(templateId), app.Profile.Sex);
             }
 
-            string sex = app.Profile.Sex == 1 ? "m" : "f";
-            string[] paths =
+            if (tex == null)
             {
-                GamePaths.PathCombine("Resource", "image", "equip", sex, slot, item.Pic, "icon_1.png"),
-                GamePaths.PathCombine("Resource", "image", "equip", sex, slot, item.Pic.ToLowerInvariant(), "icon_1.png"),
-                GamePaths.PathCombine("Resource", "image", "arm", item.Pic, "00.png"),
-            };
-            byte[] bytes = null;
-            foreach (string path in paths)
-            {
-                if (app.Loader.TryReadBytes(path, out bytes))
-                {
-                    break;
-                }
-            }
-
-            if (bytes == null)
-            {
-                return;
-            }
-
-            var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            if (!tex.LoadImage(bytes))
-            {
-                Object.Destroy(tex);
                 return;
             }
 
