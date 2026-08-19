@@ -150,6 +150,14 @@ namespace GunMobile.Res
         public int ColdDown;
     }
 
+    public sealed class PetSkillElementInfo
+    {
+        public int Id;
+        public string Name = "";
+        public string Description = "";
+        public string EffectPic = "";
+    }
+
     public sealed class CardInfo
     {
         public int Id;
@@ -256,6 +264,7 @@ namespace GunMobile.Res
         public Dictionary<int, NpcInfo> Npcs { get; } = new Dictionary<int, NpcInfo>();
         public Dictionary<int, PetInfo> Pets { get; } = new Dictionary<int, PetInfo>();
         public Dictionary<int, PetSkillInfo> PetSkills { get; } = new Dictionary<int, PetSkillInfo>();
+        public Dictionary<int, PetSkillElementInfo> PetSkillElements { get; } = new Dictionary<int, PetSkillElementInfo>();
         readonly Dictionary<int, int[]> _kindPassiveSkillIds = new Dictionary<int, int[]>();
         readonly Dictionary<int, int[]> _kindActiveSkillIds = new Dictionary<int, int[]>();
         readonly Dictionary<int, List<int>> _skillsByPicPassive = new Dictionary<int, List<int>>();
@@ -292,6 +301,7 @@ namespace GunMobile.Res
             db.LoadNpcs(loader);
             db.LoadPets(loader);
             db.LoadPetSkills(loader);
+            db.LoadPetSkillElements(loader);
             db.BuildKindPassiveSkillMap();
             db.LoadCards(loader);
             db.LoadTitles(loader);
@@ -1028,6 +1038,11 @@ namespace GunMobile.Res
             return skill.ColdDown > 0 ? skill.ColdDown * turnSec : turnSec * 2f;
         }
 
+        public List<BattleEffect> BuildPetSkillEffects(PetSkillInfo skill, int sourceSeat, int targetSeat)
+        {
+            return BattleEffectParser.FromPetSkill(skill, PetSkillElements, sourceSeat, targetSeat);
+        }
+
         public PetSkillInfo ResolvePetPassiveSkill(int petTemplateId)
         {
             if (petTemplateId <= 0 || !Pets.TryGetValue(petTemplateId, out PetInfo pet))
@@ -1560,6 +1575,31 @@ namespace GunMobile.Res
             }
 
             FinalizePicSkillGroups();
+        }
+
+        void LoadPetSkillElements(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/petskillelementinfo.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                PetSkillElements[id] = new PetSkillElementInfo
+                {
+                    Id = id,
+                    Name = Str(row, "Name"),
+                    Description = Str(row, "Description"),
+                    EffectPic = Str(row, "EffectPic")
+                };
+            }
         }
 
         void LoadCards(ResLoader loader)

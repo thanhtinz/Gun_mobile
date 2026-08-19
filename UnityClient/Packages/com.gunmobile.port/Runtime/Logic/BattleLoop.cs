@@ -64,10 +64,25 @@ namespace GunMobile.Logic
 
     public static class DamageCalculator
     {
-        public static int Compute(LivingStats attacker, LivingStats defender, int bombHurt, float distancePx, bool isCrit, bool armorPierce = false)
+        public static int Compute(
+            LivingStats attacker,
+            LivingStats defender,
+            int bombHurt,
+            float distancePx,
+            bool isCrit,
+            bool armorPierce = false,
+            BattleDamageMods attackerMods = default,
+            BattleDamageMods defenderMods = default)
         {
-            float atk = Mathf.Max(1f, attacker.Attack);
-            float def = Mathf.Max(0f, defender.Defence);
+            if (attackerMods.DamageMult <= 0f)
+            {
+                attackerMods.DamageMult = 1f;
+            }
+
+            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * attackerMods.DamageMult));
+
+            float atk = Mathf.Max(1f, attacker.Attack + attackerMods.AttackFlat);
+            float def = Mathf.Max(0f, defender.Defence + defenderMods.DefenceFlat);
             float denom = armorPierce ? 800f : 400f;
             float mitigation = def / (def + denom);
             if (armorPierce)
@@ -76,7 +91,7 @@ namespace GunMobile.Logic
             }
 
             float dist = Mathf.Clamp01(1f - distancePx / 220f);
-            float crit = isCrit ? 1.5f + attacker.Luck / 800f : 1f;
+            float crit = isCrit ? 1.5f + attacker.Luck / 800f + attackerMods.CritDamageAdd : 1f;
             float raw = bombHurt * (atk / 40f) * (1f - mitigation) * (0.55f + 0.45f * dist) * crit;
             raw *= 1f + attacker.Agility / 800f;
             int dmg = Mathf.Max(1, Mathf.RoundToInt(raw));
@@ -125,6 +140,10 @@ namespace GunMobile.Logic
         readonly List<LivingStats> _livings = new List<LivingStats>();
         System.Random _rng = new System.Random();
 
+        public BattleEffectTracker Effects { get; } = new BattleEffectTracker();
+
+        public List<(int seat, int heal, int dmg)> LastTickPulses { get; private set; }
+
         public IReadOnlyList<LivingStats> Livings => _livings;
 
         public void Reset(IEnumerable<LivingStats> livings, float turnSeconds = 20f, int seed = 0)
@@ -133,6 +152,7 @@ namespace GunMobile.Logic
             _rng = new System.Random(Seed);
             _livings.Clear();
             _livings.AddRange(livings);
+            Effects.Clear();
             TurnIndex = 0;
             CurrentLiving = 0;
             TurnTimeLeft = turnSeconds;
@@ -260,6 +280,37 @@ namespace GunMobile.Logic
             Phase = BattlePhase.Aiming;
         }
 
+        public List<(int seat, int heal, int dmg)> TickTurnEffects()
+        {
+            var hp = new int[_livings.Count];
+            var arr = new LivingStats[_livings.Count];
+            for (int i = 0; i < _livings.Count; i++)
+            {
+                arr[i] = _livings[i];
+                hp[i] = _livings[i].Hp;
+            }
+
+            var pulses = Effects.TickTurn(arr, hp);
+            for (int i = 0; i < hp.Length && i < _livings.Count; i++)
+            {
+                LivingStats s = _livings[i];
+                s.Hp = hp[i];
+                _livings[i] = s;
+            }
+
+            return pulses;
+        }
+
+        public LivingStats EffectiveLiving(int seat)
+        {
+            if (seat < 0 || seat >= _livings.Count)
+            {
+                return default;
+            }
+
+            return Effects.ApplyDefence(_livings[seat], seat);
+        }
+
         public void ApplyDamage(int livingIndex, int amount)
         {
             if (livingIndex < 0 || livingIndex >= _livings.Count)
@@ -293,6 +344,7 @@ namespace GunMobile.Logic
 
         void AdvanceTurn()
         {
+            LastTickPulses = TickTurnEffects();
             TurnIndex++;
             int n = _livings.Count;
             for (int i = 1; i <= n; i++)

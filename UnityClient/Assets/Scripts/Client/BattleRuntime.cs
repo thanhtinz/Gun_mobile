@@ -499,6 +499,7 @@ namespace GunMobile.Client
                     SpawnHealPopup(_pos[t], heal);
                 }
 
+                _loop.Effects.AddRange(_app.Database.BuildPetSkillEffects(skill, seat, seat));
                 return;
             }
 
@@ -531,9 +532,14 @@ namespace GunMobile.Client
             }
 
             bool crit = forceCrit || DamageCalculator.RollCrit(_loop.Livings[seat].Luck, seat + _loop.TurnIndex);
-            int dmg = DamageCalculator.Compute(_loop.Livings[seat], _loop.Livings[best], bombHurt, bestDist * 0.2f, crit);
+            LivingStats atk = _loop.EffectiveLiving(seat);
+            LivingStats def = _loop.EffectiveLiving(best);
+            BattleDamageMods atkMods = _loop.Effects.GetOutgoingMods(seat);
+            BattleDamageMods defMods = _loop.Effects.GetMods(best);
+            int dmg = DamageCalculator.Compute(atk, def, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods);
             _loop.ApplyDamage(best, dmg);
             SpawnDmgPopup(_pos[best], dmg, crit);
+            _loop.Effects.AddRange(_app.Database.BuildPetSkillEffects(skill, seat, best));
         }
 
         void SpawnHealPopup(Vector2 mapPos, int heal)
@@ -1406,6 +1412,7 @@ namespace GunMobile.Client
             else
             {
                 _loop.FinishSettle();
+                ShowTurnEffectPulses(_loop.LastTickPulses);
             }
 
             if (!PhoneNet.NetBattle)
@@ -1597,9 +1604,38 @@ namespace GunMobile.Client
 
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             bool armorPierce = _app?.Database != null && _app.Database.PropIgnoresArmour(_propId);
-            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit, armorPierce);
+            LivingStats atk = _loop.EffectiveLiving(src);
+            LivingStats def = _loop.EffectiveLiving(index);
+            BattleDamageMods atkMods = _loop.Effects.GetOutgoingMods(src);
+            BattleDamageMods defMods = _loop.Effects.GetMods(index);
+            int dmg = DamageCalculator.Compute(atk, def, bombHurt, dist, crit, armorPierce, atkMods, defMods);
             _loop.ApplyDamage(index, dmg);
             SpawnDmgPopup(_pos[index], dmg, crit);
+        }
+
+        void ShowTurnEffectPulses(List<(int seat, int heal, int dmg)> pulses)
+        {
+            if (pulses == null || _pos == null)
+            {
+                return;
+            }
+
+            foreach ((int seat, int heal, int dmg) in pulses)
+            {
+                if (seat < 0 || seat >= _pos.Length)
+                {
+                    continue;
+                }
+
+                if (heal > 0)
+                {
+                    SpawnHealPopup(_pos[seat], heal);
+                }
+                else if (dmg > 0)
+                {
+                    SpawnDmgPopup(_pos[seat], dmg, false);
+                }
+            }
         }
 
         struct DmgPopup { public Text Label; public float T; }

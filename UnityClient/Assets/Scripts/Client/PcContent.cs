@@ -81,6 +81,74 @@ namespace GunMobile.Client
             }
 
             File.WriteAllText(Path.Combine(PersistentPcData, ".ready"), copied.ToString());
+            yield return CopyUnpackedEquipAssets(status);
+        }
+
+        static IEnumerator CopyUnpackedEquipAssets(Action<string> status)
+        {
+            string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+            string equipSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "equip");
+            string armSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "arm");
+            if (!Directory.Exists(equipSrc) && !Directory.Exists(armSrc))
+            {
+                yield break;
+            }
+
+            if (Directory.Exists(equipSrc))
+            {
+                string equipDest = Path.Combine(PersistentPcData, "Resource", "image", "equip");
+                if (!Directory.Exists(equipDest))
+                {
+                    status?.Invoke("Copying PC equip assets…");
+                    yield return null;
+                    try
+                    {
+                        CopyDirectory(equipSrc, equipDest);
+                    }
+                    catch (Exception ex)
+                    {
+                        status?.Invoke("Equip copy skipped: " + ex.Message);
+                    }
+                }
+            }
+
+            if (Directory.Exists(armSrc))
+            {
+                string armDest = Path.Combine(PersistentPcData, "Resource", "image", "arm");
+                if (!Directory.Exists(armDest))
+                {
+                    status?.Invoke("Copying PC arm assets…");
+                    yield return null;
+                    try
+                    {
+                        CopyDirectory(armSrc, armDest);
+                        status?.Invoke("PC equip assets ready.");
+                    }
+                    catch (Exception ex)
+                    {
+                        status?.Invoke("Arm copy skipped: " + ex.Message);
+                    }
+                }
+            }
+        }
+
+        static void CopyDirectory(string src, string dest)
+        {
+            Directory.CreateDirectory(dest);
+            foreach (string dir in Directory.GetDirectories(src, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dir.Replace(src, dest));
+            }
+
+            foreach (string file in Directory.GetFiles(src, "*", SearchOption.AllDirectories))
+            {
+                string target = file.Replace(src, dest);
+                Directory.CreateDirectory(Path.GetDirectoryName(target) ?? dest);
+                if (!File.Exists(target))
+                {
+                    File.Copy(file, target);
+                }
+            }
         }
 
         static IEnumerator ReadStreaming(string relative, Action<byte[]> done)

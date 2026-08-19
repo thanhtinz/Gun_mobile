@@ -348,6 +348,8 @@ namespace GunMobile.Net
         public int[] PetMp;
         public float[] PetSkillCd;
 
+        public BattleEffectTracker Effects = new BattleEffectTracker();
+
         // Cached final battle reward so late/duplicated clients (reconnect, late ack)
         // still receive the exact same gold/win as computed by the server.
         public int[] LastFightGolds;
@@ -1830,6 +1832,7 @@ namespace GunMobile.Net
                 room.Facing = new int[n];
                 room.PetMp = new int[n];
                 room.PetSkillCd = new float[n];
+                room.Effects.Clear();
                 for (int i = 0; i < n; i++)
                 {
                     int team = (i % 2) + 1;
@@ -2215,7 +2218,11 @@ namespace GunMobile.Net
                     }
 
                     bool crit = propCrit || DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
-                    int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit, armorPierce);
+                    LivingStats atk = EffectiveLiving(room, livings, who);
+                    LivingStats defLiving = EffectiveLiving(room, livings, t);
+                    BattleDamageMods atkMods = room.Effects.GetOutgoingMods(who);
+                    BattleDamageMods defMods = room.Effects.GetMods(t);
+                    int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, dist, crit, armorPierce, atkMods, defMods);
                     dmg = Mathf.Clamp(dmg, 0, hp[t]);
 
                     lock (_lock)
@@ -2333,6 +2340,7 @@ namespace GunMobile.Net
                     BroadcastToRoom(room, PhoneMsg.FightDamage, "{\"target\":" + t + ",\"heal\":" + heal + "}", -1);
                 }
 
+                ApplyRoomPetSkillEffects(room, skill, who, who);
                 return;
             }
 
@@ -2366,7 +2374,11 @@ namespace GunMobile.Net
             }
 
             bool crit = forceCrit || DamageCalculator.RollCrit(livings[who].Luck, who + room.CurrentTurn);
-            int dmg = DamageCalculator.Compute(livings[who], livings[best], bombHurt, bestDist * 0.2f, crit);
+            LivingStats atk = EffectiveLiving(room, livings, who);
+            LivingStats defLiving = EffectiveLiving(room, livings, best);
+            BattleDamageMods atkMods = room.Effects.GetOutgoingMods(who);
+            BattleDamageMods defMods = room.Effects.GetMods(best);
+            int dmg = DamageCalculator.Compute(atk, defLiving, bombHurt, bestDist * 0.2f, crit, false, atkMods, defMods);
             dmg = Mathf.Clamp(dmg, 0, hp[best]);
             lock (_lock)
             {
@@ -2381,6 +2393,8 @@ namespace GunMobile.Net
 
             BroadcastToRoom(room, PhoneMsg.FightDamage,
                 "{\"target\":" + best + ",\"dmg\":" + dmg + ",\"crit\":" + (crit ? "true" : "false") + ",\"pet\":true}", -1);
+
+            ApplyRoomPetSkillEffects(room, skill, who, best);
 
             bool gameOver;
             lock (_lock)
@@ -2663,6 +2677,7 @@ namespace GunMobile.Net
         void AdvanceTurn(GameRoom room)
         {
             bool ended = false;
+            List<(int seat, int heal, int dmg)> turnPulses = null;
             lock (_lock)
             {
                 if (CountAliveTeams(room) <= 1)
@@ -2671,6 +2686,7 @@ namespace GunMobile.Net
                 }
                 else
                 {
+                    turnPulses = TickRoomTurnEffectsLocked(room);
                     room.CurrentTurn++;
                     int n = room.Hp.Length;
                     for (int j = 1; j <= n; j++)
@@ -2686,6 +2702,11 @@ namespace GunMobile.Net
                     room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     room.CurrentPropMask = GeneratePropMask(room);
                 }
+            }
+
+            if (turnPulses != null)
+            {
+                BroadcastTurnEffectPulses(room, turnPulses);
             }
 
             if (ended)
@@ -2705,6 +2726,80 @@ namespace GunMobile.Net
             }
 
             ScheduleNpcTurnIfNeeded(room);
+        }
+
+        List<(int seat, int heal, int dmg)> TickRoomTurnEffectsLocked(GameRoom room)
+        {
+            if (room?.Effects == null || room.Livings == null || room.Hp == null)
+            {
+                return null;
+            }
+
+            var livings = (LivingStats[])room.Livings.Clone();
+            var hp = (int[])room.Hp.Clone();
+            List<(int, int, int)> pulses = room.Effects.TickTurn(livings, hp);
+            for (int i = 0; i < hp.Length && i < room.Hp.Length; i++)
+            {
+                room.Hp[i] = hp[i];
+                if (i < room.Livings.Length)
+                {
+                    LivingStats ls = room.Livings[i];
+                    ls.Hp = hp[i];
+                    room.Livings[i] = ls;
+                }
+            }
+
+            return pulses;
+        }
+
+        void BroadcastTurnEffectPulses(GameRoom room, List<(int seat, int heal, int dmg)> pulses)
+        {
+            if (room == null || pulses == null)
+            {
+                return;
+            }
+
+            foreach ((int seat, int heal, int dmg) in pulses)
+            {
+                if (heal > 0)
+                {
+                    BroadcastToRoom(room, PhoneMsg.FightDamage, "{\"target\":" + seat + ",\"heal\":" + heal + "}", -1);
+                }
+                else if (dmg > 0)
+                {
+                    BroadcastToRoom(room, PhoneMsg.FightDamage,
+                        "{\"target\":" + seat + ",\"dmg\":" + dmg + ",\"crit\":false,\"dot\":true}", -1);
+                }
+            }
+        }
+
+        void ApplyRoomPetSkillEffects(GameRoom room, PetSkillInfo skill, int sourceSeat, int targetSeat)
+        {
+            if (room == null || skill == null || _db == null)
+            {
+                return;
+            }
+
+            List<BattleEffect> effects = _db.BuildPetSkillEffects(skill, sourceSeat, targetSeat);
+            if (effects == null || effects.Count == 0)
+            {
+                return;
+            }
+
+            lock (_lock)
+            {
+                room.Effects.AddRange(effects);
+            }
+        }
+
+        LivingStats EffectiveLiving(GameRoom room, LivingStats[] livings, int seat)
+        {
+            if (room?.Effects == null || livings == null || seat < 0 || seat >= livings.Length)
+            {
+                return seat >= 0 && seat < livings.Length ? livings[seat] : default;
+            }
+
+            return room.Effects.ApplyDefence(livings[seat], seat);
         }
 
         void ScheduleNpcTurnIfNeeded(GameRoom room)
