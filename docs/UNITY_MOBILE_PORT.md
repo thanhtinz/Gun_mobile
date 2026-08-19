@@ -42,6 +42,7 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] HUD trận `gameprop.png` + sảnh podium `hall_new_rankbg`
 - [x] LAN đồng bộ đi bộ `FightWalk` (92) + mộ `game_tombAsset` + pet/title PNG PC
 - [x] Multi-shot (Amount>1) + damage popup + equip layer preview + arm/equip game.png
+- [x] `MobileGameServer` — full Road+Fight replacement, all hall systems server-authoritative
 
 ### SWF living / bomb trên điện thoại
 
@@ -123,7 +124,16 @@ Trục: Unity `y` lên; map bit `y` xuống. Bootstrap demo: `IsSolid(x, map.Hei
 
 ## Phase 6 — Mạng
 
-Online thật cần protobuf socket giống Road/Fight (exe không có source C# trong dump). Milestone 1: **hotseat / vs bot** trên client. Milestone 2: reverse protocol hoặc viết Fight server mỏng.
+`MobileGameServer` thay thế `Road.Service.exe` + `Fight.Service.exe` + SQL Server:
+
+- **Cổng giống PC**: Road 4396, Fight 1910, magic `0x7D01`
+- **Auth**: nick-based login, server tạo player profile, JSON persistence
+- **Hall systems server-authoritative**: shop buy, equip, quest, pet/card/title/totem/mount select, sign-in, lottery, forge, guild, friends, mail, chat broadcast
+- **Room/matchmaking**: create/join room, room list
+- **Battle relay**: FightStart/Walk/Fire/Damage/Over broadcast to room, server tracks HP, awards gold/exp
+- **Persistence**: JSON save per player in `persistentDataPath/server_players/`
+
+Không dùng SQL Server / RSA / LoginKey PC. Client gửi PhoneMsg, server validate và reply.
 
 `Flash/config.xml` và `Road.Service.exe.config` trong zip chứa IP/password SQL — **đổi secret**, đừng dùng production.
 
@@ -135,7 +145,7 @@ UnityClient/Packages/com.gunmobile.port/Runtime/
   Res/      ResLoader, TextureAtlasParser, SpriteSheet, SwfImage, FlashConfig, MapCollision, CharacterDefine
   UI/       MobileUiBootstrap, SafeAreaFitter, UiObjectPool, MornUiBuilder, TouchAim/Move
   Logic/    ProjectileSimulator, BattleLoop, BombTable, DamageCalculator
-  Net/      PhonePacket, PhoneRoadServer, PhoneRoadClient (LAN 4396/1910)
+  Net/      PhonePacket, PhoneRoadServer, PhoneRoadClient, MobileGameServer (LAN 4396/1910)
   GunMobileBootstrap.cs
 ```
 

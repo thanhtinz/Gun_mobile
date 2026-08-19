@@ -64,7 +64,6 @@ namespace GunMobile.Client
             Loader = PcContent.CreateLoader();
             PcSkin.Warm(Loader);
             Profile = PlayerProfile.Load();
-            PhoneNet.Boot();
             _canvas = MobileUiBootstrap.CreateRoot(transform);
             _safe = _canvas.transform.Find("SafeArea") as RectTransform;
         }
@@ -85,6 +84,7 @@ namespace GunMobile.Client
             Database = GameDatabase.Load(Loader) ?? new GameDatabase();
             Profile.EnsureStarterBag();
             Profile.RecalcStats(Database);
+            PhoneNet.Boot(Database);
             ShowLogin();
         }
 
