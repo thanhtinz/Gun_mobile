@@ -142,6 +142,8 @@ namespace GunMobile.Client
         string _foeName = "Bot";
         int _serverRewardGold;
         bool _serverRewardWin;
+        int _propAvailableMask;
+        Dictionary<int, Button> _propButtons = new Dictionary<int, Button>();
         SpriteSheet _livingSheet;
         List<SheetFrame> _walkFrames = new List<SheetFrame>();
         List<SheetFrame> _atkFrames = new List<SheetFrame>();
@@ -434,12 +436,66 @@ namespace GunMobile.Client
             {
                 int id = ids[i];
                 var btn = UiKit.Button(bar.transform, "prop" + id, "", () => UseProp(id), new Vector2(56f, 56f));
+                _propButtons[id] = btn;
                 btn.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.04f);
                 RawImage art = PcSkin.Slice(btn.transform, "Art", PcSkin.GameProp, "game_prop_" + id, true);
                 if (art != null)
                 {
                     art.raycastTarget = false;
                 }
+            }
+
+            RefreshPropButtons();
+        }
+
+        static int PropBitIndex(int propId)
+        {
+            // propIds order must match server:
+            // [1,2,4,5,6,7] -> bits [0..5]
+            switch (propId)
+            {
+                case 1: return 0;
+                case 2: return 1;
+                case 4: return 2;
+                case 5: return 3;
+                case 6: return 4;
+                case 7: return 5;
+                default: return -1;
+            }
+        }
+
+        bool IsPropAvailable(int propId)
+        {
+            if (propId == 0) return true;
+            int bit = PropBitIndex(propId);
+            if (bit < 0) return false;
+            return (_propAvailableMask & (1 << bit)) != 0;
+        }
+
+        void RefreshPropButtons()
+        {
+            // Single-player: always enable.
+            if (!PhoneNet.NetBattle)
+            {
+                foreach (var kv in _propButtons)
+                {
+                    if (kv.Value == null) continue;
+                    kv.Value.interactable = true;
+                    kv.Value.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.4f);
+                }
+                return;
+            }
+
+            foreach (var kv in _propButtons)
+            {
+                int propId = kv.Key;
+                Button b = kv.Value;
+                if (b == null) continue;
+                bool enable = IsPropAvailable(propId);
+                b.interactable = enable;
+                b.GetComponent<Image>().color = enable
+                    ? new Color(1f, 1f, 1f, 0.4f)
+                    : new Color(1f, 1f, 1f, 0.04f);
             }
         }
 
@@ -448,6 +504,11 @@ namespace GunMobile.Client
             if (_loop == null || _loop.Phase != BattlePhase.Aiming || _loop.CurrentLiving != MeSeat())
             {
                 return;
+            }
+
+            if (PhoneNet.NetBattle && !IsPropAvailable(id))
+            {
+                return; // server says this prop isn't available this turn
             }
 
             _propId = id;
@@ -700,6 +761,15 @@ namespace GunMobile.Client
                     {
                         _loop.SyncTurn(turn, player, wind);
                     }
+                    continue;
+                }
+
+                if (msg.Id == PhoneMsg.FightProp)
+                {
+                    int player = JsonInt(msg.Json, "player", _loop.CurrentLiving);
+                    int mask = JsonInt(msg.Json, "mask", 0);
+                    _propAvailableMask = (player == MeSeat()) ? mask : 0;
+                    RefreshPropButtons();
                     continue;
                 }
 
