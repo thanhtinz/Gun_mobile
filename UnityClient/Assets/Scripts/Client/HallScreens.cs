@@ -19,58 +19,29 @@ namespace GunMobile.Client
             }
 
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Login", new Color(0.07f, 0.1f, 0.16f, 1f));
-            TryHallBackdrop(app, bg.transform);
-
-            var title = UiKit.Label(bg.transform, "Title", "弹弹堂  ·  Gun Mobile", 48, new Color(1f, 0.85f, 0.35f), TextAnchor.MiddleCenter);
-            var titleRt = title.rectTransform;
-            titleRt.anchorMin = new Vector2(0.1f, 0.72f);
-            titleRt.anchorMax = new Vector2(0.9f, 0.88f);
-            titleRt.offsetMin = titleRt.offsetMax = Vector2.zero;
-
-            var sub = UiKit.Label(bg.transform, "Sub", "PC data · landscape · Android & iOS", 22, new Color(0.8f, 0.85f, 0.95f), TextAnchor.MiddleCenter);
-            sub.rectTransform.anchorMin = new Vector2(0.1f, 0.64f);
-            sub.rectTransform.anchorMax = new Vector2(0.9f, 0.72f);
-            sub.rectTransform.offsetMin = sub.rectTransform.offsetMax = Vector2.zero;
+            PcSkin.Warm(app.Loader);
+            var bg = UiKit.Panel(safe, "Login", Color.black);
+            PcSkin.Backdrop(
+                bg.transform,
+                app.Loader,
+                GamePaths.PathCombine("Flash", "1.png"),
+                GamePaths.PathCombine("Flash", "2.png"),
+                GamePaths.PathCombine("Flash", "3.png"),
+                GamePaths.PathCombine("Flash", "4.png"));
 
             InputField nick = UiKit.Field(bg.transform, "Nick", "Nickname / 昵称", new Vector2(560f, 72f));
             nick.text = app.Profile.Nick;
             var nickRt = nick.GetComponent<RectTransform>();
-            nickRt.anchorMin = nickRt.anchorMax = new Vector2(0.5f, 0.48f);
+            nickRt.anchorMin = nickRt.anchorMax = new Vector2(0.5f, 0.22f);
             nickRt.pivot = new Vector2(0.5f, 0.5f);
 
-            Button enter = UiKit.Button(bg.transform, "Enter", "进入大厅  Enter Hall", () =>
+            Button enter = UiKit.Button(bg.transform, "Enter", "进入大厅", () =>
             {
                 app.Profile.Nick = string.IsNullOrWhiteSpace(nick.text) ? "Player" : nick.text.Trim();
                 app.ShowHall();
-            }, new Vector2(560f, 80f));
+            }, new Vector2(360f, 72f));
             var enterRt = enter.GetComponent<RectTransform>();
-            enterRt.anchorMin = enterRt.anchorMax = new Vector2(0.5f, 0.32f);
-        }
-
-        static void TryHallBackdrop(GameApp app, Transform parent)
-        {
-            string path = GamePaths.PathCombine("Flash", "ui", "cn_trad", "starling", "hall_scene", "hall_scene.png");
-            if (!app.Loader.TryReadBytes(path, out byte[] bytes))
-            {
-                return;
-            }
-
-            var tex = new Texture2D(2, 2, TextureFormat.RGB24, false);
-            if (!tex.LoadImage(bytes))
-            {
-                Object.Destroy(tex);
-                return;
-            }
-
-            var go = new GameObject("Backdrop", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-            go.transform.SetParent(parent, false);
-            go.transform.SetAsFirstSibling();
-            UiKit.Stretch(go);
-            var raw = go.GetComponent<RawImage>();
-            raw.texture = tex;
-            raw.color = new Color(1f, 1f, 1f, 0.35f);
-            raw.raycastTarget = false;
+            enterRt.anchorMin = enterRt.anchorMax = new Vector2(0.5f, 0.1f);
         }
     }
 
@@ -85,42 +56,55 @@ namespace GunMobile.Client
             }
 
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Hall", new Color(0.08f, 0.11f, 0.18f, 1f));
-            LoginScreenBackdrop(app, bg.transform);
+            PcSkin.Warm(app.Loader);
+            var bg = UiKit.Panel(safe, "Hall", Color.black);
+            var hallBg = PcSkin.Slice(bg.transform, "HallBg", PcSkin.Hall, "hall_scene_bg_0", true);
+            if (hallBg == null)
+            {
+                PcSkin.Backdrop(
+                    bg.transform,
+                    app.Loader,
+                    GamePaths.PathCombine("Flash", "ui", "cn_trad", "starling", "hall_scene", "hall_scene.png"));
+            }
 
-            var top = new GameObject("Top", typeof(RectTransform), typeof(Image));
-            top.transform.SetParent(bg.transform, false);
-            var topRt = top.GetComponent<RectTransform>();
-            topRt.anchorMin = new Vector2(0f, 0.86f);
-            topRt.anchorMax = Vector2.one;
-            topRt.offsetMin = topRt.offsetMax = Vector2.zero;
-            top.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.45f);
+            Place(bg.transform, "Church", "hall_scene_church_build", new Vector2(0.18f, 0.38f), new Vector2(280f, 230f));
+            Place(bg.transform, "Poster", "hall_scene_image_poster", new Vector2(0.88f, 0.62f), new Vector2(160f, 140f));
+            Place(bg.transform, "Flower", "hall_scene_bg_flower2", new Vector2(0.72f, 0.28f), new Vector2(70f, 110f));
+
+            Hotspot(bg.transform, "roomList", "hall_scene_build_title_roomList", new Vector2(0.5f, 0.42f), () => app.ShowRoom());
+            Hotspot(bg.transform, "dungeon", "hall_scene_build_title_dungeon", new Vector2(0.32f, 0.55f), () => Open(app, "dungeon"));
+            Hotspot(bg.transform, "labyrinth", "hall_scene_build_title_labyrinth", new Vector2(0.68f, 0.5f), () => Open(app, "labyrinth"));
+            Hotspot(bg.transform, "boss", "hall_scene_build_title_cryptBoss", new Vector2(0.22f, 0.62f), () => Open(app, "worldboss"));
+            Hotspot(bg.transform, "church", "hall_scene_build_title_church", new Vector2(0.12f, 0.55f), () => Open(app, "church"));
+            Hotspot(bg.transform, "home", "hall_scene_build_title_home", new Vector2(0.82f, 0.4f), () => Open(app, "character"));
+            Hotspot(bg.transform, "ring", "hall_scene_build_title_ringStation", new Vector2(0.6f, 0.62f), () => Open(app, "rank"));
+
             PlayerProfile p = app.Profile;
-            UiKit.Label(top.transform, "Info",
-                $"{p.Nick}  Lv.{p.Level} VIP{p.VipLevel}  ATK {p.Attack} DEF {p.Defence}  Gold {p.Gold}  Honor {p.Honor}  {p.Win}W/{p.Lose}L  {(string.IsNullOrEmpty(p.ConsortiaName) ? "" : p.ConsortiaName)}",
-                26, Color.white, TextAnchor.MiddleLeft);
-            UiKit.Stretch(top.transform.Find("Info").gameObject).offsetMin = new Vector2(24f, 0f);
+            UiKit.Label(bg.transform, "Info",
+                $"{p.Nick}  Lv.{p.Level} VIP{p.VipLevel}  ATK {p.Attack} DEF {p.Defence}  Gold {p.Gold}  Honor {p.Honor}  {p.Win}W/{p.Lose}L",
+                22, Color.white, TextAnchor.MiddleLeft)
+                .rectTransform.anchorMin = new Vector2(0.02f, 0.92f);
+            bg.transform.Find("Info").GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 1f);
+            bg.transform.Find("Info").GetComponent<RectTransform>().offsetMin = Vector2.zero;
+            bg.transform.Find("Info").GetComponent<RectTransform>().offsetMax = Vector2.zero;
 
-            var fight = UiKit.Button(top.transform, "Fight", "开战", app.ShowRoom, new Vector2(180f, 56f));
-            var frt = fight.GetComponent<RectTransform>();
-            frt.anchorMin = frt.anchorMax = new Vector2(0.92f, 0.5f);
+            var fight = UiKit.Button(bg.transform, "Fight", "开战", app.ShowRoom, new Vector2(160f, 52f));
+            fight.GetComponent<RectTransform>().anchorMin = fight.GetComponent<RectTransform>().anchorMax = new Vector2(0.92f, 0.95f);
 
             var scroll = UiKit.Scroll(bg.transform, "Modules");
             var srt = scroll.GetComponent<RectTransform>();
             srt.anchorMin = Vector2.zero;
-            srt.anchorMax = new Vector2(1f, 0.86f);
-            srt.offsetMin = new Vector2(8f, 8f);
-            srt.offsetMax = new Vector2(-8f, -8f);
-
-            var gridGo = scroll.content.gameObject;
-            Object.Destroy(gridGo.GetComponent<VerticalLayoutGroup>());
-            var grid = gridGo.AddComponent<GridLayoutGroup>();
-            grid.cellSize = new Vector2(240f, 88f);
-            grid.spacing = new Vector2(12f, 12f);
+            srt.anchorMax = new Vector2(1f, 0.22f);
+            srt.offsetMin = new Vector2(8f, 4f);
+            srt.offsetMax = new Vector2(-8f, -4f);
+            Object.Destroy(scroll.content.gameObject.GetComponent<VerticalLayoutGroup>());
+            var grid = scroll.content.gameObject.AddComponent<GridLayoutGroup>();
+            grid.cellSize = new Vector2(160f, 56f);
+            grid.spacing = new Vector2(8f, 8f);
             grid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = 6;
-            grid.padding = new RectOffset(8, 8, 8, 8);
-            gridGo.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+            grid.constraintCount = 7;
+            grid.padding = new RectOffset(4, 4, 4, 4);
+            scroll.content.gameObject.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             foreach (ModuleDef mod in ModuleCatalog.All)
             {
@@ -129,30 +113,44 @@ namespace GunMobile.Client
             }
         }
 
-        static void LoginScreenBackdrop(GameApp app, Transform parent)
+        static void Place(Transform parent, string name, string frame, Vector2 anchor, Vector2 size)
         {
-            string path = GamePaths.PathCombine("Flash", "ui", "cn_trad", "starling", "hall_scene", "hall_scene.png");
-            if (!app.Loader.TryReadBytes(path, out byte[] bytes))
+            RawImage raw = PcSkin.Slice(parent, name, PcSkin.Hall, frame, false);
+            if (raw == null)
             {
                 return;
             }
 
-            var tex = new Texture2D(2, 2, TextureFormat.RGB24, false);
-            if (!tex.LoadImage(bytes))
-            {
-                Object.Destroy(tex);
-                return;
-            }
+            var rt = raw.rectTransform;
+            rt.anchorMin = rt.anchorMax = anchor;
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = size;
+        }
 
-            var go = new GameObject("HallArt", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-            go.transform.SetParent(parent, false);
-            go.transform.SetAsFirstSibling();
-            UiKit.Stretch(go);
-            var raw = go.GetComponent<RawImage>();
-            raw.texture = tex;
-            raw.uvRect = new Rect(0f, 0.08f, 1f, 0.84f);
-            raw.color = Color.white;
-            raw.raycastTarget = false;
+        static void Hotspot(Transform parent, string name, string frame, Vector2 anchor, UnityEngine.Events.UnityAction click)
+        {
+            var btn = UiKit.Button(parent, name, "", click, new Vector2(150f, 44f));
+            var rt = btn.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = anchor;
+            RawImage raw = PcSkin.Slice(btn.transform, "Art", PcSkin.Hall, frame, true);
+            if (raw != null)
+            {
+                raw.raycastTarget = false;
+                var img = btn.GetComponent<Image>();
+                img.color = new Color(1f, 1f, 1f, 0.02f);
+            }
+        }
+
+        static void Open(GameApp app, string id)
+        {
+            foreach (ModuleDef mod in ModuleCatalog.All)
+            {
+                if (mod.Id == id)
+                {
+                    app.ShowModule(mod);
+                    return;
+                }
+            }
         }
     }
 
@@ -163,7 +161,9 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Room", new Color(0.06f, 0.08f, 0.12f, 1f));
+            PcSkin.Warm(app.Loader);
+            var bg = UiKit.Panel(safe, "Room", Color.black);
+            PcSkin.Slice(bg.transform, "RoomBg", PcSkin.Hall, "hall_scene_bg_1", true);
             var top = UiKit.Button(bg.transform, "Back", "← 大厅", app.ShowHall, new Vector2(160f, 56f));
             var tr = top.GetComponent<RectTransform>();
             tr.anchorMin = tr.anchorMax = new Vector2(0.08f, 0.93f);
@@ -241,10 +241,28 @@ namespace GunMobile.Client
                     }
 
                     app.ShowBattle(local.Id);
-                }, new Vector2(0f, 80f));
+                }, new Vector2(0f, 96f));
                 var le = btn.gameObject.AddComponent<LayoutElement>();
-                le.preferredHeight = 80f;
+                le.preferredHeight = 96f;
                 le.flexibleWidth = 1f;
+                Texture2D thumb = PcSkin.MapThumb(app.Loader, local.Id);
+                if (thumb != null)
+                {
+                    var thumbGo = new GameObject("Thumb", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    thumbGo.transform.SetParent(btn.transform, false);
+                    var trt = thumbGo.GetComponent<RectTransform>();
+                    trt.anchorMin = new Vector2(0f, 0.08f);
+                    trt.anchorMax = new Vector2(0.22f, 0.92f);
+                    trt.offsetMin = trt.offsetMax = Vector2.zero;
+                    var raw = thumbGo.GetComponent<RawImage>();
+                    raw.texture = thumb;
+                    raw.raycastTarget = false;
+                    var captionRt = btn.transform.Find("Caption") as RectTransform;
+                    if (captionRt != null)
+                    {
+                        captionRt.offsetMin = new Vector2(btn.GetComponent<RectTransform>().rect.width * 0.22f, 0f);
+                    }
+                }
             }
         }
     }

@@ -43,6 +43,18 @@ namespace GunMobile.Client
             return img;
         }
 
+        public static Image PcPanel(Transform parent, string name)
+        {
+            Image img = Panel(parent, name, Color.black);
+            if (GameApp.I != null)
+            {
+                PcSkin.Warm(GameApp.I.Loader);
+            }
+
+            PcSkin.Slice(img.transform, "PcBg", PcSkin.Hall, "hall_scene_bg_1", true);
+            return img;
+        }
+
         public static Text Label(Transform parent, string name, string value, int size, Color color, TextAnchor align = TextAnchor.MiddleLeft)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
@@ -67,6 +79,7 @@ namespace GunMobile.Client
             rt.sizeDelta = size;
             var img = go.GetComponent<Image>();
             img.color = new Color(0.18f, 0.22f, 0.32f, 0.94f);
+            PcSkin.Chrome(img);
             var btn = go.GetComponent<Button>();
             btn.targetGraphic = img;
             btn.onClick.AddListener(onClick);
@@ -83,7 +96,8 @@ namespace GunMobile.Client
             var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(InputField));
             go.transform.SetParent(parent, false);
             go.GetComponent<RectTransform>().sizeDelta = size;
-            go.GetComponent<Image>().color = new Color(0.08f, 0.09f, 0.12f, 0.9f);
+            go.GetComponent<Image>().color = Color.white;
+            PcSkin.Chrome(go.GetComponent<Image>());
             var text = Label(go.transform, "Text", "", 28, Color.white, TextAnchor.MiddleLeft);
             Stretch(text.gameObject);
             text.gameObject.GetComponent<RectTransform>().offsetMin = new Vector2(16f, 4f);

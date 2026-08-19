@@ -62,6 +62,7 @@ namespace GunMobile.Client
             EnsureCamera();
             EnsureEventSystem();
             Loader = PcContent.CreateLoader();
+            PcSkin.Warm(Loader);
             Profile = PlayerProfile.Load();
             PhoneNet.Boot();
             _canvas = MobileUiBootstrap.CreateRoot(transform);
@@ -77,6 +78,7 @@ namespace GunMobile.Client
         {
             ShowStatus("Loading PC data for Android / iOS…");
             yield return PcContent.Install(Loader, ShowStatus);
+            PcSkin.Warm(Loader);
             TryLoadConfig();
             ShowStatus("Loading PC tables…");
             yield return null;

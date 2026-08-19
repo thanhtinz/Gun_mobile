@@ -11,7 +11,9 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Shop", new Color(0.07f, 0.08f, 0.12f, 1f));
+            PcSkin.Warm(app.Loader);
+            var bg = UiKit.Panel(safe, "Shop", Color.black);
+            PcSkin.Slice(bg.transform, "Bg", PcSkin.Hall, "hall_scene_bg_1", true);
             Header(bg.transform, app, "商城 · ShopItemList");
 
             var scroll = BodyScroll(bg.transform);
@@ -121,7 +123,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Bag", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Bag");
             ShopScreen.Header(bg.transform, app, "背包 · 装备");
             var scroll = ShopScreen.BodyScroll(bg.transform);
             app.Profile.EnsureStarterBag();
@@ -167,7 +169,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Quest", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Quest");
             ShopScreen.Header(bg.transform, app, "任务 · QuestList");
             var scroll = ShopScreen.BodyScroll(bg.transform);
             int shown = 0;
@@ -232,7 +234,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Hero", new Color(0.07f, 0.09f, 0.14f, 1f));
+            var bg = UiKit.PcPanel(safe, "Hero");
             ShopScreen.Header(bg.transform, app, "角色");
             app.Profile.RecalcStats(app.Database);
             PlayerProfile p = app.Profile;
@@ -314,7 +316,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Sign", new Color(0.08f, 0.1f, 0.14f, 1f));
+            var bg = UiKit.PcPanel(safe, "Sign");
             ShopScreen.Header(bg.transform, app, "签到 · TS_EveryDaySignIn");
             int today = System.DateTime.Now.DayOfYear;
             bool done = app.Profile.LastSignDay == today;
@@ -376,7 +378,7 @@ namespace GunMobile.Client
             }
 
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Result", win ? new Color(0.08f, 0.16f, 0.1f, 1f) : new Color(0.16f, 0.07f, 0.08f, 1f));
+            var bg = UiKit.PcPanel(safe, "Result");
             UiKit.Label(bg.transform, "Title", win ? "胜利" : "惜败", 48, new Color(1f, 0.9f, 0.4f), TextAnchor.MiddleCenter)
                 .rectTransform.anchorMin = new Vector2(0.1f, 0.62f);
             bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.9f, 0.82f);
@@ -395,7 +397,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Set", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Set");
             ShopScreen.Header(bg.transform, app, "设置");
             string lang = app.Config != null ? app.Config.Language : "cn_trad";
             string info =
@@ -426,7 +428,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app, string title, string body)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Mail", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Mail");
             ShopScreen.Header(bg.transform, app, title);
             var label = UiKit.Label(bg.transform, "Body", body, 26, Color.white, TextAnchor.UpperLeft);
             label.rectTransform.anchorMin = new Vector2(0.08f, 0.1f);

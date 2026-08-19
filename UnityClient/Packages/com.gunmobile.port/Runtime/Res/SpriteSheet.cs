@@ -64,6 +64,67 @@ namespace GunMobile.Res
             return null;
         }
 
+        /// <summary>PC Starling atlas: PNG + XML under Flash/ui/*/starling.</summary>
+        public static SpriteSheet TryLoadStarling(ResLoader loader, string pngPath, string xmlPath)
+        {
+            if (loader == null || !loader.TryReadBytes(pngPath, out byte[] png))
+            {
+                return null;
+            }
+
+            Texture2D tex = LoadTexture(png, false);
+            if (tex == null)
+            {
+                return null;
+            }
+
+            var sheet = new SpriteSheet { Texture = tex };
+            if (loader.TryReadBytes(xmlPath, out byte[] xml))
+            {
+                try
+                {
+                    FillFromAtlas(sheet, ZlibXml.Load(xml), tex.width, tex.height);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("Starling xml: " + e.Message);
+                }
+            }
+
+            if (sheet.Frames.Count == 0)
+            {
+                sheet.Frames.Add(new SheetFrame
+                {
+                    Name = "full",
+                    Pixel = new Rect(0, 0, tex.width, tex.height),
+                    Uv = new Rect(0f, 0f, 1f, 1f),
+                    Size = new Vector2(tex.width, tex.height)
+                });
+            }
+
+            return sheet;
+        }
+
+        public bool TryGet(string name, out SheetFrame frame)
+        {
+            frame = default;
+            if (string.IsNullOrEmpty(name))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < Frames.Count; i++)
+            {
+                if (string.Equals(Frames[i].Name, name, StringComparison.OrdinalIgnoreCase))
+                {
+                    frame = Frames[i];
+                    return true;
+                }
+            }
+
+            return TryUv(name, out frame);
+        }
+
         public static Texture2D LoadTexture(byte[] png, bool readable)
         {
             png = StripToPng(png);

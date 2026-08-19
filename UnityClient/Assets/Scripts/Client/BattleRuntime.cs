@@ -15,7 +15,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app, ModuleDef module)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Module", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Module");
             var back = UiKit.Button(bg.transform, "Back", "← 大厅", app.ShowHall, new Vector2(160f, 56f));
             back.GetComponent<RectTransform>().anchorMin = back.GetComponent<RectTransform>().anchorMax = new Vector2(0.08f, 0.93f);
 
@@ -286,13 +286,14 @@ namespace GunMobile.Client
 
         void BuildHud(Transform parent)
         {
+            PcSkin.Warm(_app.Loader);
             var bar = new GameObject("Hud", typeof(RectTransform), typeof(Image));
             bar.transform.SetParent(parent, false);
             var rt = bar.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0f, 0.86f);
             rt.anchorMax = Vector2.one;
             rt.offsetMin = rt.offsetMax = Vector2.zero;
-            bar.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.55f);
+            PcSkin.Chrome(bar.GetComponent<Image>(), PcSkin.Game, "game_blood_RBg");
             _hud = UiKit.Label(bar.transform, "HudText", "", 24, Color.white, TextAnchor.MiddleLeft);
             UiKit.Stretch(_hud.gameObject).offsetMin = new Vector2(20f, 0f);
 
@@ -303,11 +304,23 @@ namespace GunMobile.Client
             exit.GetComponent<RectTransform>().anchorMin = exit.GetComponent<RectTransform>().anchorMax = new Vector2(0.93f, 0.5f);
 
             var move = MobileUiBootstrap.CreateHudLayer(parent as RectTransform, "Move", TextAnchor.LowerLeft, MobileUiBootstrap.FingerButtonSize * 3f);
-            move.gameObject.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.12f);
+            var moveImg = move.gameObject.AddComponent<Image>();
+            PcSkin.Chrome(moveImg, PcSkin.Game, "game_takeAimAssetBG");
+            if (moveImg.sprite == null)
+            {
+                moveImg.color = new Color(1f, 1f, 1f, 0.12f);
+            }
+
             _move = move.gameObject.AddComponent<TouchMoveController>();
 
             var aim = MobileUiBootstrap.CreateHudLayer(parent as RectTransform, "Aim", TextAnchor.LowerRight, MobileUiBootstrap.FingerButtonSize * 3.4f);
-            aim.gameObject.AddComponent<Image>().color = new Color(1f, 0.8f, 0.2f, 0.16f);
+            var aimImg = aim.gameObject.AddComponent<Image>();
+            PcSkin.Chrome(aimImg, PcSkin.Game, "game_takeAimAsset");
+            if (aimImg.sprite == null)
+            {
+                aimImg.color = new Color(1f, 0.8f, 0.2f, 0.16f);
+            }
+
             _aim = aim.gameObject.AddComponent<TouchAimController>();
         }
 
@@ -730,10 +743,14 @@ namespace GunMobile.Client
                 }
                 else
                 {
-                    raw.texture = Texture2D.whiteTexture;
+                    PcSkin.Apply(raw, PcSkin.Default, "image_deafult_player");
+                    if (raw.texture == Texture2D.whiteTexture || raw.texture == null)
+                    {
+                        raw.texture = Texture2D.whiteTexture;
+                    }
                 }
 
-                raw.color = i == 0 ? Color.white : new Color(1f, 0.55f, 0.5f, 1f);
+                raw.color = Color.white;
                 _livingImg[i] = raw;
 
                 var hpGo = new GameObject("Hp" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
@@ -744,7 +761,7 @@ namespace GunMobile.Client
                 hpRt.offsetMin = hpRt.offsetMax = Vector2.zero;
                 var hp = hpGo.GetComponent<RawImage>();
                 hp.texture = Texture2D.whiteTexture;
-                hp.color = i == 0 ? new Color(0.3f, 0.9f, 0.35f) : new Color(0.95f, 0.3f, 0.25f);
+                PcSkin.Apply(hp, PcSkin.Game, i == 0 ? "game_HPStrip1" : "game_HPStrip2");
                 hp.raycastTarget = false;
                 _hpFill[i] = hp;
             }
@@ -787,8 +804,16 @@ namespace GunMobile.Client
                 var d = new GameObject("Dot" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
                 d.transform.SetParent(_world, false);
                 var raw = d.GetComponent<RawImage>();
-                raw.texture = Texture2D.whiteTexture;
-                raw.color = new Color(1f, 1f, 0.4f, 0.55f);
+                PcSkin.Apply(raw, PcSkin.Game, "game_takeAimAsset");
+                if (raw.texture == null)
+                {
+                    raw.texture = Texture2D.whiteTexture;
+                    raw.color = new Color(1f, 1f, 0.4f, 0.55f);
+                }
+                else
+                {
+                    raw.color = Color.white;
+                }
                 raw.raycastTarget = false;
                 d.SetActive(false);
                 _dots[i] = raw;

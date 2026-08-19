@@ -12,7 +12,9 @@ namespace GunMobile.Client
         public static Transform Begin(RectTransform safe, GameApp app, string title)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Sys", new Color(0.07f, 0.08f, 0.12f, 1f));
+            PcSkin.Warm(app.Loader);
+            var bg = UiKit.Panel(safe, "Sys", Color.black);
+            PcSkin.Slice(bg.transform, "Bg", PcSkin.Hall, "hall_scene_bg_1", true);
             ShopScreen.Header(bg.transform, app, title);
             return ShopScreen.BodyScroll(bg.transform).content;
         }
@@ -774,7 +776,7 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
-            var bg = UiKit.Panel(safe, "Chat", new Color(0.07f, 0.08f, 0.12f, 1f));
+            var bg = UiKit.PcPanel(safe, "Chat");
             ShopScreen.Header(bg.transform, app, "聊天（本地）");
             var scroll = ShopScreen.BodyScroll(bg.transform);
             foreach (string line in app.Profile.ChatLog)

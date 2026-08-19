@@ -95,7 +95,7 @@ PC ~1000×600, chuột, rất nhiều cửa sổ. Mobile:
 
 `MobileUiBootstrap.CreateRoot()` tạo Canvas `ScaleWithScreenSize` match 0.5, child `SafeAreaFitter`.
 
-Ưu tiên màn: Login → Hall → Room (单机 / LAN 开房 / 加入 IP) vs bot hoặc 2 điện thoại Fight:1910. SWF living/bomb được tách JPEG/PNG. Road.Service.exe + SQL **không** chạy trên điện thoại — PhoneRoad là server TCP native.
+Ưu tiên màn: Login (`Flash/1.png`) → Hall (Starling `hall_scene` building/title) → Room (`samll_map.png` PC) vs bot hoặc LAN. Nút/HUD lấy `game.png` / `default_resource.png`. Living/bomb lấy bitmap trong SWF PC, không vẽ sprite mới.
 
 Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → uGUI. Skin `asset.*` cần bảng lookup sprite (sau khi convert SWF/atlas).
 

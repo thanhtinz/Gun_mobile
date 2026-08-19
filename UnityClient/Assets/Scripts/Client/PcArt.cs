@@ -68,6 +68,11 @@ namespace GunMobile.Client
                 GamePaths.PathCombine("Resource", "image", "game", "living", "extracted", "living003.jpg"));
         }
 
+        public static Texture2D File(ResLoader loader, params string[] paths)
+        {
+            return SwfImage.TryLoad(loader, paths);
+        }
+
         static string Stem(NpcInfo npc)
         {
             string path = npc != null ? npc.ResourcesPath : "";

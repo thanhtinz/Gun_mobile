@@ -6,7 +6,7 @@ Open **this folder** (`UnityClient/`) in Unity **6.3 LTS** (`6000.3.22f1`).
 1. Install Unity 6.3 LTS with **Android Build Support** (SDK/NDK/OpenJDK) and **iOS Build Support**.
 2. File → Open Project → `Gun_mobile/UnityClient`.
 3. Press Play. `GameApp` boots from `Assets/Scenes/Boot.unity`.
-4. Login → Hall (mọi nút đều vào gameplay local, không còn XML đọc suông):
+4. Login dùng `Flash/1.png`, Hall dùng Starling `hall_scene`, Room dùng `samll_map.png` của từng map. Không vẽ UI mới.
    - **开战** — mọi map packed vs bot
    - **副本 / NPC 狩猎 / 迷宫 / 世界BOSS** — PVE, stat NPC từ `NPCInfoList` (Blood khổng lồ được scale cho mobile)
    - **商城 / VIP / 抽奖 / 拍卖** — mua, gacha, bán
