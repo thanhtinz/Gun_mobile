@@ -922,28 +922,37 @@ namespace GunMobile.Client
             _resultOpen = true;
             bool win = _loop.Livings[MeSeat()].Hp > 0;
             PhoneNet.ReportFightOver(win);
-            int gold = 0;
+            bool net = PhoneNet.NetBattle;
+
+            int gold = win ? (net ? 800 : 800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
             int questGold = 0;
+
+            // When NetBattle, server is the source of truth for battle reward base gold
+            // (HandleFightOver: win=800, lose=100). Avoid touching pending quest/labyrinth
+            // client-side because server ProfileData may overwrite them.
             if (win)
             {
                 _app.Profile.Win++;
-                gold = 800 + Mathf.Max(0, _app.Profile.PendingReward);
-                _app.Profile.Gold += gold;
-                _app.Profile.Honor += _npcId != 0 ? 12 : 4;
-                if (_app.Profile.PendingLabyrinth != 0)
-                {
-                    _app.Profile.LabyrinthFloor++;
-                }
-
-                questGold = _app.Profile.CompleteAcceptedQuests(_app.Database);
             }
             else
             {
                 _app.Profile.Lose++;
             }
 
-            _app.Profile.PendingReward = 0;
-            _app.Profile.PendingLabyrinth = 0;
+            _app.Profile.Gold += gold;
+
+            if (!net && win)
+            {
+                _app.Profile.Honor += _npcId != 0 ? 12 : 4;
+                if (_app.Profile.PendingLabyrinth != 0)
+                {
+                    _app.Profile.LabyrinthFloor++;
+                }
+                questGold = _app.Profile.CompleteAcceptedQuests(_app.Database);
+                _app.Profile.PendingReward = 0;
+                _app.Profile.PendingLabyrinth = 0;
+            }
+
             _app.Profile.Save();
             string detail = win
                 ? $"击败 {_foeName}" + (questGold > 0 ? $"\n任务奖励 +{questGold} 金" : "")
