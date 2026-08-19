@@ -203,6 +203,15 @@ def main() -> None:
     except Exception as e:
         print("swf pack skipped:", e)
 
+    shop_ok = {}
+    try:
+        from pack_shop_icons import pack as pack_shop
+
+        shop_ok = pack_shop()
+        print("shop icons", shop_ok)
+    except Exception as e:
+        print("shop icon pack skipped:", e)
+
     files = [p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file() and p.name != "content_index.json"]
     files.sort()
     index = {

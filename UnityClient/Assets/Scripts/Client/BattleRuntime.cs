@@ -150,12 +150,19 @@ namespace GunMobile.Client
         float _blastT;
         float _animT;
         bool _resultOpen;
+        int _propId;
+        float _propPower;
+        float _propDmg = 1f;
+        float _propRadius = 1f;
+        bool _propCrit;
 
         public void Run(GameApp app, int mapId, int npcId = 0)
         {
             _app = app;
             _mapId = mapId;
             _npcId = npcId;
+            _resultOpen = false;
+            ClearProp();
             StopAllCoroutines();
             UiKit.ClearChildren(app.transform.Find("GunMobileCanvas/SafeArea") ?? transform);
             StartCoroutine(LoadAndPlay());
@@ -322,6 +329,73 @@ namespace GunMobile.Client
             }
 
             _aim = aim.gameObject.AddComponent<TouchAimController>();
+            BuildPropBar(parent);
+        }
+
+        void BuildPropBar(Transform parent)
+        {
+            if (PcSkin.GameProp == null)
+            {
+                return;
+            }
+
+            var bar = new GameObject("Props", typeof(RectTransform), typeof(HorizontalLayoutGroup));
+            bar.transform.SetParent(parent, false);
+            var rt = bar.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.26f, 0.015f);
+            rt.anchorMax = new Vector2(0.74f, 0.13f);
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            var layout = bar.GetComponent<HorizontalLayoutGroup>();
+            layout.childAlignment = TextAnchor.MiddleCenter;
+            layout.spacing = 8f;
+            layout.padding = new RectOffset(8, 8, 4, 4);
+            layout.childForceExpandHeight = true;
+            layout.childForceExpandWidth = true;
+            int[] ids = { 1, 2, 4, 5, 6, 7 };
+            for (int i = 0; i < ids.Length; i++)
+            {
+                int id = ids[i];
+                var btn = UiKit.Button(bar.transform, "prop" + id, "", () => UseProp(id), new Vector2(56f, 56f));
+                btn.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.04f);
+                RawImage art = PcSkin.Slice(btn.transform, "Art", PcSkin.GameProp, "game_prop_" + id, true);
+                if (art != null)
+                {
+                    art.raycastTarget = false;
+                }
+            }
+        }
+
+        void UseProp(int id)
+        {
+            if (_loop == null || _loop.Phase != BattlePhase.Aiming || _loop.CurrentLiving != MeSeat())
+            {
+                return;
+            }
+
+            _propId = id;
+            _propPower = 0f;
+            _propDmg = 1f;
+            _propRadius = 1f;
+            _propCrit = false;
+            switch (id)
+            {
+                case 1:
+                    _propDmg = 1.25f;
+                    _propRadius = 1.35f;
+                    break;
+                case 2:
+                    _propDmg = 1.2f;
+                    break;
+                case 5:
+                    _propPower = 12f;
+                    break;
+                case 6:
+                    _propDmg = 1.4f;
+                    break;
+                case 7:
+                    _propCrit = true;
+                    break;
+            }
         }
 
         void Update()
@@ -353,7 +427,7 @@ namespace GunMobile.Client
                 if (_aim.FireReleased)
                 {
                     _aim.ConsumeFire();
-                    Fire(me, _aim.AngleDeg, _aim.Power, false);
+            Fire(me, _aim.AngleDeg, Mathf.Clamp(_aim.Power + _propPower, 1f, 100f), false);
                 }
             }
             else if (!PhoneNet.NetBattle && _loop.Phase == BattlePhase.Aiming && cur == 1 && !_flying && !_botQueued)
@@ -540,7 +614,7 @@ namespace GunMobile.Client
         void EndShot(bool explode, int mx, int my)
         {
             _flying = false;
-            int radius = Mathf.Max(24, _ball.Radii > 0 ? _ball.Radii / 2 : 38);
+            int radius = Mathf.Max(24, Mathf.RoundToInt((_ball.Radii > 0 ? _ball.Radii / 2 : 38) * _propRadius));
             if (explode)
             {
                 _map.CutCircle(mx, my, radius);
@@ -570,6 +644,17 @@ namespace GunMobile.Client
             {
                 FinishMatch();
             }
+
+            ClearProp();
+        }
+
+        void ClearProp()
+        {
+            _propId = 0;
+            _propPower = 0f;
+            _propDmg = 1f;
+            _propRadius = 1f;
+            _propCrit = false;
         }
 
         void Hurt(int index, float dist)
@@ -581,7 +666,9 @@ namespace GunMobile.Client
                 bombHurt = 140;
             }
 
-            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex));
+            bombHurt = Mathf.RoundToInt(bombHurt * _propDmg);
+            bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
+            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);
         }
 
@@ -973,6 +1060,7 @@ namespace GunMobile.Client
             var foe = _loop.Livings[1 - seat];
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
             _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}" +
+                (_propId > 0 ? "  prop " + _propId : "") +
                 (PhoneNet.NetBattle ? "  LAN seat " + MeSeat() : "");
         }
 

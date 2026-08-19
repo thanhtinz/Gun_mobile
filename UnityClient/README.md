@@ -38,7 +38,7 @@ iOS 13+ IL2CPP
 This environment has no Unity Editor, so the APK/IPA must be built on a machine with Unity 6.3 LTS, or via GitHub Actions.
 
 ## PC data
-`Assets/StreamingAssets/PcData` is packed from the Ok dump (templates, shop, quests, balls, **all maps with fore.png+fore.map**, bombs, hall/game atlases).
+`Assets/StreamingAssets/PcData` is packed from the Ok dump (templates, shop, quests, balls, **all maps with fore.png+fore.map**, bombs, hall/game atlases, **shop/bag `icon_1.png` / `unfrightprop` icons**).
 
 Full extra art (`Resource/image/equip`, etc.) is not all shipped in the APK. Unpack:
 

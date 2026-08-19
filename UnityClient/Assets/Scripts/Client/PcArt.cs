@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Res;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GunMobile.Client
 {
@@ -88,20 +90,50 @@ namespace GunMobile.Client
 
             string side = sex == 2 ? "f" : "m";
             string slot = EquipFolder(item.CategoryId);
-            var paths = new System.Collections.Generic.List<string>();
-            if (!string.IsNullOrEmpty(slot))
+            var paths = new List<string>();
+            foreach (string p in PicKeys(pic))
             {
-                paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic, "icon_1.png"));
-                paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic.ToLowerInvariant(), "icon_1.png"));
-                if (side == "m")
+                if (!string.IsNullOrEmpty(slot) && IsBodySlot(slot))
                 {
-                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", "f", slot, pic, "icon_1.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, p, "icon_1.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side == "m" ? "f" : "m", slot, p, "icon_1.png"));
                 }
+                else if (!string.IsNullOrEmpty(slot))
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", slot, p, "icon_1.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", slot, p, "icon.png"));
+                }
+
+                if (item.CategoryId == 7)
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "1", "icon.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "icon.png"));
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "00.png"));
+                }
+
+                if (item.CategoryId == 12)
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "task", p, "icon.png"));
+                }
+
+                if (item.CategoryId == 16)
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "specialprop", "chatball", p, "icon.png"));
+                }
+
+                if (item.CategoryId == 32)
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "farm", "crops", p, "seed.png"));
+                }
+
+                paths.Add(GamePaths.PathCombine("Resource", "image", "unfrightprop", p, "icon.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "prop", p, "icon.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "gift", p, "icon.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "buff", p, "icon.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "pet", p, "icon1.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "elf", p, "icon.png"));
             }
 
-            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic, "00.png"));
-            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic, "1", "icon.png"));
-            paths.Add(GamePaths.PathCombine("Resource", "image", "arm", pic.ToLowerInvariant(), "00.png"));
             return SwfImage.TryLoad(loader, paths.ToArray());
         }
 
@@ -112,16 +144,21 @@ namespace GunMobile.Client
                 return null;
             }
 
-            string pic = item.Pic;
             string side = sex == 2 ? "f" : "m";
             string slot = EquipFolder(item.CategoryId);
-            return SwfImage.TryLoad(
-                loader,
-                !string.IsNullOrEmpty(slot)
-                    ? GamePaths.PathCombine("Resource", "image", "equip", side, slot, pic, "1", "game.png")
-                    : null,
-                GamePaths.PathCombine("Resource", "image", "arm", pic, "1", "1", "game.png"),
-                GamePaths.PathCombine("Resource", "image", "arm", pic, "00.png"));
+            var paths = new List<string>();
+            foreach (string p in PicKeys(item.Pic))
+            {
+                if (!string.IsNullOrEmpty(slot) && IsBodySlot(slot))
+                {
+                    paths.Add(GamePaths.PathCombine("Resource", "image", "equip", side, slot, p, "1", "game.png"));
+                }
+
+                paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "1", "1", "game.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "arm", p, "00.png"));
+            }
+
+            return SwfImage.TryLoad(loader, paths.ToArray());
         }
 
         public static string EquipFolder(int categoryId)
@@ -131,10 +168,73 @@ namespace GunMobile.Client
                 case 1: return "head";
                 case 2: return "glass";
                 case 3: return "hair";
-                case 4: return "face";
+                case 4: return "eff";
                 case 5: return "cloth";
-                case 6: return "suits";
+                case 6: return "face";
+                case 8: return "armlet";
+                case 9: return "ring";
+                case 13: return "suits";
+                case 14: return "necklace";
+                case 15: return "wing";
+                case 16:
+                case 17: return "offhand";
                 default: return "";
+            }
+        }
+
+        public static void Decorate(Transform btn, Texture2D tex, float left = 0.12f)
+        {
+            if (tex == null || btn == null)
+            {
+                return;
+            }
+
+            var go = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            go.transform.SetParent(btn, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = new Vector2(0.01f, 0.08f);
+            rt.anchorMax = new Vector2(left, 0.92f);
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            var raw = go.GetComponent<RawImage>();
+            raw.texture = tex;
+            raw.raycastTarget = false;
+            var cap = btn.Find("Caption") as RectTransform;
+            if (cap != null)
+            {
+                cap.offsetMin = new Vector2(72f, 0f);
+            }
+        }
+
+        static bool IsBodySlot(string slot)
+        {
+            return slot == "head" || slot == "glass" || slot == "hair" || slot == "eff" ||
+                   slot == "cloth" || slot == "face" || slot == "suits";
+        }
+
+        static IEnumerable<string> PicKeys(string pic)
+        {
+            string raw = (pic ?? "").Replace('\\', '/').Trim();
+            if (string.IsNullOrEmpty(raw))
+            {
+                yield break;
+            }
+
+            yield return raw;
+            string low = raw.ToLowerInvariant();
+            if (low != raw)
+            {
+                yield return low;
+            }
+
+            if ((raw.StartsWith("S") || raw.StartsWith("s")) && raw.Length > 1)
+            {
+                string rest = raw.Substring(1);
+                yield return rest;
+                string restLow = rest.ToLowerInvariant();
+                if (restLow != rest)
+                {
+                    yield return restLow;
+                }
             }
         }
 

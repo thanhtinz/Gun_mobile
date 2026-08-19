@@ -120,25 +120,7 @@ namespace GunMobile.Client
 
         public static void DecorateIcon(GameApp app, Button btn, int templateId)
         {
-            Texture2D tex = PcArt.ItemIcon(app.Loader, app.Database.GetItem(templateId), app.Profile.Sex);
-            if (tex == null || btn == null)
-            {
-                return;
-            }
-
-            var go = new GameObject("Icon", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
-            go.transform.SetParent(btn.transform, false);
-            var rt = go.GetComponent<RectTransform>();
-            rt.anchorMin = new Vector2(0.01f, 0.08f);
-            rt.anchorMax = new Vector2(0.12f, 0.92f);
-            rt.offsetMin = rt.offsetMax = Vector2.zero;
-            go.GetComponent<RawImage>().texture = tex;
-            go.GetComponent<RawImage>().raycastTarget = false;
-            var cap = btn.transform.Find("Caption") as RectTransform;
-            if (cap != null)
-            {
-                cap.offsetMin = new Vector2(72f, 0f);
-            }
+            PcArt.Decorate(btn != null ? btn.transform : null, PcArt.ItemIcon(app.Loader, app.Database.GetItem(templateId), app.Profile.Sex));
         }
     }
 

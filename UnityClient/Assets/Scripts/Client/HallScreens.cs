@@ -71,6 +71,7 @@ namespace GunMobile.Client
                 Building(bg.transform, build, "DunB", "hall_new_dungeon", "hall_new_dungeon_name", new Vector2(0.5f, 0.46f), new Vector2(230f, 170f), () => Open(app, "dungeon"));
                 Building(bg.transform, build, "AudB", "hall_new_auditorium", "hall_new_auditorium_name", new Vector2(0.78f, 0.48f), new Vector2(210f, 180f), () => Open(app, "consortia"));
                 Building(bg.transform, build, "SecB", "hall_new_secret", "hall_new_secret_name", new Vector2(0.36f, 0.52f), new Vector2(90f, 150f), () => Open(app, "labyrinth"));
+                RankPodium(bg.transform, build, () => Open(app, "rank"));
             }
             else
             {
@@ -119,6 +120,39 @@ namespace GunMobile.Client
                 ModuleDef local = mod;
                 UiKit.Button(scroll.content, local.Id, local.Title, () => app.ShowModule(local), grid.cellSize);
             }
+        }
+
+        static void RankPodium(Transform parent, SpriteSheet sheet, UnityEngine.Events.UnityAction click)
+        {
+            var btn = UiKit.Button(parent, "RankPodium", "", click, new Vector2(360f, 90f));
+            var rt = btn.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = new Vector2(0.78f, 0.72f);
+            rt.sizeDelta = new Vector2(360f, 90f);
+            btn.GetComponent<Image>().color = new Color(1f, 1f, 1f, 0.02f);
+            RawImage bg = PcSkin.Slice(btn.transform, "RankBg", sheet, "hall_new_rankbg", true);
+            if (bg != null)
+            {
+                bg.raycastTarget = false;
+            }
+
+            PlaceOn(btn.transform, sheet, "First", "hall_new_first", new Vector2(0.32f, 0.58f), new Vector2(72f, 56f));
+            PlaceOn(btn.transform, sheet, "Second", "hall_new_second", new Vector2(0.14f, 0.48f), new Vector2(56f, 44f));
+            PlaceOn(btn.transform, sheet, "Third", "hall_new_third", new Vector2(0.5f, 0.42f), new Vector2(52f, 36f));
+        }
+
+        static void PlaceOn(Transform parent, SpriteSheet sheet, string name, string frame, Vector2 anchor, Vector2 size)
+        {
+            RawImage raw = PcSkin.Slice(parent, name, sheet, frame, false);
+            if (raw == null)
+            {
+                return;
+            }
+
+            var rt = raw.rectTransform;
+            rt.anchorMin = rt.anchorMax = anchor;
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.sizeDelta = size;
+            raw.raycastTarget = false;
         }
 
         static void Place(Transform parent, SpriteSheet sheet, string name, string frame, Vector2 anchor, Vector2 size)

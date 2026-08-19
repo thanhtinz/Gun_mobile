@@ -38,6 +38,8 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC / Pet / Card / Title / Totem / Mount / Lottery / VIP / PVE / Spirit / Elf / Farm
 - [x] SWF living/bomb → JPEG/PNG (`tools/swf_extract.py`, runtime `SwfImage`)
 - [x] Phone Road/Fight TCP trên cổng **4396 / 1910** (không SQL; magic `0x7D01`) — LAN 2 máy hoặc loopback
+- [x] Shop/bag icon từ `Resource/image/equip|arm|unfrightprop` (dump PC, không vẽ mới)
+- [x] HUD trận `gameprop.png` + sảnh podium `hall_new_rankbg`
 
 ### SWF living / bomb trên điện thoại
 
@@ -95,7 +97,7 @@ PC ~1000×600, chuột, rất nhiều cửa sổ. Mobile:
 
 `MobileUiBootstrap.CreateRoot()` tạo Canvas `ScaleWithScreenSize` match 0.5, child `SafeAreaFitter`.
 
-Ưu tiên màn: Login (`Flash/1.png`) → Hall PC `hall_newyear_scene_build` (开战/副本/公会/迷宫 nhà) → Room (`samll_map.png`). Shop/bag hiện `icon_1.png` / `arm/*/00.png`. Living/bomb từ SWF PC.
+Ưu tiên màn: Login (`Flash/1.png`) → Hall PC `hall_newyear_scene_build` (开战/副本/公会/迷宫/排行 podium) → Room (`samll_map.png`). Shop/bag hiện `icon_1.png` / `unfrightprop/*/icon.png` / `arm/*/1/icon.png`. HUD trận dùng `gameprop.xml` (`game_prop_1`…). Living/bomb từ SWF PC.
 
 Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → uGUI. Skin `asset.*` cần bảng lookup sprite (sau khi convert SWF/atlas).
 

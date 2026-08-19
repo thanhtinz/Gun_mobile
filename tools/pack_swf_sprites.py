@@ -34,12 +34,24 @@ def pack() -> dict:
         names = [n.replace("\\", "/") for n in zf.namelist() if "__MACOSX" not in n]
         livings = [n for n in names if n.startswith("Resource/image/game/living/") and n.endswith(".swf")]
         bullets = [n for n in names if n.startswith("Resource/image/bomb/bullet/") and n.endswith(".swf")]
-        # A few blastouts matching common ball particles (1, 65) plus first 12 unique ids.
         blasts = [n for n in names if n.startswith("Resource/image/bomb/blastout/") and n.endswith(".swf")]
+        want_ids = set()
+        try:
+            from port_helpers import load_xml, parse_result_table
+
+            ball_xml = ROOT / "legacy" / "data" / "Request" / "BallList.xml"
+            if ball_xml.exists():
+                for row in parse_result_table(load_xml(ball_xml.read_bytes())):
+                    pid = (row.get("BombPartical") or "").strip()
+                    if pid.isdigit() and 0 < int(pid) <= 80:
+                        want_ids.add(int(pid))
+        except Exception:
+            want_ids = set()
+        want_ids.update((1, 3, 4, 6, 7, 8, 9, 10, 65))
         prefer = []
-        for want in ("blastout1.swf", "blastout65.swf", "blastout4.swf"):
-            prefer.extend([n for n in blasts if n.endswith("/" + want)])
-        extra = [n for n in blasts if n not in prefer][:12]
+        for bid in sorted(want_ids):
+            prefer.extend([n for n in blasts if n.endswith(f"/blastout{bid}.swf")])
+        extra = [n for n in blasts if n not in prefer][:8]
         selected_blasts = prefer + extra
 
         for group, paths, dest, key in (
@@ -48,6 +60,18 @@ def pack() -> dict:
             ("blastout", selected_blasts, blast_dir, "blastout"),
         ):
             for path in paths:
+                dest_stem = dest / _stem(path)
+                existing = None
+                for ext in (".png", ".jpg"):
+                    cand = dest_stem.with_suffix(ext)
+                    if cand.exists():
+                        existing = cand
+                        break
+                if existing is not None:
+                    rel = existing.relative_to(OUT).as_posix()
+                    index[key][_stem(path).lower()] = rel
+                    n_ok += 1
+                    continue
                 try:
                     written = write_largest(zf.read(path), dest / _stem(path))
                 except Exception as e:

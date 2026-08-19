@@ -19,10 +19,11 @@ namespace GunMobile.Client
             return ShopScreen.BodyScroll(bg.transform).content;
         }
 
-        public static void Row(Transform content, string id, string cap, UnityAction click)
+        public static Button Row(Transform content, string id, string cap, UnityAction click)
         {
             var btn = UiKit.Button(content, id, cap, click, new Vector2(0f, 72f));
             btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
+            return btn;
         }
 
         public static void Note(Transform content, string text)
@@ -265,9 +266,10 @@ namespace GunMobile.Client
             foreach (FarmRecipe r in app.Database.Farm)
             {
                 FarmRecipe local = r;
-                SysUi.Row(body, "f" + r.FoodId,
+                var btn = SysUi.Row(body, "f" + r.FoodId,
                     $"{SysUi.ItemName(app, r.VegetableId)} x{r.NeedCount}  →  {SysUi.ItemName(app, r.FoodId)}",
                     () => Cook(app, local));
+                ShopScreen.DecorateIcon(app, btn, r.FoodId);
             }
 
             if (app.Database.Farm.Count == 0)
@@ -390,7 +392,7 @@ namespace GunMobile.Client
                 BagItem local = slot;
                 ItemTemplate item = app.Database.GetItem(slot.TemplateId);
                 int price = item != null ? Mathf.Max(80, (item.Attack + item.Defence) * 12) : 80;
-                SysUi.Row(body, "a" + slot.TemplateId, $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  卖 {price} 金", () =>
+                var btn = SysUi.Row(body, "a" + slot.TemplateId, $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  卖 {price} 金", () =>
                 {
                     if (!app.Profile.Consume(local.TemplateId, 1))
                     {
@@ -401,6 +403,7 @@ namespace GunMobile.Client
                     app.Profile.Save();
                     Show(safe, app);
                 });
+                ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
         }
     }
@@ -427,7 +430,7 @@ namespace GunMobile.Client
             {
                 ShopOffer local = offer;
                 string name = SysUi.ItemName(app, offer.TemplateId);
-                SysUi.Row(body, "v" + offer.Id, $"{name}  {offer.AValue1}点券", () =>
+                var btn = SysUi.Row(body, "v" + offer.Id, $"{name}  {offer.AValue1}点券", () =>
                 {
                     if (app.Profile.VipLevel < 1 || app.Profile.Gift < local.AValue1)
                     {
@@ -439,6 +442,7 @@ namespace GunMobile.Client
                     app.Profile.Save();
                     Show(safe, app);
                 });
+                ShopScreen.DecorateIcon(app, btn, offer.TemplateId);
             }
         }
     }
@@ -595,11 +599,12 @@ namespace GunMobile.Client
 
                 NpcInfo local = npc;
                 GameDatabase.ClientCombatStats(npc, out int hp, out int atk, out _, out _, out _);
-                SysUi.Row(body, "n" + npc.Id, $"{npc.Name}  Lv{npc.Level}  HP{hp} ATK{atk}", () =>
+                var btn = SysUi.Row(body, "n" + npc.Id, $"{npc.Name}  Lv{npc.Level}  HP{hp} ATK{atk}", () =>
                 {
                     int mapId = app.Database.PickMapId(local.Id);
                     SysUi.Fight(app, mapId, local.Id, 150 + local.Level * 8);
                 });
+                PcArt.Decorate(btn.transform, PcArt.NpcLiving(app.Loader, npc));
                 n++;
                 if (n >= 150)
                 {
@@ -633,7 +638,7 @@ namespace GunMobile.Client
                 }
 
                 int gold = Mathf.Max(100, rock * 40);
-                SysUi.Row(body, "str" + slot.TemplateId,
+                var btn = SysUi.Row(body, "str" + slot.TemplateId,
                     $"{item.Name}  +{slot.Strengthen}  → +{next}  {gold}金",
                     () =>
                     {
@@ -653,6 +658,7 @@ namespace GunMobile.Client
                         app.Profile.Save();
                         Show(safe, app);
                     });
+                ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
         }
     }
@@ -824,12 +830,14 @@ namespace GunMobile.Client
             {
                 int id = kv.Key;
                 var ball = kv.Value;
-                SysUi.Row(body, "ball" + id, $"#{id}  Power{ball.Power}  r{ball.Radii}  W{ball.Wind}  m{ball.Mass}", () =>
+                var btn = SysUi.Row(body, "ball" + id, $"#{id}  Power{ball.Power}  r{ball.Radii}  W{ball.Wind}  m{ball.Mass}", () =>
                 {
                     app.Profile.PreferredBallId = id;
                     app.Profile.Save();
                     Show(safe, app);
                 });
+                int fly = ball.FlyingPartical > 0 ? ball.FlyingPartical : id;
+                PcArt.Decorate(btn.transform, PcArt.Bullet(app.Loader, fly) ?? PcArt.Blast(app.Loader, ball.BombPartical > 0 ? ball.BombPartical : id));
                 n++;
                 if (n >= 80)
                 {
@@ -849,7 +857,7 @@ namespace GunMobile.Client
             {
                 var b = kv.Value;
                 string w = SysUi.ItemName(app, b.TemplateId);
-                SysUi.Row(body, "bm" + b.TemplateId, $"{w}  Common ball {b.Common}  Special {b.Special}", () =>
+                var btn = SysUi.Row(body, "bm" + b.TemplateId, $"{w}  Common ball {b.Common}  Special {b.Special}", () =>
                 {
                     if (b.Common > 0)
                     {
@@ -862,6 +870,7 @@ namespace GunMobile.Client
 
                     Show(safe, app);
                 });
+                ShopScreen.DecorateIcon(app, btn, b.TemplateId);
                 n++;
                 if (n >= 80)
                 {
