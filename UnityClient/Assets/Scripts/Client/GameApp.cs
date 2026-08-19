@@ -107,6 +107,7 @@ namespace GunMobile.Client
         public void ShowHall()
         {
             Profile.Save();
+            PhoneNet.EnsureConnected(Profile.Nick);
             State = AppState.Hall;
             HallScreen.Show(_safe, this);
         }
@@ -383,7 +384,34 @@ namespace GunMobile.Client
             Profile.GemLevel = JsonInt(json, "gemLevel", Profile.GemLevel);
             string consortia = JsonStr(json, "consortiaName", null);
             if (consortia != null) Profile.ConsortiaName = consortia;
+            ParseBagFromServer(json);
             Profile.Save();
+        }
+
+        void ParseBagFromServer(string json)
+        {
+            int bagIdx = json.IndexOf("\"bag\":[", System.StringComparison.Ordinal);
+            if (bagIdx < 0) return;
+            int start = bagIdx + 6;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            string bagStr = json.Substring(start, end - start);
+            var newBag = new System.Collections.Generic.List<BagItem>();
+            int pos = 0;
+            while (pos < bagStr.Length)
+            {
+                int ob = bagStr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = bagStr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = bagStr.Substring(ob, cb - ob + 1);
+                int t = JsonInt(entry, "t", 0);
+                int c = JsonInt(entry, "c", 1);
+                int s = JsonInt(entry, "s", 0);
+                if (t > 0) newBag.Add(new BagItem { TemplateId = t, Count = c, Strengthen = s });
+                pos = cb + 1;
+            }
+            if (newBag.Count > 0) Profile.Bag = newBag;
         }
 
         static int JsonInt(string json, string key, int fallback)

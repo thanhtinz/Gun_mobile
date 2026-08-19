@@ -54,6 +54,12 @@ namespace GunMobile.Client
             LegacyServer?.Stop();
         }
 
+        public static void EnsureConnected(string nick)
+        {
+            if (Road != null && Road.Connected) return;
+            Login(nick);
+        }
+
         public static void RequestProfile()
         {
             Road?.Send(PhoneMsg.GetProfile, "{}");
