@@ -127,6 +127,7 @@ namespace GunMobile.Res
         public string Pic = "";
         public int KindId;
         public int StarLevel;
+        public int Mp = 100;
         public int Attack;
         public int Defence;
         public int Blood;
@@ -138,6 +139,7 @@ namespace GunMobile.Res
     {
         public int Id;
         public string Name = "";
+        public int Pic;
         public int BallType;
         public int Probability;
         public int[] ElementIds = System.Array.Empty<int>();
@@ -145,6 +147,7 @@ namespace GunMobile.Res
         public int DamagePercent;
         public int NewBallId;
         public int CostMp;
+        public int ColdDown;
     }
 
     public sealed class CardInfo
@@ -254,6 +257,9 @@ namespace GunMobile.Res
         public Dictionary<int, PetInfo> Pets { get; } = new Dictionary<int, PetInfo>();
         public Dictionary<int, PetSkillInfo> PetSkills { get; } = new Dictionary<int, PetSkillInfo>();
         readonly Dictionary<int, int[]> _kindPassiveSkillIds = new Dictionary<int, int[]>();
+        readonly Dictionary<int, int[]> _kindActiveSkillIds = new Dictionary<int, int[]>();
+        readonly Dictionary<int, List<int>> _skillsByPicPassive = new Dictionary<int, List<int>>();
+        readonly Dictionary<int, List<int>> _skillsByPicActive = new Dictionary<int, List<int>>();
         public List<CardInfo> Cards { get; } = new List<CardInfo>();
         public Dictionary<int, TitleInfo> Titles { get; } = new Dictionary<int, TitleInfo>();
         public Dictionary<int, TotemInfo> Totems { get; } = new Dictionary<int, TotemInfo>();
@@ -990,6 +996,38 @@ namespace GunMobile.Res
             return DamageCalculator.ComputeBombHurt(ball, propDmgMult);
         }
 
+        /// <summary>BallList BombType=1 heals allies in blast radius (PC angel/heal bombs).</summary>
+        public static bool BallIsHeal(BallPhysics ball)
+        {
+            return ball != null && ball.BombType == 1;
+        }
+
+        public int PetMpMax(int petTemplateId)
+        {
+            if (petTemplateId > 0 && Pets.TryGetValue(petTemplateId, out PetInfo pet) && pet.Mp > 0)
+            {
+                return pet.Mp;
+            }
+
+            return 100;
+        }
+
+        public float PetSkillCooldownSec(PetSkillInfo skill)
+        {
+            if (skill == null)
+            {
+                return 0f;
+            }
+
+            int turnSec = BattleTurnSeconds();
+            if (turnSec < 5)
+            {
+                turnSec = 20;
+            }
+
+            return skill.ColdDown > 0 ? skill.ColdDown * turnSec : turnSec * 2f;
+        }
+
         public PetSkillInfo ResolvePetPassiveSkill(int petTemplateId)
         {
             if (petTemplateId <= 0 || !Pets.TryGetValue(petTemplateId, out PetInfo pet))
@@ -1004,6 +1042,45 @@ namespace GunMobile.Res
 
             int idx = Mathf.Clamp(pet.StarLevel, 1, skillIds.Length) - 1;
             return PetSkills.TryGetValue(skillIds[idx], out PetSkillInfo skill) ? skill : null;
+        }
+
+        /// <summary>PC petskillinfo BallType 1/2 active skills (StarLevel 3+).</summary>
+        public PetSkillInfo ResolvePetActiveSkill(int petTemplateId)
+        {
+            if (petTemplateId <= 0 || !Pets.TryGetValue(petTemplateId, out PetInfo pet))
+            {
+                return null;
+            }
+
+            if (pet.StarLevel < 3)
+            {
+                return null;
+            }
+
+            if (!_kindActiveSkillIds.TryGetValue(pet.KindId, out int[] skillIds) || skillIds.Length == 0)
+            {
+                return null;
+            }
+
+            int idx = Mathf.Clamp(pet.StarLevel - 1, 0, skillIds.Length - 1);
+            return PetSkills.TryGetValue(skillIds[idx], out PetSkillInfo skill) ? skill : null;
+        }
+
+        public BallPhysics PetSkillBall(PetSkillInfo skill)
+        {
+            if (skill == null || skill.NewBallId <= 0)
+            {
+                return BallPhysics.Default;
+            }
+
+            return GetBall(skill.NewBallId);
+        }
+
+        public bool PetSkillForceCrit(PetSkillInfo skill)
+        {
+            return skill != null &&
+                   !string.IsNullOrEmpty(skill.Description) &&
+                   skill.Description.IndexOf("百分百暴击", StringComparison.Ordinal) >= 0;
         }
 
         public bool RollPetSkill(PetSkillInfo skill, int seed)
@@ -1024,17 +1101,89 @@ namespace GunMobile.Res
 
         void BuildKindPassiveSkillMap()
         {
-            // PC petskillinfo passive attack groups (BallType=3, Probability=10000).
-            _kindPassiveSkillIds[1] = new[] { 1, 2, 3 };
-            _kindPassiveSkillIds[2] = new[] { 19, 20, 21 };
-            _kindPassiveSkillIds[3] = new[] { 7, 8, 9 };
-            _kindPassiveSkillIds[4] = new[] { 13, 14, 15 };
-            _kindPassiveSkillIds[18] = new[] { 100, 101, 102 };
-            _kindPassiveSkillIds[19] = new[] { 69, 70, 70 };
-            _kindPassiveSkillIds[20] = new[] { 1, 2, 3 };
-            _kindPassiveSkillIds[22] = new[] { 7, 8, 9 };
-            _kindPassiveSkillIds[24] = new[] { 100, 101, 102 };
-            _kindPassiveSkillIds[32] = new[] { 100, 101, 102 };
+            // KindID -> petskillinfo Pic groups (passive Pic, active Pic(s)).
+            RegisterKindSkillPics(1, 1, 5);
+            RegisterKindSkillPics(2, 4, 8);
+            RegisterKindSkillPics(3, 2, 6);
+            RegisterKindSkillPics(4, 3, 15, 16);
+            RegisterKindSkillPics(18, 34, 35);
+            RegisterKindSkillPics(19, 18, 52);
+            RegisterKindSkillPics(20, 1, 5);
+            RegisterKindSkillPics(22, 2, 6);
+            RegisterKindSkillPics(24, 34, 35);
+            RegisterKindSkillPics(32, 18, 52);
+        }
+
+        void RegisterKindSkillPics(int kindId, int passivePic, params int[] activePics)
+        {
+            if (_skillsByPicPassive.TryGetValue(passivePic, out List<int> passive) && passive.Count > 0)
+            {
+                _kindPassiveSkillIds[kindId] = passive.ToArray();
+            }
+
+            if (activePics == null || activePics.Length == 0)
+            {
+                return;
+            }
+
+            var merged = new List<int>();
+            foreach (int activePic in activePics)
+            {
+                if (_skillsByPicActive.TryGetValue(activePic, out List<int> active))
+                {
+                    merged.AddRange(active);
+                }
+            }
+
+            if (merged.Count > 0)
+            {
+                merged.Sort();
+                _kindActiveSkillIds[kindId] = merged.ToArray();
+            }
+        }
+
+        void IndexPetSkillByPic(int pic, int skillId, int ballType, int probability)
+        {
+            if (pic <= 0)
+            {
+                return;
+            }
+
+            if (ballType == 3 && probability == 10000)
+            {
+                if (!_skillsByPicPassive.TryGetValue(pic, out List<int> passive))
+                {
+                    passive = new List<int>();
+                    _skillsByPicPassive[pic] = passive;
+                }
+
+                passive.Add(skillId);
+                return;
+            }
+
+            if (ballType == 1 || ballType == 2)
+            {
+                if (!_skillsByPicActive.TryGetValue(pic, out List<int> active))
+                {
+                    active = new List<int>();
+                    _skillsByPicActive[pic] = active;
+                }
+
+                active.Add(skillId);
+            }
+        }
+
+        void FinalizePicSkillGroups()
+        {
+            foreach (List<int> ids in _skillsByPicPassive.Values)
+            {
+                ids.Sort();
+            }
+
+            foreach (List<int> ids in _skillsByPicActive.Values)
+            {
+                ids.Sort();
+            }
         }
 
         static int ParsePetDamagePercent(string description)
@@ -1045,23 +1194,42 @@ namespace GunMobile.Res
             }
 
             int pctIdx = description.IndexOf('%');
-            if (pctIdx <= 0)
+            if (pctIdx > 0)
+            {
+                int start = pctIdx - 1;
+                while (start >= 0 && char.IsDigit(description[start]))
+                {
+                    start--;
+                }
+
+                if (int.TryParse(description.Substring(start + 1, pctIdx - start - 1), out int pct))
+                {
+                    return pct;
+                }
+            }
+
+            return 0;
+        }
+
+        static int ParseHealPercent(string description)
+        {
+            if (string.IsNullOrEmpty(description))
             {
                 return 0;
             }
 
-            int start = pctIdx - 1;
-            while (start >= 0 && char.IsDigit(description[start]))
+            int idx = description.IndexOf("回复", StringComparison.Ordinal);
+            if (idx < 0)
             {
-                start--;
+                idx = description.IndexOf("恢复", StringComparison.Ordinal);
             }
 
-            if (int.TryParse(description.Substring(start + 1, pctIdx - start - 1), out int pct))
+            if (idx < 0)
             {
-                return pct;
+                return 0;
             }
 
-            return 0;
+            return ParsePetDamagePercent(description.Substring(idx));
         }
 
         void LoadItems(ResLoader loader)
@@ -1328,6 +1496,7 @@ namespace GunMobile.Res
                     Pic = Str(row, "Pic"),
                     KindId = Int(row, "KindID"),
                     StarLevel = Mathf.Max(1, Int(row, "StarLevel")),
+                    Mp = Mathf.Max(1, Int(row, "MP")),
                     Attack = Int(row, "HighAttack") / 10,
                     Defence = Int(row, "HighDefence") / 10,
                     Blood = Int(row, "HighBlood") / 5,
@@ -1370,19 +1539,27 @@ namespace GunMobile.Res
                 }
 
                 string desc = Str(row, "Description");
+                int ballType = Int(row, "BallType");
+                int probability = Int(row, "Probability");
+                int pic = Int(row, "Pic");
                 PetSkills[id] = new PetSkillInfo
                 {
                     Id = id,
                     Name = Str(row, "Name"),
-                    BallType = Int(row, "BallType"),
-                    Probability = Int(row, "Probability"),
+                    Pic = pic,
+                    BallType = ballType,
+                    Probability = probability,
                     ElementIds = elementIds,
                     Description = desc,
-                    DamagePercent = ParsePetDamagePercent(desc),
+                    DamagePercent = ballType == 2 ? ParseHealPercent(desc) : ParsePetDamagePercent(desc),
                     NewBallId = Int(row, "NewBallID"),
-                    CostMp = Int(row, "CostMP")
+                    CostMp = Int(row, "CostMP"),
+                    ColdDown = Int(row, "ColdDown")
                 };
+                IndexPetSkillByPic(pic, id, ballType, probability);
             }
+
+            FinalizePicSkillGroups();
         }
 
         void LoadCards(ResLoader loader)

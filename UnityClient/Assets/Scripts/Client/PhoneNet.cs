@@ -313,6 +313,11 @@ namespace GunMobile.Client
             return ok;
         }
 
+        public static void SendPetSkill()
+        {
+            Fight?.Send(PhoneMsg.FightPetSkill, "{}");
+        }
+
         public static void SendFire(int who, float angle, float power, int facing, int propId = 0, bool special = false)
         {
             if (Fight == null || !Fight.Connected)

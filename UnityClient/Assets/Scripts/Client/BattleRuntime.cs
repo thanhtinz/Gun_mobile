@@ -195,6 +195,9 @@ namespace GunMobile.Client
         int[] _preferredBallIds;
         int _lastShooter;
         bool _specialNextShot;
+        int[] _petMp;
+        float[] _petSkillCd;
+        const int PetMpMax = 100;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
@@ -352,6 +355,8 @@ namespace GunMobile.Client
 
             _loop.Reset(allLivings, turnSec, seed);
             _battleStartTime = Time.time;
+            _petMp = new int[playerCount];
+            _petSkillCd = new float[playerCount];
             _ballsByLiving = new BallPhysics[playerCount];
             _seatPetIds = new int[playerCount];
             _weaponIds = new int[playerCount];
@@ -384,6 +389,25 @@ namespace GunMobile.Client
                 }
             }
 
+            for (int i = 0; i < playerCount; i++)
+            {
+                int petId = _seatPetIds != null && i < _seatPetIds.Length ? _seatPetIds[i] : 0;
+                if (i == MeSeat() && petId <= 0)
+                {
+                    petId = _app.Profile.PetId;
+                }
+
+                _petMp[i] = _app.Database != null ? _app.Database.PetMpMax(petId) : PetMpMax;
+                if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
+                {
+                    int serverMp = JsonInt(_fightStartJson, "p" + i + "_petMp", -1);
+                    if (serverMp >= 0)
+                    {
+                        _petMp[i] = serverMp;
+                    }
+                }
+            }
+
             _ball = _ballsByLiving[0];
             _sim.ApplyBall(_ball);
             _pos = new Vector2[playerCount];
@@ -396,7 +420,137 @@ namespace GunMobile.Client
                 PlaceOnGround(i);
             }
             BuildActors(root.transform);
+            BuildPetSkillButton(root.transform);
             yield return null;
+        }
+
+        void BuildPetSkillButton(Transform parent)
+        {
+            int me = MeSeat();
+            int petId = _seatPetIds != null && me >= 0 && me < _seatPetIds.Length ? _seatPetIds[me] : _app.Profile.PetId;
+            PetSkillInfo skill = _app.Database?.ResolvePetActiveSkill(petId);
+            if (skill == null)
+            {
+                return;
+            }
+
+            var btn = UiKit.Button(parent, "PetSkill", "宠技", UsePetSkill, new Vector2(100f, 56f));
+            var rt = btn.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = new Vector2(0.12f, 0.14f);
+        }
+
+        void UsePetSkill()
+        {
+            int me = MeSeat();
+            if (_loop == null || _loop.Phase != BattlePhase.Aiming || _loop.CurrentLiving != me)
+            {
+                return;
+            }
+
+            int petId = _seatPetIds != null && me < _seatPetIds.Length ? _seatPetIds[me] : _app.Profile.PetId;
+            PetSkillInfo skill = _app?.Database?.ResolvePetActiveSkill(petId);
+            if (skill == null || _petMp == null || me >= _petMp.Length)
+            {
+                return;
+            }
+
+            if (_petSkillCd != null && me < _petSkillCd.Length && _petSkillCd[me] > 0f)
+            {
+                return;
+            }
+
+            if (_petMp[me] < Mathf.Max(1, skill.CostMp))
+            {
+                return;
+            }
+
+            if (PhoneNet.NetBattle)
+            {
+                PhoneNet.SendPetSkill();
+                return;
+            }
+
+            _petMp[me] -= Mathf.Max(1, skill.CostMp);
+            _petSkillCd[me] = _app.Database != null
+                ? _app.Database.PetSkillCooldownSec(skill)
+                : (skill.ColdDown > 0 ? skill.ColdDown * 20f : 40f);
+            ApplyPetActiveSkill(me, skill);
+        }
+
+        void ApplyPetActiveSkill(int seat, PetSkillInfo skill)
+        {
+            if (skill == null || _loop == null || _app?.Database == null)
+            {
+                return;
+            }
+
+            if (skill.BallType == 2)
+            {
+                int pct = Mathf.Max(1, skill.DamagePercent);
+                for (int t = 0; t < _loop.Livings.Count; t++)
+                {
+                    if (_loop.Livings[t].Hp <= 0 || _loop.Livings[t].Team != _loop.Livings[seat].Team)
+                    {
+                        continue;
+                    }
+
+                    int heal = Mathf.Max(1, _loop.Livings[t].MaxHp * pct / 100);
+                    _loop.ApplyHeal(t, heal);
+                    SpawnHealPopup(_pos[t], heal);
+                }
+
+                return;
+            }
+
+            BallPhysics ball = _app.Database.PetSkillBall(skill);
+            int bombHurt = _app.Database.ComputeBombHurt(ball, 1f);
+            int pctDmg = Mathf.Max(100, skill.DamagePercent);
+            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * pctDmg / 100f));
+            bool forceCrit = _app.Database.PetSkillForceCrit(skill);
+
+            int best = -1;
+            float bestDist = float.MaxValue;
+            for (int t = 0; t < _loop.Livings.Count; t++)
+            {
+                if (t == seat || _loop.Livings[t].Hp <= 0 || _loop.Livings[t].Team == _loop.Livings[seat].Team)
+                {
+                    continue;
+                }
+
+                float d = Vector2.Distance(_pos[seat], _pos[t]);
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    best = t;
+                }
+            }
+
+            if (best < 0)
+            {
+                return;
+            }
+
+            bool crit = forceCrit || DamageCalculator.RollCrit(_loop.Livings[seat].Luck, seat + _loop.TurnIndex);
+            int dmg = DamageCalculator.Compute(_loop.Livings[seat], _loop.Livings[best], bombHurt, bestDist * 0.2f, crit);
+            _loop.ApplyDamage(best, dmg);
+            SpawnDmgPopup(_pos[best], dmg, crit);
+        }
+
+        void SpawnHealPopup(Vector2 mapPos, int heal)
+        {
+            var go = new GameObject("Heal", typeof(RectTransform), typeof(CanvasRenderer), typeof(Text));
+            go.transform.SetParent(_world, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = MapAnchor(mapPos.x, mapPos.y - 30f);
+            rt.sizeDelta = new Vector2(140f, 50f);
+            var txt = go.GetComponent<Text>();
+            txt.font = UiKit.Font;
+            txt.fontSize = 30;
+            txt.alignment = TextAnchor.MiddleCenter;
+            txt.color = new Color(0.3f, 1f, 0.4f);
+            txt.text = "+" + heal;
+            txt.raycastTarget = false;
+            _dmgPopups.Add(new DmgPopup { Label = txt, T = 1.2f });
         }
 
         bool TryLoadMap()
@@ -718,6 +872,7 @@ namespace GunMobile.Client
             DrawHud();
             UpdateActors();
             TickDmgPopups();
+            TickPetSkillCooldowns();
             TickSuicideTimer();
 
             if (_loop.Phase == BattlePhase.MatchOver)
@@ -947,6 +1102,24 @@ namespace GunMobile.Client
                         {
                             PlaceOnGround(i);
                         }
+
+                        if (_petMp != null && i < _petMp.Length)
+                        {
+                            int mp = JsonInt(msg.Json, "p" + i + "_petMp", -1);
+                            if (mp >= 0)
+                            {
+                                _petMp[i] = mp;
+                            }
+                        }
+
+                        if (_petSkillCd != null && i < _petSkillCd.Length)
+                        {
+                            int cd = JsonInt(msg.Json, "p" + i + "_petCd", -1);
+                            if (cd >= 0)
+                            {
+                                _petSkillCd[i] = cd;
+                            }
+                        }
                     }
 
                     _loop.SyncLivingHp(hp, maxHp);
@@ -969,12 +1142,21 @@ namespace GunMobile.Client
                 if (msg.Id == PhoneMsg.FightDamage)
                 {
                     int target = JsonInt(msg.Json, "target", -1);
+                    int heal = JsonInt(msg.Json, "heal", 0);
                     int dmg = JsonInt(msg.Json, "dmg", 0);
                     bool crit = JsonInt(msg.Json, "crit", 0) != 0;
                     if (target >= 0 && target < _loop.Livings.Count)
                     {
-                        _loop.ApplyDamage(target, dmg);
-                        SpawnDmgPopup(_pos[target], dmg, crit);
+                        if (heal > 0)
+                        {
+                            _loop.ApplyHeal(target, heal);
+                            SpawnHealPopup(_pos[target], heal);
+                        }
+                        else if (dmg > 0)
+                        {
+                            _loop.ApplyDamage(target, dmg);
+                            SpawnDmgPopup(_pos[target], dmg, crit);
+                        }
 
                         // If this damage ends the match (e.g. surrender/disconnect),
                         // force the battle loop into MatchOver so FinishMatch() runs.
@@ -994,6 +1176,24 @@ namespace GunMobile.Client
                             }
                         }
                     }
+                    continue;
+                }
+
+                if (msg.Id == PhoneMsg.FightPetSkill)
+                {
+                    int who = JsonInt(msg.Json, "who", -1);
+                    int mp = JsonInt(msg.Json, "mp", -1);
+                    int cd = JsonInt(msg.Json, "cd", -1);
+                    if (who >= 0 && _petMp != null && who < _petMp.Length && mp >= 0)
+                    {
+                        _petMp[who] = mp;
+                    }
+
+                    if (who >= 0 && _petSkillCd != null && who < _petSkillCd.Length && cd >= 0)
+                    {
+                        _petSkillCd[who] = cd;
+                    }
+
                     continue;
                 }
 
@@ -1276,6 +1476,22 @@ namespace GunMobile.Client
             _propCrit = false;
         }
 
+        void TickPetSkillCooldowns()
+        {
+            if (_petSkillCd == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < _petSkillCd.Length; i++)
+            {
+                if (_petSkillCd[i] > 0f)
+                {
+                    _petSkillCd[i] -= Time.deltaTime;
+                }
+            }
+        }
+
         void TickSuicideTimer()
         {
             int suicideSec = _app?.Config?.SuicideTime ?? 120;
@@ -1364,6 +1580,21 @@ namespace GunMobile.Client
             int bombHurt = _app?.Database != null
                 ? _app.Database.ComputeBombHurt(_ball, _propDmg)
                 : DamageCalculator.ComputeBombHurt(_ball, _propDmg);
+
+            if (GameDatabase.BallIsHeal(_ball))
+            {
+                if (_loop.Livings[index].Team != _loop.Livings[src].Team)
+                {
+                    return;
+                }
+
+                int heal = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, false);
+                heal = Mathf.Max(1, heal);
+                _loop.ApplyHeal(index, heal);
+                SpawnHealPopup(_pos[index], heal);
+                return;
+            }
+
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             bool armorPierce = _app?.Database != null && _app.Database.PropIgnoresArmour(_propId);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit, armorPierce);

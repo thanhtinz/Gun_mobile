@@ -272,6 +272,18 @@ namespace GunMobile.Logic
             _livings[livingIndex] = s;
         }
 
+        public void ApplyHeal(int livingIndex, int amount)
+        {
+            if (livingIndex < 0 || livingIndex >= _livings.Count || amount <= 0)
+            {
+                return;
+            }
+
+            LivingStats s = _livings[livingIndex];
+            s.Hp = Mathf.Min(s.MaxHp, s.Hp + amount);
+            _livings[livingIndex] = s;
+        }
+
         void SkipTurn()
         {
             AdvanceTurn();

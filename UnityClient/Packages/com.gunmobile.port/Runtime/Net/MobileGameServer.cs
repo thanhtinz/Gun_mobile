@@ -344,6 +344,10 @@ namespace GunMobile.Net
         public int PveNpcId;
         public int NpcSeat = -1;
 
+        // Pet active skill MP/cooldown per seat (server-authoritative online).
+        public int[] PetMp;
+        public float[] PetSkillCd;
+
         // Cached final battle reward so late/duplicated clients (reconnect, late ack)
         // still receive the exact same gold/win as computed by the server.
         public int[] LastFightGolds;
@@ -584,6 +588,8 @@ namespace GunMobile.Net
                             if (room == null || !room.InBattle) continue;
                             if (room.TurnStartMs <= 0) continue;
 
+                            TickPetSkillCooldowns(room, tickMs / 1000f);
+
                             if (room.BattleStartMs > 0 && now - room.BattleStartMs >= suicideMs)
                             {
                                 suicideEnd ??= new List<GameRoom>();
@@ -754,6 +760,15 @@ namespace GunMobile.Net
                                         sb.Append(",\"p").Append(i).Append("_maxhp\":").Append(maxHpArr[i]);
                                         sb.Append(",\"p").Append(i).Append("_x\":").Append(posXArr[i].ToString(CultureInfo.InvariantCulture));
                                         sb.Append(",\"p").Append(i).Append("_facing\":").Append(facingArr[i]);
+                                        if (snapRoom.PetMp != null && i < snapRoom.PetMp.Length)
+                                        {
+                                            sb.Append(",\"p").Append(i).Append("_petMp\":").Append(snapRoom.PetMp[i]);
+                                        }
+
+                                        if (snapRoom.PetSkillCd != null && i < snapRoom.PetSkillCd.Length)
+                                        {
+                                            sb.Append(",\"p").Append(i).Append("_petCd\":").Append(Mathf.CeilToInt(snapRoom.PetSkillCd[i]));
+                                        }
                                     }
                                     sb.Append("}");
                                     Send(ns, PhoneMsg.FightState, sb.ToString());
@@ -1278,6 +1293,10 @@ namespace GunMobile.Net
 
                 case PhoneMsg.FightSurrender:
                     HandleSurrender(player, room);
+                    break;
+
+                case PhoneMsg.FightPetSkill:
+                    HandlePetActiveSkill(player, room);
                     break;
             }
         }
@@ -1809,10 +1828,14 @@ namespace GunMobile.Net
                 room.PosX = new float[n];
                 room.PosY = new float[n];
                 room.Facing = new int[n];
+                room.PetMp = new int[n];
+                room.PetSkillCd = new float[n];
                 for (int i = 0; i < n; i++)
                 {
                     int team = (i % 2) + 1;
                     room.Balls[i] = BallPhysics.Default;
+                    room.PetMp[i] = 100;
+                    room.PetSkillCd[i] = 0f;
                     if (i < humanCount && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
                     {
                         p.RecalcStats(_db);
@@ -1827,6 +1850,7 @@ namespace GunMobile.Net
                         if (_db != null)
                         {
                             room.Balls[i] = _db.ResolveBall(p.WeaponId, p.PreferredBallId);
+                            room.PetMp[i] = _db.PetMpMax(p.PetId);
                         }
                     }
                     else if (pveNpcId > 0 && _db != null)
@@ -1937,6 +1961,8 @@ namespace GunMobile.Net
                 sb.Append(",\"").Append(p).Append("petId\":").Append(petId);
                 sb.Append(",\"").Append(p).Append("titleId\":").Append(titleId);
                 sb.Append(",\"").Append(p).Append("nick\":\"").Append((nick ?? "Player").Replace("\"", "")).Append("\"");
+                int seatPetMp = room.PetMp != null && i < room.PetMp.Length ? room.PetMp[i] : 100;
+                sb.Append(",\"").Append(p).Append("petMp\":").Append(seatPetMp);
                 if (i == room.NpcSeat && room.PveNpcId > 0)
                 {
                     sb.Append(",\"").Append(p).Append("npcId\":").Append(room.PveNpcId);
@@ -2147,6 +2173,7 @@ namespace GunMobile.Net
                 int bombHurt = _db != null
                     ? _db.ComputeBombHurt(ball, propDmg)
                     : DamageCalculator.ComputeBombHurt(ball, propDmg);
+                bool healBall = GameDatabase.BallIsHeal(ball);
 
                 for (int t = 0; t < hp.Length; t++)
                 {
@@ -2157,6 +2184,35 @@ namespace GunMobile.Net
                     float dy = hitMapY - ty;
                     float dist = Mathf.Sqrt(dx * dx + dy * dy);
                     if (dist > blastRadius) continue;
+
+                    if (healBall)
+                    {
+                        if (livings[t].Team != livings[who].Team)
+                        {
+                            continue;
+                        }
+
+                        bool crit = false;
+                        int heal = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit, armorPierce);
+                        heal = Mathf.Max(1, heal);
+                        int newHp;
+                        lock (_lock)
+                        {
+                            room.Hp[t] = Mathf.Min(livings[t].MaxHp, room.Hp[t] + heal);
+                            newHp = room.Hp[t];
+                            if (room.Livings != null && t < room.Livings.Length)
+                            {
+                                var ls = room.Livings[t];
+                                ls.Hp = newHp;
+                                room.Livings[t] = ls;
+                            }
+                        }
+                        hp[t] = newHp;
+
+                        string healJson = "{\"target\":" + t + ",\"heal\":" + heal + "}";
+                        BroadcastToRoom(room, PhoneMsg.FightDamage, healJson, -1);
+                        continue;
+                    }
 
                     bool crit = propCrit || DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
                     int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit, armorPierce);
@@ -2194,6 +2250,178 @@ namespace GunMobile.Net
             {
                 AdvanceTurn(room);
             }
+        }
+
+        void HandlePetActiveSkill(ServerPlayer player, GameRoom room)
+        {
+            if (room == null || player == null || !room.InBattle || _db == null)
+            {
+                return;
+            }
+
+            int who = player.Seat;
+            if (who != room.CurrentPlayer)
+            {
+                return;
+            }
+
+            PetSkillInfo skill = _db.ResolvePetActiveSkill(player.PetId);
+            if (skill == null)
+            {
+                return;
+            }
+
+            int costMp = Mathf.Max(1, skill.CostMp);
+            float cdSec = _db.PetSkillCooldownSec(skill);
+            lock (_lock)
+            {
+                if (room.PetMp == null || room.PetSkillCd == null || who >= room.PetMp.Length)
+                {
+                    return;
+                }
+
+                if (room.PetSkillCd[who] > 0f || room.PetMp[who] < costMp)
+                {
+                    return;
+                }
+
+                room.PetMp[who] -= costMp;
+                room.PetSkillCd[who] = cdSec;
+            }
+
+            LivingStats[] livings;
+            int[] hp;
+            float[] posX;
+            float[] posY;
+            lock (_lock)
+            {
+                if (room.Livings == null || room.Hp == null || who >= room.Livings.Length)
+                {
+                    return;
+                }
+
+                livings = (LivingStats[])room.Livings.Clone();
+                hp = (int[])room.Hp.Clone();
+                posX = (float[])room.PosX.Clone();
+                posY = (float[])room.PosY.Clone();
+            }
+
+            BroadcastPetSkillState(room, who);
+
+            if (skill.BallType == 2)
+            {
+                int pct = Mathf.Max(1, skill.DamagePercent);
+                for (int t = 0; t < hp.Length; t++)
+                {
+                    if (hp[t] <= 0 || livings[t].Team != livings[who].Team)
+                    {
+                        continue;
+                    }
+
+                    int heal = Mathf.Max(1, livings[t].MaxHp * pct / 100);
+                    lock (_lock)
+                    {
+                        room.Hp[t] = Mathf.Min(livings[t].MaxHp, room.Hp[t] + heal);
+                        if (room.Livings != null && t < room.Livings.Length)
+                        {
+                            var ls = room.Livings[t];
+                            ls.Hp = room.Hp[t];
+                            room.Livings[t] = ls;
+                        }
+                    }
+
+                    BroadcastToRoom(room, PhoneMsg.FightDamage, "{\"target\":" + t + ",\"heal\":" + heal + "}", -1);
+                }
+
+                return;
+            }
+
+            BallPhysics ball = _db.PetSkillBall(skill);
+            int bombHurt = _db.ComputeBombHurt(ball, 1f);
+            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * Mathf.Max(100, skill.DamagePercent) / 100f));
+            bool forceCrit = _db.PetSkillForceCrit(skill);
+
+            int best = -1;
+            float bestDist = float.MaxValue;
+            for (int t = 0; t < hp.Length; t++)
+            {
+                if (t == who || hp[t] <= 0 || livings[t].Team == livings[who].Team)
+                {
+                    continue;
+                }
+
+                float dx = posX[who] - posX[t];
+                float dy = posY[who] - posY[t];
+                float d = Mathf.Sqrt(dx * dx + dy * dy);
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    best = t;
+                }
+            }
+
+            if (best < 0)
+            {
+                return;
+            }
+
+            bool crit = forceCrit || DamageCalculator.RollCrit(livings[who].Luck, who + room.CurrentTurn);
+            int dmg = DamageCalculator.Compute(livings[who], livings[best], bombHurt, bestDist * 0.2f, crit);
+            dmg = Mathf.Clamp(dmg, 0, hp[best]);
+            lock (_lock)
+            {
+                room.Hp[best] = Mathf.Max(0, room.Hp[best] - dmg);
+                if (room.Livings != null && best < room.Livings.Length)
+                {
+                    var ls = room.Livings[best];
+                    ls.Hp = room.Hp[best];
+                    room.Livings[best] = ls;
+                }
+            }
+
+            BroadcastToRoom(room, PhoneMsg.FightDamage,
+                "{\"target\":" + best + ",\"dmg\":" + dmg + ",\"crit\":" + (crit ? "true" : "false") + ",\"pet\":true}", -1);
+
+            bool gameOver;
+            lock (_lock)
+            {
+                gameOver = CountAliveTeams(room) <= 1;
+            }
+
+            if (gameOver)
+            {
+                EndBattle(room);
+            }
+        }
+
+        void TickPetSkillCooldowns(GameRoom room, float dt)
+        {
+            if (room?.PetSkillCd == null || dt <= 0f)
+            {
+                return;
+            }
+
+            for (int i = 0; i < room.PetSkillCd.Length; i++)
+            {
+                if (room.PetSkillCd[i] > 0f)
+                {
+                    room.PetSkillCd[i] = Mathf.Max(0f, room.PetSkillCd[i] - dt);
+                }
+            }
+        }
+
+        void BroadcastPetSkillState(GameRoom room, int who)
+        {
+            if (room?.PetMp == null || room.PetSkillCd == null || who < 0 || who >= room.PetMp.Length)
+            {
+                return;
+            }
+
+            int cdSec = Mathf.CeilToInt(room.PetSkillCd[who]);
+            string json = "{\"who\":" + who +
+                            ",\"mp\":" + room.PetMp[who] +
+                            ",\"cd\":" + cdSec + "}";
+            BroadcastToRoom(room, PhoneMsg.FightPetSkill, json, -1);
         }
 
         void ApplyPetFollowUp(ServerPlayer shooter, GameRoom room, int who, LivingStats[] livings, int[] hp, float[] posX, float[] posY, BallPhysics ball, float propDmg)
