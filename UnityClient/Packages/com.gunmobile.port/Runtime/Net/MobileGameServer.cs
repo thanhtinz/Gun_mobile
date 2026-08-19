@@ -250,6 +250,11 @@ namespace GunMobile.Net
 
         // Cached FightStart JSON for reconnecting clients.
         public string LastFightStartJson = "";
+
+        // Cached final battle reward so late/duplicated clients (reconnect, late ack)
+        // still receive the exact same gold/win as computed by the server.
+        public int[] LastFightGolds;
+        public bool[] LastFightWins;
     }
 
     /// <summary>
@@ -560,6 +565,7 @@ namespace GunMobile.Net
                                 int playerId = JI(json, "playerId", 0);
                                 int roomId = -1;
                                 bool inBattle = false;
+                                GameRoom snapRoom = null;
                                 int turn = 0;
                                 int currentPlayer = 0;
                                 float wind = 0f;
@@ -578,10 +584,12 @@ namespace GunMobile.Net
                                         player.FightPendingLose = false;
                                         player.FightDisconnectedAtMs = 0;
 
-                                        if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out var room) && room.InBattle)
+                                        if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out var room) &&
+                                            room.Hp != null && room.Livings != null)
                                         {
                                             roomId = room.Id;
-                                            inBattle = true;
+                                            snapRoom = room;
+                                            inBattle = room.InBattle;
                                             turn = room.CurrentTurn;
                                             currentPlayer = room.CurrentPlayer;
                                             wind = room.Wind;
@@ -597,41 +605,49 @@ namespace GunMobile.Net
                                 Send(ns, PhoneMsg.RoomOk, "{\"ok\":true}");
 
                                 // Help the reconnecting client re-sync quickly.
-                                if (inBattle)
+                                int pc = hpArr != null ? hpArr.Length : 0;
+                                bool hasState = pc > 0 && posXArr != null && facingArr != null && maxHpArr != null;
+                                if (hasState)
                                 {
-                                    if (!string.IsNullOrEmpty(fightStartJson))
+                                    if (inBattle && !string.IsNullOrEmpty(fightStartJson))
                                     {
                                         Send(ns, PhoneMsg.FightStart, fightStartJson);
                                     }
 
-                                    string turnJson = "{\"turn\":" + turn +
-                                                      ",\"player\":" + currentPlayer +
-                                                      ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
-                                    Send(ns, PhoneMsg.FightTurn, turnJson);
-
-                                    string propJson = "{\"player\":" + currentPlayer +
-                                                       ",\"mask\":" + propMask + "}";
-                                    Send(ns, PhoneMsg.FightProp, propJson);
-
                                     // State snapshot: HP + x + facing, so reconnect can resume close to server state.
-                                    int pc = hpArr != null ? hpArr.Length : 0;
-                                    if (pc > 0 && posXArr != null && facingArr != null && maxHpArr != null)
+                                    if (inBattle)
                                     {
-                                        var sb = new StringBuilder(512);
-                                        sb.Append("{\"playerCount\":").Append(pc);
-                                        sb.Append(",\"turn\":").Append(turn);
-                                        sb.Append(",\"player\":").Append(currentPlayer);
-                                        sb.Append(",\"wind\":").Append(wind.ToString(CultureInfo.InvariantCulture));
+                                        string turnJson = "{\"turn\":" + turn +
+                                                          ",\"player\":" + currentPlayer +
+                                                          ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
+                                        Send(ns, PhoneMsg.FightTurn, turnJson);
 
-                                        for (int i = 0; i < pc; i++)
-                                        {
-                                            sb.Append(",\"p").Append(i).Append("_hp\":").Append(hpArr[i]);
-                                            sb.Append(",\"p").Append(i).Append("_maxhp\":").Append(maxHpArr[i]);
-                                            sb.Append(",\"p").Append(i).Append("_x\":").Append(posXArr[i].ToString(CultureInfo.InvariantCulture));
-                                            sb.Append(",\"p").Append(i).Append("_facing\":").Append(facingArr[i]);
-                                        }
-                                        sb.Append("}");
-                                        Send(ns, PhoneMsg.FightState, sb.ToString());
+                                        string propJson = "{\"player\":" + currentPlayer +
+                                                           ",\"mask\":" + propMask + "}";
+                                        Send(ns, PhoneMsg.FightProp, propJson);
+                                    }
+
+                                    var sb = new StringBuilder(512);
+                                    sb.Append("{\"playerCount\":").Append(pc);
+                                    sb.Append(",\"turn\":").Append(turn);
+                                    sb.Append(",\"player\":").Append(currentPlayer);
+                                    sb.Append(",\"wind\":").Append(wind.ToString(CultureInfo.InvariantCulture));
+
+                                    for (int i = 0; i < pc; i++)
+                                    {
+                                        sb.Append(",\"p").Append(i).Append("_hp\":").Append(hpArr[i]);
+                                        sb.Append(",\"p").Append(i).Append("_maxhp\":").Append(maxHpArr[i]);
+                                        sb.Append(",\"p").Append(i).Append("_x\":").Append(posXArr[i].ToString(CultureInfo.InvariantCulture));
+                                        sb.Append(",\"p").Append(i).Append("_facing\":").Append(facingArr[i]);
+                                    }
+                                    sb.Append("}");
+                                    Send(ns, PhoneMsg.FightState, sb.ToString());
+
+                                    // If battle already ended, resend reward+profile so client can finish UI.
+                                    if (!inBattle && snapRoom != null)
+                                    {
+                                        ResendFightReward(player, snapRoom);
+                                        SendTo(player, PhoneMsg.ProfileData, player.ToJson());
                                     }
                                 }
                             }
@@ -1779,6 +1795,9 @@ namespace GunMobile.Net
                 }
 
                 payouts = new List<(ServerPlayer, int, bool)>();
+                int n = room.Hp != null ? room.Hp.Length : 0;
+                room.LastFightGolds = n > 0 ? new int[n] : null;
+                room.LastFightWins = n > 0 ? new bool[n] : null;
                 foreach (int pid in room.PlayerIds)
                 {
                     if (!_players.TryGetValue(pid, out ServerPlayer p)) continue;
@@ -1819,6 +1838,12 @@ namespace GunMobile.Net
                     p.RecalcStats(_db);
                     SavePlayer(p);
                     payouts.Add((p, gold, win));
+
+                    if (room.LastFightGolds != null && seat >= 0 && seat < room.LastFightGolds.Length)
+                    {
+                        room.LastFightGolds[seat] = gold;
+                        room.LastFightWins[seat] = win;
+                    }
                 }
             }
 
@@ -1852,8 +1877,21 @@ namespace GunMobile.Net
         void ResendFightReward(ServerPlayer player, GameRoom room)
         {
             if (player == null || room == null) return;
-            bool win = PlayerTeamWon(room, player);
-            int gold = win ? 800 : 100;
+            int seat = player.Seat;
+            bool win;
+            int gold;
+
+            if (room.LastFightGolds != null && room.LastFightWins != null &&
+                seat >= 0 && seat < room.LastFightGolds.Length && seat < room.LastFightWins.Length)
+            {
+                gold = room.LastFightGolds[seat];
+                win = room.LastFightWins[seat];
+            }
+            else
+            {
+                win = PlayerTeamWon(room, player);
+                gold = win ? 800 : 100;
+            }
             SendFightTo(player, PhoneMsg.FightReward,
                 "{\"gold\":" + gold + ",\"win\":" + (win ? "1" : "0") + "}");
         }

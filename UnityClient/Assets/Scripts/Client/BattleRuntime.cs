@@ -828,6 +828,7 @@ namespace GunMobile.Client
                     }
 
                     _loop.SyncLivingHp(hp, maxHp);
+                    _loop.SyncMatchOverIfNeeded();
                     continue;
                 }
 

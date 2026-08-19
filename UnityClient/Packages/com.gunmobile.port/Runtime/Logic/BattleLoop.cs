@@ -150,6 +150,16 @@ namespace GunMobile.Logic
             }
         }
 
+        public void SyncMatchOverIfNeeded()
+        {
+            // Reconnect continuity: if snapshot indicates only one (or zero) team alive,
+            // force UI to MatchOver even if we missed the last damage events.
+            if (CountAliveTeams() <= 1)
+            {
+                Phase = BattlePhase.MatchOver;
+            }
+        }
+
         public void TickClock(float dt)
         {
             if (Phase != BattlePhase.Aiming)
