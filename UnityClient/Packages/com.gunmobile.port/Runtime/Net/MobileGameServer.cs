@@ -806,10 +806,69 @@ namespace GunMobile.Net
 
         void HandleFightMsg(ServerPlayer player, NetworkStream ns, ushort id, string json)
         {
-            GameRoom room;
+            GameRoom room = null;
+            List<int> assignedPlayers = null;
+
             lock (_lock)
             {
-                if (player.RoomId < 0 || !_rooms.TryGetValue(player.RoomId, out room)) return;
+                // Normal flow: player must already belong to a room (RoomId set via road join/create).
+                if (id != PhoneMsg.FightStart)
+                {
+                    if (player.RoomId < 0 || !_rooms.TryGetValue(player.RoomId, out room)) return;
+                }
+                else
+                {
+                    // Host can press "start fight" without explicit road-room join:
+                    // auto-create a room and absorb other "waiting" fight clients.
+                    if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out room))
+                    {
+                        // already in room
+                    }
+                    else
+                    {
+                        int mapId = JI(json, "map", 1056);
+                        int maxPlayers = 4;
+                        room = new GameRoom
+                        {
+                            Id = _nextRoomId++,
+                            MapId = mapId,
+                            Name = (player.Nick ?? "Player") + "'s Room",
+                            MaxPlayers = maxPlayers
+                        };
+
+                        player.RoomId = room.Id;
+                        player.Seat = 0;
+                        room.PlayerIds.Add(player.Id);
+
+                        // Auto-assign up to maxPlayers-1 waiting clients that already connected to fight socket.
+                        foreach (var p in _players.Values)
+                        {
+                            if (room.PlayerIds.Count >= room.MaxPlayers) break;
+                            if (p == player) continue;
+                            if (p.RoomId >= 0) continue; // already in a room
+                            if (p.FightTcp == null) continue; // not connected to fight yet
+
+                            p.RoomId = room.Id;
+                            p.Seat = room.PlayerIds.Count;
+                            room.PlayerIds.Add(p.Id);
+                        }
+
+                        _rooms[room.Id] = room;
+                        assignedPlayers = new List<int>(room.PlayerIds);
+                    }
+                }
+            }
+
+            // Notify clients about their assigned seat (RoomOk is consumed from the ROAD socket).
+            if (assignedPlayers != null)
+            {
+                foreach (int pid in assignedPlayers)
+                {
+                    if (_players.TryGetValue(pid, out var p))
+                    {
+                        SendTo(p, PhoneMsg.RoomOk, "{\"roomId\":" + room.Id + ",\"seat\":" + p.Seat + "}");
+                    }
+                }
             }
 
             switch (id)
