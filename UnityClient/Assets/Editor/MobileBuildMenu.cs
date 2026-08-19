@@ -60,6 +60,13 @@ namespace GunMobile.EditorTools
             AssetDatabase.Refresh();
         }
 
+        [MenuItem("GunMobile/Bootstrap PC Assets (fetch+unpack+pack+bundle)")]
+        public static void BootstrapPcAssets()
+        {
+            RunRepoPython("tools/bootstrap_pc_assets.py --skip-fetch");
+            AssetDatabase.Refresh();
+        }
+
         [MenuItem("GunMobile/Pack Equip+Arm game.png")]
         public static void PackEquipGame()
         {

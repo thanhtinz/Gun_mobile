@@ -6651,29 +6651,23 @@
     "Service/Road/map/2001/fore.map",
     "Service/Road/map/70025/fore.map",
     "Service/Road/map/70026/fore.map",
-    "Service/Road/map/70063/fore.map"
+    "Service/Road/map/70063/fore.map",
+    "equip_game_manifest.json",
+    "pc_asset_sources.json"
   ],
   "counts": {
-    "flashNamed": 18,
+    "flashNamed": 20,
     "morn": 56,
     "uiXml": 275,
     "bomb": 212,
     "game": 2,
     "scene": 18,
+    "starterArt": 15,
     "map": 680,
     "mapIds": 116,
     "requestCopied": 354,
     "flashCopied": 395,
-    "starterArt": 13,
     "swfExtracted": 327,
-    "shopIconsCopied": 0,
-    "shopIconsSkipped": 1800,
-    "shopIconsMissing": 92,
-    "shopIconsPacked": 1800,
-    "petTitlePacked": 390,
-    "petTitleCopied": 390,
-    "petTitleMissing": 1244,
-    "equipLayersPacked": 661,
     "equipGame": 0
   }
 }

@@ -8,16 +8,14 @@ Original DDTank / 弹弹堂 client + server archives from GitHub Release **Ok**.
 | Archive.2.zip | `83764cf7c01b93c3f3371abbce1bea3064a5518f2437b3d1f4a6da0090e922e3` |
 | Archive.3.zip | `fe6f77910190c22c3e40ef7892a3df7153cda46690007e47dc4181fe7dc083c9` |
 
-Re-download:
+Re-download archives and build the mobile costume bundle:
 
 ```bash
-tools/fetch_ok_release.sh
+python3 tools/bootstrap_pc_assets.py
 ```
 
-Unpack configs used by the Unity helpers:
+This fetches release **Ok**, unpacks `Resource/image/equip` + `arm`, packs StreamingAssets, and builds `equip_arm_bundle.zip` (~95 MB, 11886 PNG). Upload to the release with `--upload`.
 
-```bash
-python3 tools/extract_legacy.py
-```
+On Android/iOS the client downloads `equip_arm_bundle.zip` on first launch (see `pc_asset_sources.json`).
 
 `Archive.zip` holds SQL backups and GM tools. `Archive.2.zip` holds Flash + NewPanel. `Archive.3.zip` holds Request XML, Road/Fight/Center services, and `Resource/image`.

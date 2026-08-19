@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Security.Cryptography;
 using GunMobile.Core;
 using GunMobile.Res;
 using UnityEngine;
@@ -38,11 +40,18 @@ namespace GunMobile.Client
         public static IEnumerator Install(ResLoader loader, Action<string> status = null)
         {
             Directory.CreateDirectory(PersistentPcData);
-            if (File.Exists(Path.Combine(PersistentPcData, ".ready")))
+
+            if (!File.Exists(Path.Combine(PersistentPcData, ".ready")))
             {
-                yield break;
+                yield return InstallContentIndex(status);
             }
 
+            yield return CopyEquipGameManifest(status);
+            yield return EnsureEquipArmAssets(status);
+        }
+
+        static IEnumerator InstallContentIndex(Action<string> status)
+        {
             byte[] indexBytes = null;
             yield return ReadStreaming("content_index.json", b => indexBytes = b);
             if (indexBytes == null || indexBytes.Length == 0)
@@ -81,8 +90,240 @@ namespace GunMobile.Client
             }
 
             File.WriteAllText(Path.Combine(PersistentPcData, ".ready"), copied.ToString());
+        }
+
+        static IEnumerator EnsureEquipArmAssets(Action<string> status)
+        {
+            string marker = Path.Combine(PersistentPcData, ".equip_ready");
+            if (File.Exists(marker))
+            {
+                yield break;
+            }
+
+            string equipDest = Path.Combine(PersistentPcData, "Resource", "image", "equip");
+            if (Directory.Exists(equipDest))
+            {
+                File.WriteAllText(marker, "local");
+                yield break;
+            }
+
+#if UNITY_EDITOR
             yield return CopyUnpackedEquipAssets(status);
-            yield return CopyEquipGameManifest(status);
+            if (Directory.Exists(equipDest))
+            {
+                File.WriteAllText(marker, "editor-unpacked");
+                yield break;
+            }
+#endif
+
+            yield return DownloadEquipArmBundle(status);
+            if (Directory.Exists(equipDest))
+            {
+                File.WriteAllText(marker, "bundle");
+            }
+        }
+
+        static IEnumerator DownloadEquipArmBundle(Action<string> status)
+        {
+            byte[] srcBytes = null;
+            yield return ReadStreaming("pc_asset_sources.json", b => srcBytes = b);
+            if (srcBytes == null || srcBytes.Length == 0)
+            {
+                status?.Invoke("No costume bundle URL; hall icons may be missing.");
+                yield break;
+            }
+
+            string json = System.Text.Encoding.UTF8.GetString(srcBytes);
+            if (!TryParseEquipBundle(json, out string url, out string expectedSha, out long expectedSize))
+            {
+                status?.Invoke("Invalid pc_asset_sources.json");
+                yield break;
+            }
+
+            string zipPath = Path.Combine(PersistentPcData, "equip_arm_bundle.zip");
+            if (!File.Exists(zipPath) || (expectedSize > 0 && new FileInfo(zipPath).Length != expectedSize))
+            {
+                status?.Invoke("Downloading PC costumes (~95 MB)…");
+                yield return DownloadFile(url, zipPath, status);
+            }
+
+            if (!File.Exists(zipPath))
+            {
+                status?.Invoke("Costume download failed.");
+                yield break;
+            }
+
+            if (!string.IsNullOrEmpty(expectedSha) && !Sha256Matches(zipPath, expectedSha))
+            {
+                File.Delete(zipPath);
+                status?.Invoke("Costume bundle checksum failed; retry later.");
+                yield break;
+            }
+
+            status?.Invoke("Installing PC costumes…");
+            yield return null;
+            try
+            {
+                ExtractZip(zipPath, PersistentPcData);
+                status?.Invoke("PC costume assets ready.");
+            }
+            catch (Exception ex)
+            {
+                status?.Invoke("Costume install failed: " + ex.Message);
+            }
+        }
+
+        static IEnumerator DownloadFile(string url, string destPath, Action<string> status)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(destPath) ?? PersistentPcData);
+            if (File.Exists(destPath))
+            {
+                File.Delete(destPath);
+            }
+
+            using (var req = UnityWebRequest.Get(url))
+            {
+                req.downloadHandler = new DownloadHandlerFile(destPath);
+                var op = req.SendWebRequest();
+                while (!op.isDone)
+                {
+                    if (req.downloadProgress > 0.01f)
+                    {
+                        status?.Invoke($"Downloading costumes {Mathf.RoundToInt(req.downloadProgress * 100f)}%");
+                    }
+
+                    yield return null;
+                }
+
+                if (req.result != UnityWebRequest.Result.Success)
+                {
+                    if (File.Exists(destPath))
+                    {
+                        File.Delete(destPath);
+                    }
+
+                    status?.Invoke("Download error: " + req.error);
+                }
+            }
+        }
+
+        static void ExtractZip(string zipPath, string destRoot)
+        {
+            using (FileStream fs = File.OpenRead(zipPath))
+            using (var archive = new ZipArchive(fs, ZipArchiveMode.Read))
+            {
+                foreach (ZipArchiveEntry entry in archive.Entries)
+                {
+                    if (string.IsNullOrEmpty(entry.Name))
+                    {
+                        continue;
+                    }
+
+                    string rel = entry.FullName.Replace('\\', '/');
+                    string dest = Path.Combine(destRoot, rel);
+                    Directory.CreateDirectory(Path.GetDirectoryName(dest) ?? destRoot);
+                    using (Stream src = entry.Open())
+                    using (FileStream dst = File.Create(dest))
+                    {
+                        src.CopyTo(dst);
+                    }
+                }
+            }
+        }
+
+        static bool Sha256Matches(string path, string expectedHex)
+        {
+            using (var sha = SHA256.Create())
+            using (FileStream fs = File.OpenRead(path))
+            {
+                byte[] hash = sha.ComputeHash(fs);
+                string hex = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
+                return string.Equals(hex, expectedHex.Trim().ToLowerInvariant(), StringComparison.Ordinal);
+            }
+        }
+
+        static bool TryParseEquipBundle(string json, out string url, out string sha256, out long sizeBytes)
+        {
+            url = null;
+            sha256 = null;
+            sizeBytes = 0;
+            int block = json.IndexOf("\"equipArmBundle\"", StringComparison.Ordinal);
+            if (block < 0)
+            {
+                return false;
+            }
+
+            url = ParseJsonString(json, "url", block);
+            sha256 = ParseJsonString(json, "sha256", block);
+            sizeBytes = ParseJsonLong(json, "sizeBytes", block);
+
+            return !string.IsNullOrEmpty(url);
+        }
+
+        static long ParseJsonLong(string json, string key, int searchFrom = 0)
+        {
+            string token = "\"" + key + "\"";
+            int i = json.IndexOf(token, searchFrom, StringComparison.Ordinal);
+            if (i < 0)
+            {
+                return 0;
+            }
+
+            i = json.IndexOf(':', i);
+            if (i < 0)
+            {
+                return 0;
+            }
+
+            int j = i + 1;
+            while (j < json.Length && char.IsWhiteSpace(json[j]))
+            {
+                j++;
+            }
+
+            int k = j;
+            while (k < json.Length && (char.IsDigit(json[k]) || json[k] == '-'))
+            {
+                k++;
+            }
+
+            if (k <= j)
+            {
+                return 0;
+            }
+
+            long.TryParse(json.Substring(j, k - j), out long value);
+            return value;
+        }
+
+        static string ParseJsonString(string json, string key, int searchFrom = 0)
+        {
+            string token = "\"" + key + "\"";
+            int i = json.IndexOf(token, searchFrom, StringComparison.Ordinal);
+            if (i < 0)
+            {
+                return null;
+            }
+
+            i = json.IndexOf(':', i);
+            if (i < 0)
+            {
+                return null;
+            }
+
+            i = json.IndexOf('"', i + 1);
+            if (i < 0)
+            {
+                return null;
+            }
+
+            int j = json.IndexOf('"', i + 1);
+            if (j < 0)
+            {
+                return null;
+            }
+
+            return json.Substring(i + 1, j - i - 1);
         }
 
         static IEnumerator CopyEquipGameManifest(Action<string> status)
@@ -126,9 +367,6 @@ namespace GunMobile.Client
 
         static IEnumerator CopyUnpackedEquipAssets(Action<string> status)
         {
-#if !UNITY_EDITOR
-            yield break;
-#else
             string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
             string equipSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "equip");
             string armSrc = Path.Combine(repoRoot, "legacy", "unpacked", "Resource", "image", "arm");
@@ -173,7 +411,6 @@ namespace GunMobile.Client
                     }
                 }
             }
-#endif
         }
 
         static void CopyDirectory(string src, string dest)

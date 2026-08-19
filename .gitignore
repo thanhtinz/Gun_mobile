@@ -23,3 +23,4 @@ __pycache__/
 
 # Local unpacked binary resources (keep configs in git)
 legacy/unpacked/
+legacy/releases/Ok/equip_arm_bundle.zip

@@ -1586,7 +1586,7 @@ namespace GunMobile.Client
                 }
 
                 float dist = Vector2.Distance(_pos[src], _pos[t]);
-                int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[t], bombHurt, dist * 0.35f, false);
+                int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[t], bombHurt, dist * 0.35f, false, false, default, default, 80f);
                 _loop.ApplyDamage(t, dmg);
                 SpawnDmgPopup(_pos[t], dmg, false);
             }
