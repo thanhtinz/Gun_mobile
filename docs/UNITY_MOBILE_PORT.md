@@ -65,6 +65,11 @@ Không phải `Road.Service.exe` + SQL. Mỗi máy chạy `TcpListener` native:
 3. Máy A chọn map → server broadcast `FightStart`. Cả Host và Joiner **đều chờ `FightStart`** (map + stats/weapon/preferredBallId cho 2 ghế).
 4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz). Chỉ **người bắn** mới report `FightDamage`.
 
+Nếu bạn muốn chơi **online qua VPS** (server chạy độc lập headless trên VPS):
+- build Linux headless/đóng gói và chạy script `DedicatedServerBootstrap` (Assets/Scripts/Server/) để `MobileGameServer` listen TCP **4396 / 1910**
+- mở firewall/VPC để port **4396** và **1910** public
+- trên client, nhập **public IP của VPS** vào ô IP và bấm Host/Join như bình thường
+
 Cổng giống PC (4396 / 1910) nhưng magic packet `0x7D01` — client Flash PC **không** nói chuyện được với PhoneRoad. RSA/login 7road chưa làm.
 
 Android: `INTERNET` + `ACCESS_WIFI_STATE`. iOS: `NSLocalNetworkUsageDescription` (Info.plist khi build).
