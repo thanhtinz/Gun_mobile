@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Logic;
+using GunMobile.Net;
 using GunMobile.Res;
 using GunMobile.UI;
 using UnityEngine;
@@ -143,6 +144,10 @@ namespace GunMobile.Client
         RawImage _shotImg;
         RawImage[] _dots;
         Texture2D _craterTex;
+        Texture2D _npcSprite;
+        Texture2D _blastTex;
+        RawImage _blastImg;
+        float _blastT;
         float _animT;
         bool _resultOpen;
 
@@ -205,10 +210,11 @@ namespace GunMobile.Client
                     MaxHp = 1200,
                     Team = 2
                 };
-                _foeName = "Bot";
+                _foeName = PhoneNet.NetBattle ? "P2" : "Bot";
             }
 
-            _loop.Reset(new[] { player, bot });
+            int seed = PhoneNet.NetBattle && PhoneNet.BattleSeed != 0 ? PhoneNet.BattleSeed : 0;
+            _loop.Reset(new[] { player, bot }, 20f, seed);
             _ball = BallPhysics.Default;
             if (_app.Database != null)
             {
@@ -312,26 +318,32 @@ namespace GunMobile.Client
                 return;
             }
 
-            _loop.TickClock(Time.deltaTime);
+            if (!PhoneNet.NetBattle)
+            {
+                _loop.TickClock(Time.deltaTime);
+            }
+
+            PumpNet();
             int cur = _loop.CurrentLiving;
-            if (_loop.Phase == BattlePhase.Aiming && cur == 0 && _aim != null)
+            int me = MeSeat();
+            if (_loop.Phase == BattlePhase.Aiming && cur == me && _aim != null)
             {
                 int walk = _move != null ? _move.Direction : 0;
                 if (walk != 0)
                 {
-                    _facing[0] = walk;
-                    _pos[0].x = Mathf.Clamp(_pos[0].x + walk * 80f * Time.deltaTime, 20f, _map.Width - 20f);
-                    PlaceOnGround(0);
-                    _aim.SetFacing(_facing[0]);
+                    _facing[me] = walk;
+                    _pos[me].x = Mathf.Clamp(_pos[me].x + walk * 80f * Time.deltaTime, 20f, _map.Width - 20f);
+                    PlaceOnGround(me);
+                    _aim.SetFacing(_facing[me]);
                 }
 
                 if (_aim.FireReleased)
                 {
                     _aim.ConsumeFire();
-                    Fire(0, _aim.AngleDeg, _aim.Power);
+                    Fire(me, _aim.AngleDeg, _aim.Power, false);
                 }
             }
-            else if (_loop.Phase == BattlePhase.Aiming && cur == 1 && !_flying && !_botQueued)
+            else if (!PhoneNet.NetBattle && _loop.Phase == BattlePhase.Aiming && cur == 1 && !_flying && !_botQueued)
             {
                 _botQueued = true;
                 _botDelay = 0.7f;
@@ -383,10 +395,20 @@ namespace GunMobile.Client
                 }
             }
 
-            Fire(1, bestA, bestP);
+            Fire(1, bestA, bestP, false);
         }
 
-        void Fire(int who, float angle, float power)
+        public void ApplyNetFire(int who, float angle, float power)
+        {
+            if (_flying || _map == null)
+            {
+                return;
+            }
+
+            Fire(who, angle, power, true);
+        }
+
+        void Fire(int who, float angle, float power, bool fromNet)
         {
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
@@ -394,6 +416,71 @@ namespace GunMobile.Client
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
             _flying = true;
+            if (!fromNet && PhoneNet.NetBattle)
+            {
+                PhoneNet.SendFire(who, angle, power, _facing[who]);
+            }
+        }
+
+        void PumpNet()
+        {
+            if (!PhoneNet.NetBattle || PhoneNet.Fight == null)
+            {
+                return;
+            }
+
+            while (PhoneNet.Fight.TryDequeue(out var msg))
+            {
+                if (msg.Id != PhoneMsg.FightFire)
+                {
+                    continue;
+                }
+
+                int who = JsonInt(msg.Json, "who", 1 - MeSeat());
+                float angle = JsonFloat(msg.Json, "angle", 45f);
+                float power = JsonFloat(msg.Json, "power", 50f);
+                int facing = JsonInt(msg.Json, "facing", _facing[Mathf.Clamp(who, 0, 1)]);
+                if (who >= 0 && who < _facing.Length)
+                {
+                    _facing[who] = facing >= 0 ? 1 : -1;
+                }
+
+                ApplyNetFire(who, angle, power);
+            }
+        }
+
+        static int JsonInt(string json, string key, int fallback)
+        {
+            return Mathf.RoundToInt(JsonFloat(json, key, fallback));
+        }
+
+        static float JsonFloat(string json, string key, float fallback)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return fallback;
+            }
+
+            string needle = "\"" + key + "\":";
+            int i = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (i < 0)
+            {
+                return fallback;
+            }
+
+            int s = i + needle.Length;
+            int e = s;
+            while (e < json.Length && (json[e] == '-' || json[e] == '.' || (json[e] >= '0' && json[e] <= '9')))
+            {
+                e++;
+            }
+
+            if (float.TryParse(json.Substring(s, e - s), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float v))
+            {
+                return v;
+            }
+
+            return fallback;
         }
 
         void StepShot()
@@ -457,6 +544,15 @@ namespace GunMobile.Client
 
             _loop.EndShot();
             _loop.FinishSettle();
+            if (explode && _blastImg != null)
+            {
+                _blastT = 0.35f;
+                var rt = _blastImg.rectTransform;
+                rt.anchorMin = rt.anchorMax = MapAnchor(mx, my);
+                rt.sizeDelta = new Vector2(72f, 72f);
+                _blastImg.gameObject.SetActive(true);
+            }
+
             if (_loop.Phase == BattlePhase.MatchOver)
             {
                 FinishMatch();
@@ -484,7 +580,7 @@ namespace GunMobile.Client
             }
 
             _resultOpen = true;
-            bool win = _loop.Livings[0].Hp > 0;
+            bool win = _loop.Livings[MeSeat()].Hp > 0;
             int gold = 0;
             int questGold = 0;
             if (win)
@@ -653,13 +749,37 @@ namespace GunMobile.Client
                 _hpFill[i] = hp;
             }
 
+            NpcInfo npcArt = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
+            _npcSprite = PcArt.NpcLiving(_app.Loader, npcArt);
+            if (_npcSprite == null && PhoneNet.NetBattle)
+            {
+                _npcSprite = PcArt.DefaultLiving(_app.Loader);
+            }
+
+            if (_npcSprite != null && _livingImg[1] != null)
+            {
+                _livingImg[1].texture = _npcSprite;
+                _livingImg[1].uvRect = new Rect(0f, 0f, 1f, 1f);
+                _livingImg[1].color = Color.white;
+            }
+
+            Texture2D bullet = PcArt.Bullet(_app.Loader, _ball.Id > 0 ? _ball.Id : _ball.FlyingPartical);
             var shotGo = new GameObject("Shot", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
             shotGo.transform.SetParent(_world, false);
             _shotImg = shotGo.GetComponent<RawImage>();
-            _shotImg.texture = Texture2D.whiteTexture;
-            _shotImg.color = new Color(1f, 0.92f, 0.2f, 1f);
+            _shotImg.texture = bullet != null ? bullet : Texture2D.whiteTexture;
+            _shotImg.color = Color.white;
             _shotImg.raycastTarget = false;
             shotGo.SetActive(false);
+
+            _blastTex = PcArt.Blast(_app.Loader, _ball.BombPartical > 0 ? _ball.BombPartical : _ball.Id);
+            var blastGo = new GameObject("Blast", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            blastGo.transform.SetParent(_world, false);
+            _blastImg = blastGo.GetComponent<RawImage>();
+            _blastImg.texture = _blastTex != null ? _blastTex : Texture2D.whiteTexture;
+            _blastImg.color = Color.white;
+            _blastImg.raycastTarget = false;
+            blastGo.SetActive(false);
 
             _dots = new RawImage[10];
             for (int i = 0; i < _dots.Length; i++)
@@ -683,7 +803,14 @@ namespace GunMobile.Client
             }
 
             _animT += Time.deltaTime;
-            bool walking = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == 0 && _move != null && _move.Direction != 0;
+            if (_blastT > 0f && _blastImg != null)
+            {
+                _blastT -= Time.deltaTime;
+                _blastImg.gameObject.SetActive(_blastT > 0f);
+            }
+
+            int me = MeSeat();
+            bool walking = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == me && _move != null && _move.Direction != 0;
             bool firing = _flying;
             for (int i = 0; i < _livingImg.Length; i++)
             {
@@ -694,8 +821,17 @@ namespace GunMobile.Client
                     continue;
                 }
 
-                SheetFrame frame = PickFrame(i == 0 && (walking || firing));
-                _livingImg[i].uvRect = frame.Uv;
+                SheetFrame frame = PickFrame(i == me && (walking || firing));
+                if (i == 1 && _npcSprite != null)
+                {
+                    _livingImg[i].uvRect = new Rect(0f, 0f, 1f, 1f);
+                    frame = new SheetFrame { Uv = _livingImg[i].uvRect, Size = FitSprite(_npcSprite.width, _npcSprite.height, 96f, 120f) };
+                }
+                else
+                {
+                    _livingImg[i].uvRect = frame.Uv;
+                    frame = new SheetFrame { Uv = frame.Uv, Size = FitSprite(frame.Size.x, frame.Size.y, 80f, 100f) };
+                }
                 float sx = _world.rect.width / Mathf.Max(1, _map.Width);
                 float sy = _world.rect.height / Mathf.Max(1, _map.Height);
                 var rt = _livingImg[i].rectTransform;
@@ -717,7 +853,7 @@ namespace GunMobile.Client
                 {
                     var rt = _shotImg.rectTransform;
                     rt.anchorMin = rt.anchorMax = UnityAnchor(_shot.X, _shot.Y);
-                    rt.sizeDelta = new Vector2(14f, 14f);
+                    rt.sizeDelta = new Vector2(28f, 28f);
                     rt.pivot = new Vector2(0.5f, 0.5f);
                 }
             }
@@ -754,7 +890,8 @@ namespace GunMobile.Client
                 return;
             }
 
-            bool show = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == 0 && _aim != null && !_flying;
+            int me = MeSeat();
+            bool show = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == me && _aim != null && !_flying;
             if (!show)
             {
                 for (int i = 0; i < _dots.Length; i++)
@@ -765,8 +902,8 @@ namespace GunMobile.Client
                 return;
             }
 
-            Vector2 p = _pos[0];
-            ProjectileState s = _sim.Launch(p.x, _map.Height - p.y - 18f, _aim.AngleDeg, _aim.Power, _facing[0]);
+            Vector2 p = _pos[me];
+            ProjectileState s = _sim.Launch(p.x, _map.Height - p.y - 18f, _aim.AngleDeg, _aim.Power, _facing[me]);
             for (int i = 0; i < _dots.Length; i++)
             {
                 for (int k = 0; k < 3; k++)
@@ -789,10 +926,28 @@ namespace GunMobile.Client
                 return;
             }
 
-            var me = _loop.Livings[0];
-            var foe = _loop.Livings[1];
+            int seat = MeSeat();
+            var me = _loop.Livings[seat];
+            var foe = _loop.Livings[1 - seat];
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
-            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}";
+            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}" +
+                (PhoneNet.NetBattle ? "  LAN seat " + MeSeat() : "");
+        }
+
+        static int MeSeat()
+        {
+            return PhoneNet.NetBattle ? Mathf.Clamp(PhoneNet.Seat, 0, 1) : 0;
+        }
+
+        static Vector2 FitSprite(float w, float h, float maxW, float maxH)
+        {
+            if (w <= 0f || h <= 0f)
+            {
+                return new Vector2(maxW, maxH);
+            }
+
+            float s = Mathf.Min(1f, Mathf.Min(maxW / w, maxH / h));
+            return new Vector2(w * s, h * s);
         }
     }
 }

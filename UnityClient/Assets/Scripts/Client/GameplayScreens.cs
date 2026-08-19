@@ -402,7 +402,8 @@ namespace GunMobile.Client
                 $"Language {lang}\n" +
                 $"Suicide {app.Config?.SuicideTime ?? 120}s  Frame {app.Config?.FrameTimeOverMs ?? 67}ms\n" +
                 $"Bundle com.gunmobile.client  landscape Android+iOS\n" +
-                $"Physics 25fps gravity {GunMobile.Logic.PcPhysics.GravityPerFrame}/frame";
+                $"Physics 25fps gravity {GunMobile.Logic.PcPhysics.GravityPerFrame}/frame\n" +
+                PhoneNet.StatusLine();
             var label = UiKit.Label(bg.transform, "Info", info, 26, Color.white, TextAnchor.UpperLeft);
             label.rectTransform.anchorMin = new Vector2(0.1f, 0.35f);
             label.rectTransform.anchorMax = new Vector2(0.9f, 0.82f);

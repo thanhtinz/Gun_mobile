@@ -190,6 +190,15 @@ def main() -> None:
     n_req = copy_request(ROOT / "legacy" / "data" / "Request")
     n_flash_data = copy_flash_data(ROOT / "legacy" / "data" / "Flash")
 
+    swf_ok = 0
+    try:
+        from pack_swf_sprites import pack as pack_swf
+
+        swf_ok = pack_swf().get("ok", 0)
+        print("swf extracted", swf_ok)
+    except Exception as e:
+        print("swf pack skipped:", e)
+
     files = [p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file() and p.name != "content_index.json"]
     files.sort()
     index = {
@@ -207,6 +216,7 @@ def main() -> None:
             "mapIds": len(map_ids),
             "requestCopied": n_req,
             "flashCopied": n_flash_data,
+            "swfExtracted": swf_ok,
         },
     }
     (OUT / "content_index.json").write_text(json.dumps(index, indent=2), encoding="utf-8")

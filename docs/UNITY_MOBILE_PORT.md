@@ -36,7 +36,29 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Unity 6.3 LTS project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
 - [x] Client: login → hall (mọi module PC: shop/bag/quest/pet/card/title/totem/mount/elf/farm/guild/rank/auction/vip/lottery/labyrinth/worldboss/dungeon/NPC/forge/texp/gem/mail/chat/friends) → **all packed maps** → trận vs bot **và PVE vs NPC** (PC gravity 0.7/frame)
 - [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC / Pet / Card / Title / Totem / Mount / Lottery / VIP / PVE / Spirit / Elf / Farm
-- [x] Unpack `tools/unpack_pc_dump.py` + Editor menu; ExtraRoots `legacy/unpacked`
+- [x] SWF living/bomb → JPEG/PNG (`tools/swf_extract.py`, runtime `SwfImage`)
+- [x] Phone Road/Fight TCP trên cổng **4396 / 1910** (không SQL; magic `0x7D01`) — LAN 2 máy hoặc loopback
+
+### SWF living / bomb trên điện thoại
+
+Unity **không** chạy Flash. `tools/swf_extract.py` lấy JPEG/PNG lớn nhất trong tag `DefineBitsJPEG3` / `DefineBitsLossless2` từ SWF living + bullet (+ vài blastout) vào:
+
+`UnityClient/Assets/StreamingAssets/PcData/Resource/image/{game/living,bomb/bullet,bomb/blastout}/extracted/`
+
+Runtime `SwfImage` / `PcArt` đọc file đã extract, hoặc JPEG trong SWF nếu ExtraRoots còn `.swf`.
+
+### LAN 2 điện thoại (PhoneRoad)
+
+Không phải `Road.Service.exe` + SQL. Mỗi máy chạy `TcpListener` native:
+
+1. Máy A: Hall → 开战 → **开房 Fight** (status hiện IP LAN).
+2. Máy B: gõ IP của A → **加入** (Road 4396 + Fight 1910).
+3. Máy A chọn map. B nhận `FightStart` (kể cả join muộn — server giữ gói start).
+4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing.
+
+Cổng giống PC (4396 / 1910) nhưng magic packet `0x7D01` — client Flash PC **không** nói chuyện được với PhoneRoad. RSA/login 7road chưa làm.
+
+Android: `INTERNET` + `ACCESS_WIFI_STATE`. iOS: `NSLocalNetworkUsageDescription` (Info.plist khi build).
 
 Mở `UnityClient/` bằng Unity 6.3 LTS (`6000.3.22f1`), Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
 
@@ -73,7 +95,7 @@ PC ~1000×600, chuột, rất nhiều cửa sổ. Mobile:
 
 `MobileUiBootstrap.CreateRoot()` tạo Canvas `ScaleWithScreenSize` match 0.5, child `SafeAreaFitter`.
 
-Ưu tiên màn: Login/chọn nhân → Hall (mọi hệ thống PC, sim local trên bảng XML) → Room vs bot / 副本 / NPC / 迷宫 / 世界BOSS → Battle HUD → Kết trận. Road/Fight socket vẫn chưa reverse — PvP online không có.
+Ưu tiên màn: Login → Hall → Room (单机 / LAN 开房 / 加入 IP) vs bot hoặc 2 điện thoại Fight:1910. SWF living/bomb được tách JPEG/PNG. Road.Service.exe + SQL **không** chạy trên điện thoại — PhoneRoad là server TCP native.
 
 Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → uGUI. Skin `asset.*` cần bảng lookup sprite (sau khi convert SWF/atlas).
 
@@ -106,9 +128,10 @@ Online thật cần protobuf socket giống Road/Fight (exe không có source C#
 ```
 UnityClient/Packages/com.gunmobile.port/Runtime/
   Core/     ZlibXml, GamePaths, XmlResultTable, PackedMornUi
-  Res/      ResLoader, TextureAtlasParser, SpriteSheet, FlashConfig, MapCollision, CharacterDefine
+  Res/      ResLoader, TextureAtlasParser, SpriteSheet, SwfImage, FlashConfig, MapCollision, CharacterDefine
   UI/       MobileUiBootstrap, SafeAreaFitter, UiObjectPool, MornUiBuilder, TouchAim/Move
   Logic/    ProjectileSimulator, BattleLoop, BombTable, DamageCalculator
+  Net/      PhonePacket, PhoneRoadServer, PhoneRoadClient (LAN 4396/1910)
   GunMobileBootstrap.cs
 ```
 
@@ -120,5 +143,5 @@ Kéo package vào Unity (`manifest.json` file: path) rồi add `GunMobileBootstr
 - `fore.map` bit order giả định MSB-left (khớp stride 1250→157). Nếu terrain lệch, đảo mask `0x80 >>` thành `1 << (x & 7)`.
 - Physics: `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE.
 - Resource ~2GB: APK chứa **mọi map playable** + XML; equip PNG unpack local (`legacy/unpacked`).
-- Online Road/Fight socket chưa reverse. Trận = offline vs bot **hoặc NPC** (cùng simulator). Hall module chơi được trên bảng PC, không còn XML browser trừ module không có table.
+- Online PC Road/Fight (RSA + SQL Server) không chạy trên điện thoại. Thay bằng **PhoneRoad** TCP cổng 4396/1910, magic 0x7D01, JSON bắn đồng bộ LAN.
 - Dump có `__MACOSX`, file tên Trung + backup — `extract_legacy.py` đã bỏ png/swf/exe và thư mục backup.

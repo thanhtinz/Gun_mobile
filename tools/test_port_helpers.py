@@ -213,6 +213,48 @@ class MobilePack(unittest.TestCase):
         sign = parse_result_table(load_xml((DATA / "Request" / "TS_EveryDaySignIn.xml").read_bytes()))
         self.assertEqual(len(sign), 28)
 
+    def test_swf_extract_and_phone_packet(self):
+        from swf_extract import largest_image, write_largest
+        import zipfile, struct
+        z3 = RELEASE / "Archive.3.zip"
+        with zipfile.ZipFile(z3) as zf:
+            data = zf.read("Resource/image/game/living/living094.swf")
+        hit = largest_image(data)
+        self.assertIsNotNone(hit)
+        ext, blob = hit
+        self.assertIn(ext, (".jpg", ".png"))
+        self.assertGreater(len(blob), 500)
+        if ext == ".jpg":
+            self.assertEqual(blob[:2], b"\xff\xd8")
+        extracted = PCDATA / "Resource" / "image" / "game" / "living" / "extracted"
+        self.assertTrue(extracted.exists())
+        self.assertGreaterEqual(len(list(extracted.glob("*"))), 50)
+        self.assertTrue((PCDATA / "Resource" / "image" / "swf_extract_index.json").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Net" / "PhonePacket.cs").exists())
+        magic = 0x7D01
+        body = b'{"ok":true}'
+        pkt = struct.pack("<IHH", 4 + len(body), magic, 2) + body
+        payload, mag, mid = struct.unpack_from("<IHH", pkt)
+        self.assertEqual(mag, magic)
+        self.assertEqual(mid, 2)
+        self.assertEqual(pkt[8:], body)
+        src = (ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Net" / "PhonePacket.cs").read_text(encoding="utf-8")
+        self.assertIn("0x7D01", src)
+        self.assertIn("4396", src)
+        self.assertIn("1910", src)
+        living = (ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "PcArt.cs").read_text(encoding="utf-8")
+        self.assertIn("NpcLiving", living)
+        self.assertIn("extracted", living)
+        net = (ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "PhoneNet.cs").read_text(encoding="utf-8")
+        self.assertIn("ConnectFight", net)
+        self.assertIn("SendFire", net)
+        self.assertTrue((ROOT / "UnityClient" / "Assets" / "Plugins" / "Android" / "AndroidManifest.xml").exists())
+        manifest = (ROOT / "UnityClient" / "Assets" / "Plugins" / "Android" / "AndroidManifest.xml").read_text(encoding="utf-8")
+        self.assertIn("android.permission.INTERNET", manifest)
+        bullets = PCDATA / "Resource" / "image" / "bomb" / "bullet" / "extracted"
+        self.assertTrue(bullets.exists())
+        self.assertGreaterEqual(len(list(bullets.glob("*"))), 20)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

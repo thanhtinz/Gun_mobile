@@ -15,7 +15,8 @@ Open **this folder** (`UnityClient/`) in Unity **6.3 LTS** (`6000.3.22f1`).
    - **任务 / 签到 / 弹王盟约 / 农场 / 公会 / 排行 / 好友 / 邮件 / 聊天**
    - **炮弹 / 炸弹配置** — chọn ball từ BallList / bombconfig
    - **角色 / 设置**
-5. Battle: left walk, right aim+release, trajectory dots, living948 sprite, crater PNG. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**). End screen + quest rewards on win.
+5. Battle: left walk, right aim+release, trajectory dots, living948 + SWF living/bomb JPEG, crater PNG. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**). End screen + quest rewards on win.
+6. **LAN 2 điện thoại:** Hall → 开战 → máy host **开房 Fight**, máy kia gõ IP → **加入**, host chọn map. Socket native cổng 4396/1910 (không phải SQL Road.Service).
 
 ## Build on GitHub (APK + IPA)
 

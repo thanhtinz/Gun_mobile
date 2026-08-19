@@ -29,6 +29,7 @@ namespace GunMobile.EditorTools
             PlayerSettings.Android.minSdkVersion = AndroidSdkVersions.AndroidApiLevel23;
             PlayerSettings.Android.targetSdkVersion = AndroidSdkVersions.AndroidApiLevel35;
             PlayerSettings.Android.targetArchitectures = AndroidArchitecture.ARM64;
+            PlayerSettings.Android.forceInternetPermission = true;
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.Android, ScriptingImplementation.IL2CPP);
             PlayerSettings.SetScriptingBackend(NamedBuildTarget.iOS, ScriptingImplementation.IL2CPP);
             PlayerSettings.iOS.targetDevice = iOSTargetDevice.iPhoneAndiPad;
@@ -49,6 +50,13 @@ namespace GunMobile.EditorTools
         public static void PackStreaming()
         {
             RunRepoPython("tools/pack_mobile_content.py");
+            AssetDatabase.Refresh();
+        }
+
+        [MenuItem("GunMobile/Extract SWF living/bomb to PNG")]
+        public static void PackSwf()
+        {
+            RunRepoPython("tools/pack_swf_sprites.py");
             AssetDatabase.Refresh();
         }
 

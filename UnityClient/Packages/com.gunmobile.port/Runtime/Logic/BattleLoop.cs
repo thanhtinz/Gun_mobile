@@ -102,14 +102,17 @@ namespace GunMobile.Logic
         public int CurrentLiving { get; private set; }
         public float Wind { get; private set; }
         public float TurnTimeLeft { get; private set; } = 20f;
+        public int Seed { get; private set; }
 
         readonly List<LivingStats> _livings = new List<LivingStats>();
-        readonly System.Random _rng = new System.Random();
+        System.Random _rng = new System.Random();
 
         public IReadOnlyList<LivingStats> Livings => _livings;
 
-        public void Reset(IEnumerable<LivingStats> livings, float turnSeconds = 20f)
+        public void Reset(IEnumerable<LivingStats> livings, float turnSeconds = 20f, int seed = 0)
         {
+            Seed = seed != 0 ? seed : Environment.TickCount;
+            _rng = new System.Random(Seed);
             _livings.Clear();
             _livings.AddRange(livings);
             TurnIndex = 0;

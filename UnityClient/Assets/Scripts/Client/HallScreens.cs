@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GunMobile.Core;
+using GunMobile.Net;
 using GunMobile.Res;
 using GunMobile.UI;
 using UnityEngine;
@@ -176,16 +177,41 @@ namespace GunMobile.Client
                 }
             }
 
-            UiKit.Label(bg.transform, "Title", $"选地图 · {maps.Count} maps  vs Bot（副本/NPC 在大厅）", 32, Color.white, TextAnchor.MiddleCenter)
+            UiKit.Label(bg.transform, "Title", $"选地图 · {maps.Count} maps  ·  {PhoneNet.StatusLine()}", 26, Color.white, TextAnchor.MiddleCenter)
                 .rectTransform.anchorMin = new Vector2(0.2f, 0.88f);
-            bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.98f);
+            bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.98f, 0.98f);
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMin = Vector2.zero;
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMax = Vector2.zero;
+
+            InputField ip = UiKit.Field(bg.transform, "Ip", "LAN IP", new Vector2(280f, 48f));
+            ip.text = PhoneNet.PeerHost;
+            ip.characterLimit = 48;
+            ip.GetComponent<RectTransform>().anchorMin = ip.GetComponent<RectTransform>().anchorMax = new Vector2(0.22f, 0.82f);
+            var hostBtn = UiKit.Button(bg.transform, "Host", "开房 Fight", () =>
+            {
+                PhoneNet.Seat = 0;
+                PhoneNet.NetBattle = true;
+                PhoneNet.ConnectFight("127.0.0.1");
+            }, new Vector2(160f, 48f));
+            hostBtn.GetComponent<RectTransform>().anchorMin = hostBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.42f, 0.82f);
+            var joinBtn = UiKit.Button(bg.transform, "Join", "加入", () =>
+            {
+                PhoneNet.Seat = 1;
+                PhoneNet.NetBattle = true;
+                PhoneNet.ConnectHall(ip.text);
+                PhoneNet.ConnectFight(ip.text);
+            }, new Vector2(140f, 48f));
+            joinBtn.GetComponent<RectTransform>().anchorMin = joinBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.58f, 0.82f);
+            var solo = UiKit.Button(bg.transform, "Solo", "单机Bot", () =>
+            {
+                PhoneNet.NetBattle = false;
+            }, new Vector2(140f, 48f));
+            solo.GetComponent<RectTransform>().anchorMin = solo.GetComponent<RectTransform>().anchorMax = new Vector2(0.72f, 0.82f);
 
             var scroll = UiKit.Scroll(bg.transform, "Maps");
             var srt = scroll.GetComponent<RectTransform>();
             srt.anchorMin = new Vector2(0.05f, 0.06f);
-            srt.anchorMax = new Vector2(0.95f, 0.86f);
+            srt.anchorMax = new Vector2(0.95f, 0.76f);
             srt.offsetMin = srt.offsetMax = Vector2.zero;
 
             if (maps.Count == 0)
@@ -200,8 +226,22 @@ namespace GunMobile.Client
             {
                 MapInfo local = info;
                 string art = local.HasArt ? "" : "  (no PNG)";
-                string caption = $"Map {local.Id}  {local.Name}{art}  ·  vs Bot";
-                var btn = UiKit.Button(scroll.content, "m" + local.Id, caption, () => app.ShowBattle(local.Id), new Vector2(0f, 80f));
+                string mode = PhoneNet.NetBattle ? (PhoneNet.Seat == 0 ? "  ·  开房" : "  ·  加入") : "  ·  vs Bot";
+                string caption = $"Map {local.Id}  {local.Name}{art}{mode}";
+                var btn = UiKit.Button(scroll.content, "m" + local.Id, caption, () =>
+                {
+                    if (PhoneNet.NetBattle && PhoneNet.Seat == 0)
+                    {
+                        if (PhoneNet.Fight == null || !PhoneNet.Fight.Connected)
+                        {
+                            PhoneNet.ConnectFight("127.0.0.1");
+                        }
+
+                        PhoneNet.SendStart(local.Id);
+                    }
+
+                    app.ShowBattle(local.Id);
+                }, new Vector2(0f, 80f));
                 var le = btn.gameObject.AddComponent<LayoutElement>();
                 le.preferredHeight = 80f;
                 le.flexibleWidth = 1f;

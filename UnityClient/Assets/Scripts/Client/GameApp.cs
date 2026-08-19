@@ -1,5 +1,6 @@
 using System.Collections;
 using GunMobile.Core;
+using GunMobile.Net;
 using GunMobile.Res;
 using GunMobile.UI;
 using UnityEngine;
@@ -62,6 +63,7 @@ namespace GunMobile.Client
             EnsureEventSystem();
             Loader = PcContent.CreateLoader();
             Profile = PlayerProfile.Load();
+            PhoneNet.Boot();
             _canvas = MobileUiBootstrap.CreateRoot(transform);
             _safe = _canvas.transform.Find("SafeArea") as RectTransform;
         }
@@ -276,6 +278,51 @@ namespace GunMobile.Client
 
             var es = new GameObject("EventSystem", typeof(EventSystem), typeof(StandaloneInputModule));
             DontDestroyOnLoad(es);
+        }
+
+        void Update()
+        {
+            if (PhoneNet.Fight == null || State == AppState.Battle)
+            {
+                return;
+            }
+
+            while (PhoneNet.Fight.TryDequeue(out var msg))
+            {
+                if (msg.Id != PhoneMsg.FightStart)
+                {
+                    continue;
+                }
+
+                int mapId = JsonInt(msg.Json, "map", 1056);
+                int seed = JsonInt(msg.Json, "seed", 0);
+                if (seed != 0)
+                {
+                    PhoneNet.BattleSeed = seed;
+                }
+
+                PhoneNet.NetBattle = true;
+                PhoneNet.Seat = 1;
+                ShowBattle(mapId);
+            }
+        }
+
+        static int JsonInt(string json, string key, int fallback)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return fallback;
+            }
+
+            string needle = "\"" + key + "\":";
+            int i = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (i < 0)
+            {
+                return fallback;
+            }
+
+            string raw = json.Substring(i + needle.Length).TrimStart().Split(',', '}', ' ')[0];
+            return int.TryParse(raw, out int n) ? n : fallback;
         }
     }
 }

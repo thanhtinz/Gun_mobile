@@ -75,6 +75,8 @@ namespace GunMobile.Res
         public int Defence;
         public int Agility;
         public int Lucky;
+        public string ModelId = "";
+        public string ResourcesPath = "";
     }
 
     public sealed class PetInfo
@@ -553,7 +555,9 @@ namespace GunMobile.Res
                     Attack = Int(row, "Attack"),
                     Defence = Int(row, "Defence"),
                     Agility = Int(row, "Agility"),
-                    Lucky = Int(row, "Lucky")
+                    Lucky = Int(row, "Lucky"),
+                    ModelId = Str(row, "ModelID"),
+                    ResourcesPath = Str(row, "ResourcesPath")
                 };
             }
         }
