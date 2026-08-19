@@ -1379,12 +1379,29 @@ namespace GunMobile.Net
             }
         }
 
+        static void ApplyPropModifiers(int propId, out float dmgMul, out float radiusMul, out float powerAdd, out bool forceCrit)
+        {
+            dmgMul = 1f; radiusMul = 1f; powerAdd = 0f; forceCrit = false;
+            switch (propId)
+            {
+                case 1: dmgMul = 1.25f; radiusMul = 1.35f; break;
+                case 2: dmgMul = 1.2f; break;
+                case 5: powerAdd = 12f; break;
+                case 6: dmgMul = 1.4f; break;
+                case 7: forceCrit = true; break;
+            }
+        }
+
         void ServerSimulateFire(ServerPlayer player, GameRoom room, string json)
         {
             int who = player.Seat;
             float angle = JF(json, "angle", 45f);
             float power = JF(json, "power", 50f);
             int facing = JI(json, "facing", room.Facing[who]);
+            int propId = JI(json, "prop", 0);
+
+            ApplyPropModifiers(propId, out float propDmg, out float propRadius, out float propPower, out bool propCrit);
+            power = Mathf.Clamp(power + propPower, 1f, 100f);
 
             MapCollision map;
             BallPhysics ball;
@@ -1407,7 +1424,7 @@ namespace GunMobile.Net
                 room.Facing[who] = facing >= 0 ? 1 : -1;
             }
 
-            if (map == null) return; // can't simulate without collision data
+            if (map == null) return;
 
             var sim = new ProjectileSimulator();
             sim.ApplyBall(ball);
@@ -1417,7 +1434,7 @@ namespace GunMobile.Net
             float unityY = mapH - startY - 18f;
 
             int shotCount = Mathf.Max(1, ball.Amount);
-            int blastRadius = Mathf.Max(20, ball.Radii);
+            int blastRadius = Mathf.Max(20, Mathf.RoundToInt(ball.Radii * propRadius));
 
             for (int s = 0; s < shotCount; s++)
             {
@@ -1445,12 +1462,11 @@ namespace GunMobile.Net
                 int hitMapX = Mathf.RoundToInt(state.X);
                 int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
 
-                // Destroy terrain
                 map.CutCircle(hitMapX, hitMapY, blastRadius / 3);
 
-                // Compute damage for each living
                 int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(ball.Power) * 80f);
                 if (bombHurt < 40) bombHurt = 140;
+                bombHurt = Mathf.RoundToInt(bombHurt * propDmg);
 
                 for (int t = 0; t < hp.Length; t++)
                 {
@@ -1462,7 +1478,7 @@ namespace GunMobile.Net
                     float dist = Mathf.Sqrt(dx * dx + dy * dy);
                     if (dist > blastRadius) continue;
 
-                    bool crit = DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
+                    bool crit = propCrit || DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
                     int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit);
                     dmg = Mathf.Clamp(dmg, 0, hp[t]);
 

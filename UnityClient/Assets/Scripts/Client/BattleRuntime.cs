@@ -682,7 +682,7 @@ namespace GunMobile.Client
             _shotRemaining = Mathf.Max(0, _ball.Amount - 1);
             if (!fromNet && PhoneNet.NetBattle)
             {
-                PhoneNet.SendFire(who, angle, power, _facing[who]);
+                PhoneNet.SendFire(who, angle, power, _facing[who], _propId);
             }
         }
 
