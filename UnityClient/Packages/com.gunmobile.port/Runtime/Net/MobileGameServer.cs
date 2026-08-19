@@ -1052,17 +1052,39 @@ namespace GunMobile.Net
                     int turn = JI(json, "turn", room.CurrentTurn);
                     int who = JI(json, "player", room.CurrentPlayer);
                     float wind = JF(json, "wind", room.Wind);
+
+                    int serverTurn;
+                    int serverPlayer;
+                    float serverWind;
+                    bool okToAdvanceTimer = false;
                     lock (_lock)
                     {
-                        room.CurrentTurn = turn;
-                        room.CurrentPlayer = who;
-                        room.Wind = wind;
-                        room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                        if (!room.InBattle)
+                        {
+                            serverTurn = room.CurrentTurn;
+                            serverPlayer = room.CurrentPlayer;
+                            serverWind = room.Wind;
+                        }
+                        else
+                        {
+                            // Validate sender & turn. Never trust client values blindly.
+                            okToAdvanceTimer = player.Seat == room.CurrentPlayer && room.CurrentTurn == turn && who == room.CurrentPlayer;
+
+                            if (okToAdvanceTimer)
+                            {
+                                room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                            }
+
+                            serverTurn = room.CurrentTurn;
+                            serverPlayer = room.CurrentPlayer;
+                            serverWind = room.Wind;
+                        }
                     }
-                    // Broadcast the server-synced turn to all clients so host/join stay aligned.
-                    string turnJson = "{\"turn\":" + turn +
-                                       ",\"player\":" + who +
-                                       ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
+
+                    // Broadcast the server's authoritative turn state.
+                    string turnJson = "{\"turn\":" + serverTurn +
+                                       ",\"player\":" + serverPlayer +
+                                       ",\"wind\":" + serverWind.ToString(CultureInfo.InvariantCulture) + "}";
                     BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
                     break;
                 }
