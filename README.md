@@ -19,7 +19,7 @@ Hoặc mở folder `UnityClient/` trong Unity Hub rồi menu **GunMobile → Bui
 - `legacy/unpacked/` — full PNG/map unpack (local only)
 - `UnityClient/` — Unity project (landscape, IL2CPP, `com.gunmobile.client`)
 - `UnityClient/Assets/StreamingAssets/PcData` — packed PC tables, hall/game art, **all playable maps**, bombs
-- `UnityClient/Assets/Scripts/Client` — login, hall, shop/bag/quest/character, room, battle vs bot
+- `UnityClient/Assets/Scripts/Client` — login, hall (mọi module PC: pet/card/forge/dungeon/NPC/lottery…), room vs bot, PVE vs NPC
 - `UnityClient/Packages/com.gunmobile.port` — zlib XML, map collision, PC 25fps physics, mobile HUD
 - `docs/UNITY_MOBILE_PORT.md` — port notes
 

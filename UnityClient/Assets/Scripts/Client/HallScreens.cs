@@ -96,7 +96,7 @@ namespace GunMobile.Client
             top.GetComponent<Image>().color = new Color(0f, 0f, 0f, 0.45f);
             PlayerProfile p = app.Profile;
             UiKit.Label(top.transform, "Info",
-                $"{p.Nick}  Lv.{p.Level}   ATK {p.Attack} DEF {p.Defence}   Gold {p.Gold}   {p.Win}W/{p.Lose}L",
+                $"{p.Nick}  Lv.{p.Level} VIP{p.VipLevel}  ATK {p.Attack} DEF {p.Defence}  Gold {p.Gold}  Honor {p.Honor}  {p.Win}W/{p.Lose}L  {(string.IsNullOrEmpty(p.ConsortiaName) ? "" : p.ConsortiaName)}",
                 26, Color.white, TextAnchor.MiddleLeft);
             UiKit.Stretch(top.transform.Find("Info").gameObject).offsetMin = new Vector2(24f, 0f);
 
@@ -176,7 +176,7 @@ namespace GunMobile.Client
                 }
             }
 
-            UiKit.Label(bg.transform, "Title", $"选地图 · {maps.Count} maps  vs Bot", 32, Color.white, TextAnchor.MiddleCenter)
+            UiKit.Label(bg.transform, "Title", $"选地图 · {maps.Count} maps  vs Bot（副本/NPC 在大厅）", 32, Color.white, TextAnchor.MiddleCenter)
                 .rectTransform.anchorMin = new Vector2(0.2f, 0.88f);
             bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.98f);
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMin = Vector2.zero;

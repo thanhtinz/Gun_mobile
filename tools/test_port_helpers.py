@@ -146,6 +146,45 @@ class MobilePack(unittest.TestCase):
         self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Res" / "GameDatabase.cs").exists())
         self.assertTrue((ROOT / ".github" / "workflows" / "build-mobile.yml").exists())
         self.assertTrue((ROOT / "UnityClient" / "ci" / "android-debug.keystore").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "SystemsScreens.cs").exists())
+        for table in (
+            "pettemplateinfo.xml",
+            "cardtemplateinfo.xml",
+            "newtitleinfo.xml",
+            "toteminfo.xml",
+            "newlotteryitem.xml",
+            "LoadPVEItems.xml",
+            "NPCInfoList.xml",
+            "TS_ElfTemplate.xml",
+            "SpiritInfoList.xml",
+            "foodcomposelist.xml",
+            "CelebByDayGPList.xml",
+        ):
+            self.assertTrue((PCDATA / "Request" / table).exists(), table)
+
+    def test_hall_systems_tables(self):
+        pets = parse_result_table(load_xml((DATA / "Request" / "pettemplateinfo.xml").read_bytes()))
+        self.assertGreater(len(pets), 50)
+        self.assertIn("HighAttack", pets[0])
+        pve = parse_result_table(load_xml((DATA / "Request" / "LoadPVEItems.xml").read_bytes()))
+        self.assertGreaterEqual(len(pve), 10)
+        npcs = parse_result_table(load_xml((DATA / "Request" / "NPCInfoList.xml").read_bytes()))
+        self.assertGreater(len(npcs), 100)
+        titles = parse_result_table(load_xml((DATA / "Request" / "newtitleinfo.xml").read_bytes()))
+        self.assertIn("Name", titles[0])
+        app = (ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameApp.cs").read_text(encoding="utf-8")
+        for module in (
+            "PetScreen",
+            "DungeonScreen",
+            "NpcHuntScreen",
+            "ForgeScreen",
+            "LotteryScreen",
+            "WorldBossScreen",
+            "ConsortiaScreen",
+            "ChatScreen",
+        ):
+            self.assertIn(module, app)
+        self.assertIn("ShowBattle(int mapId, int npcId", app)
 
 
 if __name__ == "__main__":

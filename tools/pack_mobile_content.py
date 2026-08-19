@@ -59,6 +59,13 @@ REQUEST_KEEP = (
     "mounttemplateOUT.xml",
     "SpiritInfoList.xml",
     "foodcomposelist.xml",
+    "newlotteryitem.xml",
+    "LoadPVEItems.xml",
+    "ItemStrengthenList.xml",
+    "TS_ElfTemplate.xml",
+    "CelebByDayGPList.xml",
+    "CelebByConsortiaRiches.xml",
+    "fightlabdropitemlist.xml",
 )
 
 

@@ -237,10 +237,11 @@ namespace GunMobile.Client
             app.Profile.RecalcStats(app.Database);
             PlayerProfile p = app.Profile;
             string text =
-                $"{p.Nick}  {(p.Sex == 1 ? "♂" : "♀")}  Lv.{p.Level}\n" +
+                $"{p.Nick}  {(p.Sex == 1 ? "♂" : "♀")}  Lv.{p.Level}  VIP{p.VipLevel}\n" +
                 $"ATK {p.Attack}  DEF {p.Defence}  AGI {p.Agility}  LUCK {p.Luck}  HP {p.Hp}\n" +
-                $"Gold {p.Gold}  Gift {p.Gift}  {p.Win}W/{p.Lose}L\n" +
+                $"Gold {p.Gold}  Gift {p.Gift}  Honor {p.Honor}  Texp {p.Texp}  {p.Win}W/{p.Lose}L\n" +
                 $"Weapon #{p.EquipWeapon}  Cloth #{p.EquipCloth}  Head #{p.EquipHead}\n" +
+                $"Pet #{p.PetId}  Title #{p.TitleId}  Mount {p.MountGrade}  迷宫{p.LabyrinthFloor}\n" +
                 EquipName(app, p.EquipWeapon) + " / " + EquipName(app, p.EquipCloth);
 
             var label = UiKit.Label(bg.transform, "Sheet", text, 28, Color.white, TextAnchor.UpperLeft);

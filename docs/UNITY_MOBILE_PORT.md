@@ -34,8 +34,8 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Extract XML/UI đã giải zlib → `legacy/data/`
 - [x] Helper zlib / map / atlas / Morn / đạn
 - [x] Unity 6.3 LTS project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
-- [x] Client: login → hall (shop / bag / quest / character / sign-in) → **all packed maps** → trận vs bot (PC gravity 0.7/frame)
-- [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC
+- [x] Client: login → hall (mọi module PC: shop/bag/quest/pet/card/title/totem/mount/elf/farm/guild/rank/auction/vip/lottery/labyrinth/worldboss/dungeon/NPC/forge/texp/gem/mail/chat/friends) → **all packed maps** → trận vs bot **và PVE vs NPC** (PC gravity 0.7/frame)
+- [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC / Pet / Card / Title / Totem / Mount / Lottery / VIP / PVE / Spirit / Elf / Farm
 - [x] Unpack `tools/unpack_pc_dump.py` + Editor menu; ExtraRoots `legacy/unpacked`
 
 Mở `UnityClient/` bằng Unity 6.3 LTS (`6000.3.22f1`), Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
@@ -73,7 +73,7 @@ PC ~1000×600, chuột, rất nhiều cửa sổ. Mobile:
 
 `MobileUiBootstrap.CreateRoot()` tạo Canvas `ScaleWithScreenSize` match 0.5, child `SafeAreaFitter`.
 
-Ưu tiên màn: Login/chọn nhân → Hall tối giản → Room → Battle HUD → Kết trận. Event/farm/guild để sau.
+Ưu tiên màn: Login/chọn nhân → Hall (mọi hệ thống PC, sim local trên bảng XML) → Room vs bot / 副本 / NPC / 迷宫 / 世界BOSS → Battle HUD → Kết trận. Road/Fight socket vẫn chưa reverse — PvP online không có.
 
 Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → uGUI. Skin `asset.*` cần bảng lookup sprite (sau khi convert SWF/atlas).
 
@@ -120,5 +120,5 @@ Kéo package vào Unity (`manifest.json` file: path) rồi add `GunMobileBootstr
 - `fore.map` bit order giả định MSB-left (khớp stride 1250→157). Nếu terrain lệch, đảo mask `0x80 >>` thành `1 << (x & 7)`.
 - Physics: `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE.
 - Resource ~2GB: APK chứa **mọi map playable** + XML; equip PNG unpack local (`legacy/unpacked`).
-- Online Road/Fight socket chưa reverse. Trận = offline vs bot (bot bắn bằng cùng simulator).
+- Online Road/Fight socket chưa reverse. Trận = offline vs bot **hoặc NPC** (cùng simulator). Hall module chơi được trên bảng PC, không còn XML browser trừ module không có table.
 - Dump có `__MACOSX`, file tên Trung + backup — `extract_legacy.py` đã bỏ png/swf/exe và thư mục backup.

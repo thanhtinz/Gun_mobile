@@ -99,7 +99,7 @@ namespace GunMobile.Client
 
     public static class BattleRuntime
     {
-        public static void Show(RectTransform safe, GameApp app, int mapId)
+        public static void Show(RectTransform safe, GameApp app, int mapId, int npcId = 0)
         {
             var host = safe.GetComponent<BattleHost>();
             if (host == null)
@@ -107,7 +107,7 @@ namespace GunMobile.Client
                 host = safe.gameObject.AddComponent<BattleHost>();
             }
 
-            host.Run(app, mapId);
+            host.Run(app, mapId, npcId);
         }
     }
 
@@ -132,11 +132,14 @@ namespace GunMobile.Client
         bool _botQueued;
         float _botDelay;
         int _mapId;
+        int _npcId;
+        string _foeName = "Bot";
 
-        public void Run(GameApp app, int mapId)
+        public void Run(GameApp app, int mapId, int npcId = 0)
         {
             _app = app;
             _mapId = mapId;
+            _npcId = npcId;
             StopAllCoroutines();
             UiKit.ClearChildren(app.transform.Find("GunMobileCanvas/SafeArea") ?? transform);
             StartCoroutine(LoadAndPlay());
@@ -172,21 +175,35 @@ namespace GunMobile.Client
                 MaxHp = _app.Profile.Hp,
                 Team = 1
             };
-            var bot = new LivingStats
+            LivingStats bot;
+            NpcInfo npc = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
+            if (npc != null)
             {
-                Attack = 110,
-                Defence = 85,
-                Agility = 70,
-                Luck = 40,
-                Hp = 1200,
-                MaxHp = 1200,
-                Team = 2
-            };
+                bot = _app.Database.MakeNpcLiving(_npcId);
+                _foeName = npc.Name;
+            }
+            else
+            {
+                bot = new LivingStats
+                {
+                    Attack = 110,
+                    Defence = 85,
+                    Agility = 70,
+                    Luck = 40,
+                    Hp = 1200,
+                    MaxHp = 1200,
+                    Team = 2
+                };
+                _foeName = "Bot";
+            }
+
             _loop.Reset(new[] { player, bot });
             _ball = BallPhysics.Default;
             if (_app.Database != null)
             {
-                int ballId = _app.Database.DefaultBallId(_app.Profile.WeaponId);
+                int ballId = _app.Profile.PreferredBallId > 0
+                    ? _app.Profile.PreferredBallId
+                    : _app.Database.DefaultBallId(_app.Profile.WeaponId);
                 _ball = _app.Database.GetBall(ballId);
             }
 
@@ -452,13 +469,20 @@ namespace GunMobile.Client
             if (win)
             {
                 _app.Profile.Win++;
-                _app.Profile.Gold += 800;
+                _app.Profile.Gold += 800 + Mathf.Max(0, _app.Profile.PendingReward);
+                _app.Profile.Honor += _npcId != 0 ? 12 : 4;
+                if (_app.Profile.PendingLabyrinth != 0)
+                {
+                    _app.Profile.LabyrinthFloor++;
+                }
             }
             else
             {
                 _app.Profile.Lose++;
             }
 
+            _app.Profile.PendingReward = 0;
+            _app.Profile.PendingLabyrinth = 0;
             _app.Profile.Save();
             _app.ShowHall();
         }
@@ -517,7 +541,7 @@ namespace GunMobile.Client
             var me = _loop.Livings[0];
             var foe = _loop.Livings[1];
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
-            _hud.text = $"Map {_mapId}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  ball {_ball.Id} r{_ball.Radii}";
+            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  ball {_ball.Id} r{_ball.Radii}";
         }
 
         void OnGUI()

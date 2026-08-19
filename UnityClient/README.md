@@ -6,13 +6,16 @@ Open **this folder** (`UnityClient/`) in Unity **6.3 LTS** (`6000.3.22f1`).
 1. Install Unity 6.3 LTS with **Android Build Support** (SDK/NDK/OpenJDK) and **iOS Build Support**.
 2. File → Open Project → `Gun_mobile/UnityClient`.
 3. Press Play. `GameApp` boots from `Assets/Scenes/Boot.unity`.
-4. Login → Hall:
-   - **开战 / 副本** — every packed map vs bot (PC `fore.map` + art)
-   - **商城** — buy from `ShopItemList` (gold / 点券)
-   - **背包** — equip items, stats from `TemplateAlllist`
-   - **任务** — accept / claim `QuestList`
-   - **角色 / 签到 / 设置**
-5. Battle: left walk, right aim+release. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**).
+4. Login → Hall (mọi nút đều vào gameplay local, không còn XML đọc suông):
+   - **开战** — mọi map packed vs bot
+   - **副本 / NPC 狩猎 / 迷宫 / 世界BOSS** — PVE, stat NPC từ `NPCInfoList` (Blood khổng lồ được scale cho mobile)
+   - **商城 / VIP / 抽奖 / 拍卖** — mua, gacha, bán
+   - **背包 / 铁匠铺** — mặc đồ, cường hóa +0…+15
+   - **宠物 / 卡片 / 称号 / 图腾 / 坐骑 / 精灵 / 战魂 / 修炼** — cộng stat
+   - **任务 / 签到 / 弹王盟约 / 农场 / 公会 / 排行 / 好友 / 邮件 / 聊天**
+   - **炮弹 / 炸弹配置** — chọn ball từ BallList / bombconfig
+   - **角色 / 设置**
+5. Battle: left walk, right aim+release. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**). Bot/NPC aim bằng cùng simulator.
 
 ## Build on GitHub (APK + IPA)
 

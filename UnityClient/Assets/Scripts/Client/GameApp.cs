@@ -113,12 +113,12 @@ namespace GunMobile.Client
             RoomScreen.Show(_safe, this);
         }
 
-        public void ShowBattle(int mapId)
+        public void ShowBattle(int mapId, int npcId = 0)
         {
             Profile.MapId = mapId;
             Profile.Save();
             State = AppState.Battle;
-            BattleRuntime.Show(_safe, this, mapId);
+            BattleRuntime.Show(_safe, this, mapId, npcId);
         }
 
         public void ShowModule(ModuleDef module)
@@ -152,12 +152,80 @@ namespace GunMobile.Client
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
-                case "mail":
-                    MailScreen.Show(_safe, this, "邮件", "Offline client — no Road mailbox. Rewards from 签到 / 任务.");
+                case "pet":
+                    PetScreen.Show(_safe, this);
+                    return;
+                case "card":
+                    CardScreen.Show(_safe, this);
+                    return;
+                case "title":
+                    TitleScreen.Show(_safe, this);
+                    return;
+                case "totem":
+                    TotemScreen.Show(_safe, this);
+                    return;
+                case "horse":
+                    MountScreen.Show(_safe, this);
+                    return;
+                case "elf":
+                    ElfScreen.Show(_safe, this);
+                    return;
+                case "farm":
+                    FarmScreen.Show(_safe, this);
+                    return;
+                case "consortia":
+                    ConsortiaScreen.Show(_safe, this);
+                    return;
+                case "rank":
+                    RankScreen.Show(_safe, this);
+                    return;
+                case "auction":
+                    AuctionScreen.Show(_safe, this);
+                    return;
+                case "vip":
+                    VipScreen.Show(_safe, this);
+                    return;
+                case "lottery":
+                    LotteryScreen.Show(_safe, this);
+                    return;
+                case "labyrinth":
+                    LabyrinthScreen.Show(_safe, this);
+                    return;
+                case "worldboss":
+                    WorldBossScreen.Show(_safe, this);
+                    return;
+                case "dungeon":
+                    DungeonScreen.Show(_safe, this);
+                    return;
+                case "npc":
+                    NpcHuntScreen.Show(_safe, this);
+                    return;
+                case "store":
+                    ForgeScreen.Show(_safe, this);
+                    return;
+                case "texp":
+                    TexpScreen.Show(_safe, this);
+                    return;
+                case "gemstone":
+                    GemScreen.Show(_safe, this);
+                    return;
+                case "kingbless":
+                    KingBlessScreen.Show(_safe, this);
                     return;
                 case "friend":
+                    FriendScreen.Show(_safe, this);
+                    return;
+                case "mail":
+                    MailInboxScreen.Show(_safe, this);
+                    return;
                 case "im":
-                    MailScreen.Show(_safe, this, module.Title, "Online Road socket is not wired. Chat/friends stay on the PC server.");
+                    ChatScreen.Show(_safe, this);
+                    return;
+                case "ball":
+                    BallPickScreen.Show(_safe, this);
+                    return;
+                case "bomb":
+                    BombConfigScreen.Show(_safe, this);
                     return;
                 default:
                     DataBrowserScreen.Show(_safe, this, module);

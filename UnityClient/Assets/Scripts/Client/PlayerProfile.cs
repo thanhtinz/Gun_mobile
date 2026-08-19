@@ -38,9 +38,29 @@ namespace GunMobile.Client
         public int EquipGlass;
         public int EquipWeapon = 7001;
         public int LastSignDay = -1;
+        public int PetId;
+        public int CardId;
+        public int TotemId;
+        public int TitleId;
+        public int MountGrade;
+        public int VipLevel;
+        public int Texp;
+        public int LabyrinthFloor = 1;
+        public int Honor;
+        public string ConsortiaName = "";
+        public int ElfId;
+        public int GemLevel;
+        public int KingBlessDay = -1;
+        public int FarmHarvests;
+        public int PreferredBallId;
+        public int MailGoldWaiting;
+        public int PendingReward;
+        public int PendingLabyrinth;
         public List<BagItem> Bag = new List<BagItem>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
+        public List<string> Friends = new List<string>();
+        public List<string> ChatLog = new List<string>();
 
         public static string PathOnDisk => Path.Combine(Application.persistentDataPath, "player.json");
 
@@ -56,6 +76,9 @@ namespace GunMobile.Client
                         p.Bag = p.Bag ?? new List<BagItem>();
                         p.AcceptedQuests = p.AcceptedQuests ?? new List<int>();
                         p.CompletedQuests = p.CompletedQuests ?? new List<int>();
+                        p.Friends = p.Friends ?? new List<string>();
+                        p.ChatLog = p.ChatLog ?? new List<string>();
+                        p.ConsortiaName = p.ConsortiaName ?? "";
                         return p;
                     }
                 }
@@ -93,6 +116,22 @@ namespace GunMobile.Client
             {
                 EquipWeapon = 7001;
                 WeaponId = 7001;
+            }
+
+            if (Friends == null)
+            {
+                Friends = new List<string>();
+            }
+
+            if (Friends.Count == 0)
+            {
+                Friends.Add("小鸡助手");
+                Friends.Add("训练教官");
+            }
+
+            if (ChatLog == null)
+            {
+                ChatLog = new List<string>();
             }
         }
 
@@ -206,8 +245,71 @@ namespace GunMobile.Client
                 AddStats(db.GetItem(EquipCloth), ref atk, ref def, ref agi, ref luk);
                 AddStats(db.GetItem(EquipGlass), ref atk, ref def, ref agi, ref luk);
                 AddStats(db.GetItem(EquipWeapon), ref atk, ref def, ref agi, ref luk);
+                if (db.Pets.TryGetValue(PetId, out PetInfo pet))
+                {
+                    atk += pet.Attack;
+                    def += pet.Defence;
+                    agi += pet.Agility;
+                    luk += pet.Luck;
+                    hp += pet.Blood;
+                }
+
+                CardInfo card = db.GetCard(CardId);
+                if (card != null)
+                {
+                    atk += card.AddAttack;
+                    def += card.AddDefend;
+                    agi += card.AddAgility;
+                    luk += card.AddLucky;
+                }
+
+                if (db.Titles.TryGetValue(TitleId, out TitleInfo title))
+                {
+                    atk += title.Att;
+                    def += title.Def;
+                    agi += title.Agi;
+                    luk += title.Luck;
+                }
+
+                if (db.Totems.TryGetValue(TotemId, out TotemInfo totem))
+                {
+                    atk += totem.AddAttack;
+                    def += totem.AddDefence;
+                    agi += totem.AddAgility;
+                    luk += totem.AddLuck;
+                    hp += totem.AddBlood;
+                }
+
+                if (db.Mounts.TryGetValue(MountGrade, out MountGrade mount))
+                {
+                    hp += mount.AddBlood;
+                    atk += mount.AddDamage;
+                    atk += mount.MagicAttack / 4;
+                }
+
+                if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo spirit))
+                {
+                    atk += spirit.AttackAdd;
+                    def += spirit.DefendAdd;
+                    agi += spirit.AgilityAdd;
+                    luk += spirit.LuckAdd;
+                }
+
+                if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
+                {
+                    atk += elf.AttackHint / 3;
+                    hp += elf.HpHint / 2;
+                }
             }
 
+            BagItem weapon = Find(EquipWeapon);
+            int str = weapon != null ? weapon.Strengthen : 0;
+            atk += str * 8;
+            def += str * 6;
+            atk += Texp / 10;
+            def += Texp / 12;
+            atk += VipLevel * 2;
+            hp += VipLevel * 20;
             Attack = atk;
             Defence = def;
             Agility = agi;
@@ -257,12 +359,12 @@ namespace GunMobile.Client
         public static readonly ModuleDef[] All =
         {
             new ModuleDef("room", "房间 / 开战", null, true),
-            new ModuleDef("dungeon", "副本", "Request/LoadMapsItems.xml", true),
+            new ModuleDef("dungeon", "副本", "Request/LoadPVEItems.xml"),
             new ModuleDef("character", "角色"),
             new ModuleDef("shop", "商城", "Request/ShopItemList.xml"),
             new ModuleDef("bag", "背包 / 图鉴", "Request/TemplateAlllist.xml"),
             new ModuleDef("quest", "任务", "Request/QuestList.xml"),
-            new ModuleDef("npc", "NPC", "Request/NPCInfoList.xml"),
+            new ModuleDef("npc", "NPC 狩猎", "Request/NPCInfoList.xml"),
             new ModuleDef("ball", "炮弹", "Request/BallList.xml"),
             new ModuleDef("bomb", "炸弹配置", "Request/bombconfig.xml"),
             new ModuleDef("pet", "宠物", "Request/petskillinfo.xml"),
