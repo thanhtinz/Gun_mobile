@@ -190,6 +190,7 @@ namespace GunMobile.Client
         int _lastWalkDir;
         float _nextFightReconnectAt;
         float _battleStartTime;
+        CharacterDefine _charDef;
         int[] _seatPetIds;
         int[] _weaponIds;
         int[] _preferredBallIds;
@@ -205,6 +206,7 @@ namespace GunMobile.Client
             _mapId = mapId;
             _npcId = npcId;
             _fightStartJson = fightStartJson;
+            _charDef = app.Database != null ? app.Database.CharacterDef : null;
             _resultOpen = false;
             _serverRewardGold = 0;
             _serverRewardWin = false;
@@ -1058,6 +1060,17 @@ namespace GunMobile.Client
 
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
+                if (msg.Id == PhoneMsg.RoomOk)
+                {
+                    continue;
+                }
+
+                if (msg.Id == PhoneMsg.FightStart)
+                {
+                    _fightStartJson = msg.Json;
+                    continue;
+                }
+
                 if (msg.Id == PhoneMsg.FightTurn)
                 {
                     int turn = JsonInt(msg.Json, "turn", _loop.TurnIndex);
@@ -1978,7 +1991,8 @@ namespace GunMobile.Client
             Transform root = _livingImg[seat].transform;
             RawImage body = _livingImg[seat];
             SeatLook look = GetSeatLook(seat);
-            bool useSheetAnim = _livingSheet != null && !PhoneNet.NetBattle && seat == 0 && _npcId == 0;
+            bool useSheetAnim = _livingSheet != null && seat == 0 && _npcId == 0 && _charDef == null &&
+                                look.EquipCloth == 0 && look.EquipHead == 0;
 
             if (useSheetAnim)
             {
@@ -2098,6 +2112,45 @@ namespace GunMobile.Client
             raw.raycastTarget = false;
         }
 
+        void ApplyCharacterDefineFrame(int seat, string actionName, int frameIndex)
+        {
+            if (_charDef == null || _livingImg == null || seat < 0 || seat >= _livingImg.Length || _livingImg[seat] == null)
+            {
+                return;
+            }
+
+            if (!_charDef.Actions.TryGetValue(actionName, out CharacterAction action) || action.Parts.Count == 0)
+            {
+                return;
+            }
+
+            Transform root = _livingImg[seat].transform;
+            for (int pi = 0; pi < action.Parts.Count; pi++)
+            {
+                CharacterPart part = action.Parts[pi];
+                if (part.Points == null || part.Points.Length == 0)
+                {
+                    continue;
+                }
+
+                Vector2 off = _charDef.LocalOffset(part, frameIndex);
+                string layerName = part.Resource != null && part.Resource.IndexOf("body", System.StringComparison.OrdinalIgnoreCase) >= 0
+                    ? "Cloth"
+                    : "Head";
+                Transform layer = root.Find(layerName);
+                if (layer == null)
+                {
+                    layer = root;
+                }
+
+                var rt = layer as RectTransform;
+                if (rt != null)
+                {
+                    rt.anchoredPosition = new Vector2(off.x * 0.15f, -off.y * 0.15f);
+                }
+            }
+        }
+
         void UpdateActors()
         {
             if (_livingImg == null || _map == null || _pos == null)
@@ -2174,6 +2227,13 @@ namespace GunMobile.Client
                 {
                     float pct = _loop.Livings[i].MaxHp <= 0 ? 0f : (float)_loop.Livings[i].Hp / _loop.Livings[i].MaxHp;
                     _hpFill[i].rectTransform.anchorMax = new Vector2(0.1f + 0.8f * Mathf.Clamp01(pct), 1.18f);
+                }
+
+                if (_charDef != null && !dead)
+                {
+                    bool seatWalking = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == i && _move != null && _move.Direction != 0;
+                    int frameIdx = seatWalking ? Mathf.FloorToInt(_animT * 10f) % 21 : 0;
+                    ApplyCharacterDefineFrame(i, seatWalking ? "walk" : "stand", frameIdx);
                 }
             }
 

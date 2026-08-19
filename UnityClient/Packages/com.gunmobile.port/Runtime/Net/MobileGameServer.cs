@@ -57,6 +57,8 @@ namespace GunMobile.Net
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
         public List<string> Friends = new List<string>();
+        public List<ServerMail> Mails = new List<ServerMail>();
+        public int NextMailId = 1;
 
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
@@ -303,13 +305,26 @@ namespace GunMobile.Net
         public int Strengthen;
     }
 
+    [Serializable]
+    public sealed class ServerMail
+    {
+        public int Id;
+        public string Subject = "";
+        public string Body = "";
+        public int Gold;
+        public int ItemId;
+        public int ItemCount;
+        public bool Claimed;
+    }
+
     public sealed class GameRoom
     {
         public int Id;
         public string Name = "Room";
         public int MapId;
-        public int MaxPlayers = 2;
+        public int MaxPlayers = 4;
         public List<int> PlayerIds = new List<int>();
+        public int ReadyMask;
         public bool InBattle;
         public int Seed;
         public int CurrentTurn;
@@ -857,6 +872,8 @@ namespace GunMobile.Net
             {
                 player.Gp = _db.GpForLevel(player.Level);
             }
+            EnsureStarterMails(player);
+            SavePlayer(player);
             Send(ns, PhoneMsg.LoginOk, "{\"ok\":true,\"playerId\":" + player.Id + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
             return player;
@@ -1030,27 +1047,12 @@ namespace GunMobile.Net
                 }
 
                 case PhoneMsg.MailClaim:
-                {
-                    int mailGold = 0;
-                    int mailId = JI(json, "id", 0);
-                    if (mailId == 1 && _db != null)
-                    {
-                        int itemId = _db.ConfigInt("CheckRewardItem", 11001);
-                        int count = _db.ConfigInt("CheckCount", 10);
-                        ItemTemplate item = _db.GetItem(itemId);
-                        if (item != null)
-                        {
-                            mailGold = Mathf.Max(0, (item.Attack + item.Defence) * count);
-                        }
-
-                        player.Gold += mailGold;
-                        SavePlayer(player);
-                    }
-                    Send(ns, PhoneMsg.MailResult, "{\"ok\":true,\"gold\":" + mailGold + "}");
-                    if (mailGold > 0)
-                        Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                    HandleMailClaim(player, ns, json);
                     break;
-                }
+
+                case PhoneMsg.MailList:
+                    Send(ns, PhoneMsg.MailListData, BuildMailListJson(player));
+                    break;
 
                 case PhoneMsg.ChatSend:
                 {
@@ -1068,7 +1070,7 @@ namespace GunMobile.Net
                 }
 
                 case PhoneMsg.RankRequest:
-                    HandleRankRequest(player, ns);
+                    HandleRankRequest(player, ns, json);
                     break;
 
                 case PhoneMsg.RoomList:
@@ -1081,6 +1083,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.JoinRoom:
                     HandleJoinRoom(player, ns, json);
+                    break;
+
+                case PhoneMsg.RoomReady:
+                    HandleRoomReady(player, ns, json);
+                    break;
+
+                case PhoneMsg.RoomLeave:
+                    HandleRoomLeave(player, ns);
                     break;
 
                 case PhoneMsg.VipUpgrade:
@@ -1139,6 +1149,10 @@ namespace GunMobile.Net
 
                 case PhoneMsg.Ping:
                     Send(ns, PhoneMsg.Ping, "{}");
+                    break;
+
+                default:
+                    Send(ns, PhoneMsg.Error, "{\"err\":\"unknown road msg " + id + "\"}");
                     break;
             }
         }
@@ -1299,6 +1313,10 @@ namespace GunMobile.Net
 
                 case PhoneMsg.FightPetSkill:
                     HandlePetActiveSkill(player, room);
+                    break;
+
+                default:
+                    Send(ns, PhoneMsg.Error, "{\"err\":\"unknown fight msg " + id + "\"}");
                     break;
             }
         }
@@ -1685,28 +1703,316 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
-        void HandleRankRequest(ServerPlayer player, NetworkStream ns)
+        void EnsureStarterMails(ServerPlayer player)
         {
-            var sorted = new List<ServerPlayer>();
-            lock (_lock)
+            if (player.Mails == null)
             {
-                sorted.AddRange(_players.Values);
+                player.Mails = new List<ServerMail>();
             }
-            sorted.Sort((a, b) => b.Win.CompareTo(a.Win));
-            var sb = new StringBuilder("{\"ranks\":[");
-            int count = Mathf.Min(50, sorted.Count);
-            for (int i = 0; i < count; i++)
+
+            bool hasWelcome = false;
+            bool hasDaily = false;
+            foreach (ServerMail m in player.Mails)
             {
+                if (m.Subject != null && m.Subject.Contains("系统奖励")) hasWelcome = true;
+                if (m.Subject != null && m.Subject.Contains("签到")) hasDaily = true;
+            }
+
+            if (!hasWelcome)
+            {
+                int gold = 0;
+                if (_db != null)
+                {
+                    int itemId = _db.ConfigInt("CheckRewardItem", 11001);
+                    int count = _db.ConfigInt("CheckCount", 10);
+                    ItemTemplate item = _db.GetItem(itemId);
+                    if (item != null)
+                    {
+                        gold = Mathf.Max(0, (item.Attack + item.Defence) * count);
+                    }
+                }
+
+                player.Mails.Add(new ServerMail
+                {
+                    Id = player.NextMailId++,
+                    Subject = "系统奖励",
+                    Body = "来自 PC serverconfig CheckRewardItem 的离线奖励。",
+                    Gold = gold
+                });
+            }
+
+            if (!hasDaily)
+            {
+                player.Mails.Add(new ServerMail
+                {
+                    Id = player.NextMailId++,
+                    Subject = "每日签到补发",
+                    Body = "登录奖励，可在邮件中领取。",
+                    Gold = _db != null ? _db.ConfigInt("EveryDaySignInGold", 500) : 500
+                });
+            }
+        }
+
+        string BuildMailListJson(ServerPlayer player)
+        {
+            var sb = new StringBuilder("{\"mails\":[");
+            for (int i = 0; i < player.Mails.Count; i++)
+            {
+                ServerMail m = player.Mails[i];
                 if (i > 0) sb.Append(",");
-                var p = sorted[i];
-                sb.Append("{\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
-                  .Append("\",\"level\":").Append(p.Level)
-                  .Append(",\"win\":").Append(p.Win)
-                  .Append(",\"lose\":").Append(p.Lose)
-                  .Append(",\"vip\":").Append(p.VipLevel)
-                  .Append(",\"honor\":").Append(p.Honor)
+                sb.Append("{\"id\":").Append(m.Id)
+                  .Append(",\"subject\":\"").Append((m.Subject ?? "").Replace("\"", ""))
+                  .Append("\",\"body\":\"").Append((m.Body ?? "").Replace("\"", ""))
+                  .Append("\",\"gold\":").Append(m.Gold)
+                  .Append(",\"itemId\":").Append(m.ItemId)
+                  .Append(",\"itemCount\":").Append(m.ItemCount)
+                  .Append(",\"claimed\":").Append(m.Claimed ? "true" : "false")
                   .Append("}");
             }
+            sb.Append("]}");
+            return sb.ToString();
+        }
+
+        void HandleMailClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int mailId = JI(json, "id", 0);
+            int mailGold = 0;
+            int claimedItems = 0;
+            if (mailId <= 0)
+            {
+                foreach (ServerMail m in player.Mails)
+                {
+                    if (m.Claimed) continue;
+                    mailGold += ClaimOneMail(player, m);
+                    if (m.ItemId > 0 && m.ItemCount > 0) claimedItems++;
+                }
+            }
+            else
+            {
+                foreach (ServerMail m in player.Mails)
+                {
+                    if (m.Id != mailId || m.Claimed) continue;
+                    mailGold += ClaimOneMail(player, m);
+                    if (m.ItemId > 0 && m.ItemCount > 0) claimedItems++;
+                    break;
+                }
+            }
+
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MailResult, "{\"ok\":true,\"gold\":" + mailGold + ",\"items\":" + claimedItems + "}");
+            Send(ns, PhoneMsg.MailListData, BuildMailListJson(player));
+            if (mailGold > 0 || claimedItems > 0)
+            {
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+            }
+        }
+
+        int ClaimOneMail(ServerPlayer player, ServerMail m)
+        {
+            if (m.Claimed) return 0;
+            m.Claimed = true;
+            if (m.Gold > 0) player.Gold += m.Gold;
+            if (m.ItemId > 0 && m.ItemCount > 0) player.AddItem(m.ItemId, m.ItemCount);
+            return m.Gold;
+        }
+
+        string BuildRoomStateJson(GameRoom room)
+        {
+            var sb = new StringBuilder("{\"roomId\":").Append(room.Id)
+              .Append(",\"map\":").Append(room.MapId)
+              .Append(",\"max\":").Append(room.MaxPlayers)
+              .Append(",\"readyMask\":").Append(room.ReadyMask)
+              .Append(",\"inBattle\":").Append(room.InBattle ? "true" : "false")
+              .Append(",\"players\":[");
+            lock (_lock)
+            {
+                for (int i = 0; i < room.PlayerIds.Count; i++)
+                {
+                    if (i > 0) sb.Append(",");
+                    int pid = room.PlayerIds[i];
+                    ServerPlayer p = _players.TryGetValue(pid, out ServerPlayer sp) ? sp : null;
+                    bool ready = (room.ReadyMask & (1 << i)) != 0;
+                    sb.Append("{\"seat\":").Append(i)
+                      .Append(",\"nick\":\"").Append((p?.Nick ?? "P" + (i + 1)).Replace("\"", ""))
+                      .Append("\",\"ready\":").Append(ready ? "true" : "false")
+                      .Append(",\"online\":").Append(p?.RoadStream != null ? "true" : "false")
+                      .Append("}");
+                }
+            }
+            sb.Append("]}");
+            return sb.ToString();
+        }
+
+        void BroadcastRoomState(GameRoom room)
+        {
+            string json = BuildRoomStateJson(room);
+            lock (_lock)
+            {
+                foreach (int pid in room.PlayerIds)
+                {
+                    if (_players.TryGetValue(pid, out ServerPlayer p))
+                    {
+                        SendTo(p, PhoneMsg.RoomState, json);
+                    }
+                }
+            }
+        }
+
+        bool AllHumanPlayersReady(GameRoom room)
+        {
+            int n = room.PlayerIds.Count;
+            if (n <= 1) return true;
+            int mask = (1 << n) - 1;
+            return (room.ReadyMask & mask) == mask;
+        }
+
+        void HandleRoomReady(ServerPlayer player, NetworkStream ns, string json)
+        {
+            bool ready = JI(json, "ready", 1) != 0;
+            GameRoom room;
+            lock (_lock)
+            {
+                if (player.RoomId < 0 || !_rooms.TryGetValue(player.RoomId, out room) || room.InBattle)
+                {
+                    Send(ns, PhoneMsg.Error, "{\"err\":\"not in room\"}");
+                    return;
+                }
+
+                int seat = room.PlayerIds.IndexOf(player.Id);
+                if (seat < 0)
+                {
+                    Send(ns, PhoneMsg.Error, "{\"err\":\"not in room\"}");
+                    return;
+                }
+
+                if (ready)
+                {
+                    room.ReadyMask |= 1 << seat;
+                }
+                else
+                {
+                    room.ReadyMask &= ~(1 << seat);
+                }
+            }
+            BroadcastRoomState(room);
+            Send(ns, PhoneMsg.RoomState, BuildRoomStateJson(room));
+        }
+
+        void HandleRoomLeave(ServerPlayer player, NetworkStream ns)
+        {
+            GameRoom room = null;
+            lock (_lock)
+            {
+                if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out room))
+                {
+                    int seat = room.PlayerIds.IndexOf(player.Id);
+                    if (seat >= 0)
+                    {
+                        room.PlayerIds.RemoveAt(seat);
+                        room.ReadyMask = ShiftReadyMask(room.ReadyMask, seat);
+                    }
+
+                    player.RoomId = -1;
+                    player.Seat = -1;
+                    if (room.PlayerIds.Count == 0)
+                    {
+                        _rooms.Remove(room.Id);
+                        room = null;
+                    }
+                }
+            }
+
+            Send(ns, PhoneMsg.RoomOk, "{\"roomId\":-1,\"seat\":-1}");
+            if (room != null)
+            {
+                BroadcastRoomState(room);
+            }
+        }
+
+        static int ShiftReadyMask(int mask, int removedSeat)
+        {
+            int low = mask & ((1 << removedSeat) - 1);
+            int high = (mask >> (removedSeat + 1)) << removedSeat;
+            return low | high;
+        }
+
+        void HandleRankRequest(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string type = JS(json, "type", "gp");
+            var celeb = _db != null ? _db.CelebForType(type) : null;
+            var sb = new StringBuilder("{\"type\":\"").Append(type.Replace("\"", "")).Append("\",\"ranks\":[");
+            int count = 0;
+            if (celeb != null && celeb.Count > 0)
+            {
+                count = Mathf.Min(50, celeb.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    CelebEntry e = celeb[i];
+                    if (i > 0) sb.Append(",");
+                    sb.Append("{\"rank\":").Append(e.Rank)
+                      .Append(",\"nick\":\"").Append((e.Nick ?? "").Replace("\"", ""))
+                      .Append("\",\"level\":").Append(e.Grade)
+                      .Append(",\"gp\":").Append(e.Gp)
+                      .Append(",\"fightPower\":").Append(e.FightPower)
+                      .Append(",\"offer\":").Append(e.Offer)
+                      .Append(",\"win\":").Append(e.WinCount)
+                      .Append(",\"lose\":").Append(Mathf.Max(0, e.TotalCount - e.WinCount))
+                      .Append(",\"vip\":").Append(e.VipLevel)
+                      .Append(",\"consortia\":\"").Append((e.ConsortiaName ?? "").Replace("\"", ""))
+                      .Append("\"}");
+                }
+            }
+            else
+            {
+                var sorted = new List<ServerPlayer>();
+                lock (_lock)
+                {
+                    sorted.AddRange(_players.Values);
+                }
+                sorted.Sort((a, b) => b.Win.CompareTo(a.Win));
+                count = Mathf.Min(50, sorted.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    if (i > 0) sb.Append(",");
+                    ServerPlayer p = sorted[i];
+                    sb.Append("{\"rank\":").Append(i + 1)
+                      .Append(",\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
+                      .Append("\",\"level\":").Append(p.Level)
+                      .Append(",\"gp\":").Append(p.Gp)
+                      .Append(",\"fightPower\":0")
+                      .Append(",\"offer\":").Append(p.Honor)
+                      .Append(",\"win\":").Append(p.Win)
+                      .Append(",\"lose\":").Append(p.Lose)
+                      .Append(",\"vip\":").Append(p.VipLevel)
+                      .Append(",\"consortia\":\"").Append((p.ConsortiaName ?? "").Replace("\"", ""))
+                      .Append("\"}");
+                }
+            }
+
+            bool listed = false;
+            string selfNick = (player.Nick ?? "").Replace("\"", "");
+            string body = sb.ToString();
+            if (!string.IsNullOrEmpty(selfNick) && body.IndexOf("\"nick\":\"" + selfNick + "\"", StringComparison.Ordinal) >= 0)
+            {
+                listed = true;
+            }
+
+            if (!listed && !string.IsNullOrEmpty(selfNick))
+            {
+                if (count > 0) sb.Append(",");
+                sb.Append("{\"rank\":0")
+                  .Append(",\"nick\":\"").Append(selfNick)
+                  .Append("\",\"level\":").Append(player.Level)
+                  .Append(",\"gp\":").Append(player.Gp)
+                  .Append(",\"fightPower\":0")
+                  .Append(",\"offer\":").Append(player.Honor)
+                  .Append(",\"win\":").Append(player.Win)
+                  .Append(",\"lose\":").Append(player.Lose)
+                  .Append(",\"vip\":").Append(player.VipLevel)
+                  .Append(",\"consortia\":\"").Append((player.ConsortiaName ?? "").Replace("\"", ""))
+                  .Append("\",\"self\":true}");
+            }
+
             sb.Append("]}");
             Send(ns, PhoneMsg.RankData, sb.ToString());
         }
@@ -1771,7 +2077,7 @@ namespace GunMobile.Net
         {
             int mapId = JI(json, "mapId", 1056);
             string name = JS(json, "name", player.Nick + "'s Room");
-            int maxPlayers = Mathf.Clamp(JI(json, "maxPlayers", 2), 2, 4);
+            int maxPlayers = Mathf.Clamp(JI(json, "maxPlayers", 4), 2, 4);
             GameRoom room;
             lock (_lock)
             {
@@ -1782,6 +2088,7 @@ namespace GunMobile.Net
                 _rooms[room.Id] = room;
             }
             Send(ns, PhoneMsg.RoomCreated, "{\"roomId\":" + room.Id + ",\"seat\":0,\"maxPlayers\":" + maxPlayers + "}");
+            BroadcastRoomState(room);
         }
 
         void HandleJoinRoom(ServerPlayer player, NetworkStream ns, string json)
@@ -1797,8 +2104,10 @@ namespace GunMobile.Net
                 room.PlayerIds.Add(player.Id);
                 player.RoomId = roomId;
                 player.Seat = room.PlayerIds.Count - 1;
+                Send(ns, PhoneMsg.RoomOk, "{\"roomId\":" + roomId + ",\"seat\":" + player.Seat + "}");
+                BroadcastRoomState(room);
+                return;
             }
-            Send(ns, PhoneMsg.RoomOk, "{\"roomId\":" + roomId + ",\"seat\":" + player.Seat + "}");
         }
 
         void HandleFightStart(ServerPlayer host, GameRoom room, string json)
@@ -1808,14 +2117,29 @@ namespace GunMobile.Net
             int n;
             lock (_lock)
             {
+                if (room.InBattle)
+                {
+                    return;
+                }
+
+                int humanCount = room.PlayerIds.Count;
+                bool soloPve = _players.TryGetValue(host.Id, out ServerPlayer hostPlayer) && hostPlayer.PveNpcId > 0 && humanCount == 1;
+                if (!soloPve && humanCount > 1 && !AllHumanPlayersReady(room))
+                {
+                    if (host.RoadStream != null)
+                    {
+                        Send(host.RoadStream, PhoneMsg.Error, "{\"err\":\"not all ready\"}");
+                    }
+                    return;
+                }
+
                 room.MapId = mapId;
                 room.InBattle = true;
                 room.Seed = seed;
                 room.CurrentTurn = 0;
                 room.Wind = new System.Random(seed).Next(-3, 4) * 10;
-                int humanCount = room.PlayerIds.Count;
                 int pveNpcId = 0;
-                if (_players.TryGetValue(host.Id, out ServerPlayer hostPlayer) && hostPlayer.PveNpcId > 0 && humanCount == 1)
+                if (hostPlayer != null && hostPlayer.PveNpcId > 0 && humanCount == 1)
                 {
                     pveNpcId = hostPlayer.PveNpcId;
                 }
@@ -3079,10 +3403,24 @@ namespace GunMobile.Net
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
+            public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
             public List<int> AcceptedQuests = new List<int>();
             public List<int> CompletedQuests = new List<int>();
             public List<string> Friends = new List<string>();
+            public List<ServerMailSave> Mails = new List<ServerMailSave>();
+        }
+
+        [Serializable]
+        class ServerMailSave
+        {
+            public int Id;
+            public string Subject = "";
+            public string Body = "";
+            public int Gold;
+            public int ItemId;
+            public int ItemCount;
+            public bool Claimed;
         }
 
         [Serializable]
@@ -3102,9 +3440,17 @@ namespace GunMobile.Net
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
-                Friends = p.Friends
+                Friends = p.Friends, NextMailId = p.NextMailId
             };
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
+            foreach (ServerMail m in p.Mails)
+            {
+                s.Mails.Add(new ServerMailSave
+                {
+                    Id = m.Id, Subject = m.Subject, Body = m.Body, Gold = m.Gold,
+                    ItemId = m.ItemId, ItemCount = m.ItemCount, Claimed = m.Claimed
+                });
+            }
             return s;
         }
 
@@ -3123,9 +3469,22 @@ namespace GunMobile.Net
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
-                Friends = s.Friends ?? new List<string>()
+                Friends = s.Friends ?? new List<string>(),
+                NextMailId = s.NextMailId > 0 ? s.NextMailId : 1,
+                Mails = new List<ServerMail>()
             };
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
+            if (s.Mails != null)
+            {
+                foreach (ServerMailSave m in s.Mails)
+                {
+                    p.Mails.Add(new ServerMail
+                    {
+                        Id = m.Id, Subject = m.Subject, Body = m.Body, Gold = m.Gold,
+                        ItemId = m.ItemId, ItemCount = m.ItemCount, Claimed = m.Claimed
+                    });
+                }
+            }
             return p;
         }
     }

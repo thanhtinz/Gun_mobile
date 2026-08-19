@@ -155,8 +155,10 @@ namespace GunMobile.Client
                     return;
                 case "signin":
                 case "church":
-                case "calendar":
                     SignInScreen.Show(_safe, this);
+                    return;
+                case "calendar":
+                    DataBrowserScreen.Show(_safe, this, new ModuleDef("calendar", "日历", "Flash/ui/cn_trad/xml/xml/ddtcalendar.xml"));
                     return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
@@ -330,6 +332,11 @@ namespace GunMobile.Client
                         }
                         break;
                     case PhoneMsg.MailResult:
+                    case PhoneMsg.MailListData:
+                        if (msg.Id == PhoneMsg.MailListData)
+                        {
+                            PhoneNet.LastMailListJson = msg.Json;
+                        }
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
                         {
@@ -374,6 +381,9 @@ namespace GunMobile.Client
                         break;
                     case PhoneMsg.RoomListData:
                         PhoneNet.LastRoomListJson = msg.Json;
+                        break;
+                    case PhoneMsg.RoomState:
+                        PhoneNet.LastRoomStateJson = msg.Json;
                         break;
                 }
             }

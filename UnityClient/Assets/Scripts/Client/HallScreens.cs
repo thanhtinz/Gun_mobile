@@ -267,6 +267,8 @@ namespace GunMobile.Client
     public static class RoomScreen
     {
         public static readonly string[] PackedMaps = { "1056", "2001", "1005", "1010", "1029", "1048" };
+        static int _maxPlayers = 4;
+        static Text _lobbyStatus;
 
         static IEnumerator ConnectFightWhenLogged(GameApp app, string host)
         {
@@ -287,6 +289,55 @@ namespace GunMobile.Client
             PhoneNet.ConnectFight(host);
         }
 
+        static IEnumerator RefreshRoomLobby(GameApp app, string host)
+        {
+            while (true)
+            {
+                string json = PhoneNet.LastRoomStateJson;
+                if (_lobbyStatus != null)
+                {
+                    if (PhoneNet.RoomId < 0)
+                    {
+                        _lobbyStatus.text = "未加入房间 — 创建或加入在线房间";
+                    }
+                    else if (string.IsNullOrEmpty(json))
+                    {
+                        _lobbyStatus.text = $"房间 #{PhoneNet.RoomId}  seat {PhoneNet.Seat}  等待同步…";
+                    }
+                    else
+                    {
+                        int max = GameApp.JsonInt(json, "max", _maxPlayers);
+                        int readyMask = GameApp.JsonInt(json, "readyMask", 0);
+                        var lines = new System.Text.StringBuilder();
+                        lines.Append($"房间 #{PhoneNet.RoomId}  {max}人  ready {readyMask}\n");
+                        int idx = json.IndexOf("[", System.StringComparison.Ordinal);
+                        int end = json.LastIndexOf("]", System.StringComparison.Ordinal);
+                        if (idx >= 0 && end > idx)
+                        {
+                            string arr = json.Substring(idx + 1, end - idx - 1);
+                            int pos = 0;
+                            while (pos < arr.Length)
+                            {
+                                int ob = arr.IndexOf('{', pos);
+                                if (ob < 0) break;
+                                int cb = arr.IndexOf('}', ob);
+                                if (cb < 0) break;
+                                string entry = arr.Substring(ob, cb - ob + 1);
+                                pos = cb + 1;
+                                string nick = GameApp.JsonStr(entry, "nick", "?");
+                                int seat = GameApp.JsonInt(entry, "seat", 0);
+                                bool ready = entry.IndexOf("\"ready\":true", System.StringComparison.Ordinal) >= 0;
+                                lines.Append($"  [{seat}] {nick}  {(ready ? "✓准备" : "…")}\n");
+                            }
+                        }
+                        _lobbyStatus.text = lines.ToString().TrimEnd();
+                    }
+                }
+
+                yield return new WaitForSeconds(1f);
+            }
+        }
+
         static IEnumerator CreateRoomWhenLogged(GameApp app, string host, int mapId, string name)
         {
             float t = 0f;
@@ -294,7 +345,7 @@ namespace GunMobile.Client
             {
                 if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
                 {
-                    PhoneNet.CreateRoom(mapId, name);
+                    PhoneNet.CreateRoom(mapId, name, _maxPlayers);
                     PhoneNet.ConnectFight(host);
                     yield break;
                 }
@@ -524,6 +575,30 @@ namespace GunMobile.Client
             roomSrt.anchorMax = new Vector2(0.95f, 0.81f);
             roomSrt.offsetMin = roomSrt.offsetMax = Vector2.zero;
             roomListBtn.onClick.AddListener(() => app.StartCoroutine(RefreshRoomList(app, roomScroll.content, ip.text)));
+
+            var lobbyPanel = UiKit.Panel(bg.transform, "Lobby", new Color(0f, 0f, 0f, 0.55f));
+            var lrt = lobbyPanel.GetComponent<RectTransform>();
+            lrt.anchorMin = new Vector2(0.05f, 0.01f);
+            lrt.anchorMax = new Vector2(0.95f, 0.05f);
+            lrt.offsetMin = lrt.offsetMax = Vector2.zero;
+            _lobbyStatus = UiKit.Label(lobbyPanel.transform, "LobbyTxt", "房间大厅", 18, Color.white, TextAnchor.MiddleLeft);
+            _lobbyStatus.rectTransform.offsetMin = new Vector2(12f, 0f);
+
+            var readyBtn = UiKit.Button(lobbyPanel.transform, "Ready", "准备", () => PhoneNet.SetRoomReady(true), new Vector2(100f, 36f));
+            readyBtn.GetComponent<RectTransform>().anchorMin = readyBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.72f, 0.5f);
+            var unreadyBtn = UiKit.Button(lobbyPanel.transform, "Unready", "取消", () => PhoneNet.SetRoomReady(false), new Vector2(100f, 36f));
+            unreadyBtn.GetComponent<RectTransform>().anchorMin = unreadyBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.82f, 0.5f);
+            var leaveBtn = UiKit.Button(lobbyPanel.transform, "Leave", "离开", () => PhoneNet.LeaveRoom(), new Vector2(100f, 36f));
+            leaveBtn.GetComponent<RectTransform>().anchorMin = leaveBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.92f, 0.5f);
+
+            var max2 = UiKit.Button(bg.transform, "Max2", "2人", () => { _maxPlayers = 2; }, new Vector2(60f, 36f));
+            max2.GetComponent<RectTransform>().anchorMin = max2.GetComponent<RectTransform>().anchorMax = new Vector2(0.05f, 0.82f);
+            var max3 = UiKit.Button(bg.transform, "Max3", "3人", () => { _maxPlayers = 3; }, new Vector2(60f, 36f));
+            max3.GetComponent<RectTransform>().anchorMin = max3.GetComponent<RectTransform>().anchorMax = new Vector2(0.11f, 0.82f);
+            var max4 = UiKit.Button(bg.transform, "Max4", "4人", () => { _maxPlayers = 4; }, new Vector2(60f, 36f));
+            max4.GetComponent<RectTransform>().anchorMin = max4.GetComponent<RectTransform>().anchorMax = new Vector2(0.17f, 0.82f);
+
+            app.StartCoroutine(RefreshRoomLobby(app, ip.text));
 
             var scroll = UiKit.Scroll(bg.transform, "Maps");
             var srt = scroll.GetComponent<RectTransform>();

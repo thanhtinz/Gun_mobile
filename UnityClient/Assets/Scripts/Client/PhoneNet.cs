@@ -20,6 +20,8 @@ namespace GunMobile.Client
         public static int RoomId = -1;
         public static string LastRankJson;
         public static string LastRoomListJson;
+        public static string LastMailListJson;
+        public static string LastRoomStateJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -34,9 +36,25 @@ namespace GunMobile.Client
             if (Fight != null && Fight.Connected) Fight.Send(PhoneMsg.Ping, "{}");
         }
 
-        public static void RequestRank()
+        public static void RequestRank(string type = "gp")
         {
-            Road?.Send(PhoneMsg.RankRequest, "{}");
+            Road?.Send(PhoneMsg.RankRequest, "{\"type\":\"" + (type ?? "gp").Replace("\"", "") + "\"}");
+        }
+
+        public static void RequestMailList()
+        {
+            Road?.Send(PhoneMsg.MailList, "{}");
+        }
+
+        public static void SetRoomReady(bool ready)
+        {
+            Road?.Send(PhoneMsg.RoomReady, "{\"ready\":" + (ready ? 1 : 0) + "}");
+        }
+
+        public static void LeaveRoom()
+        {
+            Road?.Send(PhoneMsg.RoomLeave, "{}");
+            RoomId = -1;
         }
 
         public static void Boot()
@@ -248,9 +266,12 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.RoomList, "{}");
         }
 
-        public static void CreateRoom(int mapId, string name)
+        public static void CreateRoom(int mapId, string name, int maxPlayers = 4)
         {
-            Road?.Send(PhoneMsg.CreateRoom, "{\"mapId\":" + mapId + ",\"name\":\"" + (name ?? "Room").Replace("\"", "") + "\"}");
+            Road?.Send(PhoneMsg.CreateRoom,
+                "{\"mapId\":" + mapId +
+                ",\"name\":\"" + (name ?? "Room").Replace("\"", "") +
+                "\",\"maxPlayers\":" + Mathf.Clamp(maxPlayers, 2, 4) + "}");
         }
 
         public static void JoinServerRoom(int roomId)

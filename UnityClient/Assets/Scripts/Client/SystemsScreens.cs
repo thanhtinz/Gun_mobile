@@ -313,11 +313,16 @@ namespace GunMobile.Client
 
     public static class RankScreen
     {
+        static string _rankType = "gp";
+
         public static void Show(RectTransform safe, GameApp app)
         {
-            PhoneNet.RequestRank();
-            Transform body = SysUi.Begin(safe, app, "排行榜");
-            SysUi.Note(body, $"你: {app.Profile.Nick}  Lv.{app.Profile.Level}  {app.Profile.Win}W/{app.Profile.Lose}L");
+            PhoneNet.RequestRank(_rankType);
+            Transform body = SysUi.Begin(safe, app, "排行榜 · PC Celeb");
+            SysUi.Row(body, "gp", _rankType == "gp" ? "[经验日增]" : "经验日增", () => { _rankType = "gp"; Show(safe, app); });
+            SysUi.Row(body, "fight", _rankType == "fight" ? "[战斗力]" : "战斗力", () => { _rankType = "fight"; Show(safe, app); });
+            SysUi.Row(body, "offer", _rankType == "offer" ? "[功勋日增]" : "功勋日增", () => { _rankType = "offer"; Show(safe, app); });
+            SysUi.Note(body, $"你: {app.Profile.Nick}  Lv.{app.Profile.Level}  GP {app.Profile.Gp}  {app.Profile.Win}W/{app.Profile.Lose}L");
 
             string json = PhoneNet.LastRankJson;
             if (string.IsNullOrEmpty(json))
@@ -346,14 +351,23 @@ namespace GunMobile.Client
                 string entry = arr.Substring(ob, cb - ob + 1);
                 pos = cb + 1;
 
+                int listed = GameApp.JsonInt(entry, "rank", rank);
                 string nick = GameApp.JsonStr(entry, "nick", "?");
                 int level = GameApp.JsonInt(entry, "level", 1);
+                int gp = GameApp.JsonInt(entry, "gp", 0);
+                int fightPower = GameApp.JsonInt(entry, "fightPower", 0);
+                int offer = GameApp.JsonInt(entry, "offer", 0);
                 int win = GameApp.JsonInt(entry, "win", 0);
-                int lose = GameApp.JsonInt(entry, "lose", 0);
                 int vip = GameApp.JsonInt(entry, "vip", 0);
-                int honor = GameApp.JsonInt(entry, "honor", 0);
-
-                SysUi.Note(body, $"#{rank}  {nick}  Lv{level}  {win}W/{lose}L  VIP{vip}  荣誉{honor}");
+                string consortia = GameApp.JsonStr(entry, "consortia", "");
+                bool self = entry.IndexOf("\"self\":true", StringComparison.Ordinal) >= 0;
+                string tag = self ? " (你)" : "";
+                string metric = _rankType == "fight"
+                    ? $"战力 {fightPower}"
+                    : _rankType == "offer"
+                        ? $"功勋 {offer}"
+                        : $"GP {gp}";
+                SysUi.Note(body, $"#{listed}  {nick}{tag}  Lv{level}  {metric}  {win}胜  VIP{vip}  {consortia}");
                 rank++;
             }
 
@@ -661,22 +675,63 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
+            PhoneNet.RequestMailList();
             Transform body = SysUi.Begin(safe, app, "邮件");
-            int waiting = app.Profile.MailGoldWaiting;
-            if (waiting <= 0 && app.Database != null)
+            string json = PhoneNet.LastMailListJson;
+            if (string.IsNullOrEmpty(json))
             {
-                int itemId = app.Database.ConfigInt("CheckRewardItem", 11001);
-                int count = app.Database.ConfigInt("CheckCount", 10);
-                ItemTemplate item = app.Database.GetItem(itemId);
-                waiting = item != null ? Mathf.Max(0, (item.Attack + item.Defence) * count) : 0;
-                app.Profile.MailGoldWaiting = waiting;
+                SysUi.Note(body, "正在加载邮件...");
+                SysUi.Row(body, "claim", "全部领取", () => PhoneNet.Road?.Send(PhoneMsg.MailClaim, "{\"id\":0}"));
+                return;
             }
 
-            SysUi.Note(body, $"系统邮件：离线奖励 {waiting} 金币");
-            SysUi.Row(body, "claim", "全部领取", () =>
+            int idx = json.IndexOf("[", StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", StringComparison.Ordinal);
+            int count = 0;
+            if (idx >= 0 && end > idx)
             {
-                PhoneNet.Road?.Send(PhoneMsg.MailClaim, "{\"id\":1}");
-            });
+                string arr = json.Substring(idx + 1, end - idx - 1);
+                int pos = 0;
+                while (pos < arr.Length)
+                {
+                    int ob = arr.IndexOf('{', pos);
+                    if (ob < 0) break;
+                    int cb = arr.IndexOf('}', ob);
+                    if (cb < 0) break;
+                    string entry = arr.Substring(ob, cb - ob + 1);
+                    pos = cb + 1;
+
+                    int id = GameApp.JsonInt(entry, "id", 0);
+                    string subject = GameApp.JsonStr(entry, "subject", "邮件");
+                    string mailBody = GameApp.JsonStr(entry, "body", "");
+                    int gold = GameApp.JsonInt(entry, "gold", 0);
+                    int itemId = GameApp.JsonInt(entry, "itemId", 0);
+                    int itemCount = GameApp.JsonInt(entry, "itemCount", 0);
+                    bool claimed = entry.IndexOf("\"claimed\":true", StringComparison.Ordinal) >= 0;
+                    count++;
+                    string reward = gold > 0 ? $"{gold} 金" : itemId > 0 ? $"#{itemId} x{itemCount}" : "";
+                    string status = claimed ? "[已领]" : "领取";
+                    int mailId = id;
+                    SysUi.Row(body, "m" + id, $"{subject}  {reward}  {status}", () =>
+                    {
+                        if (!claimed)
+                        {
+                            PhoneNet.Road?.Send(PhoneMsg.MailClaim, "{\"id\":" + mailId + "}");
+                        }
+                    });
+                    if (!string.IsNullOrEmpty(mailBody))
+                    {
+                        SysUi.Note(body, mailBody);
+                    }
+                }
+            }
+
+            if (count == 0)
+            {
+                SysUi.Note(body, "收件箱为空");
+            }
+
+            SysUi.Row(body, "claimAll", "全部领取", () => PhoneNet.Road?.Send(PhoneMsg.MailClaim, "{\"id\":0}"));
         }
     }
 

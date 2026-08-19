@@ -120,6 +120,21 @@ namespace GunMobile.Res
         public int Count;
     }
 
+    /// <summary>One row from Request/CelebByDay*.xml (PC leaderboard snapshot).</summary>
+    public sealed class CelebEntry
+    {
+        public int Rank;
+        public string Nick = "";
+        public int Grade;
+        public int Gp;
+        public int FightPower;
+        public int Offer;
+        public int VipLevel;
+        public string ConsortiaName = "";
+        public int WinCount;
+        public int TotalCount;
+    }
+
     public sealed class PetInfo
     {
         public int TemplateId;
@@ -285,6 +300,10 @@ namespace GunMobile.Res
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
         public Dictionary<int, FightPropTemplate> FightPropsByPic { get; } = new Dictionary<int, FightPropTemplate>();
+        public List<CelebEntry> CelebGpDay { get; } = new List<CelebEntry>();
+        public List<CelebEntry> CelebFightPowerDay { get; } = new List<CelebEntry>();
+        public List<CelebEntry> CelebOfferDay { get; } = new List<CelebEntry>();
+        public CharacterDefine CharacterDef { get; private set; }
 
         /// <summary>Mobile battle UI prop slots (game_prop_N.png).</summary>
         public static readonly int[] BattlePropPicIds = { 1, 2, 4, 5, 6, 7 };
@@ -318,7 +337,9 @@ namespace GunMobile.Res
             db.LoadServerConfig(loader);
             db.LoadFightLabDrops(loader);
             db.LoadLevels(loader);
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} cfg={db.ServerConfig.Count}");
+            db.LoadCelebLists(loader);
+            db.LoadCharacterDefine(loader);
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -1874,6 +1895,77 @@ namespace GunMobile.Res
                     ServerConfig[name] = value;
                 }
             }
+        }
+
+        void LoadCelebLists(ResLoader loader)
+        {
+            LoadCelebFile(loader, "Request/CelebByDayGPList.xml", CelebGpDay, "AddDayGP");
+            LoadCelebFile(loader, "Request/CelebByDayFightPowerList.xml", CelebFightPowerDay, "FightPower");
+            LoadCelebFile(loader, "Request/CelebByDayOfferList.xml", CelebOfferDay, "AddDayOffer");
+        }
+
+        void LoadCelebFile(ResLoader loader, string path, List<CelebEntry> target, string sortKey)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int rank = Int(row, "ID");
+                if (rank == 0)
+                {
+                    rank = target.Count + 1;
+                }
+
+                target.Add(new CelebEntry
+                {
+                    Rank = rank,
+                    Nick = Str(row, "NickName"),
+                    Grade = Int(row, "Grade"),
+                    Gp = Int(row, sortKey == "AddDayOffer" ? "AddDayOffer" : sortKey == "FightPower" ? "FightPower" : "AddDayGP"),
+                    FightPower = Int(row, "FightPower"),
+                    Offer = Int(row, "AddDayOffer"),
+                    VipLevel = Int(row, "VIPLevel"),
+                    ConsortiaName = Str(row, "ConsortiaName"),
+                    WinCount = Int(row, "WinCount"),
+                    TotalCount = Int(row, "TotalCount")
+                });
+            }
+        }
+
+        void LoadCharacterDefine(ResLoader loader)
+        {
+            try
+            {
+                byte[] bytes = loader.ReadBytes("Flash/characterdefine.xml");
+                if (bytes == null || bytes.Length == 0)
+                {
+                    return;
+                }
+
+                CharacterDef = CharacterDefine.Load(XDocument.Parse(System.Text.Encoding.UTF8.GetString(bytes)));
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("GameDatabase characterdefine: " + e.Message);
+            }
+        }
+
+        public List<CelebEntry> CelebForType(string type)
+        {
+            if (string.Equals(type, "fight", StringComparison.OrdinalIgnoreCase))
+            {
+                return CelebFightPowerDay;
+            }
+
+            if (string.Equals(type, "offer", StringComparison.OrdinalIgnoreCase))
+            {
+                return CelebOfferDay;
+            }
+
+            return CelebGpDay;
         }
 
         void LoadFightLabDrops(ResLoader loader)

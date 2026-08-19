@@ -112,7 +112,7 @@ namespace GunMobile.EditorTools
                 return false;
             }
 
-            byte[] header = PkmImage.WriteHeader(w, h, true);
+            byte[] header = PkmImage.WriteHeader(pw, ph, true);
             string outPath = PkmImage.ToPkmPath(sourcePath);
             using (var fs = new FileStream(outPath, FileMode.Create, FileAccess.Write))
             {

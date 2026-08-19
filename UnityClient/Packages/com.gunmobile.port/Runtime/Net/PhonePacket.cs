@@ -154,6 +154,11 @@ namespace GunMobile.Net
         public const ushort KingBless = 107;
         public const ushort SetNick = 108;
         public const ushort FightPetSkill = 109;
+        public const ushort MailList = 110;
+        public const ushort MailListData = 111;
+        public const ushort RoomReady = 86;
+        public const ushort RoomState = 87;
+        public const ushort RoomLeave = 88;
         public const ushort Error = 255;
     }
 }

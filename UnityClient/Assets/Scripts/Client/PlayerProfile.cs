@@ -483,6 +483,9 @@ namespace GunMobile.Client
             new ModuleDef("gemstone", "战魂", "Request/SpiritInfoList.xml"),
             new ModuleDef("kingbless", "弹王盟约", "Flash/ui/cn_trad/xml/xml/firstRecharge.xml"),
             new ModuleDef("calendar", "日历", "Flash/ui/cn_trad/xml/xml/ddtcalendar.xml"),
+            new ModuleDef("godcard", "神卡", "Request/godcardlist.xml"),
+            new ModuleDef("engrave", "刻印", "Request/engravesetinfo.xml"),
+            new ModuleDef("stock", "股票", "Request/StockTemplateInfo.xml"),
         };
     }
 }
