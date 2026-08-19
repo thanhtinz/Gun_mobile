@@ -737,6 +737,7 @@ namespace GunMobile.Client
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);
+            PhoneNet.ReportDamage(index, dmg);
             SpawnDmgPopup(_pos[index], dmg, crit);
         }
 
@@ -789,6 +790,7 @@ namespace GunMobile.Client
 
             _resultOpen = true;
             bool win = _loop.Livings[MeSeat()].Hp > 0;
+            PhoneNet.ReportFightOver(win);
             int gold = 0;
             int questGold = 0;
             if (win)
