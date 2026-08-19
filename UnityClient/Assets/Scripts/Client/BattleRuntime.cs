@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Logic;
 using GunMobile.Res;
@@ -134,6 +135,16 @@ namespace GunMobile.Client
         int _mapId;
         int _npcId;
         string _foeName = "Bot";
+        SpriteSheet _livingSheet;
+        List<SheetFrame> _walkFrames = new List<SheetFrame>();
+        List<SheetFrame> _atkFrames = new List<SheetFrame>();
+        RawImage[] _livingImg;
+        RawImage[] _hpFill;
+        RawImage _shotImg;
+        RawImage[] _dots;
+        Texture2D _craterTex;
+        float _animT;
+        bool _resultOpen;
 
         public void Run(GameApp app, int mapId, int npcId = 0)
         {
@@ -212,6 +223,7 @@ namespace GunMobile.Client
             _facing = new[] { 1, -1 };
             PlaceOnGround(0);
             PlaceOnGround(1);
+            BuildActors(root.transform);
             yield return null;
         }
 
@@ -341,6 +353,7 @@ namespace GunMobile.Client
             }
 
             DrawHud();
+            UpdateActors();
         }
 
         void FireBot()
@@ -465,16 +478,27 @@ namespace GunMobile.Client
 
         void FinishMatch()
         {
+            if (_resultOpen)
+            {
+                return;
+            }
+
+            _resultOpen = true;
             bool win = _loop.Livings[0].Hp > 0;
+            int gold = 0;
+            int questGold = 0;
             if (win)
             {
                 _app.Profile.Win++;
-                _app.Profile.Gold += 800 + Mathf.Max(0, _app.Profile.PendingReward);
+                gold = 800 + Mathf.Max(0, _app.Profile.PendingReward);
+                _app.Profile.Gold += gold;
                 _app.Profile.Honor += _npcId != 0 ? 12 : 4;
                 if (_app.Profile.PendingLabyrinth != 0)
                 {
                     _app.Profile.LabyrinthFloor++;
                 }
+
+                questGold = _app.Profile.CompleteAcceptedQuests(_app.Database);
             }
             else
             {
@@ -484,7 +508,10 @@ namespace GunMobile.Client
             _app.Profile.PendingReward = 0;
             _app.Profile.PendingLabyrinth = 0;
             _app.Profile.Save();
-            _app.ShowHall();
+            string detail = win
+                ? $"击败 {_foeName}" + (questGold > 0 ? $"\n任务奖励 +{questGold} 金" : "")
+                : $"{_foeName} 获胜";
+            BattleResultScreen.Show(_app.SafeArea, _app, win, gold + questGold, detail);
         }
 
         void PlaceOnGround(int i)
@@ -504,6 +531,16 @@ namespace GunMobile.Client
             int w = _foreTex.width;
             int h = _foreTex.height;
             int r2 = radius * radius;
+            Color[] craterPx = null;
+            int cw = 0;
+            int ch = 0;
+            if (_craterTex != null)
+            {
+                craterPx = _craterTex.GetPixels();
+                cw = _craterTex.width;
+                ch = _craterTex.height;
+            }
+
             for (int y = -radius; y <= radius; y++)
             {
                 for (int x = -radius; x <= radius; x++)
@@ -522,13 +559,227 @@ namespace GunMobile.Client
 
                     int idx = ty * w + tx;
                     Color c = px[idx];
-                    c.a = 0f;
+                    float cut = 1f;
+                    if (craterPx != null && cw > 0 && ch > 0)
+                    {
+                        int sx = Mathf.Clamp((x + radius) * cw / (radius * 2 + 1), 0, cw - 1);
+                        int sy = Mathf.Clamp((y + radius) * ch / (radius * 2 + 1), 0, ch - 1);
+                        cut = craterPx[sy * cw + sx].a;
+                    }
+
+                    if (cut > 0.15f || craterPx == null)
+                    {
+                        c.a = 0f;
+                    }
+
                     px[idx] = c;
                 }
             }
 
             _foreTex.SetPixels(px);
             _foreTex.Apply(false, false);
+        }
+
+        void BuildActors(Transform parent)
+        {
+            _livingSheet = SpriteSheet.TryLoad(
+                _app.Loader,
+                GamePaths.PathCombine("Resource", "image", "game", "living", "living948.png"),
+                GamePaths.PathCombine("Resource", "image", "game", "bonesLiving", "game_living_living948.png"));
+            if (_livingSheet != null)
+            {
+                _walkFrames = _livingSheet.Sequence("Image/01_");
+                _atkFrames = _livingSheet.Sequence("Image/attack");
+                if (_walkFrames.Count == 0)
+                {
+                    _walkFrames.AddRange(_livingSheet.Frames);
+                }
+            }
+
+            int craterId = _ball.Crater > 0 ? _ball.Crater : 65;
+            string[] craterPaths =
+            {
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "crater1.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "Crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "crater1.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "Crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "crater.png")
+            };
+            foreach (string path in craterPaths)
+            {
+                if (_app.Loader.TryReadBytes(path, out byte[] bytes))
+                {
+                    _craterTex = SpriteSheet.LoadTexture(bytes, true);
+                    if (_craterTex != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            _livingImg = new RawImage[2];
+            _hpFill = new RawImage[2];
+            for (int i = 0; i < 2; i++)
+            {
+                var go = new GameObject("Living" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                go.transform.SetParent(_world, false);
+                var raw = go.GetComponent<RawImage>();
+                raw.raycastTarget = false;
+                if (_livingSheet != null)
+                {
+                    raw.texture = _livingSheet.Texture;
+                    SheetFrame fr = _walkFrames.Count > 0 ? _walkFrames[Mathf.Min(6, _walkFrames.Count - 1)] : _livingSheet.Frames[0];
+                    raw.uvRect = fr.Uv;
+                }
+                else
+                {
+                    raw.texture = Texture2D.whiteTexture;
+                }
+
+                raw.color = i == 0 ? Color.white : new Color(1f, 0.55f, 0.5f, 1f);
+                _livingImg[i] = raw;
+
+                var hpGo = new GameObject("Hp" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                hpGo.transform.SetParent(go.transform, false);
+                var hpRt = hpGo.GetComponent<RectTransform>();
+                hpRt.anchorMin = new Vector2(0.1f, 1.05f);
+                hpRt.anchorMax = new Vector2(0.9f, 1.18f);
+                hpRt.offsetMin = hpRt.offsetMax = Vector2.zero;
+                var hp = hpGo.GetComponent<RawImage>();
+                hp.texture = Texture2D.whiteTexture;
+                hp.color = i == 0 ? new Color(0.3f, 0.9f, 0.35f) : new Color(0.95f, 0.3f, 0.25f);
+                hp.raycastTarget = false;
+                _hpFill[i] = hp;
+            }
+
+            var shotGo = new GameObject("Shot", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            shotGo.transform.SetParent(_world, false);
+            _shotImg = shotGo.GetComponent<RawImage>();
+            _shotImg.texture = Texture2D.whiteTexture;
+            _shotImg.color = new Color(1f, 0.92f, 0.2f, 1f);
+            _shotImg.raycastTarget = false;
+            shotGo.SetActive(false);
+
+            _dots = new RawImage[10];
+            for (int i = 0; i < _dots.Length; i++)
+            {
+                var d = new GameObject("Dot" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                d.transform.SetParent(_world, false);
+                var raw = d.GetComponent<RawImage>();
+                raw.texture = Texture2D.whiteTexture;
+                raw.color = new Color(1f, 1f, 0.4f, 0.55f);
+                raw.raycastTarget = false;
+                d.SetActive(false);
+                _dots[i] = raw;
+            }
+        }
+
+        void UpdateActors()
+        {
+            if (_livingImg == null || _map == null || _pos == null)
+            {
+                return;
+            }
+
+            _animT += Time.deltaTime;
+            bool walking = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == 0 && _move != null && _move.Direction != 0;
+            bool firing = _flying;
+            for (int i = 0; i < _livingImg.Length; i++)
+            {
+                bool dead = _loop.Livings[i].Hp <= 0;
+                _livingImg[i].gameObject.SetActive(!dead);
+                if (dead)
+                {
+                    continue;
+                }
+
+                SheetFrame frame = PickFrame(i == 0 && (walking || firing));
+                _livingImg[i].uvRect = frame.Uv;
+                float sx = _world.rect.width / Mathf.Max(1, _map.Width);
+                float sy = _world.rect.height / Mathf.Max(1, _map.Height);
+                var rt = _livingImg[i].rectTransform;
+                rt.pivot = new Vector2(0.5f, 0f);
+                rt.anchorMin = rt.anchorMax = MapAnchor(_pos[i].x, _pos[i].y);
+                rt.sizeDelta = new Vector2(Mathf.Max(48f, frame.Size.x * sx), Mathf.Max(56f, frame.Size.y * sy));
+                rt.localScale = new Vector3(_facing[i] >= 0 ? 1f : -1f, 1f, 1f);
+                if (_hpFill[i] != null)
+                {
+                    float pct = _loop.Livings[i].MaxHp <= 0 ? 0f : (float)_loop.Livings[i].Hp / _loop.Livings[i].MaxHp;
+                    _hpFill[i].rectTransform.anchorMax = new Vector2(0.1f + 0.8f * Mathf.Clamp01(pct), 1.18f);
+                }
+            }
+
+            if (_shotImg != null)
+            {
+                _shotImg.gameObject.SetActive(_flying);
+                if (_flying)
+                {
+                    var rt = _shotImg.rectTransform;
+                    rt.anchorMin = rt.anchorMax = UnityAnchor(_shot.X, _shot.Y);
+                    rt.sizeDelta = new Vector2(14f, 14f);
+                    rt.pivot = new Vector2(0.5f, 0.5f);
+                }
+            }
+
+            UpdateAimDots();
+        }
+
+        SheetFrame PickFrame(bool animate)
+        {
+            List<SheetFrame> seq = _flying && _atkFrames.Count > 0 ? _atkFrames : _walkFrames;
+            if (seq == null || seq.Count == 0)
+            {
+                return new SheetFrame { Uv = new Rect(0f, 0f, 1f, 1f), Size = new Vector2(72f, 90f) };
+            }
+
+            int idx = animate ? (int)(_animT * 10f) % seq.Count : Mathf.Min(6, seq.Count - 1);
+            return seq[idx];
+        }
+
+        Vector2 MapAnchor(float mapX, float mapYFromTop)
+        {
+            return new Vector2(mapX / _map.Width, 1f - mapYFromTop / _map.Height);
+        }
+
+        Vector2 UnityAnchor(float ux, float uy)
+        {
+            return new Vector2(ux / _map.Width, uy / _map.Height);
+        }
+
+        void UpdateAimDots()
+        {
+            if (_dots == null)
+            {
+                return;
+            }
+
+            bool show = _loop.Phase == BattlePhase.Aiming && _loop.CurrentLiving == 0 && _aim != null && !_flying;
+            if (!show)
+            {
+                for (int i = 0; i < _dots.Length; i++)
+                {
+                    _dots[i].gameObject.SetActive(false);
+                }
+
+                return;
+            }
+
+            Vector2 p = _pos[0];
+            ProjectileState s = _sim.Launch(p.x, _map.Height - p.y - 18f, _aim.AngleDeg, _aim.Power, _facing[0]);
+            for (int i = 0; i < _dots.Length; i++)
+            {
+                for (int k = 0; k < 3; k++)
+                {
+                    s = _sim.StepFrame(s, _loop.Wind);
+                }
+
+                var rt = _dots[i].rectTransform;
+                rt.anchorMin = rt.anchorMax = UnityAnchor(s.X, s.Y);
+                rt.sizeDelta = new Vector2(8f, 8f);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                _dots[i].gameObject.SetActive(s.X > 0 && s.X < _map.Width && s.Y > 0);
+            }
         }
 
         void DrawHud()
@@ -541,51 +792,7 @@ namespace GunMobile.Client
             var me = _loop.Livings[0];
             var foe = _loop.Livings[1];
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
-            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  ball {_ball.Id} r{_ball.Radii}";
-        }
-
-        void OnGUI()
-        {
-            if (_map == null || _pos == null)
-            {
-                return;
-            }
-
-            // Tanks as IMGUI dots in screen space mapped from map pixels via the world rect.
-            if (_world == null)
-            {
-                return;
-            }
-
-            Vector3[] corners = new Vector3[4];
-            _world.GetWorldCorners(corners);
-            float x0 = corners[0].x;
-            float y0 = corners[0].y;
-            float x1 = corners[2].x;
-            float y1 = corners[2].y;
-            for (int i = 0; i < _pos.Length; i++)
-            {
-                if (_loop.Livings[i].Hp <= 0)
-                {
-                    continue;
-                }
-
-                float sx = Mathf.Lerp(x0, x1, _pos[i].x / _map.Width);
-                float sy = Mathf.Lerp(y1, y0, _pos[i].y / _map.Height);
-                Rect r = new Rect(sx - 14f, Screen.height - sy - 18f, 28f, 36f);
-                GUI.color = i == 0 ? new Color(0.3f, 0.85f, 1f) : new Color(1f, 0.4f, 0.35f);
-                GUI.DrawTexture(r, Texture2D.whiteTexture);
-            }
-
-            if (_flying)
-            {
-                float sx = Mathf.Lerp(x0, x1, _shot.X / _map.Width);
-                float sy = Mathf.Lerp(y0, y1, _shot.Y / _map.Height);
-                GUI.color = Color.yellow;
-                GUI.DrawTexture(new Rect(sx - 5f, Screen.height - sy - 5f, 10f, 10f), Texture2D.whiteTexture);
-            }
-
-            GUI.color = Color.white;
+            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}";
         }
     }
 }

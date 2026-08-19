@@ -40,6 +40,22 @@ FLASH_FILES = (
     "Flash/4.png",
 )
 
+STARTER_ART = (
+    "Resource/image/equip/m/head/head1/icon_1.png",
+    "Resource/image/equip/f/head/head1/icon_1.png",
+    "Resource/image/equip/m/head/head2/icon_1.png",
+    "Resource/image/equip/f/head/head2/icon_1.png",
+    "Resource/image/equip/m/cloth/cloth1/icon_1.png",
+    "Resource/image/equip/f/cloth/cloth1/icon_1.png",
+    "Resource/image/arm/axe/00.png",
+    "Resource/image/arm/axe/1/icon.png",
+    "Resource/image/arm/axe/1/1/game.png",
+    "Resource/image/arm/bow/00.png",
+    "Resource/image/arm/bow/1/icon.png",
+    "Resource/image/arm/gun/00.png",
+    "Resource/image/arm/gun/1/icon.png",
+)
+
 REQUEST_KEEP = (
     "TemplateAlllist.xml",
     "ShopItemList.xml",
@@ -164,6 +180,7 @@ def main() -> None:
         n_bomb = extract_prefix(z3, "Resource/image/bomb/", (".png",))
         n_game = extract_prefix(z3, "Resource/image/game/", (".png", ".jpg"))
         n_scene = extract_prefix(z3, "Resource/image/scene/", (".png", ".jpg"))
+        n_starter = extract_named(z3, STARTER_ART)
         map_ids = discover_playable_maps(z3)
         n_map = 0
         for mid in map_ids:
@@ -185,6 +202,7 @@ def main() -> None:
             "bomb": n_bomb,
             "game": n_game,
             "scene": n_scene,
+            "starterArt": n_starter,
             "map": n_map,
             "mapIds": len(map_ids),
             "requestCopied": n_req,

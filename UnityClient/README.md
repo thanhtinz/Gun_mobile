@@ -15,7 +15,7 @@ Open **this folder** (`UnityClient/`) in Unity **6.3 LTS** (`6000.3.22f1`).
    - **任务 / 签到 / 弹王盟约 / 农场 / 公会 / 排行 / 好友 / 邮件 / 聊天**
    - **炮弹 / 炸弹配置** — chọn ball từ BallList / bombconfig
    - **角色 / 设置**
-5. Battle: left walk, right aim+release. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**). Bot/NPC aim bằng cùng simulator.
+5. Battle: left walk, right aim+release, trajectory dots, living948 sprite, crater PNG. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**). End screen + quest rewards on win.
 
 ## Build on GitHub (APK + IPA)
 

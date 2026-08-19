@@ -186,6 +186,33 @@ class MobilePack(unittest.TestCase):
             self.assertIn(module, app)
         self.assertIn("ShowBattle(int mapId, int npcId", app)
 
+    def test_battle_art_and_signin(self):
+        living = PCDATA / "Resource" / "image" / "game" / "living" / "living948.png"
+        self.assertTrue(living.exists())
+        raw = living.read_bytes()
+        self.assertEqual(raw[:2], b"PK")
+        import zipfile, io, struct
+        zf = zipfile.ZipFile(io.BytesIO(raw))
+        names = zf.namelist()
+        self.assertTrue(any(n.lower().endswith(".png") for n in names))
+        self.assertTrue(any(n.lower().endswith(".xml") for n in names))
+        png = zf.read(next(n for n in names if n.lower().endswith(".png")))
+        self.assertEqual(png[:8], b"\x89PNG\r\n\x1a\n")
+        w, h = struct.unpack(">II", png[16:24])
+        self.assertGreaterEqual(w, 256)
+        self.assertGreaterEqual(h, 256)
+        crater = PCDATA / "Resource" / "image" / "bomb" / "crater" / "65" / "crater1.png"
+        self.assertTrue(crater.exists())
+        self.assertEqual(crater.read_bytes()[:8], b"\x89PNG\r\n\x1a\n")
+        self.assertTrue((PCDATA / "Resource" / "image" / "arm" / "axe" / "00.png").exists())
+        self.assertTrue((PCDATA / "Resource" / "image" / "equip" / "m" / "head" / "head1" / "icon_1.png").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Res" / "SpriteSheet.cs").exists())
+        gp = (ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameplayScreens.cs").read_text(encoding="utf-8")
+        self.assertIn("BattleResultScreen", gp)
+        self.assertIn("TS_EveryDaySignIn", gp)
+        sign = parse_result_table(load_xml((DATA / "Request" / "TS_EveryDaySignIn.xml").read_bytes()))
+        self.assertEqual(len(sign), 28)
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

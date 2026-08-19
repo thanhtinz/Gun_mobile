@@ -315,25 +315,78 @@ namespace GunMobile.Client
         {
             UiKit.ClearChildren(safe);
             var bg = UiKit.Panel(safe, "Sign", new Color(0.08f, 0.1f, 0.14f, 1f));
-            ShopScreen.Header(bg.transform, app, "签到");
+            ShopScreen.Header(bg.transform, app, "签到 · TS_EveryDaySignIn");
             int today = System.DateTime.Now.DayOfYear;
             bool done = app.Profile.LastSignDay == today;
-            string msg = done ? "今天已经签到过了。" : "领取今日金币 +1200 / 点券 +20";
-            UiKit.Label(bg.transform, "Msg", msg, 32, Color.white, TextAnchor.MiddleCenter)
-                .rectTransform.anchorMin = new Vector2(0.1f, 0.4f);
-            bg.transform.Find("Msg").GetComponent<RectTransform>().anchorMax = new Vector2(0.9f, 0.7f);
-            if (!done)
+            var scroll = ShopScreen.BodyScroll(bg.transform);
+            if (app.Database.SignIn.Count == 0)
             {
-                var btn = UiKit.Button(bg.transform, "Go", "签到", () =>
+                ShopScreen.AddNote(scroll.content, done ? "今天已经签到过了。" : "表缺，金币 +1200");
+                if (!done)
                 {
+                    SysUi.Row(scroll.content, "Go", "签到", () =>
+                    {
+                        app.Profile.LastSignDay = today;
+                        app.Profile.Gold += 1200;
+                        app.Profile.Gift += 20;
+                        app.Profile.Save();
+                        Show(safe, app);
+                    });
+                }
+
+                return;
+            }
+
+            int nextDay = app.Profile.SignIndex >= 28 ? 1 : app.Profile.SignIndex + 1;
+            ShopScreen.AddNote(scroll.content, done
+                ? $"今天已签。进度 {Mathf.Min(app.Profile.SignIndex, 28)}/28"
+                : $"领取第 {nextDay} 天（表 28 日循环）");
+            foreach (SignReward r in app.Database.SignIn)
+            {
+                SignReward local = r;
+                string name = r.TemplateId < 0 ? "金币" : SysUi.ItemName(app, r.TemplateId);
+                bool claimed = app.Profile.SignIndex >= 28 || r.Day <= app.Profile.SignIndex;
+                bool can = !done && r.Day == nextDay;
+                string cap = $"第{r.Day}天  {name} x{r.Count}  {(claimed ? "[已领]" : can ? "领取" : "")}";
+                SysUi.Row(scroll.content, "d" + r.Day, cap, () =>
+                {
+                    if (!can)
+                    {
+                        return;
+                    }
+
+                    app.Profile.GrantTemplate(local.TemplateId, local.Count);
                     app.Profile.LastSignDay = today;
-                    app.Profile.Gold += 1200;
-                    app.Profile.Gift += 20;
+                    app.Profile.SignIndex = local.Day;
                     app.Profile.Save();
                     Show(safe, app);
-                }, new Vector2(280f, 80f));
-                btn.GetComponent<RectTransform>().anchorMin = btn.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.28f);
+                });
             }
+        }
+    }
+
+    public static class BattleResultScreen
+    {
+        public static void Show(RectTransform safe, GameApp app, bool win, int gold, string detail)
+        {
+            var battle = safe.GetComponent<BattleHost>();
+            if (battle != null)
+            {
+                Object.Destroy(battle);
+            }
+
+            UiKit.ClearChildren(safe);
+            var bg = UiKit.Panel(safe, "Result", win ? new Color(0.08f, 0.16f, 0.1f, 1f) : new Color(0.16f, 0.07f, 0.08f, 1f));
+            UiKit.Label(bg.transform, "Title", win ? "胜利" : "惜败", 48, new Color(1f, 0.9f, 0.4f), TextAnchor.MiddleCenter)
+                .rectTransform.anchorMin = new Vector2(0.1f, 0.62f);
+            bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.9f, 0.82f);
+            UiKit.Label(bg.transform, "Body", detail + $"\n金币 {(win ? "+" : "")}{gold}\n{app.Profile.Win}W / {app.Profile.Lose}L", 28, Color.white, TextAnchor.MiddleCenter)
+                .rectTransform.anchorMin = new Vector2(0.1f, 0.32f);
+            bg.transform.Find("Body").GetComponent<RectTransform>().anchorMax = new Vector2(0.9f, 0.62f);
+            var hall = UiKit.Button(bg.transform, "Hall", "返回大厅", app.ShowHall, new Vector2(280f, 72f));
+            hall.GetComponent<RectTransform>().anchorMin = hall.GetComponent<RectTransform>().anchorMax = new Vector2(0.35f, 0.18f);
+            var again = UiKit.Button(bg.transform, "Again", "再战", app.ShowRoom, new Vector2(280f, 72f));
+            again.GetComponent<RectTransform>().anchorMin = again.GetComponent<RectTransform>().anchorMax = new Vector2(0.65f, 0.18f);
         }
     }
 

@@ -169,6 +169,13 @@ namespace GunMobile.Res
         public int NeedCount;
     }
 
+    public sealed class SignReward
+    {
+        public int Day;
+        public int TemplateId;
+        public int Count;
+    }
+
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -194,6 +201,7 @@ namespace GunMobile.Res
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
+        public List<SignReward> SignIn { get; } = new List<SignReward>();
 
         public static GameDatabase Load(ResLoader loader)
         {
@@ -217,6 +225,7 @@ namespace GunMobile.Res
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
+            db.LoadSignIn(loader);
             Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count}");
             return db;
         }
@@ -802,6 +811,26 @@ namespace GunMobile.Res
             {
                 StrengthenRock[Int(row, "StrengthenLevel")] = Int(row, "Rock");
             }
+        }
+
+        void LoadSignIn(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_EveryDaySignIn.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                SignIn.Add(new SignReward
+                {
+                    Day = Int(row, "ID"),
+                    TemplateId = Int(row, "TemplateID"),
+                    Count = Int(row, "Count")
+                });
+            }
+
+            SignIn.Sort((a, b) => a.Day.CompareTo(b.Day));
         }
 
         static int FirstInt(string csv)

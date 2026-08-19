@@ -1091,6 +1091,13 @@
     "Request/user_lotteryrank.xml",
     "Request/warriorfamranklist.xml",
     "Request/warriorhighfamranklist.xml",
+    "Resource/image/arm/axe/00.png",
+    "Resource/image/arm/axe/1/1/game.png",
+    "Resource/image/arm/axe/1/icon.png",
+    "Resource/image/arm/bow/00.png",
+    "Resource/image/arm/bow/1/icon.png",
+    "Resource/image/arm/gun/00.png",
+    "Resource/image/arm/gun/1/icon.png",
     "Resource/image/bomb/crater/101/crater.png",
     "Resource/image/bomb/crater/101/craterbrink.png",
     "Resource/image/bomb/crater/102/crater.png",
@@ -1303,6 +1310,12 @@
     "Resource/image/bomb/crater/877/craterbrink.png",
     "Resource/image/bomb/crater/878/crater.png",
     "Resource/image/bomb/crater/878/craterbrink.png",
+    "Resource/image/equip/f/cloth/cloth1/icon_1.png",
+    "Resource/image/equip/f/head/head1/icon_1.png",
+    "Resource/image/equip/f/head/head2/icon_1.png",
+    "Resource/image/equip/m/cloth/cloth1/icon_1.png",
+    "Resource/image/equip/m/head/head1/icon_1.png",
+    "Resource/image/equip/m/head/head2/icon_1.png",
     "Resource/image/game/bonesLiving/game_living_living948.png",
     "Resource/image/game/living/living948.png",
     "Resource/image/map/1001/back.jpg",
@@ -2014,6 +2027,7 @@
     "map": 680,
     "mapIds": 116,
     "requestCopied": 354,
-    "flashCopied": 395
+    "flashCopied": 395,
+    "starterArt": 13
   }
 }

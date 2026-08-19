@@ -38,6 +38,7 @@ namespace GunMobile.Client
         public int EquipGlass;
         public int EquipWeapon = 7001;
         public int LastSignDay = -1;
+        public int SignIndex;
         public int PetId;
         public int CardId;
         public int TotemId;
@@ -116,6 +117,11 @@ namespace GunMobile.Client
             {
                 EquipWeapon = 7001;
                 WeaponId = 7001;
+            }
+
+            if (EquipHead == 0 && Find(1102) != null)
+            {
+                EquipHead = 1102;
             }
 
             if (Friends == null)
@@ -333,6 +339,64 @@ namespace GunMobile.Client
         public bool QuestDone(int id) => CompletedQuests.Contains(id);
 
         public bool QuestAccepted(int id) => AcceptedQuests.Contains(id);
+
+        public void GrantTemplate(int templateId, int count)
+        {
+            if (templateId == 0)
+            {
+                return;
+            }
+
+            if (templateId < 0)
+            {
+                int gold = count > 100000 ? count / 1000 : count;
+                Gold += Mathf.Clamp(gold, 400, 30000);
+                return;
+            }
+
+            AddItem(templateId, Mathf.Clamp(count, 1, 99));
+        }
+
+        public int CompleteAcceptedQuests(GameDatabase db)
+        {
+            int extra = 0;
+            if (db == null || AcceptedQuests.Count == 0)
+            {
+                return 0;
+            }
+
+            var copy = new List<int>(AcceptedQuests);
+            AcceptedQuests.Clear();
+            foreach (int id in copy)
+            {
+                if (CompletedQuests.Contains(id))
+                {
+                    continue;
+                }
+
+                CompletedQuests.Add(id);
+                QuestInfo q = null;
+                for (int i = 0; i < db.Quests.Count; i++)
+                {
+                    if (db.Quests[i].Id == id)
+                    {
+                        q = db.Quests[i];
+                        break;
+                    }
+                }
+
+                if (q == null)
+                {
+                    continue;
+                }
+
+                extra += Mathf.Max(50, q.RewardGold);
+                Gold += Mathf.Max(50, q.RewardGold);
+                Honor += 5;
+            }
+
+            return extra;
+        }
     }
 
     public sealed class ModuleDef
