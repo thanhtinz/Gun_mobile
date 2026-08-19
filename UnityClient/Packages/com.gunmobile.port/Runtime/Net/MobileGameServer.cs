@@ -135,7 +135,10 @@ namespace GunMobile.Net
             J(sb, "lose", Lose); sb.Append(",");
             J(sb, "weaponId", WeaponId); sb.Append(",");
             J(sb, "equipHead", EquipHead); sb.Append(",");
+            J(sb, "equipHair", EquipHair); sb.Append(",");
+            J(sb, "equipFace", EquipFace); sb.Append(",");
             J(sb, "equipCloth", EquipCloth); sb.Append(",");
+            J(sb, "equipGlass", EquipGlass); sb.Append(",");
             J(sb, "equipWeapon", EquipWeapon); sb.Append(",");
             J(sb, "petId", PetId); sb.Append(",");
             J(sb, "cardId", CardId); sb.Append(",");
@@ -218,13 +221,34 @@ namespace GunMobile.Net
 
                 if (q == null) continue;
 
-                int reward = Mathf.Max(50, q.RewardGold);
-                extra += reward;
-                Gold += reward;
-                Honor += 5;
+                extra += q.RewardGold;
+                Gold += q.RewardGold;
+                Honor += q.RewardOffer;
             }
 
             return extra;
+        }
+
+        public void GrantTemplateReward(GameDatabase db, int templateId, int count)
+        {
+            if (count <= 0 || db == null)
+            {
+                return;
+            }
+
+            if (db.IsGoldTemplate(templateId))
+            {
+                Gold += count;
+                return;
+            }
+
+            if (db.IsGiftTemplate(templateId))
+            {
+                Gift += count;
+                return;
+            }
+
+            AddItem(templateId, count);
         }
 
         public bool Equip(ItemTemplate item)
@@ -286,6 +310,10 @@ namespace GunMobile.Net
 
         // Crater cuts applied during battle — replayed to reconnecting clients.
         public List<string> CraterHistory = new List<string>();
+
+        // PvE NPC seat when solo player starts with PveNpcId (from PC NPCInfoList).
+        public int PveNpcId;
+        public int NpcSeat = -1;
 
         // Cached final battle reward so late/duplicated clients (reconnect, late ack)
         // still receive the exact same gold/win as computed by the server.
@@ -861,15 +889,19 @@ namespace GunMobile.Net
                 }
 
                 case PhoneMsg.GuildDonate:
-                    if (player.Gold >= 1000 && !string.IsNullOrEmpty(player.ConsortiaName))
+                {
+                    int donateGold = _db != null ? _db.ConfigInt("ConsortiaMinOffer", 500) : 500;
+                    if (player.Gold >= donateGold && !string.IsNullOrEmpty(player.ConsortiaName))
                     {
-                        player.Gold -= 1000;
-                        player.Honor += 80;
+                        player.Gold -= donateGold;
+                        int honorGain = _db != null ? _db.ConfigInt("ConsortiaOfferCess", 10) * donateGold / 100 : donateGold / 10;
+                        player.Honor += Mathf.Max(1, honorGain);
                         SavePlayer(player);
                     }
                     Send(ns, PhoneMsg.GuildResult, "{\"ok\":true}");
                     Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
+                }
 
                 case PhoneMsg.FriendAdd:
                 {
@@ -926,9 +958,16 @@ namespace GunMobile.Net
                 {
                     int mailGold = 0;
                     int mailId = JI(json, "id", 0);
-                    if (mailId == 1)
+                    if (mailId == 1 && _db != null)
                     {
-                        mailGold = 500;
+                        int itemId = _db.ConfigInt("CheckRewardItem", 11001);
+                        int count = _db.ConfigInt("CheckCount", 10);
+                        ItemTemplate item = _db.GetItem(itemId);
+                        if (item != null)
+                        {
+                            mailGold = Mathf.Max(0, (item.Attack + item.Defence) * count);
+                        }
+
                         player.Gold += mailGold;
                         SavePlayer(player);
                     }
@@ -982,11 +1021,15 @@ namespace GunMobile.Net
                     break;
 
                 case PhoneMsg.PveStart:
+                {
                     player.PveNpcId = JI(json, "npcId", 0);
-                    player.PveRewardGold = JI(json, "reward", 0);
                     player.PveLabyrinth = JI(json, "labyrinth", 0) != 0;
-                    Send(ns, PhoneMsg.PveResult, "{\"ok\":true}");
+                    player.PveRewardGold = _db != null
+                        ? _db.ComputePveWinGold(player.PveNpcId, player.LabyrinthFloor, player.PveLabyrinth)
+                        : 0;
+                    Send(ns, PhoneMsg.PveResult, "{\"ok\":true,\"reward\":" + player.PveRewardGold + "}");
                     break;
+                }
 
                 case PhoneMsg.Ping:
                     Send(ns, PhoneMsg.Ping, "{}");
@@ -1280,8 +1323,8 @@ namespace GunMobile.Net
 
         void HandleMountUpgrade(ServerPlayer player, NetworkStream ns, string json)
         {
-            int cost = 800 + player.MountGrade * 200;
-            if (player.Gold >= cost)
+            int cost = _db != null ? _db.MountUpgradeCost(player.MountGrade) : 0;
+            if (cost > 0 && player.Gold >= cost)
             {
                 player.Gold -= cost;
                 player.MountGrade++;
@@ -1299,10 +1342,33 @@ namespace GunMobile.Net
                 Send(ns, PhoneMsg.SignInResult, "{\"ok\":false,\"err\":\"already signed\"}");
                 return;
             }
+
             player.LastSignDay = today;
             player.SignIndex = Mathf.Min(28, player.SignIndex + 1);
-            player.Gold += 1200;
-            player.Gift += 20;
+            if (_db != null && _db.SignIn.Count > 0)
+            {
+                int dayIdx = Mathf.Clamp(player.SignIndex, 1, _db.SignIn.Count);
+                SignReward reward = null;
+                foreach (SignReward r in _db.SignIn)
+                {
+                    if (r.Day == dayIdx)
+                    {
+                        reward = r;
+                        break;
+                    }
+                }
+
+                if (reward == null && dayIdx - 1 < _db.SignIn.Count)
+                {
+                    reward = _db.SignIn[dayIdx - 1];
+                }
+
+                if (reward != null)
+                {
+                    player.GrantTemplateReward(_db, reward.TemplateId, reward.Count);
+                }
+            }
+
             SavePlayer(player);
             Send(ns, PhoneMsg.SignInResult, "{\"ok\":true}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
@@ -1312,7 +1378,7 @@ namespace GunMobile.Net
         {
             int count = JI(json, "count", 1);
             if (count < 1) count = 1;
-            int cost = count == 1 ? 300 : 2700;
+            int cost = _db != null ? _db.LotteryDrawCost(count) : 100;
             if (player.Gold < cost || _db == null || _db.Lottery.Count == 0)
             {
                 Send(ns, PhoneMsg.LotteryResult, "{\"ok\":false}");
@@ -1401,12 +1467,13 @@ namespace GunMobile.Net
 
         void HandleGemUpgrade(ServerPlayer player, NetworkStream ns)
         {
-            if (player.Gold < 600 || player.GemLevel >= 12)
+            int cost = _db != null ? _db.GemUpgradeCost(player.GemLevel) : 0;
+            if (cost <= 0 || player.Gold < cost || player.GemLevel >= 12)
             {
                 Send(ns, PhoneMsg.StatResult, player.ToJson());
                 return;
             }
-            player.Gold -= 600;
+            player.Gold -= cost;
             player.GemLevel++;
             player.RecalcStats(_db);
             SavePlayer(player);
@@ -1526,7 +1593,16 @@ namespace GunMobile.Net
                 room.Seed = seed;
                 room.CurrentTurn = 0;
                 room.Wind = new System.Random(seed).Next(-3, 4) * 10;
-                n = room.PlayerIds.Count;
+                int humanCount = room.PlayerIds.Count;
+                int pveNpcId = 0;
+                if (_players.TryGetValue(host.Id, out ServerPlayer hostPlayer) && hostPlayer.PveNpcId > 0 && humanCount == 1)
+                {
+                    pveNpcId = hostPlayer.PveNpcId;
+                }
+
+                n = humanCount + (pveNpcId > 0 ? 1 : 0);
+                room.PveNpcId = pveNpcId;
+                room.NpcSeat = pveNpcId > 0 ? humanCount : -1;
                 room.Hp = new int[n];
                 room.MaxHp = new int[n];
                 room.Livings = new LivingStats[n];
@@ -1536,10 +1612,9 @@ namespace GunMobile.Net
                 room.Facing = new int[n];
                 for (int i = 0; i < n; i++)
                 {
-                    // Team: even seats = team 1, odd seats = team 2
                     int team = (i % 2) + 1;
                     room.Balls[i] = BallPhysics.Default;
-                    if (_players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
+                    if (i < humanCount && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
                     {
                         p.RecalcStats(_db);
                         room.Hp[i] = p.Hp;
@@ -1554,6 +1629,18 @@ namespace GunMobile.Net
                         {
                             int bid = p.PreferredBallId > 0 ? p.PreferredBallId : _db.DefaultBallId(p.WeaponId);
                             room.Balls[i] = _db.GetBall(bid);
+                        }
+                    }
+                    else if (pveNpcId > 0 && _db != null)
+                    {
+                        LivingStats npc = _db.MakeNpcLiving(pveNpcId);
+                        npc.Team = 2;
+                        room.Hp[i] = npc.Hp;
+                        room.MaxHp[i] = npc.MaxHp;
+                        room.Livings[i] = npc;
+                        if (_db.DefaultBallId(7001) > 0)
+                        {
+                            room.Balls[i] = _db.GetBall(_db.DefaultBallId(7001));
                         }
                     }
                     else
@@ -1651,6 +1738,10 @@ namespace GunMobile.Net
                 sb.Append(",\"").Append(p).Append("petId\":").Append(petId);
                 sb.Append(",\"").Append(p).Append("titleId\":").Append(titleId);
                 sb.Append(",\"").Append(p).Append("nick\":\"").Append((nick ?? "Player").Replace("\"", "")).Append("\"");
+                if (i == room.NpcSeat && room.PveNpcId > 0)
+                {
+                    sb.Append(",\"").Append(p).Append("npcId\":").Append(room.PveNpcId);
+                }
             }
             sb.Append("}");
             string startJson = sb.ToString();
@@ -1903,6 +1994,8 @@ namespace GunMobile.Net
             {
                 if (!room.InBattle) return;
                 room.InBattle = false;
+                room.PveNpcId = 0;
+                room.NpcSeat = -1;
 
                 aliveTeams = new HashSet<int>();
                 if (room.Hp != null && room.Livings != null)
@@ -1930,9 +2023,12 @@ namespace GunMobile.Net
                         ? room.Livings[seat].Team
                         : 1;
                     bool win = aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
-                    int gold = win ? 800 : 100;
+                    bool pve = p.PveNpcId != 0 || room.PveNpcId != 0;
+                    int winGold = _db != null ? _db.BattleWinGold() : 486;
+                    int loseGold = _db != null ? _db.BattleLoseGold() : 48;
+                    int gold = win ? winGold : loseGold;
                     int questGold = 0;
-                    int pveNpcId = p.PveNpcId;
+                    int pveNpcId = p.PveNpcId != 0 ? p.PveNpcId : room.PveNpcId;
 
                     if (win && p.PveRewardGold > 0)
                     {
@@ -1951,7 +2047,10 @@ namespace GunMobile.Net
                     {
                         p.Win++;
                         p.Gold += gold;
-                        p.Honor += pveNpcId != 0 ? 12 : 4;
+                        if (_db != null)
+                        {
+                            p.Honor += _db.BattleWinHonor(p.Level, pve);
+                        }
                         questGold = p.CompleteAcceptedQuests(_db);
                     }
                     else
@@ -1960,7 +2059,6 @@ namespace GunMobile.Net
                         p.Gold += gold;
                     }
 
-                    p.Level = Mathf.Min(70, p.Level + (win ? 1 : 0));
                     p.RecalcStats(_db);
                     SavePlayer(p);
                     int totalGold = gold + questGold;

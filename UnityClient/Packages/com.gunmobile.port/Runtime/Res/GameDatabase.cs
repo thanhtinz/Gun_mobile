@@ -49,6 +49,7 @@ namespace GunMobile.Res
         public int RewardGold;
         public int RewardMoney;
         public int RewardGp;
+        public int RewardOffer;
         public string PreQuestId = "";
         public bool CanRepeat;
     }
@@ -77,6 +78,16 @@ namespace GunMobile.Res
         public int Lucky;
         public string ModelId = "";
         public string ResourcesPath = "";
+        public int Experience;
+        public int DropId;
+    }
+
+    public sealed class FightLabDrop
+    {
+        public int LabId;
+        public int Easy;
+        public int AwardItem;
+        public int Count;
     }
 
     public sealed class PetInfo
@@ -126,6 +137,7 @@ namespace GunMobile.Res
     public sealed class MountGrade
     {
         public int Grade;
+        public int Experience;
         public int AddBlood;
         public int AddDamage;
         public int MagicAttack;
@@ -155,6 +167,7 @@ namespace GunMobile.Res
         public int DefendAdd;
         public int AgilityAdd;
         public int LuckAdd;
+        public int ReferenceCost;
     }
 
     public sealed class ElfInfo
@@ -206,6 +219,8 @@ namespace GunMobile.Res
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
         public List<SignReward> SignIn { get; } = new List<SignReward>();
+        public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
+        public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
 
         public static GameDatabase Load(ResLoader loader)
         {
@@ -230,8 +245,153 @@ namespace GunMobile.Res
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
             db.LoadSignIn(loader);
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count}");
+            db.LoadServerConfig(loader);
+            db.LoadFightLabDrops(loader);
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} cfg={db.ServerConfig.Count}");
             return db;
+        }
+
+        public int ConfigInt(string name, int fallback = 0)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw))
+            {
+                return fallback;
+            }
+
+            int comma = raw.IndexOf(',');
+            string head = comma < 0 ? raw : raw.Substring(0, comma);
+            return int.TryParse(head.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) ? n : fallback;
+        }
+
+        public float ConfigFloat(string name, float fallback = 0f)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw))
+            {
+                return fallback;
+            }
+
+            return float.TryParse(raw.Trim(), NumberStyles.Float, CultureInfo.InvariantCulture, out float n) ? n : fallback;
+        }
+
+        public int ConfigPipeInt(string name, int index, int fallback = 0)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw))
+            {
+                return fallback;
+            }
+
+            string[] parts = raw.Split('|');
+            if (parts.Length == 0)
+            {
+                return fallback;
+            }
+
+            int i = Mathf.Clamp(index, 0, parts.Length - 1);
+            return int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) ? n : fallback;
+        }
+
+        public int LevelTierIndex(int level)
+        {
+            return Mathf.Clamp((Mathf.Max(1, level) - 1) / 7, 0, 9);
+        }
+
+        public int BattleWinGold()
+        {
+            return ConfigInt("TakeCardMoney", 486);
+        }
+
+        public int BattleLoseGold()
+        {
+            int win = BattleWinGold();
+            float discount = ConfigFloat("TakeCardDiscount", 0.1f);
+            return Mathf.Max(0, Mathf.RoundToInt(win * discount));
+        }
+
+        public int BattleWinHonor(int level, bool pve)
+        {
+            string key = pve ? "MissionAwardRicheOffer" : "MissionAwardOffer";
+            return ConfigPipeInt(key, LevelTierIndex(level), 500);
+        }
+
+        public int MountUpgradeCost(int currentGrade)
+        {
+            int next = currentGrade + 1;
+            if (!Mounts.TryGetValue(next, out MountGrade nextGrade))
+            {
+                return 0;
+            }
+
+            int prevExp = 0;
+            if (Mounts.TryGetValue(currentGrade, out MountGrade curGrade))
+            {
+                prevExp = curGrade.Experience;
+            }
+
+            return Mathf.Max(0, nextGrade.Experience - prevExp);
+        }
+
+        public int GemUpgradeCost(int currentLevel)
+        {
+            int next = currentLevel + 1;
+            foreach (SpiritInfo s in Spirits.Values)
+            {
+                if (s.Level == next)
+                {
+                    return s.ReferenceCost;
+                }
+            }
+
+            return ConfigInt("MustFusionGold", 400);
+        }
+
+        public int LotteryDrawCost(int count)
+        {
+            if (count >= 10)
+            {
+                return ConfigInt("NewLotteryOpenMoney", 100) * 10;
+            }
+
+            return ConfigInt("LotteryMoney", 100);
+        }
+
+        public int ComputePveWinGold(int npcId, int labyrinthFloor, bool labyrinth)
+        {
+            if (labyrinth && labyrinthFloor > 0)
+            {
+                int easy = Mathf.Clamp((labyrinthFloor - 1) % 3, 0, 2);
+                int gold = 0;
+                foreach (FightLabDrop drop in FightLabDrops)
+                {
+                    if (drop.LabId != 1000 || drop.Easy != easy)
+                    {
+                        continue;
+                    }
+
+                    if (drop.AwardItem == -300 || drop.AwardItem == -1100)
+                    {
+                        gold += drop.Count;
+                    }
+                }
+
+                return gold;
+            }
+
+            if (npcId != 0 && Npcs.TryGetValue(npcId, out NpcInfo npc))
+            {
+                return Mathf.Max(0, npc.Experience);
+            }
+
+            return 0;
+        }
+
+        public bool IsGoldTemplate(int templateId)
+        {
+            return templateId == -1100 || templateId == -300;
+        }
+
+        public bool IsGiftTemplate(int templateId)
+        {
+            return templateId < 0 && !IsGoldTemplate(templateId);
         }
 
         public NpcInfo GetNpc(int id)
@@ -464,6 +624,7 @@ namespace GunMobile.Res
                     RewardGold = Int(row, "RewardGold"),
                     RewardMoney = Int(row, "RewardMoney"),
                     RewardGp = Int(row, "RewardGP"),
+                    RewardOffer = Int(row, "RewardOffer"),
                     PreQuestId = Str(row, "PreQuestID"),
                     CanRepeat = Bool(row, "CanRepeat")
                 });
@@ -559,7 +720,9 @@ namespace GunMobile.Res
                     Agility = Int(row, "Agility"),
                     Lucky = Int(row, "Lucky"),
                     ModelId = Str(row, "ModelID"),
-                    ResourcesPath = Str(row, "ResourcesPath")
+                    ResourcesPath = Str(row, "ResourcesPath"),
+                    Experience = Int(row, "Experience"),
+                    DropId = Int(row, "DropId")
                 };
             }
         }
@@ -669,6 +832,7 @@ namespace GunMobile.Res
                 Mounts[g] = new MountGrade
                 {
                     Grade = g,
+                    Experience = Int(row, "Experience"),
                     AddBlood = Int(row, "AddBlood"),
                     AddDamage = Int(row, "AddDamage"),
                     MagicAttack = Int(row, "MagicAttack")
@@ -758,7 +922,8 @@ namespace GunMobile.Res
                     AttackAdd = Int(row, "AttackAdd"),
                     DefendAdd = Int(row, "DefendAdd"),
                     AgilityAdd = Int(row, "AgilityAdd"),
-                    LuckAdd = Int(row, "LuckAdd")
+                    LuckAdd = Int(row, "LuckAdd"),
+                    ReferenceCost = Int(row, "RefrenceValue")
                 };
                 if (!Spirits.TryGetValue(level, out SpiritInfo prev) ||
                     info.AttackAdd + info.DefendAdd > prev.AttackAdd + prev.DefendAdd)
@@ -839,6 +1004,44 @@ namespace GunMobile.Res
             }
 
             SignIn.Sort((a, b) => a.Day.CompareTo(b.Day));
+        }
+
+        void LoadServerConfig(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ServerConfig.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/serverconfigOUT.xml", out table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                string name = Str(row, "Name");
+                string value = Str(row, "Value");
+                if (!string.IsNullOrEmpty(name))
+                {
+                    ServerConfig[name] = value;
+                }
+            }
+        }
+
+        void LoadFightLabDrops(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/fightlabdropitemlist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                FightLabDrops.Add(new FightLabDrop
+                {
+                    LabId = Int(row, "ID"),
+                    Easy = Int(row, "Easy"),
+                    AwardItem = Int(row, "AwardItem"),
+                    Count = Int(row, "Count")
+                });
+            }
         }
 
         static int FirstInt(string csv)

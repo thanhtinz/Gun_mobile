@@ -396,9 +396,9 @@ namespace GunMobile.Client
                     continue;
                 }
 
-                extra += Mathf.Max(50, q.RewardGold);
-                Gold += Mathf.Max(50, q.RewardGold);
-                Honor += 5;
+                extra += q.RewardGold;
+                Gold += q.RewardGold;
+                Honor += q.RewardOffer;
             }
 
             return extra;

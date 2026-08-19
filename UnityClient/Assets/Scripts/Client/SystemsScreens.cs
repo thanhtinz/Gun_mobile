@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GunMobile.Core;
+using GunMobile.Net;
 using GunMobile.Res;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,15 +32,13 @@ namespace GunMobile.Client
             ShopScreen.AddNote(content, text);
         }
 
-        public static void Fight(GameApp app, int mapId, int npcId, int extraGold, bool labyrinth = false)
+        public static void Fight(GameApp app, int mapId, int npcId, bool labyrinth = false)
         {
-            app.Profile.PendingReward = extraGold;
+            app.Profile.PendingReward = 0;
             app.Profile.PendingLabyrinth = labyrinth ? 1 : 0;
             app.Profile.Save();
-            // Notify server about PvE context so rewards are applied server-side
             PhoneNet.Road?.Send(PhoneMsg.PveStart,
                 "{\"npcId\":" + npcId +
-                ",\"reward\":" + extraGold +
                 ",\"labyrinth\":" + (labyrinth ? "1" : "0") + "}");
             app.ShowBattle(mapId, npcId);
         }
@@ -557,7 +556,7 @@ namespace GunMobile.Client
             string npcName = npc != null ? npc.Name : "守卫";
             int npcId = npc != null ? npc.Id : 0;
             SysUi.Note(body, $"第 {floor} 层  Map {mapId}  vs {npcName}");
-            SysUi.Row(body, "go", "挑战本层", () => SysUi.Fight(app, mapId, npcId, 300 + floor * 40, true));
+            SysUi.Row(body, "go", "挑战本层", () => SysUi.Fight(app, mapId, npcId, true));
         }
     }
 
@@ -584,7 +583,7 @@ namespace GunMobile.Client
                 SysUi.Row(body, "wb" + n.Id, $"{n.Name}  Lv{n.Level}  战 HP{hp} ATK{atk}  (表 Blood {n.Blood})", () =>
                 {
                     int mapId = app.Database.PickMapId(local.Id);
-                    SysUi.Fight(app, mapId, local.Id, 2000 + local.Level * 20);
+                    SysUi.Fight(app, mapId, local.Id);
                 });
                 nShow++;
                 if (nShow >= 24)
@@ -620,7 +619,7 @@ namespace GunMobile.Client
                 SysUi.Row(body, "d" + m.Id, $"{m.Name}  需求Lv{m.LevelLimits}  vs {foe}", () =>
                 {
                     int mapId = app.Database.PickMapId(local.Id);
-                    SysUi.Fight(app, mapId, npcId, 500 + local.LevelLimits * 10);
+                    SysUi.Fight(app, mapId, npcId);
                 });
             }
         }
@@ -644,7 +643,7 @@ namespace GunMobile.Client
                 var btn = SysUi.Row(body, "n" + npc.Id, $"{npc.Name}  Lv{npc.Level}  HP{hp} ATK{atk}", () =>
                 {
                     int mapId = app.Database.PickMapId(local.Id);
-                    SysUi.Fight(app, mapId, local.Id, 150 + local.Level * 8);
+                    SysUi.Fight(app, mapId, local.Id);
                 });
                 PcArt.Decorate(btn.transform, PcArt.NpcLiving(app.Loader, npc));
                 n++;
@@ -799,17 +798,21 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "邮件");
-            if (app.Profile.MailGoldWaiting <= 0)
+            int waiting = app.Profile.MailGoldWaiting;
+            if (waiting <= 0 && app.Database != null)
             {
-                app.Profile.MailGoldWaiting = 800;
+                int itemId = app.Database.ConfigInt("CheckRewardItem", 11001);
+                int count = app.Database.ConfigInt("CheckCount", 10);
+                ItemTemplate item = app.Database.GetItem(itemId);
+                waiting = item != null ? Mathf.Max(0, (item.Attack + item.Defence) * count) : 0;
+                app.Profile.MailGoldWaiting = waiting;
             }
 
-            SysUi.Note(body, $"系统邮件：离线奖励 {app.Profile.MailGoldWaiting} 金币");
+            SysUi.Note(body, $"系统邮件：离线奖励 {waiting} 金币");
             SysUi.Row(body, "claim", "全部领取", () =>
             {
+                PhoneNet.Road?.Send(PhoneMsg.MailClaim, "{\"id\":1}");
                 PhoneNet.RequestProfile();
-                app.Profile.Gold += app.Profile.MailGoldWaiting;
-                app.Profile.Honor += 10;
                 app.Profile.MailGoldWaiting = 0;
                 app.Profile.Save();
                 Show(safe, app);

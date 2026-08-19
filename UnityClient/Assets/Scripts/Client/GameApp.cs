@@ -373,7 +373,10 @@ namespace GunMobile.Client
             Profile.Lose = JsonInt(json, "lose", Profile.Lose);
             Profile.WeaponId = JsonInt(json, "weaponId", Profile.WeaponId);
             Profile.EquipHead = JsonInt(json, "equipHead", Profile.EquipHead);
+            Profile.EquipHair = JsonInt(json, "equipHair", Profile.EquipHair);
+            Profile.EquipFace = JsonInt(json, "equipFace", Profile.EquipFace);
             Profile.EquipCloth = JsonInt(json, "equipCloth", Profile.EquipCloth);
+            Profile.EquipGlass = JsonInt(json, "equipGlass", Profile.EquipGlass);
             Profile.EquipWeapon = JsonInt(json, "equipWeapon", Profile.EquipWeapon);
             Profile.PetId = JsonInt(json, "petId", Profile.PetId);
             Profile.CardId = JsonInt(json, "cardId", Profile.CardId);

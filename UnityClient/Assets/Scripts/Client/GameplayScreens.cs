@@ -388,15 +388,11 @@ namespace GunMobile.Client
                 ShopScreen.AddNote(scroll.content, done ? "今天已经签到过了。" : "表缺，金币 +1200");
                 if (!done)
                 {
-                    SysUi.Row(scroll.content, "Go", "签到", () =>
-                    {
-                        PhoneNet.DoSignIn();
-                        app.Profile.LastSignDay = today;
-                        app.Profile.Gold += 1200;
-                        app.Profile.Gift += 20;
-                        app.Profile.Save();
-                        Show(safe, app);
-                    });
+                SysUi.Row(scroll.content, "Go", "签到", () =>
+                {
+                    PhoneNet.DoSignIn();
+                    Show(safe, app);
+                });
                 }
 
                 return;
@@ -421,10 +417,6 @@ namespace GunMobile.Client
                     }
 
                     PhoneNet.DoSignIn();
-                    app.Profile.GrantTemplate(local.TemplateId, local.Count);
-                    app.Profile.LastSignDay = today;
-                    app.Profile.SignIndex = local.Day;
-                    app.Profile.Save();
                     Show(safe, app);
                 });
             }

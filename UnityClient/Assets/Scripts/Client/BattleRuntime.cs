@@ -127,6 +127,7 @@ namespace GunMobile.Client
             public int EquipWeapon;
             public int PetId;
             public int TitleId;
+            public int NpcId;
         }
 
         GameApp _app;
@@ -284,7 +285,8 @@ namespace GunMobile.Client
                         EquipGlass = JsonInt(_fightStartJson, px + "equipGlass", 0),
                         EquipWeapon = JsonInt(_fightStartJson, px + "equipWeapon", JsonInt(_fightStartJson, px + "weaponId", 7001)),
                         PetId = JsonInt(_fightStartJson, px + "petId", 0),
-                        TitleId = JsonInt(_fightStartJson, px + "titleId", 0)
+                        TitleId = JsonInt(_fightStartJson, px + "titleId", 0),
+                        NpcId = JsonInt(_fightStartJson, px + "npcId", 0)
                     };
                 }
             }
@@ -1293,12 +1295,20 @@ namespace GunMobile.Client
             int questGold = 0;
             if (net)
             {
-                gold = _serverRewardGold > 0 ? _serverRewardGold : (win ? 800 : 100);
+                gold = _serverRewardGold;
                 questGold = _serverQuestGold;
+            }
+            else if (_app.Database != null)
+            {
+                gold = win ? _app.Database.BattleWinGold() : _app.Database.BattleLoseGold();
+                if (win && _npcId != 0)
+                {
+                    gold += _app.Database.ComputePveWinGold(_npcId, _app.Profile.LabyrinthFloor, _app.Profile.PendingLabyrinth != 0);
+                }
             }
             else
             {
-                gold = win ? (800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
+                gold = win ? 486 : 48;
             }
 
             if (!net)
@@ -1316,7 +1326,11 @@ namespace GunMobile.Client
 
                 if (win)
                 {
-                    _app.Profile.Honor += _npcId != 0 ? 12 : 4;
+                    if (_app.Database != null)
+                    {
+                        _app.Profile.Honor += _app.Database.BattleWinHonor(_app.Profile.Level, _npcId != 0);
+                    }
+
                     if (_app.Profile.PendingLabyrinth != 0)
                     {
                         _app.Profile.LabyrinthFloor++;
@@ -1589,8 +1603,22 @@ namespace GunMobile.Client
             }
 
             AddEquipLayer(root, "Cloth", look.EquipCloth, look.Sex, new Vector2(0f, 0f), new Vector2(1f, 1f));
+            AddEquipLayer(root, "Hair", look.EquipHair, look.Sex, new Vector2(0.05f, 0.45f), new Vector2(0.95f, 1.05f));
             AddEquipLayer(root, "Head", look.EquipHead, look.Sex, new Vector2(0.1f, 0.55f), new Vector2(0.9f, 1.05f));
+            AddEquipLayer(root, "Face", look.EquipFace, look.Sex, new Vector2(0.2f, 0.45f), new Vector2(0.8f, 0.75f));
+            AddEquipLayer(root, "Glass", look.EquipGlass, look.Sex, new Vector2(0.15f, 0.6f), new Vector2(0.85f, 0.9f));
             AddEquipLayer(root, "Weapon", look.EquipWeapon, look.Sex, new Vector2(0.5f, 0.1f), new Vector2(1.2f, 0.7f));
+
+            if (look.NpcId != 0 && _app.Database != null)
+            {
+                NpcInfo npcArt = _app.Database.GetNpc(look.NpcId);
+                Texture2D npcTex = PcArt.NpcLiving(_app.Loader, npcArt);
+                if (npcTex != null)
+                {
+                    body.texture = npcTex;
+                    body.uvRect = new Rect(0f, 0f, 1f, 1f);
+                }
+            }
 
             if (_app.Database.Pets.TryGetValue(look.PetId, out PetInfo pet))
             {
