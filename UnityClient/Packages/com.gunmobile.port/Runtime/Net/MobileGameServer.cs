@@ -221,10 +221,13 @@ namespace GunMobile.Net
         public bool InBattle;
         public int Seed;
         public int CurrentTurn;
+        public int CurrentPlayer;
         public float TurnTimeLeft = 20f;
         public float Wind;
         public int[] Hp;
         public int[] MaxHp;
+        public long TurnStartMs;
+        public System.Random Rng;
     }
 
     /// <summary>
@@ -977,6 +980,10 @@ namespace GunMobile.Net
                     }
                 }
             }
+                room.Rng = new System.Random(seed);
+                room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                room.CurrentPlayer = 0;
+            }
             string startJson = "{\"map\":" + mapId + ",\"seed\":" + seed + ",\"wind\":" + room.Wind + "}";
             BroadcastToRoom(room, PhoneMsg.FightStart, startJson, -1);
         }
@@ -985,14 +992,57 @@ namespace GunMobile.Net
         {
             int target = JI(json, "target", -1);
             int dmg = JI(json, "dmg", 0);
+            dmg = Mathf.Clamp(dmg, 0, 9999);
+            bool gameOver = false;
             lock (_lock)
             {
                 if (target >= 0 && target < room.Hp.Length)
                 {
                     room.Hp[target] = Mathf.Max(0, room.Hp[target] - dmg);
+                    if (room.Hp[target] <= 0)
+                    {
+                        int alive = 0;
+                        for (int i = 0; i < room.Hp.Length; i++)
+                            if (room.Hp[i] > 0) alive++;
+                        gameOver = alive <= 1;
+                    }
                 }
             }
             BroadcastToRoom(room, PhoneMsg.FightDamage, json, -1);
+            if (gameOver)
+            {
+                AdvanceTurn(room);
+            }
+        }
+
+        void AdvanceTurn(GameRoom room)
+        {
+            lock (_lock)
+            {
+                int alive = 0;
+                for (int i = 0; i < room.Hp.Length; i++)
+                    if (room.Hp[i] > 0) alive++;
+                if (alive <= 1)
+                {
+                    room.InBattle = false;
+                    return;
+                }
+                room.CurrentTurn++;
+                int n = room.Hp.Length;
+                for (int j = 1; j <= n; j++)
+                {
+                    int idx = (room.CurrentPlayer + j) % n;
+                    if (room.Hp[idx] > 0)
+                    {
+                        room.CurrentPlayer = idx;
+                        break;
+                    }
+                }
+                room.Wind = room.Rng != null ? room.Rng.Next(-3, 4) * 10 : 0;
+                room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+            }
+            string turnJson = "{\"turn\":" + room.CurrentTurn + ",\"player\":" + room.CurrentPlayer + ",\"wind\":" + room.Wind + "}";
+            BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
         }
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)

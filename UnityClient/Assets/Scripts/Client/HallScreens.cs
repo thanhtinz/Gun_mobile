@@ -296,26 +296,34 @@ namespace GunMobile.Client
             ip.text = PhoneNet.PeerHost;
             ip.characterLimit = 48;
             ip.GetComponent<RectTransform>().anchorMin = ip.GetComponent<RectTransform>().anchorMax = new Vector2(0.22f, 0.82f);
-            var hostBtn = UiKit.Button(bg.transform, "Host", "开房 Fight", () =>
+            var hostBtn = UiKit.Button(bg.transform, "Host", "开房 Host", () =>
             {
                 PhoneNet.Seat = 0;
                 PhoneNet.NetBattle = true;
                 PhoneNet.ConnectFight("127.0.0.1");
             }, new Vector2(160f, 48f));
-            hostBtn.GetComponent<RectTransform>().anchorMin = hostBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.42f, 0.82f);
-            var joinBtn = UiKit.Button(bg.transform, "Join", "加入", () =>
+            hostBtn.GetComponent<RectTransform>().anchorMin = hostBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.38f, 0.82f);
+            var joinBtn = UiKit.Button(bg.transform, "Join", "加入 LAN", () =>
             {
                 PhoneNet.Seat = 1;
                 PhoneNet.NetBattle = true;
                 PhoneNet.ConnectHall(ip.text);
                 PhoneNet.ConnectFight(ip.text);
             }, new Vector2(140f, 48f));
-            joinBtn.GetComponent<RectTransform>().anchorMin = joinBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.58f, 0.82f);
+            joinBtn.GetComponent<RectTransform>().anchorMin = joinBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.52f, 0.82f);
             var solo = UiKit.Button(bg.transform, "Solo", "单机Bot", () =>
             {
                 PhoneNet.NetBattle = false;
+            }, new Vector2(120f, 48f));
+            solo.GetComponent<RectTransform>().anchorMin = solo.GetComponent<RectTransform>().anchorMax = new Vector2(0.64f, 0.82f);
+            var srvRoom = UiKit.Button(bg.transform, "SrvRoom", "创建房间", () =>
+            {
+                PhoneNet.CreateRoom(app.Profile.MapId > 0 ? app.Profile.MapId : 1056, app.Profile.Nick);
+                PhoneNet.Seat = 0;
+                PhoneNet.NetBattle = true;
+                PhoneNet.ConnectFight("127.0.0.1");
             }, new Vector2(140f, 48f));
-            solo.GetComponent<RectTransform>().anchorMin = solo.GetComponent<RectTransform>().anchorMax = new Vector2(0.72f, 0.82f);
+            srvRoom.GetComponent<RectTransform>().anchorMin = srvRoom.GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 0.82f);
 
             var scroll = UiKit.Scroll(bg.transform, "Maps");
             var srt = scroll.GetComponent<RectTransform>();
