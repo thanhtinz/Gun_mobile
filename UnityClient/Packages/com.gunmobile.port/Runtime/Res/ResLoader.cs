@@ -122,17 +122,39 @@ namespace GunMobile.Res
             return XmlResultTable.LoadBytes(ReadBytes(relative));
         }
 
+        public bool TryReadImageBytes(string relative, out byte[] bytes)
+        {
+            relative = GamePaths.Normalize(relative);
+            string pkm = PkmImage.ToPkmPath(relative);
+            if (!string.Equals(pkm, relative, StringComparison.OrdinalIgnoreCase) && TryReadBytes(pkm, out bytes))
+            {
+                return true;
+            }
+
+            return TryReadBytes(relative, out bytes);
+        }
+
         public Texture2D ReadTexture(string relative, bool linear = false)
         {
-            byte[] bytes = ReadBytes(relative);
-            var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false, linear);
-            if (!tex.LoadImage(bytes, true))
+            if (!TryReadImageBytes(relative, out byte[] bytes))
             {
-                UnityEngine.Object.Destroy(tex);
+                throw new FileNotFoundException("Missing game resource: " + relative);
+            }
+
+            Texture2D tex = PkmImage.IsPkm(bytes)
+                ? PkmImage.Load(bytes, true)
+                : SpriteSheet.LoadTexture(bytes, true);
+            if (tex == null)
+            {
                 throw new InvalidDataException("Not an image: " + relative);
             }
 
             tex.name = Path.GetFileName(relative);
+            if (linear)
+            {
+                // PKM stays GPU-compressed; PNG path already loaded as RGBA32.
+            }
+
             tex.filterMode = FilterMode.Bilinear;
             tex.wrapMode = TextureWrapMode.Clamp;
             return tex;

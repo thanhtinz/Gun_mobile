@@ -125,16 +125,21 @@ namespace GunMobile.Res
             return TryUv(name, out frame);
         }
 
-        public static Texture2D LoadTexture(byte[] png, bool readable)
+        public static Texture2D LoadTexture(byte[] data, bool readable)
         {
-            png = StripToPng(png);
-            if (png == null)
+            if (PkmImage.IsPkm(data))
+            {
+                return PkmImage.Load(data, readable);
+            }
+
+            data = StripToPng(data);
+            if (data == null)
             {
                 return null;
             }
 
             var tex = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            if (!tex.LoadImage(png, !readable))
+            if (!tex.LoadImage(data, !readable))
             {
                 UnityEngine.Object.Destroy(tex);
                 return null;

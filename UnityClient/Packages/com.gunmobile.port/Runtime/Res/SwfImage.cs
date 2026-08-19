@@ -32,25 +32,37 @@ namespace GunMobile.Res
 
             foreach (string path in paths)
             {
-                if (string.IsNullOrEmpty(path) || !loader.TryReadBytes(path, out byte[] bytes))
+                foreach (string candidate in PkmImage.WithPkmFallback(path))
                 {
-                    continue;
-                }
-
-                if (bytes.Length >= 3 && bytes[1] == 0x57 && bytes[2] == 0x53 &&
-                    (bytes[0] == 0x43 || bytes[0] == 0x46))
-                {
-                    Texture2D fromSwf = LoadLargest(bytes);
-                    if (fromSwf != null)
+                    if (string.IsNullOrEmpty(candidate) || !loader.TryReadBytes(candidate, out byte[] bytes))
                     {
-                        return fromSwf;
+                        continue;
                     }
-                }
 
-                Texture2D tex = SpriteSheet.LoadTexture(SpriteSheet.StripToPng(bytes) ?? bytes, false);
-                if (tex != null)
-                {
-                    return tex;
+                    if (PkmImage.IsPkm(bytes))
+                    {
+                        Texture2D fromPkm = PkmImage.Load(bytes, false);
+                        if (fromPkm != null)
+                        {
+                            return fromPkm;
+                        }
+                    }
+
+                    if (bytes.Length >= 3 && bytes[1] == 0x57 && bytes[2] == 0x53 &&
+                        (bytes[0] == 0x43 || bytes[0] == 0x46))
+                    {
+                        Texture2D fromSwf = LoadLargest(bytes);
+                        if (fromSwf != null)
+                        {
+                            return fromSwf;
+                        }
+                    }
+
+                    Texture2D tex = SpriteSheet.LoadTexture(bytes, false);
+                    if (tex != null)
+                    {
+                        return tex;
+                    }
                 }
             }
 

@@ -60,6 +60,13 @@ namespace GunMobile.EditorTools
             AssetDatabase.Refresh();
         }
 
+        [MenuItem("GunMobile/Bake PKM (ETC2) via Python (needs etc2comp)")]
+        public static void BakePkmPython()
+        {
+            RunRepoPython("tools/png_to_pkm.py");
+            AssetDatabase.Refresh();
+        }
+
         [MenuItem("GunMobile/Build Android APK")]
         public static void BuildAndroid()
         {
