@@ -143,6 +143,8 @@ namespace GunMobile.Net
         public const ushort FightSurrender = 98;
         public const ushort RankData = 85;
         public const ushort RankRequest = 84;
+        public const ushort PveStart = 100;
+        public const ushort PveResult = 101;
         public const ushort Error = 255;
     }
 }

@@ -36,6 +36,11 @@ namespace GunMobile.Client
             app.Profile.PendingReward = extraGold;
             app.Profile.PendingLabyrinth = labyrinth ? 1 : 0;
             app.Profile.Save();
+            // Notify server about PvE context so rewards are applied server-side
+            PhoneNet.Road?.Send(PhoneMsg.PveStart,
+                "{\"npcId\":" + npcId +
+                ",\"reward\":" + extraGold +
+                ",\"labyrinth\":" + (labyrinth ? "1" : "0") + "}");
             app.ShowBattle(mapId, npcId);
         }
 

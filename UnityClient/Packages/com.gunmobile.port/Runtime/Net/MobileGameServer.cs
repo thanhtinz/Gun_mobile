@@ -62,6 +62,11 @@ namespace GunMobile.Net
         public int RoomId = -1;
         public int Seat = -1;
 
+        // PvE pending context
+        public int PveNpcId;
+        public int PveRewardGold;
+        public bool PveLabyrinth;
+
         public void RecalcStats(GameDatabase db)
         {
             if (db == null) return;
@@ -784,6 +789,13 @@ namespace GunMobile.Net
 
                 case PhoneMsg.GemUpgrade:
                     HandleGemUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.PveStart:
+                    player.PveNpcId = JI(json, "npcId", 0);
+                    player.PveRewardGold = JI(json, "reward", 0);
+                    player.PveLabyrinth = JI(json, "labyrinth", 0) != 0;
+                    Send(ns, PhoneMsg.PveResult, "{\"ok\":true}");
                     break;
 
                 case PhoneMsg.Ping:
@@ -1522,7 +1534,20 @@ namespace GunMobile.Net
             int gold = win ? 800 : 100;
             lock (_lock)
             {
-                if (win) { player.Win++; player.Gold += gold; }
+                // PvE bonus
+                if (win && player.PveRewardGold > 0)
+                {
+                    gold += player.PveRewardGold;
+                }
+                if (win && player.PveLabyrinth)
+                {
+                    player.LabyrinthFloor++;
+                }
+                player.PveNpcId = 0;
+                player.PveRewardGold = 0;
+                player.PveLabyrinth = false;
+
+                if (win) { player.Win++; player.Gold += gold; player.Honor += 4; }
                 else { player.Lose++; player.Gold += gold; }
                 player.Level = Mathf.Min(70, player.Level + (win ? 1 : 0));
                 player.RecalcStats(_db);
