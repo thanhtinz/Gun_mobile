@@ -834,6 +834,18 @@ namespace GunMobile.Client
                     continue;
                 }
 
+                if (msg.Id == PhoneMsg.FightCrater)
+                {
+                    int mx = JsonInt(msg.Json, "x", -1);
+                    int my = JsonInt(msg.Json, "y", -1);
+                    int radius = JsonInt(msg.Json, "r", 24);
+                    if (mx >= 0 && my >= 0)
+                    {
+                        ApplyNetCrater(mx, my, radius);
+                    }
+                    continue;
+                }
+
                 if (msg.Id == PhoneMsg.FightDamage)
                 {
                     int target = JsonInt(msg.Json, "target", -1);
@@ -980,24 +992,56 @@ namespace GunMobile.Client
             return new Vector2(mapPos.x, _map.Height - mapPos.y);
         }
 
+        void ApplyNetCrater(int mx, int my, int radius)
+        {
+            if (_map == null || radius <= 0) return;
+
+            _map.CutCircle(mx, my, radius);
+            StampCrater(mx, my, radius);
+
+            if (_blastImg != null)
+            {
+                _blastT = 0.35f;
+                var rt = _blastImg.rectTransform;
+                rt.anchorMin = rt.anchorMax = MapAnchor(mx, my);
+                rt.sizeDelta = new Vector2(72f, 72f);
+                _blastImg.gameObject.SetActive(true);
+            }
+
+            // Re-seat actors after terrain change.
+            if (_pos != null)
+            {
+                for (int i = 0; i < _pos.Length; i++)
+                {
+                    if (_loop != null && i < _loop.Livings.Count && _loop.Livings[i].Hp > 0)
+                    {
+                        PlaceOnGround(i);
+                    }
+                }
+            }
+        }
+
         void EndShot(bool explode, int mx, int my)
         {
             int radius = Mathf.Max(24, Mathf.RoundToInt((_ball.Radii > 0 ? _ball.Radii / 2 : 38) * _propRadius));
             if (explode)
             {
-                _map.CutCircle(mx, my, radius);
-                StampCrater(mx, my, radius);
-                for (int L = 0; L < _pos.Length; L++)
+                if (!PhoneNet.NetBattle)
                 {
-                    float d = Vector2.Distance(new Vector2(mx, my), _pos[L]);
-                    if (d < radius * 2.2f && _loop.Livings[L].Hp > 0)
+                    _map.CutCircle(mx, my, radius);
+                    StampCrater(mx, my, radius);
+                    for (int L = 0; L < _pos.Length; L++)
                     {
-                        Hurt(L, d);
+                        float d = Vector2.Distance(new Vector2(mx, my), _pos[L]);
+                        if (d < radius * 2.2f && _loop.Livings[L].Hp > 0)
+                        {
+                            Hurt(L, d);
+                        }
                     }
                 }
             }
 
-            if (explode && _blastImg != null)
+            if (explode && _blastImg != null && !PhoneNet.NetBattle)
             {
                 _blastT = 0.35f;
                 var rt = _blastImg.rectTransform;

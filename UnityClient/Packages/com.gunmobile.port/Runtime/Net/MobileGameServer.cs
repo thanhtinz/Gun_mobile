@@ -1775,7 +1775,12 @@ namespace GunMobile.Net
                 int hitMapX = Mathf.RoundToInt(state.X);
                 int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
 
-                map.CutCircle(hitMapX, hitMapY, blastRadius / 3);
+                int cutRadius = Mathf.Max(8, blastRadius / 3);
+                map.CutCircle(hitMapX, hitMapY, cutRadius);
+                string craterJson = "{\"x\":" + hitMapX +
+                                    ",\"y\":" + hitMapY +
+                                    ",\"r\":" + cutRadius + "}";
+                BroadcastToRoom(room, PhoneMsg.FightCrater, craterJson, -1);
 
                 int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(ball.Power) * 80f);
                 if (bombHurt < 40) bombHurt = 140;
