@@ -356,8 +356,13 @@ namespace GunMobile.Client
 
                         PhoneNet.SendStart(local.Id);
                     }
-
-                    app.ShowBattle(local.Id);
+                    else if (!PhoneNet.NetBattle)
+                    {
+                        // Solo vs Bot.
+                        app.ShowBattle(local.Id);
+                    }
+                    // LAN joiner (Seat=1) or host (Seat=0) will wait for
+                    // server FightStart broadcast (GameApp.PumpFight).
                 }, new Vector2(0f, 96f));
                 var le = btn.gameObject.AddComponent<LayoutElement>();
                 le.preferredHeight = 96f;
