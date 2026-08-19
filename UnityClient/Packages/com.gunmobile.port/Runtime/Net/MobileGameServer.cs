@@ -613,6 +613,18 @@ namespace GunMobile.Net
                     HandleJoinRoom(player, ns, json);
                     break;
 
+                case PhoneMsg.VipUpgrade:
+                    HandleVipUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.TexpTrain:
+                    HandleTexpTrain(player, ns);
+                    break;
+
+                case PhoneMsg.GemUpgrade:
+                    HandleGemUpgrade(player, ns);
+                    break;
+
                 case PhoneMsg.Ping:
                     Send(ns, PhoneMsg.Ping, "{}");
                     break;
@@ -837,6 +849,48 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.StrengthenResult, "{\"ok\":true,\"success\":" + (success ? "true" : "false") + ",\"level\":" + slot.Strengthen + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleVipUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (player.Gift < 500 || player.VipLevel >= 15)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+            player.Gift -= 500;
+            player.VipLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandleTexpTrain(ServerPlayer player, NetworkStream ns)
+        {
+            if (player.Gold < 400)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+            player.Gold -= 400;
+            player.Texp += 25;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandleGemUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (player.Gold < 600 || player.GemLevel >= 12)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+            player.Gold -= 600;
+            player.GemLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
         }
 
         void HandleRoomList(ServerPlayer player, NetworkStream ns)

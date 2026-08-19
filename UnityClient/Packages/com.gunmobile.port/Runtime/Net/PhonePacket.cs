@@ -117,6 +117,9 @@ namespace GunMobile.Net
         public const ushort Strengthen = 64;
         public const ushort StrengthenResult = 65;
         public const ushort BallSelect = 66;
+        public const ushort VipUpgrade = 67;
+        public const ushort TexpTrain = 68;
+        public const ushort GemUpgrade = 69;
         public const ushort GuildJoin = 70;
         public const ushort GuildDonate = 71;
         public const ushort GuildResult = 72;

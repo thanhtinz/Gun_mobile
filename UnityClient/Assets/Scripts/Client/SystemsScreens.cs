@@ -404,11 +404,8 @@ namespace GunMobile.Client
                 int price = item != null ? Mathf.Max(80, (item.Attack + item.Defence) * 12) : 80;
                 var btn = SysUi.Row(body, "a" + slot.TemplateId, $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  卖 {price} 金", () =>
                 {
-                    if (!app.Profile.Consume(local.TemplateId, 1))
-                    {
-                        return;
-                    }
-
+                    if (!app.Profile.Consume(local.TemplateId, 1)) return;
+                    PhoneNet.RequestProfile();
                     app.Profile.Gold += price;
                     app.Profile.Save();
                     Show(safe, app);
@@ -430,6 +427,7 @@ namespace GunMobile.Client
                     return;
                 }
 
+                PhoneNet.UpgradeVip();
                 app.Profile.Gift -= 500;
                 app.Profile.VipLevel++;
                 app.Profile.RecalcStats(app.Database);
@@ -447,6 +445,7 @@ namespace GunMobile.Client
                         return;
                     }
 
+                    PhoneNet.ShopBuy(local.Id);
                     app.Profile.Gift -= local.AValue1;
                     app.Profile.AddItem(local.TemplateId, 1);
                     app.Profile.Save();
@@ -679,6 +678,7 @@ namespace GunMobile.Client
                     return;
                 }
 
+                PhoneNet.TrainTexp();
                 app.Profile.Gold -= 400;
                 app.Profile.Texp += 25;
                 app.Profile.RecalcStats(app.Database);
@@ -700,6 +700,7 @@ namespace GunMobile.Client
                     return;
                 }
 
+                PhoneNet.UpgradeGem();
                 app.Profile.Gold -= 600;
                 app.Profile.GemLevel++;
                 app.Profile.RecalcStats(app.Database);
@@ -726,6 +727,7 @@ namespace GunMobile.Client
             {
                 SysUi.Row(body, "kb", "领取", () =>
                 {
+                    PhoneNet.DoSignIn();
                     app.Profile.KingBlessDay = today;
                     app.Profile.Gold += gold;
                     app.Profile.Save();
@@ -773,6 +775,7 @@ namespace GunMobile.Client
             SysUi.Note(body, $"系统邮件：离线奖励 {app.Profile.MailGoldWaiting} 金币");
             SysUi.Row(body, "claim", "全部领取", () =>
             {
+                PhoneNet.RequestProfile();
                 app.Profile.Gold += app.Profile.MailGoldWaiting;
                 app.Profile.Honor += 10;
                 app.Profile.MailGoldWaiting = 0;

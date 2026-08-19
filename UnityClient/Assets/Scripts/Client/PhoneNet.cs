@@ -124,6 +124,21 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.BallSelect, "{\"ballId\":" + ballId + "}");
         }
 
+        public static void UpgradeVip()
+        {
+            Road?.Send(PhoneMsg.VipUpgrade, "{}");
+        }
+
+        public static void TrainTexp()
+        {
+            Road?.Send(PhoneMsg.TexpTrain, "{}");
+        }
+
+        public static void UpgradeGem()
+        {
+            Road?.Send(PhoneMsg.GemUpgrade, "{}");
+        }
+
         public static void JoinGuild(string name)
         {
             Road?.Send(PhoneMsg.GuildJoin, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");
