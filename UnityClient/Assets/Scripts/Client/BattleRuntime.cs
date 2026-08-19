@@ -379,6 +379,15 @@ namespace GunMobile.Client
             }, new Vector2(140f, 50f));
             exit.GetComponent<RectTransform>().anchorMin = exit.GetComponent<RectTransform>().anchorMax = new Vector2(0.93f, 0.5f);
 
+            if (PhoneNet.NetBattle)
+            {
+                var surrender = UiKit.Button(bar.transform, "Surrender", "投降", () =>
+                {
+                    PhoneNet.Fight?.Send(PhoneMsg.FightSurrender, "{}");
+                }, new Vector2(140f, 50f));
+                surrender.GetComponent<RectTransform>().anchorMin = surrender.GetComponent<RectTransform>().anchorMax = new Vector2(0.82f, 0.5f);
+            }
+
             var move = MobileUiBootstrap.CreateHudLayer(parent as RectTransform, "Move", TextAnchor.LowerLeft, MobileUiBootstrap.FingerButtonSize * 3f);
             var moveImg = move.gameObject.AddComponent<Image>();
             PcSkin.Chrome(moveImg, PcSkin.Game, "game_moveStripBgAsset");

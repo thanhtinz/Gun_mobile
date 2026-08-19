@@ -533,7 +533,19 @@ namespace GunMobile.Net
             {
                 if (player != null)
                 {
-                    lock (_lock) { player.FightTcp = null; player.FightStream = null; }
+                    // Auto-lose on disconnect
+                    GameRoom dcRoom = null;
+                    lock (_lock)
+                    {
+                        player.FightTcp = null;
+                        player.FightStream = null;
+                        if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out dcRoom))
+                        {
+                            if (dcRoom.InBattle) { }
+                            else dcRoom = null;
+                        }
+                    }
+                    if (dcRoom != null) HandleSurrender(player, dcRoom);
                 }
             }
         }
@@ -768,6 +780,44 @@ namespace GunMobile.Net
                 case PhoneMsg.FightOver:
                     HandleFightOver(player, room, json);
                     break;
+
+                case PhoneMsg.FightSurrender:
+                    HandleSurrender(player, room);
+                    break;
+            }
+        }
+
+        void HandleSurrender(ServerPlayer player, GameRoom room)
+        {
+            lock (_lock)
+            {
+                if (!room.InBattle) return;
+                int seat = player.Seat;
+                if (seat >= 0 && seat < room.Hp.Length)
+                {
+                    room.Hp[seat] = 0;
+                    if (room.Livings != null && seat < room.Livings.Length)
+                    {
+                        var ls = room.Livings[seat];
+                        ls.Hp = 0;
+                        room.Livings[seat] = ls;
+                    }
+                }
+            }
+            string dmgJson = "{\"target\":" + player.Seat + ",\"dmg\":9999,\"crit\":false,\"surrender\":true}";
+            BroadcastToRoom(room, PhoneMsg.FightDamage, dmgJson, -1);
+            // Trigger game over check
+            bool gameOver;
+            lock (_lock)
+            {
+                int alive = 0;
+                for (int i = 0; i < room.Hp.Length; i++)
+                    if (room.Hp[i] > 0) alive++;
+                gameOver = alive <= 1;
+            }
+            if (gameOver)
+            {
+                room.InBattle = false;
             }
         }
 

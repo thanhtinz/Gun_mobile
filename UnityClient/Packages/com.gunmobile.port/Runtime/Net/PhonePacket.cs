@@ -140,6 +140,9 @@ namespace GunMobile.Net
         public const ushort FightOver = 95;
         public const ushort FightReward = 96;
         public const ushort FightTurn = 97;
+        public const ushort FightSurrender = 98;
+        public const ushort RankData = 85;
+        public const ushort RankRequest = 84;
         public const ushort Error = 255;
     }
 }
