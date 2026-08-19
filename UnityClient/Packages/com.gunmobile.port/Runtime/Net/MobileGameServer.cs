@@ -636,10 +636,34 @@ namespace GunMobile.Net
                     break;
 
                 case PhoneMsg.GuildJoin:
-                    player.ConsortiaName = JS(json, "name", player.ConsortiaName);
-                    SavePlayer(player);
-                    Send(ns, PhoneMsg.GuildResult, "{\"ok\":true}");
+                {
+                    string gName = JS(json, "name", "");
+                    if (!string.IsNullOrEmpty(gName))
+                    {
+                        player.ConsortiaName = gName;
+                        SavePlayer(player);
+                    }
+                    // Return guild info with member list
+                    var gMembers = new StringBuilder();
+                    lock (_lock)
+                    {
+                        int gm = 0;
+                        foreach (var p in _players.Values)
+                        {
+                            if (string.Equals(p.ConsortiaName, player.ConsortiaName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (gm > 0) gMembers.Append(",");
+                                gMembers.Append("{\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
+                                    .Append("\",\"level\":").Append(p.Level)
+                                    .Append(",\"online\":").Append(p.RoadStream != null ? "true" : "false")
+                                    .Append("}");
+                                gm++;
+                            }
+                        }
+                    }
+                    Send(ns, PhoneMsg.GuildResult, "{\"ok\":true,\"name\":\"" + (player.ConsortiaName ?? "").Replace("\"", "") + "\",\"members\":[" + gMembers + "]}");
                     break;
+                }
 
                 case PhoneMsg.GuildDonate:
                     if (player.Gold >= 1000 && !string.IsNullOrEmpty(player.ConsortiaName))
@@ -648,22 +672,76 @@ namespace GunMobile.Net
                         player.Honor += 80;
                         SavePlayer(player);
                     }
-                    Send(ns, PhoneMsg.GuildResult, player.ToJson());
+                    Send(ns, PhoneMsg.GuildResult, "{\"ok\":true}");
+                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
 
                 case PhoneMsg.FriendAdd:
+                {
                     string fn = JS(json, "name", "");
+                    bool friendFound = false;
                     if (!string.IsNullOrEmpty(fn) && !player.Friends.Contains(fn))
                     {
                         player.Friends.Add(fn);
                         SavePlayer(player);
+                        // Mutual: add this player to the friend's list too
+                        lock (_lock)
+                        {
+                            foreach (var fp in _players.Values)
+                            {
+                                if (string.Equals(fp.Nick, fn, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    friendFound = true;
+                                    if (!fp.Friends.Contains(player.Nick))
+                                    {
+                                        fp.Friends.Add(player.Nick);
+                                        SavePlayer(fp);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
                     }
-                    Send(ns, PhoneMsg.FriendResult, "{\"ok\":true}");
+                    // Return friend list
+                    var fl = new StringBuilder();
+                    for (int fi = 0; fi < player.Friends.Count; fi++)
+                    {
+                        if (fi > 0) fl.Append(",");
+                        string fname = player.Friends[fi];
+                        bool online = false;
+                        lock (_lock)
+                        {
+                            foreach (var fp in _players.Values)
+                            {
+                                if (string.Equals(fp.Nick, fname, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    online = fp.RoadStream != null;
+                                    break;
+                                }
+                            }
+                        }
+                        fl.Append("{\"nick\":\"").Append(fname.Replace("\"", ""))
+                          .Append("\",\"online\":").Append(online ? "true" : "false").Append("}");
+                    }
+                    Send(ns, PhoneMsg.FriendResult, "{\"ok\":true,\"found\":" + (friendFound ? "true" : "false") + ",\"friends\":[" + fl + "]}");
                     break;
+                }
 
                 case PhoneMsg.MailClaim:
-                    Send(ns, PhoneMsg.MailResult, "{\"ok\":true,\"gold\":0}");
+                {
+                    int mailGold = 0;
+                    int mailId = JI(json, "id", 0);
+                    if (mailId == 1)
+                    {
+                        mailGold = 500;
+                        player.Gold += mailGold;
+                        SavePlayer(player);
+                    }
+                    Send(ns, PhoneMsg.MailResult, "{\"ok\":true,\"gold\":" + mailGold + "}");
+                    if (mailGold > 0)
+                        Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
+                }
 
                 case PhoneMsg.ChatSend:
                 {
