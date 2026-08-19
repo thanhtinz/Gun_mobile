@@ -599,6 +599,60 @@ namespace GunMobile.Client
             PlaceOnGround(who);
         }
 
+        Texture2D TryLoadCraterTexture(int craterId)
+        {
+            string[] craterPaths =
+            {
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "crater1.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(craterId), "Crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "crater1.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "Crater.png"),
+                GamePaths.PathCombine(GamePaths.BombCrater(65), "crater.png")
+            };
+
+            foreach (string path in craterPaths)
+            {
+                if (_app.Loader.TryReadBytes(path, out byte[] bytes))
+                {
+                    var tex = SpriteSheet.LoadTexture(bytes, true);
+                    if (tex != null)
+                    {
+                        return tex;
+                    }
+                }
+            }
+
+            return _craterTex;
+        }
+
+        void ApplyShotVisuals()
+        {
+            if (_shotImg != null)
+            {
+                Texture2D bullet = PcArt.Bullet(_app.Loader, _ball.Id > 0 ? _ball.Id : _ball.FlyingPartical);
+                if (bullet != null)
+                {
+                    _shotImg.texture = bullet;
+                }
+            }
+
+            if (_blastImg != null)
+            {
+                Texture2D blast = PcArt.Blast(_app.Loader, _ball.BombPartical > 0 ? _ball.BombPartical : _ball.Id);
+                if (blast != null)
+                {
+                    _blastImg.texture = blast;
+                }
+            }
+
+            if (_ball != null)
+            {
+                int craterId = _ball.Crater > 0 ? _ball.Crater : 65;
+                _craterTex = TryLoadCraterTexture(craterId);
+            }
+        }
+
         void Fire(int who, float angle, float power, bool fromNet)
         {
             _shotFromNet = fromNet;
@@ -608,6 +662,7 @@ namespace GunMobile.Client
             {
                 _ball = _ballsByLiving[who];
                 _sim.ApplyBall(_ball);
+                ApplyShotVisuals();
             }
             Vector2 p = _pos[who];
             float unityY = _map.Height - p.y - 18f;
