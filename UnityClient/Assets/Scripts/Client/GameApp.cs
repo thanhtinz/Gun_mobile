@@ -284,47 +284,127 @@ namespace GunMobile.Client
 
         void Update()
         {
-            if (PhoneNet.Fight == null || State == AppState.Battle)
-            {
-                return;
-            }
+            PumpRoad();
+            PumpFight();
+        }
 
+        void PumpRoad()
+        {
+            if (PhoneNet.Road == null) return;
+            while (PhoneNet.Road.TryDequeue(out var msg))
+            {
+                switch (msg.Id)
+                {
+                    case PhoneMsg.LoginOk:
+                        PhoneNet.PlayerId = JsonInt(msg.Json, "playerId", PhoneNet.PlayerId);
+                        break;
+                    case PhoneMsg.ProfileData:
+                        ApplyProfileFromServer(msg.Json);
+                        break;
+                    case PhoneMsg.ShopResult:
+                    case PhoneMsg.EquipResult:
+                    case PhoneMsg.QuestResult:
+                    case PhoneMsg.StatResult:
+                    case PhoneMsg.SignInResult:
+                    case PhoneMsg.LotteryResult:
+                    case PhoneMsg.StrengthenResult:
+                    case PhoneMsg.GuildResult:
+                    case PhoneMsg.FriendResult:
+                    case PhoneMsg.MailResult:
+                        break;
+                    case PhoneMsg.ChatBroadcast:
+                        string from = JsonStr(msg.Json, "from", "?");
+                        string cm = JsonStr(msg.Json, "msg", "");
+                        if (!string.IsNullOrEmpty(cm))
+                        {
+                            Profile.ChatLog.Add(from + ": " + cm);
+                            if (Profile.ChatLog.Count > 100) Profile.ChatLog.RemoveAt(0);
+                        }
+                        break;
+                    case PhoneMsg.RoomCreated:
+                        PhoneNet.RoomId = JsonInt(msg.Json, "roomId", -1);
+                        PhoneNet.Seat = JsonInt(msg.Json, "seat", 0);
+                        break;
+                    case PhoneMsg.RoomOk:
+                        PhoneNet.RoomId = JsonInt(msg.Json, "roomId", PhoneNet.RoomId);
+                        PhoneNet.Seat = JsonInt(msg.Json, "seat", PhoneNet.Seat);
+                        break;
+                }
+            }
+        }
+
+        void PumpFight()
+        {
+            if (PhoneNet.Fight == null || State == AppState.Battle) return;
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
-                if (msg.Id != PhoneMsg.FightStart)
+                if (msg.Id == PhoneMsg.FightStart)
                 {
-                    continue;
+                    int mapId = JsonInt(msg.Json, "map", 1056);
+                    int seed = JsonInt(msg.Json, "seed", 0);
+                    if (seed != 0) PhoneNet.BattleSeed = seed;
+                    PhoneNet.NetBattle = true;
+                    PhoneNet.Seat = 1;
+                    ShowBattle(mapId);
                 }
-
-                int mapId = JsonInt(msg.Json, "map", 1056);
-                int seed = JsonInt(msg.Json, "seed", 0);
-                if (seed != 0)
-                {
-                    PhoneNet.BattleSeed = seed;
-                }
-
-                PhoneNet.NetBattle = true;
-                PhoneNet.Seat = 1;
-                ShowBattle(mapId);
             }
+        }
+
+        void ApplyProfileFromServer(string json)
+        {
+            if (string.IsNullOrEmpty(json) || Profile == null) return;
+            Profile.Gold = JsonInt(json, "gold", Profile.Gold);
+            Profile.Gift = JsonInt(json, "gift", Profile.Gift);
+            Profile.Level = JsonInt(json, "level", Profile.Level);
+            Profile.Attack = JsonInt(json, "attack", Profile.Attack);
+            Profile.Defence = JsonInt(json, "defence", Profile.Defence);
+            Profile.Agility = JsonInt(json, "agility", Profile.Agility);
+            Profile.Luck = JsonInt(json, "luck", Profile.Luck);
+            Profile.Hp = JsonInt(json, "hp", Profile.Hp);
+            Profile.Win = JsonInt(json, "win", Profile.Win);
+            Profile.Lose = JsonInt(json, "lose", Profile.Lose);
+            Profile.WeaponId = JsonInt(json, "weaponId", Profile.WeaponId);
+            Profile.EquipHead = JsonInt(json, "equipHead", Profile.EquipHead);
+            Profile.EquipCloth = JsonInt(json, "equipCloth", Profile.EquipCloth);
+            Profile.EquipWeapon = JsonInt(json, "equipWeapon", Profile.EquipWeapon);
+            Profile.PetId = JsonInt(json, "petId", Profile.PetId);
+            Profile.CardId = JsonInt(json, "cardId", Profile.CardId);
+            Profile.TitleId = JsonInt(json, "titleId", Profile.TitleId);
+            Profile.TotemId = JsonInt(json, "totemId", Profile.TotemId);
+            Profile.MountGrade = JsonInt(json, "mountGrade", Profile.MountGrade);
+            Profile.VipLevel = JsonInt(json, "vipLevel", Profile.VipLevel);
+            Profile.Honor = JsonInt(json, "honor", Profile.Honor);
+            Profile.Texp = JsonInt(json, "texp", Profile.Texp);
+            Profile.PreferredBallId = JsonInt(json, "preferredBallId", Profile.PreferredBallId);
+            Profile.LastSignDay = JsonInt(json, "lastSignDay", Profile.LastSignDay);
+            Profile.SignIndex = JsonInt(json, "signIndex", Profile.SignIndex);
+            Profile.LabyrinthFloor = JsonInt(json, "labyrinthFloor", Profile.LabyrinthFloor);
+            Profile.ElfId = JsonInt(json, "elfId", Profile.ElfId);
+            Profile.GemLevel = JsonInt(json, "gemLevel", Profile.GemLevel);
+            string consortia = JsonStr(json, "consortiaName", null);
+            if (consortia != null) Profile.ConsortiaName = consortia;
+            Profile.Save();
         }
 
         static int JsonInt(string json, string key, int fallback)
         {
-            if (string.IsNullOrEmpty(json))
-            {
-                return fallback;
-            }
-
+            if (string.IsNullOrEmpty(json)) return fallback;
             string needle = "\"" + key + "\":";
             int i = json.IndexOf(needle, System.StringComparison.Ordinal);
-            if (i < 0)
-            {
-                return fallback;
-            }
-
-            string raw = json.Substring(i + needle.Length).TrimStart().Split(',', '}', ' ')[0];
+            if (i < 0) return fallback;
+            string raw = json.Substring(i + needle.Length).TrimStart().Split(',', '}', ' ', '"')[0];
             return int.TryParse(raw, out int n) ? n : fallback;
+        }
+
+        static string JsonStr(string json, string key, string fallback)
+        {
+            if (string.IsNullOrEmpty(json)) return fallback;
+            string needle = "\"" + key + "\":\"";
+            int i = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (i < 0) return fallback;
+            int s = i + needle.Length;
+            int e = json.IndexOf('"', s);
+            return e > s ? json.Substring(s, e - s) : fallback;
         }
     }
 }
