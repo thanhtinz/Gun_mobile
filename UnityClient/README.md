@@ -14,7 +14,11 @@ Open **this folder** (`UnityClient/`) in Unity **2021.3 LTS**.
    - **角色 / 签到 / 设置**
 5. Battle: left walk, right aim+release. Physics is the Fight `game.logic.dll` 25fps loop (gravity **0.7 px/frame**).
 
-## Build
+## Build on GitHub (APK + IPA)
+
+See `docs/GITHUB_BUILD.md`. After `UNITY_LICENSE` is in repo secrets, run **Actions → Build APK and IPA**.
+
+## Build locally
 Menu **GunMobile**:
 - Unpack Full PC Dump
 - Pack StreamingAssets PcData

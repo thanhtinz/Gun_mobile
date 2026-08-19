@@ -1,0 +1,271 @@
+name: Build APK and IPA
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish_release:
+        description: "Attach APK/IPA to a GitHub Release (tag gun-mobile-<run>)"
+        type: boolean
+        default: true
+  push:
+    tags:
+      - "v*"
+      - "Ok"
+
+concurrency:
+  group: mobile-build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+env:
+  UNITY_VERSION: 2021.3.33f1
+
+jobs:
+  prelude:
+    name: Check Unity license
+    runs-on: ubuntu-latest
+    outputs:
+      has_ios_sign: ${{ steps.flags.outputs.has_ios_sign }}
+    steps:
+      - name: Require UNITY_LICENSE or UNITY_SERIAL
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        run: |
+          if [ -z "$UNITY_LICENSE" ] && [ -z "$UNITY_SERIAL" ]; then
+            echo "::error::Thiếu license Unity trên GitHub. Settings → Secrets and variables → Actions, thêm UNITY_LICENSE (nội dung file .ulf) + UNITY_EMAIL + UNITY_PASSWORD. Hoặc UNITY_SERIAL cho tài khoản Pro. Xem docs/GITHUB_BUILD.md."
+            exit 1
+          fi
+          echo "Unity license secret is present."
+      - id: flags
+        env:
+          CERT: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+        run: |
+          if [ -n "$CERT" ]; then
+            echo "has_ios_sign=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_ios_sign=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  android:
+    name: Android APK
+    needs: prelude
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+
+      - uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - uses: actions/cache@v4
+        with:
+          path: UnityClient/Library
+          key: Library-Android-${{ env.UNITY_VERSION }}-${{ hashFiles('UnityClient/Packages/**', 'UnityClient/ProjectSettings/**') }}
+          restore-keys: |
+            Library-Android-${{ env.UNITY_VERSION }}-
+            Library-Android-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: UnityClient
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: Android
+          androidExportType: androidPackage
+          buildName: GunMobile
+          androidTargetSdkVersion: AndroidApiLevel33
+          androidKeystoreName: ci/android-debug.keystore
+          androidKeystorePass: android
+          androidKeyaliasName: gunmobile
+          androidKeyaliasPass: android
+          allowDirtyBuild: true
+          customParameters: -accept-apiupdate
+
+      - name: Rename APK
+        run: |
+          mkdir -p dist
+          apk=$(find build -name '*.apk' | head -n 1)
+          if [ -z "$apk" ]; then
+            echo "APK not found under build/"
+            find build -type f | head
+            exit 1
+          fi
+          cp "$apk" dist/GunMobile.apk
+          ls -lh dist/GunMobile.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GunMobile-Android-APK
+          path: dist/GunMobile.apk
+          if-no-files-found: error
+          retention-days: 30
+
+  ios-xcode:
+    name: iOS Xcode project
+    needs: prelude
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+
+      - uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - uses: actions/cache@v4
+        with:
+          path: UnityClient/Library
+          key: Library-iOS-${{ env.UNITY_VERSION }}-${{ hashFiles('UnityClient/Packages/**', 'UnityClient/ProjectSettings/**') }}
+          restore-keys: |
+            Library-iOS-${{ env.UNITY_VERSION }}-
+            Library-iOS-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: UnityClient
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: iOS
+          buildName: GunMobile
+          allowDirtyBuild: true
+          customParameters: -accept-apiupdate
+
+      - name: Zip Xcode project
+        run: |
+          mkdir -p dist
+          if [ ! -d build/iOS ]; then
+            echo "Unity iOS output missing"
+            find build -maxdepth 3 -type d
+            exit 1
+          fi
+          tar -C build -czf dist/GunMobile-iOS-Xcode.tar.gz iOS
+          cat > dist/HOW_TO_IPA.txt <<'EOF'
+          Unity exported an Xcode project (not a signed IPA).
+          Add GitHub secrets IOS_CERTIFICATE_BASE64, IOS_CERTIFICATE_PASSWORD,
+          IOS_PROVISIONING_PROFILE_BASE64, IOS_TEAM_ID then re-run this workflow,
+          or Archive in Xcode on a Mac. See docs/GITHUB_BUILD.md.
+          EOF
+          ls -lh dist/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GunMobile-iOS-Xcode
+          path: |
+            dist/GunMobile-iOS-Xcode.tar.gz
+            dist/HOW_TO_IPA.txt
+          if-no-files-found: error
+          retention-days: 30
+
+  ios-ipa:
+    name: iOS IPA
+    needs: [prelude, ios-xcode]
+    if: needs.prelude.outputs.has_ios_sign == 'true'
+    runs-on: macos-14
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: GunMobile-iOS-Xcode
+          path: artifacts
+
+      - name: Unpack Xcode project
+        run: |
+          mkdir -p xcode
+          tar -xzf artifacts/GunMobile-iOS-Xcode.tar.gz -C xcode
+          find xcode -name '*.xcodeproj' | head
+
+      - name: Import signing certificate and profile
+        env:
+          IOS_CERTIFICATE_BASE64: ${{ secrets.IOS_CERTIFICATE_BASE64 }}
+          IOS_CERTIFICATE_PASSWORD: ${{ secrets.IOS_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE_BASE64: ${{ secrets.IOS_PROVISIONING_PROFILE_BASE64 }}
+        run: |
+          CERT_PATH="$RUNNER_TEMP/build.p12"
+          echo "$IOS_CERTIFICATE_BASE64" | base64 --decode > "$CERT_PATH"
+          KEYCHAIN="$RUNNER_TEMP/app-signing.keychain-db"
+          security create-keychain -p "ci" "$KEYCHAIN"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN"
+          security unlock-keychain -p "ci" "$KEYCHAIN"
+          security import "$CERT_PATH" -P "$IOS_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN"
+          security list-keychain -d user -s "$KEYCHAIN"
+          security set-key-partition-list -S apple-tool:,apple: -s -k "ci" "$KEYCHAIN"
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          echo "$IOS_PROVISIONING_PROFILE_BASE64" | base64 --decode > "$HOME/Library/MobileDevice/Provisioning Profiles/gunmobile.mobileprovision"
+
+      - name: Export IPA
+        env:
+          IOS_TEAM_ID: ${{ secrets.IOS_TEAM_ID }}
+          IOS_EXPORT_METHOD: ${{ secrets.IOS_EXPORT_METHOD }}
+        run: bash tools/ci_export_ipa.sh xcode
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GunMobile-iOS-IPA
+          path: dist/GunMobile.ipa
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: GitHub Release
+    needs: [android, ios-xcode, ios-ipa]
+    if: |
+      always() &&
+      needs.android.result == 'success' &&
+      needs.ios-xcode.result == 'success' &&
+      (github.event_name == 'push' || github.event.inputs.publish_release == 'true')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect files
+        run: |
+          mkdir -p upload
+          find artifacts -type f \( -name '*.apk' -o -name '*.ipa' -o -name '*.tar.gz' \) -exec cp {} upload/ \;
+          ls -lh upload
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('gun-mobile-{0}', github.run_number) }}
+          name: Gun Mobile ${{ github.ref_type == 'tag' && github.ref_name || format('build {0}', github.run_number) }}
+          generate_release_notes: true
+          files: upload/*
+          fail_on_unmatched_files: true

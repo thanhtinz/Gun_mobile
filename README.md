@@ -2,13 +2,15 @@
 
 PC dump (弹弹堂 / DDTank) from release [Ok](https://github.com/thanhtinz/Gun_mobile/releases/tag/Ok) plus a Unity **2021.3** client targeting **Android and iOS**.
 
-## Play / build
+## Build APK / IPA trên GitHub
 
-Open folder `UnityClient/` in Unity 2021.3 LTS (Android + iOS modules). Play `Assets/Scenes/Boot.unity`, or use menu **GunMobile → Build Android APK** / **Build iOS Xcode Project**.
+Workflow **Build APK and IPA** (GameCI, Unity 2021.3.33f1):
 
-Menu **GunMobile → Unpack Full PC Dump** writes art into `legacy/unpacked/` (gitignored). **Pack StreamingAssets PcData** copies every playable map + Request tables into the APK/IPA.
+1. Thêm secrets `UNITY_LICENSE` + `UNITY_EMAIL` + `UNITY_PASSWORD` (xem `docs/GITHUB_BUILD.md`)
+2. Actions → **Build APK and IPA** → Run workflow
+3. Tải artifact `GunMobile.apk`. IPA cần thêm cert Apple (cùng doc)
 
-Details: `UnityClient/README.md`
+Hoặc mở folder `UnityClient/` trong Unity Hub rồi menu **GunMobile → Build Android APK** / **Build iOS Xcode Project**.
 
 ## Repo layout
 

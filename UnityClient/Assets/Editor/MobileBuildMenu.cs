@@ -66,6 +66,10 @@ namespace GunMobile.EditorTools
             };
             BuildReport report = BuildPipeline.BuildPlayer(opts);
             Debug.Log("Android build: " + report.summary.result + " " + report.summary.outputPath);
+            if (report.summary.result != BuildResult.Succeeded)
+            {
+                throw new BuildFailedException("Android build: " + report.summary.result);
+            }
         }
 
         [MenuItem("GunMobile/Build iOS Xcode Project")]
@@ -82,6 +86,10 @@ namespace GunMobile.EditorTools
             };
             BuildReport report = BuildPipeline.BuildPlayer(opts);
             Debug.Log("iOS build: " + report.summary.result + " " + report.summary.outputPath);
+            if (report.summary.result != BuildResult.Succeeded)
+            {
+                throw new BuildFailedException("iOS build: " + report.summary.result);
+            }
         }
 
         static void RunRepoPython(string relativeScript)

@@ -142,7 +142,8 @@ class MobilePack(unittest.TestCase):
         self.assertGreaterEqual(len(index.get("maps", [])), 100)
         self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameplayScreens.cs").exists())
         self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Res" / "GameDatabase.cs").exists())
-        self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Logic" / "PcPhysics.cs").exists())
+        self.assertTrue((ROOT / ".github" / "workflows" / "build-mobile.yml").exists())
+        self.assertTrue((ROOT / "UnityClient" / "ci" / "android-debug.keystore").exists())
 
 
 if __name__ == "__main__":
