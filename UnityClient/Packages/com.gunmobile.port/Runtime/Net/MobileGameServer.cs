@@ -555,17 +555,46 @@ namespace GunMobile.Net
                             if (id == PhoneMsg.JoinRoom)
                             {
                                 int playerId = JI(json, "playerId", 0);
+                                int roomId = -1;
+                                bool inBattle = false;
+                                int turn = 0;
+                                int currentPlayer = 0;
+                                float wind = 0f;
+                                int propMask = 0;
                                 lock (_lock)
                                 {
                                     if (_players.TryGetValue(playerId, out player))
                                     {
                                         player.FightTcp = client;
                                         player.FightStream = ns;
-                                    player.FightPendingLose = false;
-                                    player.FightDisconnectedAtMs = 0;
+                                        player.FightPendingLose = false;
+                                        player.FightDisconnectedAtMs = 0;
+
+                                        if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out var room) && room.InBattle)
+                                        {
+                                            roomId = room.Id;
+                                            inBattle = true;
+                                            turn = room.CurrentTurn;
+                                            currentPlayer = room.CurrentPlayer;
+                                            wind = room.Wind;
+                                            propMask = room.CurrentPropMask;
+                                        }
                                     }
                                 }
                                 Send(ns, PhoneMsg.RoomOk, "{\"ok\":true}");
+
+                                // Help the reconnecting client re-sync quickly.
+                                if (inBattle)
+                                {
+                                    string turnJson = "{\"turn\":" + turn +
+                                                      ",\"player\":" + currentPlayer +
+                                                      ",\"wind\":" + wind.ToString(CultureInfo.InvariantCulture) + "}";
+                                    Send(ns, PhoneMsg.FightTurn, turnJson);
+
+                                    string propJson = "{\"player\":" + currentPlayer +
+                                                       ",\"mask\":" + propMask + "}";
+                                    Send(ns, PhoneMsg.FightProp, propJson);
+                                }
                             }
                             else if (player != null)
                             {
