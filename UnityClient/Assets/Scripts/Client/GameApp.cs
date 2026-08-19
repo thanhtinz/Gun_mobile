@@ -30,7 +30,8 @@ namespace GunMobile.Client
         Canvas _canvas;
         RectTransform _safe;
         Text _status;
-        ModuleDef _openModule;
+        public RectTransform SafeArea => _safe;
+        public GameDatabase Database { get; private set; }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoBoot()
@@ -75,6 +76,11 @@ namespace GunMobile.Client
             ShowStatus("Loading PC data for Android / iOS…");
             yield return PcContent.Install(Loader, ShowStatus);
             TryLoadConfig();
+            ShowStatus("Loading PC tables…");
+            yield return null;
+            Database = GameDatabase.Load(Loader) ?? new GameDatabase();
+            Profile.EnsureStarterBag();
+            Profile.RecalcStats(Database);
             ShowLogin();
         }
 
@@ -123,9 +129,40 @@ namespace GunMobile.Client
                 return;
             }
 
-            _openModule = module;
             State = AppState.Module;
-            DataBrowserScreen.Show(_safe, this, module);
+            switch (module.Id)
+            {
+                case "shop":
+                    ShopScreen.Show(_safe, this);
+                    return;
+                case "bag":
+                    BagScreen.Show(_safe, this);
+                    return;
+                case "quest":
+                    QuestScreen.Show(_safe, this);
+                    return;
+                case "character":
+                    CharacterScreen.Show(_safe, this);
+                    return;
+                case "signin":
+                case "church":
+                case "calendar":
+                    SignInScreen.Show(_safe, this);
+                    return;
+                case "setting":
+                    SettingsScreen.Show(_safe, this);
+                    return;
+                case "mail":
+                    MailScreen.Show(_safe, this, "邮件", "Offline client — no Road mailbox. Rewards from 签到 / 任务.");
+                    return;
+                case "friend":
+                case "im":
+                    MailScreen.Show(_safe, this, module.Title, "Online Road socket is not wired. Chat/friends stay on the PC server.");
+                    return;
+                default:
+                    DataBrowserScreen.Show(_safe, this, module);
+                    return;
+            }
         }
 
         public void ShowStatus(string msg)

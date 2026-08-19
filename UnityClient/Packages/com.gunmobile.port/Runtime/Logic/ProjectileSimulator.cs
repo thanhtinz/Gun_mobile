@@ -21,16 +21,25 @@ namespace GunMobile.Logic
     [Serializable]
     public sealed class ProjectileSimulator
     {
-        public const float FrameDt = 1f / 25f;
+        public const float FrameDt = PcPhysics.FrameDt;
 
-        [Tooltip("Pixels per power unit at 25fps.")]
-        public float SpeedScale = 5.5f;
+        [Tooltip("Pixels per power unit per 25fps frame (PC force slider).")]
+        public float SpeedScale = PcPhysics.PowerToSpeed;
 
-        [Tooltip("Pixels / sec^2. PC gravity is applied once per 40ms frame.")]
-        public float Gravity = 175f;
+        [Tooltip("Pixels per frame². game.logic.dll gravity is 0.7 at 25fps.")]
+        public float GravityPerFrame = PcPhysics.GravityPerFrame;
 
-        [Tooltip("How strongly wind (-100..100) pushes vx.")]
-        public float WindScale = 1.15f;
+        [Tooltip("How strongly displayed wind (-40..40) pushes vx each frame.")]
+        public float WindScale = PcPhysics.WindAccelPerFrame;
+
+        public float GravityFactor = 1f;
+        public float WindFactor = 1f;
+
+        public void ApplyBall(BallPhysics ball)
+        {
+            GravityFactor = PcPhysics.GravityFactor(ball.Weight);
+            WindFactor = PcPhysics.WindFactor(ball.Wind);
+        }
 
         public ProjectileState Launch(float x, float y, float angleDeg, float power, int facing)
         {
@@ -49,24 +58,36 @@ namespace GunMobile.Logic
             };
         }
 
-        public ProjectileState Step(ProjectileState state, float wind, float dt)
+        /// <summary>Integrate one 40ms PC frame. Velocities are pixels/frame.</summary>
+        public ProjectileState StepFrame(ProjectileState state, float wind)
         {
             if (!state.Alive)
             {
                 return state;
             }
 
-            state.X += state.Vx * dt;
-            state.Y += state.Vy * dt;
-            state.Vy -= Gravity * dt;
-            state.Vx += wind * WindScale * dt;
-            state.Time += dt;
+            state.X += state.Vx;
+            state.Y += state.Vy;
+            state.Vy -= GravityPerFrame * GravityFactor;
+            state.Vx += wind * WindScale * WindFactor;
+            state.Time += FrameDt;
             return state;
         }
 
-        public ProjectileState StepFrame(ProjectileState state, float wind)
+        public ProjectileState Step(ProjectileState state, float wind, float dt)
         {
-            return Step(state, wind, FrameDt);
+            if (Mathf.Abs(dt - FrameDt) < 0.0001f)
+            {
+                return StepFrame(state, wind);
+            }
+
+            int frames = Mathf.Max(1, Mathf.RoundToInt(dt / FrameDt));
+            for (int i = 0; i < frames; i++)
+            {
+                state = StepFrame(state, wind);
+            }
+
+            return state;
         }
 
         /// <summary>

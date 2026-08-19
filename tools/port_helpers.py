@@ -39,13 +39,7 @@ def load_xml(data: bytes) -> ET.Element:
 
 
 def parse_result_table(root: ET.Element) -> List[Dict[str, str]]:
-    rows = []
-    for child in list(root):
-        row = dict(child.attrib)
-        for nested in list(child):
-            row.setdefault(nested.tag, nested.text or "")
-        rows.append(row)
-    return rows
+    return parse_nested_items(root)
 
 
 def parse_morn_views(data: bytes) -> List[Tuple[str, int, int]]:
@@ -114,7 +108,7 @@ class Projectile:
     alive: bool = True
 
 
-def launch(x: float, y: float, angle_deg: float, power: float, facing: int = 1, speed_scale: float = 5.5) -> Projectile:
+def launch(x: float, y: float, angle_deg: float, power: float, facing: int = 1, speed_scale: float = 1.0) -> Projectile:
     p = max(1.0, min(100.0, power))
     rad = math.radians(angle_deg)
     speed = p * speed_scale
@@ -122,17 +116,45 @@ def launch(x: float, y: float, angle_deg: float, power: float, facing: int = 1, 
     return Projectile(x, y, math.cos(rad) * speed * direction, math.sin(rad) * speed)
 
 
-def step(p: Projectile, wind: float, dt: float = FRAME_DT, gravity: float = 175.0, wind_scale: float = 1.15) -> Projectile:
+def step(
+    p: Projectile,
+    wind: float,
+    dt: float = FRAME_DT,
+    gravity: float = 0.7,
+    wind_scale: float = 0.04,
+    gravity_factor: float = 1.0,
+    wind_factor: float = 1.0,
+) -> Projectile:
+    """One PC 40ms frame. Velocities are pixels/frame (game.logic.dll Physics)."""
     if not p.alive:
         return p
     return Projectile(
-        p.x + p.vx * dt,
-        p.y + p.vy * dt,
-        p.vx + wind * wind_scale * dt,
-        p.vy - gravity * dt,
-        p.t + dt,
+        p.x + p.vx,
+        p.y + p.vy,
+        p.vx + wind * wind_scale * wind_factor,
+        p.vy - gravity * gravity_factor,
+        p.t + FRAME_DT,
         True,
     )
+
+
+def parse_nested_items(root: ET.Element) -> List[Dict[str, str]]:
+    rows: List[Dict[str, str]] = []
+    for child in list(root):
+        if len(list(child)) and child.attrib == {}:
+            for nested in list(child):
+                row = dict(nested.attrib)
+                for inner in list(nested):
+                    row.setdefault(inner.tag, inner.text or "")
+                if row:
+                    rows.append(row)
+            continue
+        row = dict(child.attrib)
+        for nested in list(child):
+            row.setdefault(nested.tag, nested.text or "")
+        if row:
+            rows.append(row)
+    return rows
 
 
 def fly_until_map(p: Projectile, wind: float, m: MapCollision, max_time: float = 12.0) -> Projectile:

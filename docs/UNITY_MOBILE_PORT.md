@@ -34,7 +34,9 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Extract XML/UI đã giải zlib → `legacy/data/`
 - [x] Helper zlib / map / atlas / Morn / đạn
 - [x] Unity project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
-- [x] Client: login → hall (full module list PC) → chọn map → trận vs bot, art + XML gốc
+- [x] Client: login → hall (shop / bag / quest / character / sign-in) → **all packed maps** → trận vs bot (PC gravity 0.7/frame)
+- [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC
+- [x] Unpack `tools/unpack_pc_dump.py` + Editor menu; ExtraRoots `legacy/unpacked`
 
 Mở `UnityClient/` bằng Unity 2021.3, Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
 
@@ -79,7 +81,7 @@ Morn `.ui`: zlib + vài `<View>`. Builder map `Image/Button/CheckBox/Label` → 
 
 1. Load `fore.map` + `fore.png`. Vẽ terrain bằng `SpriteMask` hoặc texture CPU update sau `CutCircle`.
 2. `ProjectileSimulator.Launch(angle, power, facing)` rồi `FlyUntil` với `MapCollision.IsSolid`.
-3. Gió `BattleLoop.Wind` (-40..40), gravity / wind scale **cần calibrate** so với 1 shot record từ client PC (các hằng `SpeedScale=5.5`, `Gravity=175` là điểm bắt đầu, không phải dump binary).
+3. Gió `BattleLoop.Wind` (bội số 10, −30…30), gravity **0.7 px/frame** từ `game.logic.dll` (`PcPhysics`). `SpeedScale=1` (px/frame / power). Wind scale **0.04**. BallList `Weight`/`Wind` điều chỉnh factor.
 4. `bombconfig.xml` → `BombTable` (Common / Special ball id).
 5. Nổ: `MapCollision.CutCircle` + sprite crater.
 6. `DamageCalculator` (atk/def/luck) — tinh chỉnh theo công thức server khi decompile `Fight`.
@@ -116,6 +118,7 @@ Kéo package vào Unity (`manifest.json` file: path) rồi add `GunMobileBootstr
 
 - SWF không port máy móc — UI phải dựng lại.
 - `fore.map` bit order giả định MSB-left (khớp stride 1250→157). Nếu terrain lệch, đảo mask `0x80 >>` thành `1 << (x & 7)`.
-- Physics chưa binary-compatible với Fight.exe cho tới khi calibrate.
-- Resource ~2GB: download theo map/weapon, không ship full APK.
+- Physics: `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE.
+- Resource ~2GB: APK chứa **mọi map playable** + XML; equip PNG unpack local (`legacy/unpacked`).
+- Online Road/Fight socket chưa reverse. Trận = offline vs bot (bot bắn bằng cùng simulator).
 - Dump có `__MACOSX`, file tên Trung + backup — `extract_legacy.py` đã bỏ png/swf/exe và thư mục backup.

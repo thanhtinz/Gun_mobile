@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import sys
 import unittest
 from pathlib import Path
@@ -65,6 +66,23 @@ class XmlHelpers(unittest.TestCase):
         self.assertIn("TemplateID", rows[0])
         self.assertIn("Common", rows[0])
 
+    def test_nested_shop_and_templates(self):
+        shop = parse_result_table(load_xml((DATA / "Request" / "shopitemlist_out.xml").read_bytes()))
+        self.assertGreater(len(shop), 50)
+        self.assertIn("TemplateID", shop[0])
+        self.assertIn("AValue1", shop[0])
+        templates = parse_result_table(load_xml((DATA / "Request" / "TemplateAlllist.xml").read_bytes()))
+        self.assertGreater(len(templates), 100)
+        self.assertIn("TemplateID", templates[0])
+        self.assertIn("Name", templates[0])
+        quests = parse_result_table(load_xml((DATA / "Request" / "QuestList.xml").read_bytes()))
+        self.assertGreater(len(quests), 100)
+        maps = parse_result_table(load_xml((DATA / "Request" / "LoadMapsItems.xml").read_bytes()))
+        self.assertGreater(len(maps), 50)
+        balls = parse_result_table(load_xml((DATA / "Request" / "BallList.xml").read_bytes()))
+        self.assertIn("Mass", balls[0])
+        self.assertIn("Wind", balls[0])
+
     def test_character_define_actions(self):
         root = load_xml((DATA / "Flash" / "characterdefine.xml").read_bytes())
         names = [a.get("name") for a in root.find("actionSet").findall("action")]
@@ -118,7 +136,13 @@ class MobilePack(unittest.TestCase):
             self.assertTrue((PCDATA / "Resource" / "image" / "map" / mid / "fore.png").exists(), mid)
         self.assertTrue((PCDATA / "Flash" / "config.xml").exists())
         self.assertTrue((PCDATA / "Request" / "bombconfig.xml").exists())
+        self.assertTrue((PCDATA / "Request" / "TemplateAlllist.xml").exists() or (PCDATA / "Request" / "shopitemlist_out.xml").exists())
         self.assertTrue((PCDATA / "Flash" / "ui" / "cn_trad" / "starling" / "hall_scene" / "hall_scene.png").exists())
+        index = json.loads((PCDATA / "content_index.json").read_text(encoding="utf-8"))
+        self.assertGreaterEqual(len(index.get("maps", [])), 100)
+        self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameplayScreens.cs").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Res" / "GameDatabase.cs").exists())
+        self.assertTrue((ROOT / "UnityClient" / "Packages" / "com.gunmobile.port" / "Runtime" / "Logic" / "PcPhysics.cs").exists())
 
 
 if __name__ == "__main__":

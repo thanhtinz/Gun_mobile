@@ -34,27 +34,53 @@ namespace GunMobile.Core
             string rowName = null;
             foreach (XElement child in root.Elements())
             {
-                rowName = child.Name.LocalName;
-                var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-                foreach (XAttribute attr in child.Attributes())
+                if (child.HasElements && !child.HasAttributes)
                 {
-                    map[attr.Name.LocalName] = attr.Value;
-                }
-
-                foreach (XElement nested in child.Elements())
-                {
-                    if (!map.ContainsKey(nested.Name.LocalName))
+                    foreach (XElement nested in child.Elements())
                     {
-                        map[nested.Name.LocalName] = nested.Value;
+                        Dictionary<string, string> nestedMap = RowFromElement(nested);
+                        if (nestedMap.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        rowName = nested.Name.LocalName;
+                        rows.Add(nestedMap);
                     }
+
+                    continue;
                 }
 
-                rows.Add(map);
+                rowName = child.Name.LocalName;
+                Dictionary<string, string> map = RowFromElement(child);
+                if (map.Count > 0)
+                {
+                    rows.Add(map);
+                }
             }
 
             table.RowName = rowName ?? "Item";
             table.Rows = rows;
             return table;
+        }
+
+        static Dictionary<string, string> RowFromElement(XElement el)
+        {
+            var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            foreach (XAttribute attr in el.Attributes())
+            {
+                map[attr.Name.LocalName] = attr.Value;
+            }
+
+            foreach (XElement nested in el.Elements())
+            {
+                if (!map.ContainsKey(nested.Name.LocalName))
+                {
+                    map[nested.Name.LocalName] = nested.Value ?? string.Empty;
+                }
+            }
+
+            return map;
         }
 
         public static XmlResultTable LoadBytes(byte[] data)

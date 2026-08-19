@@ -19,13 +19,19 @@ namespace GunMobile.Client
         public static ResLoader CreateLoader()
         {
             var loader = new ResLoader(StreamingPcData, PersistentPcData);
-#if UNITY_EDITOR
-            string repoData = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "legacy", "data"));
+            string repoRoot = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+            string unpacked = Path.Combine(repoRoot, "legacy", "unpacked");
+            if (Directory.Exists(unpacked))
+            {
+                loader.ExtraRoots.Add(unpacked);
+            }
+
+            string repoData = Path.Combine(repoRoot, "legacy", "data");
             if (Directory.Exists(repoData))
             {
                 loader.ExtraRoots.Add(repoData);
             }
-#endif
+
             return loader;
         }
 

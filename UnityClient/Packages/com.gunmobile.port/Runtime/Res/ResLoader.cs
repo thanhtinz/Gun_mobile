@@ -76,6 +76,32 @@ namespace GunMobile.Res
             return false;
         }
 
+        public IEnumerable<string> ListFiles(string relativeDir, string fileName = null)
+        {
+            relativeDir = GamePaths.Normalize(relativeDir);
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (string root in SearchRoots())
+            {
+                string dir = Path.Combine(root, relativeDir);
+                if (!Directory.Exists(dir))
+                {
+                    continue;
+                }
+
+                IEnumerable<string> files = string.IsNullOrEmpty(fileName)
+                    ? Directory.GetFiles(dir, "*", SearchOption.AllDirectories)
+                    : Directory.GetFiles(dir, fileName, SearchOption.AllDirectories);
+                foreach (string file in files)
+                {
+                    string rel = GamePaths.Normalize(file.Substring(root.Length).TrimStart('/', '\\'));
+                    if (seen.Add(rel))
+                    {
+                        yield return rel;
+                    }
+                }
+            }
+        }
+
         public byte[] ReadBytes(string relative)
         {
             if (!TryReadBytes(relative, out byte[] bytes))

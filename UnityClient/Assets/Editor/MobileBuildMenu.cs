@@ -1,7 +1,10 @@
+using System.Diagnostics;
 using System.IO;
 using UnityEditor;
+using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace GunMobile.EditorTools
 {
@@ -36,6 +39,19 @@ namespace GunMobile.EditorTools
             Debug.Log("GunMobile: Android/iOS player settings applied.");
         }
 
+        [MenuItem("GunMobile/Unpack Full PC Dump")]
+        public static void UnpackDump()
+        {
+            RunRepoPython("tools/unpack_pc_dump.py");
+        }
+
+        [MenuItem("GunMobile/Pack StreamingAssets PcData")]
+        public static void PackStreaming()
+        {
+            RunRepoPython("tools/pack_mobile_content.py");
+            AssetDatabase.Refresh();
+        }
+
         [MenuItem("GunMobile/Build Android APK")]
         public static void BuildAndroid()
         {
@@ -66,6 +82,39 @@ namespace GunMobile.EditorTools
             };
             BuildReport report = BuildPipeline.BuildPlayer(opts);
             Debug.Log("iOS build: " + report.summary.result + " " + report.summary.outputPath);
+        }
+
+        static void RunRepoPython(string relativeScript)
+        {
+            string repo = Path.GetFullPath(Path.Combine(Application.dataPath, "..", ".."));
+            string script = Path.Combine(repo, relativeScript);
+            var psi = new ProcessStartInfo
+            {
+                FileName = "python3",
+                Arguments = "\"" + script + "\"",
+                WorkingDirectory = repo,
+                UseShellExecute = false
+            };
+            using (var p = Process.Start(psi))
+            {
+                p.WaitForExit();
+                Debug.Log("GunMobile python " + relativeScript + " exit " + p.ExitCode);
+            }
+        }
+    }
+
+    public sealed class EnsurePcDataOnBuild : IPreprocessBuildWithReport
+    {
+        public int callbackOrder => 0;
+
+        public void OnPreprocessBuild(BuildReport report)
+        {
+            MobileBuildMenu.ApplyPlayerSettings();
+            string pc = Path.Combine(Application.dataPath, "StreamingAssets", "PcData", "content_index.json");
+            if (!File.Exists(pc))
+            {
+                throw new BuildFailedException("Missing StreamingAssets/PcData. Run GunMobile → Pack StreamingAssets PcData.");
+            }
         }
     }
 }

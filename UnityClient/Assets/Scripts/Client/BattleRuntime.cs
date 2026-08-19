@@ -50,7 +50,7 @@ namespace GunMobile.Client
 
                 var table = XmlResultTable.LoadBytes(bytes);
                 AddLine(scroll.content, $"{table.RowName}  ok={table.Ok}  rows={table.Rows.Count}  {table.Message}");
-                int limit = Mathf.Min(table.Rows.Count, 80);
+                int limit = Mathf.Min(table.Rows.Count, 250);
                 for (int i = 0; i < limit; i++)
                 {
                     AddLine(scroll.content, FormatRow(table.Rows[i]));
@@ -124,6 +124,7 @@ namespace GunMobile.Client
         TouchMoveController _move;
         ProjectileSimulator _sim = new ProjectileSimulator();
         BattleLoop _loop = new BattleLoop();
+        BallPhysics _ball = BallPhysics.Default;
         Vector2[] _pos;
         int[] _facing;
         ProjectileState _shot;
@@ -182,6 +183,14 @@ namespace GunMobile.Client
                 Team = 2
             };
             _loop.Reset(new[] { player, bot });
+            _ball = BallPhysics.Default;
+            if (_app.Database != null)
+            {
+                int ballId = _app.Database.DefaultBallId(_app.Profile.WeaponId);
+                _ball = _app.Database.GetBall(ballId);
+            }
+
+            _sim.ApplyBall(_ball);
             _pos = new[] { new Vector2(140f, 0f), new Vector2(_map.Width - 160f, 0f) };
             _facing = new[] { 1, -1 };
             PlaceOnGround(0);
@@ -319,9 +328,32 @@ namespace GunMobile.Client
 
         void FireBot()
         {
-            float angle = Random.Range(42f, 68f);
-            float power = Random.Range(55f, 82f);
-            Fire(1, angle, power);
+            float bestA = 50f;
+            float bestP = 70f;
+            float bestD = 1e9f;
+            Vector2 target = LivingUnity(_pos[0]);
+            for (int a = 28; a <= 72; a += 4)
+            {
+                for (int p = 35; p <= 95; p += 6)
+                {
+                    ProjectileState s = _sim.Launch(_pos[1].x, _map.Height - _pos[1].y - 18f, a, p, _facing[1]);
+                    s = _sim.FlyUntil(
+                        s,
+                        _loop.Wind,
+                        (x, y) => _map.IsSolid(Mathf.RoundToInt(x), _map.Height - Mathf.RoundToInt(y)),
+                        (x, y) => x < -40f || x > _map.Width + 40f || y < -40f,
+                        8f);
+                    float d = Vector2.Distance(new Vector2(s.X, s.Y), target);
+                    if (d < bestD)
+                    {
+                        bestD = d;
+                        bestA = a;
+                        bestP = p;
+                    }
+                }
+            }
+
+            Fire(1, bestA, bestP);
         }
 
         void Fire(int who, float angle, float power)
@@ -378,14 +410,15 @@ namespace GunMobile.Client
         void EndShot(bool explode, int mx, int my)
         {
             _flying = false;
+            int radius = Mathf.Max(24, _ball.Radii > 0 ? _ball.Radii / 2 : 38);
             if (explode)
             {
-                _map.CutCircle(mx, my, 38);
-                StampCrater(mx, my, 38);
+                _map.CutCircle(mx, my, radius);
+                StampCrater(mx, my, radius);
                 for (int L = 0; L < _pos.Length; L++)
                 {
                     float d = Vector2.Distance(new Vector2(mx, my), _pos[L]);
-                    if (d < 90f && _loop.Livings[L].Hp > 0)
+                    if (d < radius * 2.2f && _loop.Livings[L].Hp > 0)
                     {
                         Hurt(L, d);
                     }
@@ -403,7 +436,13 @@ namespace GunMobile.Client
         void Hurt(int index, float dist)
         {
             int src = _loop.CurrentLiving;
-            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], 140, dist, false);
+            int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(_ball.Power) * 80f);
+            if (bombHurt < 40)
+            {
+                bombHurt = 140;
+            }
+
+            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex));
             _loop.ApplyDamage(index, dmg);
         }
 
@@ -478,7 +517,7 @@ namespace GunMobile.Client
             var me = _loop.Livings[0];
             var foe = _loop.Livings[1];
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
-            _hud.text = $"Map {_mapId}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  { _loop.Phase}  {aim}";
+            _hud.text = $"Map {_mapId}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  ball {_ball.Id} r{_ball.Radii}";
         }
 
         void OnGUI()

@@ -72,6 +72,7 @@ namespace GunMobile.Logic
             float dist = Mathf.Clamp01(1f - distancePx / 220f);
             float crit = isCrit ? 1.5f + attacker.Luck / 800f : 1f;
             float raw = bombHurt * (atk / 40f) * (1f - mitigation) * (0.55f + 0.45f * dist) * crit;
+            raw *= 1f + attacker.Agility / 800f;
             int dmg = Mathf.Max(1, Mathf.RoundToInt(raw));
             return Mathf.Min(dmg, defender.Hp);
         }
@@ -212,7 +213,7 @@ namespace GunMobile.Logic
 
         float NextWind()
         {
-            return _rng.Next(-40, 41);
+            return _rng.Next(-3, 4) * 10;
         }
     }
 }

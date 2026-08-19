@@ -167,7 +167,16 @@ namespace GunMobile.Client
             var tr = top.GetComponent<RectTransform>();
             tr.anchorMin = tr.anchorMax = new Vector2(0.08f, 0.93f);
 
-            UiKit.Label(bg.transform, "Title", "选地图 · PC LoadMapsItems", 32, Color.white, TextAnchor.MiddleCenter)
+            List<MapInfo> maps = MapCatalog.Playable(app.Database);
+            if (maps.Count == 0)
+            {
+                foreach (int id in MapCatalog.DiscoverCollisionIds(app.Loader))
+                {
+                    maps.Add(new MapInfo { Id = id, Name = "Map " + id, HasCollision = true });
+                }
+            }
+
+            UiKit.Label(bg.transform, "Title", $"选地图 · {maps.Count} maps  vs Bot", 32, Color.white, TextAnchor.MiddleCenter)
                 .rectTransform.anchorMin = new Vector2(0.2f, 0.88f);
             bg.transform.Find("Title").GetComponent<RectTransform>().anchorMax = new Vector2(0.8f, 0.98f);
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMin = Vector2.zero;
@@ -179,37 +188,24 @@ namespace GunMobile.Client
             srt.anchorMax = new Vector2(0.95f, 0.86f);
             srt.offsetMin = srt.offsetMax = Vector2.zero;
 
-            Dictionary<string, string> names = LoadMapNames(app);
-            foreach (string id in PackedMaps)
+            if (maps.Count == 0)
             {
-                string mapId = id;
-                names.TryGetValue(id, out string title);
-                string caption = $"Map {id}  {title ?? ""}  ·  vs Bot";
-                var btn = UiKit.Button(scroll.content, "m" + id, caption, () => app.ShowBattle(int.Parse(mapId)), new Vector2(0f, 80f));
+                foreach (string id in PackedMaps)
+                {
+                    maps.Add(new MapInfo { Id = int.Parse(id), Name = "Map " + id, HasCollision = true });
+                }
+            }
+
+            foreach (MapInfo info in maps)
+            {
+                MapInfo local = info;
+                string art = local.HasArt ? "" : "  (no PNG)";
+                string caption = $"Map {local.Id}  {local.Name}{art}  ·  vs Bot";
+                var btn = UiKit.Button(scroll.content, "m" + local.Id, caption, () => app.ShowBattle(local.Id), new Vector2(0f, 80f));
                 var le = btn.gameObject.AddComponent<LayoutElement>();
                 le.preferredHeight = 80f;
                 le.flexibleWidth = 1f;
             }
-        }
-
-        static Dictionary<string, string> LoadMapNames(GameApp app)
-        {
-            var map = new Dictionary<string, string>();
-            if (!app.Loader.TryReadBytes("Request/LoadMapsItems.xml", out byte[] bytes))
-            {
-                return map;
-            }
-
-            var table = GunMobile.Core.XmlResultTable.LoadBytes(bytes);
-            foreach (var row in table.Rows)
-            {
-                if (row.TryGetValue("ID", out string id) && row.TryGetValue("Name", out string name))
-                {
-                    map[id] = name;
-                }
-            }
-
-            return map;
         }
     }
 }
