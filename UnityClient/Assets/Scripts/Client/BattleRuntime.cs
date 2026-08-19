@@ -142,6 +142,7 @@ namespace GunMobile.Client
         string _foeName = "Bot";
         int _serverRewardGold;
         bool _serverRewardWin;
+        int _serverQuestGold;
         bool _serverRewardReady;
         bool _pendingMatchOver;
         int _propAvailableMask;
@@ -181,6 +182,7 @@ namespace GunMobile.Client
             _resultOpen = false;
             _serverRewardGold = 0;
             _serverRewardWin = false;
+            _serverQuestGold = 0;
             _serverRewardReady = false;
             _pendingMatchOver = false;
             ClearProp();
@@ -875,6 +877,7 @@ namespace GunMobile.Client
                 if (msg.Id == PhoneMsg.FightReward)
                 {
                     _serverRewardGold = JsonInt(msg.Json, "gold", 0);
+                    _serverQuestGold = JsonInt(msg.Json, "questGold", 0);
                     _serverRewardWin = ParseWinFlag(msg.Json, "win");
                     _serverRewardReady = true;
                     if (_pendingMatchOver || _loop.Phase == BattlePhase.MatchOver)
@@ -1173,6 +1176,7 @@ namespace GunMobile.Client
             if (net)
             {
                 gold = _serverRewardGold > 0 ? _serverRewardGold : (win ? 800 : 100);
+                questGold = _serverQuestGold;
             }
             else
             {
@@ -1209,7 +1213,7 @@ namespace GunMobile.Client
             string detail = win
                 ? $"击败 {_foeName}" + (questGold > 0 ? $"\n任务奖励 +{questGold} 金" : "")
                 : $"{_foeName} 获胜";
-            BattleResultScreen.Show(_app.SafeArea, _app, win, gold + questGold, detail);
+            BattleResultScreen.Show(_app.SafeArea, _app, win, gold, detail);
         }
 
         void PlaceOnGround(int i)

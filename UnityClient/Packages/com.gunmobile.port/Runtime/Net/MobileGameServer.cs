@@ -194,6 +194,39 @@ namespace GunMobile.Net
             return false;
         }
 
+        public int CompleteAcceptedQuests(GameDatabase db)
+        {
+            int extra = 0;
+            if (db == null || AcceptedQuests.Count == 0) return 0;
+
+            var copy = new List<int>(AcceptedQuests);
+            AcceptedQuests.Clear();
+            foreach (int id in copy)
+            {
+                if (CompletedQuests.Contains(id)) continue;
+
+                CompletedQuests.Add(id);
+                QuestInfo q = null;
+                for (int i = 0; i < db.Quests.Count; i++)
+                {
+                    if (db.Quests[i].Id == id)
+                    {
+                        q = db.Quests[i];
+                        break;
+                    }
+                }
+
+                if (q == null) continue;
+
+                int reward = Mathf.Max(50, q.RewardGold);
+                extra += reward;
+                Gold += reward;
+                Honor += 5;
+            }
+
+            return extra;
+        }
+
         public bool Equip(ItemTemplate item)
         {
             if (item == null || !item.CanEquip) return false;
@@ -255,6 +288,7 @@ namespace GunMobile.Net
         // still receive the exact same gold/win as computed by the server.
         public int[] LastFightGolds;
         public bool[] LastFightWins;
+        public int[] LastFightQuestGolds;
     }
 
     /// <summary>
@@ -1797,7 +1831,7 @@ namespace GunMobile.Net
         {
             if (room == null) return;
 
-            List<(ServerPlayer player, int gold, bool win)> payouts = null;
+            List<(ServerPlayer player, int gold, bool win, int questGold)> payouts = null;
             HashSet<int> aliveTeams = null;
             lock (_lock)
             {
@@ -1816,10 +1850,11 @@ namespace GunMobile.Net
                     }
                 }
 
-                payouts = new List<(ServerPlayer, int, bool)>();
+                payouts = new List<(ServerPlayer, int, bool, int)>();
                 int n = room.Hp != null ? room.Hp.Length : 0;
                 room.LastFightGolds = n > 0 ? new int[n] : null;
                 room.LastFightWins = n > 0 ? new bool[n] : null;
+                room.LastFightQuestGolds = n > 0 ? new int[n] : null;
                 foreach (int pid in room.PlayerIds)
                 {
                     if (!_players.TryGetValue(pid, out ServerPlayer p)) continue;
@@ -1830,6 +1865,7 @@ namespace GunMobile.Net
                         : 1;
                     bool win = aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
                     int gold = win ? 800 : 100;
+                    int questGold = 0;
 
                     if (win && p.PveRewardGold > 0)
                     {
@@ -1849,6 +1885,7 @@ namespace GunMobile.Net
                         p.Win++;
                         p.Gold += gold;
                         p.Honor += 4;
+                        questGold = p.CompleteAcceptedQuests(_db);
                     }
                     else
                     {
@@ -1859,12 +1896,17 @@ namespace GunMobile.Net
                     p.Level = Mathf.Min(70, p.Level + (win ? 1 : 0));
                     p.RecalcStats(_db);
                     SavePlayer(p);
-                    payouts.Add((p, gold, win));
+                    int totalGold = gold + questGold;
+                    payouts.Add((p, totalGold, win, questGold));
 
                     if (room.LastFightGolds != null && seat >= 0 && seat < room.LastFightGolds.Length)
                     {
-                        room.LastFightGolds[seat] = gold;
+                        room.LastFightGolds[seat] = totalGold;
                         room.LastFightWins[seat] = win;
+                        if (room.LastFightQuestGolds != null && seat < room.LastFightQuestGolds.Length)
+                        {
+                            room.LastFightQuestGolds[seat] = questGold;
+                        }
                     }
                 }
             }
@@ -1873,7 +1915,9 @@ namespace GunMobile.Net
             foreach (var item in payouts)
             {
                 SendFightTo(item.player, PhoneMsg.FightReward,
-                    "{\"gold\":" + item.gold + ",\"win\":" + (item.win ? "1" : "0") + "}");
+                    "{\"gold\":" + item.gold +
+                    ",\"questGold\":" + item.questGold +
+                    ",\"win\":" + (item.win ? "1" : "0") + "}");
                 SendTo(item.player, PhoneMsg.ProfileData, item.player.ToJson());
             }
         }
@@ -1902,12 +1946,17 @@ namespace GunMobile.Net
             int seat = player.Seat;
             bool win;
             int gold;
+            int questGold = 0;
 
             if (room.LastFightGolds != null && room.LastFightWins != null &&
                 seat >= 0 && seat < room.LastFightGolds.Length && seat < room.LastFightWins.Length)
             {
                 gold = room.LastFightGolds[seat];
                 win = room.LastFightWins[seat];
+                if (room.LastFightQuestGolds != null && seat < room.LastFightQuestGolds.Length)
+                {
+                    questGold = room.LastFightQuestGolds[seat];
+                }
             }
             else
             {
@@ -1915,7 +1964,7 @@ namespace GunMobile.Net
                 gold = win ? 800 : 100;
             }
             SendFightTo(player, PhoneMsg.FightReward,
-                "{\"gold\":" + gold + ",\"win\":" + (win ? "1" : "0") + "}");
+                "{\"gold\":" + gold + ",\"questGold\":" + questGold + ",\"win\":" + (win ? "1" : "0") + "}");
         }
 
         int CountAliveTeams(GameRoom room)
