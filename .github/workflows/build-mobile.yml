@@ -117,6 +117,62 @@ jobs:
           if-no-files-found: error
           retention-days: 30
 
+  linux-server:
+    name: Linux Dedicated Server
+    needs: prelude
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+
+      - uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: false
+          android: false
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - uses: actions/cache@v4
+        with:
+          path: UnityClient/Library
+          key: Library-LinuxServer-${{ env.UNITY_VERSION }}-${{ hashFiles('UnityClient/Packages/**', 'UnityClient/ProjectSettings/**') }}
+          restore-keys: |
+            Library-LinuxServer-${{ env.UNITY_VERSION }}-
+            Library-LinuxServer-
+
+      - uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+          UNITY_SERIAL: ${{ secrets.UNITY_SERIAL }}
+        with:
+          projectPath: UnityClient
+          unityVersion: ${{ env.UNITY_VERSION }}
+          targetPlatform: StandaloneLinux64
+          buildName: GunMobileServer
+          allowDirtyBuild: true
+          customParameters: -accept-apiupdate -nographics -batchmode
+
+      - name: Package server
+        run: |
+          mkdir -p dist
+          tar -C build -czf dist/GunMobileServer-Linux.tar.gz StandaloneLinux64
+          ls -lh dist/GunMobileServer-Linux.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GunMobileServer-Linux
+          path: dist/GunMobileServer-Linux.tar.gz
+          if-no-files-found: error
+          retention-days: 30
+
   ios-xcode:
     name: iOS Xcode project
     needs: prelude
@@ -243,7 +299,7 @@ jobs:
 
   release:
     name: GitHub Release
-    needs: [android, ios-xcode, ios-ipa]
+    needs: [android, linux-server, ios-xcode, ios-ipa]
     if: |
       always() &&
       needs.android.result == 'success' &&

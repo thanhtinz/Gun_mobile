@@ -54,29 +54,19 @@ namespace GunMobile.Client
 
         static void Buy(GameApp app, ShopOffer offer)
         {
+            PhoneNet.ShopBuy(offer.Id);
             bool gift = offer.APrice1 == -2;
             int price = offer.AValue1;
             if (gift)
             {
-                if (app.Profile.Gift < price)
-                {
-                    Debug.Log("Not enough gift");
-                    return;
-                }
-
+                if (app.Profile.Gift < price) return;
                 app.Profile.Gift -= price;
             }
             else
             {
-                if (app.Profile.Gold < price)
-                {
-                    Debug.Log("Not enough gold");
-                    return;
-                }
-
+                if (app.Profile.Gold < price) return;
                 app.Profile.Gold -= price;
             }
-
             app.Profile.AddItem(offer.TemplateId, 1);
             app.Profile.Save();
             Show(app.SafeArea, app);
@@ -155,6 +145,7 @@ namespace GunMobile.Client
                 {
                     if (item != null && app.Profile.Equip(item))
                     {
+                        PhoneNet.EquipItem(item.TemplateId);
                         app.Profile.RecalcStats(app.Database);
                         app.Profile.Save();
                         Show(safe, app);
@@ -210,25 +201,20 @@ namespace GunMobile.Client
 
         static void Toggle(GameApp app, QuestInfo q)
         {
-            if (app.Profile.QuestDone(q.Id) && !q.CanRepeat)
-            {
-                return;
-            }
+            if (app.Profile.QuestDone(q.Id) && !q.CanRepeat) return;
 
             if (!app.Profile.QuestAccepted(q.Id))
             {
+                PhoneNet.QuestAccept(q.Id);
                 app.Profile.AcceptedQuests.Add(q.Id);
             }
             else
             {
+                PhoneNet.QuestComplete(q.Id);
                 app.Profile.AcceptedQuests.Remove(q.Id);
                 if (!app.Profile.CompletedQuests.Contains(q.Id))
-                {
                     app.Profile.CompletedQuests.Add(q.Id);
-                }
-
                 app.Profile.Gold += Mathf.Max(50, q.RewardGold);
-                app.Profile.Level = Mathf.Min(70, app.Profile.Level + (q.RewardGp > 0 ? 0 : 0));
             }
 
             app.Profile.Save();
@@ -404,6 +390,7 @@ namespace GunMobile.Client
                 {
                     SysUi.Row(scroll.content, "Go", "签到", () =>
                     {
+                        PhoneNet.DoSignIn();
                         app.Profile.LastSignDay = today;
                         app.Profile.Gold += 1200;
                         app.Profile.Gift += 20;
@@ -433,6 +420,7 @@ namespace GunMobile.Client
                         return;
                     }
 
+                    PhoneNet.DoSignIn();
                     app.Profile.GrantTemplate(local.TemplateId, local.Count);
                     app.Profile.LastSignDay = today;
                     app.Profile.SignIndex = local.Day;
