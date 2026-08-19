@@ -62,8 +62,8 @@ Không phải `Road.Service.exe` + SQL. Mỗi máy chạy `TcpListener` native:
 
 1. Máy A: Hall → 开战 → **开房 Fight** (status hiện IP LAN).
 2. Máy B: gõ IP của A → **加入** (Road 4396 + Fight 1910).
-3. Máy A chọn map. B nhận `FightStart` (kể cả join muộn — server giữ gói start).
-4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz).
+3. Máy A chọn map → server broadcast `FightStart`. Cả Host và Joiner **đều chờ `FightStart`** (map + stats/weapon/preferredBallId cho 2 ghế).
+4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz). Chỉ **người bắn** mới report `FightDamage`.
 
 Cổng giống PC (4396 / 1910) nhưng magic packet `0x7D01` — client Flash PC **không** nói chuyện được với PhoneRoad. RSA/login 7road chưa làm.
 
@@ -134,8 +134,8 @@ Trục: Unity `y` lên; map bit `y` xuống. Bootstrap demo: `IsSolid(x, map.Hei
 - **Auth**: nick-based login, server tạo player profile, JSON persistence
 - **Hall systems server-authoritative**: shop buy, equip, quest, pet/card/title/totem/mount select, sign-in, lottery, forge, guild, friends, mail, chat broadcast
 - **Room/matchmaking**: create/join room, room list
-- **Battle relay (LAN)**: server broadcast FightStart/Walk/Fire và trừ HP theo `FightDamage` (damage client gửi). Khi trận kết, client gửi `FightOver` → server mới award gold/exp và gửi `FightReward` + `ProfileData`.
-  * Lưu ý: server hiện chưa mô phỏng/validate toàn bộ projectile/path như PC server.
+- **Battle relay (LAN)**: server broadcast `FightStart` (map + per-seat stats + `weaponId`/`preferredBallId`) và relay `FightWalk`/`FightFire`/`FightDamage`. Client khởi tạo cả 2 ghế từ `FightStart`; chỉ **người bắn** mới report `FightDamage` → server clamp và trừ HP. Khi trận kết, client gửi `FightOver` → server award gold/exp và gửi `FightReward` + `ProfileData`.
+  * Lưu ý: server hiện vẫn chưa mô phỏng/validate toàn bộ projectile/path như PC server.
 - **Persistence**: JSON save per player in `persistentDataPath/server_players/`
 
 Không dùng SQL Server / RSA / LoginKey PC. Client gửi PhoneMsg, server validate và reply.
