@@ -152,6 +152,7 @@ namespace GunMobile.Net
         public const ushort AuctionSell = 105;
         public const ushort ElfSelect = 106;
         public const ushort KingBless = 107;
+        public const ushort SetNick = 108;
         public const ushort Error = 255;
     }
 }

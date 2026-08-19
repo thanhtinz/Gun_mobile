@@ -20,6 +20,8 @@ namespace GunMobile.Client
         public static int RoomId = -1;
         public static string LastRankJson;
         public static string LastRoomListJson;
+        public static int PendingPveMapId;
+        public static int PendingPveNpcId;
 
         static float _keepAliveT;
 
@@ -181,6 +183,44 @@ namespace GunMobile.Client
         public static void ClaimKingBless()
         {
             Road?.Send(PhoneMsg.KingBless, "{}");
+        }
+
+        public static void SetNick(string nick)
+        {
+            Road?.Send(PhoneMsg.SetNick, "{\"nick\":\"" + (nick ?? "").Replace("\"", "") + "\"}");
+        }
+
+        /// <summary>
+        /// Online PvE: PveStart on road, then FightStart on fight socket (server adds NPC seat).
+        /// </summary>
+        public static bool BeginPveFight(int mapId, int npcId, bool labyrinth)
+        {
+            if (Road == null || !Road.Connected)
+            {
+                return false;
+            }
+
+            Road.Send(PhoneMsg.PveStart,
+                "{\"npcId\":" + npcId +
+                ",\"labyrinth\":" + (labyrinth ? "1" : "0") + "}");
+
+            string host = string.IsNullOrWhiteSpace(PeerHost) ? "127.0.0.1" : PeerHost;
+            Seat = 0;
+            NetBattle = true;
+            PendingPveMapId = mapId;
+            PendingPveNpcId = npcId;
+
+            if (Fight == null || !Fight.Connected)
+            {
+                if (!ConnectFight(host))
+                {
+                    NetBattle = false;
+                    return false;
+                }
+            }
+
+            SendStart(mapId);
+            return true;
         }
 
         public static void JoinGuild(string name)

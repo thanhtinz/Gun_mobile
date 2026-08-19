@@ -189,6 +189,9 @@ namespace GunMobile.Client
         float _walkSendT;
         int _lastWalkDir;
         float _nextFightReconnectAt;
+        float _battleStartTime;
+        int[] _seatPetIds;
+        int _lastShooter;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
@@ -330,8 +333,24 @@ namespace GunMobile.Client
                 if (serverSeed != 0) seed = serverSeed;
             }
 
-            _loop.Reset(allLivings, 20f, seed);
+            float turnSec = 20f;
+            if (_app.Config != null && _app.Config.FightTurnSeconds >= 5)
+            {
+                turnSec = _app.Config.FightTurnSeconds;
+            }
+            else if (_app.Database != null)
+            {
+                int dbSec = _app.Database.BattleTurnSeconds();
+                if (dbSec >= 5)
+                {
+                    turnSec = dbSec;
+                }
+            }
+
+            _loop.Reset(allLivings, turnSec, seed);
+            _battleStartTime = Time.time;
             _ballsByLiving = new BallPhysics[playerCount];
+            _seatPetIds = new int[playerCount];
             for (int i = 0; i < playerCount; i++) _ballsByLiving[i] = BallPhysics.Default;
             if (_app.Database != null)
             {
@@ -342,8 +361,8 @@ namespace GunMobile.Client
                         string px = "p" + i + "_";
                         int wid = JsonInt(_fightStartJson, px + "weaponId", _app.Profile.WeaponId);
                         int bid = JsonInt(_fightStartJson, px + "preferredBallId", 0);
-                        int ballId = bid > 0 ? bid : _app.Database.DefaultBallId(wid);
-                        _ballsByLiving[i] = _app.Database.GetBall(ballId);
+                        _seatPetIds[i] = JsonInt(_fightStartJson, px + "petId", 0);
+                        _ballsByLiving[i] = _app.Database.ResolveBall(wid, bid);
                     }
                 }
                 else
@@ -351,7 +370,8 @@ namespace GunMobile.Client
                     int ballId = _app.Profile.PreferredBallId > 0
                         ? _app.Profile.PreferredBallId
                         : _app.Database.DefaultBallId(_app.Profile.WeaponId);
-                    _ballsByLiving[0] = _app.Database.GetBall(ballId);
+                    _ballsByLiving[0] = _app.Database.ResolveBall(_app.Profile.WeaponId, ballId);
+                    _seatPetIds[0] = _app.Profile.PetId;
                     for (int i = 1; i < playerCount; i++)
                         _ballsByLiving[i] = _ballsByLiving[0];
                 }
@@ -684,6 +704,7 @@ namespace GunMobile.Client
             DrawHud();
             UpdateActors();
             TickDmgPopups();
+            TickSuicideTimer();
 
             if (_loop.Phase == BattlePhase.MatchOver)
             {
@@ -803,6 +824,7 @@ namespace GunMobile.Client
 
         void Fire(int who, float angle, float power, bool fromNet)
         {
+            _lastShooter = who;
             _shotFromNet = fromNet;
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
@@ -1155,6 +1177,11 @@ namespace GunMobile.Client
                 _loop.FinishSettle();
             }
 
+            if (!PhoneNet.NetBattle)
+            {
+                TryPetFollowUp(_lastShooter);
+            }
+
             if (_loop.Phase == BattlePhase.MatchOver)
             {
                 TryFinishMatch();
@@ -1218,6 +1245,71 @@ namespace GunMobile.Client
             _propCrit = false;
         }
 
+        void TickSuicideTimer()
+        {
+            int suicideSec = _app?.Config?.SuicideTime ?? 120;
+            if (suicideSec <= 0 || _loop == null || _loop.Phase == BattlePhase.MatchOver)
+            {
+                return;
+            }
+
+            if (Time.time - _battleStartTime < suicideSec)
+            {
+                return;
+            }
+
+            if (PhoneNet.NetBattle)
+            {
+                PhoneNet.Fight?.Send(PhoneMsg.FightSurrender, "{}");
+            }
+            else
+            {
+                _loop.EndMatchTimeout();
+            }
+        }
+
+        void TryPetFollowUp(int shooter)
+        {
+            if (_app?.Database == null || _seatPetIds == null || shooter < 0 || shooter >= _seatPetIds.Length)
+            {
+                return;
+            }
+
+            int petId = _seatPetIds[shooter];
+            PetSkillInfo skill = _app.Database.ResolvePetPassiveSkill(petId);
+            if (skill == null || skill.BallType != 3 || skill.DamagePercent <= 0)
+            {
+                return;
+            }
+
+            if (!_app.Database.RollPetSkill(skill, shooter + _loop.TurnIndex))
+            {
+                return;
+            }
+
+            int src = shooter;
+            int bombHurt = _app.Database.ComputeBombHurt(_ball, _propDmg);
+            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * skill.DamagePercent / 100f));
+
+            for (int t = 0; t < _loop.Livings.Count; t++)
+            {
+                if (t == src || _loop.Livings[t].Hp <= 0)
+                {
+                    continue;
+                }
+
+                if (_loop.Livings[src].Team == _loop.Livings[t].Team)
+                {
+                    continue;
+                }
+
+                float dist = Vector2.Distance(_pos[src], _pos[t]);
+                int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[t], bombHurt, dist * 0.35f, false);
+                _loop.ApplyDamage(t, dmg);
+                SpawnDmgPopup(_pos[t], dmg, false);
+            }
+        }
+
         void Hurt(int index, float dist)
         {
             if (PhoneNet.NetBattle)
@@ -1228,13 +1320,9 @@ namespace GunMobile.Client
             }
 
             int src = _loop.CurrentLiving;
-            int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(_ball.Power) * 80f);
-            if (bombHurt < 40)
-            {
-                bombHurt = 140;
-            }
-
-            bombHurt = Mathf.RoundToInt(bombHurt * _propDmg);
+            int bombHurt = _app?.Database != null
+                ? _app.Database.ComputeBombHurt(_ball, _propDmg)
+                : DamageCalculator.ComputeBombHurt(_ball, _propDmg);
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);

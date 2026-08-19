@@ -26,6 +26,8 @@ namespace GunMobile.Res
         public int FrameTimeOverMs { get; private set; } = 67;
         public int SuicideTime { get; private set; } = 120;
         public int StrengthMax { get; private set; } = 12;
+        /// <summary>Turn budget in seconds (from FIGHT_TIME count, default 20).</summary>
+        public int FightTurnSeconds { get; private set; } = 20;
         public IReadOnlyDictionary<string, FeatureFlag> Flags { get; private set; }
 
         public static FlashConfig Load(XDocument doc)
@@ -53,6 +55,15 @@ namespace GunMobile.Res
             var flags = new Dictionary<string, FeatureFlag>(StringComparer.OrdinalIgnoreCase);
             CollectFlags(config, flags);
             cfg.Flags = flags;
+
+            if (flags.TryGetValue("FIGHT_TIME", out FeatureFlag fightTime) &&
+                fightTime.Attrs.TryGetValue("count", out string countRaw) &&
+                int.TryParse(countRaw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int fightCount) &&
+                fightCount > 0)
+            {
+                cfg.FightTurnSeconds = fightCount >= 10 ? fightCount : fightCount * 60;
+            }
+
             return cfg;
         }
 

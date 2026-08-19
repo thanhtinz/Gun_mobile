@@ -125,11 +125,24 @@ namespace GunMobile.Res
         public int TemplateId;
         public string Name = "";
         public string Pic = "";
+        public int KindId;
+        public int StarLevel;
         public int Attack;
         public int Defence;
         public int Blood;
         public int Agility;
         public int Luck;
+    }
+
+    public sealed class PetSkillInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int BallType;
+        public int Probability;
+        public int[] ElementIds = System.Array.Empty<int>();
+        public string Description = "";
+        public int DamagePercent;
     }
 
     public sealed class CardInfo
@@ -237,6 +250,8 @@ namespace GunMobile.Res
         public Dictionary<int, BombInfo> Bombs { get; } = new Dictionary<int, BombInfo>();
         public Dictionary<int, NpcInfo> Npcs { get; } = new Dictionary<int, NpcInfo>();
         public Dictionary<int, PetInfo> Pets { get; } = new Dictionary<int, PetInfo>();
+        public Dictionary<int, PetSkillInfo> PetSkills { get; } = new Dictionary<int, PetSkillInfo>();
+        readonly Dictionary<int, int[]> _kindPassiveSkillIds = new Dictionary<int, int[]>();
         public List<CardInfo> Cards { get; } = new List<CardInfo>();
         public Dictionary<int, TitleInfo> Titles { get; } = new Dictionary<int, TitleInfo>();
         public Dictionary<int, TotemInfo> Totems { get; } = new Dictionary<int, TotemInfo>();
@@ -268,6 +283,8 @@ namespace GunMobile.Res
             db.LoadBombs(loader);
             db.LoadNpcs(loader);
             db.LoadPets(loader);
+            db.LoadPetSkills(loader);
+            db.BuildKindPassiveSkillMap();
             db.LoadCards(loader);
             db.LoadTitles(loader);
             db.LoadTotems(loader);
@@ -473,6 +490,78 @@ namespace GunMobile.Res
         public int KingBlessGold(int vipLevel)
         {
             return ConfigInt("TakeCardMoney", 486) / 2 + vipLevel * 80;
+        }
+
+        public int BattleTurnSeconds()
+        {
+            return ConfigInt("EndFightTime", 20);
+        }
+
+        public int VipUpgradeGiftCost()
+        {
+            return ConfigInt("DefaultGiftToken", 500);
+        }
+
+        public int TexpTrainGoldCost()
+        {
+            return ConfigInt("MustFusionGold", 400);
+        }
+
+        public int TexpTrainGain()
+        {
+            return ConfigInt("DispatchesMoney", 25);
+        }
+
+        public int StrengthenGoldCost(int nextLevel)
+        {
+            int rock = 200 * nextLevel;
+            if (StrengthenRock.TryGetValue(nextLevel, out int r))
+            {
+                rock = r;
+            }
+
+            return Mathf.Max(100, rock * 40);
+        }
+
+        public int StrengthenSuccessChance(int currentLevel)
+        {
+            int[] rates = ConfigPipeInts("DevilIntervalRandomRate");
+            if (rates.Length > 0)
+            {
+                int idx = Mathf.Clamp(currentLevel, 0, rates.Length - 1);
+                int sum = 0;
+                foreach (int v in rates)
+                {
+                    sum += v;
+                }
+
+                if (sum > 0)
+                {
+                    return Mathf.Clamp(Mathf.RoundToInt(rates[idx] * 100f / sum), 5, 95);
+                }
+            }
+
+            return Mathf.Clamp(90 - currentLevel * 5, 20, 90);
+        }
+
+        int[] ConfigPipeInts(string name)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw))
+            {
+                return System.Array.Empty<int>();
+            }
+
+            string[] parts = raw.Split(',');
+            var list = new List<int>(parts.Length);
+            foreach (string part in parts)
+            {
+                if (int.TryParse(part.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n))
+                {
+                    list.Add(n);
+                }
+            }
+
+            return list.ToArray();
         }
 
         public static int FightPropBitIndex(int propPicId)
@@ -795,6 +884,104 @@ namespace GunMobile.Res
             return 1;
         }
 
+        /// <summary>
+        /// PC bombconfig: Common ball, or CommonMultiBall when it fires more shots.
+        /// </summary>
+        public BallPhysics ResolveBall(int weaponTemplateId, int preferredBallId = 0)
+        {
+            int ballId = preferredBallId > 0 ? preferredBallId : DefaultBallId(weaponTemplateId);
+            BallPhysics ball = GetBall(ballId);
+            if (Bombs.TryGetValue(weaponTemplateId, out BombInfo bomb) && bomb.CommonMultiBall > 0)
+            {
+                BallPhysics multi = GetBall(bomb.CommonMultiBall);
+                if (multi.Amount > ball.Amount)
+                {
+                    return multi;
+                }
+            }
+
+            return ball;
+        }
+
+        public int ComputeBombHurt(BallPhysics ball, float propDmgMult = 1f)
+        {
+            return DamageCalculator.ComputeBombHurt(ball, propDmgMult);
+        }
+
+        public PetSkillInfo ResolvePetPassiveSkill(int petTemplateId)
+        {
+            if (petTemplateId <= 0 || !Pets.TryGetValue(petTemplateId, out PetInfo pet))
+            {
+                return null;
+            }
+
+            if (!_kindPassiveSkillIds.TryGetValue(pet.KindId, out int[] skillIds) || skillIds.Length == 0)
+            {
+                return null;
+            }
+
+            int idx = Mathf.Clamp(pet.StarLevel, 1, skillIds.Length) - 1;
+            return PetSkills.TryGetValue(skillIds[idx], out PetSkillInfo skill) ? skill : null;
+        }
+
+        public bool RollPetSkill(PetSkillInfo skill, int seed)
+        {
+            if (skill == null || skill.Probability <= 0)
+            {
+                return false;
+            }
+
+            if (skill.Probability >= 10000)
+            {
+                return true;
+            }
+
+            var rng = new System.Random(seed);
+            return rng.Next(0, 10000) < skill.Probability;
+        }
+
+        void BuildKindPassiveSkillMap()
+        {
+            // PC petskillinfo passive attack groups (BallType=3, Probability=10000).
+            _kindPassiveSkillIds[1] = new[] { 1, 2, 3 };
+            _kindPassiveSkillIds[2] = new[] { 19, 20, 21 };
+            _kindPassiveSkillIds[3] = new[] { 7, 8, 9 };
+            _kindPassiveSkillIds[4] = new[] { 13, 14, 15 };
+            _kindPassiveSkillIds[18] = new[] { 100, 101, 102 };
+            _kindPassiveSkillIds[19] = new[] { 69, 70, 70 };
+            _kindPassiveSkillIds[20] = new[] { 1, 2, 3 };
+            _kindPassiveSkillIds[22] = new[] { 7, 8, 9 };
+            _kindPassiveSkillIds[24] = new[] { 100, 101, 102 };
+            _kindPassiveSkillIds[32] = new[] { 100, 101, 102 };
+        }
+
+        static int ParsePetDamagePercent(string description)
+        {
+            if (string.IsNullOrEmpty(description))
+            {
+                return 0;
+            }
+
+            int pctIdx = description.IndexOf('%');
+            if (pctIdx <= 0)
+            {
+                return 0;
+            }
+
+            int start = pctIdx - 1;
+            while (start >= 0 && char.IsDigit(description[start]))
+            {
+                start--;
+            }
+
+            if (int.TryParse(description.Substring(start + 1, pctIdx - start - 1), out int pct))
+            {
+                return pct;
+            }
+
+            return 0;
+        }
+
         void LoadItems(ResLoader loader)
         {
             if (!TryTable(loader, "Request/TemplateAlllist.xml", out XmlResultTable table) &&
@@ -1056,11 +1243,59 @@ namespace GunMobile.Res
                     TemplateId = id,
                     Name = Str(row, "Name"),
                     Pic = Str(row, "Pic"),
+                    KindId = Int(row, "KindID"),
+                    StarLevel = Mathf.Max(1, Int(row, "StarLevel")),
                     Attack = Int(row, "HighAttack") / 10,
                     Defence = Int(row, "HighDefence") / 10,
                     Blood = Int(row, "HighBlood") / 5,
                     Agility = Int(row, "HighAgility") / 10,
                     Luck = Int(row, "HighLuck") / 10
+                };
+            }
+        }
+
+        void LoadPetSkills(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/petskillinfo.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                string elements = Str(row, "ElementIDs");
+                int[] elementIds = System.Array.Empty<int>();
+                if (!string.IsNullOrEmpty(elements))
+                {
+                    string[] parts = elements.Split(',');
+                    var list = new List<int>(parts.Length);
+                    foreach (string part in parts)
+                    {
+                        if (int.TryParse(part.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int eid) && eid > 0)
+                        {
+                            list.Add(eid);
+                        }
+                    }
+
+                    elementIds = list.ToArray();
+                }
+
+                string desc = Str(row, "Description");
+                PetSkills[id] = new PetSkillInfo
+                {
+                    Id = id,
+                    Name = Str(row, "Name"),
+                    BallType = Int(row, "BallType"),
+                    Probability = Int(row, "Probability"),
+                    ElementIds = elementIds,
+                    Description = desc,
+                    DamagePercent = ParsePetDamagePercent(desc)
                 };
             }
         }

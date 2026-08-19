@@ -128,12 +128,9 @@ namespace GunMobile.Client
 
                 var btn = UiKit.Button(scroll.content, "b" + slot.TemplateId, cap, () =>
                 {
-                    if (item != null && app.Profile.Equip(item))
+                    if (item != null && item.CanEquip)
                     {
                         PhoneNet.EquipItem(item.TemplateId);
-                        app.Profile.RecalcStats(app.Database);
-                        app.Profile.Save();
-                        Show(safe, app);
                     }
                 }, new Vector2(0f, 72f));
                 btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
@@ -362,7 +359,7 @@ namespace GunMobile.Client
             var scroll = ShopScreen.BodyScroll(bg.transform);
             if (app.Database.SignIn.Count == 0)
             {
-                ShopScreen.AddNote(scroll.content, done ? "今天已经签到过了。" : "表缺，金币 +1200");
+                ShopScreen.AddNote(scroll.content, done ? "今天已经签到过了。" : "缺少 TS_EveryDaySignIn.xml，无法签到。");
                 if (!done)
                 {
                 SysUi.Row(scroll.content, "Go", "签到", () =>
@@ -448,9 +445,8 @@ namespace GunMobile.Client
             nick.GetComponent<RectTransform>().anchorMin = nick.GetComponent<RectTransform>().anchorMax = new Vector2(0.4f, 0.28f);
             var save = UiKit.Button(bg.transform, "SaveNick", "保存昵称", () =>
             {
-                app.Profile.Nick = string.IsNullOrWhiteSpace(nick.text) ? app.Profile.Nick : nick.text.Trim();
-                app.Profile.Save();
-                app.ShowHall();
+                string n = string.IsNullOrWhiteSpace(nick.text) ? app.Profile.Nick : nick.text.Trim();
+                PhoneNet.SetNick(n);
             }, new Vector2(220f, 64f));
             save.GetComponent<RectTransform>().anchorMin = save.GetComponent<RectTransform>().anchorMax = new Vector2(0.72f, 0.28f);
         }

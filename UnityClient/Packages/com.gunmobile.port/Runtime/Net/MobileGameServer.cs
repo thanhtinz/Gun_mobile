@@ -319,6 +319,7 @@ namespace GunMobile.Net
         public int[] Hp;
         public int[] MaxHp;
         public long TurnStartMs;
+        public long BattleStartMs;
         public System.Random Rng;
 
         // Server-authoritative battle state
@@ -373,6 +374,7 @@ namespace GunMobile.Net
         volatile bool _run;
         GameDatabase _db;
         ResLoader _loader;
+        int _suicideTimeSec = 120;
         System.Random _rng = new System.Random();
         string _savePath;
 
@@ -391,6 +393,7 @@ namespace GunMobile.Net
             if (Running) return;
             _db = db;
             _loader = loader;
+            _suicideTimeSec = ReadSuicideTimeSec(loader);
             _savePath = savePath ?? Path.Combine(Application.persistentDataPath, "server_players");
             try
             {
@@ -552,10 +555,15 @@ namespace GunMobile.Net
 
         void TurnTimerLoop()
         {
-            // Online battle: if a client doesn't send FightTurn in time,
-            // server will auto-advance (skip turn) to prevent deadlocks.
-            const long turnMs = 20000; // must match client BattleLoop default (20s)
-            const long reconnectGraceMs = 30000; // allow quick Fight-socket reconnect
+            int turnMs = (_db != null ? _db.BattleTurnSeconds() : 20) * 1000;
+            if (turnMs < 5000)
+            {
+                turnMs = 20000;
+            }
+
+            int suicideMs = _suicideTimeSec * 1000;
+
+            const long reconnectGraceMs = 30000;
             const int tickMs = 200;
 
             while (_run)
@@ -564,6 +572,7 @@ namespace GunMobile.Net
                 {
                     long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     List<GameRoom> advance = null;
+                    List<GameRoom> suicideEnd = null;
                     // Collect reconnect-expired disconnects and process outside _lock.
                     class LoseItem { public ServerPlayer Player; public GameRoom Room; }
                     List<LoseItem> toSurrender = null;
@@ -574,6 +583,13 @@ namespace GunMobile.Net
                         {
                             if (room == null || !room.InBattle) continue;
                             if (room.TurnStartMs <= 0) continue;
+
+                            if (room.BattleStartMs > 0 && now - room.BattleStartMs >= suicideMs)
+                            {
+                                suicideEnd ??= new List<GameRoom>();
+                                suicideEnd.Add(room);
+                                continue;
+                            }
 
                             if (now - room.TurnStartMs >= turnMs)
                             {
@@ -605,6 +621,14 @@ namespace GunMobile.Net
                         foreach (var r in advance)
                         {
                             AdvanceTurn(r);
+                        }
+                    }
+
+                    if (suicideEnd != null)
+                    {
+                        foreach (var r in suicideEnd)
+                        {
+                            EndBattle(r);
                         }
                     }
 
@@ -917,6 +941,7 @@ namespace GunMobile.Net
                         }
                     }
                     Send(ns, PhoneMsg.GuildResult, "{\"ok\":true,\"name\":\"" + (player.ConsortiaName ?? "").Replace("\"", "") + "\",\"members\":[" + gMembers + "]}");
+                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
                 }
 
@@ -983,6 +1008,7 @@ namespace GunMobile.Net
                           .Append("\",\"online\":").Append(online ? "true" : "false").Append("}");
                     }
                     Send(ns, PhoneMsg.FriendResult, "{\"ok\":true,\"found\":" + (friendFound ? "true" : "false") + ",\"friends\":[" + fl + "]}");
+                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
                 }
 
@@ -1081,6 +1107,18 @@ namespace GunMobile.Net
                 case PhoneMsg.KingBless:
                     HandleKingBless(player, ns);
                     break;
+
+                case PhoneMsg.SetNick:
+                {
+                    string newNick = JS(json, "nick", player.Nick);
+                    if (!string.IsNullOrWhiteSpace(newNick))
+                    {
+                        player.Nick = newNick.Trim();
+                        SavePlayer(player);
+                    }
+                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                    break;
+                }
 
                 case PhoneMsg.Ping:
                     Send(ns, PhoneMsg.Ping, "{}");
@@ -1559,18 +1597,17 @@ namespace GunMobile.Net
                 return;
             }
             int next = slot.Strengthen + 1;
-            int rock = 200 * next;
-            if (_db != null && _db.StrengthenRock.TryGetValue(next, out int r)) rock = r;
-            int gold = Mathf.Max(100, rock * 40);
+            int gold = _db != null ? _db.StrengthenGoldCost(next) : Mathf.Max(100, 200 * next);
             if (player.Gold < gold)
             {
                 Send(ns, PhoneMsg.StrengthenResult, "{\"ok\":false,\"err\":\"gold\"}");
                 return;
             }
             player.Gold -= gold;
-            int chance;
-            lock (_lock) { chance = _rng.Next(0, 100); }
-            bool success = chance < Mathf.Clamp(90 - slot.Strengthen * 5, 20, 90);
+            int successRate = _db != null ? _db.StrengthenSuccessChance(slot.Strengthen) : Mathf.Clamp(90 - slot.Strengthen * 5, 20, 90);
+            int roll;
+            lock (_lock) { roll = _rng.Next(0, 100); }
+            bool success = roll < successRate;
             if (success) slot.Strengthen++;
             player.RecalcStats(_db);
             SavePlayer(player);
@@ -1580,12 +1617,13 @@ namespace GunMobile.Net
 
         void HandleVipUpgrade(ServerPlayer player, NetworkStream ns)
         {
-            if (player.Gift < 500 || player.VipLevel >= 15)
+            int cost = _db != null ? _db.VipUpgradeGiftCost() : 500;
+            if (player.Gift < cost || player.VipLevel >= 15)
             {
                 Send(ns, PhoneMsg.StatResult, player.ToJson());
                 return;
             }
-            player.Gift -= 500;
+            player.Gift -= cost;
             player.VipLevel++;
             player.RecalcStats(_db);
             SavePlayer(player);
@@ -1595,13 +1633,15 @@ namespace GunMobile.Net
 
         void HandleTexpTrain(ServerPlayer player, NetworkStream ns)
         {
-            if (player.Gold < 400)
+            int cost = _db != null ? _db.TexpTrainGoldCost() : 400;
+            int gain = _db != null ? _db.TexpTrainGain() : 25;
+            if (player.Gold < cost)
             {
                 Send(ns, PhoneMsg.StatResult, player.ToJson());
                 return;
             }
-            player.Gold -= 400;
-            player.Texp += 25;
+            player.Gold -= cost;
+            player.Texp += gain;
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
@@ -1652,11 +1692,26 @@ namespace GunMobile.Net
 
         const float BattleTurnSeconds = 20f;
 
+        float BattleTurnSecondsValue()
+        {
+            if (_db != null)
+            {
+                int sec = _db.BattleTurnSeconds();
+                if (sec >= 5)
+                {
+                    return sec;
+                }
+            }
+
+            return BattleTurnSeconds;
+        }
+
         float TurnTimeLeftSeconds(GameRoom room)
         {
-            if (room == null || room.TurnStartMs <= 0) return BattleTurnSeconds;
+            float budget = BattleTurnSecondsValue();
+            if (room == null || room.TurnStartMs <= 0) return budget;
             long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
-            return Mathf.Max(0f, BattleTurnSeconds - (now - room.TurnStartMs) / 1000f);
+            return Mathf.Max(0f, budget - (now - room.TurnStartMs) / 1000f);
         }
 
         string BuildTurnJson(GameRoom room)
@@ -1772,7 +1827,7 @@ namespace GunMobile.Net
                         if (_db != null)
                         {
                             int bid = p.PreferredBallId > 0 ? p.PreferredBallId : _db.DefaultBallId(p.WeaponId);
-                            room.Balls[i] = _db.GetBall(bid);
+                            room.Balls[i] = _db.ResolveBall(p.WeaponId, bid);
                         }
                     }
                     else if (pveNpcId > 0 && _db != null)
@@ -1799,7 +1854,8 @@ namespace GunMobile.Net
                     }
                 }
                 room.Rng = new System.Random(seed);
-                room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                room.BattleStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                room.TurnStartMs = room.BattleStartMs;
                 room.CurrentPlayer = 0;
                 room.CurrentPropMask = GeneratePropMask(room);
                 room.CraterHistory.Clear();
@@ -1902,6 +1958,8 @@ namespace GunMobile.Net
             {
                 Debug.Log($"[Battle] FightStart room={room.Id} curPlayer={room.CurrentPlayer} propMask={room.CurrentPropMask}");
             }
+
+            ScheduleNpcTurnIfNeeded(room);
         }
 
         void HandleFightDamage(ServerPlayer player, GameRoom room, string json)
@@ -2076,9 +2134,9 @@ namespace GunMobile.Net
                 }
                 BroadcastToRoom(room, PhoneMsg.FightCrater, craterJson, -1);
 
-                int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(ball.Power) * 80f);
-                if (bombHurt < 40) bombHurt = 140;
-                bombHurt = Mathf.RoundToInt(bombHurt * propDmg);
+                int bombHurt = _db != null
+                    ? _db.ComputeBombHurt(ball, propDmg)
+                    : DamageCalculator.ComputeBombHurt(ball, propDmg);
 
                 for (int t = 0; t < hp.Length; t++)
                 {
@@ -2111,6 +2169,8 @@ namespace GunMobile.Net
                 }
             }
 
+            ApplyPetFollowUp(player, room, who, livings, hp, posX, posY, ball, propDmg);
+
             bool gameOver;
             lock (_lock)
             {
@@ -2124,6 +2184,79 @@ namespace GunMobile.Net
             {
                 AdvanceTurn(room);
             }
+        }
+
+        void ApplyPetFollowUp(ServerPlayer shooter, GameRoom room, int who, LivingStats[] livings, int[] hp, float[] posX, float[] posY, BallPhysics ball, float propDmg)
+        {
+            if (_db == null || shooter == null || livings == null || hp == null || who < 0 || who >= livings.Length)
+            {
+                return;
+            }
+
+            PetSkillInfo skill = _db.ResolvePetPassiveSkill(shooter.PetId);
+            if (skill == null || skill.BallType != 3 || skill.DamagePercent <= 0)
+            {
+                return;
+            }
+
+            if (!_db.RollPetSkill(skill, who + room.CurrentTurn))
+            {
+                return;
+            }
+
+            int bombHurt = _db.ComputeBombHurt(ball, propDmg);
+            bombHurt = Mathf.Max(1, Mathf.RoundToInt(bombHurt * skill.DamagePercent / 100f));
+
+            for (int t = 0; t < hp.Length; t++)
+            {
+                if (t == who || hp[t] <= 0 || livings[t].Team == livings[who].Team)
+                {
+                    continue;
+                }
+
+                float dx = posX[who] - posX[t];
+                float dy = posY[who] - posY[t];
+                float dist = Mathf.Sqrt(dx * dx + dy * dy);
+                int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist * 0.35f, false);
+                dmg = Mathf.Clamp(dmg, 0, hp[t]);
+                if (dmg <= 0)
+                {
+                    continue;
+                }
+
+                lock (_lock)
+                {
+                    room.Hp[t] = Mathf.Max(0, room.Hp[t] - dmg);
+                    if (room.Livings != null && t < room.Livings.Length)
+                    {
+                        var ls = room.Livings[t];
+                        ls.Hp = room.Hp[t];
+                        room.Livings[t] = ls;
+                    }
+                }
+                hp[t] = Mathf.Max(0, hp[t] - dmg);
+                string dmgJson = "{\"target\":" + t + ",\"dmg\":" + dmg + ",\"crit\":false,\"pet\":true}";
+                BroadcastToRoom(room, PhoneMsg.FightDamage, dmgJson, -1);
+            }
+        }
+
+        static int ReadSuicideTimeSec(ResLoader loader)
+        {
+            if (loader == null)
+            {
+                return 120;
+            }
+
+            try
+            {
+                if (loader.TryReadBytes(GamePaths.PathCombine("Flash", "config.xml"), out byte[] bytes))
+                {
+                    return FlashConfig.Load(ZlibXml.Load(bytes)).SuicideTime;
+                }
+            }
+            catch { }
+
+            return 120;
         }
 
         void EndBattle(GameRoom room)

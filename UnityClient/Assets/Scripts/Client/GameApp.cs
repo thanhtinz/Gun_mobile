@@ -34,6 +34,8 @@ namespace GunMobile.Client
         public RectTransform SafeArea => _safe;
         public GameDatabase Database { get; private set; }
         string _currentModuleId = "";
+        int _pendingBattleMapId;
+        int _pendingBattleNpcId;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoBoot()
@@ -321,6 +323,12 @@ namespace GunMobile.Client
                     case PhoneMsg.LotteryResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.MailResult:
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -329,7 +337,21 @@ namespace GunMobile.Client
                         }
                         break;
                     case PhoneMsg.FriendResult:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
                         break;
+                    case PhoneMsg.PveResult:
+                        Profile.PendingReward = JsonInt(msg.Json, "reward", Profile.PendingReward);
+                        break;
+                    case PhoneMsg.Error:
+                    {
+                        string err = JsonStr(msg.Json, "err", "error");
+                        ShowStatus("Server: " + err);
+                        break;
+                    }
                     case PhoneMsg.ChatBroadcast:
                         string from = JsonStr(msg.Json, "from", "?");
                         string cm = JsonStr(msg.Json, "msg", "");
@@ -359,17 +381,19 @@ namespace GunMobile.Client
 
         void PumpFight()
         {
-            if (PhoneNet.Fight == null || State == AppState.Battle) return;
+            if (PhoneNet.Fight == null) return;
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
                 if (msg.Id == PhoneMsg.FightStart)
                 {
-                    int mapId = JsonInt(msg.Json, "map", 1056);
+                    int mapId = JsonInt(msg.Json, "map", PhoneNet.PendingPveMapId > 0 ? PhoneNet.PendingPveMapId : 1056);
                     int seed = JsonInt(msg.Json, "seed", 0);
                     if (seed != 0) PhoneNet.BattleSeed = seed;
                     PhoneNet.NetBattle = true;
-                    // Keep PhoneNet.Seat already set by RoomScreen (host=0, join=1).
-                    ShowBattle(mapId, 0, msg.Json);
+                    int npcId = PhoneNet.PendingPveNpcId;
+                    PhoneNet.PendingPveMapId = 0;
+                    PhoneNet.PendingPveNpcId = 0;
+                    ShowBattle(mapId, npcId, msg.Json);
                 }
             }
         }
@@ -381,6 +405,8 @@ namespace GunMobile.Client
             Profile.Gift = JsonInt(json, "gift", Profile.Gift);
             Profile.Gp = JsonInt(json, "gp", Profile.Gp);
             Profile.Level = JsonInt(json, "level", Profile.Level);
+            string nick = JsonStr(json, "nick", null);
+            if (nick != null) Profile.Nick = nick;
             Profile.Attack = JsonInt(json, "attack", Profile.Attack);
             Profile.Defence = JsonInt(json, "defence", Profile.Defence);
             Profile.Agility = JsonInt(json, "agility", Profile.Agility);

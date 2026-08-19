@@ -77,6 +77,18 @@ namespace GunMobile.Logic
             return Mathf.Min(dmg, defender.Hp);
         }
 
+        public static int ComputeBombHurt(BallPhysics ball, float propDmgMult = 1f)
+        {
+            float power = ball != null ? ball.Power : 1f;
+            int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(power) * 80f);
+            if (bombHurt < 40)
+            {
+                bombHurt = 140;
+            }
+
+            return Mathf.Max(1, Mathf.RoundToInt(bombHurt * propDmgMult));
+        }
+
         public static bool RollCrit(int luck, int seed)
         {
             var rng = new System.Random(seed);
@@ -158,6 +170,11 @@ namespace GunMobile.Logic
             {
                 Phase = BattlePhase.MatchOver;
             }
+        }
+
+        public void EndMatchTimeout()
+        {
+            Phase = BattlePhase.MatchOver;
         }
 
         public void FinishSettleOnline(float turnSeconds = 20f)
