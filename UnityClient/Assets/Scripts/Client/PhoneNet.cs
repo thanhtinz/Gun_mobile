@@ -82,6 +82,19 @@ namespace GunMobile.Client
                 ",\"facing\":" + facing + "}");
         }
 
+        public static void SendWalk(int who, float x, int facing)
+        {
+            if (Fight == null || !Fight.Connected)
+            {
+                return;
+            }
+
+            Fight.Send(
+                PhoneMsg.FightWalk,
+                "{\"who\":" + who + ",\"x\":" + x.ToString(System.Globalization.CultureInfo.InvariantCulture) +
+                ",\"facing\":" + facing + "}");
+        }
+
         public static void SendStart(int mapId)
         {
             if (Fight == null || !Fight.Connected)

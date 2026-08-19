@@ -118,7 +118,40 @@ namespace GunMobile.Client
             foreach (ModuleDef mod in ModuleCatalog.All)
             {
                 ModuleDef local = mod;
-                UiKit.Button(scroll.content, local.Id, local.Title, () => app.ShowModule(local), grid.cellSize);
+                var btn = UiKit.Button(scroll.content, local.Id, local.Title, () => app.ShowModule(local), grid.cellSize);
+                SkinModule(btn, local.Id);
+            }
+        }
+
+        static void SkinModule(Button btn, string id)
+        {
+            string frame = null;
+            switch (id)
+            {
+                case "room": frame = "hall_scene_build_title_roomList"; break;
+                case "dungeon": frame = "hall_scene_build_title_dungeon"; break;
+                case "labyrinth": frame = "hall_scene_build_title_labyrinth"; break;
+                case "church":
+                case "signin": frame = "hall_scene_build_title_church"; break;
+                case "worldboss": frame = "hall_scene_build_title_cryptBoss"; break;
+                case "character": frame = "hall_scene_build_title_home"; break;
+                case "consortia": frame = "hall_scene_build_title_ringStation"; break;
+            }
+
+            if (string.IsNullOrEmpty(frame) || btn == null)
+            {
+                return;
+            }
+
+            RawImage raw = PcSkin.Slice(btn.transform, "TitleArt", PcSkin.Hall, frame, true);
+            if (raw != null)
+            {
+                raw.raycastTarget = false;
+                var cap = btn.transform.Find("Caption") as RectTransform;
+                if (cap != null)
+                {
+                    cap.gameObject.SetActive(false);
+                }
             }
         }
 

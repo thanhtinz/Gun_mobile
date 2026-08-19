@@ -262,6 +262,15 @@ namespace GunMobile.Client
             TryIcon(app, bg.transform, p.EquipCloth, "cloth", new Vector2(0.72f, 0.55f));
             TryIcon(app, bg.transform, p.EquipHead, "head", new Vector2(0.72f, 0.78f));
             TryIcon(app, bg.transform, p.EquipWeapon, "weapon", new Vector2(0.88f, 0.55f));
+            if (app.Database.Pets.TryGetValue(p.PetId, out PetInfo pet))
+            {
+                PlaceTex(bg.transform, "Pet", PcArt.PetIcon(app.Loader, pet.Pic), new Vector2(0.88f, 0.78f), new Vector2(120f, 120f));
+            }
+
+            if (app.Database.Titles.TryGetValue(p.TitleId, out TitleInfo title))
+            {
+                PlaceTex(bg.transform, "Title", PcArt.TitleBanner(app.Loader, title.Pic), new Vector2(0.3f, 0.82f), new Vector2(280f, 48f));
+            }
 
             var bag = UiKit.Button(bg.transform, "OpenBag", "打开背包", () => BagScreen.Show(safe, app), new Vector2(240f, 64f));
             bag.GetComponent<RectTransform>().anchorMin = bag.GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 0.18f);
@@ -291,6 +300,21 @@ namespace GunMobile.Client
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = rt.anchorMax = anchor;
             rt.sizeDelta = new Vector2(160f, 160f);
+            go.GetComponent<RawImage>().texture = tex;
+        }
+
+        static void PlaceTex(Transform parent, string name, Texture2D tex, Vector2 anchor, Vector2 size)
+        {
+            if (tex == null)
+            {
+                return;
+            }
+
+            var go = new GameObject(name, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+            go.transform.SetParent(parent, false);
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin = rt.anchorMax = anchor;
+            rt.sizeDelta = size;
             go.GetComponent<RawImage>().texture = tex;
         }
     }

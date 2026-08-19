@@ -40,6 +40,7 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Phone Road/Fight TCP trên cổng **4396 / 1910** (không SQL; magic `0x7D01`) — LAN 2 máy hoặc loopback
 - [x] Shop/bag icon từ `Resource/image/equip|arm|unfrightprop` (dump PC, không vẽ mới)
 - [x] HUD trận `gameprop.png` + sảnh podium `hall_new_rankbg`
+- [x] LAN đồng bộ đi bộ `FightWalk` (92) + mộ `game_tombAsset` + pet/title PNG PC
 
 ### SWF living / bomb trên điện thoại
 
@@ -56,7 +57,7 @@ Không phải `Road.Service.exe` + SQL. Mỗi máy chạy `TcpListener` native:
 1. Máy A: Hall → 开战 → **开房 Fight** (status hiện IP LAN).
 2. Máy B: gõ IP của A → **加入** (Road 4396 + Fight 1910).
 3. Máy A chọn map. B nhận `FightStart` (kể cả join muộn — server giữ gói start).
-4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing.
+4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz).
 
 Cổng giống PC (4396 / 1910) nhưng magic packet `0x7D01` — client Flash PC **không** nói chuyện được với PhoneRoad. RSA/login 7road chưa làm.
 

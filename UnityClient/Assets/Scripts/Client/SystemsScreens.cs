@@ -74,7 +74,7 @@ namespace GunMobile.Client
             {
                 PetInfo local = pet;
                 bool on = app.Profile.PetId == pet.TemplateId;
-                SysUi.Row(body, "p" + pet.TemplateId,
+                var btn = SysUi.Row(body, "p" + pet.TemplateId,
                     $"{(on ? "[出战] " : "")}{pet.Name}  ATK{pet.Attack} DEF{pet.Defence} HP{pet.Blood}",
                     () =>
                     {
@@ -83,6 +83,7 @@ namespace GunMobile.Client
                         app.Profile.Save();
                         Show(safe, app);
                     });
+                PcArt.Decorate(btn.transform, PcArt.PetIcon(app.Loader, pet.Pic));
                 n++;
                 if (n >= 120)
                 {
@@ -146,7 +147,7 @@ namespace GunMobile.Client
             {
                 TitleInfo local = t;
                 bool on = app.Profile.TitleId == t.Id;
-                SysUi.Row(body, "t" + t.Id,
+                var btn = SysUi.Row(body, "t" + t.Id,
                     $"{(on ? "[佩戴] " : "")}{t.Name}  ATK+{t.Att} DEF+{t.Def}",
                     () =>
                     {
@@ -155,6 +156,7 @@ namespace GunMobile.Client
                         app.Profile.Save();
                         Show(safe, app);
                     });
+                PcArt.Decorate(btn.transform, PcArt.TitleBanner(app.Loader, t.Pic), 0.22f);
                 n++;
                 if (n >= 80)
                 {

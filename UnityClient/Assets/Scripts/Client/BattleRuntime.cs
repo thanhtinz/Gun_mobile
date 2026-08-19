@@ -155,6 +155,10 @@ namespace GunMobile.Client
         float _propDmg = 1f;
         float _propRadius = 1f;
         bool _propCrit;
+        float _walkSendT;
+        int _lastWalkDir;
+        RawImage _petImg;
+        RawImage _titleImg;
 
         public void Run(GameApp app, int mapId, int npcId = 0)
         {
@@ -312,7 +316,11 @@ namespace GunMobile.Client
 
             var move = MobileUiBootstrap.CreateHudLayer(parent as RectTransform, "Move", TextAnchor.LowerLeft, MobileUiBootstrap.FingerButtonSize * 3f);
             var moveImg = move.gameObject.AddComponent<Image>();
-            PcSkin.Chrome(moveImg, PcSkin.Game, "game_takeAimAssetBG");
+            PcSkin.Chrome(moveImg, PcSkin.Game, "game_moveStripBgAsset");
+            if (moveImg.sprite == null)
+            {
+                PcSkin.Chrome(moveImg, PcSkin.Game, "game_takeAimAssetBG");
+            }
             if (moveImg.sprite == null)
             {
                 moveImg.color = new Color(1f, 1f, 1f, 0.12f);
@@ -424,6 +432,22 @@ namespace GunMobile.Client
                     _aim.SetFacing(_facing[me]);
                 }
 
+                if (PhoneNet.NetBattle)
+                {
+                    _walkSendT -= Time.deltaTime;
+                    if (walk != 0 && _walkSendT <= 0f)
+                    {
+                        _walkSendT = 0.12f;
+                        PhoneNet.SendWalk(me, _pos[me].x, _facing[me]);
+                    }
+                    else if (walk == 0 && _lastWalkDir != 0)
+                    {
+                        PhoneNet.SendWalk(me, _pos[me].x, _facing[me]);
+                    }
+
+                    _lastWalkDir = walk;
+                }
+
                 if (_aim.FireReleased)
                 {
                     _aim.ConsumeFire();
@@ -495,6 +519,22 @@ namespace GunMobile.Client
             Fire(who, angle, power, true);
         }
 
+        public void ApplyNetWalk(int who, float x, int facing)
+        {
+            if (_map == null || _pos == null || who < 0 || who >= _pos.Length || who == MeSeat())
+            {
+                return;
+            }
+
+            if (x >= 0f)
+            {
+                _pos[who].x = Mathf.Clamp(x, 20f, _map.Width - 20f);
+            }
+
+            _facing[who] = facing >= 0 ? 1 : -1;
+            PlaceOnGround(who);
+        }
+
         void Fire(int who, float angle, float power, bool fromNet)
         {
             _loop.BeginShot();
@@ -518,6 +558,15 @@ namespace GunMobile.Client
 
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
+                if (msg.Id == PhoneMsg.FightWalk)
+                {
+                    int walker = JsonInt(msg.Json, "who", 1 - MeSeat());
+                    float x = JsonFloat(msg.Json, "x", -1f);
+                    int face = JsonInt(msg.Json, "facing", 1);
+                    ApplyNetWalk(walker, x, face);
+                    continue;
+                }
+
                 if (msg.Id != PhoneMsg.FightFire)
                 {
                     continue;
@@ -830,7 +879,11 @@ namespace GunMobile.Client
                 }
                 else
                 {
-                    PcSkin.Apply(raw, PcSkin.Default, "image_deafult_player");
+                    PcSkin.Apply(raw, PcSkin.Game, "game_defaultCharacter");
+                    if (raw.texture == Texture2D.whiteTexture || raw.texture == null)
+                    {
+                        PcSkin.Apply(raw, PcSkin.Default, "image_deafult_player");
+                    }
                     if (raw.texture == Texture2D.whiteTexture || raw.texture == null)
                     {
                         raw.texture = Texture2D.whiteTexture;
@@ -881,6 +934,53 @@ namespace GunMobile.Client
                     var wraw = wgo.GetComponent<RawImage>();
                     wraw.texture = weap;
                     wraw.raycastTarget = false;
+                }
+            }
+
+            if (_app.Database != null && _app.Database.Pets.TryGetValue(_app.Profile.PetId, out PetInfo pet))
+            {
+                Texture2D petTex = PcArt.PetIcon(_app.Loader, pet.Pic);
+                if (petTex != null && _livingImg[0] != null)
+                {
+                    var pgo = new GameObject("Pet", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    pgo.transform.SetParent(_livingImg[0].transform, false);
+                    var prt = pgo.GetComponent<RectTransform>();
+                    prt.anchorMin = new Vector2(-0.35f, 0.05f);
+                    prt.anchorMax = new Vector2(0.25f, 0.7f);
+                    prt.offsetMin = prt.offsetMax = Vector2.zero;
+                    _petImg = pgo.GetComponent<RawImage>();
+                    _petImg.texture = petTex;
+                    _petImg.raycastTarget = false;
+                }
+            }
+
+            if (_app.Database != null && _app.Database.Titles.TryGetValue(_app.Profile.TitleId, out TitleInfo title))
+            {
+                Texture2D banner = PcArt.TitleBanner(_app.Loader, title.Pic);
+                if (banner != null && _livingImg[0] != null)
+                {
+                    var tgo = new GameObject("Title", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
+                    tgo.transform.SetParent(_livingImg[0].transform, false);
+                    var trt = tgo.GetComponent<RectTransform>();
+                    trt.anchorMin = new Vector2(-0.2f, 1.2f);
+                    trt.anchorMax = new Vector2(1.2f, 1.55f);
+                    trt.offsetMin = trt.offsetMax = Vector2.zero;
+                    _titleImg = tgo.GetComponent<RawImage>();
+                    _titleImg.texture = banner;
+                    _titleImg.raycastTarget = false;
+                }
+            }
+
+            if (_livingImg[0] != null)
+            {
+                RawImage lv = PcSkin.Slice(_livingImg[0].transform, "Lv", PcSkin.Game, "level_" + Mathf.Clamp(_app.Profile.Level, 1, 70), false);
+                if (lv != null)
+                {
+                    var lrt = lv.rectTransform;
+                    lrt.anchorMin = new Vector2(0.35f, 1.55f);
+                    lrt.anchorMax = new Vector2(0.65f, 1.85f);
+                    lrt.offsetMin = lrt.offsetMax = Vector2.zero;
+                    lv.raycastTarget = false;
                 }
             }
 
@@ -944,10 +1044,35 @@ namespace GunMobile.Client
             for (int i = 0; i < _livingImg.Length; i++)
             {
                 bool dead = _loop.Livings[i].Hp <= 0;
-                _livingImg[i].gameObject.SetActive(!dead);
+                if (i == 0)
+                {
+                    if (_petImg != null)
+                    {
+                        _petImg.gameObject.SetActive(!dead);
+                    }
+
+                    if (_titleImg != null)
+                    {
+                        _titleImg.gameObject.SetActive(!dead);
+                    }
+                }
+
                 if (dead)
                 {
+                    PcSkin.Apply(_livingImg[i], PcSkin.Game, "game_tombAsset");
+                    _livingImg[i].gameObject.SetActive(_livingImg[i].texture != null);
+                    if (_hpFill[i] != null)
+                    {
+                        _hpFill[i].gameObject.SetActive(false);
+                    }
+
                     continue;
+                }
+
+                _livingImg[i].gameObject.SetActive(true);
+                if (_hpFill[i] != null)
+                {
+                    _hpFill[i].gameObject.SetActive(true);
                 }
 
                 SheetFrame frame = PickFrame(i == me && (walking || firing));

@@ -83,6 +83,7 @@ namespace GunMobile.Res
     {
         public int TemplateId;
         public string Name = "";
+        public string Pic = "";
         public int Attack;
         public int Defence;
         public int Blood;
@@ -104,6 +105,7 @@ namespace GunMobile.Res
     {
         public int Id;
         public string Name = "";
+        public string Pic = "";
         public int Att;
         public int Def;
         public int Agi;
@@ -576,6 +578,7 @@ namespace GunMobile.Res
                 {
                     TemplateId = id,
                     Name = Str(row, "Name"),
+                    Pic = Str(row, "Pic"),
                     Attack = Int(row, "HighAttack") / 10,
                     Defence = Int(row, "HighDefence") / 10,
                     Blood = Int(row, "HighBlood") / 5,
@@ -620,6 +623,7 @@ namespace GunMobile.Res
                 {
                     Id = id,
                     Name = Str(row, "Name"),
+                    Pic = Str(row, "Pic"),
                     Att = Int(row, "Att"),
                     Def = Int(row, "Def"),
                     Agi = Int(row, "Agi"),

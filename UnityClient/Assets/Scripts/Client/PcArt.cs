@@ -161,6 +161,41 @@ namespace GunMobile.Client
             return SwfImage.TryLoad(loader, paths.ToArray());
         }
 
+        public static Texture2D PetIcon(ResLoader loader, string pic)
+        {
+            if (loader == null || string.IsNullOrEmpty(pic))
+            {
+                return null;
+            }
+
+            var paths = new List<string>();
+            foreach (string p in PicKeys(pic))
+            {
+                paths.Add(GamePaths.PathCombine("Resource", "image", "pet", p, "icon1.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "pet", p, "icon2.png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "pet", p, "icon.png"));
+            }
+
+            return SwfImage.TryLoad(loader, paths.ToArray());
+        }
+
+        public static Texture2D TitleBanner(ResLoader loader, string pic)
+        {
+            if (loader == null || string.IsNullOrEmpty(pic) || pic == "0")
+            {
+                return null;
+            }
+
+            var paths = new List<string>();
+            foreach (string p in PicKeys(pic))
+            {
+                paths.Add(GamePaths.PathCombine("Resource", "image", "title", "image_title_" + p + ".png"));
+                paths.Add(GamePaths.PathCombine("Resource", "image", "title", p, "icon.png"));
+            }
+
+            return SwfImage.TryLoad(loader, paths.ToArray());
+        }
+
         public static string EquipFolder(int categoryId)
         {
             switch (categoryId)

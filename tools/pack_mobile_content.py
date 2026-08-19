@@ -212,6 +212,13 @@ def main() -> None:
     except Exception as e:
         print("shop icon pack skipped:", e)
 
+    try:
+        from pack_pet_title_art import pack as pack_pet_title
+
+        print("pet/title art", pack_pet_title())
+    except Exception as e:
+        print("pet/title pack skipped:", e)
+
     files = [p.relative_to(OUT).as_posix() for p in OUT.rglob("*") if p.is_file() and p.name != "content_index.json"]
     files.sort()
     index = {

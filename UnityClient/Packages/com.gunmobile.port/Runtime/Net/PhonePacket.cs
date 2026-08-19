@@ -96,6 +96,7 @@ namespace GunMobile.Net
         public const ushort JoinRoom = 10;
         public const ushort RoomOk = 11;
         public const ushort FightStart = 91;
+        public const ushort FightWalk = 92;
         public const ushort FightFire = 93;
         public const ushort FightOver = 95;
         public const ushort Error = 255;
