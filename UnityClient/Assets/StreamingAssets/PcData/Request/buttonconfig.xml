@@ -1,0 +1,9 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Name="TimeActiveBtn" Text="限时活动" IsShow="false" IsClose="true" />
+  <Item ID="2" Name="rollBtn" Text="轮盘" IsShow="false" IsClose="true" />
+  <Item ID="3" Name="vipBtn" Text="VIP" IsShow="false" IsClose="true" />
+  <Item ID="4" Name="activeBtn" Text="活动" IsShow="true" IsClose="true" />
+  <Item ID="5" Name="signBtn" Text="签到" IsShow="true" IsClose="true" />
+  <Item ID="6" Name="awardBtn" Text="领奖" IsShow="true" IsClose="true" />
+  <Item ID="7" Name="angelblessBtn" Text="天使赐福" IsShow="true" IsClose="true" />
+</Result>

@@ -1,0 +1,39 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Count="1" CountRemark="×60分钟" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="6" ValidDate="60" GetWay="0" AwardDays="2" />
+  <Item ID="2" Count="1" CountRemark="×60分钟" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="6" ValidDate="60" GetWay="0" AwardDays="8" />
+  <Item ID="3" Count="1" CountRemark="×60分钟" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="6" ValidDate="60" GetWay="0" AwardDays="16" />
+  <Item ID="4" Count="1" CountRemark="×60分钟" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="6" ValidDate="60" GetWay="0" AwardDays="25" />
+  <Item ID="5" Count="1" CountRemark="×60分钟" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="6" ValidDate="60" GetWay="0" AwardDays="31" />
+  <Item ID="6" Count="0" CountRemark="×1.2倍" IsBinds="true" Remark="" Sex="0" TemplateID="11107" Type="2" ValidDate="0" GetWay="1" AwardDays="0" />
+  <Item ID="7" Count="100" CountRemark="×50" IsBinds="true" Remark="" Sex="0" TemplateID="-1100" Type="7" ValidDate="0" GetWay="1" AwardDays="0" />
+  <Item ID="8" Count="100" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="-1100" Type="7" ValidDate="0" GetWay="1" AwardDays="0" />
+  <Item ID="9" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="112059" Type="1" ValidDate="0" GetWay="2" AwardDays="0" />
+  <Item ID="10" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11997" Type="1" ValidDate="1" GetWay="3" AwardDays="0" />
+  <Item ID="11" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11998" Type="1" ValidDate="1" GetWay="3" AwardDays="0" />
+  <Item ID="12" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="15138" Type="1" ValidDate="0" GetWay="4" AwardDays="3" />
+  <Item ID="13" Count="20" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11300" Type="1" ValidDate="0" GetWay="4" AwardDays="3" />
+  <Item ID="14" Count="2" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11689" Type="1" ValidDate="0" GetWay="4" AwardDays="7" />
+  <Item ID="15" Count="50" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11300" Type="1" ValidDate="0" GetWay="4" AwardDays="7" />
+  <Item ID="16" Count="2000" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11164" Type="1" ValidDate="0" GetWay="4" AwardDays="15" />
+  <Item ID="17" Count="80" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11300" Type="1" ValidDate="0" GetWay="4" AwardDays="15" />
+  <Item ID="18" Count="5000" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="100100" Type="1" ValidDate="0" GetWay="4" AwardDays="15" />
+  <Item ID="19" Count="1000" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11154" Type="1" ValidDate="0" GetWay="4" AwardDays="23" />
+  <Item ID="20" Count="120" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11300" Type="1" ValidDate="0" GetWay="4" AwardDays="23" />
+  <Item ID="21" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="0" GetWay="4" AwardDays="23" />
+  <Item ID="22" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="7" GetWay="4" AwardDays="28" />
+  <Item ID="23" Count="200" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11300" Type="1" ValidDate="0" GetWay="4" AwardDays="28" />
+  <Item ID="24" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="11801" Type="1" ValidDate="0" GetWay="4" AwardDays="28" />
+  <Item ID="25" Count="1" CountRemark="×1" IsBinds="true" Remark="" Sex="0" TemplateID="46446" Type="1" ValidDate="0" GetWay="4" AwardDays="28" />
+  <Item ID="26" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="1" />
+  <Item ID="27" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="2" />
+  <Item ID="28" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="3" />
+  <Item ID="29" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="4" />
+  <Item ID="30" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="5" />
+  <Item ID="31" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="6" />
+  <Item ID="32" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="7" />
+  <Item ID="33" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="8" />
+  <Item ID="34" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="9" />
+  <Item ID="35" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="10" />
+  <Item ID="36" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="11" />
+  <Item ID="37" Count="1" CountRemark="x 1" IsBinds="true" Remark="" Sex="0" TemplateID="11177" Type="1" ValidDate="1" GetWay="11" AwardDays="12" />
+</Result>

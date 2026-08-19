@@ -1,0 +1,9 @@
+{
+  "name": "GunMobile.Client",
+  "rootNamespace": "GunMobile.Client",
+  "references": [ "GunMobile.Runtime" ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "autoReferenced": true
+}

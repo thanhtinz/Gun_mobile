@@ -1,0 +1,64 @@
+
+'view/PlayerItem.xml£3<View width="134" height="268">
+  <Label x="4" y="13" size="12" font="Arial" bold="true" color="0xffffff" stroke="0x000000,1,4,4,10" var="nickName" width="126" height="21" align="center"/>
+  <Box x="10" y="62" width="114" height="194" var="playerBox" mouseChildren="true" mouseEnabled="true"/>
+  <Box x="29" y="37" var="progreesBox" width="76" height="17">
+    <Image skin="asset.magicWardrobe.progressBg" y="2"/>
+    <Label text="4" x="0" y="-1" var="progressCurTxt" width="10" height="16" color="0xffe400" bold="true" size="12"/>
+    <Label text="/" x="8" size="12" color="0xffffff" bold="true" y="-1"/>
+    <Label text="8" x="13" y="-1" var="progressTotleTxt" size="12" color="0xffffff" bold="true"/>
+    <Clip x="27" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item0" width="4" height="9" index="1"/>
+    <Clip x="33" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item1"/>
+    <Clip x="39" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item2"/>
+    <Clip x="45" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item3"/>
+    <Clip x="51" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item4"/>
+    <Clip x="57" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item5"/>
+    <Clip x="63" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item6"/>
+    <Clip x="69" y="4" clipsUrl="asset.magicWardrobe.progressItem1,asset.magicWardrobe.progressItem2" name="item7"/>
+  </Box>
+  <Label text="Êî∂ÈõÜÂÆåÊàê" x="16" y="38" size="12" bold="true" color="0x4eff00" font="Arial" stroke="0x000000 ,1,4,4,10" var="completeTxt" width="106" height="18" align="center"/>
+  <Box x="17" y="242" var="btnBox" mouseChildren="true">
+    <Button skin="asset.magicWardrobe.rebackBtn" x="4" stateNum="1" var="rebackBtn" visible="false"/>
+    <Button skin="asset.magicWardrobe.activationBtn" stateNum="1" var="activationBtn" visible="false"/>
+    <Button stateNum="1" var="previewBtn" skin="asset.magicWardrobe.previewBtn" visible="false" y="1" mouseEnabled="true"/>
+  </Box>
+</View>%view/MagicMain.xmlë5<View width="850" height="450">
+  <Image skin="asset.magicWardrobe.mainBg" x="4" y="-2"/>
+  <Button skin="asset.ui.btn_close9" x="750" y="18" stateNum="1" var="btnClose"/>
+  <PlayerItem x="154" y="128" runtime="magicWardrobe.view.MagicWardrobeItem" name="item0" mouseChildren="true"/>
+  <PlayerItem x="351" y="128" runtime="magicWardrobe.view.MagicWardrobeItem" name="item1" mouseChildren="true"/>
+  <PlayerItem x="558" y="128" runtime="magicWardrobe.view.MagicWardrobeItem" name="item2" mouseChildren="true"/>
+  <SelectPageEx skin="png.comp.blank" x="312" y="412" totle="5" var="pageSelecte" mouseChildren="true"/>
+  <Image skin="asset.magicRobe.btnBg" x="71" y="118"/>
+  <TabListEx width="311" height="41" x="73" y="80" var="bigSelectGrop">
+    <TabButtonEx x="10" y="3" skin="asset.magicWardrobe.cloth2,asset.magicWardrobe.cloth1" name="item0"/>
+    <TabButtonEx x="114" y="3" skin="asset.magicWardrobe.celebration2,asset.magicWardrobe.celebration1" name="item1" selected="false"/>
+    <TabButtonEx x="219" y="3" skin="asset.magicWardrobe.marry2,asset.magicWardrobe.marry1" name="item2"/>
+  </TabListEx>
+</View>/view/MagicNeedEquip.xmlçk<View width="120" height="220" mouseChildren="true">
+  <Image skin="asset.magicWardrobe.bg" x="0" y="1" sizeGrid="44,39,44,39" width="121" height="219"/>
+  <Box x="11" y="13" name="box0">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="63" y="13" name="box1">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="11" y="63" name="box2">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="63" y="63" name="box3">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="11" y="114" name="box4">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="63" y="114" name="box5">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="11" y="165" name="box6">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+  <Box x="63" y="165" name="box7">
+    <Image skin="asset.magicWardrobe.itemBg"/>
+  </Box>
+</View>

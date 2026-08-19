@@ -1,0 +1,135 @@
+
+/TreasureHuntingMain.xml�S<View width="1004" height="650" x="-11" y="-28">
+  <Image skin="treasureHunting.treasure.BG" x="8" y="25"/>
+  <Image skin="treasureHunting.normalHuntBg" x="75" y="101" var="normalHuntBg"/>
+  <Image skin="treasureHunting.exHuntBg" x="75" y="101" var="exHuntBg"/>
+  <TabListEx x="673" y="103" var="menuTab" width="274" height="40" name="tab">
+    <TabButtonEx skin="treasureHunting.rankBtnUnselected,treasureHunting.rankBG" showClickTooQuickTip="true" clickInterval="1000" selected="false" height="40" name="item0" x="-9999" y="-9999" width="0"/>
+    <TabButtonEx skin="treasureHunting.bagBtnUnselected,treasureHunting.bagBG" showClickTooQuickTip="true" clickInterval="1000" selected="false" height="40" name="item2" y="0" width="68" x="70"/>
+    <TabButtonEx skin="treasureHunting.rank2BtnUnselected,treasureHunting.rank2BG" showClickTooQuickTip="true" clickInterval="1000" selected="false" height="40" name="item1" x="0" y="0" width="68"/>
+    <TabButtonEx skin="treasureHunting.recordBtnUnselected,treasureHunting.recordBG" showClickTooQuickTip="true" clickInterval="1000" selected="false" height="40" name="item3" y="0" width="68" x="140"/>
+  </TabListEx>
+  <Box x="693" y="536" var="myScoreBox">
+    <LabelEx y="6" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="我的积分："/>
+    <Image skin="treasureHunting.bag.inputBg" x="66" y="3"/>
+    <LabelEx x="70" y="7" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="0" width="60" height="18" align="center" var="scoretTxt"/>
+    <Button skin="treasureHunting.openBtn" x="144" stateNum="1" var="exchangeBtn"/>
+  </Box>
+  <Button skin="treasureHunting.closeBtn" x="921" stateNum="1" var="closeBtn" y="64"/>
+  <TreasureBagView x="679" y="145" var="bagView" runtime="treasureHunting.views.TreasureBagView"/>
+  <TreasureRankView x="679" var="rankView" y="145" runtime="treasureHunting.views.TreasureRankView"/>
+  <TreasureRecordView x="679" y="145" var="recordView" runtime="treasureHunting.views.TreasureRecordView"/>
+  <Button skin="treasureHunting.treasure.buyCardBoxBtn" x="185" y="517" stateNum="1" var="buyCardBoxBtn"/>
+  <Button skin="treasureHunting.treasure.huntBtnBG" x="343" y="517" stateNum="1" var="huntBtn"/>
+  <Button skin="treasureHunting.treasure.awardBtn" x="503" y="427" stateNum="1" var="showPrizeBtn"/>
+  <CheckBox label="高级寻宝" x="199" y="428" checkButtonSkin="treasureHunting.btn_check" labelColors="0xffffff" labelStroke="0x5d1c00,1,4,2,30" labelMargin="0,1" toggle="true" stateNum="1" labelBold="true" labelSize="14" var="exTreasureCb"/>
+  <CheckBox label="连续寻宝" x="339" y="428" checkButtonSkin="treasureHunting.btn_check" stateNum="1" labelColors="0xffffff" labelStroke="0x5d1c00,1,4,2,30" labelMargin="0,1" toggle="true" labelBold="true" labelSize="14" var="lxTreasureCb"/>
+  <Image skin="treasureHunting.highTicket" x="624" y="485" width="38" height="38" tipStyle="ddt.view.tips.OneLineTip" var="exTicketImg1" tipDirctions="0,7,6" toolTip="每进行10次常规寻宝可获赠一枚高级寻宝符"/>
+  <Image skin="treasureHunting.highTicket" x="630" y="525" width="24" height="24" tipStyle="ddt.view.tips.OneLineTip" var="exTicketImg2" tipDirctions="0,7,6" toolTip="每进行10次常规寻宝可获赠一枚高级寻宝符"/>
+  <Image skin="treasureHunting.normalTicket" x="630" y="549" width="24" height="24" tipStyle="ddt.view.tips.OneLineTip" var="ticketImg" tipDirctions="0,7,6" toolTip="购买卡盒赠送"/>
+  <Image skin="treasureHunting.progressBarbg" x="97" y="497" height="12" var="progressImg"/>
+  <Image skin="treasureHunting.progressBarLine" x="149" y="494" width="3" height="21"/>
+  <Image skin="treasureHunting.progressBarLine" x="202" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="255" y="493" width="3" height="21"/>
+  <Image skin="treasureHunting.progressBarLine" x="307" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="360" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="413" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="465" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="518" y="493"/>
+  <Image skin="treasureHunting.progressBarLine" x="571" y="493" width="3" height="21"/>
+  <LabelEx x="498" y="541" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="我的护身符："/>
+  <LabelEx x="568" y="530" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="0" width="60" height="18" align="center" var="exTicketLab"/>
+  <LabelEx x="568" y="553" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="0" width="60" height="18" align="center" var="normalTicketLab"/>
+  <Image skin="treasureHunting.highTicket" x="606" y="474" width="38" height="38" visible="false" var="exTicketMC"/>
+</View>;View/TreasureBuyCardAlert.xml�]<View width="1000" height="650" x="220" y="120">
+  <Image skin="asset.ui.frame.bg2" x="120" y="70" sizeGrid="25,50,25,50" width="358" height="232"/>
+  <Button skin="asset.ui.btn_close1" x="419" y="76" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="140" y="234" sizeGrid="5,5,5,5" width="317" height="48"/>
+  <Button label="取 消" x="339" y="240" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="cancelBtn" buttonMode="true"/>
+  <Button label="确 定" x="188" y="240" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="confirmBtn" buttonMode="true"/>
+  <TextInput skin="asset.ui.scale.bg4" x="255" y="166" sizeGrid="10,10,10,10" width="141" height="29" align="center" margin="0,6" var="buyCountInput" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="3"/>
+  <Label text="购买提示" x="137" y="82" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Label text="注：每购买一个卡盒即可获赠一枚普通寻宝符" x="174" y="211" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10"/>
+  <Label text="购买数量" x="174" y="171" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10"/>
+  <LabelEx x="172" y="131" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="16" var="tipMsgLab"/>
+</View>EItem/TreasureHuntAwardListItem.xml�<View width="520" height="115">
+  <Image skin="treasureHunting.rewards.listItemBg" x="0" y="0" name="bg"/>
+  <List x="159" y="10" width="347" height="101" repeatX="6" repeatY="2" spaceX="8" spaceY="2" var="itemList">
+    <TreasureHuntAwardCell x="0" y="0" name="render" runtime="treasureHunting.items.TreasureHuntAwardCell"/>
+  </List>
+  <Image x="26" y="19" var="typeIcon"/>
+</View>=Item/TreasureHuntAwardCell.xml�E<View width="50" height="50">
+  <Image skin="treasureHunting.rewards.Itembg" x="0" y="0"/>
+</View>;View/TreasureAwardPreview.xml�Q<View width="620" height="420">
+  <Image skin="treasureHunting.rewards.bg" x="0" y="-3" name="bg"/>
+  <Image skin="treasureHunting.rewards.Titlebg" x="40" y="90" width="548" height="32"/>
+  <Panel x="42" y="123" width="548" height="247" var="awardPanel" vScrollBarSkin="treasureHunting.vscroll">
+    <List repeatX="1" var="awardList" x="0" y="0" repeatY="1">
+      <TreasureHuntAwardListItem x="0" y="0" name="render" runtime="treasureHunting.items.TreasureHuntAwardListCell"/>
+    </List>
+  </Panel>
+  <Image skin="treasureHunting.rewards.line" x="189" y="92"/>
+  <LabelEx x="95" y="98" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="迷宫类型" align="center" width="58"/>
+  <LabelEx x="355" y="98" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="几率获得" align="center" width="58"/>
+  <Button skin="treasureHunting.closeBtn" x="570" y="19" stateNum="1" var="closebtn"/>
+</View>;Item/TreasureHuntRankItem.xml�Y<View width="259" height="30">
+  <Image skin="treasureHunting.Rank.itemBg" x="0" y="0"/>
+  <Image skin="treasureHunting.Rank.icon0" x="13" y="5" var="rankIcon"/>
+  <LabelEx x="93" y="8" color="0xffd9b4" bold="false" stroke="0x5d1c00,1,4,2,10" size="12" text="虚位以待" var="nameLab"/>
+  <LabelEx x="190" y="8" color="0xffd9b4" bold="false" stroke="0x5d1c00,1,4,2,10" size="12" text="0" var="countLab" width="55" height="18"/>
+  <LabelEx x="18" y="8" color="0xffd9b4" bold="false" stroke="0x5d1c00,1,4,2,10" size="12" text="1" var="rankNumLab"/>
+</View>=View/TreasureCrossRankView.xml�'<View width="260" height="430">
+  <TabListEx x="0" y="4" var="oldPlayerBackTabs" width="274" height="40" name="tab">
+    <TabButtonEx skin="treasureHunting.Rank.tabBtn1Normal,treasureHunting.Rank.tabBtn1Select" showClickTooQuickTip="true" clickInterval="1000" selected="false" name="item0" x="0" y="0"/>
+    <TabButtonEx skin="treasureHunting.Rank.tabBtn2Normal,treasureHunting.Rank.tabBtn2Select" showClickTooQuickTip="true" clickInterval="1000" selected="false" name="item1" x="130" y="0"/>
+  </TabListEx>
+  <Box x="0" y="37">
+    <Image skin="treasureHunting.Rank.titleBg"/>
+    <Image skin="treasureHunting.rewards.line" x="90" width="2" height="32"/>
+    <LabelEx x="15" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="跨区排名" align="center" width="58" var="rankTitle1Lab"/>
+    <Image skin="treasureHunting.rewards.line" x="160" width="2" height="32"/>
+    <LabelEx x="112" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="名称"/>
+    <LabelEx x="178" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" align="center" width="58" text="彩石数量" var="rankTitle2Lab"/>
+    <LabelEx x="22" y="351" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="彩石："/>
+    <LabelEx x="142" y="351" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="排名："/>
+    <LabelEx x="57" y="351" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="123456" width="52" height="18" align="left"/>
+    <LabelEx x="177" y="351" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="123456" width="52" height="18" align="left"/>
+    <LabelEx x="12" y="371" color="0xff0000" bold="false" stroke="0x3d000c,1,4,2,10" size="12" text="注；彩石数量需大于一百，才可进有效排名"/>
+  </Box>
+  <List x="0" y="70" spaceY="1" width="259" height="311" var="rankList">
+    <TreasureHuntRankItem x="0" y="0" name="render" runtime="treasureHunting.views.mornui.Item.TreasureHuntRankItemUI"/>
+  </List>
+</View>9Item/TreasureHuntBagItem.xml�C<View width="57" height="57">
+  <Image skin="treasureHunting.bag.bagItemBg" x="0" y="0"/>
+</View>3View/TreasureRankView.xml�<View width="260" height="430">
+  <TabListEx x="0" y="4" var="rankMenuTab" width="274" height="40" name="rankMenuTab">
+    <TabButtonEx skin="treasureHunting.Rank.tabBtn1Normal,treasureHunting.Rank.tabBtn1Select" showClickTooQuickTip="true" clickInterval="1000" selected="false" name="item0" x="0" y="0"/>
+    <TabButtonEx skin="treasureHunting.Rank.tabBtn2Normal,treasureHunting.Rank.tabBtn2Select" showClickTooQuickTip="true" clickInterval="1000" selected="false" name="item1" x="130" y="0"/>
+  </TabListEx>
+  <Image skin="treasureHunting.Rank.titleBg" x="0" y="37"/>
+  <Image skin="treasureHunting.rewards.line" x="90" width="2" height="32" y="37"/>
+  <LabelEx x="15" y="45" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="跨区排名" align="center" width="58" var="rankTitle1Lab"/>
+  <LabelEx x="22" y="388" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="彩石："/>
+  <LabelEx x="142" y="388" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="排名："/>
+  <LabelEx x="57" y="388" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="123456" width="52" height="18" align="left" var="stonecountLab"/>
+  <LabelEx x="177" y="388" color="0xffea00" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="123456" width="52" height="18" align="left" var="rankCountLab"/>
+  <LabelEx x="12" y="408" color="0xff0000" bold="false" stroke="0x3d000c,1,4,2,10" size="12" text="注：彩石数量需≥100，才可进有效排名" var="tipLab"/>
+  <Box x="93" y="37" width="166" height="32" var="t_rankBox">
+    <Image skin="treasureHunting.rewards.line" width="2" height="32" x="75" y="0"/>
+    <LabelEx x="12" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="名称"/>
+    <LabelEx x="98" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" align="center" width="58" text="彩石数量"/>
+  </Box>
+  <Box x="93" y="37" width="166" height="32" var="t_awardBox">
+    <LabelEx x="62" y="8" color="0xf1b383" bold="true" stroke="0x5d1c00,1,4,2,10" size="12" text="奖励"/>
+  </Box>
+  <List x="00" y="70" spaceY="1" width="259" height="311" var="rankList">
+    <TreasureHuntRankItem x="0" y="0" name="render" runtime="treasureHunting.items.TreasureHuntRankCell"/>
+  </List>
+</View>7View/TreasureRecordView.xml�)<View width="264" height="385">
+  <Panel x="-1" y="13" width="264" height="350" vScrollBarSkin="treasureHunting.vscroll" var="recordPanel"/>
+</View>1View/TreasureBagView.xml�<View width="264" height="385" x="0" y="0">
+  <Image skin="treasureHunting.btnBg" x="3" y="331"/>
+  <Button skin="treasureHunting.convert" x="139" y="336" stateNum="1" var="convertBtn"/>
+  <Button skin="treasureHunting.bag.getAllBtn" x="16" y="336" stateNum="1" var="getAllBtn"/>
+  <Panel width="264" height="328" vScrollBarSkin="treasureHunting.vscroll" x="0" y="0" var="scrollPanel"/>
+</View>

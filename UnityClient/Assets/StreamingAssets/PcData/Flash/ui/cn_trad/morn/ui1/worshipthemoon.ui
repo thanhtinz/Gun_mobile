@@ -1,0 +1,62 @@
+
+7view/WorshipTheMoonRank.xml�<View width="982" height="448">
+  <Image skin="worshipTheMoon.BG" x="0" y="0"/>
+  <TabListEx var="tab_menu" x="680" y="32">
+    <TabButtonEx x="0" y="0" width="120" height="40" selected="true" name="item0" skin="worshipTheMoon.areaRank,worshipTheMoon.areaRankSelected"/>
+    <TabButtonEx skin="worshipTheMoon.rank,worshipTheMoon.rankSelected" x="107" y="0" width="120" height="40" name="item1"/>
+  </TabListEx>
+  <Box x="179" y="368" var="movieClipBox" width="118" height="69"/>
+  <Button skin="worshipTheMoon.btn.quickBuy" x="170" y="364" stateNum="1" var="buyBtn" label="购买10次" labelSize="16" labelBold="true" labelColors="0xfff8eb" labelStroke="0x572525,1,4,4,30" labelFont="微软雅黑" letterSpacing="2"/>
+  <Button skin="worshipTheMoon.btn.once" x="449" y="364" stateNum="1" var="drawBtn"/>
+  <Button x="199" y="326" var="buyTenBtn" stateNum="1" labelMargin="10" width="30" height="30" toggle="true" checkButtonSkin="asset.ui.btn_check3"/>
+  <Label text="购买100次" x="230" y="337" color="0xffffff"/>
+  <Button x="467" y="326" var="drawTenBtn" stateNum="1" labelMargin="10" width="30" height="30" toggle="true" checkButtonSkin="asset.ui.btn_check3"/>
+  <Label text="连续祭月" x="497" y="337" color="0xffffff"/>
+  <List x="678" y="79" var="rankList" repeatY="10" spaceY="9" width="217" height="300">
+    <WorshipRankItem x="6" y="1" name="render" runtime="midAutumnWorshipTheMoon.item.WorshipRankItem"/>
+  </List>
+  <List x="659" y="80" repeatY="10" spaceY="10" var="rewardList">
+    <WorshipRankRewardItem name="render" runtime="midAutumnWorshipTheMoon.item.WorshipRankRewardItem"/>
+  </List>
+  <Label x="690" y="381" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="积分：" width="41" height="18" align="center"/>
+  <Label x="804" y="380" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="排名：" width="35" height="18" align="center"/>
+  <Label x="726" y="381" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="100000" width="69" height="18" align="center" var="scoreTxt"/>
+  <Label x="842" y="380" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="未上榜" width="43" height="18" align="center" var="rankTxt"/>
+  <Label x="585" y="376" size="12" bold="true" color="0xff2700" stroke="0x1c0000,1,4,4,30" text="还剩1000次" width="82" height="18" align="center" var="remainTimeTxt"/>
+  <Button skin="worshipTheMoon.rewardShowBtn" x="547" y="28" stateNum="1" var="awardShowBtn"/>
+</View>7view/WorshipTheMoonMain.xml�9<View width="982" height="400">
+  <Image skin="worshipTheMoon.titleBg" x="0" y="0"/>
+  <WorshipTheMoonRank x="0" y="127" runtime="midAutumnWorshipTheMoon.view.WorshipTheMoonRankView" var="rankView"/>
+  <TabListEx var="tab_menu" x="89" y="87">
+    <TabButtonEx skin="asset.core.btmc004|worshipTheMoon.rankTxt,asset.core.btmc005|worshipTheMoon.rankTxtSelected" x="0" y="0" bgSizeGrid="15,15,15,15" rects="10,2,100,38|20,9,0,0|0,0,120,40|16,9,0,0" width="120" height="40" selected="true" name="item0"/>
+    <TabButtonEx skin="asset.core.btmc004|worshipTheMoon.rewardTxt,asset.core.btmc005|worshipTheMoon.rewardTxtSelected" x="107" y="0" bgSizeGrid="15,15,15,15" rects="10,2,100,38|20,9,0,0|0,0,120,40|16,9,0,0" width="120" height="40" name="item1"/>
+  </TabListEx>
+  <Label text="活动时间：2018年1月1日-2018年1月1日" x="639" y="98" var="activeTime" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30"/>
+  <WorshipRewardView y="127" runtime="midAutumnWorshipTheMoon.view.WorshipRewardView" var="rewardView"/>
+  <Image skin="worshipTheMoon.closeBG" x="895" y="71"/>
+  <Button skin="worshipTheMoon.closeBtn" x="903" y="137" stateNum="1" var="closeBtn"/>
+</View>5view/WorshipRewardView.xml�Q<View width="982" height="488">
+  <Image skin="worshipTheMoon.scoreBG" x="0" y="0"/>
+  <Label text="3天22时10分" x="644" y="22" color="0xffdeb2" size="14" bold="true" stroke="0x6b2e0d,1,4,4,30" var="remainTime"/>
+  <Label text="活动期间，玩家达到一定积分，可领取对应奖励" x="538" y="53" color="0xffdeb2" size="14" bold="true" stroke="0x6b2e0d,1,4,4,30"/>
+  <Label text="30000" x="537" y="78" color="0xffdeb2" size="14" bold="true" stroke="0x6b2e0d,1,4,4,30" var="scpreTxt"/>
+  <List x="414" y="141" repeatY="4" spaceY="2" vScrollBarSkin="asset.ui.scroll1.vscroll" width="472" height="250" var="rewardList">
+    <WorshipRewardItem name="render" runtime="midAutumnWorshipTheMoon.item.WorshipRewardItem"/>
+  </List>
+</View>1item/WorshipRankItem.xml�9<View width="250" height="20">
+  <Label x="13" y="2" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="1" width="17" height="18" align="center" var="rankTxt"/>
+  <Label x="133" y="2" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="80" width="100" height="18" align="center" var="scoreTxt"/>
+  <Box x="45" y="2" var="nameBox">
+    <Label size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="德玛西亚" width="100" height="18" align="center" var="nameTxt"/>
+  </Box>
+</View>5item/WorshipRewardItem.xml�?<View width="454" height="61">
+  <Image skin="worshipTheMoon.rewardView.itemBg" x="0" y="0"/>
+  <Box x="143" y="8" var="cellBox"/>
+  <Label text="30000" x="35" y="22" color="0xffdeb2" size="14" bold="true" stroke="0x6b2e0d,1,4,4,30" var="scoreTxt"/>
+  <Button skin="asset.uigeneral.awardBtn" x="341" y="10" stateNum="1" var="getBtn"/>
+  <Image skin="asset.uigeneral.awardGained" x="354" y="7" var="hasGet"/>
+</View>=item/WorshipRankRewardItem.xml�<View width="250" height="20">
+  <Label x="30" y="2" var="activeTime" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" text="10-10" width="62" height="18" align="center"/>
+  <Box x="145" y="-5" width="20" height="20" var="rewardBox"/>
+  <Label text="10" x="155" y="8" var="countTxt" width="16" height="16" size="10" color="0xdfc477" stroke="0x450000,1,2,2,10" bold="true"/>
+</View>

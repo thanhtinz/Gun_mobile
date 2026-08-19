@@ -1,0 +1,450 @@
+
+/views/MarkOtherView.xml�e<View width="426" height="446">
+  <Clip skin="asset.bagAndInfo.markBg" x="0" y="0"/>
+  <Label x="10" y="414" color="0x501f09" size="12" bold="true" stroke="0x833d14,1,1,1,10" text="Nón" mouseChildren="false" mouseEnabled="false" width="54" height="18" var="label7" align="center" font="Arial"/>
+  <Label x="80" y="414" color="0x501f09" size="11" bold="true" stroke="0x833d14,1,1,1,10" text="Tóc" mouseChildren="false" mouseEnabled="false" width="54" height="18" align="center" var="label8" font="Arial"/>
+  <Label x="151" y="414" color="0x501f09" size="11" bold="true" stroke="0x833d14,1,1,1,10" text="M?t" mouseChildren="false" mouseEnabled="false" width="53" height="18" var="label9" align="center" font="Arial"/>
+  <Label x="220" y="414" color="0x501f09" size="11" bold="true" stroke="0x833d14,1,1,1,10" text="M?t" mouseChildren="false" mouseEnabled="false" width="53" height="18" align="center" var="label10" font="Arial"/>
+  <Label x="292" y="414" color="0x501f09" size="11" bold="true" stroke="0x833d14,1,1,1,10" text="B?" mouseChildren="false" mouseEnabled="false" width="50" height="18" var="label11" align="center" font="Arial"/>
+  <Label x="357" y="414" color="0x501f09" size="10" bold="true" stroke="0x833d14,1,1,1,10" text="Trang ph?c" mouseChildren="false" mouseEnabled="false" width="57" height="18" align="center" var="label12" font="Arial"/>
+  <List x="7" y="382" repeatY="1" repeatX="6" var="listEquip" spaceX="16">
+    <MarkEquipItem name="render" runtime="mark.items.MarkEquipItem"/>
+  </List>
+</View>/views/MarkRightView.xml�Y<View width="233" height="441">
+  <Image skin="asset.mark.rigthUnselectBg" x="0" y="0"/>
+  <List x="7" y="11" repeatY="6" repeatX="1" spaceY="1" var="listBags" width="218" vScrollBarSkin="asset.ui.scroll1.vscroll">
+    <MarkSuitItem name="render" runtime="mark.items.MarkSuitItem"/>
+  </List>
+</View>-views/MarkChipMenu.xml�]<View width="80" height="75">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" width="80" height="75" sizeGrid="20,20,10,10,1"/>
+  <Button skin="asset.mark.hammerBtn" x="8" y="7" var="btnHammer" stateNum="1"/>
+  <Button skin="asset.mark.toolBarUnlock" x="8" y="37" var="btnUnlock" stateNum="1"/>
+</View>-views/MarkHelpView.xml�<View width="404" height="427">
+  <Image skin="asset.ui.frame.bg1" x="0" y="0" sizeGrid="80,70,770,480,1" width="404" height="427"/>
+  <Label x="15" y="5" color="0xffeebf" size="14" bold="true" stroke="0x442006,1,4,4,30" letterSpacing="2" text="刻印套裝" var="label4" font="Arial"/>
+  <Button skin="asset.ui.btn_close1" x="348" y="2" stateNum="1" var="btnClose"/>
+  <Container var="bgCont" x="0" y="0" width="81" height="23"/>
+  <List x="34" y="48" repeatX="1" vScrollBarSkin="asset.ui.scroll1.vscroll" width="338" height="349" var="listHelp" repeatY="2">
+    <MarkHelpItem name="render" runtime="mark.items.MarkHelpItem"/>
+  </List>
+</View>/items/MarkEquipItem.xml�5<View width="55" height="55">
+  <Clip x="0" y="0" clipsUrl="asset.mark.equipItemUnselectedSkin,asset.mark.equipItemSelectedSkin" name="selectBg"/>
+</View>5views/MarkArtificeView.xml�m<View width="600" height="400">
+  <Image skin="asset.mark.artificeBg" x="-1" y="0"/>
+  <Container x="17" y="10" var="conItemLeft">
+    <Image skin="asset.mark.smallItemBg"/>
+    <Clip x="5" clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" var="clipLeftStar1" index="1"/>
+    <Clip x="14" clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" var="clipLeftStar2"/>
+    <Clip x="25" clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" var="clipLeftStar3"/>
+    <Clip x="34" clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" var="clipLeftStar4"/>
+    <Clip x="45" clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" var="clipLeftStar5"/>
+  </Container>
+  <Label x="82" y="49" color="0xfff06e" stroke="0x4f2000,1,4,4,30,1" bold="true" align="left" size="14" width="132" height="23" var="lblLeftAttachPro"/>
+  <List x="376" y="96" repeatY="4" spaceY="-1" var="listTransfer">
+    <MarkArtificeItem name="render" runtime="mark.items.MarkArtificeItem"/>
+  </List>
+  <Image skin="asset.mark.artificeConsumeBg" x="148" y="263"/>
+  <Image skin="asset.mark.cost" y="270" x="213"/>
+  <Label x="256" y="272" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="57" height="18" var="lblMarkCost" selectable="false"/>
+  <Image skin="asset.mark.demand" x="311" y="266" tipStyle="ddt.view.tips.OneLineTip" var="icon14"/>
+  <Image skin="asset.mark.artificeHaveBg" x="4" y="322"/>
+  <Label x="33" y="327" color="0xffe6a9" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="16" width="95" height="18" var="lblStoneTotal" align="left" selectable="false"/>
+  <Label x="32" y="356" color="0xffe6a9" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="16" width="96" height="18" var="lblMarkMoneyTotal" align="left" selectable="false"/>
+  <Button skin="asset.mark.artificeBtn" x="255" y="326" stateNum="1" var="btnTransfer"/>
+  <Image skin="asset.mark.cost" y="271" x="348"/>
+  <Label x="391" y="272" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="55" height="18" var="lblOtherCost" selectable="false"/>
+  <Image skin="asset.mark.transferStone" x="446" y="267" tipStyle="ddt.view.tips.OneLineTip" var="icon15"/>
+  <List x="26" y="96" repeatX="1" repeatY="4" var="listProps" spaceY="-2">
+    <MarkPropItem runtime="mark.items.MarkPropItem" name="render"/>
+  </List>
+  <Button label="确 认" skin="asset.ui.btn_yellow1" x="233" y="326" stateNum="1" labelColors="0xfff6a8" labelBold="true" labelSize="14" labelStroke="0x715008,1,4,4,30" width="84" height="34" var="btnSubmit" labelFont="Arial"/>
+  <Button label="取 消" skin="asset.ui.btn_yellow1" x="351" y="326" stateNum="1" labelColors="0xfff6a8" labelBold="true" labelSize="14" labelStroke="0x715008,1,4,4,30" width="84" height="34" var="btnCancel" labelFont="Arial"/>
+  <Container x="361" y="81" var="conLight" mouseChildren="false" mouseEnabled="false">
+    <Image skin="asset.mark.hammerLightBg"/>
+  </Container>
+  <Label x="345" y="372" color="0xfc390d" stroke="0xfff9f3,1,4,4,30,1" bold="true" align="left" size="12" width="350" height="23" text="註：煉化後需要確認才能保存結果" var="label1" font="Arial"/>
+  <Image skin="asset.mark.bigArrow" var="imgArrow" y="129" x="271"/>
+</View>5items/MarkArtificeItem.xml�]<View width="275" height="40">
+  <Clip x="0" y="0" clipsUrl="asset.mark.artificeSelect,asset.mark.artificeNotselect" name="selectBg" var="clipBg"/>
+  <Image skin="asset.mark.artificeWhat" x="129" y="3" var="imgWhat"/>
+  <Label x="71" y="8" color="0xfff06e" stroke="0x4f2000,1,4,4,30,1" bold="true" align="left" size="16" width="132" height="23" var="lblPro"/>
+  <Image skin="asset.mark.maxImg" x="176" y="0" var="maxTxt"/>
+</View>+views/MarkBagMenu.xml�}<View width="80" height="100">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" width="80" height="100" sizeGrid="20,20,10,10,1"/>
+  <Button skin="asset.mark.hammerBtn" x="7" y="34" var="btnHammer" stateNum="1"/>
+  <Button skin="asset.mark.toolBarSell" x="7" y="64" var="btnSell" stateNum="1"/>
+  <Button skin="asset.mark.toolBarWear" x="8" y="5" var="btnWear" stateNum="1"/>
+</View>-items/MarkHelpItem.xml�-<View width="317" height="140">
+  <Image skin="asset.mark.helpTile" x="-13" y="1"/>
+  <Label x="123" y="6" color="0xfff7c0" stroke="0x693812,1,4,4,30" bold="true" width="96" height="18" align="center" var="lablName"/>
+  <TextArea x="7" y="33" width="304" height="104" stroke="0x693812,1,4,4,30" color="0xfff7c0" var="lblDesc" bold="true" disabled="false" editable="false" isHtml="true" leading="4"/>
+  <Clip x="94" y="3" clipsUrl="asset.mark.single1,asset.mark.single2,asset.mark.single3,asset.mark.single4,asset.mark.single9,asset.mark.single10,asset.mark.single11,asset.mark.single12,asset.mark.single13,asset.mark.single14" var="clipTypes" index="8"/>
+</View>-items/MarkSuitItem.xml�g<View width="195" height="64" mouseEnabled="true">
+  <Clip x="0" y="0" clipsUrl="asset.mark.suitCaptain,asset.mark.suitWizad,asset.mark.suitForce,asset.mark.suitArt,asset.mark.suitVision,asset.mark.suitBaal,asset.mark.suitFortress,asset.mark.suitDragen,asset.mark.yundonghui,asset.mark.suitChicken" buttonMode="true" var="clipSuit" index="9"/>
+  <Image skin="asset.mark.new" x="157" y="-3" var="imgNew" visible="false"/>
+  <Button label="20" x="164" y="2" skin="asset.mark.redBubble" stateNum="1" var="btnBubble" enableClickMoveDownEffect="false" showClickTooQuickTip="false" labelColors="0xffffff" labelBold="true" labelMargin="1" labelStroke="0x5b2000,1,2,2,10,1" visible="false"/>
+</View>+items/MarkBagItem.xml�u<View width="47" height="46" tipStyle="mark.MarkChipTip" tipDirctions="7,6,2,1,5,4,0,3,6">
+  <Clip clipsUrl="bagAndInfo.cell.bagCellBgAsset,asset.mark.itemSelectSkin" x="0" y="0" name="selectBg" index="0"/>
+  <Box x="0" y="0" var="itemBox" width="47" height="46"/>
+  <Container x="0" y="33" var="conStars1" width="46" height="10">
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="17" y="0" var="clipStar11"/>
+  </Container>
+  <Container x="0" y="33" var="conStars2" width="46" height="10">
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="11" y="0" var="clipStar21" width="10" height="10"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="22" y="0" width="10" height="10" var="clipStar22"/>
+  </Container>
+  <Container x="0" y="33" var="conStars3" width="46" height="10">
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="7" y="0" var="clipStar31" width="10" height="10"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="17" y="0" var="clipStar32" width="10" height="10"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="27" y="0" var="clipStar33" width="10" height="10"/>
+  </Container>
+  <Container x="0" y="33" var="conStars4" width="46" height="10">
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="3" y="0" var="clipStar41"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="13" y="0" var="clipStar42"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="23" y="0" var="clipStar43"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="33" y="0" var="clipStar44"/>
+  </Container>
+  <Container x="0" y="33" var="conStars5" width="46" height="10">
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="-2" y="0" var="clipStar51"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="7" y="0" var="clipStar52"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="17" y="0" var="clipStar53" width="10" height="10"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="27" y="0" var="clipStar54"/>
+    <Clip clipsUrl="asset.mark.littleStar,asset.mark.blueLStar" x="37" y="0" var="clipStar55"/>
+  </Container>
+  <Image skin="asset.mark.rightLogo" x="0" y="0" var="imgStatus" mouseEnabled="false" mouseChildren="false"/>
+</View>-items/MarkPropItem.xml�<View width="210" height="42">
+  <RadioButton labelFont="14" labelBold="true" labelColors="0xfff06e" labelStroke="0x4f2000,1,4,4,30" selected="false" stateNum="1" checkButtonSkin="asset.mark.checkBg" x="0" y="-11" width="40" var="radio" labelMargin="0,8" height="42" mouseEnabled="false" mouseChildren="false"/>
+  <Label x="43" y="9" font="14" stroke="0x4f2000,1,4,4,30" color="0xfff06e" width="99" height="18" var="radioTxt" bold="true"/>
+  <Image skin="asset.mark.maxImg" x="146" y="-1" var="maxTxt"/>
+</View>#MarkMainFrame.xml�1<View width="765" height="456">
+  <Image skin="asset.ui.frame.bg1" x="0" y="0" sizeGrid="80,70,770,480,1" width="765" height="456"/>
+  <Label x="30" y="8" var="lblTitle" color="0xffeebf" size="16" bold="true" stroke="0x442006,1,4,4,30" letterSpacing="2"/>
+  <Button skin="asset.ui.btn_close1" x="698" y="3" stateNum="1" var="btnClose"/>
+</View>+views/MarkChipTip.xml�<View width="205" height="480">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="12,12,12,12,1" width="205" height="480" var="imgBg"/>
+  <Box x="16" y="36" var="startBox" width="73" height="16">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="0" y="0" width="15" height="15" var="clipStar1"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="14" y="0" var="clipStar2"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="29" y="0" var="clipStar3"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="43" y="0" width="15" height="15" var="clipStar4"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="58" y="0" var="clipStar5"/>
+  </Box>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="59"/>
+  <Label x="14" y="129" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10,1" size="12" var="lblMainPro" text="敏捷" font="Arial"/>
+  <Label x="96" y="129" color="0xffffff" bold="false" stroke="0x000000,1,2,2,10,1" size="14" var="lblMainProValue" text="50"/>
+  <Container x="23" y="169" var="conPro0">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblPro1" x="0" y="0"/>
+    <Label x="84" color="0x00ff00" bold="false" stroke="0x000000,1,2,2,10,1" var="lblProValue1" y="0"/>
+  </Container>
+  <Container x="23" y="193" var="conPro1">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblPro2" x="0" y="0"/>
+    <Label x="84" color="0x00ff00" bold="false" stroke="0x000000,1,2,2,10,1" var="lblProValue2" y="0"/>
+  </Container>
+  <Container x="23" y="213" var="conPro2">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblPro3" x="0" y="0"/>
+    <Label x="84" color="0x00ff00" bold="false" stroke="0x000000,1,2,2,10,1" var="lblProValue3" y="0"/>
+  </Container>
+  <Container x="23" y="233" var="conPro3">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblPro4" x="0" y="0"/>
+    <Label x="84" color="0x00ff00" bold="false" stroke="0x000000,1,2,2,10,1" var="lblProValue4" y="0"/>
+  </Container>
+  <Container x="12" y="261" var="conSuit0">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblSuit1" text="船长的祝福2："/>
+    <Label x="29" color="0xf3c981" bold="true" stroke="0x000000,1,2,2,10,1" var="lblSuitEffect1" width="153" multiline="true" wordWrap="true" leading="4" letterSpacing="1" disabled="false" y="20" isHtml="true"/>
+  </Container>
+  <Container x="12" y="303" var="conSuit1">
+    <Label color="0xed9029" bold="true" stroke="0x000000,1,2,2,10,1" var="lblSuit2"/>
+    <Label x="28" color="0xf3c981" bold="true" stroke="0x000000,1,2,2,10,1" var="lblSuitEffect2" width="156" multiline="true" wordWrap="true" leading="4" letterSpacing="1" disabled="false" y="25" isHtml="true"/>
+  </Container>
+  <Container x="206" y="3" var="conSeal" width="165" height="180">
+    <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="12,12,12,12,1" width="166" height="180" var="imgSealBg"/>
+    <List x="11" y="11" repeatX="1" repeatY="3" var="listProps" spaceY="6" spaceX="3" width="185">
+      <Box name="render">
+        <Image y="0" name="imgType" skin="asset.mark.seal.element1" visible="false"/>
+        <Label x="5" color="0xffffff" bold="false" stroke="0x000000,1,2,2,10,1" size="12" text="符咒: 攻击+1" name="labPro" y="4" height="18"/>
+      </Box>
+    </List>
+    <Label text="技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述" x="13" y="100" width="145" font="宋体" size="12" color="0xffffff" wordWrap="true" leading="3" var="sealSkillDescTxt"/>
+  </Container>
+  <Label x="50" y="66" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10,1" size="14" var="qualityTxt" text="精良"/>
+  <Label x="50" y="94" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10,1" size="14" text="刻印" var="label2"/>
+  <Image skin="asset.core.tip.GoodsType" x="16" y="99"/>
+  <Image skin="asset.core.tip.GoodsTipQuality" x="16" y="72"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="7" y="159"/>
+  <Clip x="120" y="78" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0" var="isBind"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="7" y="258" var="line1"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="7" y="405" var="line2"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="217" y="98" var="lineSeal" width="145"/>
+  <Label text="刻印碎片的主属性和副属性种类有一定的随机性，品质越高主属性越好，初始星级越多初始副属性越多。" x="9" y="413" width="184" height="64" size="12" color="0xffffff" wordWrap="true" leading="3" var="descriptTxt"/>
+</View>-items/MarkChipItem.xml��<View width="80" height="90" tipStyle="mark.MarkChipTip">
+  <Box x="0" y="0" var="itemBox"/>
+  <Box x="30" y="76" var="startBox11">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="startBox110"/>
+  </Box>
+  <Box x="23" y="76" var="startBox12">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="startBox120"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="18" y="0" var="startBox121"/>
+  </Box>
+  <Box x="16" y="76" var="startBox13" width="15" height="15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="16" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="31" y="0"/>
+  </Box>
+  <Box x="9" y="76" var="startBox14">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="31" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="46" y="0"/>
+  </Box>
+  <Box x="2" y="76" var="startBox15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="14" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="29" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="43" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="58" y="0"/>
+  </Box>
+  <Box x="0" y="47" var="startBox21">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+  </Box>
+  <Box x="-5" y="38" var="startBox22">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="12"/>
+  </Box>
+  <Box x="-6" y="37" var="startBox23" width="15" height="15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="0" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="23"/>
+  </Box>
+  <Box x="-11" y="27" var="startBox24">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="13" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="20" y="33"/>
+  </Box>
+  <Box x="-13" y="24" var="startBox25">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="13" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="20" y="33" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="26" y="44"/>
+  </Box>
+  <Box x="6" y="6" var="startBox31">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="-5" y="14"/>
+  </Box>
+  <Box x="-3" y="13" var="startBox32">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="14"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8"/>
+  </Box>
+  <Box x="-6" y="35" var="startBox33" width="30" height="16">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="-1" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="-16" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="-30"/>
+  </Box>
+  <Box x="-10" y="-1" var="startBox34">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="41" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="27"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="16" width="15" height="15" y="13"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="23"/>
+  </Box>
+  <Box x="-12" y="-2" var="startBox35">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="45" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="34"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="12" width="15" height="15" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="19" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="25"/>
+  </Box>
+  <Box x="31" y="-10" var="startBox41" width="16" height="18">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+  </Box>
+  <Box x="23" y="-10" var="startBox42">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="18" y="0"/>
+  </Box>
+  <Box x="16" y="-10" var="startBox43" width="15" height="15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="16" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="31" y="0"/>
+  </Box>
+  <Box x="9" y="-10" var="startBox44">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="31" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="46" y="0"/>
+  </Box>
+  <Box x="4" y="-10" var="startBox45" width="73" height="16">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="0" y="0" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="14" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="29" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="43" y="0" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="58" y="0" index="0"/>
+  </Box>
+  <Box x="62" y="19" var="startBox51" width="16" height="15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+  </Box>
+  <Box x="60" y="16" var="startBox52">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="12"/>
+  </Box>
+  <Box x="56" y="9" var="startBox53" width="15" height="15">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="0" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="23"/>
+  </Box>
+  <Box x="53" y="5" var="startBox54">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="13" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="20" y="33"/>
+  </Box>
+  <Box x="50" y="-1" var="startBox55">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="13" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="20" y="33" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="26" y="44"/>
+  </Box>
+  <Box x="66" y="45" var="startBox61">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar"/>
+  </Box>
+  <Box x="60" y="40" var="startBox62">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="14"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8"/>
+  </Box>
+  <Box x="59" y="60" var="startBox63">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="-1" y="0"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="-16"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="15" y="-30"/>
+  </Box>
+  <Box x="53" y="27" var="startBox64">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="41" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="8" y="27"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="16" width="15" height="15" y="13"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="23"/>
+  </Box>
+  <Box x="53" y="24" var="startBox65">
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" y="45" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="7" y="34" width="15" height="15"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="12" width="15" height="15" y="22"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="19" y="11"/>
+    <Clip clipsUrl="asset.mark.largeStar,asset.mark.blueStar" x="25" y="0" width="15" height="15"/>
+  </Box>
+</View>+views/MarkBagView.xml�}<View width="233" height="441">
+  <Image skin="asset.mark.bagBg" x="0" y="0"/>
+  <Label x="13" y="16" size="12" color="0xfbe089" stroke="0x633b17,1,2,2,10,1" width="74" height="22" var="lblName" font="Arial"/>
+  <Button skin="asset.mark.help" x="89" y="15" stateNum="1" var="btnHelp"/>
+  <Button skin="asset.mark.returnBtn" x="13" y="385" var="btnReturn" stateNum="1"/>
+  <Button skin="asset.mark.sellBtn" x="108" y="385" var="btnSelectSell" stateNum="1" width="110" height="37"/>
+  <Button skin="asset.mark.cancelBtn" x="13" y="385" var="btnCancel" stateNum="1"/>
+  <Button skin="asset.mark.redSellBtn" x="108" y="385" var="btnSell" stateNum="1"/>
+  <List x="14" y="41" var="listBag" repeatX="4" repeatY="7" spaceX="1" spaceY="1" height="328" vScrollBarSkin="asset.ui.scroll1.vscroll" width="206">
+    <MarkBagItem x="0" y="0" name="render" runtime="mark.items.MarkBagItem"/>
+  </List>
+</View>1views/MarkHammerView.xml�o<View width="662" height="370">
+  <Image skin="asset.mark.hammerLeftBg" x="0" y="0"/>
+  <Image skin="asset.mark.hammerRightBg" x="354" y="0"/>
+  <Container x="0" y="0" var="effectCon"/>
+  <Button skin="asset.mark.hammer1Btn" x="28" y="306" stateNum="1" var="btnOne" showClickTooQuickTip="false"/>
+  <Container x="113" y="256" mouseEnabled="false">
+    <Image skin="asset.mark.cost" y="4"/>
+    <Label x="43" y="6" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="61" height="18" var="lblCost" selectable="false"/>
+    <Image skin="asset.mark.demand" x="103" y="0" tipStyle="ddt.view.tips.OneLineTip" var="icon14"/>
+  </Container>
+  <Button skin="asset.mark.hammer10Btn" x="183" y="306" stateNum="1" var="btnTen"/>
+  <Container x="135" y="99" var="conItem">
+    <Image skin="asset.mark.itemLittleBg"/>
+    <Clip x="9" y="3" clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="clipStar1"/>
+    <Clip x="25" y="3" clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="clipStar2"/>
+    <Clip x="42" y="3" clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="clipStar3"/>
+    <Clip x="58" y="3" clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="clipStar4"/>
+    <Clip x="74" y="3" clipsUrl="asset.mark.largeStar,asset.mark.blueStar" var="clipStar5"/>
+  </Container>
+  <Image skin="asset.mark.hammerNextLv" x="380" y="38" var="imgNextLv"/>
+  <Image skin="asset.mark.attachProps" x="441" y="246" var="imgAttach"/>
+  <Image skin="asset.mark.mainPropBg" x="364" y="91"/>
+  <Label x="378" y="101" color="0xffffff" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="106" height="20" var="lblMainPro" font="Arial"/>
+  <Label x="534" y="101" color="0x00ff00" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="106" height="20" var="lblNextPro"/>
+  <Image skin="asset.mark.arrow" x="476" y="88" var="imgArrow"/>
+  <Label x="388" y="141" color="0xfff06e" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="121" height="20" var="lblAttachPro1"/>
+  <Label x="388" y="169" color="0xfff06e" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="121" height="20" var="lblAttachPro2"/>
+  <Label x="388" y="197" color="0xfff06e" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="121" height="20" var="lblAttachPro3"/>
+  <Label x="388" y="225" color="0xfff06e" stroke="0x4f2000,1,2,2,10,1" bold="true" align="left" size="12" width="121" height="20" var="lblAttachPro4"/>
+  <Image skin="asset.mark.ownDemand" x="386" y="318"/>
+  <Label x="476" y="320" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="16" width="67" height="20" var="lblDemandCnt" selectable="false"/>
+  <Image skin="asset.mark.demand" x="542" y="316" tipStyle="ddt.view.tips.OneLineTip" var="icon14_1"/>
+  <Image skin="asset.mark.hammerTopLv" x="385" y="36" var="imgTopLv"/>
+  <Label x="112" y="285" color="0xfff06e" stroke="0x4f2000,1,2,2,10,1" bold="true" align="center" size="14" width="125" height="18" var="hammerRateLabel" text="成功率：0%"/>
+</View>-views/MarkLeftView.xml�G<View width="603" height="408">
+  <Image skin="asset.mark.leftBg" x="0" y="0"/>
+  <List x="162" y="349" repeatY="1" repeatX="1" var="listSuitType" spaceX="-10">
+    <MarkSuitProItem name="render" runtime="mark.items.MarkSuitProItem"/>
+  </List>
+  <Box x="106" y="351">
+    <Image skin="asset.mark.nameBg"/>
+    <Image skin="asset.mark.nameBg" y="28" x="0" width="50" height="29"/>
+    <Label text="屬性：" color="0xffffff" size="12" stroke="0x5b2000,1,2,2,10,1" x="11" y="31" var="label6" font="Arial" width="34" height="20"/>
+    <Label text="套裝：" color="0xffffff" size="12" stroke="0x5b2000,1,2,2,10,1" y="3" x="10" var="label5" font="Arial"/>
+  </Box>
+  <Button skin="asset.mark.jewelBtn" x="526" y="17" var="btnJewel" stateNum="1"/>
+  <TextArea x="161" y="381" width="426" height="50" stroke="0x5b2000,1,2,2,10,1" var="txtProps" isHtml="true" size="14" leading="10" editable="false" vScrollBarSkin="asset.ui.scroll4.vscroll" multiline="true" wordWrap="true"/>
+  <Container x="477" y="316" mouseEnabled="false" mouseChildren="true">
+    <Image skin="asset.mark.demandBg" x="25"/>
+    <Image skin="asset.mark.demand" y="2" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,6,2,1,5,4,0,3,6" var="icon14"/>
+    <Label x="33" y="5" color="0xffa86a" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="72" height="20" var="lblDemandCnt" selectable="false"/>
+  </Container>
+  <Label x="161" y="355" width="200" height="20" size="14" stroke="0x5b2000,1,2,2,10,1" selectable="false" var="lblSuit"/>
+  <Button label="保存" skin="asset.ui.btn_yellow4" x="11" y="403" stateNum="1" labelFont="宋体" labelBold="true" labelColors="0xfff6a8" labelSize="14" labelStroke="0x715008,1,4,4,30" letterSpacing="3" labelMargin="6,1,1,1" var="btn_save"/>
+  <Label x="29" y="57" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="帽子" mouseChildren="false" mouseEnabled="false" var="label7"/>
+  <Label x="29" y="120" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="頭發" mouseChildren="false" mouseEnabled="false" var="label8"/>
+  <Label x="29" y="181" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="臉飾" mouseChildren="false" mouseEnabled="false" var="label9"/>
+  <Label x="29" y="242" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="眼睛" mouseChildren="false" mouseEnabled="false" var="label10"/>
+  <Label x="29" y="303" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="套裝" mouseChildren="false" mouseEnabled="false" var="label11"/>
+  <Label x="29" y="364" color="0x501f09" size="14" bold="true" stroke="0x833d14,1,1,1,10" text="服飾" mouseChildren="false" mouseEnabled="false" var="label12"/>
+  <List x="11" y="30" repeatY="6" repeatX="1" spaceY="6" var="listEquip" width="71" height="375">
+    <MarkEquipItem name="render" runtime="mark.items.MarkEquipItem"/>
+  </List>
+</View>3items/MarkSuitProItem.xml�_<View width="150" height="40">
+  <Clip x="0" y="0" var="chipIcon" width="20" height="20" clipsUrl="asset.mark.iconWizad,asset.mark.iconCaptain,asset.mark.iconForce,asset.mark.iconArt,asset.mark.iconVision,asset.mark.iconBaal,asset.mark.iconFortress,asset.mark.single12,asset.mark.single13,asset.mark.single14" tipStyle="ddt.view.tips.MultipleLineTip" tipDirctions="7,6,2,1,5,4,0,3,6" index="8"/>
+  <Label x="31" y="4" font="14" stroke="0x4f2000,1,4,4,30" color="0xfff06e" width="99" height="22" var="addTypeLabel" bold="false" gradientStroke="Arial"/>
+</View>-views/MarkSealView.xml�w<View width="662" height="370">
+  <Image skin="asset.mark.hammerLeftBg" x="0" y="0"/>
+  <Image skin="asset.mark.seal.skillBg" x="22" y="261" var="skillBG"/>
+  <Image skin="asset.mark.bigArrow" var="imgArrow" y="131" x="231" scale="-1"/>
+  <Image skin="asset.mark.bagBg" x="354" y="0" width="305" height="367" sizeGrid="1,1,1,1"/>
+  <Button skin="asset.mark.seal.injectBtn" x="98" y="317" stateNum="1" var="btnInject" showClickTooQuickTip="false" sizeGrid="0,0,0,0" clickInterval="1000"/>
+  <Container x="232" y="342" mouseEnabled="false" width="97" height="26">
+    <Image skin="asset.mark.cost" y="4" x="13"/>
+    <Label x="59" y="5" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="45" height="18" var="lblCost" selectable="false" text="0" align="left"/>
+  </Container>
+  <Container x="39" y="39" var="conMark">
+    <Image skin="asset.mark.seal.markBg"/>
+  </Container>
+  <Image skin="asset.mark.cost" x="445" y="288"/>
+  <Label x="486" y="289" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="16" width="67" height="18" var="labDemandCnt" selectable="false" align="center" text="1000"/>
+  <Image skin="asset.mark.demand" x="552" y="286" toolTip="魂晶：碎片出售或魂晶盒获得" tipStyle="ddt.view.tips.OneLineTip"/>
+  <CheckBox label="全部" checkButtonSkin="asset.mark.seal.selectAll" toggle="true" stateNum="1" labelSize="14" labelColors="0xfef9ed" labelStroke="0x692706,1,4,4,30" x="559" y="320" var="checkAllBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" labelMargin="5"/>
+  <Container x="215" y="39" var="conSeal">
+    <Image skin="asset.mark.seal.markBg"/>
+  </Container>
+  <Label x="44" y="265" color="0xe9e2ce" stroke="0x703e1c,2,2,10,2" bold="true" align="left" size="14" width="284" height="49" text="技能:很长的技能描述很长的技能描述很长的技能描述很长的技能描述很长的技能描述很长的技能描述" multiline="true" wordWrap="true" var="labSkill"/>
+  <List x="35" y="133" repeatX="1" repeatY="3" var="listProps" spaceY="-10" height="127">
+    <MarkSealProItem x="0" y="0" name="render" runtime="mark.items.MarkSealProItem"/>
+  </List>
+  <Button skin="asset.mark.seal.compoundBtn" x="438" y="314" stateNum="1" var="btnCompound" showClickTooQuickTip="false" sizeGrid="0,0,0,0"/>
+  <Label x="374" y="15" color="0xffe68e" stroke="0x5f3513,2,2,10,2" bold="true" align="left" size="14" text="符印列表"/>
+  <MarkSealBagView x="360" y="34" var="sealBagView" runtime="mark.views.MarkSealBagView"/>
+  <Container x="0" y="0" var="effectCon"/>
+  <Label x="291" y="319" color="0xfff0e6" bold="true" toolTip="0x6c4d26,1,2,2,10,1" size="14" width="67" height="18" var="labCurNum" selectable="false" align="left" text="0"/>
+  <Image skin="asset.mark.demand" x="254" y="316" toolTip="魂晶：碎片出售或魂晶盒获得" tipStyle="ddt.view.tips.OneLineTip"/>
+</View>3items/MarkSealBagItem.xml�=<View width="52" height="52">
+  <Clip clipsUrl="bagAndInfo.cell.bagCellBgAsset,asset.mark.itemSelectSkin" name="selectBg" index="0" width="50" height="50"/>
+  <Box x="3" y="3" var="itemBox" width="47" height="46"/>
+</View>3views/MarkSealBagView.xml�E<View width="285" height="250">
+  <List x="5" y="8" var="listBag" width="280" spaceX="1" spaceY="1" repeatX="5" repeatY="6" vScrollBarSkin="asset.ui.scroll1.vscroll" height="234" sliderOffset="120">
+    <MarkSealBagItem name="render" runtime="mark.items.MarkSealBagItem"/>
+  </List>
+</View>3items/MarkSealProItem.xml�y<View width="325" height="48">
+  <Image skin="asset.mark.seal.proBg2" x="0" y="10" var="imgBg"/>
+  <RadioButton labelFont="11" labelBold="true" labelColors="0xfff06e" labelStroke="0x4f2000,1,4,4,30" selected="false" stateNum="1" checkButtonSkin="asset.mark.checkBg" x="0" width="50" var="radio" labelMargin="0,8" height="42" mouseEnabled="false" mouseChildren="false" y="-1"/>
+  <Label x="73" y="19" font="14" stroke="0x4f2000,1,4,4,30" color="0xfff06e" width="99" height="22" var="proTxt" bold="true" text="符咒:防御+500" align="left"/>
+  <Image y="17" skin="asset.mark.seal.element1" x="46" var="imgType" visible="false"/>
+</View>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:78f5d43e9eccc1fc44579f5bb22961c2:1/1$ -->
+<TextureAtlas imagePath="hall_new_scene_build.png">
+    <SubTexture name="hall_new_auditorium" x="1022" y="977" width="349" height="297"/>
+    <SubTexture name="hall_new_auditorium_name" x="1990" y="493" width="53" height="28"/>
+    <SubTexture name="hall_new_boat" x="1022" y="889" width="415" height="86"/>
+    <SubTexture name="hall_new_build1" x="2" y="463" width="1125" height="207" frameX="0" frameY="0" frameWidth="1125" frameHeight="211"/>
+    <SubTexture name="hall_new_dungeon" x="1439" y="958" width="369" height="260" frameX="-2" frameY="0" frameWidth="371" frameHeight="260"/>
+    <SubTexture name="hall_new_dungeon_name" x="1439" y="889" width="106" height="28"/>
+    <SubTexture name="hall_new_fight" x="1373" y="1220" width="345" height="381"/>
+    <SubTexture name="hall_new_fight_name" x="1872" y="955" width="106" height="28"/>
+    <SubTexture name="hall_new_first" x="1736" y="853" width="134" height="103"/>
+    <SubTexture name="hall_new_pool_name" x="1990" y="463" width="55" height="28"/>
+    <SubTexture name="hall_new_rankbg" x="1128" y="748" width="606" height="139"/>
+    <SubTexture name="hall_new_road" x="2" y="672" width="1018" height="315"/>
+    <SubTexture name="hall_new_sea" x="2" y="2" width="2013" height="459"/>
+    <SubTexture name="hall_new_second" x="1022" y="672" width="104" height="81"/>
+    <SubTexture name="hall_new_secret" x="1802" y="611" width="144" height="240"/>
+    <SubTexture name="hall_new_secret_name" x="1872" y="925" width="106" height="28"/>
+    <SubTexture name="hall_new_third" x="1872" y="853" width="107" height="70"/>
+    <SubTexture name="hall_new_tree1" x="1129" y="463" width="859" height="146" frameX="0" frameY="-50" frameWidth="909" frameHeight="202"/>
+    <SubTexture name="hall_new_tree2" x="1129" y="611" width="671" height="135" frameX="0" frameY="-15" frameWidth="697" frameHeight="165"/>
+</TextureAtlas>

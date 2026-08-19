@@ -1,0 +1,89 @@
+
++NewYearRewardView.xml�g<View width="870" height="413">
+  <Image skin="asset.newyear.awardBg"/>
+  <Label x="582" y="16" color="0xe8e4cf" stroke="0x255e93,1,4,4,10" bold="true" size="14" var="dateLabel"/>
+  <Label text="達到指定積分領取對應獎勵." x="473" y="45" color="0xe8e4cf" stroke="0x255e93,1,4,4,10" bold="true" size="14"/>
+  <Label x="473" y="70" color="0xe8e4cf" stroke="0x255e93,1,4,4,10" bold="true" size="14" var="scoreLabel"/>
+  <List x="352" y="129" repeatX="1" repeatY="4" spaceX="0" spaceY="4" width="477" height="259" var="rewardList">
+    <VScrollBar skin="asset.newyear.vscroll" x="455" y="1" name="scrollBar" width="18" height="258"/>
+    <NewYearRewardItemView name="render" runtime="activity.newyear.view.NewYearRewardItemView"/>
+  </List>
+</View>3NewYearRewardItemView.xml�k<View width="454" height="61">
+  <Clip height="61" clipsUrl="asset.newyear.awardItemBg1,asset.newyear.awardItemBg2" sizeGrid="10,10,10,10" index="0" width="454" name="itemBg"/>
+  <Label color="0xffe35e" stroke="0x155da1,1,4,4,10" x="11" y="22" width="113" height="18" align="center" size="14" bold="true" var="scoreLabel"/>
+  <Button skin="asset.newyear.getAward" x="345" y="14" stateNum="1" var="getRewardBtn"/>
+  <Image skin="asset.uigeneral.awardGained" x="352" y="7" var="getRewardImage"/>
+</View>'NewYearMainView.xml�]<View width="870" height="540">
+  <Image skin="asset.newyear.titleBg"/>
+  <NewYearCongratsView y="124" var="congratsView" runtime="activity.newyear.view.NewYearCongratsView" x="0"/>
+  <NewYearRewardView y="124" var="rewardView" runtime="activity.newyear.view.NewYearRewardView" x="0"/>
+  <TabListEx y="86" var="viewTab" x="30">
+    <TabButtonEx skin="asset.newyear.congratsTxt,asset.newyear.congratsTxtSelect" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" width="126" height="40"/>
+    <TabButtonEx skin="asset.newyear.awardTxt,asset.newyear.awardTxtSelect" name="item1" x="117" y="0"/>
+  </TabListEx>
+  <Label text="活動時間：" color="0xffec6d" stroke="0x00488c,1,4,4,10" bold="true" size="14" mouseChildren="false" mouseEnabled="false" x="587" y="93"/>
+  <Label text="2018.12.30-2018.12.30" color="0xffec6d" stroke="0x00488c,1,4,4,10" bold="true" width="200" height="20" size="14" mouseChildren="false" mouseEnabled="false" var="activityDateLabel" x="660" y="94"/>
+  <Button skin="asset.ui.btn_close8" x="828" y="31" stateNum="1" var="closeBtn"/>
+</View>/NewYearCongratsView.xml�q<View width="870" height="413">
+  <Image skin="asset.newyear.congratsBg"/>
+  <TabListEx y="18" var="viewTab" x="623">
+    <TabButtonEx skin="asset.newyear.rank,asset.newyear.rankSelect" name="item0"/>
+    <TabButtonEx skin="asset.newyear.award,asset.newyear.awardSelect" name="item1" x="101" y="0"/>
+  </TabListEx>
+  <Button skin="asset.newyear.fightBtn" x="367" y="343" stateNum="1" width="146" height="49" var="fightBtn" buttonMode="true"/>
+  <Button skin="asset.newyear.fightPlusBtn" x="532" y="350" stateNum="1" var="fightPlusBtn" buttonMode="true"/>
+  <Button skin="asset.newyear.scoreMallBtn" x="85" y="353" stateNum="1" var="shopBtn" buttonMode="true"/>
+  <Box x="273" y="226" var="select1Btn" buttonMode="true">
+    <Image skin="asset.newyear.congratsMultiple1" x="8" y="12"/>
+    <Image skin="asset.newyear.congratsMultipleLight" name="light"/>
+  </Box>
+  <Box x="382" y="227" var="select2Btn" buttonMode="true">
+    <Image skin="asset.newyear.congratsMultiple2" x="7" y="10"/>
+    <Image skin="asset.newyear.congratsMultipleLight" name="light" width="106" height="106" x="0" y="0"/>
+  </Box>
+  <Box x="491" y="228" var="select3Btn" buttonMode="true">
+    <Image skin="asset.newyear.congratsMultiple3" x="6" y="9"/>
+    <Image skin="asset.newyear.congratsMultipleLight" name="light" width="105" height="103"/>
+    <TextInput x="16" y="29" color="0xfff6af" stroke="0xaa5300,1,4,4,10" align="center" width="43" height="17" var="rateTextInput" text="請輸入" maxChars="3" restrict="0-9"/>
+    <Label x="15" y="55" var="costLabel" color="0xfff6af" stroke="0xaa5300,1,4,4,10" align="center" width="48" height="18" text="0"/>
+  </Box>
+  <Label text="玩家得分:" x="280" y="18" color="0xffffff" bold="true" size="15" stroke="0x0c6c98,1,4,4,10"/>
+  <List x="620" y="65" repeatY="10" spaceY="3" width="202" height="299" var="rankList">
+    <Box name="render" height="27" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" x="0" y="0" width="200">
+      <Label color="0xf1d682" stroke="0x0463b4,1,4,4,10" width="26" height="18" align="center" size="14" x="0" name="rankLabel" bold="true"/>
+      <Label color="0xa6dced" stroke="0x045a96,1,4,4,10" width="108" height="18" align="left" size="14" x="31" name="nameLabel" bold="true"/>
+      <Label color="0xa6dced" stroke="0x045a96,1,4,4,10" width="61" height="18" align="center" size="14" x="139" name="scoreLabel" y="0" bold="true"/>
+    </Box>
+  </List>
+  <List x="621" y="63" repeatY="10" spaceY="12" width="203" height="291" var="rewardList">
+    <Box name="render" height="18" width="190" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2">
+      <Label color="0xf1d682" stroke="0x0463b4,1,4,4,10" width="67" height="18" align="center" size="14" y="0" name="rankLabel" x="0" bold="true"/>
+      <Label color="0xa6dced" stroke="0x045a96,1,4,4,10" width="120" height="18" align="left" size="14" x="70" name="rewardLabel" y="0" bold="true"/>
+    </Box>
+  </List>
+  <Label x="657" y="366" color="0xd1f0ff" stroke="0x00549b,1,4,4,10" bold="true" width="69" height="18" var="scoreLabel"/>
+  <Label x="764" y="366" color="0xd1f0ff" stroke="0x00549b,1,4,4,10" bold="true" width="56" height="18" var="myRankLabel"/>
+  <Label text="積分：" x="621" y="365" color="0xffe88f" stroke="0x0054a2,1,4,4,10" bold="true"/>
+  <Label text="排名：" x="728" y="365" color="0xffe88f" stroke="0x0054a2,1,4,4,10" bold="true"/>
+  <Label x="465" y="355" color="0xFFF5C4" stroke="0xbd4500,1,4,4,10" bold="true" width="39" height="22" size="16" mouseChildren="false" mouseEnabled="false" var="limitCountLabel"/>
+  <List x="277" y="36" width="316" height="176" repeatY="10" spaceY="1" var="contentList">
+    <Box name="render">
+      <Label width="316" height="17" leading="5" stroke="0x0066a6,1,4,4,10" color="0xd2c592" name="label" x="0" y="0" bold="true"/>
+    </Box>
+  </List>
+</View>'NewYearShopView.xml�3<View width="458" height="275">
+  <Image skin="asset.newyear.shopBg"/>
+  <Label text="積分商城" color="0xfffaeb" stroke="0x045295,1,4,4,10" x="13" y="9" size="16" bold="true"/>
+  <Button skin="asset.ui.btn_close8" x="407" y="-9" stateNum="1" var="closeBtn"/>
+  <List x="10" y="41" repeatX="2" repeatY="2" spaceX="2" spaceY="2" var="shopList">
+    <NewYearShopItemView name="render" runtime="activity.newyear.view.NewYearShopItemView"/>
+  </List>
+  <PageNavigaterEx x="312" y="222" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumStroke="0x0d2a4b,1,4,4,10" pageNumBgStyle="asset.newyear.pageBg" nextButtonStyle="asset.newyear.pageNextBtn" prevButtonStyle="asset.newyear.pagePrevBtn" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="simple" spacing="5"/>
+  <Label text="剩余積分：" color="0xffe35e" stroke="0x004381,1,4,4,10" x="18" y="223" size="14" bold="true"/>
+  <Label x="93" y="224" stroke="0x0d2a4b,1,4,4,10" size="14" color="0xfff8d6" width="83" height="18" align="center" var="myScoreLabel"/>
+</View>/NewYearShopItemView.xml�q<View width="212" height="85">
+  <Image skin="asset.newyear.shopItemBg"/>
+  <Button skin="asset.newyear.buyBtn" x="150" y="58" var="buyBtn" stateNum="1"/>
+  <Label x="86" y="9" size="14" bold="true" color="0xffe35e" stroke="0x155da1,1,4,4,10" var="nameLabel"/>
+  <Label x="86" y="30" size="14" bold="true" color="0xffe35e" stroke="0x155da1,1,4,4,10" var="scoreLabel"/>
+</View>

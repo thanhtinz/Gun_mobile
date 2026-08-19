@@ -1,0 +1,17 @@
+<style name="gemstone" version="1.0.1" source="ui/cn_trad/swf/gemstone.swf">
+<sets>
+    <!-- 商城文字样式 -->
+  
+</sets>
+
+<customDisplay>
+
+</customDisplay>
+<components>
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="gemstone.upGrade" parentStyle="core.selectedCheck2" 
+		filterString="null,lightFilter,null,grayFilter" displacement="true" backStyle="store.fineforge.allInject" x="318" y="305"/>
+</components>
+<bitmaps>
+   
+</bitmaps>
+</style>

@@ -1,0 +1,54 @@
+
+1NecklaceArtificeView.xml�/<View width="485" height="429">
+  <Box x="67" y="21" var="cellBox" width="56" height="54">
+    <Image skin="asset.necklace.cellBg" x="0" y="0"/>
+  </Box>
+  <Label text="煉化" x="141" y="40" color="0xfdff60" size="16" bold="true" stroke="0x000000,1,4,4,10"/>
+  <Label text="LV.2" x="190" y="41" color="0xfdff60" size="16" bold="true" stroke="0x000000,1,4,4,10" var="levelTxt"/>
+  <Label text="基础基础基础基础血量+1%" x="44" y="175" color="0x10ff10" stroke="0x000000,1,4,4,10" var="curTxt" width="176" align="center" size="14"/>
+  <Label text="基础基础基础基础血量+1%" x="270" y="175" color="0x10ff10" stroke="0x000000,1,4,4,10" var="nextTxt" width="176" align="center" size="14"/>
+  <Button skin="asset.ui.btn_yellow3" x="173" y="337" stateNum="1" sizeGrid="43,19,43,19" width="135" height="53" imageLabel="asset.necklace.artificeTxt" imageLabelRect="30,9" var="artificeBtn"/>
+  <ProgressBarEx x="238" y="38" skin="asset.necklace.progress" barYOffset="3" barXOffset="4" var="progress" label="10/100" barLabelY="6" value="0"/>
+  <Label text="煉化消耗:" x="47" y="298" color="0xfbf155" stroke="0x452200,1,4,4,30" bold="true" size="14"/>
+  <Box x="123" y="279" var="needBox" width="57" height="54">
+    <Image skin="asset.necklace.cellBg" x="0" y="0"/>
+  </Box>
+  <Label text="900/1000" x="193" y="299" color="0xffffff" stroke="0x452200,1,4,4,30" size="14" width="79" height="18" var="countTxt"/>
+  <Label text="(Bônus de 20% para experiência de refino)" x="277" y="289" color="0xe793ff" stroke="0x3f1c00,1,4,4,30" size="14" var="addTxt" wordWrap="true" width="153"/>
+  <Label text="注:公會爭霸戰排名影響煉化經驗加成,公會排名越靠前加成經驗越高.(煉化效果永久有效)" x="7" y="401" color="0xff0000" stroke="0x000000,1,4,4,20" size="12" width="485"/>
+</View>!NecklaceMain.xml�<View width="526" height="526">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="0" y="0" width="529" height="533"/>
+  <Button skin="asset.ui.btn_close1" x="460" y="4" stateNum="1" var="btn_close"/>
+  <TabListEx var="tab_menu" x="31" y="39">
+    <TabButtonEx x="132" bgSizeGrid="15,15,15,15" selected="false" name="item1" rects="0,8,0,0|-30,0,0,0" y="0" skin="asset.necklace.btn2UnSelected,asset.necklace.btn2Selected"/>
+    <TabButtonEx width="120" height="40" name="item0" selected="true" rects="0,8,0,0|0,0,0,0" skin="asset.necklace.btn1UnSelected,asset.necklace.btn1Selected"/>
+  </TabListEx>
+  <Image skin="asset.necklace.bg" x="21" y="84"/>
+  <NecklaceArtificeView x="19" y="84" var="artificeView" runtime="bagAndInfo.necklace.view.NecklaceArtificeView"/>
+</View>/NecklaceCastingView.xml�-<View width="485" height="429" name="render">
+  <Box x="163" y="23" var="cellBox" width="57" height="53">
+    <Image skin="asset.necklace.cellBg" x="0" y="0"/>
+  </Box>
+  <Label text="精鑄" x="249" y="40" color="0xfdff60" size="16" bold="true" stroke="0x000000,1,4,4,10"/>
+  <Label text="LV.2" x="299" y="41" color="0xfdff60" size="16" bold="true" stroke="0x000000,1,4,4,10" var="levelTxt"/>
+  <Button skin="asset.ui.btn_yellow3" x="173" y="365" stateNum="1" sizeGrid="43,19,43,19" width="135" height="53" imageLabel="asset.necklace.jingzhuTxt" imageLabelRect="30,9" var="castBtn"/>
+  <Label text="精鑄消耗:" x="46" y="306" color="0xfbf155" stroke="0x452200,1,4,4,30" bold="true" size="14"/>
+  <Box x="127" y="291" var="cellBox1" width="55" height="54">
+    <Image skin="asset.necklace.cellBg" x="0" y="0"/>
+  </Box>
+  <Label text="900/1000" x="193" y="311" color="0xffffff" stroke="0x452200,1,4,4,30" size="14" width="79" height="18" var="needTxt1"/>
+  <List x="61" y="130" repeatY="5" spaceY="5" var="curList">
+    <Box name="render" x="0" y="0" width="81" height="18">
+      <Label text="基础血量+1%" color="0x10ff10" stroke="0x000000,1,4,4,10" size="14" name="proTxt"/>
+    </Box>
+  </List>
+  <List x="280" y="130" repeatY="5" spaceY="5" var="nextList">
+    <Box name="render">
+      <Label text="基础血量+1%" color="0x10ff10" stroke="0x000000,1,4,4,10" size="14" name="proTxt"/>
+    </Box>
+  </List>
+  <Box x="290" y="291" var="cellBox2" width="55" height="52">
+    <Image skin="asset.necklace.cellBg" x="0" y="0"/>
+  </Box>
+  <Label text="900/1000" x="358" y="311" color="0xffffff" stroke="0x452200,1,4,4,30" size="14" width="79" height="18" var="needTxt2"/>
+</View>

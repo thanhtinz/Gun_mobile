@@ -1,0 +1,4 @@
+<Result value="true" message="Success!">
+  <Item PeriodId="1" PeriodName="2016001-1" ShopId="1040" Name="Pháo" MinBuyTimes="1" StartTime="2016-10-14T10:00:00" EndTime="2016-10-25T23:59:00" CountDown="180" EndShowTime="2016-10-26T23:59:00" Putaway="1" Order="1" Number="1" Validity="15" IsBind="1" MaxMultipleBuyTimes="10" />
+  <Item PeriodId="2" PeriodName="2016001-1" ShopId="1019" Name="Quyền Trượng Băng Giá" MinBuyTimes="1" StartTime="2016-10-14T10:00:00" EndTime="2016-10-25T23:59:00" CountDown="180" EndShowTime="2016-10-26T23:59:00" Putaway="1" Order="2" Number="1" Validity="15" IsBind="1" MaxMultipleBuyTimes="10" />
+</Result>

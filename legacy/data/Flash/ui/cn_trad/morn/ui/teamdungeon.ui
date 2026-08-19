@@ -1,0 +1,406 @@
+
+Eroom/TeamDungeonRoomChangeWait.xml�_<View width="335" height="152" x="328" y="179">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="152"/>
+  <Label text="提示" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <LabelEx x="19" y="68" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="294" height="63" align="center" leading="5" isHtml="true" var="descLabel"/>
+</View>Kroom/TeamDungeonRoomChangeConfirm.xml�<View width="335" height="184" x="316" y="166">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="184"/>
+  <Label text="提示" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="276" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="109" sizeGrid="5,5,5,5" width="295" height="54"/>
+  <LabelEx x="20" y="60" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="294" height="50" align="center" isHtml="true" leading="5" var="descLabel"/>
+  <Button label="取 消" x="193" y="118" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="cancelBtn" buttonMode="true"/>
+  <Button label="确 定" x="65" y="118" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+</View>9game/TeamDungeonGameView.xml�=<View width="1000" height="600">
+  <Image skin="asset.teamDungeon.sceneUI.scoreBg" x="20" y="169" sizeGrid="4,4,4,4" width="139" height="45" var="scoreBg"/>
+  <LabelEx x="24" y="173" stroke="0x181818,1,2,2,10" color="0xffffff" width="133" height="54" isHtml="true" text="获得积分：1000 \n目标积分：1000" wordWrap="true" multiline="true" leading="5" size="14" var="scoreLabel"/>
+  <LabelEx x="23" y="221" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="31" isHtml="true" leading="5" size="14" var="dateTipLabel"/>
+  <LabelEx x="23" y="241" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="34" isHtml="true" text="00:00:00" leading="5" size="14" var="timeLabel"/>
+  <FrameClip skin="asset.teamDungeon.beforeTimer" x="255" y="0" var="timeClip"/>
+  <List x="20" y="20" repeatY="3" spaceY="6" width="203" height="143" var="headList">
+    <TeamDungeonSceneHeadItem name="render" runtime="teamdungeon.view.game.TeamDungeonSceneHeadItem"/>
+  </List>
+</View>Eroom/TeamDungeonRoomPlayerTips.xml�S<View width="227" height="368">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="227" height="278" x="0" y="0" var="bg"/>
+  <LabelEx text="战力：" x="6" y="7" color="0xfff000" stroke="0x000000,1,2,2,10" bold="true" size="16" width="49" height="22"/>
+  <LabelEx text="血量：" x="6" y="30" color="0x4aec2f" size="14" width="46" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="5" y="52" height="2" width="200"/>
+  <LabelEx text="攻击：" y="57" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" x="6"/>
+  <LabelEx text="防御：" x="6" y="82" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="魔攻：" x="6" y="132" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="伤害：" x="6" y="107" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="火抗：" x="6" y="157" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="风抗：" x="6" y="182" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="6" y="232" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" var="elementLabel"/>
+  <LabelEx y="57" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" x="48" var="atkLabel"/>
+  <LabelEx x="48" y="82" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="defLabel"/>
+  <LabelEx x="48" y="107" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="damLabel"/>
+  <LabelEx x="48" y="132" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="mAtkLabel"/>
+  <LabelEx x="48" y="157" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="huoDefLabel"/>
+  <LabelEx x="48" y="182" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="fengDefLabel"/>
+  <LabelEx x="48" y="232" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="elementAtkLabel"/>
+  <LabelEx text="敏捷：" y="57" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" x="116"/>
+  <LabelEx text="幸运：" x="116" y="82" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="护甲：" x="116" y="107" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="魔抗：" x="116" y="132" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="土抗：" x="116" y="157" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="水抗：" x="116" y="182" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx y="57" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" x="158" var="agyLabel"/>
+  <LabelEx x="158" y="82" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="luckLabel"/>
+  <LabelEx x="158" y="107" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="guaLabel"/>
+  <LabelEx x="158" y="132" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="mDefLabel"/>
+  <LabelEx x="158" y="157" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="tuDefLabel"/>
+  <LabelEx x="158" y="182" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="shuiDefLabel"/>
+  <LabelEx x="48" y="8" color="0xfff000" stroke="0x000000,1,2,2,10" bold="true" size="16" width="170" height="22" var="fightPowerLabel"/>
+  <LabelEx x="48" y="31" color="0x4aec2f" size="14" width="163" height="20" stroke="0x000000,1,2,2,10" bold="true" var="hpLabel"/>
+  <Box x="6" y="257" var="countBox">
+    <LabelEx color="0xe78a2e" size="14" width="86" height="27" stroke="0x000000,1,2,2,10" bold="true" text="战力："/>
+    <LabelEx y="22" color="0xe78a2e" size="14" width="104" height="27" stroke="0x000000,1,2,2,10" bold="true" text="元素："/>
+    <LabelEx y="46" color="0xe78a2e" size="14" width="104" height="29" stroke="0x000000,1,2,2,10" bold="true" text="技巧："/>
+    <LabelEx y="70" color="0xe78a2e" size="14" width="104" height="26" stroke="0x000000,1,2,2,10" bold="true" text="躲避："/>
+    <LabelEx x="46" color="0xe78a2e" size="14" width="86" height="27" stroke="0x000000,1,2,2,10" bold="true" var="countLabel1"/>
+    <LabelEx x="46" y="22" color="0xe78a2e" size="14" width="86" height="27" stroke="0x000000,1,2,2,10" bold="true" var="countLabel2"/>
+    <LabelEx x="46" y="46" color="0xe78a2e" size="14" width="86" height="27" stroke="0x000000,1,2,2,10" bold="true" var="countLabel3"/>
+    <LabelEx x="46" y="70" color="0xe78a2e" size="14" width="86" height="27" stroke="0x000000,1,2,2,10" bold="true" var="countLabel4"/>
+  </Box>
+  <LabelEx text="光抗：" x="6" y="207" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="48" y="207" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="guangDefLabel"/>
+  <LabelEx text="暗抗：" x="116" y="207" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="158" y="207" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="anDefLabel"/>
+</View>;room/TeamDgnMagicRoomView.xml�'<View width="1000" height="600">
+  <Image skin="asset.teamDgn.magic.roomBg"/>
+  <Image skin="asset.teamDgn.magic.roomTeamBg" x="17" y="14"/>
+  <List x="20" y="22" width="718" height="386" repeatX="3" spaceX="12" repeatY="2" var="playerList" spaceY="5">
+    <TeamDgnMagicRoomPlayerItem name="render" runtime="teamdungeon.view.room.TeamDgnMagicRoomPlayerItem"/>
+  </List>
+  <TeamDungeonRoomRightView x="765" y="1" runtime="teamdungeon.view.room.TeamDungeonRoomRightView" var="rightView"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="435" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="900" y="407" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="435" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="900" y="407" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="900" y="407" buttonMode="true" autoPlay="true" var="preparBtn"/>
+</View>Aroom/TeamDungeonRoomInfoView.xml�<View width="335" height="214" x="311" y="164">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="214"/>
+  <Label text="房间设置" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="276" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="139" sizeGrid="5,5,5,5" width="295" height="54"/>
+  <Button label="确 定" x="128" y="149" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+  <Image skin="asset.ui.scale.bg2" x="19" y="44" width="295" height="90" sizeGrid="20,20,20,20"/>
+  <LabelEx text="房间名称：" x="30" y="61" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="79" height="24"/>
+  <TextInput text="请输入房间名称" skin="asset.teamDungeon.list.inputBg" x="107" y="56" width="171" height="31" margin="6,6,5,5" color="0xFFFFFF" size="14" var="nameInputText" stroke="0x000000,1,4,4,10" maxChars="16"/>
+  <TextInput skin="asset.teamDungeon.list.inputBg" x="107" y="93" width="171" height="31" margin="6,6,5,5" color="0xFFFFFF" size="14" var="passwordInputText" restrict="0-9" stroke="0x000000,1,4,4,10" maxChars="6" disabled="true"/>
+  <LabelEx text="密   码：" x="36" y="96" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="73" height="24"/>
+  <Button x="284" y="101" stateNum="1" checkButtonSkin="asset.ui.btn_check2" selected="false" width="14" height="14" var="checkBtn" toggle="true"/>
+</View>Aroom/TeamDungeonEvilRoomView.xml�+<View width="600" height="400">
+  <Image skin="asset.teamDgn.magic.roomBg" x="0" y="0"/>
+  <TeamDungeonRoomRightView x="765" y="1" runtime="activity.darkboundary.game.evilroom.EvilBlameRoomRightView" var="rightView"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="435" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="902" y="409" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="435" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="902" y="409" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="901" y="408" buttonMode="true" autoPlay="true" var="preparBtn"/>
+  <FrameClip skin="asset.ddtroom.playerItemlist.bg" x="16" y="16" buttonMode="true" autoPlay="true" width="386" height="385"/>
+  <List x="25" y="18" repeatX="2" repeatY="2" spaceY="-8" spaceX="5" var="playerList">
+    <TeamDgnCrossRoomItem name="render" runtime="activity.darkboundary.game.evilroom.EvilBlameCrossRoomItem"/>
+  </List>
+</View>9list/TeamDungeonListView.xml�<View width="900" height="564">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="100,100,100,100" width="900" height="558" x="0" y="7"/>
+  <Image skin="asset.teamDungeon.list.bg" x="12" y="1"/>
+  <Button skin="asset.ui.btn_close1" x="837" y="12" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Label text="团队副本" x="21" y="19" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" width="104" height="33"/>
+  <Button skin="asset.teamDungeon.list.enterBtn" x="239" y="69" stateNum="1" buttonMode="true" var="enterRoomBtn"/>
+  <Button skin="asset.teamDungeon.list.updateBtn" x="320" y="69" stateNum="1" buttonMode="true" var="updateBtn"/>
+  <TextInput text="请输入房间号" skin="asset.teamDungeon.list.inputBg" x="69" y="68" width="161" height="30" margin="5,5,5,5" color="0xFFD395" size="16" var="roomInputText" restrict="0-9" stroke="0x854F21,1,4,4,10"/>
+  <LabelEx text="筛选副本" x="432" y="76" color="0xFDE79B" stroke="0x3B1B04,1,4,4,5" bold="true" size="14" width="74" height="34"/>
+  <LabelEx text="筛选难度" x="655" y="76" color="0xFDE79B" stroke="0x3B1B04,1,4,4,5" bold="true" size="14" width="73" height="34"/>
+  <Button x="497" y="71" stateNum="1" twoURLs="asset.teamDungeon.list.selectBg" imageLabel="asset.teamDungeon.list.downBtn" imageLabelX="128" imageLabelY="5" labelColors="0xFDE79B" labelStroke="0x3B1B04,1,4,4,5" var="typeBtn" label="全部副本"/>
+  <Button x="723" y="71" stateNum="1" twoURLs="asset.teamDungeon.list.selectBg" imageLabel="asset.teamDungeon.list.downBtn" imageLabelX="93" imageLabelY="5" width="113" height="28" labelStroke="0x3B1B04,1,4,4,5" labelColors="0xFDE79B" var="levelBtn" label="全部"/>
+  <List x="36" y="110" repeatY="4" repeatX="2" spaceX="1" spaceY="1" var="list">
+    <TeamDungeonListItemView name="render" runtime="teamdungeon.view.list.TeamDungeonListItemView"/>
+  </List>
+  <Button skin="asset.teamDungeon.list.matchBtn" x="115" y="474" stateNum="1" buttonMode="true" var="matchBtn"/>
+  <Button skin="asset.teamDungeon.list.creatRoomBtn" x="613" y="471" stateNum="1" buttonMode="true" var="creatBtn"/>
+  <Button skin="asset.teamDungeon.list.preBtn" x="348" y="467" stateNum="1" buttonMode="true" var="preBtn" disabled="true"/>
+  <Button skin="asset.teamDungeon.list.nextbtn" x="464" y="467" stateNum="1" buttonMode="true" var="nextbtn" disabled="true"/>
+  <TeamDungeonListLevelPlane x="724" y="99" visible="false" var="levelPlane" runtime="teamdungeon.view.mornui.list.TeamDungeonListLevelPlaneUI"/>
+  <TeamDungeonListTypePlane x="497" y="99" var="typePlane" visible="false" runtime="teamdungeon.view.mornui.list.TeamDungeonListTypePlaneUI"/>
+</View>Cgame/TeamDungeonSceneHeadItem.xml�-<View width="202" height="43">
+  <LabelEx x="50" y="3" stroke="0x181818,1,2,2,10" color="0xFF388C" width="100" height="19" isHtml="true" leading="5" size="14" var="leaderLabel"/>
+  <NameTextEx y="23" size="14" bold="false" width="150" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="52"/>
+  <Clip clipsUrlAuto="asset.teamDungeon.sceneUI.head,1,3" index="0" width="45" height="42" var="bgClip"/>
+</View>Groom/TeamDgnMagicRoomPlayerItem.xml�<View width="232" height="186">
+  <Clip clipsUrl="asset.teamDgn.magic.roomItemWait,asset.teamDgn.magic.roomItemClose,asset.teamDgn.magic.roomItemOpen" index="0" var="bgClip" x="0" y="0"/>
+  <Box x="8" y="4" var="allBox" width="217" height="178" visible="false">
+    <Box x="20" y="35" width="156" height="128" var="playerBox"/>
+    <LevelIconEx size="big" level="70" x="178" y="25" height="40.66666666666663" var="levelIcon"/>
+    <NameTextEx y="2" size="14" bold="false" width="122" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="0"/>
+    <Clip x="180" y="58" index="5" clipsUrlAuto="asset.seniorVipIcon.small_,1,15" var="vipIcon"/>
+    <Image skin="asset.teamDungeon.playerItem.GuildTxtBg" x="1" y="23"/>
+    <Image skin="asset.teamDungeon.playerItem.hostIcon" y="154" var="hostIcon" x="0"/>
+    <LabelEx x="4" y="24" color="0x000000" stroke="0xffffff,1,4,4,10" bold="true" width="123" height="18" var="zoneLabel"/>
+    <Box x="176" y="138" width="36" height="37" var="petBox">
+      <Image skin="asset.teamDungeon.playerItem.petHead" x="-7" y="-11"/>
+    </Box>
+    <LabelEx x="163" y="159" color="0xE4CE82" stroke="0x533715,1,4,4,10" width="49" height="18" align="right" var="petLevelLabel"/>
+    <Image skin="asset.teamDungeon.playerItem.readyIcon" var="readyIcon" mouseChildren="false" mouseEnabled="false" x="-7" y="19"/>
+  </Box>
+  <Button x="205" stateNum="1" skin="asset.teamDungeon.playerItem.kickOutBtn" var="kickOutBtn" y="4"/>
+  <Button x="165" stateNum="1" skin="asset.teamDungeon.playerItem.exchangeBtn" var="exchangeBtn" y="4"/>
+  <Image skin="asset.teamDungeon.playerItem.viewInfoBtn" x="185" var="viewInfo" tipStyle="teamdungeon.view.room.TeamDungeonRoomPlayerTips" tipDirctions="1,2,3,4" y="4"/>
+</View>=room/TeamDgnTicketRoomView.xml�<View width="1002" height="533">
+  <Image skin="asset.teamDgn.magic.roomBg" x="0" y="0"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="435" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="902" y="409" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="435" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="902" y="409" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="901" y="408" buttonMode="true" autoPlay="true" var="preparBtn"/>
+  <FrameClip skin="asset.ddtroom.playerItemlist.bg" x="16" y="16" buttonMode="true" autoPlay="true" width="386" height="385"/>
+  <List x="25" y="18" repeatX="2" repeatY="2" spaceY="-8" spaceX="5" var="playerList">
+    <TeamDgnCrossRoomItem name="render" runtime="teamdungeon.view.room.TeamDgnCrossRoomItem"/>
+  </List>
+</View>Croom/TeamDungeonRoomRightView.xml�1<View width="232" height="422">
+  <FrameClip skin="asset.background.room.left"/>
+  <Image skin="asset.teamDungeon.room.roomTitle" x="17" y="45"/>
+  <Image skin="asset.teamDungeon.room.nameBg" x="14" y="74"/>
+  <LabelEx x="22" y="81" color="0xCEB7AB" stroke="0x671300,1,4,4,10" width="185" height="18" align="center" var="roomNameLabel"/>
+  <LabelEx x="136" y="19" color="0xEEDFA9" stroke="0x511606,1,4,4,10" bold="true" size="14" width="82" height="24" align="center" var="areaLabel"/>
+  <Button skin="asset.teamDungeon.room.setBtn" x="193" y="80" stateNum="1" var="setRoomBtn" visible="false"/>
+  <LabelEx x="67" y="50" color="0x42D8EE" stroke="0x082222,1,4,4,10" width="123" height="22" size="18" bold="true" letterSpacing="3" var="roomIDLabel"/>
+  <Image skin="asset.teamDungeon.room.propBg" x="13" y="118" width="204" height="70"/>
+  <Image skin="asset.teamDungeon.room.propBg" x="14" y="208" sizeGrid="30,30,30,30,1" width="204" height="129"/>
+  <Image skin="asset.teamDungeon.room.propSkill" x="13" y="197"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="28" y="130"/>
+  <Image skin="asset.teamDungeon.room.selfPropSkill" x="13" y="107"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="89" y="130"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="150" y="130"/>
+  <List x="22" y="221" width="182" height="107" repeatY="2" spaceX="2" repeatX="3" var="propList">
+    <TeamDungeonRoomPropCell name="render" runtime="teamdungeon.view.room.TeamDungeonRoomPropCell"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="169" name="scrollBar" width="18" height="106" y="0"/>
+  </List>
+  <Image skin="asset.teamDungeon.list.lock" x="192" y="48" var="lockIcon" visible="false"/>
+  <Box x="27" y="128" width="168" height="43" var="upCellBox"/>
+  <LabelEx text="X" x="86" y="126" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10"/>
+  <LabelEx text="C" x="148" y="126" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10"/>
+  <LabelEx text="Z" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10" x="27" y="126"/>
+  <LabelEx text="三组队伍必须有一人方可开始游戏" x="26" y="345" color="0xEEE9B7" stroke="0x451800,1,2,2,10" size="14" bold="true" width="177" height="42" wordWrap="true" leading="4" var="desTxt"/>
+  <LabelEx text="本周剩余次数：" x="27" y="389" color="0xFF0000" stroke="0x451800,1,4,4,10" size="12" bold="true" width="102" height="28" leading="4" var="remainCountTxt"/>
+  <LabelEx text="10/10" x="118" y="389" color="0xFF0000" stroke="0x451800,1,4,4,10" size="12" bold="true" width="92" leading="4" var="limitLabel" multiline="true" wordWrap="true"/>
+</View>;room/TeamDgnCrossRoomItem.xml�o<View width="180" height="198">
+  <Clip clipsUrl="asset.ddtroom.playerItem.waitingBg,asset.ddtroom.playerItem.closeBg,asset.ddtroom.playerItem.yellowbg" index="2" var="bgClip" x="0" y="0"/>
+  <Box x="8" y="4" var="allBox" width="217" height="178" visible="false">
+    <Box x="20" y="35" width="156" height="128" var="playerBox"/>
+    <LevelIconEx size="big" level="70" x="128" y="26" height="40.66666666666663" var="levelIcon"/>
+    <NameTextEx y="2" size="14" bold="false" width="122" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="0"/>
+    <Clip x="130" y="59" index="5" clipsUrlAuto="asset.seniorVipIcon.small_,1,15" var="vipIcon"/>
+    <Image skin="asset.teamDungeon.playerItem.GuildTxtBg" x="1" y="23"/>
+    <Image skin="asset.teamDungeon.playerItem.hostIcon" y="154" var="hostIcon" x="0"/>
+    <LabelEx x="4" y="24" color="0x000000" stroke="0xffffff,1,4,4,10" bold="true" width="123" height="18" var="zoneLabel"/>
+    <Box x="121" y="136" width="36" height="37" var="petBox">
+      <Image skin="asset.teamDungeon.playerItem.petHead" x="-7" y="-11"/>
+    </Box>
+    <LabelEx x="108" y="157" color="0xE4CE82" stroke="0x533715,1,4,4,10" width="49" height="18" align="right" var="petLevelLabel"/>
+    <Image skin="asset.teamDungeon.playerItem.readyIcon" var="readyIcon" mouseChildren="false" mouseEnabled="false" x="-7" y="19"/>
+  </Box>
+  <Button x="154" stateNum="1" skin="asset.teamDungeon.playerItem.kickOutBtn" var="kickOutBtn" y="4"/>
+  <Button x="114" stateNum="1" skin="asset.ddtroom.changeRoomHost" var="exchangeBtn" y="4"/>
+  <Image skin="asset.teamDungeon.playerItem.viewInfoBtn" x="134" var="viewInfo" tipStyle="teamdungeon.view.room.TeamDgnCrossRoomPlayerTips" tipDirctions="1,2,3,4" y="4"/>
+</View>9room/TeamDungeonRoomView.xml�q<View width="1000" height="600">
+  <Image skin="asset.teamDungeon.room.bg" y="8"/>
+  <TeamDungeonRoomRightView x="765" y="9" runtime="teamdungeon.view.room.TeamDungeonRoomRightView" var="rightView"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="443" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="900" y="415" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="443" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="900" y="415" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="900" y="415" buttonMode="true" autoPlay="true" var="preparBtn"/>
+  <List x="17" y="26" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList1">
+    <TeamDungeonRoomPlayerItem name="render" runtime="teamdungeon.view.room.TeamDungeonRoomPlayerItem"/>
+  </List>
+  <List x="17" y="197" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList2">
+    <TeamDungeonRoomPlayerItem name="render" runtime="teamdungeon.view.room.TeamDungeonRoomPlayerItem"/>
+  </List>
+  <List x="17" y="368" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList3">
+    <TeamDungeonRoomPlayerItem name="render" runtime="teamdungeon.view.room.TeamDungeonRoomPlayerItem"/>
+  </List>
+</View>;game/TeamDgnMagicHeadItem.xml�<View width="45" height="42">
+  <Clip clipsUrlAuto="asset.teamDungeon.sceneUI.head,1,3" index="0" width="45" height="42" var="bgClip"/>
+</View>Alist/TeamDungeonRoomWaitView.xml�_<View width="335" height="184" x="350" y="217">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="184"/>
+  <Label text="快速组队" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="276" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="109" sizeGrid="5,5,5,5" width="295" height="54"/>
+  <Button label="离开队列" x="118" y="118" stateNum="1" width="101" height="41" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+  <LabelEx text="快速组队匹配中，请等待..." x="21" y="66" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="294" height="29" align="center"/>
+</View>Clist/TeamDungeonCreatRoomView.xml�s<View x="340" y="183">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="30,50,30,50" width="327" height="250" x="0" y="0"/>
+  <Image skin="asset.teamDungeon.list.createBg" x="14" y="39"/>
+  <Label text="创建房间" x="16" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="275" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Button x="106" y="173" stateNum="1" skin="asset.teamDungeon.list.confirmBtn" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="confirmBtn" buttonMode="true"/>
+  <LabelEx text="选择副本" x="68" y="81" color="0xFDE79B" stroke="0x3B1B04,1,4,4,5" bold="true" size="14" width="74" height="34"/>
+  <LabelEx text="选择难度" x="68" y="121" color="0xFDE79B" stroke="0x3B1B04,1,4,4,5" bold="true" size="14" width="73" height="34"/>
+  <Button x="148" y="77" stateNum="1" twoURLs="asset.teamDungeon.list.selectBg" imageLabel="asset.teamDungeon.list.downBtn" imageLabelX="93" imageLabelY="5" labelColors="0xFDE79B" labelStroke="0x3B1B04,1,4,4,5" var="typeBtn" width="113" height="28"/>
+  <Button x="148" y="117" stateNum="1" twoURLs="asset.teamDungeon.list.selectBg" imageLabel="asset.teamDungeon.list.downBtn" imageLabelX="93" imageLabelY="5" width="113" height="28" labelStroke="0x3B1B04,1,4,4,5" labelColors="0xFDE79B" var="levelBtn"/>
+  <Box x="148" y="146" var="hardBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="112" height="142" x="0" y="0"/>
+    <List x="4" y="5" width="103" height="131" var="hardList">
+      <Box y="0" name="item0" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="普通" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+      </Box>
+      <Box y="33" name="item1" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="困难" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+      </Box>
+      <Box y="66" name="item2" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="英雄" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+      </Box>
+      <Box y="99" name="item3" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="噩梦" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+      </Box>
+    </List>
+  </Box>
+  <Box x="148" y="104" var="typeBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="117" height="149" x="0" y="0"/>
+    <List x="6" y="6" width="104" height="133" var="typeList">
+      <Box name="item0" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="团结协作" x="7" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14" name="txt"/>
+      </Box>
+      <Box y="35" name="item1" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="魔法密林" x="7" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14" name="txt"/>
+      </Box>
+      <Box y="70" name="item2" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="焦土废墟" x="7" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14" name="txt"/>
+      </Box>
+      <Box y="105" name="item3" x="0">
+        <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+        <LabelEx text="乐园危机" x="7" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14" name="txt"/>
+      </Box>
+    </List>
+  </Box>
+</View>Clist/TeamDungeonEnterRoomView.xml�o<View width="335" height="184">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="184"/>
+  <Label text="进入房间" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="276" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="109" sizeGrid="5,5,5,5" width="295" height="54"/>
+  <Button label="确 定" x="128" y="117" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+  <Image skin="asset.ui.scale.bg2" x="19" y="44" width="295" height="60" sizeGrid="20,20,20,20"/>
+  <TextInput skin="asset.teamDungeon.list.inputBg" x="161" y="60" width="137" height="31" margin="6,6,5,5" color="0xFFFFFF" size="14" var="passwordInputText" restrict="0-9" stroke="0x000000,1,4,4,10" maxChars="6"/>
+  <LabelEx text="请输入房间密码：" x="38" y="66" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="121" height="24"/>
+</View>Elist/TeamDungeonListLevelPlane.xml�<View width="112" height="175" name="item0">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="112" height="175" x="0" y="0"/>
+  <List x="4" y="5" width="103" height="165" var="list">
+    <Box y="1" name="item0" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+      <LabelEx text="全部" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="34" name="item1" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+      <LabelEx text="普通" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="67" name="item2" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+      <LabelEx text="困难" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="100" name="item3" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+      <LabelEx text="英雄" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="133" name="item4" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="103" height="32" name="selectBox"/>
+      <LabelEx text="噩梦" x="12" y="7" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="79" height="28" align="center" bold="true" size="14"/>
+    </Box>
+  </List>
+</View>;game/TeamDgnMagicGameView.xml�g<View width="1000" height="600">
+  <Image skin="asset.teamDungeon.sceneUI.scoreBg" x="21" y="116" sizeGrid="4,4,4,4" width="139" height="53" var="scoreBg"/>
+  <List x="20" y="20" width="152" height="98" spaceY="5" spaceX="5" repeatY="2" repeatX="3" var="headList">
+    <TeamDgnMagicHeadItem name="render" runtime="teamdungeon.view.game.TeamDgnMagicHeadItem"/>
+  </List>
+  <TeamDgnMagicDiceView x="257" y="219" runtime="teamdungeon.view.magic.TeamDgnMagicDiceView" var="diceView" visible="false"/>
+  <LabelEx x="22" y="122" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="31" isHtml="true" leading="5" size="14" var="dateTipLabel"/>
+  <LabelEx x="22" y="142" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="34" isHtml="true" text="00:00:00" leading="5" size="14" var="timeLabel"/>
+</View>Eroom/TeamDungeonRoomPlayerItem.xml�9<View width="180" height="166">
+  <Clip clipsUrl="asset.teamDungeon.room.itemWait,asset.teamDungeon.room.itemClose,asset.teamDungeon.room.itemOpen" index="0" var="bgClip"/>
+  <Box x="8" y="4" var="allBox" width="167" height="161" visible="false">
+    <Box x="4" y="26" width="156" height="128" var="playerBox"/>
+    <LevelIconEx size="big" level="70" x="126" y="29" height="40.66666666666663" var="levelIcon"/>
+    <NameTextEx y="2" size="14" bold="false" width="122" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="0"/>
+    <Clip x="128" y="62" index="5" clipsUrlAuto="asset.seniorVipIcon.small_,1,15" var="vipIcon"/>
+    <Image skin="asset.teamDungeon.playerItem.GuildTxtBg" x="1" y="23"/>
+    <Image skin="asset.teamDungeon.playerItem.hostIcon" y="135" var="hostIcon"/>
+    <LabelEx x="4" y="26" color="0x000000" stroke="0xffffff,1,4,4,10" bold="true" width="123" height="18" var="zoneLabel"/>
+    <Box x="127" y="117" width="36" height="37" var="petBox">
+      <Image skin="asset.teamDungeon.playerItem.petHead" x="-7" y="-11"/>
+    </Box>
+    <LabelEx x="115" y="142" color="0xE4CE82" stroke="0x533715,1,4,4,10" width="49" height="18" align="right" var="petLevelLabel"/>
+    <Image skin="asset.teamDungeon.playerItem.readyIcon" var="readyIcon" mouseChildren="false" mouseEnabled="false"/>
+  </Box>
+  <Button x="153" stateNum="1" skin="asset.teamDungeon.playerItem.kickOutBtn" var="kickOutBtn" y="4"/>
+  <Button x="113" stateNum="1" skin="asset.teamDungeon.playerItem.exchangeBtn" var="exchangeBtn" y="4"/>
+  <Image skin="asset.teamDungeon.playerItem.viewInfoBtn" x="133" var="viewInfo" tipStyle="teamdungeon.view.room.TeamDungeonRoomPlayerTips" tipDirctions="1,2,3,4" y="4"/>
+</View>;game/TeamDgnMagicDiceView.xml�Y<View width="483" height="191">
+  <Image skin="asset.teamDgn.magic.diceBg"/>
+  <FrameClip skin="asset.teamDgn.magic.dice" x="113" y="81" buttonMode="true" var="diceBtn"/>
+  <LabelEx x="109" y="11" width="259" height="38" var="nameLabel" align="center" bold="true" color="0xff0000" size="16"/>
+</View>;room/TeamDgnCrossRoomView.xml�}<View width="997" height="531">
+  <Image skin="asset.teamDgn.magic.roomBg" x="0" y="0"/>
+  <TeamDungeonRoomRightView x="765" y="1" runtime="teamdungeon.view.room.TeamDungeonCrossRoomRightView" var="rightView"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="435" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="902" y="409" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="435" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="902" y="409" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="901" y="408" buttonMode="true" autoPlay="true" var="preparBtn"/>
+  <FrameClip skin="asset.ddtroom.playerItemlist.bg" x="16" y="16" buttonMode="true" autoPlay="true" width="386" height="385"/>
+  <List x="25" y="18" repeatX="2" repeatY="2" spaceY="-8" spaceX="5" var="playerList">
+    <TeamDgnCrossRoomItem name="render" runtime="teamdungeon.view.room.TeamDgnCrossRoomItem"/>
+  </List>
+</View>Alist/TeamDungeonListItemView.xml�%<View width="412" height="88" visible="false" buttonMode="true">
+  <Image skin="asset.teamDungeon.list.itemBg"/>
+  <Image skin="asset.teamDungeon.list.lock" x="287" y="16" var="lockIcon"/>
+  <LabelEx text="房间号：" x="314" y="21" stroke="0x3B1B04,1,4,4,5" color="0xFFF3C0"/>
+  <LabelEx x="358" y="22" stroke="0x3B1B04,1,4,4,5" color="0xFFF3C0" width="49" height="18" var="roomIdLabel"/>
+  <LabelEx x="8" y="61" stroke="0x3B1B04,1,4,4,5" color="0xEFDB9E" size="14" var="roomNameLabel" width="252" height="23" bold="true"/>
+  <LabelEx x="357" y="61" stroke="0x3B1B04,1,4,4,5" color="0xEFDB9E" size="14" var="levelLabel" width="50" height="23" align="right"/>
+  <LabelEx x="275" y="61" stroke="0x3B1B04,1,4,4,5" color="0xEFDB9E" size="14" var="playerLabel" width="84" height="23" align="right" bold="true"/>
+  <Clip x="12" y="9" clipsUrl="asset.teamDungeon.list.itemTitle1,asset.teamDungeon.list.itemTitle2,asset.teamDungeon.list.itemTitle3" index="1" var="dgnTitle"/>
+</View>5farm/TeamDgnReportView.xml�u<View width="320" height="195">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="25,50,25,50" width="320" height="195"/>
+  <Button skin="asset.ui.btn_close1" x="261" y="5" stateNum="1" buttonMode="true" var="btn_esc"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="126" sizeGrid="5,5,5,5" width="280" height="49"/>
+  <Label text="请选择要举报的队员:" x="23" y="68" bold="true" color="0xfffebf" size="14" backgroundColor="0x0" stroke="0x632f00,1,4,4,10"/>
+  <Button label="取 消" x="190" y="132" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_cancel" buttonMode="true"/>
+  <Button label="确 定" x="55" y="132" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="btn_confirm" buttonMode="true"/>
+  <Label text="举报" x="17" y="12" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Label text="注：请慎重使用该功能" x="94" y="103" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10"/>
+  <ComboBox x="178" y="65" imageLabel="asset.ui.combox.btn3" width="122" height="25" stateNum="1" skin="asset.ui.scale.bg4" imageLabelX="100" imageLabelY="3" sizeGrid="10,10,10,10" var="comboBox_selectName" listSizeGrid="10,10,10,10" listSkin="asset.ui.scale.bg16" labelColors="0xe8ce97" labelFont="14" labelStroke="0x4c361b,1,4,4,10" itemColors="0xe8ce97,0xe8ce97,0xe8ce97,0xe8ce97" itemLabelStroke="0x4c361b,1,4,4,10" itemLabelMargin="10,4,0,2" labelMargin="5,0,0,2" labelSize="14" itemSize="14" itemHeight="25"/>
+</View>Clist/TeamDungeonListTypePlane.xml�<View width="146" height="178">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="146" height="178" x="0" y="0"/>
+  <List x="4" y="6" width="139" height="165" var="list">
+    <Box y="1" name="item0" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="137" height="32" name="selectBox" x="0" y="0"/>
+      <LabelEx text="全部副本" x="25" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="34" name="item1" x="0" width="137" height="34">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="137" height="32" name="selectBox"/>
+      <LabelEx text="团结协作" x="25" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="67" name="item2" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="137" height="32" name="selectBox"/>
+      <LabelEx text="魔法密林" x="25" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="100" name="item3" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="137" height="32" name="selectBox"/>
+      <LabelEx text="焦土废墟" x="25" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14"/>
+    </Box>
+    <Box y="133" name="item4" x="0">
+      <Image skin="asset.ui.combox.itemBg3" sizeGrid="10,10,10,10" width="137" height="32" name="selectBox"/>
+      <LabelEx text="乐园危机" x="25" y="6" color="0xfffaee" stroke="0x2b2b2b,1,4,4,10" width="87" height="28" align="center" bold="true" size="14"/>
+    </Box>
+  </List>
+</View>Aroom/TeamDungeonRoomPropCell.xml�E<View width="53" height="52">
+  <Image skin="asset.teamDungeon.room.propCellBg" var="bg"/>
+</View>

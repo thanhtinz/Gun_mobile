@@ -1,0 +1,110 @@
+<Result value="true" message="Success!">
+  <Card CardID="1">
+    <Item condition="3" PropertiesDscripID="8" value="100|150|200|250" Description="在魔蚁之巢副本中，血量上限增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="2">
+    <Item condition="2" PropertiesDscripID="3" value="2|4|6|8" Description="在啵咕王城副本中，每次轮到自己回合激怒值额外增加{0}点。" />
+    <Item condition="4" PropertiesDscripID="2" value="5|10|15|20" Description="在啵咕王城副本中，攻击命中时额外增加{0}点伤害。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="3">
+    <Item condition="3" PropertiesDscripID="9" value="60|90|120|150" Description="在邪神部落副本中，被击中时可减少{0}点伤害。" />
+    <Item condition="5" PropertiesDscripID="10" value="5|10|15|20" Description="在邪神部落副本中，攻击命中时额外提高百分之{0}的伤害。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="4">
+    <Item condition="2" PropertiesDscripID="5" value="5|10|15|20" Description="在黑暗堡垒副本中，移动时不消耗体力，并且增加全属性{0}点。" />
+    <Item condition="4" PropertiesDscripID="4" value="300|400|500|600" Description="在黑暗堡垒副本中，命中时出现暴击，则额外增加{0}点暴击伤害。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="5">
+    <Item condition="2" PropertiesDscripID="6" value="1|2|3|4" Description="在竞技战和挑战中，攻击命中时可额外增加{0}点怒气值。" />
+    <Item condition="4" PropertiesDscripID="7" value="10|20|30|40" Description="在竞技战和挑战中，攻击、防御、敏捷、幸运属性各增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="6">
+    <Item condition="2" PropertiesDscripID="11" value="30|50|70|90" Description="在龙巢之战副本中，进入关卡时初始携带{0}点怒气。 " />
+    <Item condition="4" PropertiesDscripID="12" value="100|150|200|250" Description="在龙巢之战副本中，每回合受到的灼烧伤害可减少{0}点。" />
+    <Item condition="5" PropertiesDscripID="13" value="5|10|15|20" Description="在龙巢之战副本中，可在邪炎巨龙的怒吼攻击中屹立不动，并且增加全属性{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="7">
+    <Item condition="2" PropertiesDscripID="14" value="10|20|30|40" Description="在小鸡快跑副本中，防御属性提高百分之{0}。" />
+    <Item condition="4" PropertiesDscripID="15" value="50|100|150|200" Description="在小鸡快跑副本中，每回合受到的中毒伤害可减少{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="8">
+    <Item condition="2" PropertiesDscripID="16" value="150|200|250|300" Description="在啵咕运动会副本中，天使的治疗效果可额外增加{0}点血量。" />
+    <Item condition="4" PropertiesDscripID="17" value="5|10|15|20" Description="在啵咕运动会副本中，能抵御拳击手的重拳攻击，并且增加全属性{0}点。" />
+    <Item condition="5" PropertiesDscripID="5" value="5|10|15|20" Description="在啵咕运动会副本中，移动时不消耗体力，并且增加全属性{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="9">
+    <Item condition="2" PropertiesDscripID="18" value="500|650|800|1000" Description="在竞技战和挑战中加{0}点生命值。" />
+    <Item condition="5" PropertiesDscripID="19" value="3|6|9|15" Description="在竞技战和挑战中，伤害和护甲增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="10">
+    <Item condition="3" PropertiesDscripID="7" value="10|20|30|40" Description="在时空漩涡副本中，攻击、防御、敏捷、幸运属性各增加{0}点。" />
+    <Item condition="5" PropertiesDscripID="20" value="50|80|110|150" Description="在时空漩涡副本中，救治中毒的小鸡士兵恢复血量额外增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="11">
+    <Item condition="3" PropertiesDscripID="8" value="500|1000|1500|2000" Description="在勇士竞技场副本中，血量上限增加{0}点" />
+    <Item condition="5" PropertiesDscripID="21" value="5|7|10|15" Description="在勇士竞技场副本中，受到米诺陶诺斯伤害减少百分之{0}" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="12">
+    <Item condition="3" PropertiesDscripID="18" value="1000|2000|3000|4500" Description="在竞技战和挑战中加{0}点生命值。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="13">
+    <Item condition="5" PropertiesDscripID="7" value="30|50|100|150" Description="在竞技战和挑战中攻击、防御、敏捷、幸运属性各增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="14">
+    <Item condition="5" PropertiesDscripID="18" value="1500|2500|3500|5000" Description="在竞技战和挑战中加{0}点生命值。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="15">
+    <Item condition="5" PropertiesDscripID="7" value="25|45|80|120" Description="在竞技战和挑战中攻击、防御、敏捷、幸运属性各增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="16">
+    <Item condition="5" PropertiesDscripID="18" value="2000|3000|4000|5500" Description="在竞技战和挑战中加{0}点生命值。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="17">
+    <Item condition="5" PropertiesDscripID="7" value="40|60|120|180" Description="在竞技战和挑战中攻击、防御、敏捷、幸运属性各增加{0}点。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+  <Card CardID="18">
+    <Item condition="5" PropertiesDscripID="18" value="2500|3500|4500|6000" Description="在竞技战和挑战中加{0}点生命值。" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+    <Item condition="0" PropertiesDscripID="0" value="0|0|0|0" Description="0" />
+  </Card>
+</Result>

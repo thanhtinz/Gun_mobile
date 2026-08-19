@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:9f518b2984d7d9166c80e67443303a0a:b5e2fc9fe1661c4b5c08a3387f761c2b:4c7a97e758fef6240240dbb5539a34a2$ -->
+<TextureAtlas imagePath="consortia_domain_scene_build.png">
+    <SubTexture name="consortiaDomainBagStore" x="652" y="186" width="301" height="291"/>
+    <SubTexture name="consortiaDomainConsortiaCity" x="0" y="0" width="652" height="629"/>
+    <SubTexture name="consortiaDomainConsortiaShop" x="264" y="629" width="403" height="310"/>
+    <SubTexture name="consortiaDomainConsortiaSkill" x="0" y="629" width="264" height="346"/>
+    <SubTexture name="consortiaDomainHomeBank" x="667" y="647" width="175" height="193"/>
+    <SubTexture name="consortiaDomainMonsterBornPoint2Door" x="963" y="0" width="52" height="69"/>
+    <SubTexture name="consortiaDomainMonsterNormalBorn" x="652" y="0" width="311" height="186"/>
+    <SubTexture name="consortiaDomainMonsterSecretBorn" x="667" y="477" width="227" height="170"/>
+</TextureAtlas>

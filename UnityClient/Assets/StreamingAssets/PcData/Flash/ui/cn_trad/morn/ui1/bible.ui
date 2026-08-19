@@ -1,0 +1,135 @@
+
+'view/BibleToday.xml�q<View width="816" height="425">
+  <Image skin="asset.bible.leftBg" x="0" y="0"/>
+  <TabListEx y="6" var="viewTab" x="7" width="223" height="290">
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabActivity2,asset.bible.tabSmallBg1|asset.bible.tabActivity1" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="0"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabFuben2,asset.bible.tabSmallBg1|asset.bible.tabFuben1" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="55"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabPk2,asset.bible.tabSmallBg1|asset.bible.tabPk1" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="110"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabProfit2,asset.bible.tabSmallBg1|asset.bible.tabProfit1" name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="165"/>
+  </TabListEx>
+  <Image skin="asset.ui.scale.bg19" x="243" y="-1" sizeGrid="20,20,20,20" width="573" height="423"/>
+  <FrameClip skin="asset.ui.frame.titleLine1" x="247" y="4" width="565" height="33.85"/>
+  <Label text="參與人數" x="332" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" var="des2" align="center" font="宋体"/>
+  <Label text="剩餘次數" x="409" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" var="des3" font="Arial"/>
+  <Label text="副本名稱" x="255" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" var="des1" font="宋体"/>
+  <Image skin="asset.ui.frame.line1" x="331" y="5"/>
+  <Image skin="asset.ui.frame.line1" x="398" y="5"/>
+  <Image skin="asset.ui.frame.line1" x="478" y="5"/>
+  <Label text="獎勵" x="570" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" align="center" var="des4" font="宋体"/>
+  <Image skin="asset.ui.frame.line1" x="693" y="5"/>
+  <Label text="前往參與" x="711" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" var="des5" font="宋体"/>
+  <List x="249" y="41" repeatY="5" spaceY="2" vScrollBarSkin="asset.ui.scroll1.vscroll" width="556" height="373" var="list">
+    <BibleTodayItem name="render" runtime="bible.view.item.BibleTodayItem"/>
+  </List>
+  <CheckBox label="隱藏未開放的功能" x="5" y="384" stateNum="1" labelColors="0xfef9ed" labelStroke="0x6e2b0d,1,4,4,30" labelMargin="0,2" var="checkBtn" selected="true" toggle="true" checkButtonSkin="asset.ui.btn_check3" labelFont="Arial"/>
+</View>1view/BibleStrongView.xml�?<View width="816" height="425">
+  <Image skin="asset.bible.leftBg" x="0" y="1"/>
+  <Image skin="asset.ui.scale.goldLine" x="243" y="0" width="573" height="424" sizeGrid="20,20,20,20"/>
+  <TabListEx y="7" var="viewTab" x="7" width="223" height="290">
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabCharacter2,asset.bible.tabSmallBg1|asset.bible.tabCharacter1" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="0"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabEquip2,asset.bible.tabSmallBg1|asset.bible.tabEquip1" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="55"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabPet2,asset.bible.tabSmallBg1|asset.bible.tabPet1" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="110"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabHorse2,asset.bible.tabSmallBg1|asset.bible.tabHorse1" name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|65,13,44,28|0,0,231,50|65,13,44,28" bgSizeGrid="20,15,20,15" x="-2" y="165"/>
+    <TabButtonEx skin="asset.bible.tabSmallBg2|asset.bible.tabTrain2,asset.bible.tabSmallBg1|asset.bible.tabTrain1" name="item4" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,231,50|45,11,96,28|0,0,231,50|45,11,96,28" bgSizeGrid="20,15,20,15" x="-2" y="220"/>
+  </TabListEx>
+  <List x="249" y="7" vScrollBarSkin="asset.ui.scroll1.vscroll" repeatY="4" width="555" height="411" var="list">
+    <BibleItem name="render" runtime="bible.view.item.BibleItem"/>
+  </List>
+  <CheckBox label="隱藏未開放的功能" x="5" y="384" stateNum="1" labelColors="0xfef9ed" labelStroke="0x6e2b0d,1,4,4,30" labelMargin="0,2" var="checkBtn" selected="true" toggle="true" checkButtonSkin="asset.ui.btn_check3" labelFont="Arial"/>
+  <List x="248" y="6" repeatY="4" vScrollBarSkin="asset.ui.scroll1.vscroll" width="556" height="412" var="trainList">
+    <BibleTrainItem name="render" runtime="bible.view.item.BibleTrainItem"/>
+  </List>
+</View>9item/BibleRewardBackItem.xml�C<View width="536" height="73">
+  <Image skin="asset.ui.scale.bg7" x="0" y="0" name="item1" sizeGrid="10,10,10,10" width="536" height="73"/>
+  <Image skin="asset.ui.frame.line2" x="93" y="6" height="60"/>
+  <Image skin="asset.ui.frame.line2" x="194" y="6" height="60"/>
+  <Image skin="asset.ui.frame.line2" x="412" y="6" height="60"/>
+  <Label text="Phó Bản Thử Thách" x="3" y="17" color="0xffe68e" size="14" stroke="0x381e00,1,4,4,30" width="89" leading="5" var="itemName" align="center" font="Arial" wordWrap="true"/>
+  <Box x="199" y="9" width="210" height="56" var="cellBox"/>
+  <Button skin="asset.bible.getBackBtn" x="426" y="17" stateNum="1" var="getBtn" width="100" height="39"/>
+  <List x="96" y="24" repeatX="5" spaceX="-3" var="starList">
+    <Box name="render">
+      <Image skin="asset.bible.star" name="star"/>
+    </Box>
+  </List>
+  <Image skin="asset.bible.hasGotImg" x="449" y="23" var="hasGotImg"/>
+</View>3view/BibleBackComfirm.xml�'<View width="410" height="250">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="410" height="250"/>
+  <Button skin="asset.ui.btn_close1" x="358" y="3" stateNum="1" var="closeBtn"/>
+  <Label x="9" y="9" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" var="title" text="確定購買" font="Arial"/>
+  <Label x="20" y="40" size="14" bold="true" color="0xfcf6d6" stroke="0x7b4519,1,4,4,30" text="確認消耗2000點券找回強化石*5" wordWrap="true" width="368" leading="2" letterSpacing="2" align="center" height="69" var="des" font="Arial" multiline="true"/>
+  <Image skin="asset.ui.scale.bg3" x="17" y="177" sizeGrid="138,17,138,17" width="376" height="57"/>
+  <Label text="注：免費找回的獎勵內容和完美找回的點券花費受獎勵星級影響" x="25" y="150" color="0xffffff" stroke="0xa92928,1,4,4,30" font="Arial" wordWrap="true" width="383" height="27" size="12"/>
+  <Image skin="asset.bible.txtBg" x="25" y="108"/>
+  <RadioGroup x="103" y="109" var="group">
+    <CheckBox label="免費找回" name="item0" checkButtonSkin="asset.ui.btn_check3" selected="false" toggle="true" stateNum="1" labelSize="14" labelColors="0xfef9ed" labelStroke="0x692706,1,4,4,30" labelFont="Arial" labelMargin="0,2,2,0"/>
+    <CheckBox label="完美找回" name="item1" checkButtonSkin="asset.ui.btn_check3" selected="false" toggle="true" stateNum="1" labelSize="14" labelColors="0xfef9ed" labelStroke="0x692706,1,4,4,30" x="117" labelFont="Arial" labelMargin="0,2,2,0"/>
+  </RadioGroup>
+  <Button skin="asset.ui.btn_red5" x="156" y="185" stateNum="1" var="yesBtn" imageLabel="asset.bible.confirmTxt" imageLabelRect="30,9"/>
+</View>1view/BibleRewardBack.xml�{<View width="816" height="425">
+  <Image skin="asset.bible.getBackBg" x="0" y="0"/>
+  <Image skin="asset.ui.scale.bg19" x="244" y="0" sizeGrid="20,20,20,20" width="573" height="423"/>
+  <FrameClip skin="asset.ui.frame.titleLine1" x="248" y="5" width="565" height="33.85"/>
+  <Label text="獎勵找回" x="261" y="12" size="14" color="0xffea9c" stroke="0x4f3700,1,4,4,10" font="宋体" align="center" bold="true"/>
+  <Image skin="asset.ui.frame.line1" x="343" y="6"/>
+  <Image skin="asset.ui.frame.line1" x="445" y="6"/>
+  <Label text="獎勵" x="526" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" align="center" font="宋体"/>
+  <Image skin="asset.ui.frame.line1" x="662" y="6"/>
+  <Label text="找回" x="712" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" font="宋体" align="center"/>
+  <Label text="獎勵星級" x="360" y="12" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10" align="center" font="宋体"/>
+  <List x="249" y="43" repeatY="5" spaceY="2" vScrollBarSkin="asset.ui.scroll1.vscroll" width="556" height="373" var="list">
+    <BibleRewardBackItem name="render" runtime="bible.view.item.BibleRewardBackItem"/>
+  </List>
+</View>%item/BibleItem.xml�s<View width="536" height="90">
+  <Image skin="asset.bible.itemBg" x="0" y="0"/>
+  <Label text="强化:" x="21" y="14" color="0xf8d871" size="16" bold="true" stroke="0x823602,1,4,4,30" var="systemName"/>
+  <Label text="對武器，衣服，帽子進行升級" x="72" y="16" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="false" var="desTxt"/>
+  <Label text="材料：" x="23" y="63" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="true" var="needItemsTxt" mouseChildren="true" mouseEnabled="true"/>
+  <ProgressBarEx x="20" y="39" skin="asset.bible.itemProgress" barYOffset="4" barXOffset="4" var="progressBar" value="0.3"/>
+  <Box x="217" y="63" var="getBox" buttonMode="true">
+    <Label text="如何獲取" color="0xffd800" stroke="0x843910,1,4,4,30" underline="true" size="12" height="16" font="Arial"/>
+    <Button skin="asset.bible.downBtn" x="60" stateNum="1"/>
+  </Box>
+  <Label x="408" y="62" var="desTxt1" color="0xef39ff" size="12" bold="true" stroke="0x350031,1,4,4,30" height="18" align="right" width="102"/>
+  <Button skin="asset.bible.gotoBtn" x="452" y="15" stateNum="1" var="gotoBtn"/>
+  <Label text="强化石" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="true" mouseChildren="true" mouseEnabled="true" name="need0" x="66" y="63" tipStyle="ddt.view.tips.GoodTip" tipDirctions="1,0,0"/>
+  <Label text="强化石" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="true" mouseChildren="true" mouseEnabled="true" name="need1" x="114" y="63" tipStyle="ddt.view.tips.GoodTip" tipDirctions="1,0,0"/>
+  <Label text="强化石" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="true" mouseChildren="true" mouseEnabled="true" name="need2" x="162" y="63" tipStyle="ddt.view.tips.GoodTip" tipDirctions="1,0,0"/>
+  <Image skin="asset.bible.arrow" x="512" y="63" var="arrowImg"/>
+</View>/view/BibleWhereView.xml�i<View width="157" height="200">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="151" height="63" var="bg"/>
+  <List x="5" y="6" repeatY="5" spaceY="2" var="list">
+    <Box name="render">
+      <Image skin="asset.bible.tipsItemBg" sizeGrid="68,12,68,12" name="selectBox"/>
+      <Label text="如何獲取" y="3" color="0xffd800" stroke="0x843910,1,4,4,30" underline="true" size="14" width="133" height="20" x="5" align="center" name="label"/>
+    </Box>
+  </List>
+</View>/item/BibleTodayItem.xml�<View width="536" height="73">
+  <Image skin="asset.ui.scale.bg7" x="0" y="0" name="item1" sizeGrid="10,10,10,10" width="536" height="73"/>
+  <Image skin="asset.ui.frame.line2" x="83" y="6" height="60"/>
+  <Image skin="asset.ui.frame.line2" x="150" y="6" height="60"/>
+  <Image skin="asset.ui.frame.line2" x="231" y="6" height="60"/>
+  <Image skin="asset.ui.frame.line2" x="446" y="6" height="60"/>
+  <Label x="-1" y="6" color="0xffe68e" size="14" stroke="0x381e00,1,4,4,30" wordWrap="true" width="84" align="center" leading="5" var="itemName" font="Arial"/>
+  <Label text="1-4人" x="84" y="27" color="0xffe68e" size="14" stroke="0x381e00,1,4,4,30" wordWrap="true" width="65" align="center" leading="5" var="desTxt"/>
+  <Label text="1" x="160" y="27" color="0xffe68e" size="14" stroke="0x381e00,1,4,4,30" wordWrap="true" width="61" align="center" leading="5" var="remainTxt"/>
+  <Box x="235" y="7" width="210" height="56" var="cellBox"/>
+  <Button skin="asset.bible.gotoBtn" x="456" y="17" stateNum="1" var="gotoBtn"/>
+</View>-view/BibleMainView.xml�]<View width="851" height="526">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="867" height="538"/>
+  <Button skin="asset.ui.btn_close1" x="815" y="4" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.ui.scale.bg19" x="20" y="84" sizeGrid="30,30,30,30" width="826" height="436"/>
+  <TabListEx y="49" var="viewTab" x="32">
+    <TabButtonEx skin="asset.core.btmc004|asset.bible.strong1,asset.core.btmc005|asset.bible.strong2" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,100,35|14,4,71,24|-5,-5,100,40|8,4,71,24" bgSizeGrid="10,10,10,10" x="0" y="0"/>
+    <TabButtonEx skin="asset.core.btmc004|asset.bible.today1,asset.core.btmc005|asset.bible.today2" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,100,35|14,4,71,24|-5,-5,100,40|8,4,71,24" bgSizeGrid="10,10,10,10" x="108" y="0"/>
+    <TabButtonEx skin="asset.core.btmc004|asset.bible.rewardBack1,asset.core.btmc005|asset.bible.rewardBack2" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,100,35|14,4,71,24|-5,-5,100,40|8,4,71,24" bgSizeGrid="20,10,20,10" x="217" y="0"/>
+  </TabListEx>
+  <BibleStrongView x="18" y="88" runtime="bible.view.BibleStrongView" var="strongView"/>
+  <Image skin="asset.bible.titleIcon" x="59" y="-51"/>
+  <Label text="下列數據僅供參考" x="707" y="56" color="0xffea9c" size="12" bold="true" stroke="0x6e2b0d,1,4,4,30"/>
+</View>/item/BibleTrainItem.xml�g<View width="536" height="90">
+  <Image skin="asset.bible.itemBg"/>
+  <Label text="强化" x="22" y="16" color="0xf8d871" size="16" bold="true" stroke="0x823602,1,4,4,30" var="systemName"/>
+  <Label x="16" y="50" color="0xfff1bf" size="12" stroke="0x906342,1,4,4,30" bold="false" var="desTxt" text="通過高手之路訓練，熟練掌握戰鬥中的各種技巧，​​方能成為一代彈彈堂大師！"/>
+  <Button skin="asset.bible.gotoBtn" x="453" y="24" stateNum="1" var="gotoBtn"/>
+</View>

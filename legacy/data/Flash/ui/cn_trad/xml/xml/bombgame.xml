@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<style name="bombgame" version="1.0.1" source="ui/cn_trad/swf/bombgame.swf">
+  <sets>
+  	<set stylename="simpleGameRank.listItemGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="simpleGameRank.noRankTF" args="宋体,16,0xFADF5E" type="flash.text.TextFormat"/>
+	<set stylename="simpleGameRank.noRankGF" args="0x582629,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="simpleGameRank.listItemRankTF" args="宋体,20,0xFFFFFF" type="flash.text.TextFormat"/>
+	<set stylename="simpleGameRank.listItemTF" args="宋体,16,0xFFFFFF" type="flash.text.TextFormat"/>
+
+	<set stylename="bombgame.page_txt" args="Arial,12,0xfff8d6,,,,,,center" type="flash.text.TextFormat"/>
+	<set stylename="bombgame.glowgilter_page_txt" args="0x4b270d,1,4,4,10"  type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.promptTF" args="Arial,12,0xFBDF5F,,,,,,left" type="flash.text.TextFormat"/>
+	<set stylename="bombgame.promptGF" args="0x562524,1,2,2,30" type="flash.filters.GlowFilter" />
+	<set stylename="bombgame.promptIITF" args="Arial,12,0xff0000,,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="bombgame.promptIIGF" args="0xffffff,1,2,2,30" type="flash.filters.GlowFilter" />
+	<set stylename="bombgame.itemTF" args="Arial,12,0xFEEB99,true,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="bombgame.itemGF" args="0x391400,1,2,2,30" type="flash.filters.GlowFilter" />
+	<set stylename="bombgame.itemScoreTF" args="Arial,12,0xF8DE5C,,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="bombgame.itemScoreGF" args="0x582527,1,2,2,30" type="flash.filters.GlowFilter" />
+	<set stylename="bombgame.rankTF" args="Arial,16,0xffffff,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="bombgame.rankGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.rankNameTF" args="Arial,16,0xffffff,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="bombgame.rankNameGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.bomb.rankTitleTF" args="Arial,12,0xffba00,true,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="bombgame.bomb.rankTitleGF" args="0x6a3d11,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.bomb.commonTF" args="Arial,12,0xfff3bc,,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="bombgame.bomb.rank1TF" args="Arial,14,0xf3e443,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="bombgame.bomb.rank1GF" args="0x6a3d11,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.bomb.rank2TF" args="Arial,14,0xd5a8ff,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="bombgame.bomb.rank2GF" args="0x6a3d11,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="bombgame.bomb.rank3TF" args="Arial,14,0x9db6ff,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="bombgame.bomb.rank3GF" args="0x6a3d11,1,2,2,10" type="flash.filters.GlowFilter"/>
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="happygame.rankGift.pos" x="466" y="3"/>
+	<custom classname="flash.geom.Point" stylename="happygame.itemRank.pos" x="17" y="3"/>
+	<custom classname="flash.geom.Point" stylename="happygame.rankBg.pos" x="11" y="33"/>
+
+ <custom classname="flash.geom.Point" stylename="bombgame.enteranceview.point" x="13"
+		y="26"/>
+ <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.point" x="650"
+		y="26"/>   
+ <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.pointII" x="150"
+		y="1"/>
+ <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.pointIII" x="80"
+		y="23"/>
+ <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.pointIIII" x="80"
+		y="45"/>
+  <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rank" x="128"
+		y="65"/>
+	 <custom classname="flash.geom.Point" stylename="bombgame.daynewsview.score" x="171"
+		y="24"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.scoreII" x="165"
+		y="47"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.scoreIII" x="188"
+		y="61"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.itemBg_1" x="-8"
+		y="205"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.itemBg_2" x="-8"
+		y="290"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.itemBg_3" x="-8"
+		y="374"/>	
+		
+		
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.dayitempoint_1" x="-3"
+		y="38"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.dayitempoint_2" x="-3"
+		y="125"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.dayitempoint_3" x="-3"
+		y="210"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.dayitempoint_4" x="-3"
+		y="295"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.dayitempoint_5" x="-3"
+		y="378"/>
+		
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_1" x="0"
+		y="62"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_2" x="0"
+		y="97"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_3" x="0"
+		y="131"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_4" x="0"
+		y="164"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_5" x="0"
+		y="196"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_6" x="0"
+		y="229"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_7" x="0"
+		y="262"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_8" x="0"
+		y="296"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_9" x="0"
+		y="329"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.rankitem_10" x="0"
+		y="362"/>
+	
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.totalIcon" x="5"
+		y="3"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.totalrank" x="12"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.totalname" x="79"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.daynewsview.totalscore" x="177"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.moviewand.pos" x="-143"
+		y="-113"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.name.pos" x="842"
+		y="112"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.score.pos" x="928"
+		y="112"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.myday.pos" x="895"
+		y="479"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.history.pos" x="895"
+		y="500"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.daymax.pos" x="895"
+		y="523"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.rankII.pos" x="10"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.nameII.pos" x="87"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.bomb.scoreII.pos" x="170"
+		y="6"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.page.left.pos" x="43"
+		y="460"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.page.right.pos" x="160"
+		y="460"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.page.txt.pos" x="90"
+		y="465"/>
+	<custom classname="flash.geom.Point" stylename="bombgame.page.bg.pos" x="96"
+		y="460"/>
+		
+	<custom classname="flash.geom.Point" stylename="happygame.card.pos1" x="10"
+		y="0"/>
+	<custom classname="flash.geom.Point" stylename="happygame.card.pos2" x="214"
+		y="0"/>
+	<custom classname="flash.geom.Point" stylename="happygame.card.pos3" x="418"
+		y="0"/>
+	
+	<custom classname="flash.geom.Point" stylename="happygame.cardsview.pos" x="0"
+		y="47"/>
+	<custom classname="flash.geom.Point" stylename="happygame.bombscore.pos" x="-14"
+		y="-14"/>
+	<custom classname="flash.geom.Point" stylename="happygame.enterRoom.prompt.pos" x="245"
+		y="410"/>
+	<custom classname="flash.geom.Point" stylename="happygame.gameover.pos" x="313"
+		y="183"/>
+	<custom classname="flash.geom.Point" stylename="happygame.passall.pos" x="339"
+		y="259"/>
+	<custom classname="flash.geom.Point" stylename="happygame.lv.pos" x="203"
+		y="176"/>
+</customDisplay>
+<components>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="simpleGameRank.rankItemBg" resourceLink="assets.simpleGame.rankItemBg1,assets.simpleGame.rankItemBg2"/>
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="simpleGameRank.frame.list" spacing="-5" y="83" x="24"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="simpleGameRank.playerNameText" autoSize="center" textFormatStyle="simpleGameRank.listItemTF" filterString="simpleGameRank.listItemGF" x="183" y="6"/>
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="simpleGameRank.shine" width="530" height="40" x="-6" y="-5" resourceLink="asset.core.NewScale9CornerImage8.1,asset.core.NewScale9CornerImage8.2,asset.core.NewScale9CornerImage8.3,asset.core.NewScale9CornerImage8.4,asset.core.NewScale9CornerImage8.5,asset.core.NewScale9CornerImage8.6,asset.core.NewScale9CornerImage8.7,asset.core.NewScale9CornerImage8.8,asset.core.NewScale9CornerImage8.9"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="simpleGameRank.rankBtn" backStyle="assets.simpleGame.rank.btn" x="176" y="-12"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="simpleGameRank.serverNameText" parentStyle="simpleGameRank.playerNameText" x="334"/>
+	<component classname="happyLittleGame.rank.SimpleGameRankFrame" stylename="simpleGameRank.Frame" parentStyle="BaseFrame" backStyle="SimpleFrameBackgound" width="590" height="545" escEnable="true" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="10" containerY="14" closestyle="core.closebt" closeInnerRectString="44,11,6,30,14"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="simpleGameRank.frame.topThree" resourceLink="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="simpleGameRank.scoreText" parentStyle="simpleGameRank.playerNameText" x="402"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="simpleGameRank.noRankTxt" autoSize="left" textFormatStyle="simpleGameRank.noRankTF" filterString="simpleGameRank.noRankGF" x="90" y="445"/>
+	<component classname="uiUtils.SelectPageUI" stylename="simpleGameRank.selectPageUI" parentStyle="uiUtils.SimpleSelectPageUI" x="154" y="483" isLoop="false"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="simpleGame.rank.btn" backStyle="assets.simpleGame.rank.btn" filterString="null,lightFilter,null,null" x="486" y="465"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="simpleGameRank.rankText" autoSize="center" textFormatStyle="simpleGameRank.listItemRankTF" filterString="simpleGameRank.listItemGF" x="29" y="3"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="simpleGameRank.frame.helpbtn" backStyle="asset.bombgame.helpBtn" x="495" y="-9"/>
+
+	<component classname="happyLittleGame.LittileGameFrame" stylename="happyLittleGame.Frame" parentStyle="BaseFrame" 
+		backStyle="SimpleFrameBackgound" width="980" height="580" escEnable="true"   titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="10"
+			 containerY="14" closestyle="core.closebt"  closeInnerRectString="44,11,6,30,14"/>
+
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="numberA.imageStyle" 
+				resourceLink="asset.bombgame.numA1,asset.bombgame.numA2,asset.bombgame.numA3,asset.bombgame.numA4,asset.bombgame.numA5,asset.bombgame.numA6,asset.bombgame.numA7,asset.bombgame.numA8,asset.bombgame.numA9,asset.bombgame.numA0" />
+				
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="numberB.imageStyle" 
+				resourceLink="asset.bombgame.numB1,asset.bombgame.numB2,asset.bombgame.numB3,asset.bombgame.numB4,asset.bombgame.numB5,asset.bombgame.numB6,asset.bombgame.numB7,asset.bombgame.numB8,asset.bombgame.numB9,asset.bombgame.numB0" />
+				
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="numberC.imageStyle" 
+				resourceLink="asset.bombgame.numC1,asset.bombgame.numC2,asset.bombgame.numC3,asset.bombgame.numC4,asset.bombgame.numC5,asset.bombgame.numC6,asset.bombgame.numC7,asset.bombgame.numC8,asset.bombgame.numC9,asset.bombgame.numC0" />						
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.cardI.btn" backStyle="asset.bombgame.card"
+			x="10" y="47" />
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.cardII.btn" backStyle="asset.bombgame.outpos"
+			x="214" y="47" />
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.cardIII.btn" backStyle="asset.bombgame.points"
+			x="418" y="47" />
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.right.btn" backStyle="asset.bombgame.right"
+			x="453" y="348" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.left.btn" backStyle="asset.bombgame.left"
+			x="115" y="348" />	
+			
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="bombgame.bomb.dayrankbtn" unSelectedStyle="asset.bombgame.myrank" autoSelect="false"
+			selectedStyle="asset.bombgame.myrank.select" x="789" y="77" />	
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="bombgame.bomb.totalrankbtn" unSelectedStyle="asset.bombgame.allrank" autoSelect="false"
+			selectedStyle="asset.bombgame.allrank.select" x="892" y="77" />		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.bomb.reStartbtn" backStyle="asset.bombgame.restart"
+			x="774" y="544" />	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.bomb.backbtn" backStyle="asset.bombgame.back"
+			x="908" y="544" />					
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.createroom.btn"
+	backStyle="asset.bombgame.room" 
+	filterString="null,lightFilter,null,null" x="345" y="465"/>	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.entergame.btn"
+	backStyle="asset.bombgame.enter" 
+	filterString="null,lightFilter,null,null" x="486" y="465"/>		
+	
+	<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="bombgame.dayrank.btn" 
+			unSelectedStyle="asset.bombgame.dayrank" selectedStyle="asset.bombgame.dayrankII" 
+			x="0" y="-12" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="bombgame.totalrank.btn" 
+			unSelectedStyle="asset.bombgame.total.rank" selectedStyle="asset.bombgame.total.rankII" 
+			x="102" y="-12" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="bombgame.frame.helpbtn" 
+			backStyle="asset.bombgame.helpBtn" x="883" y="-9" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="bombgame.Rank.Top3Icon" resourceLink="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="happygame.oncemore.btn" backStyle="asset.bombgame.oncemore" x="408" y="261" filterString="null,lightFilter,null,grayFilter"/>
+	
+	
+	<!--page-->
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="bombgame.PageCountBg" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG" width="65" height="24" x="103" y="393"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.rightPageBtn" backStyle="asset.ddtcore.rightBtn" width="54" height="25" x="171" y="393" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.leftPageBtn" backStyle="asset.ddtcore.leftBtn" width="54" height="25" x="47" y="393" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.pageTxt" textFormatStyle="bombgame.page_txt" filterString="bombgame.glowgilter_page_txt" x="96" y="398" autoSize="none" width="80" height="25"/>
+	
+	
+	
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.bomb.rightPageBtn" backStyle="asset.bombgame.rightBtn" width="54" height="25" x="920" y="424" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.bomb.leftPageBtn" backStyle="asset.bombgame.leftBtn" width="54" height="25" x="817" y="424" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.bomb.firstBtn" backStyle="asset.bombgame.firstBtn" width="54" height="25" x="780" y="424" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="bombgame.bomb.endBtn" backStyle="asset.bombgame.endBtn" width="54" height="25" x="955" y="424" filterString="null,lightFilter,null,grayFilter"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.bomb.pageTxt" textFormatStyle="bombgame.page_txt" filterString="bombgame.glowgilter_page_txt" x="847" y="430" autoSize="none" width="80" height="25"/>
+	
+			
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="bombgame.dayNews.frameBottom" 
+			parentStyle="core.bg6920" scaleGridString="5,10,80,20" width="300" height="515" x="-18" y="-20" />	
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage"
+			stylename="bombgame.dayNews.Bg" parentStyle="church.main.createRoomFrameLeftTopBg"
+			width="290" height="462" x="-12" y="30" />
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="bombgame.daynews.item.bg"
+			resourceLink="asset.bombgame.daynews.scales" width="282" height="84" x="-8" y="121" scaleGridString="5,5,111,26" />		
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="bombgame.daynews.item.bgII" 
+			resourceLink="asset.bombgame.daynews.scalesII" width="282" height="84" x="-8" y="35" scaleGridString="5,5,111,26"/>		
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="bombgame.NumberA" imageStyle="numberA.imageStyle" x="686" y="482"/>
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="bombgame.NumberB" imageStyle="numberB.imageStyle" x="640" y="39"/>
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="bombgame.NumberC" imageStyle="numberC.imageStyle" x="670" y="526"/>
+	<!-- text -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.prompt.Txt" 
+			textFormatStyle="bombgame.promptTF" filterString="bombgame.promptGF"  autoSize="center"  width="300"  height="80" x="12" y="460" wordWrap="true"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.promptII.Txt" 
+			textFormatStyle="bombgame.promptIITF" filterString="bombgame.promptIIGF"  autoSize="none"  width="750"  height="50" x="8" y="562" wordWrap="true"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.daynews.itemTxt" 
+			textFormatStyle="bombgame.itemTF" filterString="bombgame.itemGF"  autoSize="none"  width="100"  height="20" x="81" y="1"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.daynews.itemScoreTxt" 
+			textFormatStyle="bombgame.itemScoreTF" filterString="bombgame.itemScoreGF"  autoSize="none"  width="100"  height="20" x="212" y="5"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.dayrank.totalrank" 
+			textFormatStyle="bombgame.itemScoreTF" filterString="bombgame.itemScoreGF"  autoSize="none"  width="100"  height="20" x="87" y="431"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.dayrank.dayrank" 
+			textFormatStyle="bombgame.itemScoreTF" filterString="bombgame.itemScoreGF"  autoSize="none"  width="100"  height="20" x="87" y="452"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.dayrank.HMaxScore" 
+			textFormatStyle="bombgame.itemScoreTF" filterString="bombgame.itemScoreGF"  autoSize="none"  width="100"  height="20" x="199" y="432"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.dayrank.DMaxScore" 
+			textFormatStyle="bombgame.itemScoreTF" filterString="bombgame.itemScoreGF"  autoSize="none"  width="100"  height="20" x="213" y="452"/>
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.rank.ranking" 
+			textFormatStyle="bombgame.rankTF" filterString="bombgame.rankGF"  autoSize="none"  width="30"  height="20" x="10" y="6"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.rank.name" 
+			textFormatStyle="bombgame.rankNameTF" filterString="bombgame.rankNameGF" autoSize="none" width="110"  height="20" x="55" y="6"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.rank.score" 
+			parentStyle="bombgame.rank.ranking" autoSize="none" width="100"  height="20" x="148"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.rank.outPos" 
+			parentStyle="bombgame.rank.ranking" autoSize="none" width="50"  height="20" x="225"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.bomb.rankTitle" 
+			textFormatStyle="bombgame.bomb.rankTitleTF" filterString="bombgame.bomb.rankTitleGF" autoSize="none" width="100"  height="20" x="771" y="112"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="bombgame.bomb.commoneTxt" 
+			textFormatStyle="bombgame.bomb.commonTF" filterString="bombgame.bomb.rankTitleGF" autoSize="none" width="100"  height="20" x="895" y="456"/>
+	
+	
+</components>
+<bitmaps>
+	<bitmapData resourceLink="asset.bombgame.bg" x="0" y = "0"/>
+	<bitmapData resourceLink="asset.bombgame.game_bg" x="0" y = "0"/>
+	<bitmapData resourceLink="asset.bombgame.title" x="-12" y = "-18"/>
+ 	<bitmapData resourceLink="asset.bombgame.outpost_Bg" x="-11" y = "22"/>
+ 	<bitmapData resourceLink="asset.bombgame.rankBg" x="-11" y = "22"/>
+ 	<bitmapData resourceLink="asset.bombgame.Lv" x="580" y = "484"/>
+ 	<bitmapData resourceLink="asset.bomggame.page" x="857" y="425"/>
+ 	<bitmapData resourceLink="asset.bombgame.wandBitmap" x="560" y="90"/>
+ 	<bitmapData resourceLink="asset.happygame.doublescore" x="610" y="416"/>
+ </bitmaps>
+</style>
+

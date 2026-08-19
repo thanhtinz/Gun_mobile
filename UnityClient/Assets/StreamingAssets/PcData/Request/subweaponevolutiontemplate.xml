@@ -1,0 +1,22 @@
+<Result value="true" message="Success!">
+  <Item Level="1" Exp="800" AddBlood="25" ReduceDamage="88" />
+  <Item Level="2" Exp="1800" AddBlood="29" ReduceDamage="92" />
+  <Item Level="3" Exp="3300" AddBlood="33" ReduceDamage="97" />
+  <Item Level="4" Exp="5300" AddBlood="37" ReduceDamage="101" />
+  <Item Level="5" Exp="7800" AddBlood="41" ReduceDamage="106" />
+  <Item Level="6" Exp="10800" AddBlood="45" ReduceDamage="111" />
+  <Item Level="7" Exp="14300" AddBlood="48" ReduceDamage="115" />
+  <Item Level="8" Exp="18300" AddBlood="52" ReduceDamage="120" />
+  <Item Level="9" Exp="22800" AddBlood="56" ReduceDamage="124" />
+  <Item Level="10" Exp="27800" AddBlood="60" ReduceDamage="129" />
+  <Item Level="11" Exp="33300" AddBlood="64" ReduceDamage="134" />
+  <Item Level="12" Exp="39300" AddBlood="68" ReduceDamage="138" />
+  <Item Level="13" Exp="45800" AddBlood="72" ReduceDamage="143" />
+  <Item Level="14" Exp="52800" AddBlood="76" ReduceDamage="147" />
+  <Item Level="15" Exp="60300" AddBlood="80" ReduceDamage="152" />
+  <Item Level="16" Exp="68300" AddBlood="84" ReduceDamage="157" />
+  <Item Level="17" Exp="76800" AddBlood="87" ReduceDamage="161" />
+  <Item Level="18" Exp="85800" AddBlood="91" ReduceDamage="166" />
+  <Item Level="19" Exp="95300" AddBlood="95" ReduceDamage="170" />
+  <Item Level="20" Exp="105300" AddBlood="100" ReduceDamage="175" />
+</Result>

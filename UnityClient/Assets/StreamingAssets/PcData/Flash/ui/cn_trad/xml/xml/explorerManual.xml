@@ -1,0 +1,519 @@
+<style name="explorerManual" version="1.0.1"
+	source="ui/cn_trad/swf/explorerManual.swf">
+	<sets>
+		<set stylename="manualProperty.titleTxtTF" args="宋体,12,0x775115,true"
+			type="flash.text.TextFormat" />
+
+		<set stylename="manualProperty.proNameTF" args="宋体,12,0xb57b21,true"
+			type="flash.text.TextFormat" />
+
+		<set stylename="explorerManual.levelProgressTF" args="Arial,14,0xffffff,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.levelProgressGF" args="0xee5b30,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.materialsSelectBtnTxtTF" args="Arial,14,0xffffff,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.materialsSelectBtnTxtGF" args="0xee5b30,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.chapterRight.itemProgressTF" args="宋体,12,0xffe5b5,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.chapterRight.itemProgressGF" args="0x512e0b,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.activeProgessTF" args="宋体,12,0xffe5b5,true"
+			type="flash.text.TextFormat" align="center"/>
+		<set stylename="explorerManual.activeProgessGF" args="0x512e0b,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.pageLeftView.curProTitleTF" args="宋体,12,0xffe5b5,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.pageLeftView.curProTitleGF" args="0x512e0b,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.pageLeftView.curProValueTF" args="宋体,12,0x775115,true"
+			type="flash.text.TextFormat" />
+
+		<set stylename="explorerManual.pageLeftView.allProValueTF" args="宋体,12,0xffe5b5,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.pageLeftView.allProValueGF" args="0x512e0b,1,4,4,10"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.haspiecesPregressTxtTF" args="宋体,12,0xffe5b5,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.haspiecesPregressTxtGF" args="0x512e0b,1,4,4,30"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.upgradeCondition.txtTF" args="宋体,14,0xffe5b5,true"
+			type="flash.text.TextFormat" align="center" />
+		<set stylename="explorerManual.upgradeCondition.txtGF" args="0x512e0b,1,4,4,10"
+			type="flash.filters.GlowFilter" />
+
+		<set stylename="explorerManual.shop.descTxtTF" args="宋体,12,0xfdf4bb,true"
+			type="flash.text.TextFormat" leading="13" letterSpacing="3" />
+		<set stylename="explorerManual.shop.descTxtGF" args="0x6a3c0c,2,4,4,10"
+			type="flash.filters.GlowFilter"></set>
+
+		<set stylename="explorerManual.shop.explorerNumTF" args="宋体,12,0xfffef4,true"
+			type="flash.text.TextFormat" />
+		<set stylename="explorerManual.shop.explorerNumGF" args="0xaa2828,2,4,4,10"
+			type="flash.filters.GlowFilter"></set>
+
+		<set stylename="explorerManual.shop.nameTF" type="flash.text.TextFormat"
+			args="宋体,12,0xe8ce97,true" />
+		<set stylename="explorerManual.shop.nameGF" type="flash.filters.GlowFilter"
+			args="0x5c3d11,1,2,2,30" />
+
+		<set stylename="explorerManual.needMoney.txtTF" type="flash.text.TextFormat"
+			args="宋体,16,0xe8ce97,true" />
+		<set stylename="explorerManual.needMoney.txtGF" type="flash.filters.GlowFilter"
+			args="0x5c3d11,1,2,2,30" />
+
+		<set stylename="explorerManual.integral.TF" type="flash.text.TextFormat"
+			args="宋体,14,0xf1c55d,true" />
+		<set stylename="explorerManual.integral.GF" type="flash.filters.GlowFilter"
+			args="0x4e2f10,1,2,2,30" />
+
+		<set stylename="explorerManual.pageTxt.TF" type="flash.text.TextFormat"
+			args="宋体,12,0xfff8d6,,,,,,center" />
+		<set stylename="explorerManual.pageTxt.GF" type="flash.filters.GlowFilter"
+			args="0x4b270d,1,4,4,30" />
+		<set stylename="explorerManual.pageDirectoryView.itemTxtTF" type="flash.text.TextFormat"
+			args="Arial,14,0x775115,true" />
+			
+		<set stylename="explorerManual.pageDicView.chapteTitleTxtTF" type="flash.text.TextFormat"
+			args="Arial,18,0x775115,true" />
+			
+		<set stylename="explorerManual.leftView.pageDescribeTF" type="flash.text.TextFormat"
+			args="Arial,13,0x775115,true" indent="28" leading="3"/>
+			
+	</sets>
+	<components>
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.helpbtn" backStyle="asset.explorerManual.helpIcon"
+			filterString="null,lightFilter,null,grayFilter" x="836" y="3"
+			autoFrame="false" />
+
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.frame.closeBtn" backStyle="asset.explorerManual.closeBtn"
+			filterString="null,lightFilter,null,grayFilter" x="867" y="9" />
+
+		<component classname="com.pickgliss.ui.controls.container.VBox"
+			stylename="explorerManual.manualRightMenu.vBox" x="0" y="0" spacing="3" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.activeProgessTxt" textFormatStyle="explorerManual.activeProgessTF"
+			filterString="explorerManual.activeProgessGF" x="1" y="37" wordWrap="true" width="41"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.unActiveProgessTxt" textFormatStyle="explorerManual.activeProgessTF"
+			filterString="explorerManual.activeProgessGF" wordWrap="true" x="1" y="93" width="41"/>
+
+		<!-- 右边菜单 -->
+
+		<!-- 总纲 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn0" selectedStyle="asset.explorerManual.selectMenu0"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu0" />
+
+		<!-- 传记 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn4" selectedStyle="asset.explorerManual.selectMenu1004"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu1004" />
+
+		<!-- 怪物 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn3" selectedStyle="asset.explorerManual.selectMenu1003"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu1003" />
+
+		<!-- 庆典 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn5" selectedStyle="asset.explorerManual.selectMenu1005"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu1005" />
+
+		<!-- 世界 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn1" selectedStyle="asset.explorerManual.selectMenu1001"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu1001" />
+
+		<!-- 探险家 -->
+		<component classname="explorerManual.view.ManualMenuItem"
+			stylename="explorerManual.manualRightMenu.selBtn2" selectedStyle="asset.explorerManual.selectMenu1002"
+			displacement="false" unSelectedStyle="asset.explorerManual.defaultMenu1002" />
+
+		<!-- 章节 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.manualProperty.titleTxt" textFormatStyle="manualProperty.titleTxtTF" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.manualProperty.proNameTxt" textFormatStyle="manualProperty.proNameTF" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.chapterLeft.progressText" textFormatStyle="explorerManual.levelProgressTF"
+			filterString="explorerManual.levelProgressGF" x="95" y="0" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.manualLeft.startUpdateBtn" backStyle="asset.explorerManual.startUpdateBtn"
+			filterString="null,lightFilter,null,grayFilter" x="56" y="423" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.manualLeft.stopUpdateBtn" backStyle="asset.explorerManual.StopUpdateBtn"
+			filterString="null,lightFilter,null,grayFilter" x="198" y="424" />
+
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.manualLeft.autoUpdateBtn" backStyle="asset.explorerManual.autoUpdateBtn"
+			filterString="null,lightFilter,null,grayFilter" x="198" y="424" />
+
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+			stylename="explorerManual.materialsNotEnough.selectBtn" parentStyle="core.simpleSelectBtn"
+			textStyle="explorerManual.materialsSelectBtnTxt" displacement="false"
+			fieldX="18" fieldY="-1" x="173" y="405" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.upgradeCondition.txt" textFormatStyle="explorerManual.upgradeCondition.txtTF"
+			filterString="explorerManual.upgradeCondition.txtGF" x="59" y="489" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.materialsSelectBtnTxt" textFormatStyle="manualProperty.titleTxtTF"
+			x="160" y="10" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.chapterRight.itemProgressTxt"
+			textFormatStyle="explorerManual.chapterRight.itemProgressTF"
+			filterString="explorerManual.chapterRight.itemProgressGF" x="52" y="86" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.upgradeMaterial.numberTxt" textFormatStyle="manualProperty.titleTxtTF"
+			x="139" y="402" />`
+
+
+		<!-------<component classname="com.pickgliss.ui.image.ScaleBitmapImage" 
+			stylename="explorerManual.upgradeMaterial.icon" resourceLink=""/>----- -->
+
+		<!----------------------------章节------------------------------------------------- -->
+
+
+		<!-- 页 -->
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageLeftView.titleTxt" textFormatStyle="explorerManual.upgradeCondition.txtTF"
+			filterString="explorerManual.upgradeCondition.txtGF" x="121" y="101" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageLeftView.curProTitleTxt"
+			textFormatStyle="explorerManual.pageLeftView.curProTitleTF"
+			filterString="explorerManual.pageLeftView.curProTitleGF" x="160" y="10" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageLeftView.curProValueTxt" width="93"
+			textFormatStyle="explorerManual.pageLeftView.curProValueTF" x="61" y="161" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.manualpageView.upPageBtn" backStyle="asset.explorerManual.pageUpBtn"
+			filterString="null,lightFilter,null,grayFilter" x="19" y="468" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.manualpageView.downPageBtn" backStyle="asset.explorerManual.pageDownBtn"
+			filterString="null,lightFilter,null,grayFilter" x="739" y="472" />
+
+		<!--<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="explorerManual.manualpageView.payTypeIcon" 
+			resourceLink="asset.ddtshop.PayTypeLabelTicket,asset.ddtshop.yellowBoy" x="100" 
+			y="100"></component> -->
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageLeftView.payMoneyValue"
+			textFormatStyle="explorerManual.pageLeftView.curProTitleTF"
+			filterString="explorerManual.pageLeftView.curProTitleGF" x="578" y="442" />
+
+		<!-- 书页总的属性 -->
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageLeftView.allProValueTxt"
+			textFormatStyle="explorerManual.pageLeftView.allProValueTF"
+			filterString="explorerManual.pageLeftView.allProValueGF" x="98" y="366" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.haspiecesPregressTxt" textFormatStyle="explorerManual.haspiecesPregressTxtTF"
+			filterString="explorerManual.haspiecesPregressTxtGF" x="710" y="15" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.pageRight.associationBtn" backStyle="asset.explorerManual.pageRightView.associationBtn"
+			filterString="null,lightFilter,null,grayFilter" x="394" y="440" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.pageRight.aKeyBtn" backStyle="asset.explorerManual.pageRightView.aKeyBtn"
+			filterString="null,lightFilter,null,grayFilter" x="534" y="463" />
+
+		<component classname="com.pickgliss.ui.controls.BaseButton"
+			stylename="explorerManual.pageRight.activeBtn" backStyle="asset.explorerManual.pageLeftView.activeBtn"
+			filterString="null,lightFilter,null,grayFilter" x="697" y="381" />
+
+
+		<component classname="explorerManual.view.page.ManualPreIconCell"
+			stylename="explorerManual.preview.Icon" tipStyle="explorerManual.view.page.ManualPreviewTip"
+			tipDirctions="1" tipGapV="20" tipGapH="400" x="6" y="6" />
+
+
+
+		<!----------------------------------------------------------------------------- -->
+
+		<!-- ----商城---------- -->
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.shop.descText" textFormatStyle="explorerManual.shop.descTxtTF"
+			filterString="explorerManual.shop.descTxtGF" x="51" y="94" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.shop.explorerNum" textFormatStyle="explorerManual.shop.explorerNumTF"
+			filterString="explorerManual.shop.explorerNumGF" x="232" y="119" />
+
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+			stylename="explorerManual.shop.buyBtn" backStyle="asset.manuallShopView.buyBtn"
+			x="147" y="54" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.shop.nameTxt" textFormatStyle="explorerManual.shop.nameTF"
+			filterString="explorerManual.shop.nameGF" autoSize="none" width="150"
+			height="25" x="77" y="7" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.needMoneyTxt" textFormatStyle="explorerManual.needMoney.txtTF"
+			filterString="explorerManual.needMoney.txtGF" autoSize="none" width="60"
+			height="25" x="77" y="27" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.integral" textFormatStyle="explorerManual.integral.TF"
+			filterString="explorerManual.integral.GF" x="170" y="27" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageTxt" textFormatStyle="explorerManual.pageTxt.TF"
+			filterString="explorerManual.pageTxt.GF" autoSize="none" width="65"
+			height="20" x="338" y="356" />
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+			stylename="explorerManual.foreBtn" backStyle="asset.manuallShopView.foreBtn"
+			x="280" y="351" />
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton"
+			stylename="explorerManual.nextBtn" backStyle="asset.manuallShopView.nextBtn"
+			x="409" y="351" />
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.shop.explorerPointValue" textFormatStyle="explorerManual.pageTxt.TF"
+			filterString="explorerManual.pageTxt.GF" autoSize="none" width="65"
+			height="20" x="118" y="356" />
+
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage"
+			stylename="explorerManual.activeIcon" resourceLink="asset.explorerManual.activeIcon"
+			tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" tipGapV="12"
+			x="0" y="-3"></component>
+
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage"
+			stylename="explorerManual.unActiveIcon" resourceLink="asset.explorerManual.unActiveIcon"
+			x="0" y="55" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"
+			tipGapV="12"></component>
+
+
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage"
+			stylename="explorerManual.inputBg" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG"
+			x="340" y="351" width="62" height="23"></component>
+	
+	
+	<component classname="explorerManual.view.shop.ManualShopQuickBuy"  stylename="explorerManual.shop.QuickBuyAlert"  parentStyle="BaseFrame" 
+		containerY="30" width="340" height="225"/>	
+	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageDirectoryView.itemTxt" autoSize="none" width="250" height="26"
+			mouseEnabled="true" selectable="false" multiline="false"
+			textFormatStyle="explorerManual.pageDirectoryView.itemTxtTF"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageDicView.chapteTitleTxt"
+			textFormatStyle="explorerManual.pageDicView.chapteTitleTxtTF" x="554" y="47"/>
+			
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.leftView.pageDescribe"
+			textFormatStyle="explorerManual.leftView.pageDescribeTF" autoSize="none" width="255" wordWrap="true" x="58" y="125"/>	
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="explorerManual.pageDirectoryView.itemProgressTxt"
+			textFormatStyle="explorerManual.pageDirectoryView.itemTxtTF" x="252" y="0"/>
+		
+		<component classname="com.pickgliss.ui.controls.container.VBox"
+			stylename="explorerManual.pageDirectoryView.itemVBox" x="423" y="74" spacing="3" />
+		
+		<!-- -------------- -->
+	</components>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="explorerManual.chapterViewPos"
+			x="88" y="20" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageViewPos"
+			x="77" y="19" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.leftChapter.manualIconPos"
+			x="155" y="156" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.manualLeftMenuPos"
+			x="13" y="234" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.manualRightMenuPos"
+			x="882" y="54" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.chapterListPos"
+			x="421" y="96" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageLeft.curProTitlePos"
+			x="45" y="138" />
+
+		<custom classname="flash.geom.Point"
+			stylename="explorerManual.pageLeft.curunActiveProTitlePos" x="45" y="210" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageLeft.proPos1"
+			x="61" y="232" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageRight.previewPageViewPos"
+			x="395" y="7" />
+
+
+		<custom classname="explorerManual.view.ExplorerManualFrame"
+			stylename="explorerManual.explorerManual.Frame" backStyle="asset.explorerManual.bgAsset"
+			escEnable="true" width="904" height="575" x="22" />
+
+		<custom classname="explorerManual.view.shop.ExplorerManualShop"
+			stylename="explorerManual.ExplorerManualShop.Frame" parentStyle="BaseFrame"
+			backStyle="SimpleFrameBackgound" width="523" height="428" escEnable="true"
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5"
+			containerX="10" containerY="14" closestyle="core.closebt"
+			closeInnerRectString="44,11,6,30,14" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.itemCell.pos"
+			x="3" y="3" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.manualShop.manualTxt.pos"
+			x="310" y="94" />
+		<custom classname="flash.geom.Point" stylename="explorerManual.manualShop.explorerValuepos"
+			x="117" y="352" />
+
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageChange.mainMoviePos"
+			x="589" y="474" />
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.pageChange.mainMoviePos1"
+			x="331" y="474" />
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.activeProSpriPos"
+			x="-1" y="74" />	
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.totalProSpriPos"
+			x="50" y="211" />	
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.puzzlePagePos"
+			x="425" y="42" />
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.unActiveViewPos"
+			x="410" y="22" />	
+		
+		<custom classname="flash.geom.Point" stylename="explorerManual.curProViewPos"
+			x="68" y="237" />	
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.nextProViewPos"
+			x="221" y="237" />
+		
+		<custom classname="flash.geom.Point" stylename="explorerManual.progressBarPos"
+			x="76" y="369" />
+		
+		<custom classname="flash.geom.Point" stylename="explorerManual.proTtilePos"
+			x="0" y="0" />	
+			
+		<custom classname="flash.geom.Point" stylename="explorerManual.magicAttackPos"
+			x="0" y="22" />		
+		
+			<custom classname="flash.geom.Point" stylename="explorerManual.magicResistancePos"
+			x="0" y="42" />	
+			
+			<custom classname="flash.geom.Point" stylename="explorerManual.boostPos"
+			x="0" y="62" />		
+			
+			<custom classname="flash.geom.Point" stylename="explorerManual.shop.PayTypePos"
+			x="620" y="437" />
+			
+			<custom classname="flash.geom.Point" stylename="explorerManual.associationBtnPos"
+			x="-30" y="417" />
+			
+			<custom classname="flash.geom.Point" stylename="explorerManual.sighIconPos"
+			x="52" y="4" />		
+			
+			
+			<custom classname="flash.geom.Point" stylename="explorerManual.directorItem.sighIconPos"
+			x="317" y="1" />		
+			<custom classname="flash.geom.Point" stylename="explorerManual.directorItem.selectedBgPos"
+			x="4" y="0" />			
+	</customDisplay>
+
+	<bitmaps>
+		<bitmapData resourceLink="asset.explorerManual.bgAsset" />
+		<bitmapData resourceLink="asset.explorerManual.chapterBgAsset" />
+
+		<bitmapData resourceLink="asset.explorerManual.chaptertxtAsset1001"
+			x="46" y="-24" />
+		<bitmapData resourceLink="asset.explorerManual.chaptertxtAsset1002"
+			x="46" y="-24" />
+		<bitmapData resourceLink="asset.explorerManual.chaptertxtAsset1003"
+			x="46" y="-24" />
+		<bitmapData resourceLink="asset.explorerManual.chaptertxtAsset1004"
+			x="46" y="-24" />
+		<bitmapData resourceLink="asset.explorerManual.chaptertxtAsset1005"
+			x="46" y="-24" />
+
+		<bitmapData resourceLink="asset.explorerManual.chapterItembgAsset1001" />
+		<bitmapData resourceLink="asset.explorerManual.chapterItembgAsset1002" />
+		<bitmapData resourceLink="asset.explorerManual.chapterItembgAsset1003" />
+		<bitmapData resourceLink="asset.explorerManual.chapterItembgAsset1004" />
+		<bitmapData resourceLink="asset.explorerManual.chapterItembgAsset1005" />
+		<bitmapData resourceLink="asset.explorerManual.pageRightView.hasPiecesTxtIcon"
+			x="631" y="11" />
+		<bitmapData resourceLink="asset.explorerManual.pageRightView.previewTxtIcon"
+			x="58" y="0" />
+
+		<bitmapData resourceLink="asset.explorerManual.pageLeftView.desc1001"
+			x="21" y="6" />
+		<bitmapData resourceLink="asset.explorerManual.pageLeftView.desc1002"
+			x="24" y="6" />
+		<bitmapData resourceLink="asset.explorerManual.pageLeftView.desc1003"
+			x="84" y="18" />
+		<bitmapData resourceLink="asset.explorerManual.pageLeftView.desc1004"
+			x="24" y="5" />
+		<bitmapData resourceLink="asset.explorerManual.pageLeftView.desc1005"
+			x="23" y="4" />
+		<bitmapData resourceLink="asset.explorerManual.pageRightView.lostTxtIcon"
+			x="540" y="442" />
+
+		<!-- <bitmapData resourceLink="asset.explorerManual.upgradeMaterial11181" 
+			x="104" y="397"/> <bitmapData resourceLink="asset.explorerManual.upgradeMaterial11182" 
+			x="104" y="397"/> <bitmapData resourceLink="asset.explorerManual.upgradeMaterial11183" 
+			x="104" y="397"/> <bitmapData resourceLink="asset.explorerManual.upgradeMaterial11184" 
+			x="104" y="397"/> -->
+
+		<bitmapData resourceLink="asset.explorerManual.previewIcon" />
+
+		<bitmapData resourceLink="asset.explorerManual.shop.bgAsset"
+			x="10" y="29" />
+		<bitmapData resourceLink="asset.explorerManual.shop.exchangeShop.txtIcon"
+			x="176" y="48" />
+
+		<bitmapData resourceLink="asset.explorerManual.shop.explorerPoint.txtIcon"
+			x="33" y="352" />
+		<bitmapData resourceLink="asset.explorerManual.maxLev" x="215"
+			y="256" />
+		<bitmapData resourceLink="asset.explorerManual.progressAsset" x="0" y="0"/>
+		
+		<bitmapData resourceLink="asset.explorerManual.pageDirectory.titleIcon" x="466" y="443"/>
+		
+		<bitmapData resourceLink="asset.explorerManual.directoryleftView.bg" x="34" y="97"/>
+		
+	</bitmaps>
+
+</style>

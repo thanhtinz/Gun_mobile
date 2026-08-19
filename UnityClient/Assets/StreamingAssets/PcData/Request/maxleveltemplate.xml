@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <Item Level="1" Attack="5" Defence="10" Agility="5" Lucky="5" MagicAttack="5" MagicDefence="10" Cost="1" />
+  <Item Level="2" Attack="10" Defence="20" Agility="10" Lucky="10" MagicAttack="10" MagicDefence="20" Cost="3" />
+  <Item Level="3" Attack="15" Defence="30" Agility="15" Lucky="15" MagicAttack="15" MagicDefence="30" Cost="6" />
+  <Item Level="4" Attack="20" Defence="40" Agility="20" Lucky="20" MagicAttack="20" MagicDefence="40" Cost="10" />
+  <Item Level="5" Attack="25" Defence="50" Agility="25" Lucky="25" MagicAttack="25" MagicDefence="50" Cost="15" />
+  <Item Level="6" Attack="30" Defence="60" Agility="30" Lucky="30" MagicAttack="30" MagicDefence="60" Cost="21" />
+  <Item Level="7" Attack="35" Defence="70" Agility="35" Lucky="35" MagicAttack="35" MagicDefence="70" Cost="28" />
+  <Item Level="8" Attack="40" Defence="80" Agility="40" Lucky="40" MagicAttack="40" MagicDefence="80" Cost="36" />
+  <Item Level="9" Attack="45" Defence="90" Agility="45" Lucky="45" MagicAttack="45" MagicDefence="90" Cost="45" />
+  <Item Level="10" Attack="50" Defence="100" Agility="50" Lucky="50" MagicAttack="50" MagicDefence="100" Cost="55" />
+</Result>

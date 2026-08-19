@@ -1,0 +1,55 @@
+
+'WeddingRoomCell.xml�<View width="60" height="60">
+  <Image skin="asset.churchroomlist.create.itemBg" width="60" height="60"/>
+  <Box var="cellBox" x="3" y="3"/>
+  <LabelEx y="41" width="54" height="18" align="right" color="0x000000" stroke="0xffffff,1,2,2,10" x="3" var="countTxt"/>
+</View>?WeddingRoomEnterConfirmView.xml�<View width="428" height="334">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="428" height="334"/>
+  <Button skin="asset.ui.btn_close1" x="371" y="6" stateNum="1" var="closeBtn"/>
+  <Label text="参加婚礼" x="38" y="12" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.ui.scale.bg3" x="18" y="263" sizeGrid="5,5,5,5" width="391" height="53"/>
+  <Button label="进 入" skin="asset.ui.btn_yellow1" x="80" y="271" stateNum="1" sizeGrid="5,5,5,5" width="85" height="39" labelSize="15" labelBold="true" labelMargin="0,-1,0,0" labelColors="0xFFF6A8" labelStroke="0x714407,1,4,4,10" var="okBtn"/>
+  <Button label="取 消" skin="asset.ui.btn_yellow1" x="248" y="271" stateNum="1" sizeGrid="5,5,5,5" width="85" height="39" labelSize="15" labelBold="true" labelMargin="0,-1,0,0" labelColors="0xFFF6A8" labelStroke="0x714407,1,4,4,10" var="noBtn"/>
+  <Image skin="asset.churchroomlist.leftTopFlower" x="-19" y="-23"/>
+  <Image skin="asset.churchroomlist.joinBg" x="17" y="42"/>
+  <Label text="房间名称：" x="40" y="58" color="0xFCF0D8" stroke="0xC14E93,1,4,4,10" size="16" bold="true"/>
+  <Label text="新    郎：" x="40" y="100" color="0xFCF0D8" stroke="0xC14E93,1,4,4,10" size="16" bold="true"/>
+  <Label text="新    娘：" x="40" y="142" color="0xFCF0D8" stroke="0xC14E93,1,4,4,10" size="16" bold="true"/>
+  <Label text="当前人数：" x="40" y="186" color="0xFCF0D8" stroke="0xC14E93,1,4,4,10" size="16" bold="true"/>
+  <Label text="剩余时间：" x="40" y="227" color="0xFCF0D8" stroke="0xC14E93,1,4,4,10" size="16" bold="true"/>
+  <Label x="130" y="58" color="0xF3F5E0" stroke="0x9129B4,1,4,4,10" size="16" bold="true" var="roomNameTxt" width="265" height="18"/>
+  <Label x="130" y="100" color="0xF3F5E0" stroke="0x9129B4,1,4,4,10" size="16" bold="true" var="groomTxt"/>
+  <Label x="130" y="142" color="0xF3F5E0" stroke="0x9129B4,1,4,4,10" size="16" bold="true" var="brideTxt"/>
+  <Label x="130" y="186" color="0xF3F5E0" stroke="0x9129B4,1,4,4,10" size="16" bold="true" var="countTxt"/>
+  <Label x="130" y="227" color="0xF3F5E0" stroke="0x9129B4,1,4,4,10" size="16" bold="true" var="timeTxt"/>
+</View>%ChurchMainView.xml�A<View width="1000" height="600">
+  <FrameClip skin="asset.background.churchroomlist" x="9" y="53"/>
+  <Image skin="asset.churchroomlist.nav.bgNavAsset" x="515" y="76"/>
+  <Image skin="asset.church.main.picPreviewAsset" x="39" y="78"/>
+  <Image skin="asset.core.ScaleBitmapImage1" x="33" y="72" sizeGrid="25,25,25,25" width="477" height="323"/>
+  <Image skin="equipretrieve.trieveCell0" x="392" y="289"/>
+  <Image skin="asset.churchroomlist.main.titleAsset" x="-10" y="0"/>
+</View>3WeddingRoomCreateView.xml�<View width="578" height="514">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="578" height="514"/>
+  <Label text="举办婚礼" x="15" y="12" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Button skin="asset.ui.btn_close1" x="521" y="7" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.churchroomlist.create.bg" x="19" y="44"/>
+  <Button skin="asset.churchroomlist.create.startBtn" x="190" y="430" stateNum="1" var="startBtn"/>
+  <TextInput skin="asset.churchroomlist.create.nameInputBg" x="171" y="60" sizeGrid="15,15,15,15" width="362" height="36" color="0x894729" bold="true" size="16" margin="20,8,0,0" var="roomNameInputTxt" maxChars="30"/>
+  <List x="61" y="209" repeatY="2" height="128" var="itemCellsList" spaceX="10" width="198" repeatX="3">
+    <WeddingRoomCell name="render" runtime="church.view.weddingRoomList.mornui.WeddingRoomCellUI"/>
+  </List>
+  <ComboBox skin="asset.churchroomlist.create.selectBg" x="298" y="159" labels="中式,西式" selectedLabel="中式,西式" sizeGrid="10,10,10,10" stateNum="1" imageLabel="asset.hall.comboBtn" imageLabelX="203" imageLabelY="4" listSkin="asset.churchroomlist.create.downBg" listSizeGrid="5,5,5,5" itemClipUrl="asset.churchroomlist.create.selectOverBg" labelColors="0xeac9f6,0xeac9f6,0xeac9f6,0xeac9f6" labelMargin="8,0,0,0" labelSize="16" labelBold="false" itemSize="16" itemSteateNum="1" itemColors="0xffffff,0xffffff,0xffffff,0xffffff,0xffffff" visibleNum="2" var="mainTypeSelect" buttonLabel="选择礼堂风格"/>
+  <ComboBox skin="asset.churchroomlist.create.selectBg" x="298" y="195" labels="顶级奢华婚礼,高级豪华婚礼,中级婚礼,标准婚礼" selectedLabel="顶级奢华婚礼,高级豪华婚礼,中级婚礼,标准婚礼" sizeGrid="10,10,10,10" stateNum="1" imageLabel="asset.hall.comboBtn" imageLabelX="203" imageLabelY="4" listSkin="asset.churchroomlist.create.downBg" listSizeGrid="5,5,5,5" itemClipUrl="asset.churchroomlist.create.selectOverBg" labelColors="0xeac9f6,0xeac9f6,0xeac9f6,0xeac9f6" labelMargin="8,0,0,0" labelSize="16" labelBold="false" itemSize="16" itemSteateNum="1" itemColors="0xffffff,0xffffff,0xffffff,0xffffff,0xffffff" visibleNum="4" var="subTypeSelect" buttonLabel="选择婚礼套餐"/>
+  <CheckBox label="修改密码" x="300" y="249" stateNum="1" checkButtonSkin="asset.ui.btn_check1" labelColors="0xfffef4" labelBold="true" labelSize="14" labelStroke="0x9e5085,1,4,4,10" letterSpacing="1" labelMargin="5,0,0,0" var="updatePwdSelect"/>
+  <CheckBox label="允许宾客邀请好友" x="300" y="289" stateNum="1" checkButtonSkin="asset.ui.btn_check1" labelColors="0xfffef4" labelBold="true" labelSize="14" labelStroke="0x9e5085,1,4,4,10" letterSpacing="1" labelMargin="5,0,0,0" var="inviteFriendSelect"/>
+  <TextInput skin="asset.churchroomlist.create.pwdBg" x="392" y="246" width="127" height="21" size="16" color="0xfaf1e3" asPassword="true" margin="5,1,0,0" var="pwdInputTxt" maxChars="6" disabled="true"/>
+  <CheckBox skin="png.comp.checkbox" x="400" y="376" var="useScaleSelect" checkButtonSkin="asset.ui.btn_check3" stateNum="1"/>
+  <LabelEx text="10000点券" x="105" y="377" var="priceTxt" color="0xfffbe2" size="14" bold="true" stroke="0x794700,1,4,4,10" middleline="false"/>
+  <Label text="10000点券" x="105" y="399" var="scalePriceTxt" stroke="0x794700,1,4,4,10" bold="true" color="0xfffbe2" size="14"/>
+</View>5WeddingRoomListNavView.xml�<View width="1000" height="600">
+  <Button skin="asset.churchroomlist.nav.btnCreateAsset" x="555" y="132" stateNum="1" var="btnCreate"/>
+  <Button skin="asset.churchroomlist.nav.btnJoinAsset" x="555" y="247" stateNum="1" var="btnJoin"/>
+  <Button skin="asset.churchroomlist.nav.btnDivorceAsset" x="555" y="362" stateNum="1" var="btnDivorce"/>
+  <Label text="网恋有风险,交友需谨慎" x="655" y="114" color="0xff0000 " size="16" bold="true"/>
+</View>

@@ -1,0 +1,34 @@
+<style name="devilturn" version="1.0.1" source="ui/cn_trad/swf/devilturn.swf">
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="devilTurn.mallitem.cellPos" x="227" y="4"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.boxConvert.cellPos" x="2" y="2"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.box.cellPos" x="12" y="23"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryViewPos" x="0" y="0"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos0" x="388" y="26"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos1" x="491" y="47"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos2" x="510" y="151"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos3" x="491" y="255"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos4" x="388" y="276"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos5" x="284" y="255"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos6" x="261" y="151"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.lotteryCellPos7" x="284" y="48"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceCellPos0" x="88" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceCellPos1" x="183" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceCellPos2" x="280" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceCellPos3" x="374" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceCellPos4" x="471" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.goodsCellPos" x="346" y="70"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.goodsBoxPos" x="246" y="59"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceView.rateCell" x="83" y="251"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceView.shopCell" x="10" y="10"/>
+	<custom classname="flash.geom.Point" stylename="devilTurn.diceView.shopIconPos" x="28" y="259"/>
+	<custom classname="asset.deviturn.dice.action" stylename="devilTurn.diceView.leftAction" x="206" y="167" width="180" height="180" />
+	<custom classname="asset.deviturn.dice.action" stylename="devilTurn.diceView.rightAction" x="247" y="167" width="180" height="180" />
+</customDisplay>
+
+<components>
+<!-- 快速购买 -->
+	<component classname="devilTurn.view.DevilTurnShopBuyView" stylename="devilturn.shop.buyView" parentStyle="BaseFrame" 
+		containerY="30" width="340" height="225"/>
+</components>
+</style>

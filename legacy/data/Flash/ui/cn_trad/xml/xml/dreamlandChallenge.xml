@@ -1,0 +1,73 @@
+<style name="dreamlandChallenge" version="9.4.0" source="ui/zh_cn/swf/dreamlandChallenge.swf">
+	
+	<sets>
+		<set stylename="asset.dreamland.buffTip.titleTxtTF" args="宋体,14,0xffffff,true" leading="1" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.titleTxtGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="asset.dreamland.buffTip.buffNameTF" args="宋体,14,0xffff00,true" leading="1" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.buffNameGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	
+		<set stylename="asset.dreamland.buffTip.buffCountTF" args="宋体,12,0xf2cb88,true" leading="1" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.buffCountGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	
+		<set stylename="asset.dreamland.buffTip.buffProNameTF" args="宋体,12,0xf99532,true" leading="3" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.buffProNameGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	
+		<set stylename="asset.dreamland.buffTip.buffProValueTF" args="宋体,12,0x0cf900,true" leading="3" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.buffProValueGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="asset.dreamland.buffTip.buffDescTF" args="宋体,12,0xf2cb88,true" leading="3" type="flash.text.TextFormat"/>
+		<set stylename="asset.dreamland.buffTip.buffDescGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	
+	</sets>
+	
+	<customDisplay>
+		<custom classname="flash.display.Sprite" stylename="asset.dreamLand.dup.IconContainer" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.dupView.pos" x="-6" y="42"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.dupView.prePagepos" x="66" y="37"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.dupView.nextPagepos" x="378" y="37"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.dupView.curPagepos" x="198" y="7"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.blessingPos" x="45" y="445"/>
+		<custom classname="flash.geom.Point" stylename="asset.dreamLand.rushAwardViewPos" x="116" y="-99"/>
+		
+		
+		<!-- 快速购买 -->
+		<custom classname="flash.geom.Point" stylename="dreamLand.countBuy.numberSelecter.pos" x="127" y="37"/>
+		<custom classname="flash.geom.Point" stylename="dreamLand.countBuy.descTxt.pos" x="59" y="79"/>
+		<custom classname="flash.geom.Point" stylename="dreamLand.countBuy.moneyValueTxt.pos" x="183" y="79"/>
+		
+		<custom classname="flash.geom.Point" stylename="dreamLand.shopBuy.cellItem.pos" x="13" y="13"/>
+		
+	</customDisplay>
+	
+	<components>
+		<component classname="dreamlandChallenge.view.logicView.DreamLandQuickBuyAlert"  stylename="dreamland.QuickBuyAlert"  parentStyle="BaseFrame" 
+			containerY="26" width="340" height="225"/>	
+			
+		<component classname="dreamlandChallenge.view.logicView.DreamLandQuickBuyAlert"  stylename="dreamland.buff.QuickBuyAlert"  parentStyle="BaseFrame" 
+			containerY="26" width="340" height="225"/>	
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.titleName" textFormatStyle="asset.dreamland.buffTip.titleTxtTF" filterString="asset.dreamland.buffTip.titleTxtGF"  width="100"  x="6" y="8"/>
+	  	
+	  	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.buffName" textFormatStyle="asset.dreamland.buffTip.buffNameTF" filterString="asset.dreamland.buffTip.buffNameGF"/>
+	  	
+	  	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.buffCount" textFormatStyle="asset.dreamland.buffTip.buffCountTF" filterString="asset.dreamland.buffTip.buffCountGF"/>
+	  	
+	  	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.buffProName" textFormatStyle="asset.dreamland.buffTip.buffProNameTF" filterString="asset.dreamland.buffTip.buffProNameGF"/>
+	  	
+	  	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.buffProValue" textFormatStyle="asset.dreamland.buffTip.buffProValueTF" filterString="asset.dreamland.buffTip.buffProValueGF"/>
+	  	
+	  	
+	  	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="dreamland.buffTip.buffDesc" textFormatStyle="asset.dreamland.buffTip.buffDescTF" filterString="asset.dreamland.buffTip.buffDescGF"/>
+	  	
+	  	
+	  	<component classname="dreamlandChallenge.view.logicView.shop.DreamLandShopQuickBuy"  stylename="dreamLand.shop.QuickBuyAlert"  parentStyle="BaseFrame" 
+		containerY="30" width="340" height="225"/>	
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="dreamland.mainView.helpBtn"  backStyle="asset.ddtcore.helpbuttonSmall"
+			x="606" y="2"/>
+			
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="dreamland.awards.hbox"   spacing="13" x="116" y="11"/>	
+	</components>
+	
+</style>

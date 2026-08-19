@@ -1,0 +1,20 @@
+<Result value="true" message="Success!">
+  <Item ID="15" TemplateID="80000036" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="3" Rate="0" />
+  <Item ID="16" TemplateID="80000037" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="3" Rate="0" />
+  <Item ID="17" TemplateID="80000038" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="3" Rate="0" />
+  <Item ID="18" TemplateID="80000039" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="3" Rate="0" />
+  <Item ID="19" TemplateID="40003" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="20000" />
+  <Item ID="20" TemplateID="12269" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="1" Rate="1000" />
+  <Item ID="21" TemplateID="12276" Count="5" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="1" Rate="500" />
+  <Item ID="22" TemplateID="12277" Count="5" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="500" />
+  <Item ID="23" TemplateID="12279" Count="5" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="1" Rate="500" />
+  <Item ID="24" TemplateID="7144" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="1000" />
+  <Item ID="25" TemplateID="46412" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="50" />
+  <Item ID="26" TemplateID="46413" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="1" Rate="50" />
+  <Item ID="27" TemplateID="12252" Count="50" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="5000" />
+  <Item ID="28" TemplateID="12252" Count="10" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="20000" />
+  <Item ID="29" TemplateID="12268" Count="10" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="8000" />
+  <Item ID="30" TemplateID="12236" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="2000" />
+  <Item ID="31" TemplateID="122067" Count="1" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="50" />
+  <Item ID="32" TemplateID="11167" Count="2" Valid="0" IsBinds="true" StrengthLevel="0" AttackCompose="0" DefenceCompose="0" AgilityCompose="0" LuckCompose="0" ShowIndex="2" Rate="100" />
+</Result>

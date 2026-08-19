@@ -1,0 +1,7 @@
+<Result value="true" message="Success!">
+  <item ID="1" RewardID="1001" RewardItemID="112341" IsSelect="false" IsBind="true" RewardItemValid="0" RewardItemCount="1" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" />
+  <item ID="2" RewardID="1001" RewardItemID="13493" IsSelect="false" IsBind="true" RewardItemValid="30" RewardItemCount="1" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" />
+  <item ID="3" RewardID="1001" RewardItemID="11905" IsSelect="false" IsBind="true" RewardItemValid="0" RewardItemCount="2" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" />
+  <item ID="4" RewardID="1001" RewardItemID="313999" IsSelect="false" IsBind="true" RewardItemValid="0" RewardItemCount="10" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" />
+  <item ID="5" RewardID="1001" RewardItemID="11102" IsSelect="false" IsBind="true" RewardItemValid="0" RewardItemCount="10" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" />
+</Result>

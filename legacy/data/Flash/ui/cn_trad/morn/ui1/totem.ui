@@ -1,0 +1,27 @@
+
+;TotemLeftWindowActiveView.xml�1<View width="548" height="424">
+  <Clip x="2" y="3" clipsUrlSimple="asset.totem.leftView.activeBg,4" index="0" var="clip_activeBg"/>
+  <Clip clipsUrlSimple="asset.totem.leftView.windowBorder,1" index="0" var="clip_activeBor" x="0" y="0"/>
+  <Image skin="asset.totem.leftView.cellTabBg" x="12" y="4"/>
+  <Button skin="asset.totem.allBtn" x="440" y="19" stateNum="1" var="allBtn"/>
+  <Button skin="asset.totem.cancelBtn" x="440" y="19" stateNum="1" var="cancelBtn"/>
+</View>)TotemUpGradeView.xml�<View width="503" height="420">
+  <Image skin="asset.ui.frame.bg2" sizeGrid="50,200,50,100" width="503" height="420" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close1" x="450" y="2" stateNum="1" var="btn_close"/>
+  <Label text="圖騰升階" x="17" y="12" size="16" color="0xffeebf" bold="true" letterSpacing="2" stroke="0x442006,1,4,4,40" font="升阶提升属性百分比仅针对当前图腾"/>
+  <Image skin="asset.totem.leftView.upBg" x="18" y="44"/>
+  <Label text="2000/20000" x="92" y="283" color="0xf2f2f2" bold="true" font="宋体" size="12" stroke="0x000000,1,2,2,10" align="center" width="133" height="18" var="lbl_glory"/>
+  <Label text="2000/20000" x="299" y="283" color="0xf2f2f2" bold="true" font="宋体" size="12" stroke="0x000000,1,2,2,10" align="center" width="133" height="18" var="lbl_totem"/>
+  <Button skin="asset.ui.btn_red5" x="204" y="329" imageLabel="asset.totem.upGrades.txt" imageLabelX="16" imageLabelY="3" var="btn_upGrade" stateNum="1"/>
+  <Label text="升階提升屬性百分比僅針對當前圖騰" x="150" y="376" font="arial" size="12" color="0xefb9ff" bold="true" stroke="0x000000,1,2,2,10"/>
+  <Image skin="asset.totem.leftView.upView.gloryIcon" x="54" y="274" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,5,4" toolTip="榮譽：可通過擊殺世界BOSS獲得"/>
+  <Button skin="asset.ui.btn_red5" x="204" y="329" imageLabel="asset.totem.maxLev.txt" imageLabelX="9" imageLabelY="4" var="btn_maxGrade" stateNum="1" visible="false"/>
+</View>)TotemTabItemCell.xml�5<View width="58" height="64">
+  <Clip clipsUrlSimple="asset.totem.leftView.cellBor,3" index="0" var="clip_cell"/>
+  <Clip x="-1" y="1" clipsUrlSimple="asset.totem.chapterIcon,4" index="0" var="clip_chaampter"/>
+</View>/TotemLeftActiveView.xml�<View width="566" height="442">
+  <Image skin="asset.totem.leftView.windowBg" width="566" height="442" sizeGrid="100,100,100,100"/>
+</View>1TotemUpGradeItemView.xml�e<View width="100" height="125">
+  <TotemTabItemCell x="20" y="0" var="chapter_item" runtime="totem.mornUI.TotemTabItemCellUI"/>
+  <Label text="1.00%" x="3" y="97" bold="true" color="0xfff600" font="宋体" size="24" stroke="0x000000,1,4,4,4" var="lbl_addPer" align="center" width="93" height="26"/>
+</View>

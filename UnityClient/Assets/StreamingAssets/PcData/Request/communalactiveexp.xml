@@ -1,0 +1,8 @@
+<Result value="true" message="Success!">
+  <item ActiveID="1" Grade="1" Exp="0" AddExpPlus="0" />
+  <item ActiveID="1" Grade="2" Exp="250000" AddExpPlus="0" />
+  <item ActiveID="1" Grade="3" Exp="500000" AddExpPlus="0" />
+  <item ActiveID="1" Grade="4" Exp="750000" AddExpPlus="0" />
+  <item ActiveID="1" Grade="5" Exp="1000000" AddExpPlus="2" />
+  <item ActiveID="1" Grade="6" Exp="1250000" AddExpPlus="3" />
+</Result>

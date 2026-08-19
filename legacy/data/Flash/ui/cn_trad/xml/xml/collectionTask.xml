@@ -1,0 +1,71 @@
+<style name="collectionTask" version="1.0.1" source="ui/cn_trad/swf/collectionTask.swf">
+<sets>
+	<set stylename="church.textFormat17" args="Arial,16,0x5BFF09,true" type="flash.text.TextFormat" />
+	<set stylename="game.missionInfoTitle_Text" args="宋体,16,0xFCF60A" type="flash.text.TextFormat"/>
+	<set stylename="game.missionInfo_Text1" args="Arial,16,0xFCF60A" type="flash.text.TextFormat"/>
+	
+	<set stylename="game.rotationCountField_Filter" args="0x000000,1,4,4,10"  type="flash.filters.GlowFilter"/>
+	
+	<set type="flash.text.TextFormat" stylename="collectionTask.redTxtTF" args="Arial,14,0xff0000,true,,,,,left"/>
+	<set type="flash.filters.GlowFilter" stylename="collectionTask.redTxtGF" args="0x000000,1,4,4,10"/>
+	<set type="flash.text.TextFormat" stylename="collectionTask.yellowTxtTF" args="Arial,14,0xffc600,true,,,,,left"/>
+	<set type="flash.text.TextFormat" stylename="collectionTask.blueTxtTF" args="Arial,14,0x48fcf0,true,,,,,left"/>
+	<set type="flash.text.TextFormat" stylename="collectionTask.beeTxtTF" args="Arial,14,0xa9ff4c,true,,,,,left"/>
+		
+</sets>
+<components>
+	
+	<!--房间内操作菜单-->
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="collectionTask.menuShowNameAsset" resourceLink="asset.collectionTask.menuShowNameActAsset,asset.collectionTask.menuShowNameAsset" x="12" y="13"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="collectionTask.menuShowPaoAsset" resourceLink="asset.collectionTask.menuShowPaoActAsset,asset.collectionTask.menuShowPaoAsset" x="12" y="43"/>
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="collectionTask.menuShowPlayerAsset" resourceLink="asset.collectionTask.menuShowPlayerActAsset,asset.collectionTask.menuShowPlayerAsset" x="12" y="73"/>
+	
+	<!-- 返回菜单 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="collectionTask.views.moveOutBtn" 
+			backStyle="collectionTask.moveOutBtn" x="0" y="0"/>
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="collectionTask.views.moveInBtn" 
+			backStyle="collectionTask.moveInBtn" x="0" y="0"/>
+			
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="collectionTask.views.returnBtn" 
+			backStyle="collectionTask.returnBtn" x="35" y="4"/>
+	<!-- 任务进度 -->
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="collectionTask.infoViewButton" backStyle="collectionTask.infoViewBtn" x="1" y="2"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.title1Txt" textFormatStyle="game.missionInfoTitle_Text" filterString="game.rotationCountField_Filter" x="27" y="14" width="107" height="20"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.progressTxt" parentStyle="collectionTask.title1Txt"/>
+	<!--人物形象-人物名称-->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.collectionTask.characterPlayerNameAsset" textFormatStyle="church.textFormat17" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.redTxt" filterString="collectionTask.redTxtGF" 
+			textFormatStyle="collectionTask.redTxtTF" autoSize="none" height="30" width="100" x="341" y="769"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.yellowTxt" filterString="collectionTask.redTxtGF" 
+			textFormatStyle="collectionTask.yellowTxtTF" autoSize="none" height="30" width="100" x="634" y="388"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.blueTxt" filterString="collectionTask.redTxtGF" 
+			textFormatStyle="collectionTask.blueTxtTF" autoSize="none" height="30" width="100" x="256" y="385"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.beeTxt" filterString="collectionTask.redTxtGF" 
+			textFormatStyle="collectionTask.beeTxtTF" autoSize="none" height="30" width="100" x="821" y="365"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="collectionTask.beeTxt1" filterString="collectionTask.redTxtGF" 
+			textFormatStyle="collectionTask.beeTxtTF" autoSize="none" height="30" width="100" x="785" y="722"/>
+			
+</components>
+
+<customDisplay>
+	<custom classname="ddt.view.common.VipLevelIcon" stylename="asset.collectionTask.VipIcon"/>
+	<custom classname="collectionTask.view.CollectionTaskMenuView" stylename="collectionTask.CollectionTaskMenuView"/>
+	<custom classname="collectionTask.view.CollectionTaskExitMenuView" stylename="collectionTask.CollectionTaskExitMenuView" x="903" y="530"/>
+	<custom classname="collectionTask.view.TaskProgressView" stylename="collectionTask.taskProgressView" x="827" y="121"/>
+	<custom classname="flash.geom.Point" stylename="collectionTask.sceneMapVOPos" x="518"
+		y="600"/>
+	
+	<custom classname="flash.geom.Point" stylename="task.namePos" x="0" y="0"/>
+	<custom classname="flash.geom.Point" stylename="task.progressPos" x="100" y="0"/>	
+</customDisplay>
+<bitmaps>
+	<!--房间内操作菜单-->
+	<bitmapData resourceLink="asset.collectionTask.menuShowNameActAsset" x="-4" y="-4"/>
+	<bitmapData resourceLink="asset.collectionTask.menuShowPaoActAsset" x="-4" y="-4" />
+	<bitmapData resourceLink="asset.collectionTask.menuShowPlayerActAsset" x="-4" y="-4" />
+	
+	<bitmapData resourceLink="collectionTask.infoBgAsset" x="0" y="0" />
+</bitmaps>
+
+</style>

@@ -1,0 +1,27 @@
+<Result value="true" message="Success!">
+  <Item ID="1" RelicID="1" Name="年兽圣物" Desc="大年兽死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="30" Quality="1" LinkItem="11025" ShardNum="5" Pic="1" />
+  <Item ID="2" RelicID="2" Name="魔法小樱圣物" Desc="魔法小樱死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="30" Quality="1" LinkItem="11025" ShardNum="5" Pic="2" />
+  <Item ID="3" RelicID="3" Name="丛林领主圣物" Desc="丛林领主死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="30" Quality="1" LinkItem="11025" ShardNum="5" Pic="3" />
+  <Item ID="4" RelicID="4" Name="怨灵武士圣物" Desc="怨灵武士死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="30" Quality="1" LinkItem="11025" ShardNum="5" Pic="4" />
+  <Item ID="5" RelicID="5" Name="黑曜石守卫圣物" Desc="黑曜石守卫死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="40" Quality="2" LinkItem="11025" ShardNum="10" Pic="5" />
+  <Item ID="6" RelicID="6" Name="冰霜女巫圣物" Desc="冰霜女巫死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="40" Quality="2" LinkItem="11025" ShardNum="10" Pic="6" />
+  <Item ID="7" RelicID="7" Name="阿努比斯圣物" Desc="阿努比斯死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="40" Quality="2" LinkItem="11025" ShardNum="10" Pic="7" />
+  <Item ID="8" RelicID="8" Name="斯芬克斯圣物" Desc="斯芬克斯死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="40" Quality="2" LinkItem="11025" ShardNum="10" Pic="8" />
+  <Item ID="9" RelicID="9" Name="城堡核心圣物" Desc="城堡核心死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="50" Quality="3" LinkItem="11025" ShardNum="25" Pic="9" />
+  <Item ID="10" RelicID="10" Name="火焰领主圣物" Desc="火焰领主死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="50" Quality="3" LinkItem="11025" ShardNum="25" Pic="10" />
+  <Item ID="11" RelicID="11" Name="黑夜女神圣物" Desc="黑夜女神死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="50" Quality="3" LinkItem="11025" ShardNum="25" Pic="11" />
+  <Item ID="12" RelicID="12" Name="瓦尔基里圣物" Desc="瓦尔基里死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="50" Quality="3" LinkItem="11025" ShardNum="25" Pic="12" />
+  <Item ID="13" RelicID="13" Name="黑暗巨龙圣物" Desc="黑暗巨龙死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="13" />
+  <Item ID="14" RelicID="14" Name="斯尔克圣物" Desc="斯尔克死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="14" />
+  <Item ID="15" RelicID="15" Name="加姆·右圣物" Desc="加姆·右死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="15" />
+  <Item ID="16" RelicID="16" Name="加姆·左圣物" Desc="加姆·左死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="16" />
+  <Item ID="17" RelicID="17" Name="死亡骑士圣物" Desc="死亡骑士死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="17" />
+  <Item ID="18" RelicID="18" Name="饥荒骑士圣物" Desc="饥荒骑士死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="18" />
+  <Item ID="19" RelicID="19" Name="战争骑士圣物" Desc="战争骑士死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="19" />
+  <Item ID="20" RelicID="20" Name="瘟疫骑士圣物" Desc="瘟疫骑士死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="60" Quality="4" LinkItem="11025" ShardNum="40" Pic="20" />
+  <Item ID="21" RelicID="21" Name="斯卡蒂圣物" Desc="斯卡蒂死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="100" Quality="5" LinkItem="11025" ShardNum="60" Pic="21" />
+  <Item ID="22" RelicID="22" Name="提尔圣物" Desc="提尔死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="100" Quality="5" LinkItem="11025" ShardNum="60" Pic="22" />
+  <Item ID="23" RelicID="23" Name="卓尔圣物" Desc="卓尔死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="100" Quality="5" LinkItem="11025" ShardNum="60" Pic="23" />
+  <Item ID="24" RelicID="24" Name="伊米尔圣物" Desc="伊米尔死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="100" Quality="5" LinkItem="11025" ShardNum="60" Pic="24" />
+  <Item ID="25" RelicID="25" Name="海拉圣物" Desc="海拉死亡后，遗留下来的头颅，具有不朽力量" Type="1" CommonProperty="100" Quality="5" LinkItem="11025" ShardNum="60" Pic="25" />
+</Result>

@@ -1,0 +1,51 @@
+<style name="battleSkill" version="1.0.1" source="ui/cn_trad/swf/battleSkill.swf">
+<sets>
+	<set stylename="battleSkill.fullLevel.txtGf" args="0x500d00,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="battleSkill.fullLevel.txtTf" args="Arial,12,0xfef98c,true,,,,,center" type="flash.text.TextFormat"/>
+	
+	<set stylename="battleSkill.skillLevelTxt.txtGf" args="0x4e2100,1,2,2,10" type="flash.filters.GlowFilter"/>
+	<set stylename="battleSkill.skillLevelTxt.txtTf" args="Arial,12,0xfef16c,true,,,,,center" type="flash.text.TextFormat"/>
+	
+	<set stylename="battleSkill.cellZXC.TF3" args="黑体,16,0x709d01,true" type="flash.text.TextFormat"/>
+	<set stylename="battleSkill.cellZXC.GF3" args="0xffffff,1,4,4,30" type="flash.filters.GlowFilter"/>
+</sets>
+<components>
+		<!-- 主界面 -->
+		<component classname="battleSkill.view.BattleSkillFrame"  	stylename="battleSkill.battleSkillView"	backStyle="SimpleFrameBackgoundOne" 	parentStyle="BaseFrame"   width="489" height="556" 
+			escEnable="true"   titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="17"
+			 containerY="43" closestyle="core.closebt"  closeInnerRectString="44,11,6,30,14"/>
+		<component classname="battleSkill.view.BattleSkillCell" stylename="battleSkill.skillCell"  buttonMode="true"  x="0" y ="0"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="battleSkill.updateSmallBtn" backStyle="asset.battleSkill.updateSmallBtn" filterString="null,lightFilter,null,null" x="2" y="48" displacement="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="battleSkill.activateSmallBtn" backStyle="asset.battleSkill.activateSmallBtn" filterString="null,lightFilter,null,null" x="2" y="48" displacement="false"/>
+		 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="battleSkill.fullLevelTxt"  textFormatStyle="battleSkill.fullLevel.txtTf"  filterString="battleSkill.fullLevel.txtGf"  x="-3" y="46" autoSize="none" width="60" height="22" />
+		 <component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="battleSkill.skillGroupView.scrollpanel" parentStyle="core.ScrollPanel" 
+		 width="409" height="166" hScrollProxy="2" vScrollProxy="0" x="0" y="-10" viewportInnerRectString="2,10,15,10"/>
+		 <component classname="com.pickgliss.ui.controls.container.HBox" stylename="battleSkill.bringSkill.cellBoxAsset" x="38" y="425"  spacing="213"/>
+			<custom classname="flash.geom.Point" stylename="battleSkill.helpBtn.Pos" x="384" y="-36"/>
+		 
+		 <!--  升级界面 -->
+		 	<component classname="battleSkill.view.BattleSkillUpFrame"  	stylename="battleSkill.battleSkillUpView"	backStyle="SimpleFrameBackgoundOne" 	parentStyle="BaseFrame"   width="372" height="402" 
+			escEnable="true"   titleStyle="FrameTitleTextStyle" titleOuterRectPosString="15,10,5" containerX="17"
+			 containerY="43" closestyle="core.closebt"  closeInnerRectString="44,11,6,30,14"/>
+			<component classname="com.pickgliss.ui.controls.BaseButton" stylename="battleSkill.updateBigBtn" backStyle="asset.battleSkill.updateBigBtn" filterString="null,lightFilter,null,null" x="110" y="281" displacement="false"/>
+			<component classname="com.pickgliss.ui.controls.BaseButton" stylename="battleSkill.activateBigBtn" backStyle="asset.battleSkill.activateBigBtn" filterString="null,lightFilter,null,null" x="110" y="281" displacement="false"/>
+			 <component classname="com.pickgliss.ui.controls.container.HBox" stylename="battleSkill.updateSkill.materialCell"  y="172"  spacing="20"/>
+			 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="battleSkill.upSkill.curSkillLevelTxt"  textFormatStyle="battleSkill.skillLevelTxt.txtTf"  filterString="battleSkill.skillLevelTxt.txtGf"  x="90" y="101"/>
+			 <component classname="com.pickgliss.ui.text.FilterFrameText" stylename="battleSkill.upSkill.NextSkillLevelTxt"  textFormatStyle="battleSkill.skillLevelTxt.txtTf"  filterString="battleSkill.skillLevelTxt.txtGf" x="220" y="101"/>
+			
+			<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="battleSkill.cellKey.ZXC" textFormatStyle="battleSkill.cellZXC.TF3" filterString="battleSkill.cellZXC.GF3" x="-8" y="-19" width="30" height="22"/>
+
+</components>
+<customs>
+		<custom classname="battleSkill.view.BattleSkillCellGroupContainer" stylename="battleSkill.mainView.initiativeSkillContainer" x ="24" y="41" />
+		<custom classname="battleSkill.view.BattleSkillCellGroupContainer" stylename="battleSkill.mainView.passiveSkillContainer" x ="24" y="234" />
+		<custom classname="asset.battleSkill.help.descriptMc" stylename="asset.battleSkill.help.descriptMc" x="45" y="80"/>
+
+</customs>
+<bitmaps>
+	<bitmapData resourceLink="asset.battleSkill.main.bg" />
+	<bitmapData resourceLink="asset.battleSkill.activateNeedMaterial" x="25" y = "148"/>
+	<bitmapData resourceLink="asset.battleSkill.updateNeedMaterial" x="25" y = "148"/>
+	<bitmapData resourceLink="asset.ddtcoreii.battleskillView.skillLockIcon" x="12" y="9" />
+</bitmaps>
+</style>

@@ -1,0 +1,74 @@
+<style name="conRecharge" version="1.0.1" source="ui/cn_trad/swf/conRecharge.swf">
+	
+	<sets>
+		<set stylename="conRecharge.activityTime.TF" args="Arial,14,0x51f236,,,,,,left" type="flash.text.TextFormat" />
+		<set stylename="conRecharge.activityTime.GF" args="0x400202,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="conRecharge.finishDay.TF" args="Arial,12,0x2ced4a,,,,,,left" type="flash.text.TextFormat" />
+		<set stylename="conRecharge.finishDay.GF" args="0x164506,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="conRecharge.leftMoney.TF" args="Arial,16,0xffff00" type="flash.text.TextFormat" />
+		<set stylename="conRecharge.leftMoney.GF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="conRecharge.rightMoney.TF" args="Arial,14,0xffff00" type="flash.text.TextFormat" />
+		<set stylename="conRecharge.rightMoney.GF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+	</sets>
+	
+	<components>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="conRecharge.activityTime.txt" 
+			textFormatStyle="conRecharge.activityTime.TF" filterString="conRecharge.activityTime.GF" autoSize="none" x="22" y="104" width="200" height="24" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="conRecharge.totalRecharge.txt" 
+			textFormatStyle="conRecharge.activityTime.TF" filterString="conRecharge.activityTime.GF" autoSize="none" x="635" y="105" width="200" height="24" />	
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="conRecharge.finishDay.txt" 
+			textFormatStyle="conRecharge.finishDay.TF" filterString="conRecharge.finishDay.GF" x="16" y="63" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="conRecharge.rechargeBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2,6" 
+			backStyle="asset.conRecharge.rechargeBtn" x="683" y="48" filterString="null,lightFilter,lightFilter,grayFilter"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="conRecharge.leftItem.money.txt" 
+			textFormatStyle="conRecharge.leftMoney.TF" filterString="conRecharge.leftMoney.GF" x="14" y="30" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="conRecharge.rightItem.money.txt" 
+			textFormatStyle="conRecharge.rightMoney.TF" filterString="conRecharge.rightMoney.GF" autoSize="none" x="55" y="9" width="200" height="24" />
+			
+		<component classname="com.pickgliss.ui.controls.container.HBox"	stylename="conRecharge.leftItem.hbox" x="115" y="0" spacing="5" />
+		<component classname="com.pickgliss.ui.controls.container.VBox"	stylename="conRecharge.leftItem.vbox" x="10" y="0" spacing="113" />
+		<component classname="com.pickgliss.ui.controls.container.VBox"	stylename="conRecharge.rightItem.vbox" x="10" y="0" spacing="113" />
+		<component classname="com.pickgliss.ui.controls.container.HBox"	stylename="conRecharge.rightItem.hbox" x="10" y="41" spacing="2" />
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="conRecharge.canReceive.btn" backStyle="conRecharge.getBtn.MutipleImage" 
+			filterString="null,lightFilter,null,grayFilter" x="191" y="44"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="conRecharge.havaReceived.btn" backStyle="conRecharge.gotBtn.MutipleImage" 
+			filterString="null,lightFilter,null,grayFilter" x="191" y="44"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="conRecharge.getBtn.MutipleImage" resourceLink="core.bg6899,asset.conRecharge.getBtn" 
+			imageRectString="0|98|0|42|13,69|24|7|0|9"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="conRecharge.gotBtn.MutipleImage" resourceLink="core.bg6899,asset.conRecharge.gotBtn" 
+			imageRectString="0|98|0|42|13,83|28|7|0|9"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="conRecharge.prize.btn" backStyle="asset.conRecharge.prize" 
+			tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" filterString="null,lightFilter,null,grayFilter" x="33" y="23"/>
+		
+	</components>
+	
+	<customDisplay>
+		<custom classname="conRecharge.view.ConRechargeFrame" stylename="conRecharge.ConRechargeFrame" backStyle="SimpleFrameBackgoundOne" 
+			parentStyle="BaseFrame"	closestyle="core.closebt" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="24,10,5" 
+			closeInnerRectString="44,22,6,30,14" moveInnerRectString="0,30,0,30,1" width="833" height="542" escEnable="true" />
+		<custom classname="flash.geom.Point" stylename="conRecharge.leftView.pos" x="19" y="176"/>
+		<custom classname="flash.geom.Point" stylename="conRecharge.rightView.pos" x="500" y="179"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.conRecharge.yellow1.pos" x="178" y="-29"/>
+		<custom classname="flash.geom.Point" stylename="asset.conRecharge.yellow2.pos" x="289" y="-29"/>
+		<custom classname="flash.geom.Point" stylename="asset.conRecharge.yellow3.pos" x="398" y="-29"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.conRecharge.red.pos" x="87" y="9"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.conRecharge.box.pos" x="29" y="72"/>
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.conRecharge.topBg" x="17" y="44"/>
+		<bitmapData resourceLink="asset.conRecharge.leftBg" x="17" y="127"/>
+		<bitmapData resourceLink="asset.conRecharge.rightBg" x="502" y="127"/>
+		
+	</bitmaps>
+	
+</style>

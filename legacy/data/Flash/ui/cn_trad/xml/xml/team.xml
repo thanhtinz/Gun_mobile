@@ -1,0 +1,68 @@
+<style name="team" version="1.0.1" source="ui/cn_trad/swf/team.swf">
+	<components>
+		<!-- 战队创建主页面 -->
+		<component classname="team.view.create.TeamCreateFrame" parentStyle="bigBaseFrame" escEnable="true"
+			stylename="team.create.mainFrame" width="875" height="532" containerX="18" containerY="42"/>
+		
+		<!-- 我的战队主页面 -->
+		<component classname="team.view.main.TeamMainFrame" parentStyle="bigBaseFrame" escEnable="true"
+			stylename="team.mainFrame" width="792" height="489" />
+		
+		<!-- 战队排行 -->
+		<component classname="team.view.rank.TeamRankFrame" parentStyle="bigBaseFrame" escEnable="true"
+			stylename="team.rankFrame" width="861" height="480" containerX="18" containerY="42"/>
+			
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.infoBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectInfo" selectedStyle="asset.team.mainTab.selectInfo"  />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.recordBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectRecord" selectedStyle="asset.team.mainTab.selectRecord"  />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.governBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectGovern" selectedStyle="asset.team.mainTab.selectGovern"  />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.activeBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectActive" selectedStyle="asset.team.mainTab.selectActive"  />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.shopBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectShop" selectedStyle="asset.team.mainTab.selectShop"  />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="team.mainTab.memberBtn" filterString="null,lightFilter,null,grayFilter"
+			unSelectedStyle="asset.team.mainTab.unSelectMember" selectedStyle="asset.team.mainTab.selectMember"  />
+		
+		<component classname="com.pickgliss.ui.controls.container.HBox" stylename="team.mainTab.hBox" spacing="10" x="24" y="45"/>
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="team.rank.rankItem.selectBg"  parentStyle="core.Scale9CornerImage.scale9CornerSparkBG" width="350" height="43" x="-3" y="-4"/>
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="team.main.rankBtn"
+	        backStyle="asset.team.main.rankBtnBg"  x="671" y="45"/>
+	    
+		<component classname="team.view.main.TeamShopBuyFrame"  stylename="team.view.alertShopBuyFrame"  parentStyle="BaseFrame" 
+		containerY="30" width="340" height="200"/>	
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="team.helpButtonSmall" backStyle="asset.ui.btn_help2"/>
+	
+	</components>
+	
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="team.info.captainTransferPos" x="341" y="203"/>
+	<!-- 战队赛 -->
+		<custom classname="team.view.teamBattle.TeamBattleFrame" stylename="teamBattle.mainFrame" x="0" y="0"/>
+			
+		<custom classname="flash.geom.Point" stylename="team.shop.quickbuy.frame.totaltxtPos" x="93" y="72"/>
+			
+		<custom classname="flash.geom.Point" stylename="team.create.infoViewPos" x="300" y="125"/>
+		<custom classname="flash.geom.Point" stylename="team.main.viewPos" x="23" y="82"/>
+		<custom classname="flash.geom.Point" stylename="team.rank.leftViewPos" x="8" y="9"/>
+		<custom classname="flash.geom.Point" stylename="team.rank.rankItemPos" x="236" y="93"/>
+		<custom classname="flash.geom.Point" stylename="team.shop.itemCellPos" x="9" y="9"/>
+		<custom classname="flash.geom.Point" stylename="team.active.alertPos" x="211" y="95"/>
+		<custom classname="flash.geom.Point" stylename="team.record.hideBg" x="5" y="7"/>
+		<custom classname="flash.geom.Point" stylename="team.main.quitViewPos" x="320" y="180"/>
+		<custom classname="flash.geom.Point" stylename="team.active.donatePos" x="308" y="183"/>
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.team.mainTab.unSelectInfo" x="6" />
+		<bitmapData resourceLink="asset.team.mainTab.unSelectRecord" x="6" />
+		<bitmapData resourceLink="asset.team.mainTab.unSelectGovern" x="6" />
+		<bitmapData resourceLink="asset.team.mainTab.unSelectActive" x="6" />
+		<bitmapData resourceLink="asset.team.mainTab.unSelectShop" x="6" />
+		<bitmapData resourceLink="asset.team.mainTab.unSelectMember" x="6" />
+		<custom classname="flash.geom.Point" stylename="team.govern.redPos" x="76" y="0"/>
+	</bitmaps>
+</style>

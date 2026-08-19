@@ -1,0 +1,6 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Name="活期" InterestRate="15" MinAmount="5000" Multiple="100" Consume="0" DeadLine="0" />
+  <Item ID="2" Name="定期1月" InterestRate="25" MinAmount="10000" Multiple="1000" Consume="60" DeadLine="1" />
+  <Item ID="3" Name="定期3月" InterestRate="40" MinAmount="15000" Multiple="5000" Consume="80" DeadLine="3" />
+  <Item ID="4" Name="定期5月" InterestRate="60" MinAmount="20000" Multiple="10000" Consume="90" DeadLine="5" />
+</Result>

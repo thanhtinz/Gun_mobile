@@ -1,0 +1,47 @@
+
+/RedPacketResultView.xml�k<View width="442" height="215">
+  <Image skin="asset.auditorium.room.sendRedPacket.resultBg"/>
+  <Label x="65" y="43" color="0xffffff" font="宋体" size="18" width="323" height="60" multiline="true" wordWrap="true" leading="8" letterSpacing="1" var="txt_result1"/>
+  <Button skin="asset.auditorium.room.sendRedPacket.confirmBtn" x="143" y="138" stateNum="1" var="btn_confirm"/>
+  <Box x="145" y="36" var="txt_result2">
+    <Label text="来晚啦!" x="11" color="0xffea5d" font="宋体" size="30"/>
+    <Label text="红包已经被抢光了" y="48" color="0xffffff" font="宋体" size="18"/>
+  </Box>
+  <Label x="167" y="66" color="0xffffff" font="宋体" size="18" var="txt_result3"/>
+</View>)RedPacketGetView.xml�u<View width="300" height="370">
+  <Box x="349" y="114">
+    <Image skin="asset.auditorium.room.sendRedPacket.getBg" y="59"/>
+    <Image skin="asset.auditorium.room.sendRedPacket.headIcon"/>
+    <Button skin="asset.auditorium.room.sendRedPacket.openBtn" x="92" y="108" stateNum="1" var="btn_open"/>
+    <Label text="快打开红包，手慢了就没有了哦!" x="56" y="318" color="0xf5e858" font="宋体" size="13" stroke="0xc83737,1,4,4,30"/>
+    <Button skin="asset.auditorium.room.sendRedPacket.closeBtn" x="221" y="1" stateNum="1" var="btn_close"/>
+  </Box>
+</View>/RedPacketCreateView.xml�9<View width="397" height="544">
+  <Image skin="asset.auditorium.room.sendRedPacket.sendBg"/>
+  <Button skin="asset.auditorium.room.sendRedPacket.closeBtn" x="327" y="79" stateNum="1" var="btn_close"/>
+  <Button skin="asset.auditorium.room.sendRedPacket.helpBtn" x="28" y="113" stateNum="1" var="btn_help"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.typeTxt" x="48" y="177"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.moenyTxt" x="49" y="247"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.countTxt" x="50" y="294"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.input1" x="139" y="242"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.input1" x="139" y="288"/>
+  <Label text="点券" x="305" y="248" color="0xf5e858" font="宋体" size="13" stroke="0xc83737,1,4,4,30"/>
+  <Label text="个" x="305" y="295" color="0xf5e858" font="宋体" size="13" stroke="0xc83737,1,4,4,30"/>
+  <Image skin="asset.auditorium.room.sendRedPacket.input2" x="45" y="336"/>
+  <Button skin="asset.auditorium.room.sendRedPacket.sendBtn" x="139" y="450" stateNum="1" var="btn_send"/>
+  <TextInput x="153" y="246" leading="5" maxChars="5" restrict="0-9" var="input_money" color="0xffffff" font="宋体" size="16" stroke="0xc83737,1,4,4,30"/>
+  <TextInput x="152" y="291" leading="5" maxChars="2" restrict="0-9" var="input_count" stroke="0xc83737,1,4,4,30" color="0xffffff" font="宋体" size="16"/>
+  <RadioGroup x="137" y="172" var="btn_redPacketTypeCheck">
+    <RadioButton label="拼手气红包" stateNum="1" twoURLs="asset.auditorium.room.sendRedPacket.selectBtn$1,asset.auditorium.room.sendRedPacket.selectBtn" labelColors="0xf5e858" labelFont="宋体" labelSize="13" labelStroke="0xc83737,1,4,4,30" name="item1" x="97" y="0" width="96" height="27"/>
+    <RadioButton label="普通红包" stateNum="1" twoURLs="asset.auditorium.room.sendRedPacket.selectBtn$1,asset.auditorium.room.sendRedPacket.selectBtn" labelColors="0xf5e858" labelFont="宋体" labelSize="13" labelStroke="0xc83737,1,4,4,30" name="item0" width="83" height="27" x="0" y="0"/>
+    <RadioButton label="口令红包（随机金额）" stateNum="1" twoURLs="asset.auditorium.room.sendRedPacket.selectBtn$1,asset.auditorium.room.sendRedPacket.selectBtn" labelColors="0xf5e858" labelFont="宋体" labelSize="13" labelStroke="0xc83737,1,4,4,30" name="item2" x="0" y="35" width="96" height="27"/>
+  </RadioGroup>
+  <TextInput x="50" y="341" leading="5" maxChars="20" var="input_desc" color="0xef9393" font="宋体" size="16" stroke="0xc83737,1,4,4,30" width="294" height="86" text="快来抢红包吧！"/>
+</View>+RedPacketShowView.xml�<View width="145" height="140">
+  <Image skin="asset.auditorium.room.redPacket.showBg" x="1" y="0"/>
+  <Label x="24" y="73" color="0xf5e858" width="85" multiline="true" wordWrap="true" leading="3" letterSpacing="1" font="宋体" size="12" stroke="0xc83737,1,4,4,30" height="53" var="txt_redPacketDec" align="center"/>
+  <Label text="剩余时间:" x="10" y="12" color="0xf5e858" leading="5" letterSpacing="1" font="宋体" size="13" stroke="0xc83737,1,4,4,30"/>
+  <Label text="00:00" x="74" y="12" color="0xf5e858" leading="5" letterSpacing="1" font="宋体" size="13" stroke="0xc83737,1,4,4,30" var="txt_surplusTime"/>
+  <Button skin="asset.auditorium.room.showRedPacket.closeBtn" x="112" y="-2" stateNum="1" var="btn_close" width="32" height="31"/>
+  <LabelEx text="口令红包" x="34" y="38" bold="true" color="0xffffff" size="14" stroke="0xfd009b,1,4,4,10" var="typeTxt" visible="false"/>
+</View>

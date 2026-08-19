@@ -1,0 +1,33 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Sex="1" Name="Excelente instrumento" Attack="50" Defend="5" Agility="5" Luck="5" Blood="380" Damage="0" Guard="0" Cost="600" />
+  <Item ID="2" Sex="2" Name="Encantador" Attack="5" Defend="50" Agility="5" Luck="5" Blood="450" Damage="0" Guard="0" Cost="600" />
+  <Item ID="3" Sex="1" Name="Libertino Sábido" Attack="5" Defend="5" Agility="80" Luck="5" Blood="330" Damage="0" Guard="0" Cost="600" />
+  <Item ID="4" Sex="2" Name="Humilde e bela" Attack="5" Defend="5" Agility="5" Luck="65" Blood="350" Damage="0" Guard="0" Cost="600" />
+  <Item ID="5" Sex="1" Name="Homem Corajoso" Attack="75" Defend="5" Agility="5" Luck="5" Blood="440" Damage="0" Guard="0" Cost="600" />
+  <Item ID="6" Sex="2" Name="Digno elegante" Attack="5" Defend="75" Agility="5" Luck="5" Blood="550" Damage="0" Guard="0" Cost="700" />
+  <Item ID="7" Sex="1" Name="Intelectual" Attack="5" Defend="5" Agility="110" Luck="5" Blood="400" Damage="0" Guard="0" Cost="600" />
+  <Item ID="8" Sex="2" Name="Notável" Attack="5" Defend="5" Agility="5" Luck="85" Blood="420" Damage="0" Guard="0" Cost="600" />
+  <Item ID="9" Sex="1" Name="Gintil" Attack="45" Defend="35" Agility="5" Luck="5" Blood="500" Damage="0" Guard="0" Cost="700" />
+  <Item ID="10" Sex="2" Name="Roupa Elegante" Attack="5" Defend="50" Agility="40" Luck="0" Blood="600" Damage="0" Guard="0" Cost="700" />
+  <Item ID="11" Sex="1" Name="Fresco e Bonito" Attack="5" Defend="5" Agility="60" Luck="45" Blood="550" Damage="0" Guard="0" Cost="700" />
+  <Item ID="12" Sex="2" Name="Super Bela" Attack="65" Defend="5" Agility="70" Luck="5" Blood="660" Damage="0" Guard="0" Cost="800" />
+  <Item ID="13" Sex="2" Name="Beleza Original" Attack="5" Defend="80" Agility="5" Luck="55" Blood="700" Damage="0" Guard="0" Cost="800" />
+  <Item ID="14" Sex="2" Name="Beleza Vanila" Attack="85" Defend="5" Agility="5" Luck="75" Blood="720" Damage="0" Guard="0" Cost="800" />
+  <Item ID="15" Sex="1" Name="Guerreiro da DDT" Attack="55" Defend="55" Agility="55" Luck="55" Blood="980" Damage="0" Guard="0" Cost="900" />
+  <Item ID="16" Sex="1" Name="Nobreza Perfeita" Attack="20" Defend="20" Agility="20" Luck="0" Blood="340" Damage="0" Guard="0" Cost="600" />
+  <Item ID="17" Sex="2" Name="Sonho de Nobreza" Attack="22" Defend="0" Agility="22" Luck="22" Blood="345" Damage="0" Guard="0" Cost="600" />
+  <Item ID="18" Sex="1" Name="Respiração livre" Attack="50" Defend="5" Agility="50" Luck="30" Blood="700" Damage="0" Guard="0" Cost="800" />
+  <Item ID="19" Sex="2" Name="Assaltante da selva" Attack="10" Defend="20" Agility="10" Luck="30" Blood="700" Damage="0" Guard="0" Cost="800" />
+  <Item ID="20" Sex="1" Name="Zodíaco Ouro" Attack="70" Defend="70" Agility="10" Luck="10" Blood="900" Damage="0" Guard="0" Cost="900" />
+  <Item ID="21" Sex="1" Name="Zodíaco Trevas" Attack="10" Defend="10" Agility="70" Luck="70" Blood="900" Damage="0" Guard="0" Cost="900" />
+  <Item ID="22" Sex="2" Name="asas do céu" Attack="100" Defend="10" Agility="100" Luck="10" Blood="1000" Damage="0" Guard="0" Cost="900" />
+  <Item ID="23" Sex="1" Name="Estrelas conhecem meu amor" Attack="50" Defend="20" Agility="50" Luck="20" Blood="850" Damage="0" Guard="0" Cost="800" />
+  <Item ID="24" Sex="2" Name="Estrelas conhecem meu coração" Attack="20" Defend="50" Agility="20" Luck="50" Blood="850" Damage="0" Guard="0" Cost="800" />
+  <Item ID="25" Sex="1" Name="Escolar menino" Attack="35" Defend="20" Agility="5" Luck="10" Blood="400" Damage="0" Guard="0" Cost="800" />
+  <Item ID="26" Sex="2" Name="Escolar menina" Attack="5" Defend="10" Agility="35" Luck="20" Blood="380" Damage="0" Guard="0" Cost="800" />
+  <Item ID="27" Sex="1" Name="Copa do Mundo" Attack="30" Defend="30" Agility="30" Luck="30" Blood="500" Damage="0" Guard="0" Cost="800" />
+  <Item ID="28" Sex="2" Name="Copa do Mundo" Attack="30" Defend="30" Agility="30" Luck="30" Blood="500" Damage="0" Guard="0" Cost="800" />
+  <Item ID="29" Sex="1" Name="Amado dele" Attack="10" Defend="30" Agility="10" Luck="40" Blood="980" Damage="0" Guard="0" Cost="800" />
+  <Item ID="30" Sex="2" Name="Amado dela" Attack="10" Defend="30" Agility="10" Luck="40" Blood="980" Damage="0" Guard="0" Cost="800" />
+  <Item ID="31" Sex="1" Name="Dias da Juventude" Attack="50" Defend="50" Agility="50" Luck="50" Blood="500" Damage="0" Guard="0" Cost="800" />
+</Result>

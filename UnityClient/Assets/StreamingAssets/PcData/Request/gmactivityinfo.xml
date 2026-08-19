@@ -1,0 +1,325 @@
+<Result value="true" message="Success!">
+  <ActiveInfo>
+    <Activity activityId="02d525dd-b139-7e47-36ac-89c1244e93a4" activityName="龙珠兑兑乐" activityType="2" activityChildType="0" getWay="0" desc="" rewardDesc="收集物品：&amp;#xA;龍珠 x 60 (不限,绑定,永久有效)&amp;#xA;可兑换物品：&amp;#xA;碎石斧 x 1 (不限,绑定,7天)&amp;#xA;&amp;#xA;收集物品：&amp;#xA;龍珠 x 60 (不限,绑定,永久有效)&amp;#xA;可兑换物品：&amp;#xA;硬弩弓 x 1 (不限,绑定,7天)&amp;#xA;" beginTime="2022-03-05 00:00:00" beginShowTime="2022-03-05 00:00:00" endTime="2025-03-31 23:59:59" endShowTime="2025-03-31 23:59:59" icon="1" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="69c62a43-0ec2-4549-85da-6765e5c4bf2d" activityId="02d525dd-b139-7e47-36ac-89c1244e93a4" rewardMark="1" giftbagOrder="0" />
+      <ActiveReward>
+        <Reward giftId="69c62a43-0ec2-4549-85da-6765e5c4bf2d" templateId="12642" count="60" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="龙珠" />
+        <Reward giftId="69c62a43-0ec2-4549-85da-6765e5c4bf2d" templateId="7001" count="1" isBind="1" occupationOrSex="0" rewardType="1" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石斧" />
+      </ActiveReward>
+      <Gift giftbagId="d39709e0-c6c7-34e4-9fdb-18644a4241dd" activityId="02d525dd-b139-7e47-36ac-89c1244e93a4" rewardMark="1" giftbagOrder="1" />
+      <ActiveReward>
+        <Reward giftId="d39709e0-c6c7-34e4-9fdb-18644a4241dd" templateId="12642" count="60" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="龍珠" />
+        <Reward giftId="d39709e0-c6c7-34e4-9fdb-18644a4241dd" templateId="7002" count="1" isBind="1" occupationOrSex="0" rewardType="1" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="硬弩弓" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="04ab7313-6af8-b327-56c9-ab21612d42f0" activityName="登录领取战神" activityType="5" activityChildType="3" getWay="0" desc="登录领取战神" rewardDesc="登录领取战神" beginTime="2022-03-05 00:00:00" beginShowTime="2022-03-05 00:00:00" endTime="2022-03-08 23:59:59" endShowTime="2022-03-08 23:59:59" icon="1" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="c8082029-a29f-0aae-45be-88bf4af9161a" activityId="04ab7313-6af8-b327-56c9-ab21612d42f0" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="c8082029-a29f-0aae-45be-88bf4af9161a" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="c8082029-a29f-0aae-45be-88bf4af9161a" templateId="7182" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="1" property="0,0,0,0,0,0,0,0,0" remain1="战神" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" activityName="打造精工坊" activityType="25" activityChildType="0" getWay="0" desc="打造现在返利咯！马上进行打造获取丰厚奖励吧！" rewardDesc="升级精工坊至石装3件: &amp;#xA;碎石 x 25 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至石装7件: &amp;#xA;碎石 x 50 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至石装11件: &amp;#xA;碎石 x 100 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至石装14件: &amp;#xA;碎石 x 200 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至铜装3件: &amp;#xA;铜块 x 25 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至铜装7件: &amp;#xA;铜块 x 50 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至铜装11件: &amp;#xA;铜块 x 100 (不限,绑定,永久有效)&amp;#xA;&amp;#xA;升级精工坊至铜装14件: &amp;#xA;铜块 x 200 (不限,绑定,永久有效)&amp;#xA;" beginTime="2017-11-01 00:00:00" beginShowTime="2017-11-01 00:00:00" endTime="2024-11-01 00:00:00" endShowTime="2024-11-01 00:00:00" icon="3" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="5f83d374-5b27-6b74-162e-fcccede7caaa" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="3" />
+      <ActiveCondition>
+        <Condition giftbagId="5f83d374-5b27-6b74-162e-fcccede7caaa" conditionIndex="0" conditionValue="14" remain1="14" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="5f83d374-5b27-6b74-162e-fcccede7caaa" templateId="11169" count="2000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+      </ActiveReward>
+      <Gift giftbagId="6f616371-4fb1-f258-2306-6e75ccb1fb51" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="6f616371-4fb1-f258-2306-6e75ccb1fb51" conditionIndex="0" conditionValue="7" remain1="7" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="6f616371-4fb1-f258-2306-6e75ccb1fb51" templateId="11169" count="500" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+      </ActiveReward>
+      <Gift giftbagId="c4e004a7-bf56-ecc8-16b5-9e76a53586ca" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="c4e004a7-bf56-ecc8-16b5-9e76a53586ca" conditionIndex="0" conditionValue="11" remain1="11" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="c4e004a7-bf56-ecc8-16b5-9e76a53586ca" templateId="11169" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+      </ActiveReward>
+      <Gift giftbagId="d759abdf-2b82-0ad0-830f-8b7b563e07d2" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="7" />
+      <ActiveCondition>
+        <Condition giftbagId="d759abdf-2b82-0ad0-830f-8b7b563e07d2" conditionIndex="0" conditionValue="14" remain1="28" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d759abdf-2b82-0ad0-830f-8b7b563e07d2" templateId="11170" count="2000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="铜块" />
+      </ActiveReward>
+      <Gift giftbagId="e062767a-3dd4-f57f-900a-f6cd6315f480" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="5" />
+      <ActiveCondition>
+        <Condition giftbagId="e062767a-3dd4-f57f-900a-f6cd6315f480" conditionIndex="0" conditionValue="7" remain1="21" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="e062767a-3dd4-f57f-900a-f6cd6315f480" templateId="11170" count="500" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="铜块" />
+      </ActiveReward>
+      <Gift giftbagId="eb23aa97-61fd-b763-3a35-52d3f30b24ce" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="6" />
+      <ActiveCondition>
+        <Condition giftbagId="eb23aa97-61fd-b763-3a35-52d3f30b24ce" conditionIndex="0" conditionValue="11" remain1="25" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="eb23aa97-61fd-b763-3a35-52d3f30b24ce" templateId="11170" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="铜块" />
+      </ActiveReward>
+      <Gift giftbagId="faf8a06f-d406-8f8d-d223-a6769159ad4e" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="4" />
+      <ActiveCondition>
+        <Condition giftbagId="faf8a06f-d406-8f8d-d223-a6769159ad4e" conditionIndex="0" conditionValue="3" remain1="17" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="faf8a06f-d406-8f8d-d223-a6769159ad4e" templateId="11170" count="250" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="铜块" />
+      </ActiveReward>
+      <Gift giftbagId="ffe12220-eb63-93f4-e464-e4aa258cb2a2" activityId="06f6f266-c2ff-5df3-2ee4-1f140e64c90b" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="ffe12220-eb63-93f4-e464-e4aa258cb2a2" conditionIndex="0" conditionValue="3" remain1="3" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ffe12220-eb63-93f4-e464-e4aa258cb2a2" templateId="11169" count="250" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" activityName="坐骑达人" activityType="14" activityChildType="0" getWay="0" desc="升级超值的坐骑额外赠送坐骑丹，让你升级更有理由更加值得。" rewardDesc="" beginTime="2017-10-26 00:00:00" beginShowTime="2017-10-26 00:00:00" endTime="2024-10-26 00:00:00" endShowTime="2024-10-26 00:00:00" icon="3" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="16e2aa89-d46f-74f9-c7d9-a85e15e580ed" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="16e2aa89-d46f-74f9-c7d9-a85e15e580ed" conditionIndex="0" conditionValue="3" remain1="24" remain2="" />
+        <Condition giftbagId="16e2aa89-d46f-74f9-c7d9-a85e15e580ed" conditionIndex="1" conditionValue="4" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="16e2aa89-d46f-74f9-c7d9-a85e15e580ed" templateId="11164" count="450" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="16e2aa89-d46f-74f9-c7d9-a85e15e580ed" templateId="11163" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="1eb1a823-2955-68f2-fd56-a9647ce25466" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="4" />
+      <ActiveCondition>
+        <Condition giftbagId="1eb1a823-2955-68f2-fd56-a9647ce25466" conditionIndex="0" conditionValue="6" remain1="50" remain2="" />
+        <Condition giftbagId="1eb1a823-2955-68f2-fd56-a9647ce25466" conditionIndex="1" conditionValue="0" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="1eb1a823-2955-68f2-fd56-a9647ce25466" templateId="11164" count="200" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="1eb1a823-2955-68f2-fd56-a9647ce25466" templateId="11163" count="200" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+        <Reward giftId="1eb1a823-2955-68f2-fd56-a9647ce25466" templateId="313599" count="5" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="属性宝珠" />
+      </ActiveReward>
+      <Gift giftbagId="55b08a56-eb1e-bdfe-68d0-d7d0a4eb7aca" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="8" />
+      <ActiveCondition>
+        <Condition giftbagId="55b08a56-eb1e-bdfe-68d0-d7d0a4eb7aca" conditionIndex="0" conditionValue="8" remain1="78" remain2="" />
+        <Condition giftbagId="55b08a56-eb1e-bdfe-68d0-d7d0a4eb7aca" conditionIndex="1" conditionValue="8" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="55b08a56-eb1e-bdfe-68d0-d7d0a4eb7aca" templateId="11164" count="4000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="55b08a56-eb1e-bdfe-68d0-d7d0a4eb7aca" templateId="11163" count="4000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="77bfb3d2-e1a2-66c4-a836-4c59c1155f6a" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="77bfb3d2-e1a2-66c4-a836-4c59c1155f6a" conditionIndex="0" conditionValue="2" remain1="12" remain2="" />
+        <Condition giftbagId="77bfb3d2-e1a2-66c4-a836-4c59c1155f6a" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="77bfb3d2-e1a2-66c4-a836-4c59c1155f6a" templateId="11164" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="77bfb3d2-e1a2-66c4-a836-4c59c1155f6a" templateId="11163" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="882584b8-fe43-f82a-c746-2f7711fce943" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="3" />
+      <ActiveCondition>
+        <Condition giftbagId="882584b8-fe43-f82a-c746-2f7711fce943" conditionIndex="0" conditionValue="5" remain1="45" remain2="" />
+        <Condition giftbagId="882584b8-fe43-f82a-c746-2f7711fce943" conditionIndex="1" conditionValue="5" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="882584b8-fe43-f82a-c746-2f7711fce943" templateId="11164" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="882584b8-fe43-f82a-c746-2f7711fce943" templateId="11163" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="b2505656-83d9-34bc-6013-4cfe4f39ecbe" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="7" />
+      <ActiveCondition>
+        <Condition giftbagId="b2505656-83d9-34bc-6013-4cfe4f39ecbe" conditionIndex="0" conditionValue="7" remain1="66" remain2="" />
+        <Condition giftbagId="b2505656-83d9-34bc-6013-4cfe4f39ecbe" conditionIndex="1" conditionValue="6" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="b2505656-83d9-34bc-6013-4cfe4f39ecbe" templateId="11164" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="b2505656-83d9-34bc-6013-4cfe4f39ecbe" templateId="11163" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="d7711df4-fdb3-d63c-fb84-31c7e2f43c58" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="d7711df4-fdb3-d63c-fb84-31c7e2f43c58" conditionIndex="0" conditionValue="4" remain1="36" remain2="" />
+        <Condition giftbagId="d7711df4-fdb3-d63c-fb84-31c7e2f43c58" conditionIndex="1" conditionValue="6" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d7711df4-fdb3-d63c-fb84-31c7e2f43c58" templateId="11164" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="d7711df4-fdb3-d63c-fb84-31c7e2f43c58" templateId="11163" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+      <Gift giftbagId="d84420b6-a7c2-87cd-37db-6081c4fdc03d" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="9" />
+      <ActiveCondition>
+        <Condition giftbagId="d84420b6-a7c2-87cd-37db-6081c4fdc03d" conditionIndex="0" conditionValue="9" remain1="89" remain2="" />
+        <Condition giftbagId="d84420b6-a7c2-87cd-37db-6081c4fdc03d" conditionIndex="1" conditionValue="9" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d84420b6-a7c2-87cd-37db-6081c4fdc03d" templateId="46205" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="骑行旅人" />
+        <Reward giftId="d84420b6-a7c2-87cd-37db-6081c4fdc03d" templateId="313599" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="属性宝珠" />
+      </ActiveReward>
+      <Gift giftbagId="ed85397b-8798-a262-9a6d-633523ba5ba0" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="5" />
+      <ActiveCondition>
+        <Condition giftbagId="ed85397b-8798-a262-9a6d-633523ba5ba0" conditionIndex="0" conditionValue="6" remain1="56" remain2="" />
+        <Condition giftbagId="ed85397b-8798-a262-9a6d-633523ba5ba0" conditionIndex="1" conditionValue="6" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ed85397b-8798-a262-9a6d-633523ba5ba0" templateId="11164" count="1000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="ed85397b-8798-a262-9a6d-633523ba5ba0" templateId="11163" count="2000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+        <Reward giftId="ed85397b-8798-a262-9a6d-633523ba5ba0" templateId="313599" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="宝珠" />
+      </ActiveReward>
+      <Gift giftbagId="f4569d0c-8e23-3225-b285-06ad718aa082" activityId="2b6b357d-838d-e8ca-a130-aaf7bb434405" rewardMark="0" giftbagOrder="6" />
+      <ActiveCondition>
+        <Condition giftbagId="f4569d0c-8e23-3225-b285-06ad718aa082" conditionIndex="0" conditionValue="7" remain1="60" remain2="" />
+        <Condition giftbagId="f4569d0c-8e23-3225-b285-06ad718aa082" conditionIndex="1" conditionValue="0" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="f4569d0c-8e23-3225-b285-06ad718aa082" templateId="11164" count="2000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="f4569d0c-8e23-3225-b285-06ad718aa082" templateId="11163" count="4000" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="千叶草" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" activityName="神庙升级" activityType="20" activityChildType="0" getWay="0" desc="神庙升级" rewardDesc="神庙升级" beginTime="2022-03-05 00:00:00" beginShowTime="2022-03-05 00:00:00" endTime="2022-03-05 00:00:00" endShowTime="2022-03-05 00:00:00" icon="3" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="9" />
+      <ActiveCondition>
+        <Condition giftbagId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" conditionIndex="0" conditionValue="2" remain1="19" remain2="" />
+        <Condition giftbagId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" conditionIndex="1" conditionValue="9" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" templateId="11164" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" templateId="11169" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="034c3e2e-4cac-0b03-a262-9523d3b6e53b" templateId="11177" count="75" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="8" />
+      <ActiveCondition>
+        <Condition giftbagId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" conditionIndex="0" conditionValue="2" remain1="17" remain2="" />
+        <Condition giftbagId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" conditionIndex="1" conditionValue="7" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" templateId="11164" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" templateId="11169" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="20cc1c80-4806-9e6b-67ca-0061cc3c29e2" templateId="11177" count="65" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="22905246-8796-5d16-28c1-628a1e82c2f8" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="22905246-8796-5d16-28c1-628a1e82c2f8" conditionIndex="0" conditionValue="1" remain1="5" remain2="" />
+        <Condition giftbagId="22905246-8796-5d16-28c1-628a1e82c2f8" conditionIndex="1" conditionValue="5" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="22905246-8796-5d16-28c1-628a1e82c2f8" templateId="11164" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="22905246-8796-5d16-28c1-628a1e82c2f8" templateId="11169" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="22905246-8796-5d16-28c1-628a1e82c2f8" templateId="11177" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="6993b860-964b-48f3-f3c3-23db8d2a2de9" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="5" />
+      <ActiveCondition>
+        <Condition giftbagId="6993b860-964b-48f3-f3c3-23db8d2a2de9" conditionIndex="0" conditionValue="2" remain1="11" remain2="" />
+        <Condition giftbagId="6993b860-964b-48f3-f3c3-23db8d2a2de9" conditionIndex="1" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="6993b860-964b-48f3-f3c3-23db8d2a2de9" templateId="11164" count="70" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="6993b860-964b-48f3-f3c3-23db8d2a2de9" templateId="11169" count="70" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="6993b860-964b-48f3-f3c3-23db8d2a2de9" templateId="11177" count="35" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="730650f5-e6eb-913f-e299-5bb39741dd28" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="7" />
+      <ActiveCondition>
+        <Condition giftbagId="730650f5-e6eb-913f-e299-5bb39741dd28" conditionIndex="0" conditionValue="2" remain1="15" remain2="" />
+        <Condition giftbagId="730650f5-e6eb-913f-e299-5bb39741dd28" conditionIndex="1" conditionValue="5" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="730650f5-e6eb-913f-e299-5bb39741dd28" templateId="11164" count="90" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="730650f5-e6eb-913f-e299-5bb39741dd28" templateId="11169" count="90" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="730650f5-e6eb-913f-e299-5bb39741dd28" templateId="11177" count="55" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="96f4a179-a185-f192-e52b-7cef47beea03" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="6" />
+      <ActiveCondition>
+        <Condition giftbagId="96f4a179-a185-f192-e52b-7cef47beea03" conditionIndex="0" conditionValue="2" remain1="13" remain2="" />
+        <Condition giftbagId="96f4a179-a185-f192-e52b-7cef47beea03" conditionIndex="1" conditionValue="3" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="96f4a179-a185-f192-e52b-7cef47beea03" templateId="11164" count="90" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="96f4a179-a185-f192-e52b-7cef47beea03" templateId="11169" count="90" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="96f4a179-a185-f192-e52b-7cef47beea03" templateId="11177" count="45" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="3" />
+      <ActiveCondition>
+        <Condition giftbagId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" conditionIndex="0" conditionValue="1" remain1="7" remain2="" />
+        <Condition giftbagId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" conditionIndex="1" conditionValue="7" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" templateId="11169" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="9ef43a7b-ee95-521c-31ab-30115af8f3c9" templateId="11177" count="80" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" conditionIndex="0" conditionValue="1" remain1="3" remain2="" />
+        <Condition giftbagId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" conditionIndex="1" conditionValue="3" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" templateId="11164" count="10" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" templateId="11169" count="10" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="bed0e9b4-d7d6-823f-6c73-2f3fa4e858af" templateId="11177" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="11" />
+      <ActiveCondition>
+        <Condition giftbagId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" conditionIndex="0" conditionValue="6" remain1="99" remain2="" />
+        <Condition giftbagId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" conditionIndex="1" conditionValue="9" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" templateId="334103" count="9999" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="宠物粮" />
+        <Reward giftId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" templateId="46005" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="称号" />
+        <Reward giftId="ca27af93-dac7-9bcf-c922-e3790b53ce3f" templateId="12248" count="9999" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" conditionIndex="0" conditionValue="1" remain1="1" remain2="" />
+        <Condition giftbagId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" conditionIndex="1" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" templateId="11164" count="5" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" templateId="11169" count="5" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="cdfb32a7-a66d-5ec5-c46f-dbc43c422cd2" templateId="11177" count="10" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="4" />
+      <ActiveCondition>
+        <Condition giftbagId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" conditionIndex="0" conditionValue="1" remain1="9" remain2="" />
+        <Condition giftbagId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" conditionIndex="1" conditionValue="9" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" templateId="11164" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" templateId="11169" count="5" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="cf64b809-c2ec-7c09-f77e-ee43f6e095cc" templateId="11177" count="150" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+      <Gift giftbagId="db982a60-b1aa-deb4-1a38-d15537bc945f" activityId="5f8acd5e-0cac-b268-1c2c-53fd4c7635cf" rewardMark="0" giftbagOrder="10" />
+      <ActiveCondition>
+        <Condition giftbagId="db982a60-b1aa-deb4-1a38-d15537bc945f" conditionIndex="0" conditionValue="3" remain1="22" remain2="" />
+        <Condition giftbagId="db982a60-b1aa-deb4-1a38-d15537bc945f" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="db982a60-b1aa-deb4-1a38-d15537bc945f" templateId="11164" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="坐骑升级丹" />
+        <Reward giftId="db982a60-b1aa-deb4-1a38-d15537bc945f" templateId="11169" count="150" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="碎石" />
+        <Reward giftId="db982a60-b1aa-deb4-1a38-d15537bc945f" templateId="11177" count="150" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="高级祭品" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="f65bdb67-02de-a05c-56c5-30fa20d28aef" activityName="长期抢购" activityType="19" activityChildType="4" getWay="0" desc="请适量购买" rewardDesc="物品1: 玻璃球 x 1 (不限,绑定,永久有效)&amp;#xA;数量：1原价:100，现价:100点券，限购条件:无，限购数量:不限购&amp;#xA;物品2: 榮譽精華 x 1 (不限,绑定,永久有效)&amp;#xA;数量：1原价:50，现价:50点券，限购条件:无，限购数量:不限购&amp;#xA;" beginTime="2021-03-02 00:00:00" beginShowTime="2021-03-02 00:00:00" endTime="2024-10-26 00:00:00" endShowTime="2024-10-26 00:00:00" icon="1" isContinue="0" status="1" remain1="0" remain2="" />
+    <ActiveGiftBag>
+      <Gift giftbagId="0bc987f0-0e39-e7d6-bc43-ce3f52aa0f70" activityId="f65bdb67-02de-a05c-56c5-30fa20d28aef" rewardMark="0" giftbagOrder="1" />
+      <ActiveReward>
+        <Reward giftId="0bc987f0-0e39-e7d6-bc43-ce3f52aa0f70" templateId="11917" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="1,1,50,-8,50,0,0,3,0,1484963" remain1="榮譽精華" />
+      </ActiveReward>
+      <Gift giftbagId="28dc363e-5840-6215-9830-d8dd35798ba0" activityId="f65bdb67-02de-a05c-56c5-30fa20d28aef" rewardMark="0" giftbagOrder="0" />
+      <ActiveReward>
+        <Reward giftId="28dc363e-5840-6215-9830-d8dd35798ba0" templateId="11633" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="1,1,100,-8,100,0,0,3,0,1484962" remain1="玻璃球" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+</Result>

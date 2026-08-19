@@ -1,0 +1,19 @@
+<Result value="true" message="Success!">
+  <Item ID="1" AwardIndex="1" Type="1" PlayerLevel="0" Reward="101000041,1|11020,10|101000035,1" />
+  <Item ID="2" AwardIndex="1" Type="2" PlayerLevel="1" Reward="101000184,5|11020,15|101000034,1" />
+  <Item ID="3" AwardIndex="2" Type="2" PlayerLevel="2" Reward="101000184,7|11020,20|101000034,2" />
+  <Item ID="4" AwardIndex="3" Type="2" PlayerLevel="3" Reward="101000184,10|12236,5|101000034,4" />
+  <Item ID="5" AwardIndex="4" Type="2" PlayerLevel="4" Reward="101000115,100|101000114,100|101000068,1" />
+  <Item ID="6" AwardIndex="5" Type="2" PlayerLevel="5" Reward="101000115,150|101000114,150|101000069,1" />
+  <Item ID="7" AwardIndex="6" Type="2" PlayerLevel="6" Reward="101000115,300|101000114,300|101000070,1" />
+  <Item ID="8" AwardIndex="7" Type="2" PlayerLevel="7" Reward="101000115,400|101000114,400|101000071,1" />
+  <Item ID="9" AwardIndex="8" Type="2" PlayerLevel="8" Reward="101000115,500|101000114,500|101000072,1" />
+  <Item ID="10" AwardIndex="9" Type="2" PlayerLevel="9" Reward="101000115,900|101000114,900|101000073,1" />
+  <Item ID="11" AwardIndex="1" Type="3" PlayerLevel="10" Reward="11019,1|11022,1" />
+  <Item ID="12" AwardIndex="2" Type="3" PlayerLevel="20" Reward="11019,2|11022,2" />
+  <Item ID="13" AwardIndex="3" Type="3" PlayerLevel="30" Reward="11019,3|11022,3" />
+  <Item ID="14" AwardIndex="4" Type="3" PlayerLevel="40" Reward="11019,4|11022,4" />
+  <Item ID="15" AwardIndex="5" Type="3" PlayerLevel="50" Reward="11019,5|11022,4" />
+  <Item ID="16" AwardIndex="1" Type="4" PlayerLevel="0" Reward="50201,1|101000036,1" />
+  <Item ID="17" AwardIndex="1" Type="5" PlayerLevel="0" Reward="71444,1|101000037,1" />
+</Result>

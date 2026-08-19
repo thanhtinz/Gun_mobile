@@ -1,0 +1,6 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Name="Không kỳ hạn" InterestRate="15" MinAmount="5000" Multiple="100" Consume="0" DeadLine="0" />
+  <Item ID="2" Name="Định kỳ 1 tháng" InterestRate="25" MinAmount="10000" Multiple="1000" Consume="60" DeadLine="1" />
+  <Item ID="3" Name="Định kỳ 3 tháng" InterestRate="40" MinAmount="15000" Multiple="5000" Consume="80" DeadLine="3" />
+  <Item ID="4" Name="Định kỳ 5 tháng" InterestRate="60" MinAmount="20000" Multiple="10000" Consume="90" DeadLine="5" />
+</Result>

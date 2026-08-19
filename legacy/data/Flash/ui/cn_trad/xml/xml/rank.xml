@@ -1,0 +1,109 @@
+<style name="rank" version="1.0.1" source="ui/cn_trad/swf/rank.swf">
+	
+	<sets>
+		<set stylename="rank.ActivityCellTitleSelectedTextTF" args="Arial,16,0xf4d96b,true" type="flash.text.TextFormat" />
+		<set stylename="rank.ActivityCellTitleSelectedTextGF" args="0x541e00,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rank.ActivityCellTitleUnSelectedTextTF" args="Arial,16,0xffffff" type="flash.text.TextFormat" />
+		<set stylename="rank.ActivityCellTitleUnSelectedTextGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rank.ActivityTimeTextTF" args="Arial,14,0xf9e8b8" type="flash.text.TextFormat" />
+		<set stylename="rank.ActivityTimeTextGF" args="0xbf0702,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rankInfo.lastRefreshTextTF" args="Arial,14,0xff2c26,true" type="flash.text.TextFormat" />
+		<set stylename="rankInfo.lastRefreshTextGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rank.AcitvityEndInfoTextTF" args="Arial,14,0xff2c26,true" type="flash.text.TextFormat" />
+		<set stylename="rank.AcitvityEndInfoTextGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rankInfo.titleTextTF" args="Arial,14,0xffea9c,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="rankInfo.titleTextGF" args="0x4f3700,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set stylename="rankInfo.infoTextTF" args="Arial,13,0xffffff,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="rankInfo.infoTextGF" args="0x362109,1,2,2,10" type="flash.filters.GlowFilter" />
+	</sets>
+	
+	<components>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="rank.view.scale9ImageBg" width="713" height="489" x="19" y="44" parentStyle="core.bg6920"/>
+		
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="rank.view.BG1" resourceLink="asset.core.ScaleBitmapImage1" width="204" height="479" x="25" y="50" scaleGridString="33,26,59,70"/>
+		
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage"
+			stylename="rank.ActivityCellBg" x="2"
+			resourceLink="rank.ActivityCellBgUnSelected,rank.ActivityCellBgSelected"  height="50"/>
+		<component classname="com.pickgliss.ui.image.Image"
+			stylename="rank.ActivityCellBgSelected" resourceLink="asset.rank.ActivityContentBg" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage"
+			stylename="rank.ActivityCellBgUnSelected" resourceLink="asset.rank.ActivityCellUnSelectedBg" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="rank.ActivityCellTitleText"
+			textFormatStyle="rank.ActivityCellTitleUnSelectedTextTF,rank.ActivityCellTitleSelectedTextTF"
+			filterString="rank.ActivityCellTitleUnSelectedTextGF,rank.ActivityCellTitleSelectedTextGF"
+			x="18" y="14" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rank.ActivityTimeText" 
+			textFormatStyle="rank.ActivityTimeTextTF" filterString="rank.ActivityTimeTextGF" x="298" y="129" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rank.AcitvityEndInfoText" 
+			textFormatStyle="rank.AcitvityEndInfoTextTF" filterString="rank.AcitvityEndInfoTextGF" x="429" y="500" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rankInfo.lastRefreshText" 
+			textFormatStyle="rankInfo.lastRefreshTextTF" filterString="rankInfo.lastRefreshTextGF" x="225" y="434" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rankInfo.titleText" 
+			textFormatStyle="rankInfo.titleTextTF" filterString="rankInfo.titleTextGF"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="rankInfo.infoText" 
+			textFormatStyle="rankInfo.infoTextTF" filterString="rankInfo.infoTextGF" autoSize="none" height="24"/>
+			
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="rank.checkRankBtn" 
+			backStyle="asset.rank.checkRankBtn" x="387" y="44" filterString="null,lightFilter,lightFilter,grayFilter"/>
+			
+		<component classname="com.pickgliss.ui.controls.container.VBox"
+			stylename="rank.ActivityState.Vbox" x="142" y="139" spacing="29" />
+		<component classname="com.pickgliss.ui.controls.container.HBox"
+			stylename="rank.ActivityState.Hbox" x="0" y="0" spacing="6" />
+	</components>
+	
+	<customDisplay>
+		<custom classname="rank.view.RankFrame" stylename="rank.RankFrame"
+			backStyle="SimpleFrameBackgoundOne" parentStyle="BaseFrame"
+			closestyle="core.closebt" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="24,10,5" closeInnerRectString="44,22,6,30,14"
+			moveInnerRectString="0,30,0,30,1" width="752" height="550" escEnable="true" />
+			
+		<custom classname="rank.view.RankInfoFrame" stylename="rank.RankInfoFrame"
+			backStyle="SimpleFrameBackgoundOne" parentStyle="BaseFrame"
+			closestyle="core.closebt" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="24,10,5" closeInnerRectString="44,22,6,30,14"
+			moveInnerRectString="0,30,0,30,1" width="474" height="464" escEnable="true" />
+		
+		<custom classname="flash.geom.Point" stylename="rank.leftView.pos" x="34" y="73"/>
+		<custom classname="flash.geom.Point" stylename="rank.rightView.pos" x="230" y="49"/>
+		
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle1" titleHLinePt="101,50|213,50|313,50" titleTextPt="45,54|112,54|217,54|329,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle2" titleHLinePt="101,50|227,50|361,50" titleTextPt="45,54|147,54|257,54|366,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle3" titleHLinePt="101,50|227,50|361,50" titleTextPt="45,54|147,54|264,54|374,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle4" titleHLinePt="101,50|298,50" titleTextPt="45,54|184,54|337,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle5" titleHLinePt="101,50|298,50" titleTextPt="45,54|184,54|337,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle6" titleHLinePt="101,50|298,50" titleTextPt="45,54|184,54|337,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle7" titleHLinePt="101,50|298,50" titleTextPt="45,54|184,54|328,54"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posTitle8" titleHLinePt="101,50|298,50" titleTextPt="45,54|184,54|337,54"/>
+		
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo1" titleHLinePt="119,50|232,50|332,50" titleTextPt="49,52|120,52|233,52|333,52" infoTextWidth="66|113|100|124"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo2" titleHLinePt="119,50|245,50|380,50" titleTextPt="49,52|120,52|246,52|381,52" infoTextWidth="66|126|145|76"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo3" titleHLinePt="119,50|245,50|380,50" titleTextPt="49,52|120,52|246,52|381,52" infoTextWidth="66|126|145|76"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo4" titleHLinePt="119,50|317,50" titleTextPt="49,52|120,52|318,52" infoTextWidth="66|198|136"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo5" titleHLinePt="119,50|317,50" titleTextPt="49,52|120,52|318,52" infoTextWidth="66|198|136"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo6" titleHLinePt="119,50|317,50" titleTextPt="49,52|120,52|318,52" infoTextWidth="66|198|136"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo7" titleHLinePt="119,50|317,50" titleTextPt="49,52|120,52|318,52" infoTextWidth="66|198|136"/>
+		<custom classname="rank.data.RankLayouInfo" stylename="rankInfo.posInfo8" titleHLinePt="119,50|317,50" titleTextPt="49,52|120,52|318,52" infoTextWidth="66|198|136"/>
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.rankInfo.bg" x="19" y="45"/>
+		<bitmapData resourceLink="asset.rank.reward.bg"/>
+	</bitmaps>
+	
+</style>

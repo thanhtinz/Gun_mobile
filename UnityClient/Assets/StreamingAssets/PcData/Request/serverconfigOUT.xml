@@ -1,0 +1,1083 @@
+<Result value="true" message="Success!">
+  <Item Name="MustStrengthenGold" Value="0" />
+  <Item Name="MustComposeGold" Value="0" />
+  <Item Name="MustFusionGold" Value="400" />
+  <Item Name="Edition" Value="5498628" />
+  <Item Name="CheckRewardItem" Value="11001" />
+  <Item Name="CheckCount" Value="10" />
+  <Item Name="HymenealMoney" Value="300" />
+  <Item Name="DivorcedMoney" Value="1499" />
+  <Item Name="MarryRoomCreateMoney" Value="700,900" />
+  <Item Name="BoxAppearCondition" Value="4" />
+  <Item Name="DisableCommands" Value="   " />
+  <Item Name="AssState" Value="False" />
+  <Item Name="DailyAwardState" Value="True" />
+  <Item Name="Cess" Value="0.1" />
+  <Item Name="BeginAuction" Value="45" />
+  <Item Name="EndAuction" Value="75" />
+  <Item Name="Equip" Value="3158,,5160,71050|3244,,5276,71050" />
+  <Item Name="CopyInviteLevelLimit" Value="10" />
+  <Item Name="SpaRoomCreateMoney" Value="0,9999999" />
+  <Item Name="SpaPubRoomCount" Value="8,0" />
+  <Item Name="SpaPriRoomCount" Value="2000" />
+  <Item Name="RefreshLimitShopCount" Value="08:00|16:00" />
+  <Item Name="LimitShopState" Value="True" />
+  <Item Name="GoHomeState" Value="True" />
+  <Item Name="SpaPubRoomServerID" Value="1|2|3|4|5|6|7|8|9|10" />
+  <Item Name="SeizeNpc" Value="True" />
+  <Item Name="SpaPubRoomLoginPay" Value="10000,200" />
+  <Item Name="SpaPriRoomInitTime" Value="60" />
+  <Item Name="SpaPriRoomContinueTime" Value="60" />
+  <Item Name="SpaPubRoomTimeLimit" Value="60,60" />
+  <Item Name="SpaPubRoomPlayerMaxCount" Value="20,20" />
+  <Item Name="ChatCount" Value="5" />
+  <Item Name="DefaultGold" Value="0" />
+  <Item Name="DefaultMoney" Value="0" />
+  <Item Name="DefaultGiftToken" Value="200" />
+  <Item Name="NpcPlayerState" Value="True" />
+  <Item Name="ExchangMoneyToGold" Value="50" />
+  <Item Name="MustTransferGold" Value="40000" />
+  <Item Name="MustInlayGold" Value="20000" />
+  <Item Name="DispatchesMoney" Value="200" />
+  <Item Name="DismountGemMoney" Value="200" />
+  <Item Name="CanExperience" Value="False" />
+  <Item Name="MaxStrengthLevel" Value="12" />
+  <Item Name="AASInterfaceSwitch" Value="0" />
+  <Item Name="OpenHolesGold" Value="200" />
+  <Item Name="DefaultGP" Value="1" />
+  <Item Name="IsOpenUseLog" Value="False" />
+  <Item Name="InviterRewardGrade" Value="5,112065|10,11462" />
+  <Item Name="MAXLevel" Value="70" />
+  <Item Name="GiftLimit" Value="23" />
+  <Item Name="DivorcedDiscountMoney" Value="999" />
+  <Item Name="LotterySilverRewardTimes" Value="10" />
+  <Item Name="LotteryGoldRewardTimes" Value="100" />
+  <Item Name="HoleLevelUpExpList" Value="400|600|700|800|800|800" />
+  <Item Name="SendRandUserFaceInterval" Value="25" />
+  <Item Name="UserFaceRange" Value="49|66" />
+  <Item Name="CoupleFightGPRate" Value="0.5" />
+  <Item Name="ConsortiaFightRate" Value="0.1|0.2" />
+  <Item Name="MarrayAutoAward" Value="False" />
+  <Item Name="WeddingAutoAward" Value="False" />
+  <Item Name="GhostGPMax" Value="1000" />
+  <Item Name="PlayerGPMax" Value="10000" />
+  <Item Name="PICKUP_SNENIOR_ROBOT" Value="True" />
+  <Item Name="FightSendFace_Open" Value="True" />
+  <Item Name="IsOpenAreBigBugle" Value="False" />
+  <Item Name="IsPasswordTwoFailedLockBag" Value="True" />
+  <Item Name="FightLabLimitGrade" Value="15" />
+  <Item Name="ExerciseMaxLevel" Value="75" />
+  <Item Name="LotteryTemplateExchange" Value="11998|11997|14006|11069|17003|11904|11030|11031|11032|11033|9125|20135|11102|7015|9224|11112" />
+  <Item Name="SpaWorldMaxCount" Value="500" />
+  <Item Name="SpaWorldIds" Value="1,1" />
+  <Item Name="LuckStoneExchangeRule" Value="101,8|102,4|103,2|104,1" />
+  <Item Name="LuckyNumMoney" Value="99" />
+  <Item Name="LuckStoneCoefficient" Value="0.33|0.46|0.6|1" />
+  <Item Name="MissionMinute" Value="360" />
+  <Item Name="MissionBuffDay" Value="1" />
+  <Item Name="MissionRiches" Value="3000|3000|5000|5000|8000|8000|10000|10000|12000|12000" />
+  <Item Name="MissionAwardRiches" Value="5000|5000|8250|8250|13200|13200|16500|16500|19800|19800" />
+  <Item Name="MissionAwardGP" Value="100000|100000|200000|200000|300000|300000|400000|400000|500000|500000" />
+  <Item Name="MissionAwardOffer" Value="500|500|1000|1000|1500|1500|2000|2000|2500|2500" />
+  <Item Name="MissionAwardRicheOffer" Value="1500|1500|2500|2500|4000|4000|5000|5000|6000|6000" />
+  <Item Name="MissionAgainMoney" Value="500" />
+  <Item Name="MaxCountBuyOneDay" Value="3" />
+  <Item Name="GpExchangeForEachOfferLvMax" Value="600" />
+  <Item Name="MaxMedalCount" Value="999" />
+  <Item Name="RollAward" Value="0|110|120|150|180|200" />
+  <Item Name="RollFirstProbability" Value="1000|1000|1000|2000|2000|3000" />
+  <Item Name="RollProbability" Value="500|1000|1500|3000|2500|1500" />
+  <Item Name="AwardMaxMoney" Value="5000" />
+  <Item Name="RollTimes" Value="1" />
+  <Item Name="MarryRoomSendGiftItemID" Value="11900" />
+  <Item Name="PveCheckCodeCount" Value="3" />
+  <Item Name="GameMgrUseFor" Value="1" />
+  <Item Name="BlessTemplateID" Value="11560|11561|11562" />
+  <Item Name="BlessValid" Value="30|30|30" />
+  <Item Name="BlessDropProbability" Value="190|260|50" />
+  <Item Name="BlessProbability" Value="1000|1000|1000" />
+  <Item Name="BlessCategoryID" Value="7|5|1" />
+  <Item Name="BlessEquipLevel" Value="12|12|12" />
+  <Item Name="OldPlayerTeamAddExp" Value="100" />
+  <Item Name="VIPExpForEachLv" Value="0|200|400|800|2000|4000|8000|20000|40000|80000|200000|400000|800000|1200000|1600000" />
+  <Item Name="VIPRateForGP" Value="1.1|1.2|1.3|1.4|1.5|1.8|1.8|1.8|1.8|1.9|1.9|2.0" />
+  <Item Name="VIPLotteryCountMaxPerDay" Value="3|4|5|6|7|8|9|10|11|12|13|15" />
+  <Item Name="VIPExtraBindMoneyUpper" Value="0|0|0|9999|9999|12999|12999|12999|12999|19999|19999|19999" />
+  <Item Name="VIPQuestFinishDirect" Value="0|0|0|0|0|2|2|2|2|3|3|4" />
+  <Item Name="VIPQuestStar" Value="2|2|2|2|2|3|3|3|3|3|3|3" />
+  <Item Name="VIPStrengthenEx" Value="25|25|25|35|35|50|50|50|50|50|50|50|50|50|50" />
+  <Item Name="VIPOfferDecreaseRate" Value="0|0|0|0|0|0|0|0|0|0|0|0" />
+  <Item Name="VIPDailyPackID" Value="112112|112113|112114|112115|112116|112117|112118|112119|112120|112204|112205|112206" />
+  <Item Name="VIPTakeCardDisCount" Value="100|100|100|90|90|80|80|80|80|80|70|70|80|70|70" />
+  <Item Name="BecomeVIPAward" Value="112164" />
+  <Item Name="VIPMaxLevel" Value="12" />
+  <Item Name="VIPPayAimEnergy" Value="120|120|120|120|120|50|50|50|50|30|30|30" />
+  <Item Name="VIPPrivilege" Value="0,|0,|1,|2,|3,|4,13,|5,11,|6,|7,8,|10,20,|9,|12," />
+  <Item Name="PayAimEnergy" Value="120" />
+  <Item Name="FreePayAimCount" Value="3" />
+  <Item Name="AimLevel" Value="15" />
+  <Item Name="PlayerMinLevel" Value="19" />
+  <Item Name="BindMoneyRate" Value="1|1|1|1" />
+  <Item Name="ExpRate" Value="1.5|2|2.5|3" />
+  <Item Name="GoldRate" Value="1.5|2|2.5|3" />
+  <Item Name="ExploitRate" Value="1.5|2|2.5|3" />
+  <Item Name="BindMoneyMax" Value="30000|30000|30000|30000|30000|30000|30000|30000" />
+  <Item Name="CanOneKeyFinishTime" Value="10000" />
+  <Item Name="ExerciseLevelLimited" Value="10|20|30|40|45|50|55|60|65|70" />
+  <Item Name="VIPRenewalPrize" Value="569|1707|3000" />
+  <Item Name="ConsortiaStrengthenEx" Value="10|20|30|40|50|60|70|80|90|100" />
+  <Item Name="RunePackageID" Value="311100" />
+  <Item Name="OpenRunePackageMoney" Value="10|20|50|100" />
+  <Item Name="OpenRunePackageRange" Value="1,6|1,5|1,4" />
+  <Item Name="CardResetSoulValue" Value="50" />
+  <Item Name="IsGrooveLevelUpNoticeEnabled" Value="True" />
+  <Item Name="GrooveLevelUpSysNotice" Value="35|40,45" />
+  <Item Name="IsCardTypeUpNoticeEnabled" Value="True" />
+  <Item Name="CardTypeUpSysNotice" Value="1,4" />
+  <Item Name="OverseaVIPFeatures" Value="False" />
+  <Item Name="MalaysiaFeatures" Value="False" />
+  <Item Name="VietnamFeatures" Value="True" />
+  <Item Name="SpaAddictionMoneyNeeded" Value="100" />
+  <Item Name="KickPlayerMoney" Value="-1" />
+  <Item Name="VIPExpNeededForEachLv" Value="0|100|250|550|1250|2200|3100|4100|5650" />
+  <Item Name="VIPExpGainPerDay" Value="10" />
+  <Item Name="VIPExpDecreasePerDay" Value="5" />
+  <Item Name="VIPGpBonusRatePerLevel" Value="0.1" />
+  <Item Name="VIPSpaTimeBonusPerLevel" Value="30" />
+  <Item Name="VIPExpBonusForValueVIP" Value="5" />
+  <Item Name="RollLevel" Value="10|70" />
+  <Item Name="IsCardUpgradeNoticeEnabled" Value="true" />
+  <Item Name="LotteryRewardSwitch" Value="True" />
+  <Item Name="SNSMessageExtend" Value="True" />
+  <Item Name="OverseaNewLotteryBox" Value="True" />
+  <Item Name="LevelControlSwitch" Value="False" />
+  <Item Name="LevelControlLevel" Value="15" />
+  <Item Name="TakeCardMoney" Value="500" />
+  <Item Name="TakeCardDiscount" Value="0.1" />
+  <Item Name="CardGrooveRevert" Value="300" />
+  <Item Name="BoxActivityCount" Value="2|2|3|5|6" />
+  <Item Name="RandomPetScore" Value="3,7,100|8,12,15|13,15,5" />
+  <Item Name="IsOpenPetScore" Value="False" />
+  <Item Name="RuneLevelUpExp" Value="1|2|4|8|16|32|64|128|384|1152|3456|10368|31104|93312|279936|839808|1679616|6718464|16796160|50388480|83980800" />
+  <Item Name="MultAreaBeginDate" Value="2010/10/1 0:00:00" />
+  <Item Name="MultAreaEndDate" Value="2010/10/7 0:00:00" />
+  <Item Name="MultAreaBeginTime" Value="2016/9/29 12:00:00" />
+  <Item Name="MultAreaEndTime" Value="2016/9/29 14:00:00" />
+  <Item Name="WorldBossBattleMinPlayerLevel" Value="20" />
+  <Item Name="WorldBossCD" Value="15" />
+  <Item Name="WorldBossReviveMoney" Value="10" />
+  <Item Name="PveTickets" Value="200619|200620|200621|200622|201105|201105" />
+  <Item Name="DealIsBinds" Value="False" />
+  <Item Name="LuckStoneTopAwardCount" Value="3" />
+  <Item Name="RemovePetSendItem" Value="False" />
+  <Item Name="DicePoint" Value="5|10" />
+  <Item Name="WorldBossDamageScoreExchangeRate" Value="100" />
+  <Item Name="WorldBossMaxBlood" Value="3000000000" />
+  <Item Name="WorldBossBattleID" Value="111101" />
+  <Item Name="WorldBossBattleTicketNeeded" Value="0" />
+  <Item Name="WorldBossBeginTime" Value="2012/10/1 0:00:00" />
+  <Item Name="WorldBossEndTime" Value="2012/10/1 0:00:00" />
+  <Item Name="WorldBossFightTime" Value="65" />
+  <Item Name="WorldBossSwitch" Value="True" />
+  <Item Name="WorldBossBattlePlayerAddBlood" Value="50000" />
+  <Item Name="WorldBossBattlePlayerAddDamage" Value="10000" />
+  <Item Name="WorldBossFightMoney" Value="12" />
+  <Item Name="BuyBossBufferMoney" Value="30" />
+  <Item Name="LuckStoneLimit" Value="300" />
+  <Item Name="KingBuffPrice" Value="475,1425,2778" />
+  <Item Name="KingBuffPriceDiscount" Value="0,0,0" />
+  <Item Name="QuestCollocationCount" Value="99" />
+  <Item Name="QuestCollocationAdvanceMinuteCost" Value="3" />
+  <Item Name="QuestCollocationEnergyBuyCost" Value="170" />
+  <Item Name="QuestCollocationEnergyBuyCount" Value="50" />
+  <Item Name="QuestCollocationEnergyMaxCount" Value="100" />
+  <Item Name="ItemAdvanceMinRandom" Value="20" />
+  <Item Name="ItemAdvanceLuckyRate" Value="10" />
+  <Item Name="WorldBossDamageHonorExchangeRate" Value="1200" />
+  <Item Name="WorldBossKillHonor" Value="500|500|700|700|900|900|1200|1200|1500|1500" />
+  <Item Name="WorldBossRankHonor" Value="500|350|250|100|100|100|100|100|100|100" />
+  <Item Name="WarriorFamSwitch" Value="True" />
+  <Item Name="FightSpiritSwitch" Value="True" />
+  <Item Name="WarriorFamRaidPricePerMin" Value="10" />
+  <Item Name="StrengthenSysNotice" Value="False" />
+  <Item Name="FightSpiritMaxLevel" Value="12" />
+  <Item Name="WorldBossBeginTimeAdjust" Value="0" />
+  <Item Name="WarriorFamTrySwitch" Value="False" />
+  <Item Name="NpcMainWeapon" Value="7008" />
+  <Item Name="FairBattleDayPrestige" Value="2000" />
+  <Item Name="HighTimeBoxLeve" Value="20" />
+  <Item Name="HighTimeBoxBegin" Value="2014/1/14 0:00:00" />
+  <Item Name="HighTimeBoxEnd" Value="2050/2/28 23:59:59" />
+  <Item Name="FairBattleBaseProperty" Value="1650,1150,1310,1350,950,390,18000,230" />
+  <Item Name="FairBattleLevelLimit" Value="29" />
+  <Item Name="FairBattleTime" Value="08:00-10:00|17:00-19:00" />
+  <Item Name="FairBattleSwitch" Value="True" />
+  <Item Name="ConsortiaBossMaxProlong" Value="3" />
+  <Item Name="ConsortiaBossHonerPER" Value="20" />
+  <Item Name="ConsortiaBossRichPER" Value="2" />
+  <Item Name="ConsortiaBossFightTime" Value="1200" />
+  <Item Name="ConsortiaBossProlongTime" Value="600" />
+  <Item Name="EncounterBeginTime" Value="2010/1/1 0:00:00" />
+  <Item Name="EncounterEndTime" Value="2010/1/1 23:59:59" />
+  <Item Name="HideNewRune" Value="True" />
+  <Item Name="FarmActivityCount" Value="1|2|3|6|4" />
+  <Item Name="RepairFriendFarmCount" Value="5" />
+  <Item Name="FarmActivityItemCount" Value="16" />
+  <Item Name="IsOpenFarmActivity" Value="True" />
+  <Item Name="FarmActivityItemGears" Value="5" />
+  <Item Name="WorldBattleProperty" Value="1800|1600|1500|1800|1500|600|25000|250" />
+  <Item Name="WorldBattleMainWeapons" Value="70353|70363|70373|70413" />
+  <Item Name="WorldBattleSecondWeapons" Value="17002|17004|17200" />
+  <Item Name="WorldBattlePets" Value="100102,2,26,38|130102,14,32,62|120102,8,29,43|110102,20,35,66" />
+  <Item Name="WorldBattleLevelLimit" Value="20" />
+  <Item Name="WorldBattleDayPoint" Value="2000" />
+  <Item Name="WorldBattleAgentID" Value="2" />
+  <Item Name="WorldBattleStyles" Value="1199,1299|5199,5299|15043" />
+  <Item Name="SpaGameMinLevel" Value="20" />
+  <Item Name="ComradeRewardLimitCount" Value="5" />
+  <Item Name="IsQuitSave" Value="True" />
+  <Item Name="SecondWeapeonFightPower" Value="500:17001,17003|700:17002,17004,17006,17000|850:17100,17005" />
+  <Item Name="SearchGoodsFreeCount" Value="3" />
+  <Item Name="SearchGoodsTakeCardMoney" Value="0|50|120" />
+  <Item Name="StopWingsPlusScore" Value="6,20|10,40|11,60" />
+  <Item Name="WingsPlusScore" Value="3,20|6,40|10,80" />
+  <Item Name="EndFightTime" Value="5" />
+  <Item Name="DrawScore" Value="5" />
+  <Item Name="LostScore" Value="1" />
+  <Item Name="WinScore" Value="10" />
+  <Item Name="BeginTime" Value="2000,1,1,9,0,0" />
+  <Item Name="EndTime" Value="2050,1,1,19,0,0" />
+  <Item Name="IsReConnet" Value="False" />
+  <Item Name="SearchGoodsPayMoney" Value="20" />
+  <Item Name="DragonBoatByMoney" Value="100:10,10" />
+  <Item Name="DragonBoatByProps" Value="1:10,10" />
+  <Item Name="DragonBoatMaxScore" Value="30000" />
+  <Item Name="DragonBoatAreaMinScore" Value="25000" />
+  <Item Name="FinestHourTurnCount" Value="2" />
+  <Item Name="FinestHourDropCount" Value="1|2|3|3" />
+  <Item Name="FinestHourItemGears" Value="4" />
+  <Item Name="FinestHourTakeCardCount" Value="2|1|1" />
+  <Item Name="FinestHourRooms" Value="4" />
+  <Item Name="FinestHourGoals" Value="5" />
+  <Item Name="FinestHourGoalNo" Value="10005,10006,10007,10008,10009" />
+  <Item Name="DragonBoatProp" Value="11771" />
+  <Item Name="SearchGoodsFreeLimit" Value="1" />
+  <Item Name="DragonBoatConvertHours" Value="72" />
+  <Item Name="PyramidPricePointRadio" Value="0" />
+  <Item Name="BuyCardSoulValueCount" Value="30" />
+  <Item Name="BuyCardSoulValueMoney" Value="50" />
+  <Item Name="TotemPropMoneyOffset" Value="40" />
+  <Item Name="PyramidMinLevel" Value="13" />
+  <Item Name="PyramidTopPoint" Value="50|100|150|200|250|300|350|400|450|500" />
+  <Item Name="DivorcedDiscount" Value="True" />
+  <Item Name="IsLuckRollAwardMoney" Value="True" />
+  <Item Name="ConsortiaBossLastAwardRich" Value="100" />
+  <Item Name="ConsortiaBossLastAwardHoner" Value="1500" />
+  <Item Name="WorldBossFindBack" Value="20,30,4500|31,40,6000|41,50,9000|51,80,12000" />
+  <Item Name="WorldBossFindBackMoney" Value="10" />
+  <Item Name="FairBattleFindBackMoney" Value="450,450" />
+  <Item Name="DailyLeagueFindBackMoney" Value="450,450" />
+  <Item Name="OldPlayerGiftDealProb" Value="30,10,5,5,5,5,5,5,5,5,4,4,4,4,4" />
+  <Item Name="OldPlayerOnOff" Value="True" />
+  <Item Name="Activity77RankRewardProb" Value="50,30,20,10,0" />
+  <Item Name="Activity77BuffCD" Value="10,20,30" />
+  <Item Name="Activity77BeginDate" Value="2013/12/25 14:15:00" />
+  <Item Name="Activity77EndDate" Value="2050/1/1 15:30:59" />
+  <Item Name="Activity77TotalTime" Value="1800" />
+  <Item Name="Activity77AbilityMoney" Value="250,100,150" />
+  <Item Name="Activity77CarMoneyAndSpeed" Value="0,3|500,4|800,5" />
+  <Item Name="Activity77BuyEscortMoney" Value="600" />
+  <Item Name="Activity77FastBuffProb" Value="130" />
+  <Item Name="Activity77SlowBuffProb" Value="50" />
+  <Item Name="Activity77JumpLength" Value="400" />
+  <Item Name="NewLotteryOpenMoney" Value="100" />
+  <Item Name="ConsortiaBossAwardRate" Value="0,0.2|0.02,0.75|0.05,1.2|0.1,1.5" />
+  <Item Name="Activity77LevelLimet" Value="20" />
+  <Item Name="MaxMissionEnergy" Value="1500" />
+  <Item Name="Activity77DoubleRewardTime" Value="11:00|12:00" />
+  <Item Name="WorldBossAssistantRandomMax" Value="130" />
+  <Item Name="WorldBossAssistantRandomMin" Value="100" />
+  <Item Name="WorldBossFightPower" Value="0,2.9|300,3.1|450,3.2|900,3.4|1200,3.6|1350,3.8|2850,4.0|3000,4.2|3150,4.3|3600,4.5|3900,4.7|4050,4.9|4200,5.0" />
+  <Item Name="WorldBossAssistantBloodAdd" Value="7700" />
+  <Item Name="WorldBossAssistantFightMoney" Value="10" />
+  <Item Name="WorldBossAssistantNormalTime" Value="90" />
+  <Item Name="WorldBossAssistantReviveTime" Value="70" />
+  <Item Name="WorldBossAssistantFastTime" Value="65" />
+  <Item Name="QXGameLimitCount" Value="1" />
+  <Item Name="OpenYYVIPTemplateID" Value="112315" />
+  <Item Name="YYEveryDayTemplateID" Value="112316,112317,112318,112319,112320,112321" />
+  <Item Name="YYYearTemplateID" Value="112322" />
+  <Item Name="FastGrowSubTime" Value="30" />
+  <Item Name="FastGrowNeedMoney" Value="30" />
+  <Item Name="NationalDayDropProb" Value="3000" />
+  <Item Name="NationalDayDropItemProbNum" Value="16" />
+  <Item Name="NationalDayDropItem" Value="11696|11697|11698|11699|11700|11701|11702|11703|11704|11705|11706|11707|11708|11709|11710|11711|11712|11713|11714|11715|11716|11717" />
+  <Item Name="NationalDayDropItemProb" Value="230|490|490|490|490|490|490|490|230|490|490|490|490|490|490|490|490|490|490|490|490|230" />
+  <Item Name="Activity77DayOfWeek" Value="6,0" />
+  <Item Name="OldPlayerRegisterReturnMoney" Value="True" />
+  <Item Name="OldPlayerMinGrade" Value="25" />
+  <Item Name="RuneMultiAreaNoticeLevel" Value="17" />
+  <Item Name="RuneSingleAreaNoticeLevel" Value="15" />
+  <Item Name="ChristmasBeginDate" Value="2018/12/18 0:00:00" />
+  <Item Name="ChristmasEndDate" Value="2018/12/26 23:59:59" />
+  <Item Name="ChristmasGifts" Value="201148,10|201149,35|201150,70|201151,120|201152,220|201153,370|201154,650|201155,1000|201156,100" />
+  <Item Name="ChristmasGiftsMaxNum" Value="1000" />
+  <Item Name="ChristmasBuildSnowmanDoubleMoney" Value="10" />
+  <Item Name="ChristmasBuyTimeMoney" Value="150" />
+  <Item Name="ChristmasMinute" Value="60" />
+  <Item Name="ChristmasBuyMinute" Value="10" />
+  <Item Name="WarriorFamMaxLevel" Value="52" />
+  <Item Name="PromotePackagePrice" Value="3600" />
+  <Item Name="IsPromotePackageOpen" Value="False" />
+  <Item Name="CAMPWAR_FIGHTTYPE" Value="0" />
+  <Item Name="DailyRewardIDForMonth" Value="13400|13430|13434|13440|13444|13504|13506|13507|13350|13363|13377|13382|" />
+  <Item Name="NewLotteryLuckStoneCoefficient" Value="1650|2300|3000|5000" />
+  <Item Name="MysticalRollBegin" Value="2015/1/13 10:20:00" />
+  <Item Name="MysticalRollEnd" Value="2015/1/15 17:30:59" />
+  <Item Name="MysticalRollLotteryProb" Value="200,1000,500,300,8000|3000,500,500,6000,0|4000,2000,1000,3000,0|1500,3000,2500,1000,2000" />
+  <Item Name="ConsortiaMissionAddTime" Value="120,800|120,1500|120,2200|120,3000|120,3500" />
+  <Item Name="OldPlayerCDKey" Value="AcUsZfv" />
+  <Item Name="QX70001Prop" Value="70001,10601,1|70002,10401,1|70003,10602,1|70003,10101,1|70006,10201,1|70006,10301,1|70006,10401,1|" />
+  <Item Name="QX70001Prop1" Value="70007,10402,1|70007,10102,1|70007,10302,1|70008,10204,1|" />
+  <Item Name="QX70001Prop2" Value="70008,10302,1|70009,10405,1|70009,10305,1|70010,10102,1|70010,10202,1|70010,10604,1|70011,10305,1|70011,10405,1" />
+  <Item Name="CheckPhoneNumberMoney" Value="50" />
+  <Item Name="ArenaChallengeCD" Value="10" />
+  <Item Name="ArenaRankMaxNum" Value="5000" />
+  <Item Name="ArenaChallengeMaxNum" Value="10" />
+  <Item Name="ArenaCleanCDMoney" Value="50" />
+  <Item Name="ArenaChallengeBuyNum" Value="10" />
+  <Item Name="ArenaChallengeBuyMoney" Value="80" />
+  <Item Name="ArenaRewardIntervalSecond" Value="3" />
+  <Item Name="ArenaRewardNumPerInterval" Value="50" />
+  <Item Name="LightRiddleAnswerScore" Value="29|9" />
+  <Item Name="LightRiddleBeginDate" Value="2016/10/6 12:30:00" />
+  <Item Name="LightRiddleEndDate" Value="2016/10/12 13:30:00" />
+  <Item Name="LightRiddleBeginTime" Value="2016/10/6 12:30:00" />
+  <Item Name="LightRiddleEndTime" Value="2016/10/12 13:30:00" />
+  <Item Name="LightRiddleAnswerTime" Value="15" />
+  <Item Name="LightRiddleFreeHitNum" Value="2" />
+  <Item Name="LightRiddleFreeComboNum" Value="2" />
+  <Item Name="LightRiddleComboMoney" Value="30" />
+  <Item Name="LightRiddleHitMoney" Value="30" />
+  <Item Name="YearMonsterBeginDate" Value="2015/8/20 0:00:00" />
+  <Item Name="YearMonsterEndDate" Value="2015/9/30 23:59:00" />
+  <Item Name="YearMonsterHP" Value="6000000" />
+  <Item Name="YearMonsterBoxInfo" Value="112370,10|112371,60|112372,180|112373,300|112374,600" />
+  <Item Name="YearMonsterBuffMoney" Value="300" />
+  <Item Name="YearMonsterFightNum" Value="1" />
+  <Item Name="YearMonsterOpenLevel" Value="15" />
+  <Item Name="DiceGameAwardAndCount" Value="32|16|8|4|2|1" />
+  <Item Name="LuckStarActivityBeginDate" Value="2013/12/1 0:00:00" />
+  <Item Name="LuckStarActivityEndDate" Value="2013/12/24 0:00:00" />
+  <Item Name="MinUseNum" Value="100" />
+  <Item Name="ConsortiaOfferCess" Value="10" />
+  <Item Name="ConsortiaMinOffer" Value="500" />
+  <Item Name="GoodsCollectBeginDate" Value="2015/1/13 10:20:00" />
+  <Item Name="GoodsCollectEndDate" Value="2015/1/15 17:30:59" />
+  <Item Name="GoodsCollectMinLevel" Value="20" />
+  <Item Name="RecreationPvpBeginDate" Value="2014/3/1 11:10:00" />
+  <Item Name="RecreationPvpEndDate" Value="2014/4/5 12:10:00" />
+  <Item Name="RecreationPkRemoveMoney" Value="100" />
+  <Item Name="RecreationPkAddMoney" Value="180" />
+  <Item Name="RecreationPkMultiple" Value="2" />
+  <Item Name="LocalConsortiaMatchDays" Value="-1|-1|-1|-1|-1" />
+  <Item Name="AreaConsortiaMatchDays" Value="-1|-1|-1|-1|-1" />
+  <Item Name="ConsortiaMatchStartTime" Value="2015/2/6 20:00:00" />
+  <Item Name="ConsortiaMatchEndTime" Value="2018/11/25 21:00:00" />
+  <Item Name="ConsortiaMatchTimes" Value="10" />
+  <Item Name="ConsortiaMatchGradeLimit" Value="30" />
+  <Item Name="ConsortiaMatchLocal_FIGHTTYPE" Value="0" />
+  <Item Name="ConsortiaMatchAwardLimit1" Value="30" />
+  <Item Name="WorldCupTickets" Value="0|201279|201280|201281|0" />
+  <Item Name="IsChickenActiveKeyOpen" Value="True" />
+  <Item Name="ChickenActiveKeyLvAwardNeedPrestige" Value="0|0|0|1000|2000|10000|20000|40000|60000|80000|100000|120000" />
+  <Item Name="EntertainmentScore" Value="75|201252,125|201253,250|201254,375|201255,500|201256,625|201257,750|201258,875|201259,1000|201260,1125|201261" />
+  <Item Name="RecreationPvpAddBlood" Value="20000" />
+  <Item Name="RecreationPvpMinLevel" Value="20" />
+  <Item Name="RecreationPvpRefreshPropBindMoney" Value="50" />
+  <Item Name="RecreationPvpAddScore" Value="10,10,10,10|5,5,5,5" />
+  <Item Name="FiveYearCarDoubleRewardTime" Value="11:00,12:00|20:00,21:00" />
+  <Item Name="FiveYearCarMoneyAndSpeed" Value="0,3|700,4|1000,5" />
+  <Item Name="FiveYearCarFastTime" Value="220" />
+  <Item Name="FiveYearCarFastReward" Value="112381,112382,112383,112384,112385" />
+  <Item Name="FiveYearCarBeginDate" Value="2014/3/5 0:00:00" />
+  <Item Name="FiveYearCarEndDate" Value="2014/3/11 23:59:59" />
+  <Item Name="OpenMagicBoxMoney" Value="10000,30" />
+  <Item Name="FiveYearGiftBeginDate" Value="2016/7/14 0:00:00" />
+  <Item Name="FiveYearGiftEndDate" Value="2016/7/27 23:59:59" />
+  <Item Name="MagicStoneVIPLimit" Value="4,10" />
+  <Item Name="LotteryMultiple" Value="1,7500|2,1500|3,400|5,40|10,3" />
+  <Item Name="LotteryMoney" Value="100" />
+  <Item Name="BombTimes" Value="2" />
+  <Item Name="AutoMarkPrice" Value="10" />
+  <Item Name="AutoMarkFactor" Value="2" />
+  <Item Name="RecoverPrice" Value="20" />
+  <Item Name="ResetPrice" Value="30" />
+  <Item Name="BombNum" Value="20" />
+  <Item Name="BombExchangeFactor" Value="10|25|50" />
+  <Item Name="ResetTimes" Value="5" />
+  <Item Name="BombOpenDate" Value="0|1|2|3|4|5|6" />
+  <Item Name="BombItemNum" Value="10" />
+  <Item Name="SingPrice" Value="20" />
+  <Item Name="MagicStoneExp" Value="100|200|300|400|500|600|700|800|900|1000" />
+  <Item Name="CalledPlayerGetScore" Value="10|2" />
+  <Item Name="MainAreaPlayerNum" Value="15" />
+  <Item Name="ChampionMatchBeginTime" Value="2016/9/29 20:30:00" />
+  <Item Name="ChampionMatchBeginWeek" Value="0" />
+  <Item Name="ChampionMatchLevel" Value="30" />
+  <Item Name="HaveArenaLevel" Value="27" />
+  <Item Name="DanDanBuffPrice" Value="1500" />
+  <Item Name="YearGiftBeginDate" Value="2009-06-15|2010-06-16|2011-06-17|2012-06-18|2013-06-19|2014-06-20|2015-06-21" />
+  <Item Name="YearGiftEndDate" Value="2010-06-16|2011-06-17|2012-06-18|2013-06-19|2014-06-20|2015-06-21|2016-06-22" />
+  <Item Name="YearGiftID" Value="2120162|2120163|2120164|2120165|2120166|2120167|2120168" />
+  <Item Name="YearGiftLevel" Value="1|1|1|1|1|1|1" />
+  <Item Name="IsChampionMatchDelayOneWeek" Value="True" />
+  <Item Name="ActivityPictureInfo" Value="201386,45|201387,45|201388,45|201389,45|201390,45|201391,45#201386,65|201387,65|201388,65|201389,65|201390,65|201391,65#201386,185|201387,185|201388,185|201389,185|201390,185|201391,185" />
+  <Item Name="PictureBeginDate" Value="2014/8/29 0:00:00" />
+  <Item Name="PictureEndDate" Value="2014/9/18 23:59:59" />
+  <Item Name="CanDeleteSpcialItem" Value="True" />
+  <Item Name="EveryDayOpenPrice" Value="-300,100|-300,200|-300,300|-200,200|-200,500" />
+  <Item Name="IsSendWorldBossRewardByRank" Value="False" />
+  <Item Name="ConsortiaMissionContinue" Value="True" />
+  <Item Name="WitchBlessBeginDate" Value="2014/12/20 0:00:00" />
+  <Item Name="WitchBlessEndDate" Value="2014/12/26 23:59:59" />
+  <Item Name="WitchBlessConfig" Value="500,700,1000|2,2,2|300,600,900" />
+  <Item Name="WitchBlessGP" Value="10|0|15" />
+  <Item Name="WitchBlessDoubleGpTime" Value="20:00-20:30" />
+  <Item Name="WithcBlessMoney" Value="70" />
+  <Item Name="WitchBlessAddProperty" Value="50,30,30,50,30,10,30,50" />
+  <Item Name="WitchBlessTemplateId" Value="201560" />
+  <Item Name="CryptBossOpenDay" Value="1,1|2,2|3,3|4,4|5,5,6,0|6,5,6,0" />
+  <Item Name="VIPRewardCryptCount" Value="0|0|0|0|0|0|0|0|0|0|0|1" />
+  <Item Name="WorshipMoonBeginDate" Value="2015-12-10 11:00:00" />
+  <Item Name="WorshipMoonEndDate" Value="2018-12-13 23:59:59" />
+  <Item Name="WorshipMoonProb" Value="35|35|20|5|3|2" />
+  <Item Name="WorshipMoonReward" Value="1120233|1120234|1120235|1120236|1120237|1120238" />
+  <Item Name="WorshipMoonGift" Value="300|1120239" />
+  <Item Name="WorshipMoonGiftShowList" Value="11976|11977|11978|11979|11981|7093|7100|7126|7067|7127|13668|17000" />
+  <Item Name="WorshipMoonPriceInfo" Value="3|50000" />
+  <Item Name="PerfectCookingMoney" Value="100" />
+  <Item Name="HalloweenMinNum" Value="5000" />
+  <Item Name="HalloweenBeginDate" Value="2015/10/25 0:00:00" />
+  <Item Name="HalloweenEndDate" Value="2015/10/31 23:59:59" />
+  <Item Name="TanabataActiveEventNum" Value="17,2,2|19,2,3|19,3,3" />
+  <Item Name="TanabataActivePrice" Value="100" />
+  <Item Name="TanabataActiveDestinationAWardID" Value="1120156|1120157|1120158" />
+  <Item Name="TanabataActiveBeginTime" Value="2015-09-24 00:00:00" />
+  <Item Name="TanabataActiveEndTime" Value="2015-09-29 23:59:59" />
+  <Item Name="SummerAcitveBeginTime" Value="2016/2/4 11:00:00" />
+  <Item Name="SummerAcitveEndTime" Value="2016/2/10 23:59:59" />
+  <Item Name="SummerAcitveGifts" Value="1120179,1000|1120180,3000|1120181,10000|1120182,20000|1120183,50000|1120184,100000|1120185,200000" />
+  <Item Name="AreaSummerAcitveTitle" Value="626|618|618|629|629|629|629|629|629|629" />
+  <Item Name="SummerAcitveTitle" Value="620|619|619|621|621|621|621|621|621|621" />
+  <Item Name="SummerAcitveConvertHours" Value="48" />
+  <Item Name="FiveYearTitleBeginDate" Value="2014/11/18 0:00:00" />
+  <Item Name="FiveYearTitleEndDate" Value="2014/12/31 23:59:59" />
+  <Item Name="FiveYearTitleCardID" Value="46001" />
+  <Item Name="HelpGameBeginDate" Value="2015/6/18 9:00:00" />
+  <Item Name="HelpGameEndDate" Value="2015/6/24 23:59:59" />
+  <Item Name="HelpGameBeginWeek" Value="2,4" />
+  <Item Name="HelpGameMissionNum" Value="8" />
+  <Item Name="HelpGameFightResetNum" Value="3" />
+  <Item Name="HelpGameCleanCDPrice" Value="200|200" />
+  <Item Name="HelpGameBuffPrice" Value="250|150|30" />
+  <Item Name="HelpGameLvLimit" Value="20" />
+  <Item Name="TreasureHuntStarCount" Value="25,1,2,1,2|28,1,2,1,2|30,2,1,2,2" />
+  <Item Name="TreasureHuntEventTools" Value="20150,11165,11166,201520" />
+  <Item Name="TreasureHuntConfig" Value="5,50|10,1" />
+  <Item Name="TreasureHuntDicePrice" Value="100,150,250,350,450,550,650,750,850,900" />
+  <Item Name="TreasureHuntEnergyPrice" Value="50,150,250,350,500" />
+  <Item Name="TreasureHuntDropPara" Value="10021" />
+  <Item Name="TreasureHuntConvertCount" Value="30" />
+  <Item Name="TreasureHuntEventAward" Value="201487" />
+  <Item Name="BuyItemTimeInter" Value="12" />
+  <Item Name="BuyItemExchangeRate" Value="500" />
+  <Item Name="MagicRoomJuniorWeaponList" Value="7080,70801,70802,70803,70804|7093,70931,70932,70933,70934|7100,71001,71002,71003,71004" />
+  <Item Name="MagicRoomMidWeaponList" Value="7127,71271,71272,71273,71274|7126,71261,71262,71263,71264|7131,71311,71312,71313,71314" />
+  <Item Name="MagicRoomSeniorWeaponList" Value="7099,70991,70992,70993,70994|7116,71161,71162,71163,71164|7129,71291,71292,71293,71294" />
+  <Item Name="MagicRoomJuniorAddAttribute" Value="3,3,0|1,1,0|1,1,0|1,1,0|2,2,0|2,2,0" />
+  <Item Name="MagicRoomMidAddAttribute" Value="0,3,2|0,1,1|0,1,1|0,2,1|0,3,1|0,3,1" />
+  <Item Name="MagicRoomSeniorAddAttribute" Value="5,0,2|1,0,1|1,0,1|2,0,1|3,0,1|3,0,1" />
+  <Item Name="MagicRoomBoxNeedMoney" Value="500" />
+  <Item Name="MagicRoomLevelUpCount" Value="600|1200|1900|2700|3600" />
+  <Item Name="MagicRoomOpenNeedMoney" Value="100|100" />
+  <Item Name="IsMissionEnergyEnable" Value="True" />
+  <Item Name="ItemMagicProperty" Value="1,5000,200,200|2,50000,400,400|3,150000,700,500|4,200000,1500,1000" />
+  <Item Name="HalloweenCardId" Value="201453" />
+  <Item Name="MysteryShopOpenTime" Value="12|0" />
+  <Item Name="MysteryShopFreshTime" Value="18" />
+  <Item Name="YearFoodItemsCount" Value="15,15,15,15|25,25,25,25|40,40,40,40" />
+  <Item Name="YearFoodItems" Value="201648,201646,201647,201645" />
+  <Item Name="YearFoodBeginTime" Value="2016/5/19 11:00:00" />
+  <Item Name="YearFoodEndTime" Value="2016/6/1 23:59:59" />
+  <Item Name="YearFoodItemPrices" Value="10,10,10,10" />
+  <Item Name="ConstellationBeginTime" Value="2000/1/1 0:00:00" />
+  <Item Name="ConstellationEndTime" Value="2050/1/1 23:59:59" />
+  <Item Name="ConstellationExtraSpendMoney" Value="100" />
+  <Item Name="ConstellationLevelLimited" Value="25" />
+  <Item Name="HorseGameBuffConfig" Value="1,3|2,5|3,5|4,5|5,5|6,5|7,2|8,5" />
+  <Item Name="HorseGamePlayerCount" Value="5" />
+  <Item Name="HorseGameEachDayMaxCount" Value="1" />
+  <Item Name="HorseGameUsePapawMoney" Value="100" />
+  <Item Name="HorseGameBeginTime" Value="2015/2/5 14:15:00" />
+  <Item Name="HorseGameEndTime" Value="2016/6/30 15:15:00" />
+  <Item Name="HorseGameCostMoneyCount" Value="200" />
+  <Item Name="HorseGameEachDayMaxCostCount" Value="5" />
+  <Item Name="HorseGameBeginWeek" Value="1,3,5" />
+  <Item Name="MagicStoneCostItem" Value="1" />
+  <Item Name="MagicStoneMinLevel" Value="40" />
+  <Item Name="MagicStoneFightTimes" Value="1" />
+  <Item Name="FlowerNoticeCount" Value="999,1314,214" />
+  <Item Name="HomeTDHomeBoxID" Value="1120261,1120262,1120263,1120264,1120265" />
+  <Item Name="HomeTDSkillPrice" Value="300,500" />
+  <Item Name="HomeTDSkillEffect" Value="5,100000" />
+  <Item Name="HomeLvLimit" Value="25" />
+  <Item Name="HomeTDHomeBlood" Value="5" />
+  <Item Name="HomeTDHomeInitAdd" Value="100000,10000" />
+  <Item Name="HomeTDHomeNpcID" Value="50301,50302,50303,50304,50305" />
+  <Item Name="HomeTDRevivePrice" Value="140" />
+  <Item Name="CallScoreLimit" Value="100" />
+  <Item Name="OldPlayerShopBuyLimit" Value="8" />
+  <Item Name="CurrDailyRewardID" Value="35170301,1|11689,2" />
+  <Item Name="HomeBarDrinkNum" Value="6" />
+  <Item Name="HomeBarDrinkPower" Value="20" />
+  <Item Name="HomeBarPourPower" Value="30" />
+  <Item Name="HomeBarTastePower" Value="5" />
+  <Item Name="HomeBarCleanCDPrice" Value="70" />
+  <Item Name="NewYearEscortBeginDate" Value="2014-12-30 10:00:00" />
+  <Item Name="NewYearEscortEndDate" Value="2015-01-06 23:59:59" />
+  <Item Name="NewYearEscortMoneyAndSpeed" Value="0,6|2000,6|10000,6" />
+  <Item Name="NewYearEscortReward" Value="1120284,1120284,1120284,1120284,1120284" />
+  <Item Name="NewYearEscortFastTime" Value="192" />
+  <Item Name="HouseUpgradeUse" Value="1,11865,1,11867,150|2,11866,2,11867,500" />
+  <Item Name="DiffDimensionLevelUpItemID" Value="201631" />
+  <Item Name="DiffDimensionTimeControl" Value="1,2000,15|2,3000,30|3,5000,45|4,8000,60" />
+  <Item Name="DiffDimensionSpaceControl" Value="1,3000,1|2,6000,2" />
+  <Item Name="DiffDimensionLootControl" Value="1,1400,1|2,2600,2|3,3800,3|4,5000,4|5,6200,5" />
+  <Item Name="DiffDimensionRefreshPrice" Value="50" />
+  <Item Name="PetDisappearMinLevel" Value="25" />
+  <Item Name="PetDisappearBuyPrice" Value="300" />
+  <Item Name="PetDisappearRecoverPrice" Value="100" />
+  <Item Name="PetDisappearUserBlood" Value="100|100|100|100|100" />
+  <Item Name="PetDisappearNPCBlood" Value="100|120|140|160|180" />
+  <Item Name="PetDisappearNPCRandomSorce" Value="60,70|70,80|90,100|100,110|110,120" />
+  <Item Name="PetDisappearMaxLevel" Value="5" />
+  <Item Name="PetDisappearPlayCount" Value="8|8|8|8|8" />
+  <Item Name="PetDisappearPlaySonCount" Value="5|5|6|7|8" />
+  <Item Name="PetDisappearSkillMaxTimes" Value="2" />
+  <Item Name="PetDisappearSkillMoney" Value="150|300" />
+  <Item Name="PetDisappearSkillTwoMaxTimes" Value="2" />
+  <Item Name="PetDisappearSkillTwoMoney" Value="200|350" />
+  <Item Name="PrayGoodsActivityCount" Value="8|8|5|4|3" />
+  <Item Name="PrayGoodsBeginTime" Value="2015-05-14 9:00:00" />
+  <Item Name="PrayGoodsEndTime" Value="2015-05-17 23:59:59" />
+  <Item Name="PrayGoodsActivityConfig" Value="3|3|200|50|50|150" />
+  <Item Name="NewPveTickets" Value="201628|201629" />
+  <Item Name="PetDisappearAddScore" Value="2" />
+  <Item Name="HappyChargeItemPercent" Value="5|10" />
+  <Item Name="HomeBarPourBasePrice" Value="50" />
+  <Item Name="WealthTreeConfigList" Value="1120303,600,200|1120300,480,200|11963,120,200|1120302,240,200" />
+  <Item Name="WealthTreeRedBagPro" Value="90,9,1" />
+  <Item Name="FishDailyOnlineTime" Value="1800" />
+  <Item Name="FishSecondRandom" Value="7|26,1|7,1|7,1|7,1|7,1|7" />
+  <Item Name="FishOdds" Value="45,45,45,45,45,45" />
+  <Item Name="FishBuyCost" Value="50" />
+  <Item Name="FishDailyCount" Value="30" />
+  <Item Name="CookPanaxPointReward" Value="200,1120304|400,1120305|600,1120306|800,1120307|1000,1120308" />
+  <Item Name="CookPanaxFlyAchieveInfo" Value="1000,2|2000,8|5000,35|7000,55|9000,85|10000,100" />
+  <Item Name="FishLostRandom" Value="0,0,5,10,20,25,0" />
+  <Item Name="CookPanaxBeginDate" Value="2015/7/2 9:00:00" />
+  <Item Name="CookPanaxEndDate" Value="2015/7/15 23:59:59" />
+  <Item Name="HelpGameSpringBegin" Value="2015-05-28 00:00:00" />
+  <Item Name="ActivePvpMap" Value="1455,1456,1457,1458" />
+  <Item Name="ActivePvpMinLevel" Value="20" />
+  <Item Name="RedGiftTime" Value="1440" />
+  <Item Name="LightRiddleIsNew" Value="False" />
+  <Item Name="LightRiddleRemoveErrorMoney" Value="200" />
+  <Item Name="LightRiddleFreeRemoveError" Value="2" />
+  <Item Name="CookPanaxAnswerTime" Value="15" />
+  <Item Name="DDTKingQuizPrize" Value="100" />
+  <Item Name="DDTKingQuizCityList" Value="1|2|3|4|5|6|8" />
+  <Item Name="DDTKingQuizPersonMaxCount" Value="1000|500|200|100" />
+  <Item Name="DDTKingQuizTeamMaxCount" Value="1000|500|200|100" />
+  <Item Name="FairBattleWinAddScore" Value="20" />
+  <Item Name="FairBattleLostAddScore" Value="5" />
+  <Item Name="RedEnvelopeBeginTime" Value="2016/6/23 0:00:00" />
+  <Item Name="RedEnvelopeEndTime" Value="2016/6/26 23:59:59" />
+  <Item Name="DDTKingQuizBeginTime" Value="2015/7/9 0:00:00" />
+  <Item Name="DDTKingQuizEndTime" Value="2015/7/21 23:59:59" />
+  <Item Name="DDTKingQuizCanJoinBeginTime" Value="2015/7/9 0:00:00" />
+  <Item Name="DDTKingQuizCanJoinEndTime" Value="2015/7/17 23:59:59" />
+  <Item Name="FairBattleScoreBeginTime" Value="2015/7/9 0:00:00" />
+  <Item Name="FairBattleScoreEndTime" Value="2015/7/15 23:59:59" />
+  <Item Name="SysRedEnvelopePublishInfo" Value="13,500,50|17,1000,20|21,2000,10" />
+  <Item Name="DDTKingQuizWinID" Value="201650" />
+  <Item Name="DDTKingQuizLostID" Value="201651" />
+  <Item Name="PrestigeTimes" Value="30" />
+  <Item Name="SeniorMarrySuit" Value="13705,13706,46060" />
+  <Item Name="WarriorHighFamMaxLevel" Value="12" />
+  <Item Name="ShopVipScore" Value="500|600|700|800|1000|1200|1400|1600|1800|2800|3800|4800" />
+  <Item Name="FightSpiritLevelAddDamage" Value="6,2" />
+  <Item Name="ItemDevelopPrice" Value="35" />
+  <Item Name="PickUpExactLv" Value="True" />
+  <Item Name="IsSameToCheapPrice" Value="1" />
+  <Item Name="VIPConstellationExtraCount" Value="0|0|0|0|0|2|2|3|3|4|4|4" />
+  <Item Name="IsTanabataTreasure" Value="1" />
+  <Item Name="PVEFightServerEnabled" Value="False" />
+  <Item Name="LargessCommandMoneyType" Value="1" />
+  <Item Name="FreeCountGradeLimit" Value="30" />
+  <Item Name="QuestCollocationEnergyDayAdd" Value="20" />
+  <Item Name="IsWarriorFamDeleteProp" Value="False" />
+  <Item Name="SingleAreaNoticeStrengthenLevel" Value="7" />
+  <Item Name="MultiAreaNoticeStrengthenLevel" Value="10" />
+  <Item Name="MultiAreaNoticeAdvanceLevel" Value="15" />
+  <Item Name="HighTimeBoxLevel" Value="20" />
+  <Item Name="IsBuyQuestEnereyNeedKingBuff" Value="False" />
+  <Item Name="PveTiredCount" Value="10" />
+  <Item Name="BuyCardSoulValueAward" Value="120" />
+  <Item Name="OldPlayerRegisterReturnMoneyRate" Value="10" />
+  <Item Name="OldPlayerReturnMoney" Value="False" />
+  <Item Name="OldPlayerReturnMoneyRate" Value="10" />
+  <Item Name="TanabataTreasureLimit" Value="25" />
+  <Item Name="DragonBoatMoneyAndSpeed" Value="0,3|1000,3|2000,3" />
+  <Item Name="DragonBoatBeginDate" Value="2012/1/1 0:00:00" />
+  <Item Name="DragonBoatEndDate" Value="2012/1/1 0:00:00" />
+  <Item Name="DragonBoatFastTime" Value="300" />
+  <Item Name="DragonBoatFastReward" Value="13350,13363,13377,13382,13400" />
+  <Item Name="DragonBoatBuildStage0" Value="100100,1|11025,2" />
+  <Item Name="DragonBoatBuildStage1" Value="100100,3|11025,4" />
+  <Item Name="DragonBoatBuildStage2" Value="100100,5|11025,6" />
+  <Item Name="DragonBoatBuildStage3" Value="100100,10" />
+  <Item Name="DragonBoatCompleteReward" Value="13350,3" />
+  <Item Name="DragonBoatHelpAddProcess" Value="33" />
+  <Item Name="DragonBoatLevelLimet" Value="25" />
+  <Item Name="QX70001Prop3" Value="" />
+  <Item Name="ChristmasMonsters" Value="10012|10013|10014" />
+  <Item Name="ChristmasGiftsGetTime" Value="2016/9/29 19:30:00" />
+  <Item Name="IsSendWorldBossRank" Value="False" />
+  <Item Name="IsTeamBuyReturnMoney" Value="True" />
+  <Item Name="IsNewLotterySameToLottery" Value="False" />
+  <Item Name="AREACHATTYPE" Value="4" />
+  <Item Name="Activity77_FIGHTTYPE" Value="4" />
+  <Item Name="ConsortiaMatchArea_FIGHTTYPE" Value="4" />
+  <Item Name="ConsortiaMatchSpecialUsed" Value="True" />
+  <Item Name="LightRiddleOpenLevel" Value="15" />
+  <Item Name="SearchGoodsNoticeLevel" Value="4" />
+  <Item Name="IsSendDivinationWealth" Value="True" />
+  <Item Name="ActiveClothMoneyType" Value="0" />
+  <Item Name="IsAutoCovertCarnieCoin" Value="True" />
+  <Item Name="BombStartTime" Value="2000/1/1 0:00:00" />
+  <Item Name="BombEndTime" Value="2050/1/1 23:00:00" />
+  <Item Name="SummerAcitveMonsters" Value="10012|10013|10014" />
+  <Item Name="IsOldPlayerOpen" Value="True" />
+  <Item Name="TreasureHuntEndDate" Value="2014/3/1 0:00:00" />
+  <Item Name="TreasureHuntNpc" Value="10015,4,8|10016,4,10" />
+  <Item Name="GiftBoxTemplateId" Value="201453" />
+  <Item Name="GiftBoxOpenFlag" Value="False" />
+  <Item Name="ExchangeScoreRate" Value="30" />
+  <Item Name="NewLotteryBoxRewardFlag" Value="True" />
+  <Item Name="BossStoneValue" Value="500" />
+  <Item Name="DDTKingQuizUseBindMoney" Value="False" />
+  <Item Name="ApprenticeChargeRate" Value="10" />
+  <Item Name="SeniorMarryBegin" Value="2015/7/14 10:00:00" />
+  <Item Name="SeniorMarryEnd" Value="2050/7/15 23:59:59" />
+  <Item Name="SeniorMarryMoney" Value="11000,45000,180000" />
+  <Item Name="SeniorMarryMinGiftMoney" Value="20,20,30" />
+  <Item Name="SeniorMarryMaxGiftMoney" Value="30,80,100" />
+  <Item Name="SeniorMarryGift" Value="1120324,1120325,1120326" />
+  <Item Name="HouseUpgradeFlourish" Value="100|1000|2000" />
+  <Item Name="HotSpringExp" Value="200,240,288,346,415,498,597,717,860,946,1041,1145,1259,1385,1523,1676,1843,2028,2231,2342,2459,2582,2711,2847,2989,3139,3295,3460,3633,3815,3929,4047,4169,4294,4423,4555,4692,4833,4978,5127,5281,5439,5602,5770,5944,6122,6306,6495,6690,6890,7097,7310,7529,7755,7988,8227,8474,8728,8990,9260,9530,9800,10070,10340,10610,10880,11150,11420,11690,11960" />
+  <Item Name="ToyMachinePrice" Value="200000|1800000|1000000|9500000" />
+  <Item Name="CardLockAttrMoney" Value="280|520|1800" />
+  <Item Name="HighCardResetSoulValue" Value="2000" />
+  <Item Name="HomeTempPracticeSmallLuck" Value="100,1500" />
+  <Item Name="HomeTempPracticeBigLuck" Value="50,2000" />
+  <Item Name="SanXiaoStartTime" Value="2016/2/13 0:00:00" />
+  <Item Name="SanXiaoEndTime" Value="2116/2/16 0:00:00" />
+  <Item Name="RewardDouble" Value="0,1|5000,2|10000,3|15000,4|20000,5" />
+  <Item Name="ThreeCleanAwardBox" Value="1120428" />
+  <Item Name="ThreeCleanBuyCost" Value="10000" />
+  <Item Name="PairUpOnePoint" Value="300" />
+  <Item Name="ThreeCleanDailyFreeCount" Value="5" />
+  <Item Name="PairUpBoxID" Value="1120429,1120430,1120431,1120432" />
+  <Item Name="PairUpRandom1" Value="199,174,132,110" />
+  <Item Name="PairUpRandom2" Value="31,45,94,154" />
+  <Item Name="PairUpDailyFreeCount" Value="5" />
+  <Item Name="PairUpCardCost" Value="10000" />
+  <Item Name="PairUpResetCost" Value="150000" />
+  <Item Name="PairUpOpenCount" Value="2" />
+  <Item Name="CardChangeStyle1" Value="13148,13149,13147,13135,13153,13154,13155,13156,13157,13158" />
+  <Item Name="CardChangeStyle2" Value="13159,13160,13161,13162,13163,13164,13165,13166,13167,13174,13175,13176,13179,13180,13181,13182,13183,13184,13185,13186,13187,13188" />
+  <Item Name="CardChangeStyle3" Value="13343,13342,13341,13340,13339,13338,13337,13336,13335,13334,13333,13332,13331,13330,13329,13328,13325,13324,13323,13322,13320,13319,13318,13317,13316,13315,13314,13313,13312,13311" />
+  <Item Name="EveryDayMissionEnergy" Value="300" />
+  <Item Name="SearchGoodsRewardTimes" Value="2,3,4,5,6" />
+  <Item Name="SearchGoodsRewardID" Value="1120244,1120245,1120246,1120247,1120248" />
+  <Item Name="ImagePathClearCost" Value="350" />
+  <Item Name="CardWashRuleNumber" Value="1.3" />
+  <Item Name="GodCardDailyFreeCount" Value="3" />
+  <Item Name="GodCardOpenOneTimeMoney" Value="10000" />
+  <Item Name="GodCardOpenFiveTimeMoney" Value="50000" />
+  <Item Name="HongBaoCount" Value="3|5|7|9" />
+  <Item Name="ThreeClearCrossCost" Value="65000" />
+  <Item Name="ThreeClearRectCost" Value="50000" />
+  <Item Name="ThreeClearColourCleanCost" Value="100000" />
+  <Item Name="ThreeClearColourChangeCost" Value="65000" />
+  <Item Name="ThreeClearCrossPoint" Value="25" />
+  <Item Name="ThreeClearRectPoint" Value="20" />
+  <Item Name="ThreeClearColourCleanPoint" Value="40" />
+  <Item Name="ThreeClearColourChangePoint" Value="25" />
+  <Item Name="WeaponShellNormalAdd" Value="1000" />
+  <Item Name="WeaponShellMinAdd" Value="50" />
+  <Item Name="WeaponShellMaxAdd" Value="150" />
+  <Item Name="DdtLuckProgressBarNumber" Value="2000" />
+  <Item Name="MaxProgressBarNumber" Value="7" />
+  <Item Name="DdtLuckBoGuBoxShowList" Value="313505,313506,9523,8514,11175,12545,11560,11561,11562,11150,12536" />
+  <Item Name="DdtLuckWorshipShowList" Value="313411,313412,9523,8514,9525,9524,12545,11175,11560,11561,11562,11150,12536,11177,11164,11163,12525" />
+  <Item Name="SceneEventTurn" Value="0,1,1|-1,2,4|-2,2,4|-3,2,4|-4,2,4|-101,2,4|-102,2,4|-103,2,4|-104,2,4" />
+  <Item Name="DdtLuckWorshipMoney" Value="10000|90000" />
+  <Item Name="DdtLuckOpenBoxMoney" Value="35000" />
+  <Item Name="FairBattleDefaultActivateSkill" Value="20000|20010|20020|20030|20040" />
+  <Item Name="DdtLuckEachAddBoGuBoxTimes" Value="10" />
+  <Item Name="NewFairBattleProperty" Value="0,0,0,0,0,0,35000,0,0,80000" />
+  <Item Name="DayMaxAddPrestige" Value="3000" />
+  <Item Name="NewFairBattlePrestige" Value="25,15,60,15" />
+  <Item Name="GMOldPlayerFundCost" Value="1500" />
+  <Item Name="GMOldPlayerFundDaily" Value="4000" />
+  <Item Name="GMOldPlayerFundFirstReturn" Value="8888" />
+  <Item Name="GMOldPlayerFundReturnDay" Value="7" />
+  <Item Name="PullBombCommonOutSideDiameter" Value="150" />
+  <Item Name="PullBombSpecialOutSideDiameter" Value="200" />
+  <Item Name="PullBombInSideDiameter" Value="40" />
+  <Item Name="ReduceBloodPerPixel" Value="1000" />
+  <Item Name="MonthCardBuyAllPrice" Value="2999" />
+  <Item Name="MonthCardBuyAllDay" Value="30" />
+  <Item Name="MonthCardBuyAllDiscount" Value="45" />
+  <Item Name="RecycleGoodGetRewardIntegal" Value="100" />
+  <Item Name="RecycleGoodRewardBox" Value="1120509,60|1120510,30|1120511,10" />
+  <Item Name="RecyGoodDayMaxTimes" Value="20000" />
+  <Item Name="TurnTableCostCountByLevel" Value="2|4|6|8" />
+  <Item Name="RecycleGoodShowList" Value="9524,1|9525,1|8514,1|12000,1|12300,1|12400,1|12600,1|12700,1|11100,1|11150,1|11166,3|11177,3|11171,3|315005,10|11164,1|8208,1|9208,1|11689,1|1120482,1|12800,1|" />
+  <Item Name="AutoFightMissionDate1" Value="22:00:00|23:59:59" />
+  <Item Name="AutoFightMissionDate2" Value="00:00:00|00:59:00" />
+  <Item Name="AutoFightMissionDayAwardMaxCount" Value="30" />
+  <Item Name="CityOccupationStartDate" Value="2016/9/1 8:00:00" />
+  <Item Name="CityOccupationEndDate" Value="2016/9/8 22:00:00" />
+  <Item Name="CityOccupationAddPrice" Value="10,200000|50,900000|200,1600000|500,2800000" />
+  <Item Name="WorldBossNpcEnabled" Value="false" />
+  <Item Name="RichesMoneyRatio" Value="1" />
+  <Item Name="TopLuckStoneLimit" Value="20" />
+  <Item Name="IsSendRuneChangeMail" Value="false" />
+  <Item Name="IsStrictBuyItemMode" Value="true" />
+  <Item Name="WarriorFamRaidPricePerFloor" Value="150" />
+  <Item Name="UserSendGiftMaxCount" Value="200" />
+  <Item Name="IsUseCardVipActive" Value="True" />
+  <Item Name="FacebookFriendGifts" Value="201404,200651,11634,200648,200653" />
+  <Item Name="FacebookFriendOpen" Value="True" />
+  <Item Name="FacebookDayLimit" Value="20" />
+  <Item Name="FacebookGradeLimit" Value="6" />
+  <Item Name="ChristmasMonster" Value="10012|10013|10014" />
+  <Item Name="ChristmasSnowmenMaxNum" Value="2000" />
+  <Item Name="PyramidTopMinMaxPoint" Value="300|1000" />
+  <Item Name="DailyLeagueMinPlayerLevel" Value="24" />
+  <Item Name="IsOpenAuction" Value="False" />
+  <Item Name="SkipItemMan" Value="3110,1,0|5507,1,0|1514,1,365|1588,1,365|5513,1,365|2367,1,365" />
+  <Item Name="SkipItemWoman" Value="3237,1,0|5604,1,0|1469,1,365|5476,1,365|1474,1,365|2268,1,365" />
+  <Item Name="SkipItemCommon" Value="8004,2,30|9006,2,30|1120071,1,0|112098,0,0|1120098,1,0|11025,20,0|11001,0,0" />
+  <Item Name="PetSendAreaStar" Value="5" />
+  <Item Name="PetSendNoticeStar" Value="4" />
+  <Item Name="IsRussia" Value="False" />
+  <Item Name="IslamicWedding" Value="False" />
+  <Item Name="MARRY_SIMPLE_PRICE" Value="2000" />
+  <Item Name=" IsRegisteredReturnActiveOpen" Value="False" />
+  <Item Name="MissionLimit" Value="99999" />
+  <Item Name="PromotePackagePriceIsBindMoney" Value="False" />
+  <Item Name="OldGoOtherReturn" Value="15" />
+  <Item Name="MountTempExpLevel" Value="5" />
+  <Item Name="NationalDayDropBeginDate" Value="2015-09-30 10:00:00" />
+  <Item Name="NationalDayDropEndDate" Value="2015-10-08 23:59:59" />
+  <Item Name="NationalDayOpenBoxProb" Value="800|1400|800|900|1000|600|750|850|600|300|850|700|300|150" />
+  <Item Name="ChristmasFreeMinute" Value="30" />
+  <Item Name="HalloweenExchangeInfo" Value="46029,80|11858,50|11859,50|11860,50|11861,50|100100,1" />
+  <Item Name="HalloweenSuitInfo" Value="11858|11859|11860|11861|13670" />
+  <Item Name="RaceAward" Value="100|70|40|20|10" />
+  <Item Name="RaceDayCount" Value="3" />
+  <Item Name="RaceMaxSorce" Value="5000" />
+  <Item Name="DepotBuyMoney" Value="200,20" />
+  <Item Name="DDFundOpenLevel" Value="20,40" />
+  <Item Name="DDFundPrice" Value="5000,15000,20000" />
+  <Item Name="WishTreeReward" Value="18,1120313|88,1120314|188,1120315|388,1120316|588,1120317|888,1120318" />
+  <Item Name="WishTreeBeginDate" Value="2015-02-15 00:00:00" />
+  <Item Name="WishTreeEndDate" Value="2015-02-25 23:59:59" />
+  <Item Name="YearMonsterBuyTimes" Value="3" />
+  <Item Name="YearMonsterBuyPrice" Value="500|1000|2000" />
+  <Item Name="WishTreeRewardInfo" Value="7132|15066|11150|11164|11166|11173|11177" />
+  <Item Name="SeniorMarryActivePrice" Value="12900,52000,191314" />
+  <Item Name="LanternActiveBeginDate" Value="2015-02-28 00:00:00" />
+  <Item Name="LanternActiveEndDate" Value="2015-03-10 23:59:59" />
+  <Item Name="LanternHomeVisits" Value="15" />
+  <Item Name="LanternHomeVisited" Value="5" />
+  <Item Name="CookLanternGold" Value="1000" />
+  <Item Name="DesertFreeEnterCount" Value="0" />
+  <Item Name="DesertFeeEnterCount" Value="2" />
+  <Item Name="NewServerUserCount" Value="1000" />
+  <Item Name="NewLotteryBindMoney" Value="120000" />
+  <Item Name="TankMatchBeginDate" Value="2016-3-8 10:00:00" />
+  <Item Name="TankMatchEndDate" Value="2016-3-13 23:59:59" />
+  <Item Name="TankMatchMoneyAndSpeed" Value="0,6|2000,6|10000,6" />
+  <Item Name="TankMatchReward" Value="1120365,1120365,1120365,1120365,1120365" />
+  <Item Name="TankMatchFastTime" Value="192" />
+  <Item Name="ItemAdvanceRestoreMoney" Value="1000" />
+  <Item Name="FireWorksList" Value="12549,100,5,10,3|12550,50,5,10,2|12551,200,5,20,1|12552,200,5,20,1|12553,200,5,20,1" />
+  <Item Name="NewAreaBossBuffBlood" Value="0" />
+  <Item Name="NewAreaBossBuffDamage" Value="0" />
+  <Item Name="CurseTuTeng" Value="90006|0.3|2|0" />
+  <Item Name="AttackTuTeng" Value="10003|0.3|3|0.375" />
+  <Item Name="ExplodeTuTeng" Value="90004|0.2|1|1.875" />
+  <Item Name="RecoverTuTeng" Value="90005|0.15|3|0.41" />
+  <Item Name="TuTengRadius" Value="150" />
+  <Item Name="MaxLevelAllResetCost" Value="10000" />
+  <Item Name="MaxLevelResetCost" Value="1000" />
+  <Item Name="TuTengReduceScaleDamage" Value="800" />
+  <Item Name="PetEquipAwakenMultiple" Value="120" />
+  <Item Name="PetAwakenLevelLimit" Value="60" />
+  <Item Name="ConsortiaLandAwardList" Value="1,200|2,180|3,140" />
+  <Item Name="ConsortiaLandBombHit" Value="10" />
+  <Item Name="ConsortiaLandActiveHours" Value="1" />
+  <Item Name="ConsortiaLandMonsterSpeed" Value="150" />
+  <Item Name="ConsortiaLandRepairTime" Value="49" />
+  <Item Name="ConsortiaLandRepairCount" Value="50" />
+  <Item Name="ConsortiaLandCheckAllDay" Value="2" />
+  <Item Name="ConsortiaLandReduceBlood" Value="1" />
+  <Item Name="ConsortiaLandReduceSpecialBlood" Value="2" />
+  <Item Name="ConsortiaLandFailRate" Value="50" />
+  <Item Name="ConsortiaLandBuildBlood" Value="1000" />
+  <Item Name="ConsortiaLandRepairBlood" Value="36000" />
+  <Item Name="ConsortiaLandPlayerRepair" Value="1" />
+  <Item Name="ConsortiaLandNpcHit" Value="5" />
+  <Item Name="ConsortiaLandNpcHeal" Value="1" />
+  <Item Name="ConsortiaLandAwardLimit" Value="100" />
+  <Item Name="ConsortiaLandNormalAwardRate" Value="1" />
+  <Item Name="MountAmuletOpenLvl" Value="1,0|2,0|3,3|4,6|5,9|6,12|7,15|8,18|9,21" />
+  <Item Name="QuestOfferBuyTimes" Value="70" />
+  <Item Name="QuestOfferRefreshQuest" Value="35" />
+  <Item Name="QuestOfferRefreshReward" Value="70" />
+  <Item Name="QuestOfferCanAcceptTimes" Value="2" />
+  <Item Name="BombFixGamePerBombScore" Value="10" />
+  <Item Name="BombRandomGamePerBombScore" Value="10" />
+  <Item Name="BombFixGamePerBombCountAddCount" Value="4" />
+  <Item Name="BombRandomGamePerBombCountAddCount" Value="4" />
+  <Item Name="LittleGameSwitch" Value="1|1,2|1,3|0" />
+  <Item Name="TreasureTimes" Value="3" />
+  <Item Name="GuradWarStatueMaxBlood" Value="100000" />
+  <Item Name="GuradWarStatueReduceBloodRate" Value="40" />
+  <Item Name="GReliveTime" Value="20" />
+  <Item Name="GReliveCost" Value="500" />
+  <Item Name="GOpenActiveCost" Value="3000" />
+  <Item Name="GBuyBUFFCost" Value="2000" />
+  <Item Name="BombGameDoubleScoreBeginCount" Value="50" />
+  <Item Name="BombGameDoubleScoreKeepCount" Value="5" />
+  <Item Name="GBUFFValue" Value="2500|500|500|5" />
+  <Item Name="GBuyBUFFMax" Value="3" />
+  <Item Name="QuestOfferBuyTimesAddMoney" Value="30" />
+  <Item Name="ChickOrAntTreasureTimes" Value="5" />
+  <Item Name="ChickOrAntTreasureMinFightPower" Value="500000" />
+  <Item Name="FeedDailyMaxCount" Value="200" />
+  <Item Name="FeedExp" Value="1" />
+  <Item Name="FeedAddLove" Value="2" />
+  <Item Name="IsGayMarriage" Value="False" />
+  <Item Name="NewFairBattleStableProperty" Value="0,0,0,0,0,0,0,0,320,0" />
+  <Item Name="BuyFangshengxiao" Value="300" />
+  <Item Name="DdtLuckOpenBoGuBoxAddProgess" Value="5" />
+  <Item Name="GMOldPlayerOnlineTimeUpdateCost" Value="7" />
+  <Item Name="VipDiscountCardCanSend" Value="12568" />
+  <Item Name="VipDiscountCardCanUse" Value="12569" />
+  <Item Name="TwoColorBallBeginTime" Value="2016/9/29 11:00:00" />
+  <Item Name="TwoColorBallEndTime" Value="2016/10/5 23:59:59" />
+  <Item Name="BattleRankBeginTime" Value="2016/7/21 0:00:00" />
+  <Item Name="BattleRankEndTime" Value="2016/10/31 23:59:59" />
+  <Item Name="BattleRankSeasonID" Value="20161" />
+  <Item Name="DayAwardConsortiaBadgeCount" Value="100" />
+  <Item Name="ConsortiaBadgeId" Value="12567" />
+  <Item Name="VipDiscountCardValidateDay" Value="1" />
+  <Item Name="PetAwakenGoodId" Value="12570" />
+  <Item Name="ConsortiaLandBombTime" Value="10" />
+  <Item Name="ActivePveIsOpen" Value="False" />
+  <Item Name="GReliveX" Value="743" />
+  <Item Name="GReliveY" Value="1044" />
+  <Item Name="SevenDayTargetReward" Value="35,1120628|70,1120629|100,1120630" />
+  <Item Name="BatchOpen" Value="11901,999|11902,999|11903,999|11904,999|11905,999|11917,999|20150,999|112150,999" />
+  <Item Name="AmuletBuyDustMax" Value="20" />
+  <Item Name="AmuletBuyDustCountAndNeedMoney" Value="30|100000|150" />
+  <Item Name="IsOpenWealthTree" Value="False" />
+  <Item Name="EscapePropWeight" Value="10015,30|10016,40|10022,10|10619,20" />
+  <Item Name="EscapePropMax" Value="3" />
+  <Item Name="EscapePropRefushIndex" Value="2" />
+  <Item Name="EscapePropRefushCount" Value="1" />
+  <Item Name="FlagWarNpcWeigth" Value="10007,6|10008,3|10009,1" />
+  <Item Name="FlagWarCondition" Value="1,10|2,10|3,15|4,20" />
+  <Item Name="MatchBattleProperty" Value="1,5000,5000,2500,5000,2500,2500,2000,1500,323,45000|2,1,5000,2500,5000,2500,2500,1,1500,323,45000" />
+  <Item Name="TanabataBoxID" Value="1120155" />
+  <Item Name="ComboSlashMaxRow" Value="0" />
+  <Item Name="ComboSlashMaxColumn" Value="0" />
+  <Item Name="OldPlayerRegisterCallValidDay" Value="5" />
+  <Item Name="OldPlayerRegisterCallAddScore" Value="40" />
+  <Item Name="FlagWarAddFlags" Value="1" />
+  <Item Name="PoisonNetEffectAddValue" Value="500" />
+  <Item Name="PoisonNetEffectAddRate" Value="5" />
+  <Item Name="CityOccupationAddScoreCount" Value="30" />
+  <Item Name="CityOccupationKillsAddScore" Value="1,2|2,3|3,5|4,8" />
+  <Item Name="SpaRoomGameTotalBaseSorce" Value="200" />
+  <Item Name="SpaRoomGameDayBaseSorce" Value="100" />
+  <Item Name="ComboSlashGameMinSpeed" Value="6" />
+  <Item Name="ComboSlashGameMaxSpeed" Value="10" />
+  <Item Name="ComboSlashShootBombRemoveScore" Value="2" />
+  <Item Name="ComboSlashBaseColumnCount" Value="18" />
+  <Item Name="ComboSlashMulripleColumnCount" Value="2" />
+  <Item Name="ComboSlashRemoveSevevenCountAddScore" Value="500" />
+  <Item Name="ComboSlashRemoveFourteenCountAddScore" Value="1000" />
+  <Item Name="ComboSlashNullCloumnScore" Value="100" />
+  <Item Name="CubeGameCostEnergy" Value="1" />
+  <Item Name="NationalDayExchangeTimes" Value="10, 10, 10, 10" />
+  <Item Name="ProtectDDTIslandCount" Value="50|50|50|50|50" />
+  <Item Name="BlessBuffRefreshPrice" Value="10000" />
+  <Item Name="BlessBuffAddBuffPrice" Value="50000" />
+  <Item Name="BlessBuffOpenLv" Value="20" />
+  <Item Name="BlessBuffAddRate" Value="20" />
+  <Item Name="BuyClothGroupCost" Value="1,600|2,1500|3,2400" />
+  <Item Name="ApprenticesLvAddAttrPer" Value="0.01|0.02|0.03|0.04|0.05" />
+  <Item Name="ApprenticesLvChargeRetPer" Value="0.05|0.06|0.07|0.08|0.10" />
+  <Item Name="ApprenticesLvVitReducePer" Value="0.10|0.15|0.20|0.25|0.30" />
+  <Item Name="ApprenticesWeekActiveGift" Value="300,1120696|500,1120695|800,1120694" />
+  <Item Name="ApprenticesFightPowerGift" Value="100000,46115|500000,46116|2000000,46117|10000000,46118|20000000,46119" />
+  <Item Name="ApprenticesLvAwardInfo" Value="20,1120689|30,1120690|40,1120691|50,1120692" />
+  <Item Name="ApprenticesLvInfo" Value="2500|10000|30000|60000" />
+  <Item Name="NewFairPVEBattleProperty" Value="4000,4000,4000,4000,2000,2000,1500,1000,0,50000" />
+  <Item Name="CreateTeamMoney" Value="200" />
+  <Item Name="MoneyRichesOffer" Value="10" />
+  <Item Name="MaxMarginExchageOneDay" Value="10000000" />
+  <Item Name="StockMarginSend" Value="5000" />
+  <Item Name="StockOpenTime" Value="9,15|16,22" />
+  <Item Name="HappyQuestReward" Value="30,1120927|60,1120928|100,1120929" />
+  <Item Name="StockWorldMsgCond" Value="300,25" />
+  <Item Name="ConsortiaDayActiveCondInfo" Value="1,30,3000,0|2,50,6000,2000|3,80,12000,4000" />
+  <Item Name="ConsortiaDayActiveRewardInfo" Value="1120954,1120955,1120956" />
+  <Item Name="StockMagrinExchangeList" Value="3000,11169|1000,11163|10000,11166" />
+  <Item Name="StockStartDate" Value="2017/8/31 0:00:00" />
+  <Item Name="StockEndDate" Value="2017/9/5 23:59:59" />
+  <Item Name="StockOverDate" Value="2017/9/6 23:59:59" />
+  <Item Name="StockLimitLevel" Value="30" />
+  <Item Name="StockGameMsgCond" Value="200,20" />
+  <Item Name="StockReward" Value="400000,1120988|1000000,1120989|1500000,1120990|2000000,1120991|3000000,1120992|5000000,1120993" />
+  <Item Name="OnlineArmCostEnergy" Value="3" />
+  <Item Name="OnlineArmRefreshItemTime" Value="1,2,3,4,5,6,7|9:0:0" />
+  <Item Name="IsGiveBackGroundBattleRankSeason" Value="20173" />
+  <Item Name="BattleTeamIsOpen" Value="False" />
+  <Item Name="GiveBackGroundBattleRankItemID" Value="1120819|1120820|1120821|1120822|1120823" />
+  <Item Name="BackGroundBoudMaxCount" Value="54" />
+  <Item Name="IsOpenBackGround" Value="True" />
+  <Item Name="LeagueMaxScore" Value="99999" />
+  <Item Name="ExchangeMargin" Value="10" />
+  <Item Name="VIPLevelGiftID" Value="0|1120965|1120966|1120967|1120968|1120969|1120970|1120971|1120972|1120973|1120974|1120975|1120976|1120977|1120978" />
+  <Item Name="VIPSendFireRed" Value="0|0|0|0|0|0|0|0|0|0|0|0|1120995|1120996|1120997" />
+  <Item Name="FreeInviteLevelMin" Value="0" />
+  <Item Name="FreeInviteLevelMax" Value="25" />
+  <Item Name="FreeInviteCount" Value="2" />
+  <Item Name="EngraveVaultsConfig" Value="1,999999999,1|10,5000000,10" />
+  <Item Name="EngraveVaultsTime" Value="10" />
+  <Item Name="EngraveVaultsFreeTimes" Value="5" />
+  <Item Name="EngraveLimitLevel" Value="48" />
+  <Item Name="EngraveSaleStarConfig" Value="10" />
+  <Item Name="EngraveSaleTemperConsumeConfig" Value="60" />
+  <Item Name="WarriorFamVipLevel" Value="6" />
+  <Item Name="WarriorFamVipNoMoneyLevel" Value="7" />
+  <Item Name="AnniversaryMarryMoney" Value="30" />
+  <Item Name="IsOnlineArmAddProperty" Value="True" />
+  <Item Name="IsNoviceOptimize" Value="False" />
+  <Item Name="GourdBottle" Value="11192,11196,0,0|11193,11197,0,0|11194,11198,6,0|11195,11199,6,0|12207,12211,6,1" />
+  <Item Name="DevilTreasureBeginDate" Value="2018/8/30 9:00:00" />
+  <Item Name="DevilTreasureEndDate" Value="2018/9/5 23:59:59" />
+  <Item Name="DevilTreasureCfgBox" Value="12631,12635,12636,12637,12638|12632,12636,12637,12638,12639|12633,12637,12638,12639,12640" />
+  <Item Name="DevilTreasureTemplateID" Value="201567" />
+  <Item Name="DevilTreasureOneCost" Value="100" />
+  <Item Name="DevilTreasureTenCost" Value="900" />
+  <Item Name="DevilTreasureFreeLotteryCount" Value="10" />
+  <Item Name="DevilTreasureFreeLotteryCD" Value="600" />
+  <Item Name="DevilTreasurePrizePool" Value="50000" />
+  <Item Name="DevilTreasurePrizePoolMax" Value="100000" />
+  <Item Name="DevilIntervalRandomRate" Value="27,53,80,110,145,170,145,110,80,53,27" />
+  <Item Name="DevilTreasurePrizePoolWeightParam" Value="150" />
+  <Item Name="DevilTreasLevelLimit" Value="20" />
+  <Item Name="DevilTreasureRankCount" Value="2000" />
+  <Item Name="GamePvpSuicidePunish" Value="3|3|1|10" />
+  <Item Name="ConsortiaMissionLockPrices" Value="200|300" />
+  <Item Name="DevilTreasureBoxExpriyMinutes" Value="240" />
+  <Item Name="UnrealContestBeginDate" Value="2018/8/30 9:00:00" />
+  <Item Name="UnrealContestEndDate" Value="2018/9/5 23:59:59" />
+  <Item Name="UnrealContestRankCount" Value="500" />
+  <Item Name="UnrealContestBuyCost" Value="500" />
+  <Item Name="UnrealContestLevelLimits" Value="23,35,36,50,51,70" />
+  <Item Name="UnrealBattleProperty" Value="1000,1000,1000,1000,0,0,900,400,10000|1500,1500,1500,1500,0,0,1200,500,15000|2000,2000,2000,2000,0,0,1500,700,20000" />
+  <Item Name="UnrealContestFreeCount" Value="2" />
+  <Item Name="CryptBossFindBackMoney" Value="8800,20,11162" />
+  <Item Name="DailyTaskFindBackMoney" Value="2800,3000" />
+  <Item Name="ProvingDungeonFindBackMoney" Value="2800,30,11181" />
+  <Item Name="PetWashCost" Value="0,40|1,80|2,120|3,160|4,200" />
+  <Item Name="PetQualityConfig" Value="60|70|80|95|100" />
+  <Item Name="MaxMagicRoomLevelLimited" Value="17" />
+  <Item Name="RussianWorldCupQuizBeginTime" Value="2018/6/1 0:00:00" />
+  <Item Name="RussianWorldCupQuizEndTime" Value="2018/6/13 23:59:59" />
+  <Item Name="RussianWorldCupEndTime" Value="2018/7/15 23:59:59" />
+  <Item Name="RussianWorldCupCloseTime" Value="2018/7/18 23:59:59" />
+  <Item Name="RussianWorldCupQuizBackRate" Value="1|10|20|40|60|80|100" />
+  <Item Name="RussianWorldCupQuizAwardCount" Value="1000|5000|10000|20000|30000|50000|100000" />
+  <Item Name="RussianWorldCupQuizChangeQuizPrize" Value="2000" />
+  <Item Name="WorldBossBattlePlayerAddProperties" Value="50000,20000,0,8000" />
+  <Item Name="WorldBossBattleRankHonors" Value="0,5000|1,15000|2,10000|3,8000" />
+  <Item Name="WorldBossBattleRankItems" Value="1-1,12684,150|2-2,12684,130|3-3,12684,110|4-10,12684,90|11-50,12684,70|51-200,12684,50|201-2000,12684,30" />
+  <Item Name="UnrealContestPveID" Value="3000" />
+  <Item Name="TurnZoneValidDay" Value="30" />
+  <Item Name="TurnZoneQuestDay" Value="30" />
+  <Item Name="AddEngraveEquipSchemeCostMoney" Value="2000" />
+  <Item Name="DragonBoatWeekStartEnd" Value="4|0" />
+  <Item Name="NewYearBeginDate" Value="2018/9/6 9:00:00" />
+  <Item Name="NewYearEndDate" Value="2018/9/12 23:59:59" />
+  <Item Name="NewYearWait" Value="5" />
+  <Item Name="NewYearRankCount" Value="2000" />
+  <Item Name="NewYearBuyCost" Value="1000" />
+  <Item Name="NewYearBuyRateCost" Value="1" />
+  <Item Name="NewYearLevelLimit" Value="20" />
+  <Item Name="NewYearFreeCount" Value="3" />
+  <Item Name="NewYearPveID" Value="1348" />
+  <Item Name="NewYearMaxBuy" Value="2" />
+  <Item Name="RegReward" Value="1121493,1" />
+  <Item Name="WorldBossMinBlood" Value="3000000" />
+  <Item Name="WorldBossLastDamageHonor" Value="18000" />
+  <Item Name="WorldBossLastHitRewardItems" Value="12684,180" />
+  <Item Name="NewYearNeedPointLocal" Value="2000" />
+  <Item Name="NewYearNeedPointArea" Value="5000" />
+  <Item Name="IsLotteryActivityOpen" Value="True" />
+  <Item Name="IsDragonBoatOpen" Value="True" />
+  <Item Name="VIPAddPrestigeTimes" Value="0|0|0|0|0|5|5|5|10|10|10|15|15|15|15" />
+  <Item Name="ThreeClearDiscount" Value="100" />
+  <Item Name="ThreeCleanBeginTime" Value="2010/1/1 0:00:00" />
+  <Item Name="ThreeCleanEndTime" Value="2010/1/1 23:59:59" />
+  <Item Name="ThreeCleanWeekStartEnd" Value="0|2" />
+  <Item Name="IsOpenThreeClear" Value="True" />
+  <Item Name="IsOpenPairUp" Value="True" />
+  <Item Name="PairUpGameBegin" Value="2010/1/1 0:00:00" />
+  <Item Name="PairUpGameEnd" Value="2010/1/1 23:59:59" />
+  <Item Name="PairUpWeekStartEnd" Value="4|6" />
+  <Item Name="IsOpenLuckRollActivity" Value="True" />
+  <Item Name="LuckRollActivityBegin" Value="2010/1/1 0:00:00" />
+  <Item Name="LuckRollActivityEnd" Value="2010/1/1 23:59:59" />
+  <Item Name="LuckRollActivityEndWeekStartEnd" Value="1|3" />
+  <Item Name="LuckRollActivityRollReward" Value="11181,3,100|11181,3,100|11181,3,100" />
+  <Item Name="DiffDimensionIsOpen" Value="True" />
+  <Item Name="IsGodWealthRandom" Value="True" />
+  <Item Name="DevilTreasureAbandonBoxGiveAward" Value="False" />
+  <Item Name="GamePvpExitPunish" Value="30,30,120,50" />
+  <Item Name="UnrealContestWait" Value="30" />
+  <Item Name="UnrealLevelLimit" Value="20" />
+  <Item Name="Activity77PlayerNum" Value="5" />
+  <Item Name="IsConsortiaViceSub" Value="False" />
+</Result>

@@ -1,0 +1,21 @@
+<Result value="true" message="Success!">
+  <Item QuestID="3201" Descripiton="Mục tiêu cơ bản ngày 1" QuestGroup="1" QuestType="1" AddScore="5" AddRule="1" Validay="7" />
+  <Item QuestID="3202" Descripiton="Mục tiêu cơ bản ngày 2" QuestGroup="1" QuestType="1" AddScore="5" AddRule="2" Validay="7" />
+  <Item QuestID="3203" Descripiton="Mục tiêu cơ bản ngày 3" QuestGroup="1" QuestType="1" AddScore="5" AddRule="3" Validay="7" />
+  <Item QuestID="3204" Descripiton="Mục tiêu cơ bản ngày 4" QuestGroup="1" QuestType="1" AddScore="5" AddRule="4" Validay="7" />
+  <Item QuestID="3205" Descripiton="Mục tiêu cơ bản ngày 5" QuestGroup="1" QuestType="1" AddScore="5" AddRule="5" Validay="7" />
+  <Item QuestID="3206" Descripiton="Mục tiêu cơ bản ngày 6" QuestGroup="1" QuestType="1" AddScore="5" AddRule="6" Validay="7" />
+  <Item QuestID="3207" Descripiton="Mục tiêu cơ bản ngày 7" QuestGroup="1" QuestType="1" AddScore="5" AddRule="7" Validay="7" />
+  <Item QuestID="3208" Descripiton="Mục tiêu tăng cấp ngày 1" QuestGroup="1" QuestType="2" AddScore="10" AddRule="1" Validay="7" />
+  <Item QuestID="3209" Descripiton="Mục tiêu tăng cấp ngày 2" QuestGroup="1" QuestType="2" AddScore="10" AddRule="2" Validay="7" />
+  <Item QuestID="3210" Descripiton="Mục tiêu tăng cấp ngày 3" QuestGroup="1" QuestType="2" AddScore="10" AddRule="3" Validay="7" />
+  <Item QuestID="3211" Descripiton="Mục tiêu tăng cấp ngày 4" QuestGroup="1" QuestType="2" AddScore="10" AddRule="4" Validay="7" />
+  <Item QuestID="3212" Descripiton="Mục tiêu tăng cấp ngày 5" QuestGroup="1" QuestType="2" AddScore="10" AddRule="5" Validay="7" />
+  <Item QuestID="3213" Descripiton="Mục tiêu tăng cấp ngày 6" QuestGroup="1" QuestType="2" AddScore="10" AddRule="6" Validay="7" />
+  <Item QuestID="3214" Descripiton="Mục tiêu tăng cấp ngày 7" QuestGroup="1" QuestType="2" AddScore="10" AddRule="7" Validay="7" />
+  <Item QuestID="3301" Descripiton="Mục tiêu Lv30" QuestGroup="2" QuestType="1" AddScore="0" AddRule="30" Validay="20" />
+  <Item QuestID="3302" Descripiton="Mục tiêu Lv40" QuestGroup="2" QuestType="1" AddScore="0" AddRule="40" Validay="30" />
+  <Item QuestID="3303" Descripiton="Mục tiêu Lv50" QuestGroup="2" QuestType="1" AddScore="0" AddRule="50" Validay="50" />
+  <Item QuestID="3304" Descripiton="Mục tiêu Lv60" QuestGroup="2" QuestType="1" AddScore="0" AddRule="60" Validay="80" />
+  <Item QuestID="3305" Descripiton="Mục tiêu Lv70" QuestGroup="2" QuestType="1" AddScore="0" AddRule="70" Validay="10" />
+</Result>

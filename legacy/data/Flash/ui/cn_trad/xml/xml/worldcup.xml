@@ -1,0 +1,15 @@
+<style name="worldcup" version="1.0.1" source="ui/cn_trad/swf/worldcup.swf">
+	<sets>
+	</sets>
+	
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="asset.worldcup.PrizeView.pos" x="64" y="255" />
+		<custom classname="flash.geom.Point" stylename="asset.worldcup.BetView.pos" x="70" y="255" />
+	</customDisplay>
+	
+	<components>
+	</components>
+	
+	<bitmaps>
+	</bitmaps>
+</style>

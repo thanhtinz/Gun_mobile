@@ -1,0 +1,152 @@
+<style name="signActivity" version="2.0.1" source="ui/cn_trad/swf/signActivity.swf">
+
+	<sets>
+		<set type="flash.text.TextFormat" stylename="signActivityFrame.activeTimeTxtTF" args="Arial,14,0xFFFAAD,true,,,,,left"/>
+		<set type="flash.filters.GlowFilter" stylename="signActivityFrame.activeTimeTxtGF" args="0x681809,1,4,4,10"/>
+		<set type="flash.text.TextFormat" stylename="signActivityFrame.helpTxtTF" args="Arial,12,0xFFFAAD,true,,,,,left"/>
+		<set type="flash.filters.GlowFilter" stylename="signActivityFrame.helpTxtGF" args="0x681809,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="signActivityFrame.desTxtTF" args="Arial,14,0xffffbd,,,,,,left"/>
+		<set type="flash.filters.GlowFilter" stylename="signActivityFrame.desTxtGF" args="0x3e1d09,1,2,2,10"/>
+	</sets>
+	
+	<customs>
+		<custom classname="signActivity.view.SignActivityFrame" backStyle="SimpleFrameBackgoundOne" stylename="SignActivity.SignActivityFrame" 
+			closestyle="core.closebt" titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,11,5" closeInnerRectString="44,6,6,30,14" 
+			containerX="10" containerY="30" width="800" height="420"   x="354" y="90"/>
+		<custom classname="signActivity.view.SignActivityItem" stylename="SignActivityFrame.SignActivityItem" x="-26" y="32"/>
+		<custom classname="flash.geom.Point" stylename="hall.tip.activityTxt.pos3" x="419" y="10"/>
+		<custom classname="flash.geom.Point" stylename="hall.tip.activityTxt.pos7" x="419" y="10"/>
+		<custom classname="flash.geom.Point" stylename="hall.tip.activityTxt.pos14" x="419" y="10"/>
+		<!-- 左边界面物品位置 -->
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.3.1" x="96" y="110"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.3.2" x="236" y="110"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.3.3" x="376" y="110"/>
+		
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.1" x="83" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.2" x="184" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.3" x="286" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.4" x="387" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.5" x="83" y="223"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.6" x="185" y="223"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.7.7" x="287" y="223"/>
+		
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.1" x="71" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.2" x="155" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.3" x="240" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.4" x="323" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.5" x="407" y="76"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.6" x="71" y="158"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.7" x="155" y="158"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.8" x="240" y="158"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.9" x="323" y="158"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.10" x="407" y="158"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.11" x="71" y="241"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.12" x="155" y="241"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.13" x="240" y="241"/>
+		<custom classname="flash.geom.Point" stylename="everyDayGoods.14.14" x="323" y="241"/>
+		<!-- 左边界面领取按钮 -->
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.3.1" x="80" y="200"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.3.2" x="222" y="200"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.3.3" x="361" y="200"/>
+		
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.1" x="67" y="135"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.2" x="168" y="135"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.3" x="269" y="135"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.4" x="371" y="135"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.5" x="67" y="283"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.6" x="168" y="283"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.7.7" x="270" y="283"/>
+		
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.1" x="54" y="102"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.2" x="138" y="102"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.3" x="222" y="102"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.4" x="307" y="102"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.5" x="391" y="102"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.6" x="54" y="185"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.7" x="138" y="185"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.8" x="222" y="185"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.9" x="307" y="185"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.10" x="391" y="185"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.11" x="54" y="269"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.12" x="138" y="269"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.13" x="222" y="269"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtn.14.14" x="307" y="269"/>
+		<!-- 右边界面领取按钮 -->
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.3.1" x="596" y="136"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.7.1" x="714" y="42"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.7.2" x="716" y="146"/>
+		
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.14.1" x="705" y="14"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.14.2" x="705" y="85"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.14.3" x="705" y="152"/>
+		
+		<custom classname="flash.geom.Point" stylename="continuousGoods.3.1" x="514" y="44"/>
+		<custom classname="flash.geom.Point" stylename="continuousGoods.7.1" x="496" y="15"/>
+		<custom classname="flash.geom.Point" stylename="continuousGoods.7.2" x="496" y="120"/>
+		
+		<custom classname="flash.geom.Point" stylename="continuousGoods.14.1" x="502" y="-9"/>
+		<custom classname="flash.geom.Point" stylename="continuousGoods.14.2" x="502" y="61"/>
+		<custom classname="flash.geom.Point" stylename="continuousGoods.14.3" x="502" y="129"/>
+		<!-- 已领取的Tag -->
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.3.1" x="90" y="191"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.3.2" x="232" y="191"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.3.3" x="371" y="191"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.1" x="80" y="125"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.2" x="182" y="125"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.3" x="283" y="125"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.4" x="382" y="125"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.5" x="80" y="273"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.6" x="182" y="273"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.7.7" x="283" y="273"/>
+		
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.1" x="66" y="78"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.2" x="149" y="78"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.3" x="234" y="78"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.4" x="318" y="78"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.5" x="402" y="78"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.6" x="66" y="158"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.7" x="149" y="158"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.8" x="234" y="158"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.9" x="318" y="158"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.10" x="402" y="158"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.11" x="66" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.12" x="149" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.13" x="234" y="242"/>
+		<custom classname="flash.geom.Point" stylename="asset.signactivity.tag.pos.14.14" x="318" y="242"/>
+		<custom classname="flash.geom.Point" stylename="signActivityItem.getBtnBig.14" x="197" y="20"/>
+		<custom classname="flash.geom.Point" stylename="continuousGoods.14" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="signActivity.item2pos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="signActivity.item1pos" x="-26" y="32"/>
+	</customs>
+	
+	<components>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="signActivityItem.getBtn" 
+			backStyle="asset.signactivity.smallBtn" filterString="null,lightFilter,null,grayFilter" x="419" y="10"/>	
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="signActivityItem.getBtnBig" 
+			backStyle="asset.signactivity.bigBtn" filterString="null,lightFilter,null,grayFilter" x="419" y="10"/>	
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="signActivityItem.getBtnBig2" 
+			backStyle="asset.signactivity.bigBtn2" filterString="null,lightFilter,null,grayFilter" x="419" y="10"/>	
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="signActivityItem.getBtnBig3" 
+			backStyle="asset.signactivity.bigBtn3" filterString="null,lightFilter,null,grayFilter" x="419" y="10"/>	
+				<component classname="com.pickgliss.ui.controls.BaseButton" stylename="signActivityItem.getBtnBig4" 
+			backStyle="asset.signactivity.bigBtn4" filterString="null,lightFilter,null,grayFilter" x="419" y="10"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="signActivityFrame.activeTimeTxt" filterString="signActivityFrame.activeTimeTxtGF" 
+			textFormatStyle="signActivityFrame.activeTimeTxtTF" autoSize="none" height="30" width="250" x="146" y="39"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="signActivityFrame.helpTxt" filterString="signActivityFrame.helpTxtGF" 
+			textFormatStyle="signActivityFrame.helpTxtTF" autoSize="none" height="150" width="290" x="475" y="253" wordWrap="true"/>			
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="signActivityFrame.GiftBagArrayContainer" spacing="7" x="10" y="32"/>
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="signActivityFrame.scrollpanel" thumbStyle="core.scrollVThumb" 
+			parentStyle="core.ScrollPanel" width="545" height="260" hScrollProxy="2" vScrollProxy="1" x="24" y="155"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="signActivityFrame.desTxt" filterString="signActivityFrame.desTxtGF" textFormatStyle="signActivityFrame.desTxtTF" autoSize="none" height="30" width="250" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="signactivity.rightScrollPanel" parentStyle="core.ScrollPanel" hScrollProxy="2" vScrollProxy="1" width="293" height="206" x="474" y="22" vUnitIncrement="45" viewportInnerRectString="0,22,0,0,0" vScrollbarInnerRectString="21,0,0,0,3"/>
+		
+	</components>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.signactivity.day3" x="8" y="14"/>
+		<bitmapData resourceLink="asset.signactivity.day7" x="8" y="14"/>
+		<bitmapData resourceLink="asset.signactivity.day14" x="8" y="14"/>
+		<bitmapData resourceLink="asset.signactivity.goodsBG" x="-5" y="-4"/>
+	</bitmaps>
+</style>

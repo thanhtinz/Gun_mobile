@@ -1,0 +1,15 @@
+
+SignInCell.xml†i<View width="63" height="59">
+  <Image skin="asset.signin.mark" var="markImg"/>
+  <Image skin="asset.signin.check" x="7" y="10" var="checkImg"/>
+  <FrameClip skin="asset.signin.getShine" var="shineImg"/>
+  <Image skin="asset.signin.double" x="26" y="0" var="doubleImg" mouseEnabled="false" visible="false"/>
+  <Image skin="asset.signin.tip" x="-5" y="17" mouseChildren="false" mouseEnabled="false" visible="false" var="tipImg"/>
+</View>%SignInMainView.xmlˆ<View width="743" height="409">
+  <Image skin="asset.signin.bg"/>
+  <Button skin="asset.ui.btn_close8" x="674" y="16" stateNum="1" var="closeBtn"/>
+  <List x="209" y="104" repeatX="7" repeatY="4" width="473" height="272" spaceX="4" spaceY="8" var="list">
+    <SignInCell name="render" runtime="activity.signin.view.SignInCell" buttonMode="true"/>
+  </List>
+  <Label x="230" y="76" color="0xfff714" bold="true" size="12" stroke="0x6e3814,1,4,4,10" width="449" height="18" align="center" var="doubleLabel"/>
+</View>

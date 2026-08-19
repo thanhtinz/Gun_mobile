@@ -1,0 +1,394 @@
+
+-equip/ElfEquipView.xml�I<View width="772" height="432">
+  <Image skin="asset.elf.equip.bg" x="0" y="0"/>
+  <Button skin="asset.elf.property.fightBtn" x="107" y="13" stateNum="1" var="fightBtn"/>
+  <Button skin="asset.elf.property.discardBtn" x="329" y="13" stateNum="1" var="discardBtn"/>
+  <LabelEx text="名称" x="112" y="97" color="0xffffff" bold="true" size="16" width="277" height="24" stroke="0x004f66,1,4,4,10" align="center" var="nameLabel"/>
+  <LabelEx text="Lv.50" x="93" y="381" color="0xffffff" bold="true" size="16" width="62" height="24" stroke="0x004f66,1,4,4,10" align="right" var="levelLabel"/>
+  <ProgressBar skin="asset.elf.property.expProgress" x="155" y="379" var="expProgress" value="0"/>
+  <LabelEx text="10/100" x="172" y="383" color="0xffffff" bold="true" size="12" width="187" height="16" stroke="0x004f66,1,2,2,10" align="center" var="expLabel"/>
+  <Button skin="asset.elf.property.goodFelingBtn" x="118" y="64" stateNum="1" var="goodFelingBtn"/>
+  <Button skin="asset.elf.property.restBtn" x="108" y="14" stateNum="1" var="restBtn"/>
+  <Box x="178" y="216" width="174" height="121" var="movieBox"/>
+  <Clip x="309" y="111" index="0" clipsUrl="asset.elf.quality.0,asset.elf.quality.1,asset.elf.quality.2,asset.elf.quality.3" var="qualityClip"/>
+  <Box x="180" y="58" var="star">
+    <Image skin="asset.elf.bigStar" name="star0"/>
+    <Image skin="asset.elf.bigStar" x="29" name="star1"/>
+    <Image skin="asset.elf.bigStar" x="58" name="star2"/>
+    <Image skin="asset.elf.bigStar" x="87" name="star3"/>
+    <Image skin="asset.elf.bigStar" x="116" name="star4"/>
+  </Box>
+  <List x="430" y="29" width="325" height="299" repeatX="5" spaceX="-5" spaceY="-5" var="list" repeatY="6">
+    <ElfEquipBagCell x="0" y="0" name="render" runtime="elf.view.equip.ElfEquipBagCell"/>
+  </List>
+  <ElfEquipBagCell x="111" y="120" var="currElfEquipCell" runtime="elf.view.equip.ElfEquipBagCell"/>
+</View>+skill/ElfListCell.xml�<View width="66" height="66">
+  <Image skin="asset.elf.ui.cell1Bg" y="1"/>
+  <Box width="48" height="48" var="icon" x="9" y="10" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+</View>=summon/ElfSummonRewardView.xml�<View width="671" height="355">
+  <Button skin="asset.elf.ui.frameCloseBtn" x="572" y="107" stateNum="1" var="closeBtn"/>
+  <List x="124" y="168" width="429" height="161" repeatX="5" repeatY="2" spaceX="0" spaceY="2" var="list">
+    <ElfSummonRewardCell name="render" runtime="elf.view.summon.ElfSummonRewardCell"/>
+  </List>
+</View>+skill/ElfListView.xml�g<View width="398" height="449">
+  <Image skin="asset.elf.ui.frame" sizeGrid="40,40,40,40" width="390" height="443" x="0" y="6"/>
+  <PageNavigaterEx x="151" y="401" var="pageSelect" type="simple" pageNumBgSize="4,4,4,4,1" pageNumAlign="center" isLoop="true" pageNumStyle="宋体,12,0xB5DBE4,false" pageNumStroke="0x000000,1,4,4,10" pageNumBgStyle="asset.elf.ui.scale3" prevButtonStyle="asset.elf.ui.lef1Btn" nextButtonStyle="asset.elf.ui.right1Btn" pageNumSize="40,22" spacing="2"/>
+  <List x="23" y="52" width="344" height="340" repeatX="5" repeatY="5" spaceX="2" spaceY="2" var="list">
+    <ElfListCell runtime="elf.view.skill.ElfListCell" name="render"/>
+  </List>
+  <Button skin="asset.elf.ui.closeBtn" x="357" stateNum="1" var="closeBtn" y="0"/>
+  <Image skin="asset.elf.skill.elfListTitle" x="148" y="18"/>
+</View>5main/ElfSelectItemView.xml�k<View width="81" height="81">
+  <Image skin="asset.elf.ui.cell2Bg"/>
+  <Box x="8" y="8" width="64" height="60" var="icon" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+  <Image skin="asset.elf.ui.cell2Shine" name="selectBox" mouseChildren="false" mouseEnabled="false"/>
+  <Image skin="asset.elf.fightState" x="48" y="43" var="fight"/>
+  <Box x="7" y="5" var="star" width="68" height="17">
+    <Clip clipsUrl="asset.elf.starNormal,asset.elf.starSelect" index="0" x="0" name="star0" y="0" width="16" height="17"/>
+    <Clip clipsUrl="asset.elf.starNormal,asset.elf.starSelect" x="13" index="0" y="0" width="16" height="17" name="star1"/>
+    <Clip clipsUrl="asset.elf.starNormal,asset.elf.starSelect" x="26" y="0" index="0" width="16" height="17" name="star2"/>
+    <Clip clipsUrl="asset.elf.starNormal,asset.elf.starSelect" x="39" index="0" y="0" name="star3" width="16" height="17"/>
+    <Clip clipsUrl="asset.elf.starNormal,asset.elf.starSelect" x="52" index="0" y="0" name="star4"/>
+  </Box>
+</View>)main/ElfMainView.xml�a<View width="878" height="505">
+  <Image skin="asset.elf.bg"/>
+  <Button skin="asset.elf.ui.closeBtn" x="837" y="12" stateNum="1" var="closeBtn"/>
+  <Button skin="asset.elf.ui.helpBtn" x="803" y="10" stateNum="1" var="helpBtn"/>
+  <TabListEx var="menuTab" x="792" y="67" width="64" height="410">
+    <TabButtonEx skin="asset.elf.tab.propertyBtnNormal,asset.elf.tab.propertyBtnSelect" width="120" height="40" selected="true" name="item0"/>
+    <TabButtonEx skin="asset.elf.tab.skillBtnNormal,asset.elf.tab.skillBtnSelect" y="80" width="120" height="40" name="item1"/>
+    <TabButtonEx skin="asset.elf.tab.exchangeBtnNormal,asset.elf.tab.exchangeBtnSelect" y="240" width="120" height="40" name="item3"/>
+    <TabButtonEx skin="asset.elf.tab.summonBtnNormal,asset.elf.tab.summonBtnSelect" y="160" width="120" height="40" name="item2"/>
+    <TabButtonEx y="320" width="120" height="40" name="item4" x="0" skin="asset.elf.tab.equipBtnNormal,asset.elf.tab.equipBtnSelect"/>
+  </TabListEx>
+  <ElfPropertyView x="19" y="56" runtime="elf.view.property.ElfPropertyView" var="propertyView"/>
+  <ElfSkillView x="19" y="56" var="skillView" runtime="elf.view.skill.ElfSkillView"/>
+  <ElfSummonView x="19" y="56" var="summonView" runtime="elf.view.summon.ElfSummonView"/>
+  <ElfShopView x="20" y="59" runtime="elf.view.shop.ElfShopView" var="shopView"/>
+  <ElfEquipView x="20" y="56" var="equipview" runtime="elf.view.equip.ElfEquipView"/>
+  <ElfSelectView x="21" y="57" var="selectView" runtime="elf.view.main.ElfSelectView"/>
+</View>-main/ElfSelectView.xml�s<View width="88" height="427">
+  <PageNavigaterEx x="0" y="405" var="pageSelect" type="simple" pageNumBgSize="4,4,4,4,1" pageNumAlign="center" isLoop="true" pageNumStyle="宋体,12,0xB5DBE4,false" pageNumStroke="0x000000,1,4,4,10" pageNumBgStyle="asset.elf.ui.scale3" prevButtonStyle="asset.elf.ui.lef1Btn" nextButtonStyle="asset.elf.ui.right1Btn" pageNumSize="40,22" spacing="2"/>
+  <List x="3" y="0" width="81" height="396" spaceY="0" repeatY="5" repeatX="1" var="elfList">
+    <ElfSelectItemView name="render" runtime="elf.view.main.ElfSelectItemView"/>
+  </List>
+  <Button skin="asset.elf.property.sortBtn" x="78" y="-9" stateNum="1" var="sortBtn"/>
+  <ElfSortView x="109" y="-11" runtime="elf.view.main.ElfSortView" var="sortView" visible="false"/>
+</View>7skill/ElfSkillStudyView.xml�Q<View width="325" height="354">
+  <List x="0" y="0" width="325" height="299" repeatX="5" spaceX="-5" spaceY="-7" var="skillList">
+    <ElfSkillBookCell runtime="elf.view.skill.ElfSkillBookCell" name="render"/>
+    <VScrollBar skin="asset.elf.ui.scroll1.vscroll" x="304" y="5" width="18" height="300" name="scrollBar"/>
+  </List>
+  <Button skin="asset.elf.skill.studyBtn" x="102" y="311" stateNum="1" var="studyBtn"/>
+</View>7skill/ElfSkillAtlasView.xml�g<View width="398" height="449">
+  <Image skin="asset.elf.ui.frame" sizeGrid="40,40,40,40" width="390" height="443" x="0" y="6"/>
+  <PageNavigaterEx x="151" y="401" var="pageSelect" type="simple" pageNumBgSize="4,4,4,4,1" pageNumAlign="center" isLoop="true" pageNumStyle="宋体,12,0xB5DBE4,false" pageNumStroke="0x000000,1,4,4,10" pageNumBgStyle="asset.elf.ui.scale3" prevButtonStyle="asset.elf.ui.lef1Btn" nextButtonStyle="asset.elf.ui.right1Btn" pageNumSize="40,22" spacing="2"/>
+  <List x="23" y="52" width="344" height="340" repeatX="5" repeatY="5" spaceX="2" spaceY="2" var="list">
+    <ElfSkillCell name="render" runtime="elf.view.skill.ElfSkillCell"/>
+  </List>
+  <Button skin="asset.elf.ui.closeBtn" x="357" stateNum="1" var="closeBtn" y="0"/>
+  <Image skin="asset.elf.skill.atlasTitle" x="147" y="19"/>
+</View>3main/ElfTipsSkillCell.xml�5<View width="44" height="44">
+  <Image skin="asset.elf.ui.cell1Bg" width="44" height="44"/>
+  <Box x="6" y="6" width="32" height="32" var="icon"/>
+</View>Kproperty/ElfPropertyCultivateCell.xml�{<View width="66" height="66" buttonMode="true">
+  <Image skin="asset.elf.ui.cell1Bg"/>
+  <Box x="10" y="11" width="42" height="42" var="icon"/>
+  <Image skin="asset.elf.ui.cell1Shine" name="selectBox" mouseChildren="false" mouseEnabled="false"/>
+</View>-skill/ElfSkillCell.xml�I<View width="66" height="66" tipStyle="ddt.view.tips.PetSkillCellTip" tipDirctions="1,2,3,4,5">
+  <Image skin="asset.elf.ui.cell1Bg" x="0" y="0"/>
+  <Box x="10" y="11" width="42" height="42" var="icon"/>
+  <Image skin="asset.elf.lockIcon1" x="10" y="9" var="lockImg" visible="false"/>
+</View>5equip/ElfEquipInfoView.xml�A<View width="1220" height="736">
+  <Image skin="asset.elf.equip.infoBg" x="0"/>
+  <Button skin="asset.elf.equip.lvUpBtn" x="405" y="342" stateNum="1" var="cultivateBtn"/>
+  <List x="386" y="269" repeatX="2" repeatY="1" width="200" height="64" var="goodsList" spaceX="10">
+    <ElfPropertyCultivateCell name="render" runtime="elf.view.equip.ElfEquipCultivateCell"/>
+  </List>
+  <Button skin="asset.elf.ui.closeBtn" x="625" y="2" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.elf.ui.scale2" x="306" y="70" sizeGrid="4,4,4,4" width="315" height="24"/>
+  <LabelEx text="当前属性" x="419" y="74" color="0xA1EAFF" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <LabelEx text="下一级" x="530" y="74" color="0xA1EAFF" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <List x="326" y="94" width="281" height="128" spaceY="3" var="proList" repeatX="1">
+    <Box name="render" x="0" y="0">
+      <LabelEx text="生命" color="0x42e491" size="12" width="30" height="18" stroke="0x0A0007,1,2,2,10" bold="true" name="proName"/>
+      <LabelEx text="000000" x="199" color="0xFFF5A1" size="12" width="53" height="16" stroke="0x0A0007,1,2,2,10" bold="true" align="center" name="proLaterValue"/>
+      <LabelEx text="000000" color="0xFFF5A1" size="12" width="56" height="18" stroke="0x0,1,2,2,10" bold="true" align="center" name="proValue" x="90"/>
+    </Box>
+  </List>
+  <LabelEx x="322" y="223" color="0xfeef0" size="12" stroke="0x22073E,1,2,2,10" bold="true" wordWrap="true" width="255" var="skillDesLabel" height="42"/>
+  <LabelEx text="当前属性" x="86" y="94" color="0xA1EAFF" size="16" stroke="0x22073E,1,2,2,10" var="LbequipName"/>
+  <LabelEx text="LV:12" x="156" y="94" color="0xfff5a1" size="14" stroke="0x22073E,1,2,2,10" var="LbLv"/>
+</View>1summon/ElfSummonView.xml�K<View width="772" height="432">
+  <Image skin="asset.elf.summon.bg"/>
+  <Image skin="asset.elf.summon.cellBg" x="151" y="296"/>
+  <CheckBox label="召唤x10" checkButtonSkin="asset.elf.ui.checkBtn1" stateNum="1" labelSize="12" labelColors="0x4CDE95" x="282" y="342" labelBold="true" labelMargin="0,2" toggle="true" labelStroke="0x0D1045,1,2,2,10" var="allBtn1"/>
+  <Button skin="asset.elf.summon.rewardBtn" x="155" y="58" stateNum="1" var="rewardViewBtn1"/>
+  <Button skin="asset.elf.summon.rewardBtn" x="528" y="57" stateNum="1" var="rewardViewBtn2"/>
+  <Image skin="asset.elf.summon.cellBg" x="514" y="296"/>
+  <Button skin="asset.elf.summon.startBtn" x="125" y="328" stateNum="1" var="summonBtn1"/>
+  <Button skin="asset.elf.summon.buy1Btn" x="126" y="381" stateNum="1" var="buyBtn1"/>
+  <CheckBox label="召唤x10" checkButtonSkin="asset.elf.ui.checkBtn1" stateNum="1" labelSize="12" labelColors="0x4CDE95" x="647" y="342" labelBold="true" labelMargin="0,2" toggle="true" labelStroke="0x0D1045,1,2,2,10" var="allBtn2"/>
+  <Button skin="asset.elf.summon.startBtn" x="490" y="328" stateNum="1" var="summonBtn2"/>
+  <Button skin="asset.elf.summon.buy2Btn" x="491" y="381" stateNum="1" var="buyBtn2"/>
+  <CheckBox label="购买10个" checkButtonSkin="asset.elf.ui.checkBtn1" stateNum="1" labelSize="12" labelColors="0x4CDE95" x="282" y="390" labelBold="true" labelMargin="0,2" toggle="true" labelStroke="0x0D1045,1,2,2,10" var="buyCheckBtn1"/>
+  <CheckBox label="购买10个" checkButtonSkin="asset.elf.ui.checkBtn1" stateNum="1" labelSize="12" labelColors="0x4CDE95" x="647" y="389" labelBold="true" labelMargin="0,2" toggle="true" labelStroke="0x0D1045,1,2,2,10" var="buyCheckBtn2"/>
+  <LabelEx x="191" y="302" color="0xEBF2FF" stroke="0x1C1036,1,2,2,10" bold="true" size="14" width="59" height="21" var="count1"/>
+  <LabelEx x="555" y="302" color="0xEBF2FF" stroke="0x1C1036,1,2,2,10" bold="true" size="14" width="59" height="21" var="count2"/>
+  <LabelEx text="00" x="125" y="20" bold="true" size="20" align="center" width="29" height="23" var="rewardCount1" color="0xffd2f8" stroke="0x000000,1,2,2,10"/>
+  <LabelEx text="00" x="503" y="21" bold="true" size="20" align="center" width="29" height="23" var="rewardCount2" color="0xfffcb4" stroke="0x000000,1,2,2,10"/>
+</View>!main/ElfTips.xml�1<View width="204" height="332">
+  <Image skin="asset.elf.ui.line2" x="1" y="284"/>
+  <Image skin="asset.elf.tips.scaleBg" x="0" y="0" sizeGrid="7,7,7,7" width="204" height="332" var="bg"/>
+  <Label x="8" y="10" size="14" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="nameLabel"/>
+  <Image skin="asset.elf.tips.line1" x="8" y="104" sizeGrid="95,1,95,1" width="183" height="2"/>
+  <Label text="星级" x="9" y="32" size="12" color="0x5ad2ff" bold="true" stroke="0x0000000,1,2,2,10"/>
+  <Label text="资质" x="9" y="57" size="12" color="0x5ad2ff" bold="true" stroke="0x0000000,1,2,2,10"/>
+  <Label text="亲密度" x="9" y="81" size="12" color="0x5ad2ff" bold="true" stroke="0x0000000,1,2,2,10"/>
+  <Image skin="asset.elf.tips.line1" x="38" y="72" sizeGrid="95,1,95,1" width="60"/>
+  <Image skin="asset.elf.tips.line1" x="51" y="97" sizeGrid="95,1,95,1" width="60"/>
+  <Label text="生命值成长：" x="9" y="112" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" width="82" height="16"/>
+  <Label text="攻击成长：" x="9" y="132" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10"/>
+  <Label text="火抗成长：" x="9" y="152" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="huoDefLabel"/>
+  <Label text="水抗成长：" x="9" y="172" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" width="69" height="18.0625" var="shuiDefLabel"/>
+  <Label text="风抗成长：" x="9" y="192" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10"/>
+  <Label text="土抗成长：" x="9" y="212" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10"/>
+  <Image skin="asset.elf.tips.line1" x="8" y="236" sizeGrid="95,1,95,1" width="183" height="2"/>
+  <Image skin="asset.elf.tips.line1" x="38" y="48" sizeGrid="95,1,95,1" width="60"/>
+  <List x="11" y="240" width="180" height="82" repeatX="4" repeatY="2" spaceX="0" spaceY="-4" var="skillList">
+    <ElfTipsSkillCell name="render" runtime="elf.view.main.ElfTipsSkillCell"/>
+  </List>
+  <Label x="40" y="32" size="12" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="starLabel"/>
+  <Label x="40" y="57" size="12" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="qualityLabel"/>
+  <Label x="53" y="82" size="12" color="0xff8000" bold="true" stroke="0x000000,1,2,2,10" var="goodFelingLabel" width="39" height="16"/>
+  <Label x="85" y="112" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="hpLabel" text="0"/>
+  <Label x="73" y="132" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="attackLabel" text="0"/>
+  <Label x="73" y="152" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="huoLabel" text="0"/>
+  <Label x="73" y="172" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="shuiLabel" text="0"/>
+  <Label x="73" y="192" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="fengLabel" text="0"/>
+  <Label x="73" y="212" size="12" color="0x99ff33" bold="true" stroke="0x000000,1,2,2,10" var="tuLabel" text="0"/>
+</View>3equip/ElfEquipBagCell.xml�[<View width="66" height="66" buttonMode="true">
+  <Image skin="asset.elf.ui.cell1Bg" x="0" y="0"/>
+  <Image skin="asset.elf.ui.cell1Shine" name="selectBox" x="0" y="0" visible="false"/>
+  <Container x="10" y="11" width="53" height="51" var="bagCellCon"/>
+  <Button skin="asset.elf.equip.goBtn" x="41" y="38" stateNum="1" var="currEquipBtn" visible="false"/>
+</View>Oproperty/ElfPropertyExerciseProItem.xml�m<View width="270" height="23">
+  <LabelEx text="0000" x="202" color="0xFFF5A1" size="12" width="34" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="center" y="5" var="proLaterValue"/>
+  <LabelEx text="0000" x="99" color="0xFFF5A1" size="12" width="34" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="center" y="5" var="proValue"/>
+  <Image skin="asset.elf.ui.line2" y="21" width="270" height="2" x="0"/>
+  <LabelEx text="000" x="138" color="0xEE8D00" size="12" width="27" height="18" stroke="0x0A0007,1,2,2,10" bold="true" y="5" var="proPlusValue" align="left"/>
+  <Button skin="asset.elf.property.proAdd" x="160" stateNum="1" y="1" var="proAddBtn"/>
+  <Clip x="236" clipsUrl="asset.elf.property.proUp,asset.elf.property.proDown" index="0" var="proIcon" y="2"/>
+  <Button skin="asset.elf.property.minusAdd" x="181" stateNum="1" y="1" var="proMinusBtn"/>
+  <LabelEx text="+" x="129" color="0xEE8D00" size="12" stroke="0x0A0007,1,2,2,10" bold="true" y="6" align="left" var="symbolLabel"/>
+</View>)main/ElfSortView.xml�y<View width="100" height="86">
+  <Image skin="asset.elf.tips.scaleBg" sizeGrid="7,7,7,7" width="100" height="86" var="bg" x="0" y="0"/>
+  <Button x="10" y="10" checkButtonSkin="asset.elf.ui.sortBtn" stateNum="1" var="check1" selected="true"/>
+  <LabelEx text="等级" x="31" y="10" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true" width="64" height="19"/>
+  <Button x="10" y="33" checkButtonSkin="asset.elf.ui.sortBtn" stateNum="1" var="check2"/>
+  <LabelEx text="星级" x="31" y="33" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true" width="64" height="19"/>
+  <Button x="10" y="56" checkButtonSkin="asset.elf.ui.sortBtn" stateNum="1" var="check3"/>
+  <LabelEx text="技能数量" x="31" y="56" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true" width="64" height="19"/>
+</View>-skill/ElfSkillView.xml�_<View width="772" height="432">
+  <Image skin="asset.elf.skill.bg"/>
+  <Button skin="asset.elf.property.goodFelingBtn" x="104" y="14" stateNum="1" var="goodFelingBtn"/>
+  <Image skin="asset.elf.label.skill" x="93" y="210"/>
+  <List x="113" y="230" width="279" height="134" repeatX="4" repeatY="2" spaceX="4" spaceY="-2" var="skillList">
+    <ElfSkillCell runtime="elf.view.skill.ElfSkillLockCell" name="render"/>
+  </List>
+  <LabelEx text="消耗:" x="149" y="357" color="0x42E491" bold="true" size="14" width="44" height="19" stroke="0x1F0E3E,1,4,4,10"/>
+  <LabelEx x="191" y="357" color="0xFFF5A1" bold="true" size="14" width="82" height="18" stroke="0x1F0E3E,1,4,4,10" var="consumeLabel" text="0"/>
+  <Button skin="asset.elf.skill.lockBtn" x="123" y="356" stateNum="1" var="lockBtn"/>
+  <LabelEx text="注：学习技能/融合圣灵时一定几率会覆盖原有技能,请谨慎操作,必要时可选择锁定技能.最大锁定数为当前圣灵拥有技能数-1,锁定上限:5。" x="112" y="379" color="0xff0000" size="12" width="287" height="46" stroke="0x1F0E3E,1,4,4,10" multiline="true" wordWrap="true" leading="3"/>
+  <ElfSkillStudyView x="421" y="53" runtime="elf.view.skill.ElfSkillStudyView" var="skillStydyView"/>
+  <ElfSkillBlendView x="422" y="51" runtime="elf.view.skill.ElfSkillBlendView" var="blendView"/>
+  <TabListEx var="menuTab" x="421" y="21">
+    <TabButtonEx skin="asset.elf.skill.tab1BtnNormal,asset.elf.skill.tab1BtnSelect" selected="true" name="item0"/>
+    <TabButtonEx skin="asset.elf.skill.tab2BtnNormal,asset.elf.skill.tab2BtnSelect" name="item1" x="80"/>
+  </TabListEx>
+  <Button skin="asset.elf.skill.atlasBtn" x="705" y="13" stateNum="1" var="atlasBtn"/>
+  <LabelEx text="4星解锁" x="193" y="319" color="0x3A9BD8" size="12" width="50" height="18" stroke="0x1F0E3E,1,4,4,10" multiline="true" wordWrap="true" leading="3" var="lockTip1"/>
+  <LabelEx text="4星解锁" x="264" y="319" color="0x3A9BD8" size="12" width="50" height="18" stroke="0x1F0E3E,1,4,4,10" multiline="true" wordWrap="true" leading="3" var="lockTip2"/>
+  <LabelEx text="5星解锁" x="333" y="319" color="0x3A9BD8" size="12" width="50" height="18" stroke="0x1F0E3E,1,4,4,10" multiline="true" wordWrap="true" leading="3" var="lockTip3"/>
+  <ElfEquipBagCell x="97" y="74" var="currElfEquipCell" runtime="elf.view.equip.ElfEquipBagCell"/>
+</View>=summon/ElfSummonRewardCell.xml�<View width="81" height="77">
+  <Image skin="asset.elf.ui.cell2Bg"/>
+</View>9property/ElfPropertyView.xml�<View width="772" height="432">
+  <Image skin="asset.elf.property.bg" x="0" y="-3"/>
+  <Button skin="asset.elf.property.fightBtn" x="107" y="13" stateNum="1" var="fightBtn"/>
+  <Button skin="asset.elf.property.discardBtn" x="329" y="13" stateNum="1" var="discardBtn"/>
+  <LabelEx text="名称" x="112" y="97" color="0xffffff" bold="true" size="16" width="277" height="24" stroke="0x004f66,1,4,4,10" align="center" var="nameLabel"/>
+  <LabelEx text="Lv.50" x="93" y="381" color="0xffffff" bold="true" size="16" width="62" height="24" stroke="0x004f66,1,4,4,10" align="right" var="levelLabel"/>
+  <ProgressBar skin="asset.elf.property.expProgress" x="155" y="379" var="expProgress" value="0"/>
+  <LabelEx text="10/100" x="172" y="383" color="0xffffff" bold="true" size="12" width="187" height="16" stroke="0x004f66,1,2,2,10" align="center" var="expLabel"/>
+  <TabListEx var="menuTab" x="411" y="20">
+    <TabButtonEx skin="asset.elf.property.tab1BtnNormal,asset.elf.property.tab1BtnSelect" selected="true" name="item0"/>
+    <TabButtonEx skin="asset.elf.property.tab2BtnNormal,asset.elf.property.tab2BtnSelect" name="item1" x="80" y="0"/>
+    <TabButtonEx skin="asset.elf.property.tab3BtnNormal,asset.elf.property.tab3BtnSelect" name="item2" x="160"/>
+  </TabListEx>
+  <ElfPropertyGrowUpView x="421" y="58" runtime="elf.view.property.ElfPropertyGrowUpView" var="growUpView"/>
+  <Button skin="asset.elf.property.goodFelingBtn" x="118" y="64" stateNum="1" var="goodFelingBtn"/>
+  <ElfPropertyCultivateView x="419" y="51" runtime="elf.view.property.ElfPropertyCultivateView" var="cultivateView"/>
+  <ElfPropertyExerciseView x="419" y="51" runtime="elf.view.property.ElfPropertyExerciseView" var="exerciseView"/>
+  <Button skin="asset.elf.property.restBtn" x="108" y="14" stateNum="1" var="restBtn"/>
+  <Box x="178" y="216" width="174" height="121" var="movieBox"/>
+  <Clip x="309" y="111" index="0" clipsUrl="asset.elf.quality.0,asset.elf.quality.1,asset.elf.quality.2,asset.elf.quality.3" var="qualityClip"/>
+  <Box x="180" y="58" var="star">
+    <Image skin="asset.elf.bigStar" name="star0"/>
+    <Image skin="asset.elf.bigStar" x="29" name="star1"/>
+    <Image skin="asset.elf.bigStar" x="58" name="star2"/>
+    <Image skin="asset.elf.bigStar" x="87" name="star3"/>
+    <Image skin="asset.elf.bigStar" x="116" name="star4"/>
+  </Box>
+  <Button x="329" y="52" checkButtonSkin="asset.elf.ui.checkBtn" stateNum="1" var="hidePetBtn" toggle="true"/>
+  <LabelEx text="战斗展示" x="348" y="53" bold="true" color="0xffffff" size="12" stroke="0x274177,1,2,2,10"/>
+  <Button skin="asset.elf.property.resetBtn" x="256" y="13" stateNum="1" var="resetBtn"/>
+  <ElfEquipBagCell x="111" y="120" var="currElfEquipCell" runtime="elf.view.equip.ElfEquipBagCell"/>
+</View>Eproperty/ElfPropertyGrowUpView.xml�?<View width="330" height="360">
+  <Image skin="asset.elf.property.proBg" x="98" y="32"/>
+  <LabelEx text="生命" x="137" y="2" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="水抗" x="214" y="50" color="0x4FD78D" size="12" width="34" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiDefLabel"/>
+  <LabelEx text="土抗" x="214" y="116" color="0x4FD78D" size="12" width="34" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="风抗" x="60" y="116" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="火抗" x="60" y="50" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="huoDefLabel"/>
+  <LabelEx text="攻击" x="137" y="160" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="atkNameLabel1"/>
+  <LabelEx text="000(max:000)" x="208" y="135" color="0xFFF5A1" size="12" width="95" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="tuLabel"/>
+  <LabelEx text="000(max:000)" x="208" y="68" color="0xFFF5A1" size="12" width="93" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiLabel"/>
+  <LabelEx text="(max:000) 000" x="0" y="68" color="0xFFF5A1" size="12" width="95" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="right" var="huoLabel"/>
+  <LabelEx text="(max:000) 000" x="0" y="134" color="0xFFF5A1" size="12" width="98" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="right" var="fengLabel"/>
+  <LabelEx text="000(max:000)" x="135" y="176" color="0xFFF5A1" size="12" width="119" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="attackLabel"/>
+  <LabelEx text="000 (max:000)" x="139" y="17" color="0xFFF5A1" size="12" width="119" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="hpLabel"/>
+  <Image skin="asset.elf.label.growUp"/>
+  <Image skin="asset.elf.label.pro" y="184" x="0"/>
+  <LabelEx text="生命" x="38" y="211" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="000000" x="68" y="211" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="hpProLabel"/>
+  <List x="31" y="290" width="263" height="61" repeatX="4" repeatY="1" var="skillList">
+    <ElfSkillCell name="render" runtime="elf.view.skill.ElfSkillCell"/>
+  </List>
+  <Image skin="asset.elf.label.skillPreview" x="0" y="263"/>
+  <LabelEx text="火抗" x="120" y="211" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="huoDefLabel2"/>
+  <LabelEx text="000000" x="150" y="211" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="huoProLabel"/>
+  <LabelEx text="水抗" x="200" y="211" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiDefLabel2"/>
+  <LabelEx text="000000" x="230" y="211" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="shuiProLabel"/>
+  <LabelEx text="攻击" x="38" y="233" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" var="atkNameLabel2"/>
+  <LabelEx text="000000" x="150" y="233" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="fengProLabel"/>
+  <LabelEx x="120" y="233" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" text="风抗"/>
+  <LabelEx text="000000" x="230" y="233" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="tuProLabel"/>
+  <LabelEx text="土抗" x="200" y="233" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true"/>
+  <LabelEx text="000000" x="68" y="233" color="0xFFF5A1" size="12" width="48" height="18" stroke="0x0A0007,1,2,2,10" bold="true" var="attackProLabel"/>
+  <Button skin="asset.elf.ui.lef2Btn" x="4" y="305" stateNum="1" var="leftBtn"/>
+  <Button skin="asset.elf.ui.right2Btn" x="296" y="305" stateNum="1" var="rightBtn"/>
+</View>7skill/ElfSkillBlendView.xml�}<View width="340" height="352">
+  <Image skin="asset.elf.skill.viceCell" x="166" y="15"/>
+  <Image skin="asset.elf.label.skillPreview" x="0" y="135"/>
+  <List x="27" y="164" width="295" height="135" repeatX="4" repeatY="2" spaceY="0" spaceX="2" var="skillList">
+    <ElfSkillCell name="render" runtime="elf.view.skill.ElfSkillCell"/>
+    <VScrollBar skin="asset.elf.ui.scroll1.vscroll" x="269" y="5" width="18" height="122" name="scrollBar"/>
+  </List>
+  <Button skin="asset.elf.skill.blendBtn" x="101" y="312" stateNum="1" var="blendBtn"/>
+  <Image skin="asset.elf.skill.mainCell" x="24" y="8"/>
+  <Box x="63" y="46" width="66" height="62" var="mainElfIcon" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+  <Box x="198" y="43" width="61" height="62" var="viceElfIcon" buttonMode="true" tipDirctions="1,2,3,4"/>
+</View>Kproperty/ElfPropertyCultivateView.xml�i<View width="330" height="360">
+  <Image skin="asset.elf.ui.scale2" x="5" y="12" sizeGrid="4,4,4,4" width="315" height="24"/>
+  <LabelEx text="当前属性" x="118" y="16" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <LabelEx text="下一级" x="229" y="16" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <List x="28" y="41" width="281" height="133" repeatY="6" spaceY="3" var="proList">
+    <Box name="render" x="0" y="2">
+      <LabelEx text="000000" x="197" color="0xFFF5A1" size="12" width="53" height="16" stroke="0x0A0007,1,2,2,10" bold="true" align="center" name="proLaterValue"/>
+      <LabelEx text="000000" x="88" color="0xFFF5A1" size="12" width="56" height="18" stroke="0x0A0007,1,2,2,10" bold="true" align="center" name="proValue" y="2"/>
+      <Image skin="asset.elf.ui.line2" y="18" width="270" height="2" x="0"/>
+    </Box>
+  </List>
+  <LabelEx text="培育等级越高，属性加成越多！" x="74" y="197" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <Image skin="asset.elf.label.cultivate" x="8" y="228"/>
+  <Button skin="asset.elf.property.cultivateBtn" x="105" y="312" stateNum="1" var="cultivateBtn"/>
+  <CheckBox label="升至下级" checkButtonSkin="asset.elf.ui.checkBtn1" stateNum="1" labelSize="12" labelColors="0x4CDE95" x="224" y="322" labelBold="true" labelMargin="0,2" toggle="true" labelStroke="0x0D1045,1,2,2,10" var="allCheckBtn"/>
+  <LabelEx text="生命" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="43"/>
+  <LabelEx text="攻击" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="66" var="atkNameLabel"/>
+  <LabelEx text="火抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="89" var="huoDefLabel"/>
+  <LabelEx text="水抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="112" var="shuiDefLabel"/>
+  <LabelEx text="风抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="135"/>
+  <LabelEx text="土抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="158"/>
+  <List x="66" y="249" repeatX="3" repeatY="1" width="200" height="64" var="goodsList">
+    <ElfPropertyCultivateCell name="render" runtime="elf.view.property.ElfPropertyCultivateCell"/>
+  </List>
+</View>Iproperty/ElfPropertyExerciseView.xml�i<View width="330" height="360">
+  <Image skin="asset.elf.ui.scale2" x="5" y="12" sizeGrid="4,4,4,4" width="315" height="24"/>
+  <LabelEx text="当前资质" x="118" y="16" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <LabelEx text="淬炼后" x="229" y="16" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" bold="true"/>
+  <LabelEx text="使用资质成长丹可以直接提升圣灵资质成长" x="63" y="187" color="0x91EDFC" size="12" stroke="0x22073E,1,2,2,10" multiline="true" wordWrap="true" width="177" height="31" leading="2"/>
+  <Button skin="asset.elf.property.exerciseBtn" x="105" y="312" stateNum="1" var="exerciseBtn"/>
+  <Button skin="asset.elf.property.replaceBtn" x="38" y="312" stateNum="1" var="replaceBtn"/>
+  <Image skin="asset.elf.label.exercise" x="8" y="229"/>
+  <Button skin="asset.elf.property.useBtn" x="238" y="191" stateNum="1" var="useBtn"/>
+  <Image skin="asset.elf.ui.cell1Bg" x="132" y="249"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="38" var="hpItem"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="61" var="attackItem"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="84" var="huoItem"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="107" var="shuiItem"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="130" var="fengItem"/>
+  <ElfPropertyExerciseProItem runtime="elf.view.property.ElfPropertyExerciseProItem" x="28" y="153" var="tuItem"/>
+  <LabelEx text="生命" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="43"/>
+  <LabelEx text="攻击" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="66" var="atkNameLabel"/>
+  <LabelEx text="火抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="89" var="huoDefLabel"/>
+  <LabelEx text="水抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="112" var="shuiDefLabel"/>
+  <LabelEx text="风抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="135"/>
+  <LabelEx text="土抗" x="31" color="0x4FD78D" size="12" width="30" height="17" stroke="0x0A0007,1,2,2,10" bold="true" y="158"/>
+  <Button skin="asset.elf.property.cancelGrowUpBtn" x="238" y="202" stateNum="1" var="cancelGrowUpBtn"/>
+  <Button skin="asset.elf.property.confirnGrowUpBtn" x="238" y="179" stateNum="1" var="confirnGrowUpBtn"/>
+  <Button skin="asset.elf.property.cancelBtn" x="172" y="312" stateNum="1" var="cancelBtn"/>
+</View>1shop/ElfShopItemView.xml�y<View width="245" height="109">
+  <Image skin="asset.elf.shop.itemBg"/>
+  <Image skin="asset.elf.ui.cell2Bg" x="7" y="18"/>
+  <LabelEx text="000000" x="95" y="14" color="0xFFFFFF" size="14" width="133" height="18" stroke="0x000000,1,2,2,10" bold="true" var="nameLabel"/>
+  <LabelEx text="000000" x="97" y="46" color="0xFFED84" size="12" width="105" height="18" stroke="0x000000,1,2,2,10" bold="true" align="left" var="coinLabel"/>
+  <Button skin="asset.elf.shop.exchangeBtn" x="159" y="70" stateNum="1" var="exchangeBtn"/>
+  <Image skin="asset.elf.coinIcon" x="202" y="38" smoothing="true" scaleX="0.7" scaleY="0.7" var="icon"/>
+</View>7summon/ElfSummonPreview.xml�<View width="398" height="449">
+  <Image skin="asset.elf.ui.frame" sizeGrid="40,40,40,40" width="390" height="443" x="0" y="6"/>
+  <PageNavigaterEx x="151" y="401" var="pageSelect" type="simple" pageNumBgSize="4,4,4,4,1" pageNumAlign="center" isLoop="true" pageNumStyle="宋体,12,0xB5DBE4,false" pageNumStroke="0x000000,1,4,4,10" pageNumBgStyle="asset.elf.ui.scale3" prevButtonStyle="asset.elf.ui.lef1Btn" nextButtonStyle="asset.elf.ui.right1Btn" pageNumSize="40,22" spacing="2"/>
+  <List x="23" y="52" width="344" height="340" repeatX="5" repeatY="5" spaceX="2" spaceY="2" var="list">
+    <ElfSummonPreviewCell name="render" runtime="elf.view.summon.ElfSummonPreviewCell"/>
+  </List>
+  <Button skin="asset.elf.ui.closeBtn" x="357" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.elf.summon.rewardTitle" x="148" y="18"/>
+</View>?equip/ElfEquipCultivateCell.xml�'<View width="66" height="66">
+  <Image skin="asset.elf.ui.cell1Bg" x="0" y="0"/>
+  <Box x="10" y="11" width="42" height="42" var="icon"/>
+  <Image skin="asset.elf.ui.cell1Shine" name="selectBox" mouseChildren="false" mouseEnabled="false" x="0" y="0" visible="false"/>
+</View>)shop/ElfShopView.xml�y<View width="772" height="432">
+  <List x="13" y="9" width="751" height="341" repeatX="3" repeatY="3" spaceX="4" spaceY="4" var="shopList">
+    <ElfShopItemView name="render" runtime="elf.view.shop.ElfShopItemView"/>
+  </List>
+  <Image skin="asset.elf.coinIcon" x="18" y="359"/>
+  <LabelEx text="000000" x="61" y="375" color="0xFFFFFF" size="14" width="133" height="18" stroke="0x000000,1,2,2,10" bold="true" var="coinLabel"/>
+  <LabelEx text="圣晶可通过纹章出售/召唤圣灵获得。" x="17" y="404" color="0x37ECE3" size="12" width="214" height="18" stroke="0x000000,1,2,2,10"/>
+  <PageNavigaterEx x="304" y="376" var="selectPage" type="simple" pageNumBgSize="4,4,4,4,1" pageNumAlign="center" isLoop="true" width="160" pageNumStyle="宋体,12,0xB5DBE4" pageNumStroke="0x000000,1,4,4,10" pageNumBgStyle="asset.elf.ui.scale3" prevButtonStyle="asset.elf.ui.lef3Btn" nextButtonStyle="asset.elf.ui.right3Btn" pageNumSize="60,22" spacing="5"/>
+</View>5skill/ElfSkillBookCell.xml�?<View width="66" height="66">
+  <Image skin="asset.elf.ui.cell1Bg" x="0" y="0"/>
+  <Box x="10" y="11" width="42" height="42" var="icon"/>
+  <LabelEx x="19" y="41" width="41" height="17" align="right" color="0xffffff" stroke="0x000000,1,2,2,10" mouseChildren="false" mouseEnabled="false" var="countLabel"/>
+  <Image skin="asset.elf.ui.cell1Shine" name="selectBox" mouseChildren="false" mouseEnabled="false"/>
+</View>?summon/ElfSummonPreviewCell.xml�<View width="66" height="66">
+  <Image skin="asset.elf.ui.cell1Bg"/>
+</View>Mproperty/ElfPropertyGoodFelingView.xml�u<View width="508" height="428">
+  <Image skin="asset.elf.ui.frame" sizeGrid="40,40,40,40" width="508" height="422" x="0" y="6"/>
+  <Button skin="asset.elf.ui.closeBtn" x="467" stateNum="1" var="closeBtn" y="0"/>
+  <Image skin="asset.elf.goodFeling.title" x="220" y="19"/>
+  <Image skin="asset.elf.goodFeling.headBg" x="17" y="38"/>
+  <ProgressBar skin="asset.elf.goodFeling.progress" x="209" y="125" var="expProgress" value="0.5"/>
+  <Image skin="asset.elf.ui.scale1" x="20" y="174" sizeGrid="20,20,20,20" width="466" height="139"/>
+  <Image skin="asset.elf.goodFeling.effect" x="33" y="186"/>
+  <Image skin="asset.elf.goodFeling.source" x="31" y="313"/>
+  <LabelEx text="亲密度" x="285" y="90" width="59" height="20" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14"/>
+  <LabelEx text="LV.50" x="342" y="90" width="59" height="20" stroke="0x000000,1,2,2,10" color="0xa1eaff" bold="true" size="14" var="gradeLabel"/>
+  <LabelEx x="37" y="335" width="419" height="19" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14" text="携带圣灵通关副本获得，每日上限&lt;font color='#ffffff'>5&lt;/font>点. &lt;font color='#fffc00'>(0/5)&lt;/font>" isHtml="true" var="sourceLabel1"/>
+  <LabelEx x="37" y="359" width="413" height="19" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14" text="携带圣灵参与竞技获得，每日上限&lt;font color='#ffffff'>5&lt;/font>点. &lt;font color='#fffc00'>(0/5)&lt;/font>" isHtml="true" var="sourceLabel2"/>
+  <LabelEx x="37" y="382" width="423" height="19" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14" text="圣灵培育时获得，每日上限&lt;font color='#ffffff'>5&lt;/font>点. &lt;font color='#fffc00'>(0/5)&lt;/font>" isHtml="true" var="sourceLabel3"/>
+  <LabelEx x="37" y="219" width="402" height="35" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14" text="Lv20：生命值低于50%有几率触发技能&lt;font color='#FCF1A8'>治愈术&lt;/font>,回复自身生命&lt;font color='#ffffff'>(触发几率、生效次数、恢复生命值受亲密度影响)&lt;/font>." multiline="true" wordWrap="true" leading="2" isHtml="true" var="effectLabel2"/>
+  <LabelEx x="37" y="265" width="418" height="23" stroke="0x000000,1,2,2,10" color="0x42e491" bold="true" size="14" text="Lv30：提升召唤&lt;font color='#FCF1A8'>五星圣灵&lt;/font>获得几率,亲密度越高提升几率越高." isHtml="true" var="effectLabel3"/>
+  <Box x="45" y="61" var="icon" width="82" height="82" tipStyle="elf.view.main.ElfTips" tipDirctions="1,2,3,4"/>
+  <Image skin="asset.elf.goodFeling.icon" x="247" y="85"/>
+  <LabelEx text="10/100" x="233" y="130" color="0xffffff" bold="true" size="12" width="187" height="16" stroke="0x000000,1,2,2,10" align="center" var="expLabel"/>
+</View>

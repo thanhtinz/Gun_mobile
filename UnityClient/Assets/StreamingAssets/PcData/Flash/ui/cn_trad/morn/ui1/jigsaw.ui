@@ -1,0 +1,293 @@
+
+Ishowframe/JigsawBuyAlbumViewItem.xml�Q<View width="170" height="208" buttonMode="true">
+  <ViewStack x="0" y="0" var="bgTab">
+    <Image skin="asset.jigsaw.common.selectBg0" x="0" y="0" name="item0"/>
+    <Image skin="asset.jigsaw.common.selectBg1" x="0" y="0" name="item1"/>
+    <Image skin="asset.jigsaw.common.selectBg2" x="0" y="0" name="item2"/>
+  </ViewStack>
+  <Image skin="asset.jigsaw.common.itemBg" x="49" y="51" width="76" height="76" var="itemBg"/>
+  <Label text="低級拼圖碎片禮包" x="14" y="153" var="itemNameTxt" color="0xfff8d6" size="14" stroke="0x420000,1,4,4,10" width="142" height="38" align="center" multiline="true"/>
+</View>Schallenge/JigsawQuestViewUnSelectItem.xml�<View width="515" height="57" buttonMode="true">
+  <Image skin="asset.jigsaw.quest.selectBg0" x="0" y="0" width="515" sizeGrid="20,20,20,20" mouseEnabled="false" mouseChildren="false"/>
+  <Label text="活動期間試煉之地獲得10場戰鬥" x="32" y="20" size="14" bold="true" stroke="0x4f3700,1,4,4,10" color="0xffea9c" mouseEnabled="false" var="titleTxt"/>
+  <Image skin="asset.jigsaw.common.ok" x="431" y="8" mouseChildren="false" mouseEnabled="false" var="okIcon" visible="false"/>
+  <Image skin="asset.jigsaw.quest.getCompleteIcon" x="419" y="8" var="getCompleteIcon"/>
+</View>=album/JigsawAlbumSmallItem.xml�5<View width="194" height="32">
+  <Image skin="asset.jigsaw.mouseSelectItemBg" x="0" y="0"/>
+  <Label text="守护小鸡之一" x="17" y="6" var="contentTxt" size="14" stroke="0x663518,1,2,2,10" color="0xfff0b5" bold="true" width="142" height="18"/>
+  <Label text="(2)" x="115" y="6" var="countTxt" size="14" stroke="0x663518,1,2,2,10" color="0xfff0b5" bold="true" width="65" height="18" align="right"/>
+</View>Ashop/JigsawShopViewRightItem.xml�e<View width="350" height="72">
+  <ViewStack x="0" y="0" var="bgTab">
+    <Image skin="asset.ui.scale.bg6" x="0" y="0" sizeGrid="10,10,10,10" width="350" height="72" name="item0"/>
+    <Image skin="asset.ui.scale.bg7" x="0" y="0" name="item1" sizeGrid="10,10,10,10" width="350" height="72"/>
+  </ViewStack>
+  <Image skin="asset.ui.frame.line2" x="102" y="5" height="62"/>
+  <Image skin="asset.ui.frame.line2" x="243" y="5" height="62" width="2"/>
+  <Label text="0" x="6" y="28" color="0xffe68e" size="14" stroke="0x381e00,1,4,4,10" width="92" height="18" align="center" var="scoreTxt"/>
+  <Image skin="asset.jigsaw.common.itemBg" x="152" y="11" width="52" height="52" var="rewardIcon" tipStyle="core.GoodsTip"/>
+  <ViewStack x="257" y="14" var="getBtnTab">
+    <Button skin="asset.jigsaw.shop.getBtn" width="84" height="40" name="item0" stateNum="1" y="1"/>
+    <Image skin="asset.uigeneral.awardGained" name="item1" x="8"/>
+  </ViewStack>
+</View>Cshowframe/JigsawGiveAlbumView.xml�7<View width="460" height="410">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="464" height="411"/>
+  <Button skin="asset.ui.btn_close1" x="402" y="5" stateNum="1" var="closeBtn"/>
+  <Label text="贈送拼圖碎片" x="14" y="13" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.jigsaw.give.selectBg" x="16" y="42"/>
+  <Image skin="asset.ui.scale.bg3" x="17" y="334" width="430" height="60" sizeGrid="5,5,5,5"/>
+  <Label text="贈送給：" x="32" y="61" color="0xfff0b8" size="18" stroke="0x781d01,1,4,4,10"/>
+  <Button skin="asset.jigsaw.give.giveBtn" x="144" y="341" stateNum="1" var="giveBtn"/>
+  <Button skin="asset.jigsaw.give.selectPlayer" x="339" y="57" stateNum="1" var="friendBtn"/>
+  <List x="38" y="138" width="388" height="152" repeatX="5" spaceX="1" var="albumList" autoHideItem="true">
+    <JigsawAlbumViewSmallItem name="render" runtime="jigsaw.view.mornui.showframe.JigsawAlbumViewSmallItemUI"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="369" y="2" name="scrollBar" width="18" height="156"/>
+  </List>
+  <Label text="注：每天最多只可贈送五枚拼圖塊" x="27" y="308" color="0xf6e872" size="12" stroke="0x892300,1,4,4,10"/>
+  <Label text="0" x="336" y="102" color="0xffa751" stroke="0x583101,1,4,4,10" bold="true" width="46" height="18" align="center" var="countTxt"/>
+  <Label text="收到" x="303" y="102" color="0xfff2b2" stroke="0x784100,1,4,4,10" bold="true"/>
+  <Label text="件禮物" x="381" y="102" color="0xfff2b2" stroke="0x784100,1,4,4,10" bold="true"/>
+  <Button skin="asset.jigsaw.give.giftBag" x="271" y="95" stateNum="1" var="giftBagBtn" buttonMode="true"/>
+</View>3album/JigsawAlbumView.xml�[<View width="810" height="425">
+  <Image skin="asset.jigsaw.leftBg"/>
+  <JigsawAlbumViewLeft x="6" y="13" var="leftView" runtime="jigsaw.view.album.JigsawAlbumViewLeft"/>
+  <Image skin="asset.ui.scale.goldLine" x="244" y="1" width="562" height="424"/>
+  <JigsawAlbumViewRight x="249" y="11" runtime="jigsaw.view.album.JigsawAlbumViewRight" var="rightView"/>
+</View>%JigsawMainView.xml�<View width="920" height="580">
+  <Image skin="asset.ui.frame.bg2" x="34" y="39" sizeGrid="150,110,150,200" width="850" height="530"/>
+  <Button skin="asset.ui.btn_close1" x="826" y="46" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.jigsaw.main.frameBorder" x="-4" y="39"/>
+  <Image skin="asset.jigsaw.main.frameBorder" x="923" y="39" scaleX="-1"/>
+  <Image skin="asset.ui.scale.bg19" x="52" y="116" sizeGrid="30,30,30,30" width="814" height="436"/>
+  <Label text="活動時間：" x="439" y="94" size="14" color="0xfff0b8" stroke="0x781d01,1,4,4,10"/>
+  <Label x="506" y="94" size="14" color="0xfff0b8" stroke="0x781d01,1,4,4,10" width="243" height="18" var="dateTxt"/>
+  <Image skin="asset.jigsaw.main.frameTitle" x="43" y="-20" mouseEnabled="false"/>
+  <TabListEx y="82" var="viewTab" x="84">
+    <TabButtonEx skin="asset.core.btmc004|asset.jigsaw.main.selectBtn0_2,asset.core.btmc005|asset.jigsaw.main.selectBtn0_1" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" rects="0,0,110,35|10,5,89,25|-5,-5,120,40|11,4,89,25" bgSizeGrid="20,15,20,15"/>
+    <TabButtonEx skin="asset.core.btmc004|asset.jigsaw.main.selectBtn1_2,asset.core.btmc005|asset.jigsaw.main.selectBtn1_1" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,110,35|10,5,89,25|-5,-5,120,40|11,4,89,25" bgSizeGrid="20,15,20,15" x="120"/>
+    <TabButtonEx skin="asset.core.btmc004|asset.jigsaw.main.selectBtn2_2,asset.core.btmc005|asset.jigsaw.main.selectBtn2_1" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" rects="0,0,110,35|10,5,89,25|-5,-5,120,40|11,4,89,25" bgSizeGrid="20,15,20,15" x="239" y="0"/>
+  </TabListEx>
+  <Button skin="asset.ddtcore.helpbutton" x="749" y="79" stateNum="1" var="helpBtn"/>
+  <Container x="56" y="122" var="contentSp"/>
+</View>7album/JigsawAlbumItem_1.xml�o<View width="230" height="248">
+  <Image skin="asset.jigsaw.groupItemBg1" x="0" y="0" sizeGrid="22,66,10,10" width="230" height="248" var="itemBg"/>
+  <FrameClip skin="asset.jigsaw.selectTitleMc" x="24" y="12" index="0" var="titleMc"/>
+  <List x="5" y="54" width="218" height="189" repeatX="1" spaceX="0" spaceY="0" var="itemList">
+    <JigsawAlbumSmallItem x="3" y="0" name="render" runtime="jigsaw.view.mornui.album.JigsawAlbumSmallItemUI"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="199" y="-2" name="scrollBar" width="18" height="191"/>
+  </List>
+</View>;challenge/JigsawQuestView.xml�5<View width="540" height="320">
+  <VBox var="questVBox" x="0" y="0" align="left"/>
+</View>Ochallenge/JigsawQuestViewSelectItem.xml�{<View width="515" height="90">
+  <Image skin="asset.jigsaw.quest.selectBg1" x="0" y="0" sizeGrid="20,20,20,20" width="515" height="90"/>
+  <Label text="活動期間試煉之地獲得10場戰鬥" x="21" y="17" size="14" bold="true" stroke="0x4f3700,1,4,4,10" color="0xffffff" var="titleTxt"/>
+  <Label text="獲勝5場" x="21" y="43" size="12" bold="true" stroke="0x5d2100,1,4,4,10" color="0xbcbcbc" var="cTxt1" width="120"/>
+  <Label text="獲勝20場" x="118" y="43" size="12" bold="true" stroke="0x5d2100,1,4,4,10" color="0xffd800" var="cTxt2" width="120" height="18" align="center"/>
+  <Label text="獲勝50場" x="218" y="43" size="12" bold="true" stroke="0x5d2100,1,4,4,10" color="0xffea9c" var="cTxt3" width="120" height="18" align="right"/>
+  <Button skin="asset.jigsaw.quest.gotoBtn" x="414" y="26" stateNum="1" var="gotoBtn"/>
+  <Image skin="asset.ui.scale.bg15" x="348" y="19" sizeGrid="10,10,10,10" width="55" height="55"/>
+  <Image skin="asset.ui.scale.bg15" x="350" y="20" width="52" height="52" var="rewardIcon" tipStyle="core.GoodsTip"/>
+  <ProgressBarEx skin="asset.jigsaw.quest.progress" x="17" y="63" var="progress" barXOffset="3" barYOffset="3" value="0" barLabelY="0" sizeGrid="2,2,2,2"/>
+  <Label x="18" y="63" size="12" bold="false" stroke="0x5d2100,1,2,2,10" color="0xffea9c" var="progressTxt" align="center" text="(10000/10000)" width="319"/>
+  <Image skin="asset.ui.frame.bg5" x="4" y="5" width="339" height="80" alpha="0" var="tipBg"/>
+</View>Gshowframe/JigsawGetSeedViewItem.xml�/<View width="170" height="208" buttonMode="true">
+  <ViewStack x="0" y="0" var="bgTab">
+    <Image skin="asset.jigsaw.common.selectBg0" name="item0"/>
+    <Image skin="asset.jigsaw.common.selectBg1" name="item1" x="0" y="0"/>
+    <Image skin="asset.jigsaw.common.selectBg2" name="item2" x="0" y="0"/>
+  </ViewStack>
+  <Label text="普通拼圖種子" x="17" y="29" var="typeTxt" color="0xfff8d6" size="14" stroke="0x590101,1,4,4,10" width="138" height="18" align="center"/>
+  <Image skin="asset.jigsaw.common.itemBg" x="47" y="53" width="76" height="76" var="itemBg"/>
+  <Image skin="asset.jigsaw.getseed.getTxt" x="55" y="146"/>
+  <Label text="低級拼圖碎片禮包" x="13" y="172" width="145" height="18" var="msgTxt" color="0xf0be85" stroke="0x131313,1,4,4,10" align="center"/>
+</View>7shop/JigsawShopLeftItem.xml�<View width="201" height="82">
+  <Image skin="asset.jigsaw.shop.itemBg" x="0" y="0"/>
+  <Label text="經驗藥水3級" x="78" y="8" bold="true" size="12" color="0xe8ce97" stroke="0x624117,1,4,4,10" var="nameTxt" width="117" height="18"/>
+  <Label text="500" x="78" y="29" bold="true" size="12" color="0xe8ce97" stroke="0x624117,1,4,4,10" var="priceTxt" width="83" height="18"/>
+  <Label text="積分" x="144" y="28" bold="true" size="12" color="0xe8ce97" stroke="0x624117,1,4,4,10" width="48" height="18" var="priceTxtValue" align="right"/>
+  <Button label="购 买" skin="asset.ui.btn_red6" x="127" y="54" stateNum="1" var="buyBtn" labelSize="12" labelColors="0xe8ce97" labelStroke="0x624117,1,2,2,10"/>
+</View>Achallenge/JigsawRankViewItem.xml�)<View width="250" height="20">
+  <Label x="16" y="1" size="14" bold="true" color="0xffe88f" stroke="0x620601,1,4,4,30" height="18" align="center" var="rankTxt" width="25"/>
+  <Label x="136" y="2" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" width="100" height="18" align="center" var="scoreTxt"/>
+  <Label size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" width="100" height="18" align="center" var="nameTxt" x="49" y="2"/>
+</View>/shop/JigsawShopView.xml�]<View width="800" height="425">
+  <JigsawShopViewLeft x="0" y="0" runtime="jigsaw.view.shop.JigsawShopViewLeft" var="leftView"/>
+  <JigsawShopViewRight x="428" y="0" runtime="jigsaw.view.shop.JigsawShopViewRight" var="rightView"/>
+</View>Cchallenge/JigsawQuestViewItem.xml�I<View>
+  <ViewStack x="0" y="0" visible="true" selectedIndex="0" var="itemTab">
+    <JigsawQuestViewUnSelectItem x="0" y="0" name="item0" runtime="jigsaw.view.mornui.challenge.JigsawQuestViewUnSelectItemUI"/>
+    <JigsawQuestViewSelectItem x="0" y="0" name="item1" runtime="jigsaw.view.mornui.challenge.JigsawQuestViewSelectItemUI"/>
+  </ViewStack>
+</View>Mchallenge/JigsawRankViewRewardItem.xml�i<View width="250" height="20">
+  <Label x="25" y="3" var="rankTxt" size="12" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" width="70" height="18" align="center"/>
+  <Box x="140" y="-4" width="20" height="20" var="rewardBox"/>
+  <Label x="150" y="9" var="countTxt" width="16" height="16" size="10" color="0xdfc477" stroke="0x450000,1,2,2,10" bold="true"/>
+</View>Ashowframe/JigsawGetAlbumView.xml�A<View width="474" height="392">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="475" height="393"/>
+  <Button skin="asset.ui.btn_close1" x="415" y="6" stateNum="1" var="closeBtn"/>
+  <Label text="收到的拼圖" x="14" y="12" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.jigsaw.get.msgBg" x="37" y="346"/>
+  <Label text="注：每天最多只可接受五塊好友贈送的拼圖碎片" x="97" y="351" bold="true" color="0xFCE192" stroke="0x543100,1,4,4,10"/>
+  <List x="21" y="46" repeatY="4" width="432" height="293" spaceY="3" var="itemList" autoHideItem="true">
+    <JigsawGetAlbumViewItem name="render" runtime="jigsaw.view.showframe.JigsawGetAlbumViewItem"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="414" y="6" name="scrollBar" width="18" height="283"/>
+  </List>
+</View>?showframe/JigsawGetSeedView.xml�=<View width="585" height="360">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="586" height="358"/>
+  <Button skin="asset.ui.btn_close1" x="526" y="7" stateNum="1" var="closeBtn"/>
+  <Label text="領取種子" x="14" y="12" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.jigsaw.getseed.frameBg" x="16" y="42"/>
+  <Image skin="asset.ui.scale.bg3" x="17" y="288" sizeGrid="10,10,10,10" width="551" height="53"/>
+  <List x="37" y="62" width="511" height="208" repeatX="3" var="itemList">
+    <JigsawGetSeedViewItem name="render" runtime="jigsaw.view.showframe.JigsawGetSeedViewItem"/>
+  </List>
+  <ViewStack x="183" y="290" var="getTab">
+    <Button label="(0)" skin="asset.jigsaw.getseed.freeBtn" stateNum="1" labelMargin="102,-2,10,0" labelColors="0xffffff" labelStroke="0x783d00,1,4,4,10" labelSize="18" name="item0" x="0" y="0"/>
+    <Button skin="asset.jigsaw.buyBtn" stateNum="1" name="item1" x="0" y="1"/>
+  </ViewStack>
+  <Image skin="asset.jigsaw.getseed.freeIcon" x="44" y="71" var="freeIcon"/>
+  <Image skin="asset.jigsaw.getseed.scaleIcon" x="213" y="70" var="scaleIcon1"/>
+  <Image skin="asset.jigsaw.getseed.scaleIcon" x="383" y="70" var="scaleIcon2"/>
+</View>9challenge/JigsawRankView.xml�<View width="241" height="425">
+  <Image skin="asset.jigsaw.rank.bg" x="0" y="0"/>
+  <TabListEx var="tab_menu" x="14" y="13">
+    <TabButtonEx x="0" y="0" width="120" height="40" selected="true" name="item0" skin="asset.jigsaw.rank.rankBtn0,asset.jigsaw.rank.rankBtn1"/>
+    <TabButtonEx skin="asset.jigsaw.rank.rankRewardBtn0,asset.jigsaw.rank.rankRewardBtn1" x="102" y="0" width="120" height="40" name="item1"/>
+  </TabListEx>
+  <List x="6" y="60" repeatY="10" spaceY="13" var="rewardList">
+    <JigsawRankViewRewardItem name="render" runtime="jigsaw.view.challenge.JigsawRankViewRewardItem"/>
+  </List>
+  <List x="10" y="62" var="rankList" spaceY="13" width="217" height="300" repeatY="10">
+    <JigsawRankViewItem x="6" y="1" name="render" runtime="jigsaw.view.challenge.JigsawRankViewItem"/>
+  </List>
+  <Label x="14" y="393" size="14" bold="true" color="0xffe88f" stroke="0x620601,1,4,4,30" text="積分：" width="40" height="18" align="center"/>
+  <Label size="14" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" width="100" height="18" align="center" var="myScoreTxt" x="40" y="393"/>
+  <Label x="134" y="393" size="14" bold="true" color="0xffe88f" stroke="0x620601,1,4,4,30" text="排名：" width="40" height="18" align="center" var="rankTxt"/>
+  <Label size="14" bold="true" color="0xdfc477" stroke="0x450000,1,4,4,30" width="49" height="18" align="center" var="myRankTxt" x="175" y="393"/>
+</View>Gchallenge/JigsawQuestViewBottom.xml�<View width="540" height="78">
+  <Image skin="asset.ui.scale.bg3" x="0" y="0" width="540" height="78" sizeGrid="20,20,20,20"/>
+  <ProgressBarEx skin="asset.jigsaw.quest.giftProgress" x="66" y="21" barXOffset="2" barYOffset="2" var="progress" value="0"/>
+  <Image skin="asset.jigsaw.quest.giftCountBg1" x="210" y="54"/>
+  <Label text="35" x="213" y="56" size="12" color="0xfff6c9" bold="true" stroke="0x5c2500,1,2,2,10" width="38" height="18" align="center" var="giftScore0"/>
+  <Image skin="asset.jigsaw.quest.giftCountBg1" x="355" y="55"/>
+  <Image skin="asset.jigsaw.quest.giftCountBg1" x="476" y="56"/>
+  <Label text="70" x="359" y="56" size="12" color="0xfff6c9" bold="true" stroke="0x5c2500,1,2,2,10" width="38" height="18" align="center" var="giftScore1"/>
+  <Label text="100" x="480" y="58" size="12" color="0xfff6c9" bold="true" stroke="0x5c2500,1,2,2,10" width="38" height="18" align="center" var="giftScore2"/>
+  <Image skin="asset.jigsaw.common.giftBag0" x="208" y="7" var="gift0"/>
+  <Image skin="asset.jigsaw.common.giftBag1" x="354" y="7" var="gift1"/>
+  <Image skin="asset.jigsaw.common.giftBag2" x="476" y="7" var="gift2"/>
+  <Button skin="asset.jigsaw.quest.getseedBtn" x="7" y="45" stateNum="1" var="getSeedBtn"/>
+  <Image skin="asset.jigsaw.quest.giftCountBg2" x="7" y="16"/>
+  <Label text="90/100" x="7" y="20" width="61" height="17" align="center" color="0xffd800" bold="true" stroke="0x5d2100,1,2,2,10" var="progressTxt" size="12"/>
+  <Image skin="asset.uigeneral.awardGained" x="194" y="9" var="getIcon0" visible="false"/>
+  <Image skin="asset.uigeneral.awardGained" x="338" y="9" var="getIcon1" visible="false"/>
+  <Image skin="asset.uigeneral.awardGained" x="462" y="9" var="getIcon2" visible="false"/>
+</View>Mshowframe/JigsawAlbumViewSmallItem.xml�W<View width="72" height="46" buttonMode="true">
+  <Image skin="asset.jigsaw.common.jigsawSamllBg" x="0" y="0"/>
+  <Image x="3" y="3" width="66" height="40" var="picImg"/>
+  <Label x="32" y="27" color="0xfff8d6" stroke="0x420000,1,4,4,10" width="36" height="18" align="right" var="countTxt"/>
+</View>;album/JigsawAlbumViewLeft.xml�A<View width="230" height="410">
+  <List x="0" y="0" autoHideItem="true" repeatX="1" var="selectList" width="230" height="344">
+    <JigsawAlbumItem x="0" y="0" name="render" runtime="jigsaw.view.mornui.album.JigsawAlbumItemUI"/>
+  </List>
+  <Button skin="asset.jigsaw.buyGiftBtn" x="0" y="361" stateNum="1" var="buyGiftBtn"/>
+  <Button skin="asset.jigsaw.friendGiveBtn" x="132" y="362" stateNum="1" var="friendGiveBtn"/>
+  <Image skin="asset.ui.line.img1" x="-1" y="354"/>
+</View>=album/JigsawAlbumViewRight.xml�<View width="550" height="405">
+  <List x="0" y="0" width="550" height="324" repeatX="3" repeatY="3" var="itemList">
+    <JigsawAlbumViewRightItem x="0" y="0" name="render" runtime="jigsaw.view.mornui.album.JigsawAlbumViewRightItemUI"/>
+  </List>
+  <Image skin="asset.ui.scale.bg3" x="0" y="336" width="551" height="68" sizeGrid="10,10,10,10"/>
+  <Image skin="asset.ui.scale.bg15" x="11" y="346" width="52" height="52" var="rewardIcon" tipStyle="core.GoodsTip"/>
+  <Label text="獲得禮包" x="70" y="365" size="12" color="0xffea9c" bold="true" stroke="0x5d2100,1,4,4,10"/>
+  <CheckBox label="使用萬能碎片" x="372" y="355" stateNum="1" twoURLs="asset.ui.btn_check3,asset.ui.btn_check3$select" labelSize="14" labelBold="true" labelStroke="0x692706,1,4,4,10" labelColors="0xfdf9ed" labelMargin="2,2,0,0" var="magnaSelect" selected="true"/>
+  <Label text="(1)" x="497" y="363" var="magnaCountTxt" height="18" size="14" bold="true" color="0xfdf9ed" stroke="0x692706,1,4,4,10"/>
+  <Button skin="asset.jigsaw.completeBtn" x="188" y="346" stateNum="1" centerX="0" var="completeBtn"/>
+</View>7album/JigsawAlbumItem_0.xml�<View width="230" height="50">
+  <Image skin="asset.jigsaw.groupItemBg2" x="0" y="0"/>
+  <FrameClip skin="asset.jigsaw.unSelectTitleMc" x="24" y="12" index="0" var="titleMc"/>
+  <Image skin="asset.jigsaw.common.ok" x="171" y="5" var="okIcon" visible="false"/>
+</View>Ashowframe/JigsawBuyAlbumView.xml�W<View width="580" height="355">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="150,110,150,200" width="581" height="355"/>
+  <Button skin="asset.ui.btn_close1" x="521" y="7" stateNum="1" var="closeBtn"/>
+  <Label text="購買拼圖禮包" x="15" y="12" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.jigsaw.getseed.frameBg" x="17" y="43" width="546" height="238" sizeGrid="20,20,20,20"/>
+  <Image skin="asset.ui.scale.bg3" x="17" y="282" sizeGrid="10,10,10,10" width="545" height="57"/>
+  <Button skin="asset.jigsaw.buyBtn" x="205" y="287" stateNum="1" var="buyBtn"/>
+  <List x="32" y="58" width="511" height="209" repeatX="3" var="itemList">
+    <JigsawBuyAlbumViewItem name="render" runtime="jigsaw.view.showframe.JigsawBuyAlbumViewItem"/>
+  </List>
+</View>Ishowframe/JigsawGetAlbumViewItem.xml�}<View width="410" height="65">
+  <Image skin="asset.ui.scale.bg3" x="0" y="0" sizeGrid="10,10,10,10" width="410" height="65"/>
+  <Label x="82" y="26" stroke="0x5a2c00,1,4,4,10" color="0xF7E300" width="114" height="18" align="right" var="nameTxt"/>
+  <Label text="贈送給你" x="195" y="26" stroke="0x5a2c00,1,4,4,10" color="0xFFEEB8"/>
+  <Button skin="asset.jigsaw.get.yesBtn" x="274" y="20" stateNum="1" var="yesBtn"/>
+  <Button skin="asset.jigsaw.get.noBtn" x="342" y="20" stateNum="1" var="noBtn"/>
+  <JigsawAlbumViewSmallItem x="13" y="10" var="albumSamll" runtime="jigsaw.view.mornui.showframe.JigsawAlbumViewSmallItemUI"/>
+</View>Ealbum/JigsawAlbumViewRightItem.xml�7<View width="183" height="108">
+  <Image x="0" y="0" var="tileImg"/>
+  <Clip skin="asset.jigsaw.album.Num" x="138" y="11" clipX="9" var="numIcon"/>
+</View>Cchallenge/JigsawChallengeView.xml�<View width="800" height="430">
+  <Image skin="asset.ui.scale.goldLine" x="0" y="0" width="558" height="426" sizeGrid="20,20,20,20"/>
+  <JigsawQuestView x="11" y="9" runtime="jigsaw.view.challenge.JigsawQuestView" var="questView"/>
+  <JigsawQuestViewBottom x="11" y="340" runtime="jigsaw.view.challenge.JigsawQuestViewBottom" var="bottomView"/>
+  <JigsawRankView x="560" y="1" runtime="jigsaw.view.challenge.JigsawRankView" var="rankView"/>
+</View>3album/JigsawAlbumItem.xml�<View>
+  <ViewStack x="0" y="0" var="itemTab" selectedIndex="0" visible="true">
+    <JigsawAlbumItem_0 x="0" y="0" name="item0" buttonMode="true" runtime="jigsaw.view.mornui.album.JigsawAlbumItem_0UI"/>
+    <JigsawAlbumItem_1 x="0" y="0" name="item1" runtime="jigsaw.view.album.JigsawAlbumItem_1"/>
+  </ViewStack>
+</View>7showframe/JigsawBuyView.xml�{<View width="390" height="260">
+  <Image skin="asset.ui.frame.bg2" x="-1" y="0" sizeGrid="150,110,150,200" width="390" height="260"/>
+  <Button skin="asset.ui.btn_close1" x="334" y="4" stateNum="1" var="closeBtn"/>
+  <Label text="確認購買" x="13" y="10" bold="true" size="15" color="0xF6E1B2" stroke="0x3F2004,1,4,4,10"/>
+  <Image skin="asset.ui.scale.bg3" x="11" y="192" sizeGrid="5,5,5,5" width="365" height="53"/>
+  <Button skin="asset.core.QuickNumberBtn2" x="83" y="92" stateNum="1" var="preBtn"/>
+  <Button skin="asset.core.QuickNumberBtn1" x="252" y="93" stateNum="1" var="nextBtn"/>
+  <TextInput text="1" skin="asset.ui.scale.bg4" x="144" y="94" sizeGrid="5,5,5,5" align="center" restrict="0-9" stroke="0x000000,1,4,4,10" color="0xffffff" margin="0,3,0,0" var="inputCountTxt" width="104" height="22"/>
+  <FrameClip skin="asset.core.stranDown" x="194" y="143"/>
+  <Button label="确 认" skin="asset.ui.btn_yellow1" x="73" y="203" stateNum="1" sizeGrid="5,5,5,5" width="85" height="39" labelSize="15" labelBold="true" labelMargin="0,-1,0,0" labelColors="0xFFF6A8" labelStroke="0x714407,1,4,4,10" var="okBtn"/>
+  <Button label="取 消" skin="asset.ui.btn_yellow1" x="241" y="203" stateNum="1" sizeGrid="5,5,5,5" width="85" height="39" labelSize="15" labelBold="true" labelMargin="0,-1,0,0" labelColors="0xFFF6A8" labelStroke="0x714407,1,4,4,10" var="noBtn"/>
+  <RadioGroup x="104" y="127" selectedIndex="0" var="typeSelect">
+    <RadioButton label="點券" stateNum="1" twoURLs="asset.ui.btn_check3,asset.ui.btn_check3$select" labelColors="0xFFFFFF" labelFont="16" labelStroke="0x692806,1,4,4,10" labelBold="true" labelMargin="0,3,0,0" name="item0" selected="true"/>
+    <RadioButton label="綁定點券" stateNum="1" twoURLs="asset.ui.btn_check3,asset.ui.btn_check3$select" labelColors="0xFFFFFF" labelFont="16" labelStroke="0x692806,1,4,4,10" labelBold="true" labelMargin="0,3,0,0" x="83" y="0" name="item1"/>
+  </RadioGroup>
+  <HBox x="87" y="59" centerX="0" align="middle" var="txtVBox">
+    <Label text="確定花" color="0xFFF1BF" size="14" stroke="0x633100,1,4,4,10" bold="true" x="0" y="0"/>
+    <Label text="點券領取" x="114" color="0xFFF1BF" size="14" stroke="0x633100,1,4,4,10" bold="true" y="0"/>
+    <Label x="176" color="0xFFF1BF" size="14" stroke="0x633100,1,4,4,10" bold="true" var="itemName" y="0"/>
+    <Label text="0" x="50" color="0xFFF1BF" size="14" stroke="0xAC2829,1,4,4,10" bold="true" height="18" align="center" var="priceTxt" y="0"/>
+  </HBox>
+  <HBox x="132" y="166" align="middle" var="getMsgVBox" centerX="0">
+    <Label color="0x79481C" size="14" stroke="0xffffff,1,4,4,10" bold="true" height="18" var="getMsgTxt" x="0"/>
+    <Label text="0" x="109" color="0xFFE400" size="14" stroke="0xA31F00,1,4,4,10" bold="true" height="18" var="remainCountTxt"/>
+  </HBox>
+</View>9shop/JigsawShopViewRight.xml�Y<View width="375" height="425">
+  <Image skin="asset.ui.scale.bg19" x="0" y="0" sizeGrid="20,20,20,20" width="375" height="423"/>
+  <List x="4" y="45" width="351" height="289" repeatY="4" repeatX="1" var="itemList">
+    <JigsawShopViewRightItem x="0" y="0" name="render" runtime="jigsaw.view.shop.JigsawShopViewRightItem"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="349" y="5" name="scrollBar" width="18" height="283"/>
+  </List>
+  <FrameClip skin="asset.ui.frame.titleLine1" x="7" y="8" width="362.25" height="33.85"/>
+  <Image skin="asset.ui.frame.line1" x="106" y="9"/>
+  <Label text="目標積分" x="23" y="15" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10"/>
+  <Label text="獎勵" x="160" y="15" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10"/>
+  <Label text="領取狀態" x="275" y="15" size="14" color="0xffea9c" bold="true" stroke="0x4f3700,1,4,4,10"/>
+  <Image skin="asset.ui.frame.line1" x="247" y="9"/>
+  <Image skin="asset.ui.frame.hline1" x="2" y="39" width="370" height="5"/>
+  <Image skin="asset.ui.scale.bg3" x="6" y="339" sizeGrid="10,10,10,10" width="361" height="79"/>
+  <Label text="0" x="92" y="356" size="14" color="0xffd800" stroke="0x5d2100,1,4,4,10" bold="true" var="scoreTxt" height="18"/>
+  <Image skin="asset.jigsaw.scorereward.subTimeTxt" x="156" y="356"/>
+  <Image skin="asset.jigsaw.scorereward.myScoreTxt" x="12" y="356"/>
+  <Label text="0" x="238" y="356" size="14" color="0xffd800" stroke="0x5d2100,1,4,4,10" bold="true" var="timeTxt" height="18"/>
+  <Label text="活動內容：活動期間，玩家達到一定積分，可領取對應獎勵" x="12" y="385" bold="true" color="0xffea9c" stroke="0x6e2b0d,1,4,4,10"/>
+</View>7shop/JigsawShopViewLeft.xml�<View width="427" height="425">
+  <Image skin="asset.jigsaw.shop.leftBg"/>
+  <List x="11" y="10" repeatX="2" repeatY="4" width="396" height="330" var="shopList">
+    <JigsawShopLeftItem x="0" y="0" name="render" runtime="jigsaw.view.shop.JigsawShopLeftItem"/>
+  </List>
+  <PageNavigaterEx x="120" y="345" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xe8ce97,true,0" pageNumStroke="0x624117,1,4,4,10" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="simple" spacing="5"/>
+  <Label text="注：積分商城兌換道具為綁定道具" x="213" y="394" bold="true" color="0xffea9c" stroke="0x6e2b0d,1,4,4,10"/>
+  <Image skin="asset.jigsaw.shop.scoreBg" x="7" y="387"/>
+  <Label text="可用積分：" x="10" y="394" color="0xffd800" size="12" bold="true" stroke="0x5d2100,1,4,4,10"/>
+  <Label text="0" x="71" y="395" bold="true" size="12" color="0xffea9c" stroke="0x6e2b0d,1,4,4,10" width="61" height="18" var="availableScoreTxt" align="center"/>
+</View>

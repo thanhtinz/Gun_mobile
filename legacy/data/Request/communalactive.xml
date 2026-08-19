@@ -1,0 +1,30 @@
+<Result value="true" message="Success!">
+  <Active ActiveID="1" BeginTime="2017-01-24T23:59:59.46" EndTime="2027-01-24T23:59:59.46" LimitGrade="15" DayMaxScore="50000" MinScore="13000" AddPropertyByMoney="50000:10,10" AddPropertyByProp="1:10,10" />
+  <Active ActiveID="4" BeginTime="2017-01-24T23:59:59.46" EndTime="2027-01-24T23:59:59.46" LimitGrade="15" DayMaxScore="50000" MinScore="13000" AddPropertyByMoney="50000:10,10" AddPropertyByProp="1:10,10" />
+  <ActiveExp ActiveID="4" Grade="1" Exp="0" AddExpPlus="0" />
+  <ActiveExp ActiveID="4" Grade="2" Exp="250000" AddExpPlus="0" />
+  <ActiveExp ActiveID="4" Grade="3" Exp="500000" AddExpPlus="0" />
+  <ActiveExp ActiveID="4" Grade="4" Exp="750000" AddExpPlus="0" />
+  <ActiveExp ActiveID="4" Grade="5" Exp="1000000" AddExpPlus="2" />
+  <ActiveExp ActiveID="4" Grade="6" Exp="1250000" AddExpPlus="3" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="1" TemplateID="9526" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="2" TemplateID="8515" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="3" TemplateID="9426" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="4" TemplateID="8415" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="5" TemplateID="9326" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="6" TemplateID="8315" StrengthenLevel="0" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="7" TemplateID="15066" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="8" TemplateID="15066" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="9" TemplateID="15066" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="2" RandID="10" TemplateID="15066" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="1" TemplateID="70642" StrengthenLevel="12" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="2" TemplateID="70802" StrengthenLevel="12" AttackCompose="50" DefendCompose="50" AgilityCompose="50" LuckCompose="50" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="3" TemplateID="14028" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="4" TemplateID="14028" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="5" TemplateID="14028" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="6" TemplateID="13558" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="7" TemplateID="13558" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="8" TemplateID="13558" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="9" TemplateID="13558" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+  <ActiveAward ActiveID="4" IsArea="1" RandID="10" TemplateID="13558" StrengthenLevel="0" AttackCompose="0" DefendCompose="0" AgilityCompose="0" LuckCompose="0" Count="1" IsBind="true" IsTime="true" ValidDate="7" />
+</Result>

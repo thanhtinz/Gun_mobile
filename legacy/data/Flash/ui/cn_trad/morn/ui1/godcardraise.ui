@@ -1,0 +1,18 @@
+
+)GodCardSmallView.xml�I<View width="300" height="215">
+  <Image skin="asset.ui.frame.bg1" sizeGrid="25,50,25,50" x="0" y="1" width="300" height="215"/>
+  <Button skin="asset.ui.btn_close1" x="235" y="6" stateNum="1" var="btn_close"/>
+  <Image skin="asset.godCard.smallview.bg" x="21" y="48"/>
+  <List x="34" y="60" repeatY="5" spaceY="8" var="nameList">
+    <Box name="render">
+      <Label text="分红啵咕*1" color="0xcfcfcf" size="14" bold="true" stroke="0x000000,1,4,4,30" name="nameTxt"/>
+    </Box>
+  </List>
+  <Label text="批量开启中" x="180" y="55" size="12" bold="true" color="0xfff6c9" stroke="0x654308,1,4,4,30"/>
+  <Label text="剩余次数: " x="203" y="74" size="12" bold="false" color="0xfff6c9" stroke="0x654308,1,4,4,30" width="64" var="lbl_remainNumber"/>
+  <Label text="1111" x="190" y="94" size="12" bold="true" color="0x00fffc" stroke="0x654308,1,4,4,30" width="64" height="16" align="center" var="remainTxt"/>
+  <Button skin="asset.godCard.smallview.startBtn" x="186" y="113" stateNum="1" var="startBtn"/>
+  <Button skin="asset.godCard.smallview.endBtn" x="186" y="140" stateNum="1" var="endBtn"/>
+  <Button skin="asset.godCard.smallview.backBtn" x="186" y="167" stateNum="1" var="backBtn"/>
+  <Label text="神卡募集" x="21" y="12" size="16" bold="true" color="0xfff6c9" stroke="0x654308,1,4,4,30"/>
+</View>

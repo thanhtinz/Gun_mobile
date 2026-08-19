@@ -1,0 +1,7 @@
+<style name="peakBattle" version="5.1.0" source="ui/cn_trad/swf/peakBattle.swf">
+
+	<customs>
+		<custom classname="flash.geom.Point" stylename="peakBattle.skillViewPos"
+			x="348" y="88" />
+	</customs>
+</style>

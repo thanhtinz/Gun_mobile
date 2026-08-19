@@ -1,0 +1,37 @@
+<Result value="true" message="Success!">
+  <Item TaskId="1" TaskName="探索巡逻1" GradeMin="0" GradeMax="10" NeedFeeling="15" NeedTime="15" RewardGp="15" RewardItemId="1122351" TaskDescr="" />
+  <Item TaskId="2" TaskName="探索巡逻2" GradeMin="0" GradeMax="10" NeedFeeling="30" NeedTime="30" RewardGp="25" RewardItemId="1122352" TaskDescr="" />
+  <Item TaskId="3" TaskName="探索巡逻3" GradeMin="0" GradeMax="10" NeedFeeling="60" NeedTime="60" RewardGp="45" RewardItemId="1122353" TaskDescr="" />
+  <Item TaskId="4" TaskName="探索巡逻4" GradeMin="0" GradeMax="10" NeedFeeling="120" NeedTime="120" RewardGp="80" RewardItemId="1122354" TaskDescr="" />
+  <Item TaskId="5" TaskName="探索巡逻5" GradeMin="0" GradeMax="10" NeedFeeling="240" NeedTime="240" RewardGp="150" RewardItemId="1122355" TaskDescr="" />
+  <Item TaskId="6" TaskName="探索巡逻1" GradeMin="11" GradeMax="20" NeedFeeling="15" NeedTime="15" RewardGp="17" RewardItemId="1122356" TaskDescr="" />
+  <Item TaskId="7" TaskName="探索巡逻2" GradeMin="11" GradeMax="20" NeedFeeling="30" NeedTime="30" RewardGp="28" RewardItemId="1122357" TaskDescr="" />
+  <Item TaskId="8" TaskName="探索巡逻3" GradeMin="11" GradeMax="20" NeedFeeling="60" NeedTime="60" RewardGp="50" RewardItemId="1122358" TaskDescr="" />
+  <Item TaskId="9" TaskName="探索巡逻4" GradeMin="11" GradeMax="20" NeedFeeling="120" NeedTime="120" RewardGp="88" RewardItemId="1122359" TaskDescr="" />
+  <Item TaskId="10" TaskName="探索巡逻5" GradeMin="11" GradeMax="20" NeedFeeling="240" NeedTime="240" RewardGp="165" RewardItemId="1122360" TaskDescr="" />
+  <Item TaskId="11" TaskName="探索巡逻1" GradeMin="21" GradeMax="30" NeedFeeling="15" NeedTime="15" RewardGp="18" RewardItemId="1122361" TaskDescr="" />
+  <Item TaskId="12" TaskName="探索巡逻2" GradeMin="21" GradeMax="30" NeedFeeling="30" NeedTime="30" RewardGp="30" RewardItemId="1122362" TaskDescr="" />
+  <Item TaskId="13" TaskName="探索巡逻3" GradeMin="21" GradeMax="30" NeedFeeling="60" NeedTime="60" RewardGp="54" RewardItemId="1122363" TaskDescr="" />
+  <Item TaskId="14" TaskName="探索巡逻4" GradeMin="21" GradeMax="30" NeedFeeling="120" NeedTime="120" RewardGp="97" RewardItemId="1122364" TaskDescr="" />
+  <Item TaskId="15" TaskName="探索巡逻5" GradeMin="21" GradeMax="30" NeedFeeling="240" NeedTime="240" RewardGp="182" RewardItemId="1122365" TaskDescr="" />
+  <Item TaskId="16" TaskName="探索巡逻1" GradeMin="31" GradeMax="40" NeedFeeling="15" NeedTime="15" RewardGp="19" RewardItemId="1122366" TaskDescr="" />
+  <Item TaskId="17" TaskName="探索巡逻2" GradeMin="31" GradeMax="40" NeedFeeling="30" NeedTime="30" RewardGp="32" RewardItemId="1122367" TaskDescr="" />
+  <Item TaskId="18" TaskName="探索巡逻3" GradeMin="31" GradeMax="40" NeedFeeling="60" NeedTime="60" RewardGp="57" RewardItemId="1122368" TaskDescr="" />
+  <Item TaskId="19" TaskName="探索巡逻4" GradeMin="31" GradeMax="40" NeedFeeling="120" NeedTime="120" RewardGp="101" RewardItemId="1122369" TaskDescr="" />
+  <Item TaskId="20" TaskName="探索巡逻5" GradeMin="31" GradeMax="40" NeedFeeling="240" NeedTime="240" RewardGp="190" RewardItemId="1122370" TaskDescr="" />
+  <Item TaskId="21" TaskName="探索巡逻1" GradeMin="41" GradeMax="50" NeedFeeling="15" NeedTime="15" RewardGp="20" RewardItemId="1122371" TaskDescr="" />
+  <Item TaskId="22" TaskName="探索巡逻2" GradeMin="41" GradeMax="50" NeedFeeling="30" NeedTime="30" RewardGp="33" RewardItemId="1122372" TaskDescr="" />
+  <Item TaskId="23" TaskName="探索巡逻3" GradeMin="41" GradeMax="50" NeedFeeling="60" NeedTime="60" RewardGp="59" RewardItemId="1122373" TaskDescr="" />
+  <Item TaskId="24" TaskName="探索巡逻4" GradeMin="41" GradeMax="50" NeedFeeling="120" NeedTime="120" RewardGp="106" RewardItemId="1122374" TaskDescr="" />
+  <Item TaskId="25" TaskName="探索巡逻5" GradeMin="41" GradeMax="50" NeedFeeling="240" NeedTime="240" RewardGp="198" RewardItemId="1122375" TaskDescr="" />
+  <Item TaskId="26" TaskName="探索巡逻1" GradeMin="51" GradeMax="60" NeedFeeling="15" NeedTime="15" RewardGp="21" RewardItemId="1122376" TaskDescr="" />
+  <Item TaskId="27" TaskName="探索巡逻2" GradeMin="51" GradeMax="60" NeedFeeling="30" NeedTime="30" RewardGp="34" RewardItemId="1122377" TaskDescr="" />
+  <Item TaskId="28" TaskName="探索巡逻3" GradeMin="51" GradeMax="60" NeedFeeling="60" NeedTime="60" RewardGp="62" RewardItemId="1122378" TaskDescr="" />
+  <Item TaskId="29" TaskName="探索巡逻4" GradeMin="51" GradeMax="60" NeedFeeling="120" NeedTime="120" RewardGp="110" RewardItemId="1122379" TaskDescr="" />
+  <Item TaskId="30" TaskName="探索巡逻5" GradeMin="51" GradeMax="60" NeedFeeling="240" NeedTime="240" RewardGp="206" RewardItemId="1122380" TaskDescr="" />
+  <Item TaskId="31" TaskName="探索巡逻1" GradeMin="61" GradeMax="70" NeedFeeling="15" NeedTime="15" RewardGp="21" RewardItemId="1122381" TaskDescr="" />
+  <Item TaskId="32" TaskName="探索巡逻2" GradeMin="61" GradeMax="70" NeedFeeling="30" NeedTime="30" RewardGp="36" RewardItemId="1122382" TaskDescr="" />
+  <Item TaskId="33" TaskName="探索巡逻3" GradeMin="61" GradeMax="70" NeedFeeling="60" NeedTime="60" RewardGp="64" RewardItemId="1122383" TaskDescr="" />
+  <Item TaskId="34" TaskName="探索巡逻4" GradeMin="61" GradeMax="70" NeedFeeling="120" NeedTime="120" RewardGp="114" RewardItemId="1122384" TaskDescr="" />
+  <Item TaskId="35" TaskName="探索巡逻5" GradeMin="61" GradeMax="70" NeedFeeling="240" NeedTime="240" RewardGp="215" RewardItemId="1122385" TaskDescr="" />
+</Result>

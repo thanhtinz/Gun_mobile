@@ -1,0 +1,249 @@
+
+;DarkBoundaryEnterRoomView.xml�q<View width="335" height="184">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" sizeGrid="30,50,30,50" width="335" height="184"/>
+  <Label text="进入房间" x="15" y="10" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30"/>
+  <Button skin="asset.ui.btn_close1" x="276" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Image skin="asset.ddtstore.ShortcutTextBg" x="20" y="109" sizeGrid="5,5,5,5" width="295" height="54"/>
+  <Button label="确 定" x="128" y="117" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="submitBtn" buttonMode="true"/>
+  <Image skin="asset.ui.scale.bg2" x="19" y="44" width="295" height="60" sizeGrid="20,20,20,20"/>
+  <TextInput skin="asset.darkboundary.list.inputBg" x="161" y="60" width="137" height="31" margin="6,6,5,5" color="0xFFFFFF" size="14" var="passwordInputText" restrict="0-9" stroke="0x000000,1,4,4,10" maxChars="6"/>
+  <LabelEx text="请输入房间密码：" x="38" y="66" color="0xEEE3C5" stroke="0x734017,1,4,4,10" bold="true" size="14" width="121" height="24"/>
+</View>;item/DarkBoundaryRoomItem.xml�<View width="426" height="98">
+  <Image skin="asset.darkboundary.img27" x="0" y="0"/>
+  <LabelEx text="黑暗绝境" x="202" y="9" size="18" color="0xfff2c3" stroke="0x293c99,1,4,4,30" var="roomNameLabel"/>
+  <LabelEx text="房间号:" x="196" y="44" size="12" color="0xe3eaff" stroke="0x293c99,1,4,4,30"/>
+  <LabelEx text="(1/12)" x="196" y="69" size="12" color="0xe3eaff" stroke="0x293c99,1,4,4,30" var="playerLabel"/>
+  <LabelEx text="普通" x="383" y="8" size="14" color="0xe5fff0" stroke="0x06874f,1,4,4,30" var="levelLabel"/>
+  <LabelEx text="302" x="242" y="44" size="12" color="0xe3eaff" stroke="0x293c99,1,4,4,30" var="roomIdLabel"/>
+</View>;item/DarkBoundaryBuffItem.xml�<View width="80" height="120">
+  <Image skin="asset.darkboundary.img25" x="0" y="0"/>
+  <LabelEx text="祝福" x="0" y="3" align="center" width="81" color="0xf0d34d" size="16" height="25" var="zfTxt"/>
+  <LabelEx text="灾难" x="-3" y="3" align="center" width="81" color="0xde2828" size="16" height="24" var="znTxt"/>
+  <Box x="0" y="27" width="81" height="92" var="buffBox"/>
+</View>3rank/DarkBoundaryRank.xml�9<View width="864" height="409">
+  <Image skin="asset.darkboundary.img8" x="19" y="41" sizeGrid="26,2,26,2" width="850"/>
+  <TabListEx y="7" var="viewTab" x="310">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.darkboundary.new.bit11,asset.darkboundary.new.bit12" labelBold="true" label="跨区竞速" labelSize="16" labelColors="0xaec1fe,0xffffff,.0xffffff,0xaec1fe" labelMargin="0,8" labelStroke="0x2b5eb6,1,2,2,30"/>
+  </TabListEx>
+  <List x="0" y="49" repeatY="4" vScrollBarSkin="asset.darkboundary.new.bit10" width="878" height="388" var="rankList">
+    <DarkBoundaryRankItem name="render" runtime="activity.darkboundary.active.DarkBoundaryRankItem"/>
+  </List>
+  <Box x="48" y="48" var="playerListBox">
+    <Image skin="asset.darkboundary.new.bit17" sizeGrid="33,22,33,22" width="393" height="220"/>
+    <List x="22" y="21" repeatX="2" repeatY="6" width="346" height="187" spaceY="10" var="playerList">
+      <Box name="render">
+        <LabelEx text="我的名字七个字" size="14" color="0xc7d4fe" bold="false" stroke="0x2a3d77,1,4,4,30" align="center" width="173" height="23" name="nameTxt" mouseChildren="true" mouseEnabled="true" toolTip="ddt.view.tips.OneLineTip"/>
+      </Box>
+    </List>
+  </Box>
+  <Box x="680" y="7" visible="false">
+    <LabelEx text="副本：" y="6" size="16" color="0x3f4b83" bold="true"/>
+    <Image skin="asset.darkboundary.img7" x="45" sizeGrid="16,15,16,15" width="121" height="31"/>
+    <Box x="8" y="33" var="missonListBox">
+      <Image skin="asset.darkboundary.new.bit17" sizeGrid="33,22,33,22" width="164" height="69"/>
+      <List x="4" y="6" repeatY="2" spaceY="2" var="missonList">
+        <Box name="render">
+          <Image skin="asset.darkboundary.new.bit7" name="selectBox"/>
+          <LabelEx text="黑暗绝境" x="18" y="2" size="16" color="0xffffff" bold="false" stroke="0x2f3d70" width="120" height="25" align="center" name="nameTxt"/>
+        </Box>
+      </List>
+    </Box>
+    <LabelEx text="黑暗绝境" x="52" y="4" size="16" color="0xffffff" bold="false" stroke="0x2f3d70"/>
+    <Button skin="asset.darkboundary.new.bit14" x="136" y="6" stateNum="1" var="combBtn"/>
+  </Box>
+  <LabelEx text="目前跨区竞速只统计邪焰王城" size="14" color="0xc7d4fe" bold="false" stroke="0x2a3d77,1,4,4,30" align="center" width="368" height="25" mouseChildren="true" mouseEnabled="true" toolTip="ddt.view.tips.OneLineTip" x="484" y="13"/>
+</View>;rank/DarkBoundaryRankItem.xml�5<View width="854" height="97">
+  <Image skin="asset.darkboundary.new.bit8" x="0" y="0"/>
+  <Image skin="asset.darkboundary.new.bit15" x="18" y="6"/>
+  <Image skin="asset.darkboundary.new.bit16" x="494" y="17"/>
+  <Clip x="50" y="35" index="0" clipsUrl="asset.uigenerral.rank1,asset.uigenerral.rank2,asset.uigenerral.rank3" var="rankClip"/>
+  <LabelEx text="1" x="33" y="39" size="16" color="0xffffff" bold="false" stroke="0x2f3d70" align="center" width="57" height="23" var="rankTxt"/>
+  <List x="136" y="23" repeatX="2" repeatY="2" width="346" height="59" spaceY="5" var="list">
+    <Box name="render">
+      <LabelEx text="我的名字七个字" size="14" color="0xc7d4fe" bold="false" stroke="0x2a3d77,1,4,4,30" align="center" width="173" height="23" name="nameTxt" mouseChildren="true" mouseEnabled="true" tipStyle="ddt.view.tips.OneLineTip"/>
+    </Box>
+  </List>
+  <LabelEx text="通关总回合" x="515" y="20" size="16" color="0xffffff" bold="true" stroke="0x2f3d70" align="center" width="118" height="23"/>
+  <LabelEx text="8888" x="514" y="54" size="16" color="0xffffff" bold="true" stroke="0x2f3d70" align="center" width="118" height="23" var="turnTxt"/>
+  <LabelEx text="奖励：" size="14" color="0xc7d4fe" bold="false" stroke="0x2a3d77,1,4,4,30" align="left" x="695" y="42"/>
+  <Box x="741" y="21" width="60" height="60" var="cellBox"/>
+  <LabelEx text="*1" size="14" color="0xc7d4fe" bold="false" stroke="0x2a3d77,1,4,4,30" align="left" x="814" y="42" var="countTxt"/>
+  <Button skin="asset.darkboundary.new.bit13" x="311" y="50" stateNum="1" label="队员名单" labelColors="0xc7d4fe" labelSize="14" labelBold="true" labelStroke="0x2a3d77,1,4,4,30" var="teamBtn"/>
+</View>Eroom/DarkBoundaryRoomRightView.xml�K<View width="232" height="422">
+  <FrameClip skin="asset.background.room.left"/>
+  <Image skin="asset.teamDungeon.room.roomTitle" x="17" y="45"/>
+  <Image skin="asset.teamDungeon.room.nameBg" x="14" y="74"/>
+  <LabelEx x="22" y="81" color="0xCEB7AB" stroke="0x671300,1,4,4,10" width="185" height="18" align="center" var="roomNameLabel"/>
+  <LabelEx x="136" y="19" color="0xEEDFA9" stroke="0x511606,1,4,4,10" bold="true" size="14" width="82" height="24" align="center" var="areaLabel"/>
+  <Button skin="asset.teamDungeon.room.setBtn" x="193" y="80" stateNum="1" var="setRoomBtn" visible="false"/>
+  <LabelEx x="67" y="50" color="0x42D8EE" stroke="0x082222,1,4,4,10" width="123" height="22" size="18" bold="true" letterSpacing="3" var="roomIDLabel"/>
+  <Image skin="asset.teamDungeon.room.propBg" x="13" y="118" width="204" height="70"/>
+  <Image skin="asset.teamDungeon.room.propBg" x="14" y="208" sizeGrid="30,30,30,30,1" width="204" height="129"/>
+  <Image skin="asset.teamDungeon.room.propSkill" x="13" y="197"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="28" y="130"/>
+  <Image skin="asset.teamDungeon.room.selfPropSkill" x="13" y="107"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="89" y="130"/>
+  <Image skin="asset.teamDungeon.room.selfCellBg" x="150" y="130"/>
+  <List x="22" y="221" width="182" height="107" repeatY="2" spaceX="2" repeatX="3" var="propList">
+    <TeamDungeonRoomPropCell name="render" runtime="activity.darkboundary.game.room.DarkBoundaryRoomProCell"/>
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="169" name="scrollBar" width="18" height="106" y="0"/>
+  </List>
+  <Image skin="asset.teamDungeon.list.lock" x="192" y="48" var="lockIcon" visible="false"/>
+  <Box x="27" y="128" width="168" height="43" var="upCellBox"/>
+  <LabelEx text="X" x="86" y="126" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10"/>
+  <LabelEx text="C" x="148" y="126" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10"/>
+  <LabelEx text="Z" bold="true" size="18" color="0x689200" stroke="0xffffff,1,4,4,10" x="27" y="126"/>
+</View>)DarkBoundaryMain.xml�<View width="929" height="400">
+  <Image skin="asset.darkboundary.new.bit2" x="-2" y="-4" width="929" height="508"/>
+  <Clip x="4" y="53" clipsUrl="asset.darkboundary.new.bit4,asset.darkboundary.new.bit3" index="0" var="bgClip"/>
+  <Image skin="asset.darkboundary.new.bit5" x="5" y="2"/>
+  <Image skin="asset.darkboundary.img1" x="-4" y="-79"/>
+  <Image skin="asset.darkboundary.img23" x="196" y="-43"/>
+  <Button skin="asset.darkboundary.img16" x="895" y="-23" stateNum="1" var="closeBtn"/>
+  <LabelEx text="每月21-24日开启" x="235" y="-31" color="0xd6d8ff" size="16" stroke="0x1a3b97,1,4,4,30" width="148" height="20" var="activeTime"/>
+  <Image skin="asset.darkboundary.new.bit6" x="6" y="55" sizeGrid="29,32,29,32" width="915" height="443" var="zhezhao"/>
+  <TabListEx y="17" var="viewTab" x="30">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="true" skin="asset.darkboundary.img4,asset.darkboundary.img5" labelBold="true" x="0" y="0" label="黑暗绝境" labelSize="16" labelColors="0xaec1fe,0xffffff,.0xffffff,0xaec1fe" labelMargin="0,8" labelStroke="0x2b5eb6,1,2,2,30"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" x="118" skin="asset.darkboundary.img4,asset.darkboundary.img5" mouseChildren="true" mouseEnabled="true" y="0" labelColors="0xaec1fe,0xffffff,.0xffffff,0xaec1fe" labelMargin="0,8" labelSize="16" label="队伍列表" width="114" height="47"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" selected="false" x="240" skin="asset.darkboundary.img4,asset.darkboundary.img5" mouseChildren="true" mouseEnabled="true" y="0" labelColors="0xaec1fe,0xffffff,.0xffffff,0xaec1fe" labelMargin="0,8" labelSize="16" label="竞速排行" width="114" height="47"/>
+  </TabListEx>
+  <Box x="27" y="68" var="creatBox">
+    <Image skin="asset.darkboundary.img10" x="553" y="13"/>
+    <Image skin="asset.darkboundary.img10" x="881" y="13" scaleX="-1"/>
+    <Image skin="asset.darkboundary.img25" y="246" sizeGrid="40,12,40,12" width="518" height="62"/>
+    <Image skin="asset.darkboundary.img2" x="79" y="257"/>
+    <Image skin="asset.darkboundary.img9" x="123" y="259"/>
+    <Button skin="asset.darkboundary.img20" x="169" y="320" stateNum="1" var="creatBtn"/>
+    <List x="142" y="260" repeatX="4" spaceX="10" var="levelList">
+      <Box name="render">
+        <Image skin="asset.darkboundary.img14" name="img" x="4" y="5"/>
+        <Image skin="asset.darkboundary.img28" name="selectBox"/>
+      </Box>
+    </List>
+    <LabelEx text="本月剩余通关次数:" x="172" y="395" color="0xfcfcfc" size="16" stroke="0x1c295c,1,4,4,30" width="148" height="20"/>
+    <LabelEx text="2" x="309" y="395" color="0x2df38f" size="16" stroke="0x1c295c,1,4,4,30" var="countTxt" width="36" height="27" align="center"/>
+    <LabelEx text="本月效果如下：" x="549" y="267" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30"/>
+    <LabelEx text="次" x="343" y="395" color="0xfcfcfc" size="16" stroke="0x1c295c,1,4,4,30"/>
+    <List repeatX="2" spaceX="80" x="586" y="293" var="buffList">
+      <DarkBoundaryBuffItem name="render" runtime="activity.darkboundary.active.DarkBoundaryBuffItem"/>
+    </List>
+    <Box x="568" y="31" var="helpBox0">
+      <LabelEx text="副本需要12名玩家参与，分为两个阶段。" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" x="2"/>
+      <LabelEx text="一阶段需要每个队伍通关一次副本即可过关。" y="24" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="50" x="2"/>
+      <LabelEx text="通关辅助副本会为核心副本的玩家提供不同的帮助效果。" y="78" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="60" width="299" wordWrap="true" multiline="true" leading="10" x="2"/>
+      <LabelEx text="通关核心副本即为团本通关。" y="129" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="50" width="281" wordWrap="true" multiline="true" leading="10" x="2"/>
+      <LabelEx text="副本每月开启时还会额外刷新一个祝福效果和一个灾难效果。" y="179" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="58" width="309" wordWrap="true" multiline="true" leading="10" x="2"/>
+      <LabelEx text="二阶段分为核心副本和辅助副本。" y="51" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="50"/>
+      <LabelEx text="通关核心副本的玩家会获得额外的翻牌奖励。" y="155" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" height="50" width="309" wordWrap="true" multiline="true" leading="10"/>
+    </Box>
+    <Clip x="671" clipsUrl="asset.darkboundary.img3,asset.darkboundary.new.bit18" index="0" var="titleClip"/>
+    <Box x="568" y="33" var="helpBox1">
+      <LabelEx text="副本需要4名玩家参与，分为三个阶段。\n一阶段需要玩家尽力解救王子+公主，并击杀黑炎啵咕队长若解救任意一个则前往二阶段讨伐黑暗啵咕骑士\n二阶段胜利后进去三阶段挑战黑暗国王\n若一阶段王子+公主均未被解救，则跳过二阶段直接面对狂暴的黑暗国王\n通关的玩家会获得额外的翻牌奖励。\n副本每月开启时还会额外刷新一个祝福效果和一个灾难效果。" color="0xffffff" size="15" stroke="0x0f2066,1,4,4,30" width="297" height="228" multiline="true" wordWrap="true" leading="5"/>
+    </Box>
+  </Box>
+  <DarkBoundaryRoomList x="25" y="72" var="roomBox" runtime="activity.darkboundary.active.DarkBoundaryRoomList"/>
+</View>;room/DarkBoundaryGameView.xml�<View width="1000" height="600">
+  <LabelEx x="7" y="147" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="31" isHtml="true" leading="5" size="14" var="dateTipLabel"/>
+  <LabelEx x="7" y="167" stroke="0x181818,1,2,2,10" color="0xff0000" width="133" height="34" isHtml="true" text="00:00:00" leading="5" size="14" var="timeLabel"/>
+  <FrameClip skin="asset.teamDungeon.beforeTimer" x="255" y="0" var="timeClip"/>
+  <List x="1" y="3" var="headList" repeatY="3" spaceY="6">
+    <DarkBoundarySceneHeadItem runtime="activity.darkboundary.game.room.DarkBoundarySceneHeadItem" name="render"/>
+  </List>
+  <Button skin="asset.darkboundary.img31" x="933" y="451" stateNum="1" var="giveupBtn"/>
+</View>Eroom/DarkBoundarySceneHeadItem.xml�-<View width="202" height="43">
+  <LabelEx x="50" y="3" stroke="0x181818,1,2,2,10" color="0xFF388C" width="100" height="19" isHtml="true" leading="5" size="14" var="leaderLabel"/>
+  <NameTextEx y="23" size="14" bold="false" width="150" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="52"/>
+  <Clip clipsUrlAuto="asset.teamDungeon.sceneUI.head,1,3" index="0" width="45" height="42" var="bgClip"/>
+</View>1DarkBoundaryRoomList.xml�<View width="864" height="409">
+  <Image skin="asset.darkboundary.img2" x="15" y="0"/>
+  <Image skin="asset.darkboundary.img9" x="59" y="2"/>
+  <List x="78" y="3" repeatX="5" spaceX="10" var="levelList">
+    <Box name="render">
+      <Image skin="asset.darkboundary.img14" name="img" x="4" y="5"/>
+      <Image skin="asset.darkboundary.img28" name="selectBox"/>
+    </Box>
+  </List>
+  <Image skin="asset.darkboundary.img8" x="14" y="46" sizeGrid="26,2,26,2" width="850"/>
+  <List x="0" y="66" repeatX="2" repeatY="3" spaceX="10" spaceY="5" var="list">
+    <DarkBoundaryRoomItem name="render" runtime="activity.darkboundary.active.DarkBoundaryRoomItem"/>
+  </List>
+  <TextInput text="请输入房间号" skin="asset.darkboundary.img7" x="597" y="10" width="135" height="27" size="16" color="0x3f4bb3" margin="2,3" var="input"/>
+  <Button skin="asset.darkboundary.img30" x="740" y="6" stateNum="1" var="quickEnterBtn"/>
+  <Button skin="asset.darkboundary.img18" x="349" y="387" stateNum="1" label="上一页" labelColors="0xfdf7dc" labelStroke="0x1b4cb2,1,2,2,30" labelMargin="10" var="preBtn"/>
+  <Button skin="asset.darkboundary.img17" x="436" y="387" stateNum="1" label="下一页" labelColors="0xfdf7dc" labelStroke="0x1b4cb2,1,2,2,30" labelMargin="-15" var="nextbtn"/>
+</View>Groom/DarkBoundaryRoomPlayerTips.xml�M<View width="227" height="300">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="6,6,6,6" width="227" height="278" x="0" y="0" var="bg"/>
+  <LabelEx text="战力：" x="6" y="7" color="0xfff000" stroke="0x000000,1,2,2,10" bold="true" size="16" width="49" height="22"/>
+  <LabelEx text="血量：" x="6" y="30" color="0x4aec2f" size="14" width="46" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="5" y="52" height="2" width="200"/>
+  <LabelEx text="攻击：" y="57" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" x="6"/>
+  <LabelEx text="防御：" x="6" y="82" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="魔攻：" x="6" y="132" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="伤害：" x="6" y="107" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="火抗：" x="6" y="157" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="风抗：" x="6" y="182" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="6" y="232" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" var="elementLabel"/>
+  <LabelEx y="57" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" x="48" var="atkLabel"/>
+  <LabelEx x="48" y="82" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="defLabel"/>
+  <LabelEx x="48" y="107" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="damLabel"/>
+  <LabelEx x="48" y="132" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="mAtkLabel"/>
+  <LabelEx x="48" y="157" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="huoDefLabel"/>
+  <LabelEx x="48" y="182" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="fengDefLabel"/>
+  <LabelEx x="48" y="232" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="elementAtkLabel"/>
+  <LabelEx text="敏捷：" y="57" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true" x="116"/>
+  <LabelEx text="幸运：" x="116" y="82" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="护甲：" x="116" y="107" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="魔抗：" x="116" y="132" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="土抗：" x="116" y="157" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx text="水抗：" x="116" y="182" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx y="57" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" x="158" var="agyLabel"/>
+  <LabelEx x="158" y="82" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="luckLabel"/>
+  <LabelEx x="158" y="107" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="guaLabel"/>
+  <LabelEx x="158" y="132" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="mDefLabel"/>
+  <LabelEx x="158" y="157" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="tuDefLabel"/>
+  <LabelEx x="158" y="182" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="shuiDefLabel"/>
+  <LabelEx x="48" y="8" color="0xfff000" stroke="0x000000,1,2,2,10" bold="true" size="16" width="170" height="22" var="fightPowerLabel"/>
+  <LabelEx x="48" y="31" color="0x4aec2f" size="14" width="163" height="20" stroke="0x000000,1,2,2,10" bold="true" var="hpLabel"/>
+  <LabelEx text="光抗：" x="6" y="207" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="48" y="207" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="guangDefLabel"/>
+  <LabelEx text="暗抗：" x="116" y="207" color="0xe78a2e" size="14" width="47" height="20" stroke="0x000000,1,2,2,10" bold="true"/>
+  <LabelEx x="158" y="207" color="0xe78a2e" size="14" width="62" height="20" stroke="0x000000,1,2,2,10" bold="true" var="anDefLabel"/>
+</View>;room/DarkBoundaryRoomView.xml�Q<View width="1000" height="600">
+  <Image skin="asset.teamDungeon.room.bg" y="8"/>
+  <DarkBoundaryRoomRightView x="765" y="9" runtime="activity.darkboundary.game.room.DarkBoundaryRoomRightView" var="rightView"/>
+  <Image skin="asset.teamDungeon.room.crossZoneBtn" x="836" y="443" disabled="true"/>
+  <FrameClip skin="asset.teamDungeon.room.cancelBtn" x="900" y="415" var="cancelBtn" buttonMode="true" autoPlay="false"/>
+  <Button skin="asset.teamDungeon.room.inviteBtn" x="765" y="443" stateNum="1" var="inviteBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.startMovie" x="900" y="415" autoPlay="true" buttonMode="true" var="startBtn"/>
+  <FrameClip skin="asset.teamDungeon.room.preparMovie" x="900" y="415" buttonMode="true" autoPlay="true" var="preparBtn"/>
+  <List x="17" y="26" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList1">
+    <DarkBoundaryRoomPlayerItem name="render" runtime="activity.darkboundary.game.room.DarkBoundaryRoomPlayerItem"/>
+  </List>
+  <List x="17" y="197" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList2">
+    <DarkBoundaryRoomPlayerItem name="render" runtime="activity.darkboundary.game.room.DarkBoundaryRoomPlayerItem"/>
+  </List>
+  <List x="17" y="368" width="739" height="174" repeatX="4" spaceX="3" repeatY="1" var="teamList3">
+    <DarkBoundaryRoomPlayerItem name="render" runtime="activity.darkboundary.game.room.DarkBoundaryRoomPlayerItem"/>
+  </List>
+</View>Aroom/DarkBoundaryRoomProCell.xml�E<View width="53" height="52">
+  <Image skin="asset.teamDungeon.room.propCellBg" var="bg"/>
+</View>Groom/DarkBoundaryRoomPlayerItem.xml�E<View width="180" height="166">
+  <Clip clipsUrl="asset.teamDungeon.room.itemWait,asset.teamDungeon.room.itemClose,asset.teamDungeon.room.itemOpen" index="0" var="bgClip"/>
+  <Box x="8" y="4" var="allBox" width="167" height="161" visible="false">
+    <Box x="4" y="26" width="156" height="128" var="playerBox"/>
+    <LevelIconEx size="big" level="70" x="126" y="29" height="40.66666666666663" var="levelIcon"/>
+    <NameTextEx y="2" size="14" bold="false" width="122" height="20" autoSize="none" isVip="true" textType="2" mouseEnabled="false" mouseChildren="false" var="nameLabel" x="0"/>
+    <Clip x="128" y="62" index="5" clipsUrlAuto="asset.seniorVipIcon.small_,1,15" var="vipIcon"/>
+    <Image skin="asset.teamDungeon.playerItem.GuildTxtBg" x="1" y="23"/>
+    <Image skin="asset.teamDungeon.playerItem.hostIcon" y="135" var="hostIcon"/>
+    <LabelEx x="4" y="26" color="0x000000" stroke="0xffffff,1,4,4,10" bold="true" width="123" height="18" var="zoneLabel"/>
+    <Box x="127" y="117" width="36" height="37" var="petBox">
+      <Image skin="asset.teamDungeon.playerItem.petHead" x="-7" y="-11"/>
+    </Box>
+    <LabelEx x="115" y="142" color="0xE4CE82" stroke="0x533715,1,4,4,10" width="49" height="18" align="right" var="petLevelLabel"/>
+    <Image skin="asset.teamDungeon.playerItem.readyIcon" var="readyIcon" mouseChildren="false" mouseEnabled="false"/>
+  </Box>
+  <Button x="153" stateNum="1" skin="asset.teamDungeon.playerItem.kickOutBtn" var="kickOutBtn" y="4"/>
+  <Button x="113" stateNum="1" skin="asset.teamDungeon.playerItem.exchangeBtn" var="exchangeBtn" y="4"/>
+  <Image skin="asset.teamDungeon.playerItem.viewInfoBtn" x="133" var="viewInfo" tipDirctions="1,2,3,4" y="4" tipStyle="activity.darkboundary.morn.DarkBoundaryRoomPlayerTips"/>
+</View>

@@ -1,0 +1,1433 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Name="MustStrengthenGold" Value="0" />
+  <Item ID="2" Name="MustComposeGold" Value="0" />
+  <Item ID="3" Name="MustFusionGold" Value="400" />
+  <Item ID="4" Name="Edition" Value="5498628" />
+  <Item ID="5" Name="CheckRewardItem" Value="11001" />
+  <Item ID="6" Name="CheckCount" Value="10" />
+  <Item ID="7" Name="HymenealMoney" Value="300" />
+  <Item ID="8" Name="DivorcedMoney" Value="1499" />
+  <Item ID="9" Name="MarryRoomCreateMoney" Value="700,900" />
+  <Item ID="10" Name="BoxAppearCondition" Value="4" />
+  <Item ID="11" Name="DisableCommands" Value="false" />
+  <Item ID="12" Name="AssState" Value="False" />
+  <Item ID="13" Name="DailyAwardState" Value="True" />
+  <Item ID="14" Name="Cess" Value="0.1" />
+  <Item ID="15" Name="BeginAuction" Value="45" />
+  <Item ID="16" Name="EndAuction" Value="75" />
+  <Item ID="17" Name="Equip" Value="3158,,5160,71050|3244,,5276,71050" />
+  <Item ID="18" Name="CopyInviteLevelLimit" Value="10" />
+  <Item ID="19" Name="SpaRoomCreateMoney" Value="0,9999999" />
+  <Item ID="20" Name="SpaPubRoomCount" Value="8,0" />
+  <Item ID="21" Name="SpaPriRoomCount" Value="2000" />
+  <Item ID="23" Name="LimitShopState" Value="True" />
+  <Item ID="24" Name="GoHomeState" Value="True" />
+  <Item ID="25" Name="SpaPubRoomServerID" Value="1|2|3|4|5|6|7|8|9|10" />
+  <Item ID="26" Name="SeizeNpc" Value="True" />
+  <Item ID="27" Name="SpaPubRoomLoginPay" Value="10000,200" />
+  <Item ID="28" Name="SpaPriRoomInitTime" Value="60" />
+  <Item ID="29" Name="SpaPriRoomContinueTime" Value="60" />
+  <Item ID="30" Name="SpaPubRoomTimeLimit" Value="60,60" />
+  <Item ID="31" Name="SpaPubRoomPlayerMaxCount" Value="20,20" />
+  <Item ID="32" Name="ChatCount" Value="5" />
+  <Item ID="33" Name="DefaultGold" Value="0" />
+  <Item ID="34" Name="DefaultMoney" Value="0" />
+  <Item ID="35" Name="DefaultGiftToken" Value="200" />
+  <Item ID="36" Name="NpcPlayerState" Value="True" />
+  <Item ID="37" Name="ExchangMoneyToGold" Value="50" />
+  <Item ID="38" Name="MustTransferGold" Value="40000" />
+  <Item ID="39" Name="MustInlayGold" Value="20000" />
+  <Item ID="40" Name="DispatchesMoney" Value="200" />
+  <Item ID="41" Name="DismountGemMoney" Value="200" />
+  <Item ID="42" Name="CanExperience" Value="False" />
+  <Item ID="43" Name="MaxStrengthLevel" Value="12" />
+  <Item ID="44" Name="AASInterfaceSwitch" Value="0" />
+  <Item ID="45" Name="OpenHolesGold" Value="200" />
+  <Item ID="46" Name="DefaultGP" Value="1" />
+  <Item ID="47" Name="IsOpenUseLog" Value="False" />
+  <Item ID="48" Name="InviterRewardGrade" Value="5,112065|10,11462" />
+  <Item ID="49" Name="MAXLevel" Value="70" />
+  <Item ID="50" Name="GiftLimit" Value="23" />
+  <Item ID="51" Name="DivorcedDiscountMoney" Value="999" />
+  <Item ID="52" Name="LotterySilverRewardTimes" Value="10" />
+  <Item ID="53" Name="LotteryGoldRewardTimes" Value="100" />
+  <Item ID="54" Name="HoleLevelUpExpList" Value="400|600|700|800|800|800" />
+  <Item ID="55" Name="SendRandUserFaceInterval" Value="25" />
+  <Item ID="56" Name="UserFaceRange" Value="49|66" />
+  <Item ID="57" Name="CoupleFightGPRate" Value="0.5" />
+  <Item ID="58" Name="ConsortiaFightRate" Value="0.1|0.2" />
+  <Item ID="59" Name="MarrayAutoAward" Value="False" />
+  <Item ID="60" Name="WeddingAutoAward" Value="False" />
+  <Item ID="61" Name="GhostGPMax" Value="1000" />
+  <Item ID="62" Name="PlayerGPMax" Value="10000" />
+  <Item ID="63" Name="PICKUP_SNENIOR_ROBOT" Value="True" />
+  <Item ID="64" Name="FightSendFace_Open" Value="True" />
+  <Item ID="65" Name="IsOpenAreBigBugle" Value="true" />
+  <Item ID="66" Name="IsPasswordTwoFailedLockBag" Value="True" />
+  <Item ID="67" Name="FightLabLimitGrade" Value="15" />
+  <Item ID="68" Name="ExerciseMaxLevel" Value="75" />
+  <Item ID="69" Name="LotteryTemplateExchange" Value="11998|11997|14006|11069|17003|11904|11030|11031|11032|11033|9125|20135|11102|7015|9224|11112" />
+  <Item ID="70" Name="SpaWorldMaxCount" Value="500" />
+  <Item ID="71" Name="SpaWorldIds" Value="1,1" />
+  <Item ID="72" Name="LuckStoneExchangeRule" Value="101,8|102,4|103,2|104,1" />
+  <Item ID="73" Name="LuckyNumMoney" Value="99" />
+  <Item ID="74" Name="LuckStoneCoefficient" Value="0.33|0.46|0.6|1" />
+  <Item ID="75" Name="MissionMinute" Value="360" />
+  <Item ID="76" Name="MissionBuffDay" Value="1" />
+  <Item ID="77" Name="MissionRiches" Value="3000|3000|5000|5000|8000|8000|10000|10000|12000|12000" />
+  <Item ID="78" Name="MissionAwardRiches" Value="5000|5000|8250|8250|13200|13200|16500|16500|19800|19800" />
+  <Item ID="79" Name="MissionAwardGP" Value="100000|100000|200000|200000|300000|300000|400000|400000|500000|500000" />
+  <Item ID="80" Name="MissionAwardOffer" Value="500|500|1000|1000|1500|1500|2000|2000|2500|2500" />
+  <Item ID="81" Name="MissionAwardRicheOffer" Value="1500|1500|2500|2500|4000|4000|5000|5000|6000|6000" />
+  <Item ID="82" Name="MissionAgainMoney" Value="500" />
+  <Item ID="83" Name="MaxCountBuyOneDay" Value="3" />
+  <Item ID="84" Name="GpExchangeForEachOfferLvMax" Value="600" />
+  <Item ID="85" Name="MaxMedalCount" Value="999" />
+  <Item ID="86" Name="RollAward" Value="0|110|120|150|180|200" />
+  <Item ID="87" Name="RollFirstProbability" Value="1000|1000|1000|2000|2000|3000" />
+  <Item ID="88" Name="RollProbability" Value="500|1000|1500|3000|2500|1500" />
+  <Item ID="89" Name="AwardMaxMoney" Value="5000" />
+  <Item ID="90" Name="RollTimes" Value="1" />
+  <Item ID="91" Name="MarryRoomSendGiftItemID" Value="11900" />
+  <Item ID="92" Name="PveCheckCodeCount" Value="3" />
+  <Item ID="93" Name="GameMgrUseFor" Value="1" />
+  <Item ID="94" Name="BlessTemplateID" Value="11560|11561|11562" />
+  <Item ID="95" Name="BlessValid" Value="7|7|7" />
+  <Item ID="96" Name="BlessDropProbability" Value="190|260|50" />
+  <Item ID="97" Name="BlessProbability" Value="2500|2500|2500" />
+  <Item ID="98" Name="BlessCategoryID" Value="7|5|1" />
+  <Item ID="99" Name="BlessEquipLevel" Value="12|12|12" />
+  <Item ID="100" Name="OldPlayerTeamAddExp" Value="100" />
+  <Item ID="101" Name="VIPExpForEachLv" Value="0|0|0|0|0|0|0|0|0|0|0|0|300000|500000|1000000" />
+  <Item ID="102" Name="VIPRateForGP" Value="1.1|1.2|1.3|1.4|1.5|1.8|1.8|1.8|1.8|1.9|1.9|2.0" />
+  <Item ID="103" Name="VIPLotteryCountMaxPerDay" Value="3|4|5|6|7|8|9|10|11|12|13|15" />
+  <Item ID="104" Name="VIPExtraBindMoneyUpper" Value="0|0|0|9999|9999|12999|12999|12999|12999|19999|19999|19999" />
+  <Item ID="105" Name="VIPQuestFinishDirect" Value="0|0|0|0|0|2|2|2|2|3|3|4" />
+  <Item ID="106" Name="VIPQuestStar" Value="2|2|2|2|2|3|3|3|3|3|3|3" />
+  <Item ID="107" Name="VIPStrengthenEx" Value="25|25|25|35|35|50|50|50|50|50|50|50|50|50|50" />
+  <Item ID="108" Name="VIPOfferDecreaseRate" Value="0|0|0|0|0|0|0|0|0|0|0|0" />
+  <Item ID="109" Name="VIPDailyPackID" Value="112112|112113|112114|112115|112116|112117|112118|112119|112120|112204|112205|112206" />
+  <Item ID="110" Name="VIPTakeCardDisCount" Value="100|100|100|90|90|80|80|80|80|80|70|70|80|70|70" />
+  <Item ID="111" Name="BecomeVIPAward" Value="112164" />
+  <Item ID="112" Name="VIPMaxLevel" Value="15" />
+  <Item ID="113" Name="VIPPayAimEnergy" Value="120|120|120|120|120|50|50|50|50|30|30|30" />
+  <Item ID="114" Name="VIPPrivilege" Value="0,|0,|1,|2,|3,|4,13,|5,11,|6,|7,8,|10,20,|9,|12," />
+  <Item ID="115" Name="PayAimEnergy" Value="120" />
+  <Item ID="116" Name="FreePayAimCount" Value="15" />
+  <Item ID="117" Name="AimLevel" Value="15" />
+  <Item ID="118" Name="PlayerMinLevel" Value="19" />
+  <Item ID="119" Name="BindMoneyRate" Value="1|1|1|1" />
+  <Item ID="120" Name="ExpRate" Value="1.5|2|2.5|3" />
+  <Item ID="121" Name="GoldRate" Value="1.5|2|2.5|3" />
+  <Item ID="122" Name="ExploitRate" Value="1.5|2|2.5|3" />
+  <Item ID="123" Name="BindMoneyMax" Value="30000|30000|30000|30000|30000|30000|30000|30000" />
+  <Item ID="124" Name="CanOneKeyFinishTime" Value="10000" />
+  <Item ID="125" Name="ExerciseLevelLimited" Value="10|20|30|40|45|50|55|60|65|70" />
+  <Item ID="126" Name="VIPRenewalPrize" Value="200000|400000|800000" />
+  <Item ID="127" Name="ConsortiaStrengthenEx" Value="10|20|30|40|50|60|70|80|90|100" />
+  <Item ID="128" Name="RunePackageID" Value="311100|311200|311300|311400" />
+  <Item ID="129" Name="OpenRunePackageMoney" Value="999999999|999999999|999999999|999999999" />
+  <Item ID="130" Name="OpenRunePackageRange" Value="1,6|1,5|1,4" />
+  <Item ID="131" Name="CardResetSoulValue" Value="50" />
+  <Item ID="132" Name="IsGrooveLevelUpNoticeEnabled" Value="True" />
+  <Item ID="133" Name="GrooveLevelUpSysNotice" Value="35|40,45" />
+  <Item ID="134" Name="IsCardTypeUpNoticeEnabled" Value="True" />
+  <Item ID="135" Name="CardTypeUpSysNotice" Value="1,4" />
+  <Item ID="136" Name="OverseaVIPFeatures" Value="False" />
+  <Item ID="137" Name="MalaysiaFeatures" Value="False" />
+  <Item ID="138" Name="VietnamFeatures" Value="True" />
+  <Item ID="139" Name="SpaAddictionMoneyNeeded" Value="100" />
+  <Item ID="140" Name="KickPlayerMoney" Value="-1" />
+  <Item ID="147" Name="RollLevel" Value="10|70" />
+  <Item ID="148" Name="IsCardUpgradeNoticeEnabled" Value="true" />
+  <Item ID="149" Name="LotteryRewardSwitch" Value="True" />
+  <Item ID="150" Name="SNSMessageExtend" Value="True" />
+  <Item ID="151" Name="OverseaNewLotteryBox" Value="false" />
+  <Item ID="152" Name="LevelControlSwitch" Value="False" />
+  <Item ID="153" Name="LevelControlLevel" Value="15" />
+  <Item ID="154" Name="TakeCardMoney" Value="500" />
+  <Item ID="155" Name="TakeCardDiscount" Value="0.1" />
+  <Item ID="156" Name="CardGrooveRevert" Value="300" />
+  <Item ID="157" Name="BoxActivityCount" Value="2|2|3|5|6" />
+  <Item ID="158" Name="RandomPetScore" Value="3,7,100|8,12,15|13,15,5" />
+  <Item ID="159" Name="IsOpenPetScore" Value="False" />
+  <Item ID="160" Name="RuneLevelUpExp" Value="1|2|4|8|16|32|64|128|384|1152|3456|10368|31104|93312|279936|839808|1679616|6718464|16796160|50388480|83980800" />
+  <Item ID="165" Name="WorldBossBattleMinPlayerLevel" Value="20" />
+  <Item ID="166" Name="WorldBossCD" Value="1" />
+  <Item ID="167" Name="WorldBossReviveMoney" Value="10" />
+  <Item ID="168" Name="PveTickets" Value="200619|200620|200621|200622|201105|201105" />
+  <Item ID="169" Name="DealIsBinds" Value="False" />
+  <Item ID="170" Name="LuckStoneTopAwardCount" Value="3" />
+  <Item ID="171" Name="RemovePetSendItem" Value="False" />
+  <Item ID="172" Name="DicePoint" Value="5|10" />
+  <Item ID="173" Name="WorldBossDamageScoreExchangeRate" Value="100" />
+  <Item ID="174" Name="WorldBossMaxBlood" Value="3000000000" />
+  <Item ID="175" Name="WorldBossBattleID" Value="111101" />
+  <Item ID="176" Name="WorldBossBattleTicketNeeded" Value="0" />
+  <Item ID="177" Name="WorldBossBeginTime" Value="2012/10/1 0:00:00" />
+  <Item ID="178" Name="WorldBossEndTime" Value="2050/10/1 0:00:00" />
+  <Item ID="179" Name="WorldBossFightTime" Value="120" />
+  <Item ID="180" Name="WorldBossSwitch" Value="True" />
+  <Item ID="181" Name="WorldBossBattlePlayerAddBlood" Value="50000" />
+  <Item ID="182" Name="WorldBossBattlePlayerAddDamage" Value="10000" />
+  <Item ID="183" Name="WorldBossFightMoney" Value="12" />
+  <Item ID="184" Name="BuyBossBufferMoney" Value="30" />
+  <Item ID="185" Name="LuckStoneLimit" Value="300" />
+  <Item ID="186" Name="KingBuffPrice" Value="475,1425,2778" />
+  <Item ID="187" Name="KingBuffPriceDiscount" Value="0,0,0" />
+  <Item ID="188" Name="QuestCollocationCount" Value="99" />
+  <Item ID="189" Name="QuestCollocationAdvanceMinuteCost" Value="3" />
+  <Item ID="190" Name="QuestCollocationEnergyBuyCost" Value="170" />
+  <Item ID="191" Name="QuestCollocationEnergyBuyCount" Value="50" />
+  <Item ID="192" Name="QuestCollocationEnergyMaxCount" Value="100" />
+  <Item ID="193" Name="ItemAdvanceMinRandom" Value="20" />
+  <Item ID="194" Name="ItemAdvanceLuckyRate" Value="10" />
+  <Item ID="195" Name="WorldBossDamageHonorExchangeRate" Value="1200" />
+  <Item ID="196" Name="WorldBossKillHonor" Value="500|500|700|700|900|900|1200|1200|1500|1500" />
+  <Item ID="197" Name="WorldBossRankHonor" Value="500|350|250|100|100|100|100|100|100|100" />
+  <Item ID="198" Name="WarriorFamSwitch" Value="True" />
+  <Item ID="199" Name="FightSpiritSwitch" Value="True" />
+  <Item ID="200" Name="WarriorFamRaidPricePerMin" Value="10" />
+  <Item ID="201" Name="StrengthenSysNotice" Value="False" />
+  <Item ID="202" Name="FightSpiritMaxLevel" Value="12" />
+  <Item ID="203" Name="WorldBossBeginTimeAdjust" Value="14" />
+  <Item ID="204" Name="WarriorFamTrySwitch" Value="true" />
+  <Item ID="205" Name="NpcMainWeapon" Value="7008" />
+  <Item ID="206" Name="FairBattleDayPrestige" Value="2000" />
+  <Item ID="207" Name="HighTimeBoxLeve" Value="20" />
+  <Item ID="208" Name="HighTimeBoxBegin" Value="2014/1/14 0:00:00" />
+  <Item ID="209" Name="HighTimeBoxEnd" Value="2015/2/28 23:59:59" />
+  <Item ID="210" Name="FairBattleBaseProperty" Value="1650,1150,1310,1350,950,390,18000,230" />
+  <Item ID="211" Name="FairBattleLevelLimit" Value="29" />
+  <Item ID="212" Name="FairBattleTime" Value="saturday" />
+  <Item ID="213" Name="FairBattleSwitch" Value="True" />
+  <Item ID="214" Name="ConsortiaBossMaxProlong" Value="3" />
+  <Item ID="215" Name="ConsortiaBossHonerPER" Value="20" />
+  <Item ID="216" Name="ConsortiaBossRichPER" Value="2" />
+  <Item ID="217" Name="ConsortiaBossFightTime" Value="1200" />
+  <Item ID="218" Name="ConsortiaBossProlongTime" Value="600" />
+  <Item ID="219" Name="EncounterBeginTime" Value="2010/1/1 0:00:00" />
+  <Item ID="220" Name="EncounterEndTime" Value="2012/1/1 23:59:59" />
+  <Item ID="221" Name="HideNewRune" Value="True" />
+  <Item ID="222" Name="FarmActivityCount" Value="1|2|3|6|4" />
+  <Item ID="223" Name="RepairFriendFarmCount" Value="5" />
+  <Item ID="224" Name="FarmActivityItemCount" Value="16" />
+  <Item ID="225" Name="IsOpenFarmActivity" Value="True" />
+  <Item ID="226" Name="FarmActivityItemGears" Value="5" />
+  <Item ID="227" Name="WorldBattleProperty" Value="1800|1600|1500|1800|1500|600|25000|250" />
+  <Item ID="228" Name="WorldBattleMainWeapons" Value="70353|70363|70373|70413" />
+  <Item ID="229" Name="WorldBattleSecondWeapons" Value="17002|17004|17200" />
+  <Item ID="230" Name="WorldBattlePets" Value="100102,2,26,38|130102,14,32,62|120102,8,29,43|110102,20,35,66" />
+  <Item ID="231" Name="WorldBattleLevelLimit" Value="20" />
+  <Item ID="232" Name="WorldBattleDayPoint" Value="2000" />
+  <Item ID="233" Name="WorldBattleAgentID" Value="2" />
+  <Item ID="234" Name="WorldBattleStyles" Value="1199,1299|5199,5299|15043" />
+  <Item ID="235" Name="SpaGameMinLevel" Value="20" />
+  <Item ID="236" Name="ComradeRewardLimitCount" Value="2" />
+  <Item ID="237" Name="IsQuitSave" Value="True" />
+  <Item ID="238" Name="SecondWeapeonFightPower" Value="500:17001,17003|700:17002,17004,17006,17000|850:17100,17005" />
+  <Item ID="239" Name="SearchGoodsFreeCount" Value="10" />
+  <Item ID="240" Name="SearchGoodsTakeCardMoney" Value="0|50|120" />
+  <Item ID="241" Name="StopWingsPlusScore" Value="6,20|10,40|11,60" />
+  <Item ID="242" Name="WingsPlusScore" Value="3,20|6,40|10,80" />
+  <Item ID="243" Name="EndFightTime" Value="2" />
+  <Item ID="244" Name="DrawScore" Value="5" />
+  <Item ID="245" Name="LostScore" Value="1" />
+  <Item ID="246" Name="WinScore" Value="10" />
+  <Item ID="247" Name="BeginTime" Value="2010/1/1 0:00:00" />
+  <Item ID="248" Name="EndTime" Value="2012/1/1 23:59:59" />
+  <Item ID="249" Name="IsReConnet" Value="True" />
+  <Item ID="250" Name="SearchGoodsPayMoney" Value="20" />
+  <Item ID="251" Name="DragonBoatByMoney" Value="100:10,10" />
+  <Item ID="252" Name="DragonBoatByProps" Value="1:10,10" />
+  <Item ID="253" Name="DragonBoatMaxScore" Value="30000" />
+  <Item ID="254" Name="DragonBoatAreaMinScore" Value="25000" />
+  <Item ID="255" Name="FinestHourTurnCount" Value="2" />
+  <Item ID="256" Name="FinestHourDropCount" Value="1|2|3|3" />
+  <Item ID="257" Name="FinestHourItemGears" Value="4" />
+  <Item ID="258" Name="FinestHourTakeCardCount" Value="2|1|1" />
+  <Item ID="259" Name="FinestHourRooms" Value="4" />
+  <Item ID="260" Name="FinestHourGoals" Value="5" />
+  <Item ID="261" Name="FinestHourGoalNo" Value="10005,10006,10007,10008,10009" />
+  <Item ID="262" Name="DragonBoatProp" Value="12524" />
+  <Item ID="263" Name="SearchGoodsFreeLimit" Value="1" />
+  <Item ID="264" Name="DragonBoatConvertHours" Value="14000" />
+  <Item ID="265" Name="PyramidPricePointRadio" Value="0" />
+  <Item ID="266" Name="BuyCardSoulValueCount" Value="30" />
+  <Item ID="267" Name="BuyCardSoulValueMoney" Value="50" />
+  <Item ID="268" Name="TotemPropMoneyOffset" Value="40" />
+  <Item ID="269" Name="PyramidMinLevel" Value="13" />
+  <Item ID="270" Name="PyramidTopPoint" Value="50|100|150|200|250|300|350|400|450|500" />
+  <Item ID="271" Name="DivorcedDiscount" Value="True" />
+  <Item ID="272" Name="IsLuckRollAwardMoney" Value="True" />
+  <Item ID="273" Name="ConsortiaBossLastAwardRich" Value="100" />
+  <Item ID="274" Name="ConsortiaBossLastAwardHoner" Value="1500" />
+  <Item ID="275" Name="WorldBossFindBack" Value="20,30,4500|31,40,6000|41,50,9000|51,80,12000" />
+  <Item ID="276" Name="WorldBossFindBackMoney" Value="10" />
+  <Item ID="277" Name="FairBattleFindBackMoney" Value="450,450" />
+  <Item ID="278" Name="DailyLeagueFindBackMoney" Value="450,450" />
+  <Item ID="279" Name="OldPlayerGiftDealProb" Value="30,10,5,5,5,5,5,5,5,5,4,4,4,4,4" />
+  <Item ID="280" Name="OldPlayerOnOff" Value="True" />
+  <Item ID="281" Name="Activity77RankRewardProb" Value="50,30,20,10,0" />
+  <Item ID="282" Name="Activity77BuffCD" Value="10,20,30" />
+  <Item ID="283" Name="Activity77BeginDate" Value="2013/12/25 14:15:00" />
+  <Item ID="284" Name="Activity77EndDate" Value="2025/1/1 15:30:59" />
+  <Item ID="285" Name="Activity77TotalTime" Value="1800" />
+  <Item ID="286" Name="Activity77AbilityMoney" Value="250,100,150" />
+  <Item ID="287" Name="Activity77CarMoneyAndSpeed" Value="0,3|500,4|800,5" />
+  <Item ID="288" Name="Activity77BuyEscortMoney" Value="600" />
+  <Item ID="289" Name="Activity77FastBuffProb" Value="130" />
+  <Item ID="290" Name="Activity77SlowBuffProb" Value="50" />
+  <Item ID="291" Name="Activity77JumpLength" Value="400" />
+  <Item ID="292" Name="NewLotteryOpenMoney" Value="100" />
+  <Item ID="293" Name="ConsortiaBossAwardRate" Value="0,0.2|0.02,0.75|0.05,1.2|0.1,1.5" />
+  <Item ID="294" Name="Activity77LevelLimet" Value="20" />
+  <Item ID="295" Name="MaxMissionEnergy" Value="1500" />
+  <Item ID="296" Name="Activity77DoubleRewardTime" Value="11:00|12:00" />
+  <Item ID="297" Name="WorldBossAssistantRandomMax" Value="130" />
+  <Item ID="298" Name="WorldBossAssistantRandomMin" Value="100" />
+  <Item ID="299" Name="WorldBossFightPower" Value="0,2.9|300,3.1|450,3.2|900,3.4|1200,3.6|1350,3.8|2850,4.0|3000,4.2|3150,4.3|3600,4.5|3900,4.7|4050,4.9|4200,5.0" />
+  <Item ID="300" Name="WorldBossAssistantBloodAdd" Value="7700" />
+  <Item ID="301" Name="WorldBossAssistantFightMoney" Value="10" />
+  <Item ID="302" Name="WorldBossAssistantNormalTime" Value="90" />
+  <Item ID="303" Name="WorldBossAssistantReviveTime" Value="70" />
+  <Item ID="304" Name="WorldBossAssistantFastTime" Value="65" />
+  <Item ID="305" Name="QXGameLimitCount" Value="1" />
+  <Item ID="306" Name="OpenYYVIPTemplateID" Value="112315" />
+  <Item ID="307" Name="YYEveryDayTemplateID" Value="112316,112317,112318,112319,112320,112321" />
+  <Item ID="308" Name="YYYearTemplateID" Value="112322" />
+  <Item ID="309" Name="FastGrowSubTime" Value="30" />
+  <Item ID="310" Name="FastGrowNeedMoney" Value="30" />
+  <Item ID="311" Name="NationalDayDropProb" Value="3000" />
+  <Item ID="312" Name="NationalDayDropItemProbNum" Value="16" />
+  <Item ID="313" Name="NationalDayDropItem" Value="11696|11697|11698|11699|11700|11701|11702|11703|11704|11705|11706|11707|11708|11709|11710|11711|11712|11713|11714|11715|11716|11717" />
+  <Item ID="314" Name="NationalDayDropItemProb" Value="230|490|490|490|490|490|490|490|230|490|490|490|490|490|490|490|490|490|490|490|490|230" />
+  <Item ID="315" Name="Activity77DayOfWeek" Value="6,1" />
+  <Item ID="316" Name="OldPlayerRegisterReturnMoney" Value="false" />
+  <Item ID="317" Name="OldPlayerMinGrade" Value="25" />
+  <Item ID="318" Name="RuneMultiAreaNoticeLevel" Value="17" />
+  <Item ID="319" Name="RuneSingleAreaNoticeLevel" Value="15" />
+  <Item ID="320" Name="ChristmasBeginDate" Value="2018/12/18 0:00:00" />
+  <Item ID="321" Name="ChristmasEndDate" Value="2019/12/26 23:59:59" />
+  <Item ID="322" Name="ChristmasGifts" Value="201148,10|201149,35|201150,70|201151,120|201152,220|201153,370|201154,650|201155,1000|201156,100" />
+  <Item ID="323" Name="ChristmasGiftsMaxNum" Value="1000" />
+  <Item ID="324" Name="ChristmasBuildSnowmanDoubleMoney" Value="10" />
+  <Item ID="325" Name="ChristmasBuyTimeMoney" Value="150" />
+  <Item ID="326" Name="ChristmasMinute" Value="60" />
+  <Item ID="327" Name="ChristmasBuyMinute" Value="10" />
+  <Item ID="328" Name="WarriorFamMaxLevel" Value="52" />
+  <Item ID="329" Name="PromotePackagePrice" Value="3600" />
+  <Item ID="330" Name="IsPromotePackageOpen" Value="False" />
+  <Item ID="331" Name="CAMPWAR_FIGHTTYPE" Value="0" />
+  <Item ID="332" Name="DailyRewardIDForMonth" Value="13400|13430|13434|13440|13444|13504|13506|13507|13350|13363|13377|13382|" />
+  <Item ID="333" Name="NewLotteryLuckStoneCoefficient" Value="1650|2300|3000|5000" />
+  <Item ID="334" Name="MysticalRollBegin" Value="2015/1/13 10:20:00" />
+  <Item ID="335" Name="MysticalRollEnd" Value="2022/1/1 23:59:59" />
+  <Item ID="336" Name="MysticalRollLotteryProb" Value="200,1000,500,300,8000|3000,500,500,6000,0|4000,2000,1000,3000,0|1500,3000,2500,1000,2000" />
+  <Item ID="337" Name="ConsortiaMissionAddTime" Value="120,800|120,1500|120,2200|120,3000|120,3500" />
+  <Item ID="339" Name="QX70001Prop" Value="70001,10601,1|70002,10401,1|70003,10602,1|70003,10101,1|70006,10201,1|70006,10301,1|70006,10401,1|" />
+  <Item ID="340" Name="QX70001Prop1" Value="70007,10402,1|70007,10102,1|70007,10302,1|70008,10204,1|" />
+  <Item ID="341" Name="QX70001Prop2" Value="70008,10302,1|70009,10405,1|70009,10305,1|70010,10102,1|70010,10202,1|70010,10604,1|70011,10305,1|70011,10405,1" />
+  <Item ID="342" Name="CheckPhoneNumberMoney" Value="50" />
+  <Item ID="343" Name="ArenaChallengeCD" Value="10" />
+  <Item ID="344" Name="ArenaRankMaxNum" Value="5000" />
+  <Item ID="345" Name="ArenaChallengeMaxNum" Value="10" />
+  <Item ID="346" Name="ArenaCleanCDMoney" Value="50" />
+  <Item ID="347" Name="ArenaChallengeBuyNum" Value="10" />
+  <Item ID="348" Name="ArenaChallengeBuyMoney" Value="80" />
+  <Item ID="349" Name="ArenaRewardIntervalSecond" Value="3" />
+  <Item ID="350" Name="ArenaRewardNumPerInterval" Value="50" />
+  <Item ID="351" Name="LightRiddleAnswerScore" Value="29|9" />
+  <Item ID="352" Name="LightRiddleBeginDate" Value="2010-12-31 23:59:59" />
+  <Item ID="353" Name="LightRiddleEndDate" Value="2012-12-31 23:59:59" />
+  <Item ID="354" Name="LightRiddleBeginTime" Value="2016/10/6 12:30:00" />
+  <Item ID="355" Name="LightRiddleEndTime" Value="2020/1/1 13:30:00" />
+  <Item ID="356" Name="LightRiddleAnswerTime" Value="15" />
+  <Item ID="357" Name="LightRiddleFreeHitNum" Value="2" />
+  <Item ID="358" Name="LightRiddleFreeComboNum" Value="2" />
+  <Item ID="359" Name="LightRiddleComboMoney" Value="30" />
+  <Item ID="360" Name="LightRiddleHitMoney" Value="30" />
+  <Item ID="361" Name="YearMonsterBeginDate" Value="2015/8/20 0:00:00" />
+  <Item ID="362" Name="YearMonsterEndDate" Value="2022/1/1 14:00:00" />
+  <Item ID="363" Name="YearMonsterHP" Value="50000000" />
+  <Item ID="364" Name="YearMonsterBoxInfo" Value="112370,500|112371,1000|112372,2000|112373,3000|112374,4000" />
+  <Item ID="365" Name="YearMonsterBuffMoney" Value="99999999" />
+  <Item ID="366" Name="YearMonsterFightNum" Value="2" />
+  <Item ID="367" Name="YearMonsterOpenLevel" Value="15" />
+  <Item ID="368" Name="DiceGameAwardAndCount" Value="11177|10" />
+  <Item ID="369" Name="LuckStarActivityBeginDate" Value="2011-12-31 23:59:59" />
+  <Item ID="370" Name="LuckStarActivityEndDate" Value="2012-12-31 23:59:59" />
+  <Item ID="371" Name="MinUseNum" Value="100" />
+  <Item ID="372" Name="ConsortiaOfferCess" Value="10" />
+  <Item ID="373" Name="ConsortiaMinOffer" Value="500" />
+  <Item ID="374" Name="GoodsCollectBeginDate" Value="2015/1/13 10:20:00" />
+  <Item ID="375" Name="GoodsCollectEndDate" Value="2015/1/15 17:30:59" />
+  <Item ID="376" Name="GoodsCollectMinLevel" Value="20" />
+  <Item ID="377" Name="RecreationPvpBeginDate" Value="2010-12-31 23:59:59" />
+  <Item ID="378" Name="RecreationPvpEndDate" Value="2012-12-31 23:59:59" />
+  <Item ID="379" Name="RecreationPkRemoveMoney" Value="100" />
+  <Item ID="380" Name="RecreationPkAddMoney" Value="180" />
+  <Item ID="381" Name="RecreationPkMultiple" Value="2" />
+  <Item ID="382" Name="LocalConsortiaMatchDays" Value="-1|-1|-1|-1|-1" />
+  <Item ID="383" Name="AreaConsortiaMatchDays" Value="-1|-1|-1|-1|-1" />
+  <Item ID="384" Name="ConsortiaMatchStartTime" Value="2010-12-31 23:59:59" />
+  <Item ID="385" Name="ConsortiaMatchEndTime" Value="2012-12-31 23:59:59" />
+  <Item ID="386" Name="ConsortiaMatchTimes" Value="10" />
+  <Item ID="387" Name="ConsortiaMatchGradeLimit" Value="30" />
+  <Item ID="388" Name="ConsortiaMatchLocal_FIGHTTYPE" Value="0" />
+  <Item ID="389" Name="ConsortiaMatchAwardLimit1" Value="30" />
+  <Item ID="390" Name="WorldCupTickets" Value="0|201279|201280|201281|0" />
+  <Item ID="391" Name="IsChickenActiveKeyOpen" Value="True" />
+  <Item ID="392" Name="ChickenActiveKeyLvAwardNeedPrestige" Value="0|0|0|1000|2000|10000|20000|40000|60000|80000|100000|120000" />
+  <Item ID="393" Name="EntertainmentScore" Value="75|201252,125|201253,250|201254,375|201255,500|201256,625|201257,750|201258,875|201259,1000|201260,1125|201261" />
+  <Item ID="394" Name="RecreationPvpAddBlood" Value="20000" />
+  <Item ID="395" Name="RecreationPvpMinLevel" Value="20" />
+  <Item ID="396" Name="RecreationPvpRefreshPropBindMoney" Value="50" />
+  <Item ID="397" Name="RecreationPvpAddScore" Value="10,10,10,10|5,5,5,5" />
+  <Item ID="398" Name="FiveYearCarDoubleRewardTime" Value="11:00,12:00|20:00,21:00" />
+  <Item ID="399" Name="FiveYearCarMoneyAndSpeed" Value="0,3|700,4|1000,5" />
+  <Item ID="400" Name="FiveYearCarFastTime" Value="220" />
+  <Item ID="401" Name="FiveYearCarFastReward" Value="112381,112382,112383,112384,112385" />
+  <Item ID="402" Name="FiveYearCarBeginDate" Value="2014/3/5 0:00:00" />
+  <Item ID="403" Name="FiveYearCarEndDate" Value="2014/3/5 0:00:00" />
+  <Item ID="404" Name="OpenMagicBoxMoney" Value="10000,30" />
+  <Item ID="405" Name="FiveYearGiftBeginDate" Value="2016/7/14 0:00:00" />
+  <Item ID="406" Name="FiveYearGiftEndDate" Value="2021/1/1 14:00:00" />
+  <Item ID="407" Name="MagicStoneVIPLimit" Value="12" />
+  <Item ID="408" Name="LotteryMultiple" Value="1,7500|2,1500|3,400|5,40|10,3" />
+  <Item ID="409" Name="LotteryMoney" Value="10000" />
+  <Item ID="410" Name="BombTimes" Value="2" />
+  <Item ID="411" Name="AutoMarkPrice" Value="10" />
+  <Item ID="412" Name="AutoMarkFactor" Value="2" />
+  <Item ID="413" Name="RecoverPrice" Value="20" />
+  <Item ID="414" Name="ResetPrice" Value="30" />
+  <Item ID="415" Name="BombNum" Value="20" />
+  <Item ID="416" Name="BombExchangeFactor" Value="10|25|50" />
+  <Item ID="417" Name="ResetTimes" Value="5" />
+  <Item ID="418" Name="BombOpenDate" Value="0|1|2|3|4|5|6" />
+  <Item ID="419" Name="BombItemNum" Value="10" />
+  <Item ID="420" Name="SingPrice" Value="20" />
+  <Item ID="421" Name="MagicStoneExp" Value="100|200|300|400|500|600|700|800|900|1000" />
+  <Item ID="422" Name="CalledPlayerGetScore" Value="10|2" />
+  <Item ID="423" Name="MainAreaPlayerNum" Value="15" />
+  <Item ID="424" Name="ChampionMatchBeginTime" Value="2016/9/29 20:30:00" />
+  <Item ID="425" Name="ChampionMatchBeginWeek" Value="0" />
+  <Item ID="426" Name="ChampionMatchLevel" Value="30" />
+  <Item ID="427" Name="HaveArenaLevel" Value="27" />
+  <Item ID="428" Name="DanDanBuffPrice" Value="1500" />
+  <Item ID="429" Name="YearGiftBeginDate" Value="2021/1/1 14:00:00" />
+  <Item ID="430" Name="YearGiftEndDate" Value="2021/1/2 14:00:00" />
+  <Item ID="431" Name="YearGiftID" Value="2120162|2120163|2120164|2120165|2120166|2120167|2120168" />
+  <Item ID="432" Name="YearGiftLevel" Value="1|1|1|1|1|1|1" />
+  <Item ID="433" Name="IsChampionMatchDelayOneWeek" Value="false" />
+  <Item ID="434" Name="ActivityPictureInfo" Value="201386,45|201387,45|201388,45|201389,45|201390,45|201391,45#201386,65|201387,65|201388,65|201389,65|201390,65|201391,65#201386,185|201387,185|201388,185|201389,185|201390,185|201391,185" />
+  <Item ID="435" Name="PictureBeginDate" Value="2014/8/29 0:00:00" />
+  <Item ID="436" Name="PictureEndDate" Value="2022/1/1 23:59:59" />
+  <Item ID="437" Name="CanDeleteSpcialItem" Value="True" />
+  <Item ID="438" Name="EveryDayOpenPrice" Value="-300,100|-300,200|-300,300|-200,200|-200,500" />
+  <Item ID="439" Name="IsSendWorldBossRewardByRank" Value="false" />
+  <Item ID="440" Name="ConsortiaMissionContinue" Value="false" />
+  <Item ID="441" Name="WitchBlessBeginDate" Value="2050-12-31 23:59:59" />
+  <Item ID="442" Name="WitchBlessEndDate" Value="2050-12-31 23:59:59" />
+  <Item ID="443" Name="WitchBlessConfig" Value="500,700,1000|2,2,2|300,600,900" />
+  <Item ID="444" Name="WitchBlessGP" Value="10|0|15" />
+  <Item ID="445" Name="WitchBlessDoubleGpTime" Value="20:00-20:30" />
+  <Item ID="446" Name="WithcBlessMoney" Value="70" />
+  <Item ID="447" Name="WitchBlessAddProperty" Value="50,30,30,50,30,10,30,50" />
+  <Item ID="448" Name="WitchBlessTemplateId" Value="201560" />
+  <Item ID="449" Name="CryptBossOpenDay" Value="1,1|2,2|3,3|4,4|5,5,6,0|6,5,6,0" />
+  <Item ID="450" Name="VIPRewardCryptCount" Value="0|0|0|0|0|0|0|0|0|0|0|1" />
+  <Item ID="451" Name="WorshipMoonBeginDate" Value="2015-12-10 11:00:00" />
+  <Item ID="452" Name="WorshipMoonEndDate" Value="2022-1-1 11:00:00" />
+  <Item ID="453" Name="WorshipMoonProb" Value="25|25|15|25|6|1" />
+  <Item ID="454" Name="WorshipMoonReward" Value="1120233|1120234|1120235|1120236|1120237|1120238" />
+  <Item ID="455" Name="WorshipMoonGift" Value="200|1120239" />
+  <Item ID="456" Name="WorshipMoonGiftShowList" Value="12918|12919|12920|52000107|3688|7093|72174|101001|3680|72184|12921|520000885" />
+  <Item ID="457" Name="WorshipMoonPriceInfo" Value="3|30000" />
+  <Item ID="458" Name="PerfectCookingMoney" Value="100" />
+  <Item ID="459" Name="HalloweenMinNum" Value="5000" />
+  <Item ID="460" Name="HalloweenBeginDate" Value="2015/10/25 0:00:00" />
+  <Item ID="461" Name="HalloweenEndDate" Value="2020/10/31 23:59:59" />
+  <Item ID="462" Name="TanabataActiveEventNum" Value="17,2,2|19,2,3|19,3,3" />
+  <Item ID="463" Name="TanabataActivePrice" Value="30000" />
+  <Item ID="464" Name="TanabataActiveDestinationAWardID" Value="1120156|1120157|1120158" />
+  <Item ID="465" Name="TanabataActiveBeginTime" Value="2015-09-24 00:00:00" />
+  <Item ID="466" Name="TanabataActiveEndTime" Value="2022/1/1 23:59:59" />
+  <Item ID="467" Name="SummerAcitveBeginTime" Value="2016/2/4 11:00:00" />
+  <Item ID="468" Name="SummerAcitveEndTime" Value="2022/2/10 23:59:59" />
+  <Item ID="469" Name="SummerAcitveGifts" Value="1120179,1000|1120180,3000|1120181,10000|1120182,20000|1120183,50000|1120184,100000|1120185,200000" />
+  <Item ID="470" Name="AreaSummerAcitveTitle" Value="626|618|618|629|629|629|629|629|629|629" />
+  <Item ID="471" Name="SummerAcitveTitle" Value="620|619|619|621|621|621|621|621|621|621" />
+  <Item ID="472" Name="SummerAcitveConvertHours" Value="48" />
+  <Item ID="473" Name="FiveYearTitleBeginDate" Value="2014/11/18 0:00:00" />
+  <Item ID="474" Name="FiveYearTitleEndDate" Value="2014/12/31 23:59:59" />
+  <Item ID="475" Name="FiveYearTitleCardID" Value="46001" />
+  <Item ID="476" Name="HelpGameBeginDate" Value="2015/6/18 9:00:00" />
+  <Item ID="477" Name="HelpGameEndDate" Value="2021/1/1 23:59:59" />
+  <Item ID="478" Name="HelpGameBeginWeek" Value="2,4" />
+  <Item ID="479" Name="HelpGameMissionNum" Value="8" />
+  <Item ID="480" Name="HelpGameFightResetNum" Value="3" />
+  <Item ID="481" Name="HelpGameCleanCDPrice" Value="200|200" />
+  <Item ID="482" Name="HelpGameBuffPrice" Value="250|150|30" />
+  <Item ID="483" Name="HelpGameLvLimit" Value="20" />
+  <Item ID="484" Name="TreasureHuntStarCount" Value="25,1,2,1,2|28,1,2,1,2|30,2,1,2,2" />
+  <Item ID="485" Name="TreasureHuntEventTools" Value="20150,11165,11166,201520" />
+  <Item ID="486" Name="TreasureHuntConfig" Value="5,50|10,1" />
+  <Item ID="487" Name="TreasureHuntDicePrice" Value="100,150,250,350,450,550,650,750,850,900" />
+  <Item ID="488" Name="TreasureHuntEnergyPrice" Value="50,150,250,350,500" />
+  <Item ID="489" Name="TreasureHuntDropPara" Value="10021" />
+  <Item ID="490" Name="TreasureHuntConvertCount" Value="30" />
+  <Item ID="491" Name="TreasureHuntEventAward" Value="201487" />
+  <Item ID="492" Name="BuyItemTimeInter" Value="12" />
+  <Item ID="493" Name="BuyItemExchangeRate" Value="500" />
+  <Item ID="494" Name="MagicRoomJuniorWeaponList" Value="7001|7002|7003" />
+  <Item ID="495" Name="MagicRoomMidWeaponList" Value="7024|7026|7027" />
+  <Item ID="496" Name="MagicRoomSeniorWeaponList" Value="7093|7089|7196" />
+  <Item ID="497" Name="MagicRoomJuniorAddAttribute" Value="6,3,2|2,1,2|2,1,2|5,1,2|5,2,2|5,2,2" />
+  <Item ID="498" Name="MagicRoomMidAddAttribute" Value="6,3,4|0,1,4|0,1,4|0,2,4|0,3,4|0,3,4" />
+  <Item ID="499" Name="MagicRoomSeniorAddAttribute" Value="5,0,5|1,0,5|1,0,5|2,0,5|3,0,5|3,0,5" />
+  <Item ID="500" Name="MagicRoomBoxNeedMoney" Value="500" />
+  <Item ID="501" Name="MagicRoomLevelUpCount" Value="600|1200|1900|2700|3600" />
+  <Item ID="502" Name="MagicRoomOpenNeedMoney" Value="100|100" />
+  <Item ID="503" Name="IsMissionEnergyEnable" Value="True" />
+  <Item ID="504" Name="ItemMagicProperty" Value="1,5000,200,200|2,50000,400,400|3,150000,700,500|4,200000,1500,1000" />
+  <Item ID="505" Name="HalloweenCardId" Value="201453" />
+  <Item ID="506" Name="MysteryShopOpenTime" Value="6|0" />
+  <Item ID="507" Name="MysteryShopFreshTime" Value="18" />
+  <Item ID="508" Name="YearFoodItemsCount" Value="15,15,15,15|25,25,25,25|40,40,40,40" />
+  <Item ID="509" Name="YearFoodItems" Value="201648,201646,201647,201645" />
+  <Item ID="510" Name="YearFoodBeginTime" Value="2016/5/19 11:00:00" />
+  <Item ID="511" Name="YearFoodEndTime" Value="2022/6/1 23:59:59" />
+  <Item ID="512" Name="YearFoodItemPrices" Value="10,10,10,10" />
+  <Item ID="513" Name="ConstellationBeginTime" Value="2000/1/1 0:00:00" />
+  <Item ID="514" Name="ConstellationEndTime" Value="2012/01/01 0:00:00" />
+  <Item ID="515" Name="ConstellationExtraSpendMoney" Value="100" />
+  <Item ID="516" Name="ConstellationLevelLimited" Value="25" />
+  <Item ID="517" Name="HorseGameBuffConfig" Value="1,3|2,5|3,5|4,5|5,5|6,5|7,2|8,5" />
+  <Item ID="518" Name="HorseGamePlayerCount" Value="5" />
+  <Item ID="519" Name="HorseGameEachDayMaxCount" Value="1" />
+  <Item ID="520" Name="HorseGameUsePapawMoney" Value="100" />
+  <Item ID="521" Name="HorseGameBeginTime" Value="2015/2/5 14:15:00" />
+  <Item ID="522" Name="HorseGameEndTime" Value="2022/6/30 15:15:00" />
+  <Item ID="523" Name="HorseGameCostMoneyCount" Value="200" />
+  <Item ID="524" Name="HorseGameEachDayMaxCostCount" Value="5" />
+  <Item ID="525" Name="HorseGameBeginWeek" Value="1,3,5" />
+  <Item ID="526" Name="MagicStoneCostItem" Value="1" />
+  <Item ID="527" Name="MagicStoneMinLevel" Value="40" />
+  <Item ID="528" Name="MagicStoneFightTimes" Value="1" />
+  <Item ID="529" Name="FlowerNoticeCount" Value="999,1314,214" />
+  <Item ID="530" Name="HomeTDHomeBoxID" Value="1120261,1120262,1120263,1120264,1120265" />
+  <Item ID="531" Name="HomeTDSkillPrice" Value="300,500" />
+  <Item ID="532" Name="HomeTDSkillEffect" Value="5,100000" />
+  <Item ID="533" Name="HomeLvLimit" Value="25" />
+  <Item ID="534" Name="HomeTDHomeBlood" Value="5" />
+  <Item ID="535" Name="HomeTDHomeInitAdd" Value="100000,10000" />
+  <Item ID="536" Name="HomeTDHomeNpcID" Value="50301,50302,50303,50304,50305" />
+  <Item ID="537" Name="HomeTDRevivePrice" Value="140" />
+  <Item ID="538" Name="CallScoreLimit" Value="100" />
+  <Item ID="539" Name="OldPlayerShopBuyLimit" Value="8" />
+  <Item ID="540" Name="CurrDailyRewardID" Value="35170301,1|11689,2" />
+  <Item ID="541" Name="HomeBarDrinkNum" Value="6" />
+  <Item ID="542" Name="HomeBarDrinkPower" Value="20" />
+  <Item ID="543" Name="HomeBarPourPower" Value="30" />
+  <Item ID="544" Name="HomeBarTastePower" Value="5" />
+  <Item ID="545" Name="HomeBarCleanCDPrice" Value="70" />
+  <Item ID="546" Name="NewYearEscortBeginDate" Value="2014-12-30 10:00:00" />
+  <Item ID="547" Name="NewYearEscortEndDate" Value="2022-01-06 23:59:59" />
+  <Item ID="548" Name="NewYearEscortMoneyAndSpeed" Value="0,6|2000,6|10000,6" />
+  <Item ID="549" Name="NewYearEscortReward" Value="1120284,1120284,1120284,1120284,1120284" />
+  <Item ID="550" Name="NewYearEscortFastTime" Value="192" />
+  <Item ID="551" Name="HouseUpgradeUse" Value="1,11865,1,11867,150|2,11866,2,11867,500" />
+  <Item ID="552" Name="DiffDimensionLevelUpItemID" Value="201631" />
+  <Item ID="553" Name="DiffDimensionTimeControl" Value="1,2000,15|2,3000,30|3,5000,45|4,8000,60" />
+  <Item ID="554" Name="DiffDimensionSpaceControl" Value="1,3000,1|2,6000,2" />
+  <Item ID="555" Name="DiffDimensionLootControl" Value="1,1400,1|2,2600,2|3,3800,3|4,5000,4|5,6200,5" />
+  <Item ID="556" Name="DiffDimensionRefreshPrice" Value="50" />
+  <Item ID="557" Name="PetDisappearMinLevel" Value="25" />
+  <Item ID="558" Name="PetDisappearBuyPrice" Value="300" />
+  <Item ID="559" Name="PetDisappearRecoverPrice" Value="100" />
+  <Item ID="560" Name="PetDisappearUserBlood" Value="100|100|100|100|100" />
+  <Item ID="561" Name="PetDisappearNPCBlood" Value="100|120|140|160|180" />
+  <Item ID="562" Name="PetDisappearNPCRandomSorce" Value="60,70|70,80|90,100|100,110|110,120" />
+  <Item ID="563" Name="PetDisappearMaxLevel" Value="5" />
+  <Item ID="564" Name="PetDisappearPlayCount" Value="8|8|8|8|8" />
+  <Item ID="565" Name="PetDisappearPlaySonCount" Value="5|5|6|7|8" />
+  <Item ID="566" Name="PetDisappearSkillMaxTimes" Value="2" />
+  <Item ID="567" Name="PetDisappearSkillMoney" Value="150|300" />
+  <Item ID="568" Name="PetDisappearSkillTwoMaxTimes" Value="2" />
+  <Item ID="569" Name="PetDisappearSkillTwoMoney" Value="200|350" />
+  <Item ID="570" Name="PrayGoodsActivityCount" Value="8|8|5|4|3" />
+  <Item ID="571" Name="PrayGoodsBeginTime" Value="2015-05-14 9:00:00" />
+  <Item ID="572" Name="PrayGoodsEndTime" Value="2015-05-17 23:59:59" />
+  <Item ID="573" Name="PrayGoodsActivityConfig" Value="3|3|200|50|50|150" />
+  <Item ID="574" Name="NewPveTickets" Value="201628|201629" />
+  <Item ID="575" Name="PetDisappearAddScore" Value="2" />
+  <Item ID="576" Name="HappyChargeItemPercent" Value="5|10" />
+  <Item ID="577" Name="HomeBarPourBasePrice" Value="50" />
+  <Item ID="578" Name="WealthTreeConfigList" Value="1120303,600,20000|1120300,600,10000|11232,600,2000|1120302,600,40000" />
+  <Item ID="579" Name="WealthTreeRedBagPro" Value="90,9,1" />
+  <Item ID="580" Name="FishDailyOnlineTime" Value="1800" />
+  <Item ID="581" Name="FishSecondRandom" Value="7|26,1|7,1|7,1|7,1|7,1|7" />
+  <Item ID="582" Name="FishOdds" Value="45,45,45,45,45,45" />
+  <Item ID="583" Name="FishBuyCost" Value="50" />
+  <Item ID="584" Name="FishDailyCount" Value="30" />
+  <Item ID="585" Name="CookPanaxPointReward" Value="200,1120304|400,1120305|600,1120306|800,1120307|1000,1120308" />
+  <Item ID="586" Name="CookPanaxFlyAchieveInfo" Value="1000,2|2000,8|5000,35|7000,55|9000,85|10000,100" />
+  <Item ID="587" Name="FishLostRandom" Value="0,0,5,10,20,25,0" />
+  <Item ID="588" Name="CookPanaxBeginDate" Value="2015/7/2 9:00:00" />
+  <Item ID="589" Name="CookPanaxEndDate" Value="2012/7/15 23:59:59" />
+  <Item ID="590" Name="HelpGameSpringBegin" Value="2015-05-28 00:00:00" />
+  <Item ID="591" Name="ActivePvpMap" Value="1455,1456,1457,1458" />
+  <Item ID="592" Name="ActivePvpMinLevel" Value="20" />
+  <Item ID="593" Name="RedGiftTime" Value="1440" />
+  <Item ID="594" Name="LightRiddleIsNew" Value="False" />
+  <Item ID="595" Name="LightRiddleRemoveErrorMoney" Value="200" />
+  <Item ID="596" Name="LightRiddleFreeRemoveError" Value="2" />
+  <Item ID="597" Name="CookPanaxAnswerTime" Value="15" />
+  <Item ID="598" Name="DDTKingQuizPrize" Value="100" />
+  <Item ID="599" Name="DDTKingQuizCityList" Value="1|2|3|4|5|6|8" />
+  <Item ID="600" Name="DDTKingQuizPersonMaxCount" Value="1000|500|200|100" />
+  <Item ID="601" Name="DDTKingQuizTeamMaxCount" Value="1000|500|200|100" />
+  <Item ID="602" Name="FairBattleWinAddScore" Value="20" />
+  <Item ID="603" Name="FairBattleLostAddScore" Value="5" />
+  <Item ID="604" Name="RedEnvelopeBeginTime" Value="2016/6/23 0:00:00" />
+  <Item ID="605" Name="RedEnvelopeEndTime" Value="2016/6/26 23:59:59" />
+  <Item ID="606" Name="DDTKingQuizBeginTime" Value="2015/7/9 0:00:00" />
+  <Item ID="607" Name="DDTKingQuizEndTime" Value="2016/7/21 23:59:59" />
+  <Item ID="608" Name="DDTKingQuizCanJoinBeginTime" Value="2015/7/9 0:00:00" />
+  <Item ID="609" Name="DDTKingQuizCanJoinEndTime" Value="2016/7/17 23:59:59" />
+  <Item ID="610" Name="FairBattleScoreBeginTime" Value="2015/7/9 0:00:00" />
+  <Item ID="611" Name="FairBattleScoreEndTime" Value="2015/7/15 23:59:59" />
+  <Item ID="612" Name="SysRedEnvelopePublishInfo" Value="13,500,50|17,1000,20|21,2000,10" />
+  <Item ID="613" Name="DDTKingQuizWinID" Value="201650" />
+  <Item ID="614" Name="DDTKingQuizLostID" Value="201651" />
+  <Item ID="615" Name="PrestigeTimes" Value="30" />
+  <Item ID="616" Name="SeniorMarrySuit" Value="13705,13706,46060" />
+  <Item ID="617" Name="WarriorHighFamMaxLevel" Value="12" />
+  <Item ID="618" Name="ShopVipScore" Value="500|600|700|800|1000|1200|1400|1600|1800|2800|3800|4800|7200|12000|15000" />
+  <Item ID="619" Name="FightSpiritLevelAddDamage" Value="6,2|12,4" />
+  <Item ID="620" Name="ItemDevelopPrice" Value="35" />
+  <Item ID="621" Name="PickUpExactLv" Value="True" />
+  <Item ID="622" Name="IsSameToCheapPrice" Value="1" />
+  <Item ID="623" Name="VIPConstellationExtraCount" Value="0|0|0|0|0|2|2|3|3|4|4|4" />
+  <Item ID="624" Name="IsTanabataTreasure" Value="1" />
+  <Item ID="625" Name="PVEFightServerEnabled" Value="true" />
+  <Item ID="626" Name="LargessCommandMoneyType" Value="1" />
+  <Item ID="627" Name="FreeCountGradeLimit" Value="30" />
+  <Item ID="628" Name="QuestCollocationEnergyDayAdd" Value="20" />
+  <Item ID="629" Name="IsWarriorFamDeleteProp" Value="False" />
+  <Item ID="630" Name="SingleAreaNoticeStrengthenLevel" Value="7" />
+  <Item ID="631" Name="MultiAreaNoticeStrengthenLevel" Value="10" />
+  <Item ID="632" Name="MultiAreaNoticeAdvanceLevel" Value="15" />
+  <Item ID="633" Name="HighTimeBoxLevel" Value="20" />
+  <Item ID="634" Name="IsBuyQuestEnereyNeedKingBuff" Value="False" />
+  <Item ID="635" Name="PveTiredCount" Value="10" />
+  <Item ID="636" Name="BuyCardSoulValueAward" Value="120" />
+  <Item ID="637" Name="OldPlayerRegisterReturnMoneyRate" Value="10" />
+  <Item ID="638" Name="OldPlayerReturnMoney" Value="False" />
+  <Item ID="639" Name="OldPlayerReturnMoneyRate" Value="10" />
+  <Item ID="640" Name="TanabataTreasureLimit" Value="25" />
+  <Item ID="641" Name="DragonBoatMoneyAndSpeed" Value="0,3|1000,3|2000,3" />
+  <Item ID="642" Name="DragonBoatBeginDate" Value="2012/1/1 0:00:00" />
+  <Item ID="643" Name="DragonBoatEndDate" Value="2021/1/1 0:00:00" />
+  <Item ID="644" Name="DragonBoatFastTime" Value="300" />
+  <Item ID="645" Name="DragonBoatFastReward" Value="13350,13363,13377,13382,13400" />
+  <Item ID="646" Name="DragonBoatBuildStage0" Value="100100,1|11025,2" />
+  <Item ID="647" Name="DragonBoatBuildStage1" Value="100100,3|11025,4" />
+  <Item ID="648" Name="DragonBoatBuildStage2" Value="100100,5|11025,6" />
+  <Item ID="649" Name="DragonBoatBuildStage3" Value="100100,10" />
+  <Item ID="650" Name="DragonBoatCompleteReward" Value="13350,3" />
+  <Item ID="651" Name="DragonBoatHelpAddProcess" Value="33" />
+  <Item ID="652" Name="DragonBoatLevelLimet" Value="25" />
+  <Item ID="653" Name="QX70001Prop3" Value="70008,10302,1|70009,10405,1|70009,10305,1|70010,10102,1|70010,10202,1|70010,10604,1|70011,10305,1|70011,10405,1" />
+  <Item ID="654" Name="ChristmasMonsters" Value="10012|10013|10014" />
+  <Item ID="655" Name="ChristmasGiftsGetTime" Value="2016/9/29 19:30:00" />
+  <Item ID="656" Name="IsSendWorldBossRank" Value="false" />
+  <Item ID="657" Name="IsTeamBuyReturnMoney" Value="True" />
+  <Item ID="658" Name="IsNewLotterySameToLottery" Value="False" />
+  <Item ID="659" Name="AREACHATTYPE" Value="4" />
+  <Item ID="660" Name="Activity77_FIGHTTYPE" Value="4" />
+  <Item ID="661" Name="ConsortiaMatchArea_FIGHTTYPE" Value="4" />
+  <Item ID="662" Name="ConsortiaMatchSpecialUsed" Value="false" />
+  <Item ID="663" Name="LightRiddleOpenLevel" Value="15" />
+  <Item ID="664" Name="SearchGoodsNoticeLevel" Value="4" />
+  <Item ID="665" Name="IsSendDivinationWealth" Value="false" />
+  <Item ID="666" Name="ActiveClothMoneyType" Value="1" />
+  <Item ID="667" Name="IsAutoCovertCarnieCoin" Value="True" />
+  <Item ID="668" Name="BombStartTime" Value="2000/1/1 0:00:00" />
+  <Item ID="669" Name="BombEndTime" Value="2013/01/01 0:00:00" />
+  <Item ID="670" Name="SummerAcitveMonsters" Value="10012|10013|10014" />
+  <Item ID="671" Name="IsOldPlayerOpen" Value="True" />
+  <Item ID="672" Name="TreasureHuntEndDate" Value="2012/3/1 0:00:00" />
+  <Item ID="673" Name="TreasureHuntNpc" Value="10015,4,8|10016,4,10" />
+  <Item ID="674" Name="GiftBoxTemplateId" Value="201453" />
+  <Item ID="675" Name="GiftBoxOpenFlag" Value="False" />
+  <Item ID="676" Name="ExchangeScoreRate" Value="30" />
+  <Item ID="677" Name="NewLotteryBoxRewardFlag" Value="True" />
+  <Item ID="678" Name="BossStoneValue" Value="500" />
+  <Item ID="679" Name="DDTKingQuizUseBindMoney" Value="False" />
+  <Item ID="680" Name="ApprenticeChargeRate" Value="10" />
+  <Item ID="681" Name="SeniorMarryBegin" Value="2015/7/14 10:00:00" />
+  <Item ID="682" Name="SeniorMarryEnd" Value="2022/01/01 0:00:00" />
+  <Item ID="683" Name="SeniorMarryMoney" Value="11000,45000,180000" />
+  <Item ID="684" Name="SeniorMarryMinGiftMoney" Value="20,20,30" />
+  <Item ID="685" Name="SeniorMarryMaxGiftMoney" Value="30,80,100" />
+  <Item ID="686" Name="SeniorMarryGift" Value="1120324,1120325,1120326" />
+  <Item ID="687" Name="HouseUpgradeFlourish" Value="100|1000|2000" />
+  <Item ID="688" Name="HotSpringExp" Value="200,240,288,346,415,498,597,717,860,946,1041,1145,1259,1385,1523,1676,1843,2028,2231,2342,2459,2582,2711,2847,2989,3139,3295,3460,3633,3815,3929,4047,4169,4294,4423,4555,4692,4833,4978,5127,5281,5439,5602,5770,5944,6122,6306,6495,6690,6890,7097,7310,7529,7755,7988,8227,8474,8728,8990,9260,9530,9800,10070,10340,10610,10880,11150,11420,11690,11960" />
+  <Item ID="689" Name="ToyMachinePrice" Value="200000|1800000|1000000|9500000" />
+  <Item ID="690" Name="CardLockAttrMoney" Value="280|520|1800" />
+  <Item ID="691" Name="HighCardResetSoulValue" Value="2000" />
+  <Item ID="692" Name="HomeTempPracticeSmallLuck" Value="100,1500" />
+  <Item ID="693" Name="HomeTempPracticeBigLuck" Value="50,2000" />
+  <Item ID="694" Name="SanXiaoStartTime" Value="2016/2/13 0:00:00" />
+  <Item ID="695" Name="SanXiaoEndTime" Value="2021/1/1 0:00:00" />
+  <Item ID="696" Name="RewardDouble" Value="0,1|5000,2|10000,3|15000,4|20000,5" />
+  <Item ID="697" Name="ThreeCleanAwardBox" Value="1120428" />
+  <Item ID="698" Name="ThreeCleanBuyCost" Value="10000" />
+  <Item ID="699" Name="PairUpOnePoint" Value="300" />
+  <Item ID="700" Name="ThreeCleanDailyFreeCount" Value="5" />
+  <Item ID="701" Name="PairUpBoxID" Value="1120429,1120430,1120431,1120432" />
+  <Item ID="702" Name="PairUpRandom1" Value="199,174,132,110" />
+  <Item ID="703" Name="PairUpRandom2" Value="31,45,94,154" />
+  <Item ID="704" Name="PairUpDailyFreeCount" Value="5" />
+  <Item ID="705" Name="PairUpCardCost" Value="10000" />
+  <Item ID="706" Name="PairUpResetCost" Value="150000" />
+  <Item ID="707" Name="PairUpOpenCount" Value="2" />
+  <Item ID="708" Name="CardChangeStyle1" Value="13148,13149,13147,13135,13153,13154,13155,13156,13157,13158" />
+  <Item ID="709" Name="CardChangeStyle2" Value="13159,13160,13161,13162,13163,13164,13165,13166,13167,13174,13175,13176,13179,13180,13181,13182,13183,13184,13185,13186,13187,13188" />
+  <Item ID="710" Name="CardChangeStyle3" Value="13343,13342,13341,13340,13339,13338,13337,13336,13335,13334,13333,13332,13331,13330,13329,13328,13325,13324,13323,13322,13320,13319,13318,13317,13316,13315,13314,13313,13312,13311" />
+  <Item ID="711" Name="EveryDayMissionEnergy" Value="300" />
+  <Item ID="712" Name="SearchGoodsRewardTimes" Value="30" />
+  <Item ID="713" Name="SearchGoodsRewardID" Value="1120244,1120245,1120246,1120247,1120248" />
+  <Item ID="714" Name="ImagePathClearCost" Value="350" />
+  <Item ID="715" Name="CardWashRuleNumber" Value="1.3" />
+  <Item ID="716" Name="GodCardDailyFreeCount" Value="3" />
+  <Item ID="717" Name="GodCardOpenOneTimeMoney" Value="10000" />
+  <Item ID="718" Name="GodCardOpenFiveTimeMoney" Value="50000" />
+  <Item ID="719" Name="HongBaoCount" Value="3|5|7|9" />
+  <Item ID="720" Name="ThreeClearCrossCost" Value="580000" />
+  <Item ID="721" Name="ThreeClearRectCost" Value="725000" />
+  <Item ID="722" Name="ThreeClearColourCleanCost" Value="1250000" />
+  <Item ID="723" Name="ThreeClearColourChangeCost" Value="2500000" />
+  <Item ID="724" Name="ThreeClearCrossPoint" Value="4000" />
+  <Item ID="725" Name="ThreeClearRectPoint" Value="5000" />
+  <Item ID="726" Name="ThreeClearColourCleanPoint" Value="10000" />
+  <Item ID="727" Name="ThreeClearColourChangePoint" Value="20000" />
+  <Item ID="728" Name="WeaponShellNormalAdd" Value="1000" />
+  <Item ID="729" Name="WeaponShellMinAdd" Value="50" />
+  <Item ID="730" Name="WeaponShellMaxAdd" Value="150" />
+  <Item ID="731" Name="DdtLuckProgressBarNumber" Value="2000" />
+  <Item ID="732" Name="MaxProgressBarNumber" Value="7" />
+  <Item ID="733" Name="DdtLuckBoGuBoxShowList" Value="313505,313506,9523,8514,11175,12545,11560,11561,11562,11150,12536" />
+  <Item ID="734" Name="DdtLuckWorshipShowList" Value="313411,313412,9523,8514,9525,9524,12545,11175,11560,11561,11562,11150,12536,11177,11164,11163,12525" />
+  <Item ID="735" Name="SceneEventTurn" Value="0,1,1|-1,2,4|-2,2,4|-3,2,4|-4,2,4|-101,2,4|-102,2,4|-103,2,4|-104,2,4" />
+  <Item ID="736" Name="DdtLuckWorshipMoney" Value="30000|288000" />
+  <Item ID="737" Name="DdtLuckOpenBoxMoney" Value="100000" />
+  <Item ID="738" Name="FairBattleDefaultActivateSkill" Value="20000|20010|20020|20030|20040" />
+  <Item ID="739" Name="DdtLuckEachAddBoGuBoxTimes" Value="10" />
+  <Item ID="740" Name="NewFairBattleProperty" Value="0,0,0,0,0,0,35000,0,0,80000" />
+  <Item ID="741" Name="DayMaxAddPrestige" Value="3000" />
+  <Item ID="742" Name="NewFairBattlePrestige" Value="25,15,60,15" />
+  <Item ID="743" Name="GMOldPlayerFundCost" Value="1500" />
+  <Item ID="744" Name="GMOldPlayerFundDaily" Value="4000" />
+  <Item ID="745" Name="GMOldPlayerFundFirstReturn" Value="8888" />
+  <Item ID="746" Name="GMOldPlayerFundReturnDay" Value="7" />
+  <Item ID="747" Name="PullBombCommonOutSideDiameter" Value="150" />
+  <Item ID="748" Name="PullBombSpecialOutSideDiameter" Value="200" />
+  <Item ID="749" Name="PullBombInSideDiameter" Value="40" />
+  <Item ID="750" Name="ReduceBloodPerPixel" Value="1000" />
+  <Item ID="751" Name="MonthCardBuyAllPrice" Value="2999" />
+  <Item ID="752" Name="MonthCardBuyAllDay" Value="30" />
+  <Item ID="753" Name="MonthCardBuyAllDiscount" Value="45" />
+  <Item ID="754" Name="RecycleGoodGetRewardIntegal" Value="100" />
+  <Item ID="755" Name="RecycleGoodRewardBox" Value="1120509,60|1120510,30|1120511,10" />
+  <Item ID="756" Name="RecyGoodDayMaxTimes" Value="20000" />
+  <Item ID="757" Name="TurnTableCostCountByLevel" Value="2|4|6|8" />
+  <Item ID="758" Name="RecycleGoodShowList" Value="9524" />
+  <Item ID="759" Name="AutoFightMissionDate1" Value="22:00:00|23:59:59" />
+  <Item ID="760" Name="AutoFightMissionDate2" Value="00:00:00|00:59:00" />
+  <Item ID="761" Name="AutoFightMissionDayAwardMaxCount" Value="30" />
+  <Item ID="762" Name="CityOccupationStartDate" Value="2016/9/1 8:00:00" />
+  <Item ID="763" Name="CityOccupationEndDate" Value="2021/1/1 22:00:00" />
+  <Item ID="764" Name="CityOccupationAddPrice" Value="1,999999999|" />
+  <Item ID="765" Name="WorldBossNpcEnabled" Value="true" />
+  <Item ID="766" Name="RichesMoneyRatio" Value="1" />
+  <Item ID="767" Name="TopLuckStoneLimit" Value="20" />
+  <Item ID="768" Name="IsSendRuneChangeMail" Value="false" />
+  <Item ID="769" Name="IsStrictBuyItemMode" Value="true" />
+  <Item ID="770" Name="WarriorFamRaidPricePerFloor" Value="150" />
+  <Item ID="771" Name="UserSendGiftMaxCount" Value="200" />
+  <Item ID="772" Name="IsUseCardVipActive" Value="True" />
+  <Item ID="773" Name="FacebookFriendGifts" Value="201404,200651,11634,200648,200653" />
+  <Item ID="774" Name="FacebookFriendOpen" Value="false" />
+  <Item ID="775" Name="FacebookDayLimit" Value="20" />
+  <Item ID="776" Name="FacebookGradeLimit" Value="6" />
+  <Item ID="777" Name="ChristmasMonster" Value="10012|10013|10014" />
+  <Item ID="778" Name="ChristmasSnowmenMaxNum" Value="2000" />
+  <Item ID="779" Name="PyramidTopMinMaxPoint" Value="300|1000" />
+  <Item ID="780" Name="DailyLeagueMinPlayerLevel" Value="24" />
+  <Item ID="781" Name="IsOpenAuction" Value="False" />
+  <Item ID="782" Name="SkipItemMan" Value="3110,1,0|5507,1,0|1514,1,365|1588,1,365|5513,1,365|2367,1,365" />
+  <Item ID="783" Name="SkipItemWoman" Value="3237,1,0|5604,1,0|1469,1,365|5476,1,365|1474,1,365|2268,1,365" />
+  <Item ID="784" Name="SkipItemCommon" Value="8004,2,30|9006,2,30|1120071,1,0|112098,0,0|1120098,1,0|11025,20,0|11001,0,0" />
+  <Item ID="785" Name="PetSendAreaStar" Value="5" />
+  <Item ID="786" Name="PetSendNoticeStar" Value="4" />
+  <Item ID="787" Name="IsRussia" Value="False" />
+  <Item ID="788" Name="IslamicWedding" Value="False" />
+  <Item ID="789" Name="MARRY_SIMPLE_PRICE" Value="2000" />
+  <Item ID="790" Name=" IsRegisteredReturnActiveOpen" Value="False" />
+  <Item ID="791" Name="MissionLimit" Value="99999" />
+  <Item ID="792" Name="PromotePackagePriceIsBindMoney" Value="False" />
+  <Item ID="793" Name="OldGoOtherReturn" Value="15" />
+  <Item ID="794" Name="MountTempExpLevel" Value="5" />
+  <Item ID="795" Name="NationalDayDropBeginDate" Value="2015-09-30 10:00:00" />
+  <Item ID="796" Name="NationalDayDropEndDate" Value="2015-10-08 23:59:59" />
+  <Item ID="797" Name="NationalDayOpenBoxProb" Value="800|1400|800|900|1000|600|750|850|600|300|850|700|300|150" />
+  <Item ID="798" Name="ChristmasFreeMinute" Value="30" />
+  <Item ID="799" Name="HalloweenExchangeInfo" Value="46029,80|11858,50|11859,50|11860,50|11861,50|100100,1" />
+  <Item ID="800" Name="HalloweenSuitInfo" Value="11858|11859|11860|11861|13670" />
+  <Item ID="801" Name="RaceAward" Value="100|70|40|20|10" />
+  <Item ID="802" Name="RaceDayCount" Value="3" />
+  <Item ID="803" Name="RaceMaxSorce" Value="5000" />
+  <Item ID="804" Name="DepotBuyMoney" Value="200,20" />
+  <Item ID="805" Name="DDFundOpenLevel" Value="20,40" />
+  <Item ID="806" Name="DDFundPrice" Value="5000,15000,20000" />
+  <Item ID="807" Name="WishTreeReward" Value="18,1120313|88,1120314|188,1120315|388,1120316|588,1120317|888,1120318" />
+  <Item ID="808" Name="WishTreeBeginDate" Value="2015-02-15 00:00:00" />
+  <Item ID="809" Name="WishTreeEndDate" Value="2022-02-25 23:59:59" />
+  <Item ID="810" Name="YearMonsterBuyTimes" Value="3" />
+  <Item ID="811" Name="YearMonsterBuyPrice" Value="500|1000|2000" />
+  <Item ID="812" Name="WishTreeRewardInfo" Value="7132|15066|11150|11164|11166|11173|11177" />
+  <Item ID="813" Name="SeniorMarryActivePrice" Value="12900,52000,191314" />
+  <Item ID="814" Name="LanternActiveBeginDate" Value="2010-12-31 23:59:59" />
+  <Item ID="815" Name="LanternActiveEndDate" Value="2010-12-31 23:59:59" />
+  <Item ID="816" Name="LanternHomeVisits" Value="15" />
+  <Item ID="817" Name="LanternHomeVisited" Value="5" />
+  <Item ID="818" Name="CookLanternGold" Value="1000" />
+  <Item ID="819" Name="DesertFreeEnterCount" Value="0" />
+  <Item ID="820" Name="DesertFeeEnterCount" Value="2" />
+  <Item ID="821" Name="NewServerUserCount" Value="1000" />
+  <Item ID="822" Name="NewLotteryBindMoney" Value="120000" />
+  <Item ID="823" Name="TankMatchBeginDate" Value="2016-3-8 10:00:00" />
+  <Item ID="824" Name="TankMatchEndDate" Value="2016-3-13 23:59:59" />
+  <Item ID="825" Name="TankMatchMoneyAndSpeed" Value="0,6|2000,6|10000,6" />
+  <Item ID="826" Name="TankMatchReward" Value="1120365,1120365,1120365,1120365,1120365" />
+  <Item ID="827" Name="TankMatchFastTime" Value="192" />
+  <Item ID="828" Name="ItemAdvanceRestoreMoney" Value="1000" />
+  <Item ID="829" Name="FireWorksList" Value="12549,100,5,10,3|12550,50,5,10,2|12551,200,5,20,1|12552,200,5,20,1|12553,200,5,20,1" />
+  <Item ID="830" Name="NewAreaBossBuffBlood" Value="0" />
+  <Item ID="831" Name="NewAreaBossBuffDamage" Value="0" />
+  <Item ID="832" Name="CurseTuTeng" Value="90006|0.3|2|0" />
+  <Item ID="833" Name="AttackTuTeng" Value="10003|0.3|3|0.375" />
+  <Item ID="834" Name="ExplodeTuTeng" Value="90004|0.2|1|1.875" />
+  <Item ID="835" Name="RecoverTuTeng" Value="90005|0.15|3|0.41" />
+  <Item ID="836" Name="TuTengRadius" Value="150" />
+  <Item ID="837" Name="MaxLevelAllResetCost" Value="10000" />
+  <Item ID="838" Name="MaxLevelResetCost" Value="1000" />
+  <Item ID="839" Name="TuTengReduceScaleDamage" Value="800" />
+  <Item ID="840" Name="PetEquipAwakenMultiple" Value="120" />
+  <Item ID="841" Name="PetAwakenLevelLimit" Value="30" />
+  <Item ID="842" Name="ConsortiaLandAwardList" Value="1,200|2,180|3,140" />
+  <Item ID="843" Name="ConsortiaLandBombHit" Value="10" />
+  <Item ID="844" Name="ConsortiaLandActiveHours" Value="1" />
+  <Item ID="845" Name="ConsortiaLandMonsterSpeed" Value="150" />
+  <Item ID="846" Name="ConsortiaLandRepairTime" Value="49" />
+  <Item ID="847" Name="ConsortiaLandRepairCount" Value="50" />
+  <Item ID="848" Name="ConsortiaLandCheckAllDay" Value="2" />
+  <Item ID="849" Name="ConsortiaLandReduceBlood" Value="1" />
+  <Item ID="850" Name="ConsortiaLandReduceSpecialBlood" Value="2" />
+  <Item ID="851" Name="ConsortiaLandFailRate" Value="50" />
+  <Item ID="852" Name="ConsortiaLandBuildBlood" Value="1000" />
+  <Item ID="853" Name="ConsortiaLandRepairBlood" Value="36000" />
+  <Item ID="854" Name="ConsortiaLandPlayerRepair" Value="1" />
+  <Item ID="855" Name="ConsortiaLandNpcHit" Value="5" />
+  <Item ID="856" Name="ConsortiaLandNpcHeal" Value="1" />
+  <Item ID="857" Name="ConsortiaLandAwardLimit" Value="100" />
+  <Item ID="858" Name="ConsortiaLandNormalAwardRate" Value="1" />
+  <Item ID="859" Name="MountAmuletOpenLvl" Value="1,0|2,0|3,3|4,6|5,9|6,12|7,15|8,18|9,21" />
+  <Item ID="860" Name="QuestOfferBuyTimes" Value="70" />
+  <Item ID="861" Name="QuestOfferRefreshQuest" Value="35" />
+  <Item ID="862" Name="QuestOfferRefreshReward" Value="70" />
+  <Item ID="863" Name="QuestOfferCanAcceptTimes" Value="2" />
+  <Item ID="864" Name="BombFixGamePerBombScore" Value="10" />
+  <Item ID="865" Name="BombRandomGamePerBombScore" Value="10" />
+  <Item ID="866" Name="BombFixGamePerBombCountAddCount" Value="4" />
+  <Item ID="867" Name="BombRandomGamePerBombCountAddCount" Value="4" />
+  <Item ID="868" Name="LittleGameSwitch" Value="1|1,2|1,3|0" />
+  <Item ID="869" Name="TreasureTimes" Value="12" />
+  <Item ID="870" Name="GuradWarStatueMaxBlood" Value="100000" />
+  <Item ID="871" Name="GuradWarStatueReduceBloodRate" Value="40" />
+  <Item ID="872" Name="GReliveTime" Value="20" />
+  <Item ID="873" Name="GReliveCost" Value="500" />
+  <Item ID="874" Name="GOpenActiveCost" Value="3000" />
+  <Item ID="875" Name="GBuyBUFFCost" Value="2000" />
+  <Item ID="876" Name="BombGameDoubleScoreBeginCount" Value="50" />
+  <Item ID="877" Name="BombGameDoubleScoreKeepCount" Value="5" />
+  <Item ID="878" Name="GBUFFValue" Value="2500|500|500|5" />
+  <Item ID="879" Name="GBuyBUFFMax" Value="3" />
+  <Item ID="880" Name="QuestOfferBuyTimesAddMoney" Value="30" />
+  <Item ID="881" Name="ChickOrAntTreasureTimes" Value="2" />
+  <Item ID="882" Name="ChickOrAntTreasureMinFightPower" Value="500000" />
+  <Item ID="883" Name="FeedDailyMaxCount" Value="200" />
+  <Item ID="884" Name="FeedExp" Value="1" />
+  <Item ID="885" Name="FeedAddLove" Value="2" />
+  <Item ID="886" Name="IsGayMarriage" Value="False" />
+  <Item ID="887" Name="NewFairBattleStableProperty" Value="0,0,0,0,0,0,0,0,320,0" />
+  <Item ID="888" Name="BuyFangshengxiao" Value="300" />
+  <Item ID="889" Name="DdtLuckOpenBoGuBoxAddProgess" Value="5" />
+  <Item ID="890" Name="GMOldPlayerOnlineTimeUpdateCost" Value="7" />
+  <Item ID="891" Name="VipDiscountCardCanSend" Value="12568" />
+  <Item ID="892" Name="VipDiscountCardCanUse" Value="12569" />
+  <Item ID="893" Name="TwoColorBallBeginTime" Value="2016/9/29 11:00:00" />
+  <Item ID="894" Name="TwoColorBallEndTime" Value="2021/10/5 23:59:59" />
+  <Item ID="895" Name="BattleRankBeginTime" Value="2016/7/21 0:00:00" />
+  <Item ID="896" Name="BattleRankEndTime" Value="2016/10/31 23:59:59" />
+  <Item ID="897" Name="BattleRankSeasonID" Value="20161" />
+  <Item ID="898" Name="DayAwardConsortiaBadgeCount" Value="100" />
+  <Item ID="899" Name="ConsortiaBadgeId" Value="12567" />
+  <Item ID="900" Name="VipDiscountCardValidateDay" Value="1" />
+  <Item ID="901" Name="PetAwakenGoodId" Value="12570" />
+  <Item ID="902" Name="ConsortiaLandBombTime" Value="10" />
+  <Item ID="903" Name="ActivePveIsOpen" Value="false" />
+  <Item ID="904" Name="GReliveX" Value="743" />
+  <Item ID="905" Name="GReliveY" Value="1044" />
+  <Item ID="906" Name="SevenDayTargetReward" Value="35,1120628|70,1120629|100,1120630" />
+  <Item ID="907" Name="BatchOpen" Value="-1000,9999|-400,9999|10001,9999|10002,9999|10003,9999|10004,9999|10005,9999|10006,9999|10007,9999|10008,9999|10009,9999|10010,9999|10011,9999|10012,9999|10013,9999|10015,9999|10016,9999|10017,9999|10018,9999|10019,9999|10020,9999|10021,9999|10022,9999|10023,9999|10024,9999|10025,9999|10026,9999|10027,9999|10028,9999|10029,9999|10060,9999|10061,9999|10062,9999|10063,9999|10064,9999|10065,9999|10066,9999|10067,9999|10068,9999|10069,9999|10070,9999|10071,9999|10101,9999|10102,9999|10103,9999|10104,9999|10105,9999|10201,9999|10202,9999|10203,9999|10204,9999|10205,9999|10301,9999|10302,9999|10303,9999|10304,9999|10305,9999|10401,9999|10402,9999|10403,9999|10404,9999|10405,9999|10450,9999|10451,9999|10452,9999|10453,9999|10454,9999|10455,9999|10456,9999|10457,9999|10458,9999|10459,9999|10460,9999|10461,9999|10462,9999|10463,9999|10464,9999|10465,9999|10466,9999|10467,9999|10468,9999|10469,9999|10470,9999|10471,9999|10501,9999|10502,9999|10503,9999|10504,9999|10505,9999|10601,9999|10602,9999|10603,9999|10604,9999|10605,9999|10611,9999|10612,9999|10613,9999|10614,9999|10615,9999|10616,9999|10620,9999|10621,9999|10623,9999|11001,9999|11002,9999|11003,9999|11004,9999|11005,9999|11006,9999|11007,9999|11008,9999|11009,9999|11010,9999|11011,9999|11012,9999|11013,9999|11014,9999|11015,9999|11016,9999|11017,9999|11018,9999|11019,9999|11020,9999|11021,9999|11022,9999|11023,9999|11024,9999|11025,9999|11026,9999|11027,9999|11028,9999|11029,9999|11030,9999|11031,9999|11032,9999|11033,9999|11034,9999|11035,9999|11036,9999|11037,9999|11038,9999|11039,9999|11040,9999|11041,9999|11042,9999|11043,9999|11044,9999|11045,9999|11046,9999|11047,9999|11048,9999|11049,9999|11050,9999|11051,9999|11052,9999|11053,9999|11054,9999|11055,9999|11056,9999|11057,9999|11058,9999|11059,9999|11060,9999|11061,9999|11062,9999|11063,9999|11064,9999|11065,9999|11066,9999|11069,9999|11070,9999|11075,9999|11076,9999|11077,9999|11078,9999|11079,9999|11080,9999|11081,9999|11082,9999|11083,9999|11084,9999|11085,9999|11086,9999|11087,9999|11088,9999|11089,9999|11090,9999|11091,9999|11092,9999|11093,9999|11094,9999|11096,9999|11097,9999|11098,9999|11099,9999|11100,9999|11101,9999|11102,9999|11104,9999|11105,9999|11106,9999|11108,9999|11109,9999|11110,9999|11111,9999|11112,9999|11113,9999|11114,9999|11150,9999|11151,9999|11152,9999|11153,9999|11154,9999|11160,9999|11161,9999|11162,9999|11163,9999|11164,9999|11165,9999|11166,9999|11167,9999|11168,9999|11169,9999|11170,9999|11171,9999|11172,9999|11173,9999|11174,9999|11175,9999|11176,9999|11177,9999|11178,9999|11179,9999|11180,9999|11181,9999|11182,9999|11183,9999|11184,9999|11185,9999|11186,9999|11187,9999|11188,9999|11189,9999|11190,9999|11191,9999|11196,9999|11197,9999|11198,9999|11199,9999|11201,9999|11202,9999|11203,9999|11204,9999|11205,9999|11206,9999|11207,9999|11208,9999|11209,9999|11210,9999|11212,9999|11213,9999|11214,9999|11215,9999|11216,9999|11217,9999|11218,9999|11219,9999|11220,9999|11223,9999|11224,9999|11225,9999|11226,9999|11227,9999|11228,9999|11229,9999|11230,9999|11231,9999|11232,9999|11233,9999|11234,9999|11235,9999|11236,9999|11238,9999|11239,9999|11240,9999|11241,9999|11242,9999|11243,9999|11244,9999|11245,9999|11246,9999|11247,9999|11248,9999|11249,9999|11250,9999|11251,9999|11252,9999|11253,9999|11254,9999|11255,9999|11256,9999|11257,9999|11258,9999|11259,9999|11260,9999|11261,9999|11262,9999|11263,9999|11264,9999|11265,9999|11266,9999|11267,9999|11268,9999|11269,9999|11270,9999|11271,9999|11272,9999|11273,9999|11274,9999|11275,9999|11276,9999|11277,9999|11278,9999|11279,9999|11280,9999|11281,9999|11282,9999|11283,9999|11284,9999|11285,9999|11286,9999|11287,9999|11288,9999|11289,9999|11290,9999|11291,9999|11292,9999|11293,9999|11294,9999|11295,9999|11296,9999|11297,9999|11298,9999|11299,9999|11300,9999|11301,9999|11302,9999|11303,9999|11304,9999|11305,9999|11310,9999|11311,9999|11312,9999|11313,9999|11314,9999|11315,9999|11316,9999|11317,9999|11318,9999|11319,9999|11320,9999|11321,9999|11322,9999|11323,9999|11324,9999|11325,9999|11326,9999|11327,9999|11328,9999|11329,9999|11399,9999|11400,9999|11401,9999|11402,9999|11403,9999|11404,9999|11405,9999|11406,9999|11407,9999|11408,9999|11409,9999|11410,9999|11411,9999|11412,9999|11413,9999|11414,9999|11415,9999|11416,9999|11417,9999|11418,9999|11419,9999|11420,9999|11421,9999|11422,9999|11423,9999|11424,9999|11425,9999|11426,9999|11427,9999|11428,9999|11430,9999|11431,9999|11432,9999|11433,9999|11434,9999|11435,9999|11436,9999|11437,9999|11438,9999|11439,9999|11440,9999|11441,9999|11442,9999|11443,9999|11444,9999|11445,9999|11446,9999|11447,9999|11448,9999|11449,9999|11450,9999|11451,9999|11452,9999|11453,9999|11454,9999|11455,9999|11456,9999|11457,9999|11458,9999|11459,9999|11460,9999|11461,9999|11462,9999|11463,9999|11464,9999|11465,9999|11466,9999|11467,9999|11468,9999|11469,9999|11470,9999|11471,9999|11472,9999|11473,9999|11474,9999|11475,9999|11476,9999|11477,9999|11478,9999|11479,9999|11480,9999|11481,9999|11482,9999|11483,9999|11484,9999|11485,9999|11486,9999|11487,9999|11488,9999|11489,9999|11490,9999|11491,9999|11492,9999|11493,9999|11494,9999|11495,9999|11496,9999|11497,9999|11498,9999|11499,9999|11501,9999|11502,9999|11503,9999|11504,9999|11505,9999|11508,9999|11509,9999|11510,9999|11511,9999|11512,9999|11513,9999|11514,9999|11515,9999|11516,9999|11517,9999|11518,9999|11519,9999|11520,9999|11521,9999|11522,9999|11523,9999|11524,9999|11525,9999|11526,9999|11527,9999|11528,9999|11529,9999|11530,9999|11531,9999|11532,9999|11533,9999|11534,9999|11535,9999|11536,9999|11537,9999|11538,9999|11539,9999|11540,9999|11541,9999|11542,9999|11543,9999|11544,9999|11545,9999|11546,9999|11547,9999|11548,9999|11549,9999|11550,9999|11551,9999|11552,9999|11553,9999|11554,9999|11555,9999|11556,9999|11557,9999|11558,9999|11559,9999|11560,9999|11561,9999|11562,9999|11563,9999|11564,9999|11565,9999|11566,9999|11567,9999|11568,9999|11569,9999|11570,9999|11571,9999|11572,9999|11573,9999|11574,9999|11575,9999|11576,9999|11577,9999|11578,9999|11579,9999|11580,9999|11581,9999|11582,9999|11583,9999|11584,9999|11585,9999|11586,9999|11587,9999|11588,9999|11589,9999|11590,9999|11591,9999|11592,9999|11593,9999|11594,9999|11595,9999|11596,9999|11597,9999|11598,9999|11599,9999|11600,9999|11601,9999|11602,9999|11603,9999|11604,9999|11605,9999|11606,9999|11607,9999|11608,9999|11609,9999|11610,9999|11611,9999|11612,9999|11613,9999|11614,9999|11615,9999|11616,9999|11617,9999|11619,9999|11620,9999|11621,9999|11622,9999|11623,9999|11624,9999|11625,9999|11626,9999|11627,9999|11628,9999|11629,9999|11630,9999|11631,9999|11632,9999|11633,9999|11634,9999|11635,9999|11636,9999|11637,9999|11638,9999|11639,9999|11640,9999|11641,9999|11642,9999|11643,9999|11644,9999|11645,9999|11646,9999|11647,9999|11648,9999|11649,9999|11650,9999|11651,9999|11652,9999|11653,9999|11654,9999|11655,9999|11656,9999|11657,9999|11658,9999|11660,9999|11661,9999|11662,9999|11663,9999|11664,9999|11665,9999|11666,9999|11667,9999|11668,9999|11669,9999|11670,9999|11671,9999|11672,9999|11673,9999|11674,9999|11675,9999|11676,9999|11677,9999|11678,9999|11679,9999|11680,9999|11681,9999|11682,9999|11683,9999|11684,9999|11685,9999|11686,9999|11687,9999|11688,9999|11689,9999|11690,9999|11691,9999|11692,9999|11693,9999|11694,9999|11695,9999|11696,9999|11697,9999|11698,9999|11699,9999|11700,9999|11701,9999|11702,9999|11703,9999|11704,9999|11705,9999|11706,9999|11707,9999|11708,9999|11709,9999|11710,9999|11711,9999|11712,9999|11713,9999|11714,9999|11715,9999|11716,9999|11717,9999|11718,9999|11719,9999|11720,9999|11721,9999|11722,9999|11723,9999|11724,9999|11725,9999|11726,9999|11727,9999|11728,9999|11729,9999|11730,9999|11731,9999|11732,9999|11733,9999|11734,9999|11735,9999|11736,9999|11737,9999|11738,9999|11739,9999|11740,9999|11741,9999|11742,9999|11743,9999|11744,9999|11745,9999|11746,9999|11747,9999|11748,9999|11749,9999|11750,9999|11751,9999|11752,9999|11753,9999|11754,9999|11755,9999|11756,9999|11757,9999|11758,9999|11759,9999|11760,9999|11761,9999|11762,9999|11763,9999|11764,9999|11765,9999|11766,9999|11767,9999|11768,9999|11769,9999|11770,9999|11771,9999|11772,9999|11773,9999|11774,9999|11775,9999|11776,9999|11777,9999|11778,9999|11779,9999|11780,9999|11781,9999|11782,9999|11783,9999|11784,9999|11785,9999|11786,9999|11787,9999|11788,9999|11789,9999|11790,9999|11791,9999|11792,9999|11793,9999|11794,9999|11795,9999|11796,9999|11797,9999|11798,9999|11799,9999|11800,9999|11801,9999|11802,9999|11803,9999|11804,9999|11805,9999|11806,9999|11807,9999|11808,9999|11809,9999|11810,9999|11811,9999|11812,9999|11813,9999|11814,9999|11815,9999|11816,9999|11817,9999|11818,9999|11819,9999|11820,9999|11821,9999|11822,9999|11823,9999|11824,9999|11825,9999|11826,9999|11827,9999|11828,9999|11829,9999|11830,9999|11831,9999|11832,9999|11833,9999|11834,9999|11835,9999|11836,9999|11837,9999|11838,9999|11839,9999|11840,9999|11841,9999|11842,9999|11843,9999|11844,9999|11845,9999|11846,9999|11847,9999|11848,9999|11849,9999|11850,9999|11851,9999|11852,9999|11853,9999|11854,9999|11855,9999|11856,9999|11857,9999|11858,9999|11859,9999|11860,9999|11861,9999|11862,9999|11863,9999|11864,9999|11865,9999|11866,9999|11867,9999|11868,9999|11869,9999|11870,9999|11871,9999|11872,9999|11873,9999|11874,9999|11875,9999|11876,9999|11877,9999|11878,9999|11879,9999|11880,9999|11881,9999|11882,9999|11883,9999|11884,9999|11885,9999|11886,9999|11887,9999|11888,9999|11889,9999|11890,9999|11891,9999|11892,9999|11893,9999|11894,9999|11895,9999|11896,9999|11897,9999|11898,9999|11899,9999|11901,9999|11902,9999|11903,9999|11904,9999|11905,9999|11906,9999|11907,9999|11908,9999|11909,9999|11910,9999|11911,9999|11912,9999|11913,9999|11914,9999|11916,9999|11917,9999|11918,9999|11919,9999|11920,9999|11921,9999|11922,9999|11923,9999|11924,9999|11925,9999|11926,9999|11927,9999|11928,9999|11929,9999|11930,9999|11931,9999|11932,9999|11933,9999|11934,9999|11935,9999|11936,9999|11937,9999|11938,9999|11939,9999|11940,9999|11941,9999|11942,9999|11943,9999|11944,9999|11945,9999|11946,9999|11947,9999|11948,9999|11949,9999|11950,9999|11951,9999|11952,9999|11953,9999|11954,9999|11955,9999|11956,9999|11957,9999|11958,9999|11959,9999|11960,9999|11961,9999|11962,9999|11963,9999|11965,9999|11966,9999|11967,9999|11968,9999|11969,9999|11970,9999|11971,9999|11972,9999|11973,9999|11974,9999|11975,9999|11976,9999|11977,9999|11978,9999|11979,9999|11980,9999|11981,9999|11982,9999|11983,9999|11984,9999|11985,9999|11987,9999|11988,9999|11989,9999|11990,9999|11991,9999|11992,9999|11993,9999|11994,9999|11995,9999|11996,9999|11997,9999|11998,9999|11999,9999|12000,9999|12200,9999|12201,9999|12202,9999|12203,9999|12211,9999|12212,9999|12213,9999|12215,9999|12216,9999|12217,9999|12300,9999|12400,9999|12499,9999|12500,9999|12501,9999|12502,9999|12503,9999|12504,9999|12505,9999|12506,9999|12507,9999|12508,9999|12509,9999|12510,9999|12512,9999|12513,9999|12514,9999|12515,9999|12516,9999|12517,9999|12518,9999|12519,9999|12520,9999|12521,9999|12522,9999|12523,9999|12524,9999|12527,9999|12528,9999|12529,9999|12530,9999|12531,9999|12532,9999|12533,9999|12534,9999|12535,9999|12536,9999|12537,9999|12538,9999|12539,9999|12540,9999|12541,9999|12542,9999|12543,9999|12544,9999|12545,9999|12546,9999|12547,9999|12548,9999|12549,9999|12550,9999|12551,9999|12552,9999|12553,9999|12554,9999|12555,9999|12556,9999|12557,9999|12558,9999|12559,9999|12560,9999|12561,9999|12562,9999|12563,9999|12564,9999|12565,9999|12566,9999|12567,9999|12568,9999|12569,9999|12570,9999|12571,9999|12572,9999|12573,9999|12574,9999|12579,9999|12580,9999|12581,9999|12594,9999|12595,9999|12596,9999|12597,9999|12598,9999|12599,9999|12600,9999|12601,9999|12604,9999|12623,9999|12624,9999|12625,9999|12626,9999|12627,9999|12631,9999|12632,9999|12633,9999|12642,9999|12643,9999|12644,9999|12645,9999|12646,9999|12647,9999|12648,9999|12650,9999|12656,9999|12681,9999|12682,9999|12683,9999|12684,9999|12700,9999|12711,9999|12712,9999|12713,9999|12714,9999|12715,9999|12716,9999|12717,9999|12718,9999|12800,9999|12801,9999|12900,9999|12901,9999|12903,9999|12904,9999|12905,9999|12906,9999|12907,9999|12908,9999|12909,9999|12911,9999|12912,9999|12913,9999|13000,9999|13002,9999|13003,9999|14016,9999|14017,9999|14018,9999|14019,9999|14020,9999|14021,9999|14022,9999|14023,9999|14024,9999|14025,9999|14026,9999|14027,9999|14039,9999|14040,9999|20000,9999|20001,9999|20002,9999|20003,9999|20004,9999|20005,9999|20006,9999|20007,9999|20008,9999|20009,9999|20010,9999|20011,9999|20012,9999|20013,9999|20014,9999|20015,9999|20016,9999|20017,9999|20018,9999|20019,9999|20020,9999|20021,9999|20022,9999|20023,9999|20024,9999|20025,9999|20026,9999|20027,9999|20028,9999|20029,9999|20030,9999|20031,9999|20032,9999|20033,9999|20034,9999|20035,9999|20036,9999|20037,9999|20038,9999|20101,9999|20102,9999|20103,9999|20104,9999|20105,9999|20106,9999|20107,9999|20108,9999|20109,9999|20110,9999|20111,9999|20112,9999|20113,9999|20114,9999|20115,9999|20116,9999|20117,9999|20118,9999|20119,9999|20120,9999|20121,9999|20122,9999|20123,9999|20124,9999|20125,9999|20126,9999|20127,9999|20128,9999|20129,9999|20130,9999|20131,9999|20132,9999|20133,9999|20134,9999|20135,9999|20136,9999|20137,9999|20138,9999|20139,9999|20140,9999|20141,9999|20142,9999|20143,9999|20144,9999|20145,9999|20146,9999|20147,9999|20148,9999|20149,9999|20150,9999|20151,9999|20152,9999|20153,9999|20154,9999|20155,9999|20156,9999|20157,9999|20158,9999|20159,9999|20160,9999|20161,9999|20162,9999|20163,9999|20164,9999|20165,9999|20166,9999|20167,9999|20168,9999|20169,9999|20170,9999|20171,9999|20172,9999|20173,9999|20174,9999|20175,9999|20176,9999|20177,9999|20178,9999|20179,9999|20180,9999|20181,9999|20182,9999|20183,9999|21001,9999|21002,9999|21003,9999|21004,9999|21005,9999|21006,9999|21101,9999|21102,9999|21103,9999|21104,9999|21105,9999|21106,9999|21107,9999|21108,9999|21109,9999|21110,9999|21111,9999|21112,9999|21113,9999|21114,9999|21115,9999|21116,9999|21117,9999|21118,9999|21119,9999|21120,9999|21121,9999|21122,9999|21123,9999|21124,9999|21125,9999|21126,9999|21127,9999|21128,9999|21129,9999|21130,9999|21131,9999|21132,9999|21133,9999|21134,9999|21135,9999|21136,9999|21137,9999|21138,9999|21139,9999|21140,9999|21141,9999|21142,9999|21143,9999|21144,9999|21145,9999|21146,9999|21147,9999|21148,9999|21149,9999|21151,9999|21152,9999|21153,9999|21154,9999|21155,9999|21156,9999|21157,9999|21158,9999|21159,9999|21160,9999|21161,9999|21162,9999|21163,9999|21164,9999|21165,9999|21166,9999|21167,9999|21168,9999|21169,9999|21170,9999|21171,9999|21172,9999|21173,9999|21174,9999|21175,9999|21176,9999|21177,9999|21178,9999|21179,9999|21180,9999|21181,9999|21182,9999|21183,9999|22001,9999|22101,9999|22102,9999|22103,9999|22104,9999|22105,9999|22106,9999|22107,9999|22108,9999|22109,9999|22110,9999|22111,9999|22112,9999|22113,9999|22114,9999|22115,9999|22116,9999|22117,9999|22118,9999|22119,9999|22120,9999|22121,9999|22122,9999|22123,9999|22124,9999|22125,9999|22126,9999|22127,9999|22128,9999|22129,9999|22130,9999|22131,9999|22132,9999|22133,9999|22134,9999|22135,9999|22136,9999|22137,9999|22138,9999|22139,9999|22140,9999|22141,9999|22142,9999|22143,9999|22144,9999|22145,9999|22146,9999|22147,9999|22148,9999|22149,9999|22151,9999|22152,9999|22153,9999|22154,9999|22155,9999|22156,9999|22157,9999|22158,9999|22159,9999|22160,9999|22161,9999|22162,9999|22163,9999|22164,9999|22165,9999|22166,9999|22167,9999|22168,9999|22169,9999|22170,9999|22171,9999|22172,9999|22173,9999|22174,9999|22175,9999|22176,9999|22177,9999|22178,9999|22179,9999|22180,9999|22181,9999|22182,9999|22183,9999|29993,9999|29994,9999|29995,9999|29996,9999|29997,9999|29998,9999|29999,9999|30000,9999|40001,9999|40002,9999|40003,9999|40004,9999|40005,9999|40006,9999|40007,9999|40008,9999|45001,9999|45002,9999|45003,9999|45004,9999|45005,9999|46043,9999|46044,9999|46045,9999|46046,9999|46047,9999|46048,9999|46049,9999|46050,9999|46051,9999|46052,9999|46053,9999|46054,9999|46055,9999|46056,9999|46057,9999|46058,9999|46059,9999|46060,9999|46061,9999|46069,9999|46070,9999|46071,9999|46072,9999|46073,9999|46074,9999|46075,9999|46076,9999|46077,9999|46078,9999|46079,9999|46080,9999|46081,9999|46082,9999|46083,9999|46084,9999|46085,9999|46086,9999|46087,9999|46088,9999|46089,9999|46090,9999|46091,9999|46092,9999|46093,9999|46094,9999|46095,9999|46096,9999|46097,9999|46098,9999|46099,9999|46100,9999|46101,9999|46102,9999|46103,9999|46104,9999|46105,9999|46106,9999|46107,9999|46108,9999|46109,9999|46110,9999|46111,9999|46112,9999|46113,9999|46114,9999|46115,9999|46116,9999|46117,9999|46118,9999|46119,9999|46126,9999|46127,9999|46128,9999|46129,9999|46130,9999|46131,9999|46132,9999|46133,9999|46134,9999|46139,9999|46140,9999|46145,9999|46146,9999|46147,9999|46148,9999|46149,9999|46150,9999|46151,9999|46152,9999|46168,9999|46169,9999|46170,9999|46171,9999|46172,9999|46174,9999|46175,9999|46176,9999|46183,9999|46184,9999|46185,9999|46186,9999|46188,9999|46189,9999|46190,9999|46191,9999|46192,9999|46193,9999|46194,9999|46195,9999|46196,9999|46197,9999|46198,9999|46199,9999|46200,9999|46201,9999|46204,9999|46233,9999|50000,9999|50001,9999|50002,9999|50003,9999|60000,9999|60001,9999|60002,9999|100001,9999|100002,9999|100003,9999|100004,9999|100005,9999|100100,9999|101010,9999|101011,9999|112001,9999|112002,9999|112003,9999|112004,9999|112005,9999|112006,9999|112007,9999|112008,9999|112009,9999|112010,9999|112011,9999|112012,9999|112013,9999|112014,9999|112015,9999|112016,9999|112017,9999|112018,9999|112019,9999|112020,9999|112021,9999|112022,9999|112023,9999|112024,9999|112025,9999|112026,9999|112027,9999|112028,9999|112029,9999|112030,9999|112031,9999|112032,9999|112033,9999|112034,9999|112035,9999|112036,9999|112037,9999|112038,9999|112039,9999|112040,9999|112041,9999|112042,9999|112043,9999|112044,9999|112045,9999|112046,9999|112047,9999|112048,9999|112049,9999|112050,9999|112051,9999|112052,9999|112053,9999|112054,9999|112055,9999|112056,9999|112057,9999|112058,9999|112059,9999|112060,9999|112061,9999|112062,9999|112063,9999|112064,9999|112065,9999|112066,9999|112067,9999|112068,9999|112069,9999|112070,9999|112071,9999|112072,9999|112073,9999|112074,9999|112075,9999|112076,9999|112077,9999|112078,9999|112079,9999|112080,9999|112081,9999|112082,9999|112083,9999|112084,9999|112085,9999|112086,9999|112087,9999|112088,9999|112089,9999|112090,9999|112091,9999|112092,9999|112093,9999|112094,9999|112095,9999|112096,9999|112097,9999|112098,9999|112100,9999|112101,9999|112102,9999|112103,9999|112104,9999|112105,9999|112106,9999|112107,9999|112108,9999|112109,9999|112110,9999|112111,9999|112112,9999|112113,9999|112114,9999|112115,9999|112116,9999|112117,9999|112118,9999|112119,9999|112120,9999|112121,9999|112122,9999|112123,9999|112124,9999|112125,9999|112126,9999|112127,9999|112128,9999|112129,9999|112131,9999|112132,9999|112133,9999|112134,9999|112135,9999|112136,9999|112137,9999|112138,9999|112139,9999|112140,9999|112141,9999|112142,9999|112143,9999|112144,9999|112145,9999|112146,9999|112147,9999|112148,9999|112149,9999|112150,9999|112151,9999|112152,9999|112153,9999|112154,9999|112155,9999|112156,9999|112157,9999|112158,9999|112159,9999|112160,9999|112161,9999|112162,9999|112163,9999|112164,9999|112165,9999|112166,9999|112167,9999|112168,9999|112169,9999|112170,9999|112171,9999|112172,9999|112173,9999|112174,9999|112175,9999|112176,9999|112177,9999|112178,9999|112179,9999|112180,9999|112181,9999|112182,9999|112183,9999|112184,9999|112185,9999|112186,9999|112187,9999|112188,9999|112189,9999|112190,9999|112191,9999|112192,9999|112193,9999|112194,9999|112195,9999|112196,9999|112197,9999|112198,9999|112199,9999|112200,9999|112201,9999|112202,9999|112203,9999|112204,9999|112205,9999|112206,9999|112207,9999|112208,9999|112209,9999|112210,9999|112211,9999|112212,9999|112213,9999|112214,9999|112215,9999|112216,9999|112217,9999|112218,9999|112219,9999|112220,9999|112221,9999|112222,9999|112223,9999|112224,9999|112225,9999|112226,9999|112227,9999|112228,9999|112229,9999|112230,9999|112231,9999|112232,9999|112233,9999|112234,9999|112235,9999|112236,9999|112237,9999|112238,9999|112239,9999|112240,9999|112241,9999|112242,9999|112243,9999|112244,9999|112245,9999|112246,9999|112247,9999|112248,9999|112249,9999|112250,9999|112251,9999|112252,9999|112253,9999|112254,9999|112255,9999|112256,9999|112257,9999|112258,9999|112259,9999|112260,9999|112261,9999|112262,9999|112263,9999|112264,9999|112265,9999|112266,9999|112267,9999|112268,9999|112269,9999|112270,9999|112271,9999|112272,9999|112273,9999|112274,9999|112275,9999|112276,9999|112277,9999|112278,9999|112279,9999|112280,9999|112281,9999|112282,9999|112283,9999|112284,9999|112285,9999|112286,9999|112287,9999|112288,9999|112289,9999|112290,9999|112291,9999|112292,9999|112293,9999|112294,9999|112295,9999|112296,9999|112297,9999|112298,9999|112299,9999|112300,9999|112301,9999|112302,9999|112303,9999|112304,9999|112305,9999|112306,9999|112307,9999|112308,9999|112309,9999|112310,9999|112311,9999|112312,9999|112313,9999|112314,9999|112315,9999|112316,9999|112317,9999|112318,9999|112319,9999|112320,9999|112321,9999|112322,9999|112323,9999|112324,9999|112328,9999|112329,9999|112330,9999|112331,9999|112332,9999|112333,9999|112334,9999|112335,9999|112336,9999|112337,9999|112338,9999|112339,9999|112340,9999|112341,9999|112342,9999|112343,9999|112344,9999|112345,9999|112346,9999|112347,9999|112348,9999|112349,9999|112350,9999|112351,9999|112352,9999|112353,9999|112354,9999|112355,9999|112356,9999|112357,9999|112358,9999|112359,9999|112360,9999|112361,9999|112362,9999|112363,9999|112364,9999|112365,9999|112366,9999|112367,9999|112368,9999|112369,9999|112370,9999|112371,9999|112372,9999|112373,9999|112374,9999|112375,9999|112376,9999|112377,9999|112378,9999|112379,9999|112380,9999|112381,9999|112382,9999|112383,9999|112384,9999|112385,9999|112386,9999|112387,9999|112388,9999|112389,9999|112390,9999|112391,9999|112392,9999|112393,9999|112394,9999|112395,9999|112396,9999|112397,9999|112398,9999|112399,9999|112400,9999|112401,9999|112402,9999|112403,9999|112404,9999|112405,9999|112406,9999|112407,9999|112408,9999|112409,9999|112410,9999|112411,9999|112412,9999|112413,9999|112414,9999|112415,9999|112416,9999|112417,9999|112418,9999|112419,9999|112420,9999|112421,9999|112422,9999|112423,9999|112424,9999|112425,9999|112426,9999|112427,9999|112428,9999|112429,9999|112430,9999|112431,9999|112432,9999|112433,9999|112434,9999|112435,9999|112436,9999|112437,9999|112438,9999|112439,9999|112440,9999|112441,9999|112442,9999|113025,9999|113026,9999|113027,9999|113028,9999|114401,9999|114402,9999|114403,9999|114404,9999|114405,9999|114406,9999|114407,9999|114408,9999|114461,9999|119993,9999|119994,9999|119995,9999|119996,9999|119997,9999|119998,9999|120000,9999|120001,9999|120002,9999|120003,9999|120004,9999|122000,9999|122001,9999|122002,9999|122003,9999|122004,9999|122005,9999|122006,9999|122007,9999|122008,9999|122009,9999|122010,9999|122011,9999|122012,9999|122013,9999|122014,9999|122015,9999|122016,9999|122017,9999|122018,9999|122019,9999|122020,9999|122021,9999|122022,9999|122023,9999|122024,9999|122025,9999|122026,9999|122027,9999|122028,9999|122029,9999|122030,9999|122031,9999|122032,9999|122033,9999|122034,9999|122035,9999|122036,9999|122037,9999|122038,9999|122039,9999|122040,9999|122041,9999|122042,9999|122043,9999|122044,9999|122045,9999|122046,9999|122047,9999|122048,9999|122049,9999|122050,9999|122051,9999|122052,9999|122053,9999|122054,9999|122055,9999|122056,9999|122057,9999|122058,9999|122059,9999|122060,9999|122061,9999|122062,9999|122063,9999|122064,9999|122065,9999|122066,9999|122067,9999|122068,9999|122069,9999|122070,9999|122071,9999|122072,9999|122073,9999|122074,9999|122075,9999|122076,9999|122077,9999|122078,9999|122079,9999|122080,9999|122081,9999|122082,9999|122083,9999|122084,9999|122085,9999|122086,9999|122087,9999|122088,9999|122089,9999|122090,9999|122091,9999|122092,9999|122093,9999|122094,9999|122095,9999|122096,9999|122097,9999|122098,9999|122099,9999|122100,9999|122101,9999|122102,9999|122103,9999|122104,9999|122105,9999|122106,9999|122107,9999|122108,9999|122109,9999|122110,9999|122111,9999|122112,9999|122113,9999|122114,9999|122115,9999|122116,9999|122117,9999|122118,9999|122119,9999|122120,9999|122121,9999|122122,9999|122123,9999|122124,9999|122125,9999|122126,9999|122127,9999|122128,9999|122129,9999|122130,9999|122131,9999|122132,9999|122133,9999|122134,9999|122135,9999|122136,9999|122137,9999|122138,9999|122139,9999|122140,9999|122141,9999|122142,9999|122143,9999|122144,9999|122145,9999|122146,9999|122147,9999|122148,9999|122149,9999|122150,9999|122151,9999|122152,9999|122153,9999|122154,9999|122155,9999|122156,9999|122157,9999|122158,9999|122159,9999|122160,9999|122161,9999|122162,9999|122163,9999|122164,9999|122165,9999|122166,9999|122167,9999|122168,9999|122169,9999|122170,9999|122171,9999|122172,9999|122173,9999|122174,9999|122175,9999|122176,9999|122177,9999|122178,9999|122179,9999|122180,9999|122181,9999|122182,9999|122183,9999|122184,9999|122185,9999|122186,9999|122187,9999|122188,9999|122189,9999|122190,9999|122191,9999|122192,9999|122193,9999|122194,9999|122195,9999|122196,9999|122197,9999|122198,9999|122199,9999|122200,9999|122201,9999|122202,9999|122203,9999|122204,9999|122205,9999|122206,9999|122207,9999|122208,9999|122209,9999|122210,9999|122211,9999|122212,9999|122213,9999|122214,9999|122215,9999|122216,9999|122217,9999|122218,9999|122219,9999|122220,9999|122221,9999|122222,9999|122223,9999|122224,9999|122225,9999|122226,9999|122227,9999|122228,9999|122229,9999|122230,9999|122231,9999|122232,9999|122233,9999|122234,9999|122235,9999|122236,9999|122237,9999|122238,9999|122239,9999|122240,9999|122241,9999|122242,9999|122243,9999|122244,9999|122245,9999|122246,9999|122247,9999|122248,9999|122249,9999|122250,9999|122251,9999|122252,9999|122253,9999|122254,9999|122255,9999|122256,9999|122257,9999|122258,9999|122259,9999|122260,9999|122261,9999|122262,9999|122263,9999|122264,9999|122265,9999|122266,9999|122267,9999|122268,9999|122269,9999|122270,9999|122271,9999|122272,9999|122273,9999|122274,9999|122275,9999|122276,9999|122277,9999|122278,9999|122279,9999|122280,9999|122281,9999|122282,9999|122283,9999|122284,9999|122285,9999|122286,9999|122287,9999|122289,9999|122290,9999|122291,9999|122292,9999|122293,9999|122294,9999|122295,9999|122296,9999|122297,9999|122298,9999|122299,9999|122300,9999|122301,9999|122302,9999|122303,9999|122304,9999|122305,9999|122306,9999|122307,9999|122308,9999|122309,9999|122311,9999|122312,9999|122313,9999|122314,9999|122315,9999|122316,9999|122317,9999|122318,9999|122319,9999|122320,9999|122321,9999|122322,9999|122323,9999|122324,9999|122325,9999|122326,9999|122327,9999|122328,9999|122329,9999|122330,9999|122331,9999|122332,9999|122333,9999|122334,9999|122335,9999|122336,9999|122337,9999|122338,9999|122339,9999|122340,9999|122341,9999|122342,9999|122343,9999|122344,9999|122345,9999|122346,9999|122347,9999|122348,9999|122349,9999|122350,9999|122351,9999|122352,9999|122353,9999|122354,9999|122355,9999|122356,9999|122357,9999|122358,9999|122359,9999|122360,9999|122361,9999|122362,9999|122363,9999|122364,9999|122365,9999|122366,9999|122367,9999|122368,9999|122369,9999|122370,9999|122371,9999|122372,9999|122373,9999|122374,9999|122375,9999|122376,9999|122377,9999|122378,9999|122379,9999|122380,9999|122381,9999|122382,9999|122383,9999|122384,9999|122385,9999|122386,9999|122387,9999|122388,9999|122389,9999|122390,9999|122391,9999|122392,9999|122394,9999|122395,9999|122396,9999|122397,9999|122398,9999|122399,9999|122400,9999|122401,9999|122402,9999|122403,9999|122404,9999|122405,9999|122406,9999|122407,9999|122408,9999|122409,9999|122410,9999|122411,9999|122412,9999|122413,9999|122414,9999|122415,9999|122416,9999|122417,9999|122418,9999|122419,9999|122420,9999|122421,9999|122422,9999|122423,9999|122424,9999|122425,9999|122426,9999|122427,9999|122428,9999|122429,9999|122430,9999|122431,9999|122432,9999|122433,9999|122434,9999|122437,9999|122444,9999|122445,9999|122446,9999|122447,9999|122448,9999|122449,9999|122450,9999|122451,9999|122452,9999|122453,9999|122454,9999|122455,9999|122456,9999|122457,9999|122458,9999|122459,9999|122460,9999|122461,9999|122462,9999|122463,9999|122464,9999|122465,9999|122466,9999|122467,9999|122468,9999|122469,9999|122470,9999|122471,9999|122472,9999|122473,9999|122474,9999|122475,9999|122476,9999|122477,9999|122478,9999|122479,9999|122480,9999|122481,9999|122482,9999|122483,9999|122488,9999|122491,9999|122493,9999|122494,9999|122495,9999|122496,9999|122497,9999|122498,9999|122499,9999|122500,9999|122501,9999|122502,9999|122503,9999|122504,9999|122505,9999|122506,9999|122507,9999|122508,9999|122509,9999|122510,9999|122511,9999|122512,9999|122513,9999|122514,9999|122516,9999|122517,9999|122518,9999|122519,9999|122520,9999|122521,9999|122522,9999|122523,9999|122524,9999|122525,9999|122526,9999|122527,9999|122528,9999|122529,9999|122531,9999|122532,9999|122533,9999|122534,9999|122535,9999|122536,9999|122537,9999|122538,9999|122539,9999|122540,9999|122541,9999|122542,9999|122543,9999|122544,9999|122545,9999|122546,9999|122547,9999|122548,9999|122549,9999|122550,9999|122551,9999|122552,9999|122553,9999|122554,9999|122555,9999|122556,9999|122557,9999|122558,9999|122559,9999|122560,9999|122561,9999|122562,9999|122563,9999|122564,9999|122565,9999|122566,9999|122567,9999|122568,9999|122569,9999|122570,9999|122571,9999|122572,9999|122573,9999|122574,9999|122575,9999|122576,9999|122577,9999|122578,9999|122579,9999|122580,9999|122581,9999|122582,9999|122583,9999|122584,9999|122585,9999|122586,9999|122587,9999|122588,9999|122589,9999|122590,9999|122591,9999|122592,9999|122593,9999|122594,9999|122595,9999|122596,9999|122597,9999|122598,9999|122599,9999|122600,9999|122601,9999|122602,9999|122603,9999|122604,9999|122605,9999|122606,9999|122607,9999|122608,9999|122609,9999|122610,9999|122611,9999|122612,9999|122613,9999|122614,9999|122615,9999|122616,9999|122617,9999|122618,9999|122619,9999|122620,9999|122621,9999|122622,9999|122623,9999|122624,9999|122625,9999|122626,9999|122627,9999|122628,9999|122629,9999|122630,9999|122631,9999|122632,9999|122633,9999|122634,9999|122635,9999|122636,9999|122637,9999|122638,9999|122639,9999|122640,9999|122641,9999|122642,9999|122643,9999|122644,9999|122645,9999|122646,9999|122647,9999|122648,9999|122649,9999|122650,9999|122651,9999|122652,9999|122653,9999|122654,9999|122655,9999|122656,9999|122657,9999|122658,9999|122659,9999|122660,9999|122661,9999|122662,9999|122663,9999|122664,9999|122665,9999|122666,9999|122667,9999|122668,9999|122669,9999|122670,9999|122671,9999|122672,9999|122673,9999|122674,9999|122675,9999|122676,9999|122677,9999|122678,9999|122679,9999|122680,9999|122681,9999|122682,9999|122683,9999|122684,9999|122685,9999|122686,9999|122687,9999|122688,9999|122689,9999|122690,9999|122691,9999|122692,9999|122693,9999|122694,9999|122695,9999|122696,9999|122697,9999|122698,9999|122699,9999|122700,9999|122701,9999|122702,9999|122703,9999|122704,9999|122705,9999|122706,9999|122707,9999|122708,9999|122709,9999|122710,9999|122711,9999|122712,9999|122713,9999|122714,9999|122715,9999|122716,9999|122717,9999|122718,9999|122719,9999|122720,9999|122721,9999|122722,9999|122723,9999|122724,9999|122725,9999|122726,9999|122727,9999|122728,9999|122729,9999|122730,9999|122731,9999|122732,9999|122733,9999|122734,9999|122735,9999|122736,9999|122737,9999|122738,9999|122741,9999|122742,9999|122743,9999|122744,9999|122745,9999|122746,9999|122747,9999|122748,9999|122749,9999|122750,9999|122751,9999|122752,9999|122753,9999|122754,9999|122755,9999|122756,9999|122757,9999|122758,9999|122759,9999|122760,9999|122761,9999|122762,9999|122763,9999|122764,9999|122765,9999|122766,9999|122767,9999|122768,9999|122769,9999|122770,9999|122771,9999|122772,9999|122773,9999|122774,9999|122775,9999|122776,9999|122777,9999|122778,9999|122779,9999|122834,9999|123043,9999|123045,9999|123157,9999|123158,9999|123159,9999|123160,9999|123163,9999|123176,9999|123179,9999|123180,9999|130010,9999|130011,9999|130012,9999|130025,9999|130026,9999|130030,9999|130031,9999|130032,9999|130033,9999|130034,9999|130035,9999|130036,9999|130037,9999|130038,9999|130100,9999|130101,9999|130102,9999|130103,9999|140020,9999|140021,9999|140022,9999|140031,9999|140033,9999|150001,9999|150002,9999|150020,9999|150021,9999|150022,9999|150023,9999|150030,9999|150031,9999|150032,9999|150033,9999|150040,9999|150041,9999|160001,9999|160002,9999|160003,9999|160004,9999|160005,9999|160006,9999|170001,9999|170002,9999|170003,9999|170004,9999|170005,9999|170006,9999|170007,9999|170008,9999|170009,9999|170010,9999|170011,9999|170012,9999|170013,9999|170014,9999|170015,9999|170016,9999|170017,9999|170018,9999|170019,9999|170020,9999|170021,9999|170022,9999|170050,9999|170051,9999|170052,9999|170053,9999|170054,9999|170055,9999|170056,9999|170057,9999|170058,9999|170059,9999|170060,9999|170061,9999|170062,9999|170063,9999|170064,9999|170100,9999|170101,9999|170102,9999|170103,9999|170104,9999|170105,9999|170106,9999|170107,9999|170108,9999|170109,9999|170110,9999|170111,9999|170112,9999|170113,9999|170114,9999|170115,9999|170116,9999|170117,9999|170118,9999|170119,9999|170120,9999|170121,9999|170122,9999|170123,9999|170128,9999|170129,9999|170130,9999|170131,9999|170132,9999|170133,9999|170134,9999|170135,9999|170136,9999|170137,9999|170138,9999|170139,9999|170140,9999|170141,9999|170142,9999|170143,9999|170144,9999|170145,9999|170146,9999|170147,9999|170148,9999|170149,9999|170150,9999|170151,9999|180001,9999|180002,9999|180003,9999|180004,9999|180005,9999|180006,9999|180010,9999|180011,9999|180012,9999|180013,9999|180014,9999|180015,9999|180016,9999|180017,9999|180018,9999|180019,9999|180020,9999|180021,9999|180022,9999|180023,9999|180024,9999|180025,9999|180026,9999|180027,9999|190000,9999|190001,9999|190002,9999|200000,9999|200001,9999|200002,9999|200003,9999|200004,9999|200005,9999|200006,9999|200007,9999|200008,9999|200009,9999|200010,9999|200011,9999|200012,9999|200013,9999|200014,9999|200015,9999|200016,9999|200017,9999|200018,9999|200019,9999|200021,9999|200022,9999|200030,9999|200031,9999|200033,9999|200034,9999|200036,9999|200037,9999|200038,9999|200039,9999|200040,9999|200041,9999|200042,9999|200044,9999|200045,9999|200047,9999|200048,9999|200049,9999|200052,9999|200053,9999|200054,9999|200055,9999|200056,9999|200057,9999|200058,9999|200071,9999|200072,9999|200073,9999|200074,9999|200075,9999|200082,9999|200083,9999|200084,9999|200085,9999|200086,9999|200087,9999|200088,9999|200089,9999|200090,9999|200091,9999|200092,9999|200093,9999|200094,9999|200095,9999|200096,9999|200097,9999|200098,9999|200099,9999|200100,9999|200101,9999|200102,9999|200103,9999|200104,9999|200105,9999|200106,9999|200112,9999|200116,9999|200117,9999|200118,9999|200120,9999|200121,9999|200122,9999|200123,9999|200124,9999|200125,9999|200129,9999|200130,9999|200131,9999|200132,9999|200133,9999|200134,9999|200135,9999|200141,9999|200144,9999|200145,9999|200146,9999|200147,9999|200148,9999|200149,9999|200151,9999|200152,9999|200153,9999|200154,9999|200155,9999|200156,9999|200157,9999|200161,9999|200162,9999|200163,9999|200165,9999|200166,9999|200167,9999|200169,9999|200172,9999|200175,9999|200176,9999|200177,9999|200178,9999|200179,9999|200180,9999|200181,9999|200182,9999|200183,9999|200184,9999|200185,9999|200186,9999|200189,9999|200190,9999|200191,9999|200192,9999|200193,9999|200194,9999|200195,9999|200196,9999|200220,9999|200221,9999|200231,9999|200232,9999|200235,9999|200236,9999|200238,9999|200239,9999|200240,9999|200241,9999|200243,9999|200244,9999|200245,9999|200246,9999|200247,9999|200248,9999|200249,9999|200250,9999|200251,9999|200255,9999|200256,9999|200257,9999|200265,9999|200266,9999|200267,9999|200268,9999|200272,9999|200273,9999|200274,9999|200275,9999|200276,9999|200277,9999|200278,9999|200279,9999|200280,9999|200281,9999|200282,9999|200283,9999|200284,9999|200285,9999|200287,9999|200289,9999|200290,9999|200301,9999|200302,9999|200303,9999|200304,9999|200305,9999|200306,9999|200314,9999|200315,9999|200316,9999|200319,9999|200320,9999|200326,9999|200327,9999|200328,9999|200334,9999|200335,9999|200336,9999|200337,9999|200338,9999|200339,9999|200340,9999|200341,9999|200342,9999|200343,9999|200344,9999|200345,9999|200346,9999|200356,9999|200357,9999|200358,9999|200359,9999|200360,9999|200361,9999|200362,9999|200363,9999|200364,9999|200365,9999|200366,9999|200367,9999|200368,9999|200369,9999|200370,9999|200371,9999|200374,9999|200375,9999|200376,9999|200395,9999|200396,9999|200397,9999|200400,9999|200401,9999|200402,9999|200403,9999|200404,9999|200405,9999|200407,9999|200408,9999|200409,9999|200410,9999|200411,9999|200421,9999|200422,9999|200423,9999|200435,9999|200436,9999|200439,9999|200440,9999|200441,9999|200442,9999|200443,9999|200448,9999|200449,9999|200450,9999|200451,9999|200452,9999|200453,9999|200454,9999|200455,9999|200456,9999|200460,9999|200461,9999|200462,9999|200463,9999|200464,9999|200465,9999|200466,9999|200467,9999|200468,9999|200469,9999|200470,9999|200471,9999|200478,9999|200479,9999|200480,9999|200481,9999|200482,9999|200487,9999|200488,9999|200489,9999|200490,9999|200491,9999|200492,9999|200493,9999|200494,9999|200503,9999|200504,9999|200505,9999|200506,9999|200507,9999|200508,9999|200509,9999|200511,9999|200512,9999|200513,9999|200514,9999|200515,9999|200516,9999|200517,9999|200518,9999|200519,9999|200520,9999|200521,9999|200522,9999|200523,9999|200524,9999|200525,9999|200526,9999|200527,9999|200528,9999|200529,9999|200530,9999|200531,9999|200532,9999|200533,9999|200534,9999|200535,9999|200536,9999|200537,9999|200538,9999|200539,9999|200540,9999|200546,9999|200547,9999|200548,9999|200549,9999|200550,9999|200551,9999|200552,9999|200553,9999|200556,9999|200557,9999|200558,9999|200559,9999|200560,9999|200561,9999|200562,9999|200563,9999|200564,9999|200565,9999|200566,9999|200567,9999|200568,9999|200569,9999|200576,9999|200577,9999|200578,9999|200579,9999|200580,9999|200581,9999|200582,9999|200583,9999|200584,9999|200585,9999|200586,9999|200587,9999|200588,9999|200590,9999|200591,9999|200592,9999|200593,9999|200594,9999|200598,9999|200599,9999|200600,9999|200601,9999|200602,9999|200606,9999|200619,9999|200620,9999|200621,9999|200622,9999|200623,9999|200624,9999|200625,9999|200626,9999|200627,9999|200628,9999|200629,9999|200630,9999|200631,9999|200632,9999|200642,9999|200643,9999|200655,9999|200656,9999|200657,9999|200658,9999|200659,9999|200660,9999|200661,9999|200662,9999|200663,9999|200664,9999|200665,9999|200666,9999|200667,9999|200668,9999|200669,9999|200670,9999|200671,9999|200673,9999|200682,9999|200686,9999|200687,9999|200688,9999|200689,9999|200690,9999|200691,9999|200692,9999|200693,9999|200694,9999|200701,9999|200702,9999|200720,9999|200721,9999|200723,9999|200724,9999|200725,9999|200726,9999|200727,9999|200728,9999|200729,9999|200730,9999|200731,9999|200732,9999|200733,9999|200734,9999|200735,9999|200736,9999|200737,9999|200738,9999|200739,9999|200740,9999|200741,9999|200742,9999|200743,9999|200744,9999|200745,9999|200750,9999|200751,9999|200752,9999|200758,9999|200759,9999|200760,9999|200761,9999|200762,9999|200763,9999|200764,9999|200765,9999|200766,9999|200776,9999|200777,9999|200797,9999|200798,9999|200799,9999|200800,9999|200801,9999|200802,9999|200803,9999|200804,9999|200805,9999|200806,9999|200807,9999|200809,9999|200810,9999|200811,9999|200812,9999|200813,9999|200825,9999|200826,9999|200827,9999|200835,9999|200836,9999|200837,9999|200838,9999|200839,9999|200840,9999|200841,9999|200842,9999|200844,9999|200845,9999|200860,9999|200872,9999|200873,9999|200874,9999|200875,9999|200881,9999|200882,9999|200883,9999|200884,9999|200885,9999|200886,9999|200887,9999|200888,9999|200896,9999|200897,9999|200898,9999|200899,9999|200900,9999|200921,9999|200934,9999|200935,9999|200936,9999|200937,9999|200938,9999|200942,9999|200943,9999|200944,9999|200945,9999|200951,9999|200955,9999|200956,9999|200962,9999|200971,9999|200972,9999|200973,9999|200985,9999|200986,9999|200987,9999|200988,9999|200989,9999|200990,9999|201005,9999|201006,9999|201007,9999|201008,9999|201009,9999|201010,9999|201013,9999|201014,9999|201015,9999|201021,9999|201022,9999|201023,9999|201024,9999|201025,9999|201026,9999|201031,9999|201032,9999|201040,9999|201047,9999|201048,9999|201049,9999|201050,9999|201051,9999|201052,9999|201053,9999|201054,9999|201055,9999|201056,9999|201066,9999|201067,9999|201068,9999|201069,9999|201077,9999|201078,9999|201079,9999|201080,9999|201081,9999|201082,9999|201083,9999|201084,9999|201105,9999|201144,9999|201145,9999|201146,9999|201147,9999|201148,9999|201149,9999|201150,9999|201151,9999|201152,9999|201153,9999|201154,9999|201155,9999|201156,9999|201159,9999|201160,9999|201166,9999|201167,9999|201168,9999|201169,9999|201170,9999|201171,9999|201192,9999|201193,9999|201229,9999|201230,9999|201231,9999|201233,9999|201234,9999|201235,9999|201236,9999|201237,9999|201238,9999|201239,9999|201240,9999|201241,9999|201248,9999|201249,9999|201250,9999|201251,9999|201252,9999|201253,9999|201254,9999|201255,9999|201256,9999|201257,9999|201258,9999|201259,9999|201260,9999|201261,9999|201263,9999|201264,9999|201265,9999|201266,9999|201267,9999|201279,9999|201280,9999|201281,9999|201294,9999|201295,9999|201296,9999|201297,9999|201298,9999|201299,9999|201300,9999|201301,9999|201302,9999|201303,9999|201304,9999|201305,9999|201306,9999|201309,9999|201310,9999|201316,9999|201352,9999|201364,9999|201365,9999|201368,9999|201370,9999|201386,9999|201387,9999|201388,9999|201389,9999|201390,9999|201391,9999|201405,9999|201406,9999|201407,9999|201408,9999|201409,9999|201420,9999|201426,9999|201427,9999|201428,9999|201433,9999|201434,9999|201435,9999|201436,9999|201437,9999|201438,9999|201439,9999|201440,9999|201441,9999|201442,9999|201443,9999|201444,9999|201445,9999|201446,9999|201453,9999|201454,9999|201458,9999|201459,9999|201472,9999|201473,9999|201487,9999|201488,9999|201489,9999|201490,9999|201511,9999|201520,9999|201526,9999|201531,9999|201532,9999|201551,9999|201552,9999|201553,9999|201554,9999|201555,9999|201556,9999|201557,9999|201558,9999|201559,9999|201560,9999|201561,9999|201566,9999|201567,9999|201570,9999|201571,9999|201572,9999|201573,9999|201574,9999|201575,9999|201576,9999|201577,9999|201578,9999|201581,9999|201582,9999|201584,9999|201585,9999|201589,9999|201590,9999|201592,9999|201593,9999|201594,9999|201595,9999|201596,9999|201597,9999|201598,9999|201599,9999|201600,9999|201601,9999|201602,9999|201603,9999|201604,9999|201610,9999|201611,9999|201612,9999|201613,9999|201614,9999|201615,9999|201616,9999|201617,9999|201618,9999|201619,9999|201620,9999|201621,9999|201623,9999|201624,9999|201625,9999|201626,9999|201627,9999|201628,9999|201629,9999|201630,9999|201631,9999|201632,9999|201640,9999|201641,9999|201642,9999|201643,9999|201644,9999|201645,9999|201646,9999|201647,9999|201648,9999|201649,9999|201650,9999|201651,9999|201669,9999|201670,9999|201671,9999|201672,9999|201673,9999|201674,9999|201675,9999|201676,9999|201677,9999|201678,9999|201679,9999|201701,9999|201702,9999|201703,9999|201704,9999|201705,9999|201706,9999|201707,9999|201708,9999|311000,9999|311100,9999|311199,9999|311200,9999|311299,9999|311300,9999|311399,9999|311400,9999|311499,9999|311500,9999|311599,9999|311600,9999|311699,9999|311999,9999|312000,9999|312100,9999|312199,9999|312200,9999|312299,9999|312300,9999|312399,9999|312400,9999|312499,9999|312500,9999|312599,9999|312600,9999|312699,9999|312999,9999|313000,9999|313100,9999|313199,9999|313200,9999|313299,9999|313300,9999|313399,9999|313400,9999|313499,9999|313500,9999|313599,9999|313600,9999|313699,9999|313999,9999|314101,9999|520000882,9999|31410" />
+  <Item ID="908" Name="AmuletBuyDustMax" Value="20" />
+  <Item ID="909" Name="AmuletBuyDustCountAndNeedMoney" Value="30|10|150" />
+  <Item ID="910" Name="IsOpenWealthTree" Value="true" />
+  <Item ID="911" Name="EscapePropWeight" Value="10015,30|10016,40|10022,10|10619,20" />
+  <Item ID="912" Name="EscapePropMax" Value="3" />
+  <Item ID="913" Name="EscapePropRefushIndex" Value="2" />
+  <Item ID="914" Name="EscapePropRefushCount" Value="1" />
+  <Item ID="915" Name="FlagWarNpcWeigth" Value="10007,6|10008,3|10009,1" />
+  <Item ID="916" Name="FlagWarCondition" Value="1,10|2,10|3,15|4,20" />
+  <Item ID="917" Name="MatchBattleProperty" Value="1,5000,5000,2500,5000,2500,2500,2000,1500,323,45000|2,1,5000,2500,5000,2500,2500,1,1500,323,45000" />
+  <Item ID="918" Name="TanabataBoxID" Value="1120155" />
+  <Item ID="919" Name="ComboSlashMaxRow" Value="0" />
+  <Item ID="920" Name="ComboSlashMaxColumn" Value="0" />
+  <Item ID="921" Name="OldPlayerRegisterCallValidDay" Value="5" />
+  <Item ID="922" Name="OldPlayerRegisterCallAddScore" Value="40" />
+  <Item ID="923" Name="FlagWarAddFlags" Value="1" />
+  <Item ID="924" Name="PoisonNetEffectAddValue" Value="500" />
+  <Item ID="925" Name="PoisonNetEffectAddRate" Value="5" />
+  <Item ID="926" Name="CityOccupationAddScoreCount" Value="30" />
+  <Item ID="927" Name="CityOccupationKillsAddScore" Value="1,20|2,15|3,20|4,25" />
+  <Item ID="928" Name="SpaRoomGameTotalBaseSorce" Value="200" />
+  <Item ID="929" Name="SpaRoomGameDayBaseSorce" Value="100" />
+  <Item ID="930" Name="ComboSlashGameMinSpeed" Value="6" />
+  <Item ID="931" Name="ComboSlashGameMaxSpeed" Value="10" />
+  <Item ID="932" Name="ComboSlashShootBombRemoveScore" Value="2" />
+  <Item ID="933" Name="ComboSlashBaseColumnCount" Value="18" />
+  <Item ID="934" Name="ComboSlashMulripleColumnCount" Value="2" />
+  <Item ID="935" Name="ComboSlashRemoveSevevenCountAddScore" Value="500" />
+  <Item ID="936" Name="ComboSlashRemoveFourteenCountAddScore" Value="1000" />
+  <Item ID="937" Name="ComboSlashNullCloumnScore" Value="100" />
+  <Item ID="938" Name="CubeGameCostEnergy" Value="1" />
+  <Item ID="939" Name="NationalDayExchangeTimes" Value="10, 10, 10, 10" />
+  <Item ID="940" Name="ProtectDDTIslandCount" Value="50|50|50|50|50" />
+  <Item ID="941" Name="BlessBuffRefreshPrice" Value="10000" />
+  <Item ID="942" Name="BlessBuffAddBuffPrice" Value="99999999" />
+  <Item ID="943" Name="BlessBuffOpenLv" Value="120" />
+  <Item ID="944" Name="BlessBuffAddRate" Value="1" />
+  <Item ID="945" Name="BuyClothGroupCost" Value="1,600|2,1500|3,2400" />
+  <Item ID="946" Name="ApprenticesLvAddAttrPer" Value="0.01|0.02|0.03|0.04|0.05" />
+  <Item ID="947" Name="ApprenticesLvChargeRetPer" Value="0.05|0.06|0.07|0.08|0.10" />
+  <Item ID="948" Name="ApprenticesLvVitReducePer" Value="0.10|0.15|0.20|0.25|0.30" />
+  <Item ID="949" Name="ApprenticesWeekActiveGift" Value="300,1120696|500,1120695|800,1120694" />
+  <Item ID="950" Name="ApprenticesFightPowerGift" Value="100000,46115|500000,46116|2000000,46117|10000000,46118|20000000,46119" />
+  <Item ID="951" Name="ApprenticesLvAwardInfo" Value="20,1120689|30,1120690|40,1120691|50,1120692" />
+  <Item ID="952" Name="ApprenticesLvInfo" Value="2500|10000|30000|60000" />
+  <Item ID="953" Name="NewFairPVEBattleProperty" Value="4000,4000,4000,4000,2000,2000,1500,1000,0,50000" />
+  <Item ID="954" Name="CreateTeamMoney" Value="200" />
+  <Item ID="955" Name="MoneyRichesOffer" Value="10" />
+  <Item ID="956" Name="MaxMarginExchageOneDay" Value="10000000" />
+  <Item ID="957" Name="StockMarginSend" Value="5000" />
+  <Item ID="958" Name="StockOpenTime" Value="9,15|16,22" />
+  <Item ID="959" Name="HappyQuestReward" Value="30,1120927|60,1120928|100,1120929" />
+  <Item ID="960" Name="StockWorldMsgCond" Value="300,25" />
+  <Item ID="961" Name="ConsortiaDayActiveCondInfo" Value="1,30,3000,0|2,50,6000,2000|3,80,12000,4000" />
+  <Item ID="962" Name="ConsortiaDayActiveRewardInfo" Value="1120954,1120955,1120956" />
+  <Item ID="963" Name="StockMagrinExchangeList" Value="3000,11169|1000,11163|10000,11166" />
+  <Item ID="970" Name="OnlineArmCostEnergy" Value="3" />
+  <Item ID="971" Name="OnlineArmRefreshItemTime" Value="1,2,3,4,5,6,7|9:0:0" />
+  <Item ID="972" Name="IsGiveBackGroundBattleRankSeason" Value="20173" />
+  <Item ID="973" Name="BattleTeamIsOpen" Value="False" />
+  <Item ID="974" Name="GiveBackGroundBattleRankItemID" Value="1120819|1120820|1120821|1120822|1120823" />
+  <Item ID="975" Name="BackGroundBoudMaxCount" Value="54" />
+  <Item ID="976" Name="IsOpenBackGround" Value="True" />
+  <Item ID="977" Name="LeagueMaxScore" Value="99999" />
+  <Item ID="978" Name="ExchangeMargin" Value="10" />
+  <Item ID="979" Name="VIPLevelGiftID" Value="0|1120965|1120966|1120967|1120968|1120969|1120970|1120971|1120972|1120973|1120974|1120975|1120976|1120977|1120978" />
+  <Item ID="980" Name="VIPSendFireRed" Value="0|0|0|0|0|0|0|0|0|0|0|0|1120995|1120996|1120997" />
+  <Item ID="981" Name="FreeInviteLevelMin" Value="0" />
+  <Item ID="982" Name="FreeInviteLevelMax" Value="25" />
+  <Item ID="983" Name="FreeInviteCount" Value="2" />
+  <Item ID="984" Name="EngraveVaultsConfig" Value="1,999999999,1|10,999999999,10" />
+  <Item ID="985" Name="EngraveVaultsTime" Value="10" />
+  <Item ID="986" Name="EngraveVaultsFreeTimes" Value="5" />
+  <Item ID="987" Name="EngraveLimitLevel" Value="48" />
+  <Item ID="988" Name="EngraveSaleStarConfig" Value="10" />
+  <Item ID="989" Name="EngraveSaleTemperConsumeConfig" Value="60" />
+  <Item ID="990" Name="WarriorFamVipLevel" Value="6" />
+  <Item ID="991" Name="WarriorFamVipNoMoneyLevel" Value="7" />
+  <Item ID="992" Name="AnniversaryMarryMoney" Value="30" />
+  <Item ID="993" Name="IsOnlineArmAddProperty" Value="True" />
+  <Item ID="994" Name="IsNoviceOptimize" Value="False" />
+  <Item ID="995" Name="GourdBottle" Value="11192,11196,0,0|11193,11197,0,0|11194,11198,6,0|11195,11199,6,0|12207,12211,6,1" />
+  <Item ID="1010" Name="GamePvpSuicidePunish" Value="3|3|1|10" />
+  <Item ID="1011" Name="ConsortiaMissionLockPrices" Value="200|300" />
+  <Item ID="1012" Name="DevilTreasureBoxExpriyMinutes" Value="240" />
+  <Item ID="1020" Name="CryptBossFindBackMoney" Value="8800,20,11162" />
+  <Item ID="1021" Name="DailyTaskFindBackMoney" Value="2800,3000" />
+  <Item ID="1022" Name="ProvingDungeonFindBackMoney" Value="2800,30,11181" />
+  <Item ID="1023" Name="PetWashCost" Value="0,40|1,80|2,180|3,300|4,400" />
+  <Item ID="1024" Name="PetQualityConfig" Value="60|70|80|95|100" />
+  <Item ID="1025" Name="MaxMagicRoomLevelLimited" Value="17" />
+  <Item ID="1033" Name="WorldBossBattlePlayerAddProperties" Value="50000,20000,0,8000" />
+  <Item ID="1034" Name="WorldBossBattleRankHonors" Value="0,5000|1,15000|2,10000|3,8000" />
+  <Item ID="1035" Name="WorldBossBattleRankItems" Value="1-1,12684,150|2-2,12684,130|3-3,12684,110|4-10,12684,90|11-50,12684,70|51-200,12684,50|201-2000,12684,30" />
+  <Item ID="1036" Name="UnrealContestPveID" Value="3000" />
+  <Item ID="1037" Name="TurnZoneValidDay" Value="30" />
+  <Item ID="1038" Name="TurnZoneQuestDay" Value="30" />
+  <Item ID="1039" Name="AddEngraveEquipSchemeCostMoney" Value="2000" />
+  <Item ID="1040" Name="DragonBoatWeekStartEnd" Value="4|0" />
+  <Item ID="1051" Name="RegReward" Value="1121493,1" />
+  <Item ID="1052" Name="WorldBossMinBlood" Value="3000000" />
+  <Item ID="1053" Name="WorldBossLastDamageHonor" Value="18000" />
+  <Item ID="1054" Name="WorldBossLastHitRewardItems" Value="12684,180" />
+  <Item ID="1055" Name="NewYearNeedPointLocal" Value="2000" />
+  <Item ID="1056" Name="NewYearNeedPointArea" Value="5000" />
+  <Item ID="1057" Name="IsLotteryActivityOpen" Value="false" />
+  <Item ID="1058" Name="IsDragonBoatOpen" Value="true" />
+  <Item ID="1059" Name="VIPAddPrestigeTimes" Value="0|0|0|0|0|5|5|5|10|10|10|15|15|15|15" />
+  <Item ID="1060" Name="ThreeClearDiscount" Value="100" />
+  <Item ID="1061" Name="ThreeCleanBeginTime" Value="2010/1/1 0:00:00" />
+  <Item ID="1062" Name="ThreeCleanEndTime" Value="2021/1/1 0:00:00" />
+  <Item ID="1063" Name="ThreeCleanWeekStartEnd" Value="0|2" />
+  <Item ID="1064" Name="IsOpenThreeClear" Value="flase" />
+  <Item ID="1065" Name="IsOpenPairUp" Value="false" />
+  <Item ID="1066" Name="PairUpGameBegin" Value="2010-12-31 23:59:59" />
+  <Item ID="1067" Name="PairUpGameEnd" Value="2010-12-31 23:59:59" />
+  <Item ID="1068" Name="PairUpWeekStartEnd" Value="4|6" />
+  <Item ID="1069" Name="IsOpenLuckRollActivity" Value="true" />
+  <Item ID="1070" Name="LuckRollActivityBegin" Value="2010-12-31 23:59:59" />
+  <Item ID="1071" Name="LuckRollActivityEnd" Value="2022-12-31 23:59:59" />
+  <Item ID="1072" Name="LuckRollActivityEndWeekStartEnd" Value="1|3" />
+  <Item ID="1073" Name="LuckRollActivityRollReward" Value="11181,3,100|11181,3,100|11181,3,100" />
+  <Item ID="1074" Name="DiffDimensionIsOpen" Value="true" />
+  <Item ID="1075" Name="IsGodWealthRandom" Value="0" />
+  <Item ID="1076" Name="DevilTreasureAbandonBoxGiveAward" Value="False" />
+  <Item ID="1077" Name="GamePvpExitPunish" Value="30,30,120,50" />
+  <Item ID="1078" Name="UnrealContestWait" Value="30" />
+  <Item ID="1079" Name="UnrealLevelLimit" Value="20" />
+  <Item ID="1080" Name="Activity77PlayerNum" Value="5" />
+  <Item ID="1081" Name="IsConsortiaViceSub" Value="False" />
+  <Item ID="1082" Name="WheelOfFortuneTakeCardCount" Value="5" />
+  <Item ID="1083" Name="ActiveRaceRoadItemCount" Value="10-15" />
+  <Item ID="1084" Name="MoonRoomOpenTime" Value="3600" />
+  <Item ID="1085" Name="JudgePunishMins" Value="360,360,1440" />
+  <Item ID="1086" Name="YearFoodDayLimit" Value="5" />
+  <Item ID="1087" Name="NpcSpecialStyles" Value="1,71334,17100,0,5797,0,3520,0,6313,0,15094|2,70904,17100,0,5764,0,3371,0,6330,0,15096|3,71444,17100,0,5188,0,3395,0,6344,0,15097" />
+  <Item ID="1088" Name="NewHelpGameDefaultFightCount" Value="6" />
+  <Item ID="1089" Name="LimitStolenCount" Value="20" />
+  <Item ID="1090" Name="ButteryTaskSpeed" Value="100" />
+  <Item ID="1091" Name="NationalQuestSeedPrices" Value="334052,0,500|334053,500,1000|334054,2000,3500" />
+  <Item ID="1092" Name="YearFoodLotteryTimeRange" Value="11:00-11:30|18:00-18:30|20:00-20:30" />
+  <Item ID="1093" Name="CheerActivityTypeConfig" Value="11102,1,1,50,0|11113,1,5,200,0|11110,1,5,200,0|11112,1,5,200,0|11109,1,5,200,0|11100,1,1000,9999,500|11116,1,4000,9999,2000" />
+  <Item ID="1094" Name="NewDenseFogGamePickUpCount" Value="4" />
+  <Item ID="1095" Name="MagicDicePeoplePerScore" Value="50" />
+  <Item ID="1096" Name="AreaPVEDoubleRewardBeginDate" Value="2021-01-10 09:00:00" />
+  <Item ID="1097" Name="CeremoryGiftID" Value="1123622|1123070|1123069|1123068|1123067|1123066|1123065|1123064|1123063|1123062|1123061|1123060" />
+  <Item ID="1098" Name="ReverseFightBossProperty" Value="1073,0,3000,3000,3000,0,0,15000,500,180000|1076,0,3000,3000,3000,0,0,15000,500,180000|1503,0,3000,3000,3000,0,0,15000,500,180000|70030,0,3000,3000,3000,0,0,10000,500,180000" />
+  <Item ID="1099" Name="CarnivalRollConfig" Value="1000,10,100000,10000,11305,10000,20" />
+  <Item ID="1100" Name="NewDenseFogGameBeginTime" Value="2021-08-18 17:00:00" />
+  <Item ID="1101" Name="CeremoryEndDate" Value="2021/08/3 23:59:59" />
+  <Item ID="1102" Name="AllSaintsDayBuyRateCost" Value="1000" />
+  <Item ID="1103" Name="MeetPlayerProperty" Value="3000,3000,3000,3000,1200,1500,2000,1000,50000" />
+  <Item ID="1104" Name="DungeonCrawlRandomRateConfig" Value="3000,227,1500,147" />
+  <Item ID="1105" Name="MagicDiceRankReward" Value="1-1,1121878|2-2,1121879|3-3,1121880|4-4,1121881|5-5,1121882|6-10,1121883|11-20,1121884|21-30,1121885|31-50,1121886|51-100,1121887" />
+  <Item ID="1106" Name="BombAreaAward" Value="1-1,1122119|2-2,1122120|3-3,1122121|4-4,1122122|5-5,1122123|6-10,1121499|11-20,1121500|21-30,1121501|31-50,1121502|51-100,1121503" />
+  <Item ID="1107" Name="FirstPayMoneys" Value="500,3000,15000" />
+  <Item ID="1108" Name="MeetGiftCount" Value="2" />
+  <Item ID="1109" Name="FundPrivilegeMoney" Value="10000" />
+  <Item ID="1110" Name="PayFieldMoney" Value="7000,10000,13000,16000,20000,24000,28000,32000" />
+  <Item ID="1111" Name="BirthdayRoomOpenTime" Value="3600" />
+  <Item ID="1112" Name="ManorTaskBoxId" Value="1122728" />
+  <Item ID="1113" Name="ConsortiaLandRepairCountInfo" Value="50" />
+  <Item ID="1114" Name="SafeOpMoney" Value="50" />
+  <Item ID="1115" Name="OpenCardSpecialGiftBagId" Value="112150" />
+  <Item ID="1116" Name="MinerDropSet" Value="334000,334001,334002,334003,334004,334005,334006,334007,334008" />
+  <Item ID="1117" Name="MoonRoomCost" Value="1000" />
+  <Item ID="1118" Name="YearFoodAwardGift" Value="10-98,10,380031|99,99,380032" />
+  <Item ID="1119" Name="MarryHoldFlowerCount" Value="1" />
+  <Item ID="1120" Name="BuyFashionVoteCountCost" Value="300" />
+  <Item ID="1121" Name="HonorSystemFightActiveLimit" Value="70" />
+  <Item ID="1122" Name="ManorWealthsOrderReward" Value="1-1,1122635|2-2,1122636|3-3,1122637 |4-10,1122638|11-50,1122639|51-100,1122640" />
+  <Item ID="1123" Name="YearFoodScoreReward" Value="50,1122004,1|150,1122005,1|300,1122801,1|800,1123454,1|1500,1123455,1|3000,1123456,1|5000,1123457,1|10000,1123458,1|15000,1123459,1|30000,1123460,1|45000,1123461,1|68000,1123462,1" />
+  <Item ID="1124" Name="QX70001Prop4" Value="70014,10105,1|70014,10205,1|70014,10305,1" />
+  <Item ID="1125" Name="PreferenceGiftTokenRank" Value="1,0-4999|2,5000-9999|3,10000" />
+  <Item ID="1126" Name="YearFoodGuestRewardID" Value="1123463,1" />
+  <Item ID="1127" Name="MagicDiceRankScore" Value="1-5000|2-750|3-50|4-20|5-5" />
+  <Item ID="1128" Name="DDTOldGift" Value="1,46250_1,1122057_2|2,46251_1,1122057_3|3,46252_1,1122057_4|4,46253_1,1122057_5|5,46254_1,1122057_6,1122003_1|6,46255_1,1122057_7,1122003_1|7,46256_1,1122057_8,1122003_1|8,46257_1,1122057_9,1122003_1|9,46258_1,1122057_10,1122003_1" />
+  <Item ID="1129" Name="NationalQuestSeeds" Value="334052,334053,334054" />
+  <Item ID="1130" Name="AllSaintsDayBeginTime" Value="2021-1-21 9:00:00" />
+  <Item ID="1131" Name="PerfectCoupleGiftGroup" Value="380020:380023,3&amp;380024,1|380021:380023,10&amp;380024,3&amp;380027,1|380022:380026,3&amp;380027,2&amp;380025,1|380024:380023,5|380025:380023,20&amp;380024,15&amp;380027,2|380026:380023,10&amp;380024,2|380027:380023,15&amp;380026,2" />
+  <Item ID="1132" Name="NpcFightPropertyConfig" Value="1000,25000,1000|500,5000,500|10000,1000000,10000|0,10000,1000|0,5000,500" />
+  <Item ID="1133" Name="LuckSignActivePoint" Value="140" />
+  <Item ID="1134" Name="CheerActivityGambleLimit" Value="100,10000" />
+  <Item ID="1135" Name="WheelOfFortuneLevelLimit" Value="20" />
+  <Item ID="1136" Name="FriendMatchRankAward" Value="1-1,1123636|2-2,1123637|3-4,1123638|5-8,1123639|9-16,1123640|17-32,1123641" />
+  <Item ID="1137" Name="FashionVoteGiftCoupleBoy" Value="1120736,1120737,1120738,1120739,1120740,1120741,1120742" />
+  <Item ID="1138" Name="ItemExpirTimeOutMinute" Value="720" />
+  <Item ID="1139" Name="DenseFogGameAddLifeItemAddBlood" Value="15" />
+  <Item ID="1140" Name="AreaPVEGameMaxMinutes" Value="35" />
+  <Item ID="1141" Name="TreasureZQRankingReward" Value="300,10,1121583|200,9,1121584|100,8,1121585|70,7,1121586|50,1,1121587" />
+  <Item ID="1142" Name="FlyKingGameEachDayMaxPlayCount" Value="2" />
+  <Item ID="1143" Name="FriendMatchIsOpen" Value="True" />
+  <Item ID="1144" Name="CeremoryDropIdLimit" Value="14698-5,14699-10,14700-5,14701-3,14702-6,14703-9,14704-6,14705-10,14706-10,14707-10,14708-6,14709-6" />
+  <Item ID="1145" Name="RedBulletScreenNeedMoney" Value="999" />
+  <Item ID="1146" Name="FriendMatchFightMinute" Value="10" />
+  <Item ID="1147" Name="SnowBlockItemTemplateID" Value="12864" />
+  <Item ID="1148" Name="PerfectCouplePetUpLevelLimit" Value="0-1,20|2-3,40|4-6,60" />
+  <Item ID="1149" Name="HighRemoveStarCost" Value="2000" />
+  <Item ID="1150" Name="MarbleGameChangeScoreGoodItemCount" Value="120" />
+  <Item ID="1151" Name="FashionVoteDoubleLevel" Value="30" />
+  <Item ID="1152" Name="BirthdayRoomHymenealTime" Value="25" />
+  <Item ID="1153" Name="MagicDiceMaxPollScore" Value="50000" />
+  <Item ID="1154" Name="New_MissionAwardOffer" Value="2000|2000|4000|4000|6000|6000|8000|8000|10000|10000" />
+  <Item ID="1155" Name="CeremoryConvertItems" Value="334194,334195,334196,334197,334198" />
+  <Item ID="1156" Name="HeroAutoDoorConfig" Value="9001,20,70,200|9002,80,70,800|9003,300,70,3000|9004,500,70,5000" />
+  <Item ID="1157" Name="NewHelpGameOpen" Value="True" />
+  <Item ID="1158" Name="NationalQuestPicScoreReward" Value="2000,1123279,1|5000,1123280,1|10000,1123518,1|20000,1123519,1|30000,1123520,1|50000,1123377,1|80000,1123521,1|120000,1123286,1" />
+  <Item ID="1159" Name="RobotLevelWeights" Value="10,80,20,0,0|20,70,30,0,0|30,50,40,10,0|50,30,50,20,0|60,10,40,40,10|70,0,30,50,20" />
+  <Item ID="1160" Name="SnowManCountAward" Value="10,12243_50,20150_50,1120538_5|50,11166_50,101010_50,1120538_10|100,40008_20,19001_50,1120538_20|200,12221_100,334103_45,1120538_30|500,40010_50,1121948_1,1120538_50|1000,46356_1,1123154_1,1120538_100|3000,12246_2,12247_280,1120539_20|5000,12931_1,12802_4,1120539_30|10000,1123310_1,12264_350,1120539_50|15000,35190101_1,12212_220,12251_380|18000,1123375_1,1120539_100|25000,35150101_1,12656_200|50000,35210101_1,1120627_1" />
+  <Item ID="1161" Name="OldBackDayGift" Value="3,11150_50|5,46081_1|7,11299_1|10,12242_1|15,12806_4|30,1122795_1" />
+  <Item ID="1162" Name="IdentityRewards" Value="11150,5|1121566,20|11969,3" />
+  <Item ID="1163" Name="CeremoryConvertItem" Value="334197,334198,334195-1122283|334197,334198,334194,334195-1122284|334194,334195,334196,334197,334198-1122285" />
+  <Item ID="1164" Name="FirstPayTwoPromots" Value="1122746,1122746" />
+  <Item ID="1165" Name="WarriorFamEveryDayContinueCount" Value="1" />
+  <Item ID="1166" Name="PerfectCoupleOneAchvRankRewards" Value="1,1121993|2,1121994|3,1121995|4-5,1121996|6-10,1121997|11-20,1121998|21-50,1121999|51-100,1122000" />
+  <Item ID="1167" Name="BirthdayRoomCost" Value="2000,8000" />
+  <Item ID="1168" Name="CeremoryGiftBeginDate" Value="2000-07-07|2010-07-07|2011-07-07|2012-07-07|2013-07-07|2014-07-07|2015-07-07|2016-07-07|2017-07-07|2018-07-07|2019-07-07|2020-07-07" />
+  <Item ID="1169" Name="TreasureXSReward" Value="200|30|1121571" />
+  <Item ID="1170" Name="NotifyAdUserCount" Value="5" />
+  <Item ID="1171" Name="NpcRate" Value="1-10,9,1,0,0,0|11-20,7,3,0,0,0|21-30,0,5,3,2,0|31-50,0,3,4,2,1|51-60,0,1,5,3,1|61-70,0,1,5,3,1" />
+  <Item ID="1172" Name="MoneyChangeRate" Value="10" />
+  <Item ID="1173" Name="FriendMatchTimeConfig" Value="5|12:00:00-18:00:00|18:30:00-22:00:00|12:00:00-21:00:00" />
+  <Item ID="1174" Name="DDTOldFlag" Value="201901" />
+  <Item ID="1175" Name="YearFoodRankReward" Value="1-1,1122811|2-2,1122016|3-3,1122017|4-10,1122018|11-20,1122019|21-50,1122020|51-100,1122021|101-200,1122022|201-500,1122023|501-1000,1122024" />
+  <Item ID="1176" Name="CarnivalNoticeConfig" Value="5000,1000,500,200,100" />
+  <Item ID="1177" Name="SetsBuildLevelBeginDate" Value="2019-10-07 00:00:00" />
+  <Item ID="1178" Name="FlyKingBeginTime" Value="2020-09-01 09:00:00" />
+  <Item ID="1179" Name="NewDenseFogGameLvLimited" Value="30" />
+  <Item ID="1180" Name="MeetLevelLimit" Value="30" />
+  <Item ID="1181" Name="MarbleGameBeginTime" Value="2050-12-31 23:59:59" />
+  <Item ID="1182" Name="PerfectCoupleFoods" Value="380020,380021,380022" />
+  <Item ID="1183" Name="TreasureEndingReward" Value="1121559,1121570,1121581" />
+  <Item ID="1184" Name="ActiveRaceMoneyToExpAndScore" Value="100:10,10" />
+  <Item ID="1185" Name="ToyMachineGoods" Value="11680" />
+  <Item ID="1186" Name="DungeonCrawlBeginTime" Value="2021/08/26 0:00:00" />
+  <Item ID="1187" Name="CeremoryAreaBuyStart" Value="12,0|20,0" />
+  <Item ID="1188" Name="SealLockItems" Value="1,15|2,45|3,75|4,115" />
+  <Item ID="1189" Name="MagicJunglePlayerPropertyRate" Value="1000" />
+  <Item ID="1190" Name="DenseFogGamePickUpCount" Value="6" />
+  <Item ID="1191" Name="FriendFightPropertyAll" Value="12000" />
+  <Item ID="1192" Name="AreaBigRewards" Value="1123441,1" />
+  <Item ID="1193" Name="ChristmasBossBloodMinutes" Value="10" />
+  <Item ID="1194" Name="EveryDayActiveResetTargetCount" Value="5" />
+  <Item ID="1195" Name="SupremeUpdatePropertyMoney" Value="500" />
+  <Item ID="1196" Name="ActiveRaceAwardScoreLimited" Value="90000" />
+  <Item ID="1197" Name="FundPetMoney" Value="20000" />
+  <Item ID="1198" Name="GoldenHappyLuckyCount" Value="5000,10|5000,5" />
+  <Item ID="1199" Name="ToyMachineTenSilverNum" Value="10" />
+  <Item ID="1200" Name="KingPvpOpenHours" Value="20:00|22:00" />
+  <Item ID="1201" Name="NewDenseFogGameMaxAllPassAwardCount" Value="3" />
+  <Item ID="1202" Name="TreasureRestoreCost" Value="10000" />
+  <Item ID="1203" Name="NewFashionRankReward" Value="1-1,1123195|2-2,1123196|3-3,1123197" />
+  <Item ID="1204" Name="SceneCircleHighCountTitle" Value="500,46366" />
+  <Item ID="1205" Name="CeremoryAskLimit" Value="5,10,50" />
+  <Item ID="1206" Name="EmblemComposeRandom" Value="700,400" />
+  <Item ID="1207" Name="ConsortiaLandMonsterSpeedInfo" Value="20" />
+  <Item ID="1208" Name="ReverseFightPlayerRewardID" Value="1123043" />
+  <Item ID="1209" Name="CheerActivityKnockoutTime" Value="19:01:00-19:05:59|19:07:00-19:11:59|19:13:00-19:17:59|19:19:00-19:23:59|19:25:00-19:29:59|19:31:00-19:35:59|19:37:00-19:41:59|19:45:00-19:54:59" />
+  <Item ID="1210" Name="NpcSpecialRewardID" Value="1122914" />
+  <Item ID="1211" Name="ManorActivityScoreRange" Value="300,800,1500,99999" />
+  <Item ID="1212" Name="CarnivalTurnAward" Value="1,35330101,46465|2,35330101,46466|3,35330101,46467|4,35330101,46468|5,35330101,46469|6,35330101,46470|7,35330101,46471|8,35330101,46472|9,35330101,46473|10-9999,35330101,46474" />
+  <Item ID="1213" Name="ToyMachineOneSilverNum" Value="1" />
+  <Item ID="1214" Name="MagicDiceEndTime" Value="2021-08-23 23:59:59" />
+  <Item ID="1215" Name="DungeonCrawlReviveConfig" Value="500,1" />
+  <Item ID="1216" Name="HoleExps" Value="0,2000,6000,11000,17000,25000,35000,11000" />
+  <Item ID="1217" Name="FriendFightPropertyConfig" Value="1500,6000,500|50000|1000|2000" />
+  <Item ID="1218" Name="KingPvpBattleProperty" Value="0,0,0,0,0,0,35000,0,0,80000" />
+  <Item ID="1219" Name="NpcSpecialEndDate" Value="2021/09/7 23:59:59" />
+  <Item ID="1220" Name="MarryCreateRoomShowItems" Value="380000,380002,12536,9022|380000,380002,9122,46060|380000,380001,380002,9222,46060|380000,380001,380002,9322,46061" />
+  <Item ID="1221" Name="CheckRegStopDate" Value="2020-6-29 00:00:00" />
+  <Item ID="1222" Name="JewelSystemSkillNotice" Value="1146,1151,1156,1091,1096,1101,1106,1111,1116,1121,1126,1131,1136,1141" />
+  <Item ID="1223" Name="ElementCopyAddEmblemValue" Value="33,200,200,300,200,500,250,1000,300|34,200,200,300,200,500,250,1000,300|35,200,200,300,200,500,250,1000,300|36,200,200,300,200,500,250,1000,300|37,200,200,300,200,500,250,1000,300|38,200,200,300,200,500,250,1000,300" />
+  <Item ID="1224" Name="CeremoryWeekRankAward" Value="1,150|2,80|3,60|4,40|5-10,30|11-50,15|51-150,8|151-500,4|501-1000,2|1001-2000,1" />
+  <Item ID="1225" Name="ReverseFightEndDate" Value="2022/08/31 21:59:59" />
+  <Item ID="1226" Name="FashionVoteDoubleUpdateCost" Value="2000" />
+  <Item ID="1227" Name="MarbleGameEachDayMaxPlayCount" Value="3" />
+  <Item ID="1228" Name="PerfectCoupleGiveCountLimit" Value="10,10" />
+  <Item ID="1229" Name="AllSaintsDayFreeWheelCount" Value="3" />
+  <Item ID="1230" Name="NewHelpGameStartEndOfWeek" Value="5,6" />
+  <Item ID="1231" Name="YearFoodLotteryStartDays" Value="1,2,3,4,5,6,7" />
+  <Item ID="1232" Name="FashionVoteGetCoin" Value="30" />
+  <Item ID="1233" Name="ReverseFightBossRewardID" Value="1123042" />
+  <Item ID="1234" Name="AllSaintsDayBattleMaxCount" Value="2" />
+  <Item ID="1235" Name="AdvSealLockItems" Value="1,50|2,150|3,250|4,350" />
+  <Item ID="1236" Name="CallBindConfigs" Value="20,5|10,10|100,1|50,1|100,1" />
+  <Item ID="1237" Name="CityOccupationSelectCityMoney" Value="1000" />
+  <Item ID="1238" Name="FirstPayThdPromots" Value="1122747,1122747" />
+  <Item ID="1239" Name="NewHelpGamePropPrice" Value="500,300,1000,800,300" />
+  <Item ID="1240" Name="CeremoryAreaBuyStartLastDay" Value="10,0,1|12,0,2|14,0,3|16,0,4|18,0,5|20,0,6" />
+  <Item ID="1241" Name="TreasureXSRankingReward" Value="300,10,1121572|200,9,1121573|100,8,1121574|70,7,1121575|50,1,1121576" />
+  <Item ID="1242" Name="CeremoryAreaBuyConfig" Value="60,10,10" />
+  <Item ID="1243" Name="CheerActivityMatchTurn" Value="1,2|2,3|3,4|4,1|5,1|6,4|7,2|8,3" />
+  <Item ID="1244" Name="GoldenHappyAwards" Value="1,2000,200000,100,58800000,500-0|3,2000,150000,50,58800000,300-0|6,2000,100000,30,58800000,200-0|30,2000,1000,10,58800000,0-10|0,2000,0,0,58800000,200-0" />
+  <Item ID="1245" Name="NationalQuestStealLimit" Value="10,5" />
+  <Item ID="1246" Name="KingofArenaBeginTime" Value="2020-04-09 00:00:00" />
+  <Item ID="1247" Name="CeremoryDropIdNotice" Value="15001-1,15002-2" />
+  <Item ID="1248" Name="RunKingMaxCount" Value="6" />
+  <Item ID="1249" Name="DungeonCrawlDefaultHPConfig" Value="50,8,3" />
+  <Item ID="1250" Name="MagicJungleGameMaxCountEachWeek" Value="1" />
+  <Item ID="1251" Name="FashionVoteFreshCount" Value="10" />
+  <Item ID="1252" Name="FirstPayThdIds" Value="1122741,1122742,1122743,1122744" />
+  <Item ID="1253" Name="FundEquipInitNum" Value="1000" />
+  <Item ID="1254" Name="ManorWorkEventRandom" Value="25" />
+  <Item ID="1255" Name="NewFashionStartEndOfWeek" Value="6,0" />
+  <Item ID="1256" Name="FundShareFailAdd" Value="10000" />
+  <Item ID="1257" Name="RecycleCost" Value="1000" />
+  <Item ID="1258" Name="FriendMatchMinGrade" Value="20" />
+  <Item ID="1259" Name="FashionVoteLevelLimit" Value="30" />
+  <Item ID="1260" Name="KingBuffDiscountCardCanUse" Value="12784" />
+  <Item ID="1261" Name="NewFashionAreaSceneStart" Value="16,25|18,25|20,25" />
+  <Item ID="1262" Name="JewelSystemSkillOpenPos" Value="1_2_10,2_4_1000,3_6_2000,4_8_4000,5_10_8000" />
+  <Item ID="1263" Name="NewFashionStartDate" Value="2017-03-06 00:00:00" />
+  <Item ID="1264" Name="PlanBuyPoint" Value="2000" />
+  <Item ID="1265" Name="BombResetPriceConfig" Value="2000,0" />
+  <Item ID="1266" Name="AdvRestoreRate" Value="10" />
+  <Item ID="1267" Name="BirthdayRoomCount" Value="7,11" />
+  <Item ID="1268" Name="KingBuffDiscountCardCanSend" Value="12783" />
+  <Item ID="1269" Name="WorldPvpBattleProperty" Value="770,770,770,770,0,0,570,440,0,9900" />
+  <Item ID="1270" Name="DungeonCrawlEndTime" Value="2021/08/31 23:59:59" />
+  <Item ID="1271" Name="MeetTimeLimit" Value="17:00-22:00" />
+  <Item ID="1272" Name="NewHelpGameRankReward" Value="1-1,1122881|2-2,1122882|3-3,1122883|4-4,1122884|5-5,1122885|6-10,1122886|11-20,1122887|21-30,1122888|31-50,1122889|51-100,1122890" />
+  <Item ID="1273" Name="NationalQuestOnSale" Value="334136,334137,334138" />
+  <Item ID="1274" Name="AreaPVEGameItemInvitePlayerCost" Value="1000" />
+  <Item ID="1275" Name="NationalQuestScoreReward" Value="35,1121824,1|70,1121825,1|100,1123297,1" />
+  <Item ID="1276" Name="ToyMachineTenGoldNum" Value="250" />
+  <Item ID="1277" Name="NationalQuestEndTime" Value="2021-05-06 23:59:59" />
+  <Item ID="1278" Name="ConsortiaLandActiveExcludeTimes" Value="0,6|20" />
+  <Item ID="1279" Name="ReverseFightTimeLimit" Value="18:00-21:59" />
+  <Item ID="1280" Name="FlyffAnswerBeginTime" Value="19:30-20:00|2,4,6,7" />
+  <Item ID="1281" Name="FashionVoteFightLimit" Value="100000" />
+  <Item ID="1282" Name="ProtectDDTIslandLvLimited" Value="20" />
+  <Item ID="1283" Name="ThreeClearDayItemMax" Value="11164,299|112379,299|11177,299|11170,299|11166,999" />
+  <Item ID="1284" Name="BountyHunterTime" Value="2017-06-27 0:00:00|2017-07-03 23:59:59" />
+  <Item ID="1285" Name="DDTOldGiftStopDate" Value="2019-2-11 23:59:59" />
+  <Item ID="1286" Name="MagicJungleGameMissionIndex" Value="1,77001|2,77002|3,77003|4,77004|5,77005|6,77006|7,77007" />
+  <Item ID="1287" Name="NationalQuestDropIdNotice" Value="14548-1,14549-2,14550-3,14551-4,14552-5,14553-6,14554-7,14555-8,14556-9,14557-10,14558-11,14559-12" />
+  <Item ID="1288" Name="SupremeFightSkillValues" Value="60000,8000" />
+  <Item ID="1289" Name="TreasureCrowdFundingConfig" Value="1,6000,720|2,8000,720|3,10000,720" />
+  <Item ID="1290" Name="SceneCircleTotalCountTitle" Value="1000,46367" />
+  <Item ID="1291" Name="NpcSpecialRate" Value="100,0,100" />
+  <Item ID="1292" Name="NpcRateLoseTwo" Value="1-10,9,1,0,0,0|11-20,7,3,0,0,0|21-30,0,7,4,0,0|31-50,0,4,5,0,0|51-60,0,1,6,2,0|61-70,0,0,5,3,0" />
+  <Item ID="1293" Name="ManorActivityConfig" Value="6,0|10:00-18:00|5|15" />
+  <Item ID="1294" Name="LeagueScoreLimite" Value="30000" />
+  <Item ID="1295" Name="New_TaskRewardIds" Value="1123217|1123217|1123217|1123217|1123217|1123217|1123217|1123217|1123217|1123217" />
+  <Item ID="1296" Name="MeetBlessMoney" Value="8800" />
+  <Item ID="1297" Name="StoryCopyMaxBattleBuyCount" Value="3" />
+  <Item ID="1298" Name="NpcRoomStyles" Value="1,70904,17100,0,5764,0,3371,0,6330,0,0|2,71334,17100,0,5797,0,3520,0,6313,0,0|3,71444,17100,0,5188,0,3395,0,6344,0,0" />
+  <Item ID="1299" Name="NewFashionPriceRedBag" Value="300" />
+  <Item ID="1300" Name="GreenHatGameEachGameAwardCount" Value="5" />
+  <Item ID="1301" Name="SupremePickUpPlayerCount" Value="2" />
+  <Item ID="1302" Name="MarryCreateRoomConfig" Value="2000,380006,100|32000,380005,100|131400,380004,100|520000,380003,100" />
+  <Item ID="1303" Name="MarryRoomMoney_DistItems" Value="380018,380017|380016,380015|380014,380013|380012,380011" />
+  <Item ID="1304" Name="BirthdayRoomGift" Value="1121297,1121299,1121301,1121303,1121305,1121307,1121309,1121311,1121245,1121259,1121293,1121295|1121246|1121296,1121298,1121300,1121302,1121304,1121306,1121308,1121310,1121243,1121257,1121292,1121294|1121244" />
+  <Item ID="1305" Name="ReverseFightBeginDate" Value="2021/08/25 18:00:00" />
+  <Item ID="1306" Name="SnowBlockToSnowMan" Value="10" />
+  <Item ID="1307" Name="BountyHunterQuest" Value="3701,3708,3709,3710,3711|3707,3712,3713,3714,3715" />
+  <Item ID="1308" Name="FundPetRewards" Value="0-3999,1122835|4000-4999,1122836|5000-5999,1122837|6000-7999,1122838|8000-11999,1122839|12000-99999,1122840" />
+  <Item ID="1309" Name="EmblemPropRandom" Value="400,200" />
+  <Item ID="1310" Name="PayAutoMoney" Value="168,2500|720,10000" />
+  <Item ID="1311" Name="NationalQuestRankReward" Value="1-1,1123287|2-2,1123288|3-3,1123289|4-4,1123290|5-5,1123291|6-10,1123292|11-20,1123293|21-50,1123294|51-100,1123295|101-200,1123296" />
+  <Item ID="1312" Name="PetSealLevel" Value="10,100,0|200,300,0|500,500,0|2000,800,0|10000,2000,0" />
+  <Item ID="1313" Name="New_MissionAwardRiches" Value="20000|20000|33000|33000|52800|52800|66000|66000|79200|79200" />
+  <Item ID="1314" Name="MagicDiceRollScore" Value="5" />
+  <Item ID="1315" Name="ChristmasBossBeginDate" Value="2020-12-23 18:00:00" />
+  <Item ID="1316" Name="CheerActivityBuffRate" Value="1-149,100|150-499,110|500-1999,120|2000-4999,130|5000-9999,140|10000-19999,150|20000-9999999,200" />
+  <Item ID="1317" Name="KingofArenaDayMaxAwardCount" Value="5" />
+  <Item ID="1318" Name="CarnivalItemRate" Value="1,5|2,20|3,50" />
+  <Item ID="1319" Name="FirstPayTwoIds" Value="1122737,1122738,1122739,1122740" />
+  <Item ID="1320" Name="SupremeFightScoreResetPercent" Value="80" />
+  <Item ID="1321" Name="CeremoryMinGrade" Value="25" />
+  <Item ID="1322" Name="ChristmasBossEndDate" Value="2020-12-27 19:00:00" />
+  <Item ID="1323" Name="ActiveRaceOpenSkillBagWeight" Value="1_100,2_80,3_100,4_100,5_100,6_60|1_100,2_80,3_100,4_100,5_100,6_70|1_100,2_80,3_100,4_100,5_100,6_80" />
+  <Item ID="1324" Name="TreasureMaxResetBoss" Value="10" />
+  <Item ID="1325" Name="WheelOfFortuneRotateAngle" Value="36" />
+  <Item ID="1326" Name="SupremeLevelLimit" Value="30" />
+  <Item ID="1327" Name="ProtectDDTIslandBeginTime" Value="20:00-21:00|1,3,5" />
+  <Item ID="1328" Name="OldBackFlag" Value="202001" />
+  <Item ID="1329" Name="ActiveRacePickUpMaxPlayerCount" Value="4" />
+  <Item ID="1330" Name="AreaPVEDoubleRewardEndDate" Value="2021-01-11 23:59:59" />
+  <Item ID="1331" Name="JewelSystemQualityRate" Value="1-4,90|5,100|6,110" />
+  <Item ID="1332" Name="FarmStolenRate" Value="0.2" />
+  <Item ID="1333" Name="NewDenseFogGameMaxPassAwardCount" Value="3" />
+  <Item ID="1334" Name="WarPassRefreshConfig" Value="2,1,6,4|2,1,6,4" />
+  <Item ID="1335" Name="AllSaintsDayLevelLimit" Value="30" />
+  <Item ID="1336" Name="ChristmasBossBuffPrice" Value="1000" />
+  <Item ID="1337" Name="AreaPVEGameMaxScores" Value="100" />
+  <Item ID="1338" Name="EngraveTemperMoney" Value="1000" />
+  <Item ID="1339" Name="GoldenHappyLevelLimit" Value="20" />
+  <Item ID="1340" Name="NpcRateWinTwo" Value="1-10,9,1,0,0,0|11-20,7,3,0,0,0|21-30,0,5,3,2,0|31-50,0,1,3,3,1|51-60,0,0,2,4,1|61-70,0,0,1,5,2" />
+  <Item ID="1341" Name="ReverseFightRewardCount" Value="2" />
+  <Item ID="1342" Name="PerfectCoupleGetCountLimit" Value="10,10" />
+  <Item ID="1343" Name="DungeonCrawlResetFloorConfig" Value="2000,1" />
+  <Item ID="1344" Name="CeremorySummonActiveGift" Value="1122296" />
+  <Item ID="1345" Name="SupremeScoreRankRewards" Value="1122226,1122227,1122228,1122229,1122229,1122229,1122229,1122229,1122229,1122229" />
+  <Item ID="1346" Name="FlyKingGameMaxBattleBuyCount" Value="1" />
+  <Item ID="1347" Name="GloryViewItems" Value="12651,12657,12662,12667,12672" />
+  <Item ID="1348" Name="CheerActivityConsortiaMission" Value="1000,1123348|5000,1123349|10000,1123350|30000,1123351|50000,1123352" />
+  <Item ID="1349" Name="SurvivalBattleAwardCountLimited" Value="5" />
+  <Item ID="1350" Name="OneChargeEndTime" Value="2021-08-30 23:59:59" />
+  <Item ID="1351" Name="FlyffAnswerLevelLimit" Value="20" />
+  <Item ID="1352" Name="FlyKingGameLvLimited" Value="30" />
+  <Item ID="1353" Name="New_MissionTaskCount" Value="5|5|5|5|5|5|5|5|5|5" />
+  <Item ID="1354" Name="AreaBigEndDate" Value="2021/02/17 23:59:00" />
+  <Item ID="1355" Name="GiftOfflineDays" Value="30-59,1123591,1|60-89,1123592,1|90-119,1123593,1|120-149,1123594,1|150-179,1123595,1|180-209,1123596,1|210-239,1123597,1|240-269,1123598,1|270-299,1123599,1|300-329,1123600,1|330-359,1123601,1|360-9999,1123602,1" />
+  <Item ID="1356" Name="ItemAdvFails" Value="250,46315|350,46316|500,46317|1500,46318" />
+  <Item ID="1357" Name="SurvivalBattleEndDate" Value="2021/08/10 22:00:00" />
+  <Item ID="1358" Name="OldBackFilterDates" Value="2019-12-18 00:00:00|2020-01-17 23:59:59" />
+  <Item ID="1359" Name="BountyHunterRank" Value="1121017,1121018,1121019,1121020,1121021,1121022,1121023,1121024,1121025,1121026|1121027,1121028,1121029,1121030,1121031,1121032,1121033,1121034,1121035,1121036" />
+  <Item ID="1360" Name="TrunAddMP" Value="10" />
+  <Item ID="9000" Name="TestActive" Value="False" />
+  <Item ID="9001" Name="FreeMoney" Value="9990000" />
+  <Item ID="9002" Name="FreeExp" Value="11901|1" />
+  <Item ID="9003" Name="BigExp" Value="11906|99" />
+  <Item ID="9004" Name="PetExp" Value="334103|999" />
+  <Item ID="9005" Name="CustomLimit" Value="2|2|2|2|2" />
+  <Item ID="9009" Name="AttachMailLmitTime" Value="0" />
+  <Item ID="9010" Name="IsLimitCount" Value="False" />
+  <Item ID="9011" Name="LimitCount" Value="10" />
+  <Item ID="9012" Name="IsLimitMoney" Value="False" />
+  <Item ID="9013" Name="LimitMoney" Value="999000" />
+  <Item ID="9014" Name="IsLimitAuction" Value="False" />
+  <Item ID="9015" Name="LimitAuction" Value="3" />
+  <Item ID="9016" Name="IsLimitMail" Value="False" />
+  <Item ID="9017" Name="LimitMail" Value="3" />
+  <Item ID="9018" Name="DragonBoatMinScore" Value="13000" />
+  <Item ID="9019" Name="WishBeadLimitLv" Value="12" />
+  <Item ID="9020" Name="IsWishBeadLimit" Value="False" />
+  <Item ID="9021" Name="IsDDTMoneyActive" Value="False" />
+  <Item ID="9022" Name="NewChickenBeginTime" Value="2014/01/17 0:00:00" />
+  <Item ID="9023" Name="NewChickenEndTime" Value="2030/01/01 0:00:00" />
+  <Item ID="9024" Name="NewChickenEagleEyePrice" Value="4000, 3000, 2000,1000, 500" />
+  <Item ID="9025" Name="NewChickenOpenCardPrice" Value="2500, 2000, 1500, 1000, 500" />
+  <Item ID="9026" Name="NewChickenFlushPrice" Value="10000" />
+  <Item ID="9027" Name="DiceBeginTime" Value="2013/01/17 0:00:00" />
+  <Item ID="9028" Name="DiceEndTime" Value="2022/1/1 0:00:00" />
+  <Item ID="9029" Name="DiceRefreshPrice" Value="20000" />
+  <Item ID="9030" Name="CommonDicePrice" Value="20000" />
+  <Item ID="9031" Name="DoubleDicePrice" Value="25000" />
+  <Item ID="9032" Name="BigDicePrice" Value="30000" />
+  <Item ID="9033" Name="SmallDicePrice" Value="40000" />
+  <Item ID="9034" Name="PyramidBeginTime" Value="2013/12/17 0:00:00" />
+  <Item ID="9035" Name="PyramidEndTime" Value="2020/12/17 0:00:00" />
+  <Item ID="9036" Name="PyramidRevivePrice" Value="10000, 30000, 50000" />
+  <Item ID="9037" Name="PyramydTurnCardPrice" Value="5000" />
+  <Item ID="9040" Name="BattleGoundTime" Value="18|60" />
+  <Item ID="9041" Name="LeagueTime" Value="21|120" />
+  <Item ID="9042" Name="FightFootballTime" Value="7|600" />
+  <Item ID="9043" Name="WarriorFamRaidPriceSmall" Value="30000" />
+  <Item ID="9044" Name="WarriorFamRaidPriceBig" Value="40000" />
+  <Item ID="9045" Name="WarriorFamRaidDDTPrice" Value="5000" />
+  <Item ID="9046" Name="WarriorFamRaidTimeRemain" Value="120" />
+  <Item ID="9047" Name="BagMailEnable" Value="False" />
+  <Item ID="9048" Name="IsActiveMoney" Value="False" />
+  <Item ID="9058" Name="DDTMoneyActive" Value="False" />
+  <Item ID="9059" Name="DoubleMoneyActive" Value="False" />
+  <Item ID="9060" Name="DoubleMoneyRate" Value="2" />
+  <Item ID="9061" Name="DoubleDDTMoneyActive" Value="False" />
+  <Item ID="9062" Name="DoubleDDTMoneyRate" Value="2" />
+  <Item ID="9063" Name="DoubleExpActive" Value="False" />
+  <Item ID="9064" Name="DoubleExpRate" Value="2" />
+  <Item ID="9065" Name="VirtualName" Value="恶魔机器人" />
+  <Item ID="9066" Name="RemoteEnable" Value="False" />
+  <Item ID="9068" Name="NewbieEnable" Value="True" />
+  <Item ID="9069" Name="BeginLevel" Value="40" />
+  <Item ID="9071" Name="GoldHour" Value="20|22,2500" />
+  <Item ID="9072" Name="DisibleBonusMoneyHour" Value="00|00" />
+  <Item ID="9074" Name="NeedBox1GoguAward" Value="10" />
+  <Item ID="9075" Name="NeedBox2GoguAward" Value="25" />
+  <Item ID="9076" Name="NeedBox3GoguAward" Value="30" />
+  <Item ID="9077" Name="FindMinePrice" Value="100000" />
+  <Item ID="9078" Name="RevivePrice" Value="250000" />
+  <Item ID="9079" Name="resetCount" Value="5" />
+  <Item ID="9080" Name="DDPlayBeginDate" Value="2015/03/03 0:00:00" />
+  <Item ID="9081" Name="DDPlayEndDate" Value="2022/01/01 0:00:00" />
+  <Item ID="9082" Name="DDPlayMoney" Value="100000" />
+  <Item ID="9083" Name="ExchangeFold" Value="200" />
+  <Item ID="9084" Name="CloudBuyLotteryEndDate" Value="2020/01/01 0:00:00" />
+  <Item ID="9085" Name="CloudBuyLotteryExchangeScore" Value="0 " />
+  <Item ID="9086" Name="IsOpenOrCloseEyes" Value="True" />
+  <Item ID="9087" Name="IsLimitPresentGoods" Value="False" />
+  <Item ID="9088" Name="LimitPresentGoods" Value="3" />
+  <Item ID="9089" Name="AlwaysShowNoticeUpdate" Value="False" />
+  <Item ID="9090" Name="AlwaysOpen1vs5" Value="false" />
+  <Item ID="9091" Name="RouletteOpenOrClose" Value="false" />
+  <Item ID="9092" Name="RouletteRate" Value="1.2|1.5|1.7|1.9|2.0" />
+  <Item ID="9093" Name="ClientVersion" Value="10200" />
+  <Item ID="9094" Name="RouletteRate" Value="1.2|1.5|1.7|1.9|2.0" />
+  <Item ID="9095" Name="ShortFoldDress" Value="False" />
+  <Item ID="9096" Name="MissionEnergyAdd" Value="300" />
+  <Item ID="9097" Name="EntertainmentModeMoneyAdd" Value="1800" />
+  <Item ID="9098" Name="EventBombKingWeek" Value="False" />
+  <Item ID="9099" Name="MaxWellSignBuff" Value="50" />
+  <Item ID="9100" Name="FightPowerSignData" Value="100000|500000|1000000|2000000|5000000|10000000" />
+  <Item ID="9101" Name="SanXiaoResetCount" Value="5" />
+  <Item ID="9102" Name="MemoryGameEndTime" Value="2017/2/16 0:00:00" />
+  <Item ID="9103" Name="MemoryGameAwardBox" Value="11204280" />
+  <Item ID="9104" Name="MemoryGameResetCount" Value="5" />
+  <Item ID="9105" Name="BeautyVoteCost" Value="10000" />
+  <Item ID="9106" Name="GuildBattleStartTime" Value="2050/1/1 18:00:00" />
+  <Item ID="9107" Name="GuildBattleStartDay" Value="Friday" />
+  <Item ID="9108" Name="LotteryPoolCountDefault" Value="1000000" />
+  <Item ID="9109" Name="LotteryTicketEndTime" Value="2021/01/01 0:00:00" />
+  <Item ID="9110" Name="LotteryTicketCloseTicketTime" Value="20:50:00" />
+  <Item ID="9111" Name="LotteryTicketShowPoolTime" Value="21:00:00" />
+  <Item ID="9112" Name="LotteryTicketPrice" Value="200000" />
+  <Item ID="9113" Name="ConsortiaRichesPlus" Value="210000000" />
+  <Item ID="9116" Name="TrailEliteAwardLevel" Value="50501|1120819,50502|1120820,50503|1120821,50504|1120822,50505|1120823" />
+  <Item ID="9117" Name="QiYuanEndTime" Value="2022/10/15 0:00:00" />
+  <Item ID="9118" Name="QiYuanJoinLeastOfferTimes" Value="10" />
+  <Item ID="9119" Name="QiYuanRankLeastOfferTimes" Value="600" />
+  <Item ID="9120" Name="QiYuanOfferTimesPerBaoZhu" Value="2000" />
+  <Item ID="9121" Name="QiYuanOfferTimesPerTreasureBox" Value="10" />
+  <Item ID="9122" Name="OnlineArmPerTimeDig" Value="7" />
+  <Item ID="9123" Name="TrailEliteWinScore" Value="50" />
+  <Item ID="9124" Name="TrailEliteLostScore" Value="20" />
+  <Item ID="9125" Name="contasPorIp" Value="1" />
+  <Item ID="9127" Name="EventoRecarga" Value="False" />
+  <Item ID="9128" Name="EnvotRecarga" Value="False" />
+  <Item ID="9129" Name="batismoNoPvp" Value="False" />
+  <Item ID="9130" Name="batismoNoDesafio" Value="False" />
+  <Item ID="9131" Name="PetSealLevel" Value="10,100,0|200,300,0|500,500,0|2000,800,0|10000,2000,0" />
+  <Item ID="9132" Name="SealItems" Value="5,5,50" />
+  <Item ID="9133" Name="SealLockItems" Value="1,15|2,45|3,75|4,115" />
+  <Item ID="9134" Name="AdvSealLockItems" Value="1,50|2,150|3,250|4,350" />
+  <Item ID="9135" Name="servidor" Value="nexus" />
+  <Item ID="9136" Name="reduzirFC" Value="False" />
+  <Item ID="9137" Name="CookingOpenClose" Value="false" />
+  <Item ID="9138" Name="HappyRechargeBeginDate" Value="2021/01/01 0:00:00" />
+  <Item ID="9139" Name="HappyRechargeEndDate" Value="2022/01/01 0:00:00" />
+  <Item ID="9140" Name="HappyRechargeOpenClose" Value="True" />
+  <Item ID="9142" Name="ExaltRatewith15" Value="60000" />
+  <Item ID="9143" Name="ExaltRatewith16" Value="80000" />
+  <Item ID="9144" Name="ExaltRatewith17" Value="100000" />
+  <Item ID="9147" Name="expNoPvp" Value="True" />
+  <Item ID="9148" Name="CityBattleBeginTime" Value="1990/01/01 08:00:00" />
+  <Item ID="9149" Name="CityBattleEndTime" Value="1990/01/01 22:00:00" />
+</Result>

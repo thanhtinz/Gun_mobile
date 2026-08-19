@@ -1,0 +1,7 @@
+
+%AuditoriumView.xml‡<View width="496" height="414">
+  <Image skin="asset.auditorium.bg"/>
+  <Button skin="asset.auditorium.churchBtn" x="71" y="97" stateNum="1" var="btn_church" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+  <Button skin="asset.ui.btn_close5" x="421" y="44" stateNum="1" var="btn_close"/>
+  <Button skin="asset.auditorium.swornBtn" x="71" y="244" stateNum="1" var="btn_sworn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2"/>
+</View>

@@ -1,0 +1,168 @@
+
++LabyrinthRankView.xml�<View width="820" height="408">
+  <TabListEx var="viewTab">
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="挑戰排名" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" x="0"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.30-39" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="126"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.40-49" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="252"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.50-70" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="378"/>
+  </TabListEx>
+  <Button skin="asset.labyrinth.rank.awardBtn" x="703" y="2" stateNum="1" var="awardBtn"/>
+  <Image skin="asset.labyrinth.ui.scaleBg1" y="45" sizeGrid="40,40,40,40" width="820" height="309" x="0"/>
+  <Image skin="asset.labyrinth.ui.scaleBg6" y="53" sizeGrid="10,10,10,10" width="808" height="35" x="4"/>
+  <Box x="7" y="89" width="806" height="30" var="myRankItem">
+    <Image skin="asset.labyrinth.ui.scaleBg9" sizeGrid="10,10,10,10" width="804" height="30"/>
+    <Label x="6" y="5" size="14" color="0xffbddb" stroke="0x731717,1,4,4,10" width="131" height="20" autoSize="none" align="center" name="rankLabel" text="1" bold="true"/>
+    <Label x="142" y="5" size="14" color="0xffbddb" stroke="0x731717,1,4,4,10" width="182" height="20" autoSize="none" align="center" name="nameLabel" bold="true"/>
+    <Label x="331" y="5" size="14" color="0xffbddb" stroke="0x731717,1,4,4,10" width="172" height="20" autoSize="none" align="center" name="areaLabel" bold="true"/>
+    <Label x="513" y="5" size="14" color="0xffbddb" stroke="0x731717,1,4,4,10" width="151" height="20" autoSize="none" align="center" name="floorLabel" bold="true"/>
+    <Label x="667" y="5" size="14" color="0xffbddb" stroke="0x731717,1,4,4,10" width="132" height="20" autoSize="none" align="center" name="roundLabel" bold="true"/>
+    <Clip x="44" y="2" clipsUrl="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset" index="2" name="rankClip"/>
+  </Box>
+  <Image skin="asset.labyrinth.ui.line2" x="144" y="55"/>
+  <Image skin="asset.labyrinth.ui.line2" x="332" y="55"/>
+  <Image skin="asset.labyrinth.ui.line2" x="513" y="55"/>
+  <Image skin="asset.labyrinth.ui.line2" x="670" y="55"/>
+  <List x="7" y="121" repeatY="7" spaceY="2" width="806" height="229" var="rankList">
+    <Box width="806" height="30" name="render">
+      <Clip height="30" clipsUrl="asset.labyrinth.ui.scaleBg7,asset.labyrinth.ui.scaleBg8" sizeGrid="10,10,10,10" index="0" width="804" name="itemBg" x="0" y="0"/>
+      <Label x="6" y="5" size="14" color="0xbddbff" stroke="0x133f82,1,4,4,10" width="131" height="20" autoSize="none" align="center" name="rankLabel" text="1" bold="true"/>
+      <Label x="142" y="6" size="12" color="0x68aada" stroke="0x133f82,1,4,4,10" width="182" height="20" autoSize="none" align="center" name="nameLabel" bold="true"/>
+      <Label x="331" y="6" size="12" color="0x68aada" stroke="0x133f82,1,4,4,10" width="172" height="20" autoSize="none" align="center" name="areaLabel" bold="true"/>
+      <Label x="513" y="6" size="12" color="0x68aada" stroke="0x133f82,1,4,4,10" width="151" height="20" autoSize="none" align="center" name="floorLabel" bold="true"/>
+      <Label x="667" y="6" size="12" color="0x68aada" stroke="0x133f82,1,4,4,10" width="132" height="20" autoSize="none" align="center" name="roundLabel" bold="true"/>
+      <Clip x="44" y="2" clipsUrl="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset" index="0" name="rankClip"/>
+    </Box>
+  </List>
+  <Label text="排  名" x="50" y="60" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="55" height="20"/>
+  <Label text=" 名 稱" x="213" y="60" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="55" height="25"/>
+  <Label text="區 服" x="398" y="60" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="55" height="25"/>
+  <Label text="挑戰層數" x="560" y="60" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="75" height="21" var="levelLabel"/>
+  <Label text="通關回合數" x="703" y="60" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="84" height="21"/>
+  <Image skin="asset.labyrinth.view.line" x="0" y="354" width="820" height="54"/>
+  <PageNavigaterEx x="319.5" y="369" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0x68aada,true,0" pageNumStroke="0x14356d,1,4,4,10" pageNumBgStyle="asset.labyrinth.ui.scaleBg2" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="simple" spacing="5"/>
+</View>3LabyrinthViewSeatHead.xml�S<View width="142" height="178">
+  <Image skin="asset.labyrinth.leftView.seatShine" x="2" y="16"/>
+</View>7LabyrinthSweepSpeedView.xml�w<View width="388" height="282">
+  <Image skin="asset.labyrinth.ui.scaleBg10" sizeGrid="20,60,20,20" width="388" height="282" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close10" x="338" y="4" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.labyrinth.sweep.tips" x="12" y="14"/>
+  <Label x="16" y="66" color="0xbddbff" bold="true" stroke="0x133f82,1,4,4,10" width="358" height="22" size="14" var="contentLabel" align="center"/>
+  <Image skin="asset.labyrinth.sweep.bg" x="14" y="183"/>
+  <Image skin="asset.labyrinth.sweep.vip1" x="35" y="100"/>
+  <Image skin="asset.labyrinth.sweep.vip2" x="205" y="100"/>
+  <Button label="綁定點券" skin="asset.ui.btn_check3" x="207" y="182" labelSize="14" labelColors="0x68aada" labelBold="true" labelStroke="0x14356d,1,4,4,10" var="moneySelectBtn2" labelMargin="25,2,-65,0" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true"/>
+  <Button label="點券" skin="asset.ui.btn_check3" x="89" y="182" labelSize="14" labelColors="0x68aada" labelBold="true" labelStroke="0x14356d,1,4,4,10" var="moneySelectBtn1" labelMargin="25,2,-40,0" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true"/>
+  <Image skin="asset.labyrinth.ui.scaleBg4" x="15" y="218" width="358" height="48" sizeGrid="20,20,20,20"/>
+  <Button label="确 认" skin="asset.ui.btn_yellow1" x="79" y="224" stateNum="1" labelColors="0xFFF6A7" labelStroke="0x734007,1,4,4,10" labelBold="true" width="82" height="37" labelSize="16" var="submitBtn"/>
+  <Button label="取 消" skin="asset.ui.btn_yellow1" x="230" y="224" stateNum="1" labelColors="0xFFF6A7" labelStroke="0x734007,1,4,4,10" labelBold="true" width="82" height="37" labelSize="16" var="cancelBtn"/>
+</View>9LabyrinthAwardAlertFrame.xml�?<View width="500" height="474">
+  <Image skin="asset.labyrinth.ui.scaleBg10" sizeGrid="20,60,20,20" width="500" height="474" x="0" y="0"/>
+  <Button skin="asset.ui.btn_close10" x="451" y="4" stateNum="1" var="closeBtn"/>
+  <TabListEx var="viewTab" x="13" y="46">
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="挑戰排名" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" x="0"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.30-39" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="117" y="0"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.40-49" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="235" y="0"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab2,asset.labyrinth.ui.tab2Select" name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" offsets="24,8,16,9" label="Lv.50-70" labelSize="14" labelColors="0xffea00" labelBold="true" labelStroke="0x0c3574,1,4,4,10" width="120" height="43" selected="false" x="353" y="0"/>
+  </TabListEx>
+  <Image skin="asset.labyrinth.view.line" x="9" y="87" width="478" height="54"/>
+  <Image skin="asset.labyrinth.ui.scaleBg6" y="91" sizeGrid="10,10,10,10" width="467" height="35" x="16"/>
+  <Label text="排  名" x="65" y="99" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="55" height="20"/>
+  <Label text="獎勵" x="296" y="99" color="0xbddbff" stroke="0x133f82,1,4,4,10" bold="true" size="14" width="45" height="20"/>
+  <Image skin="asset.labyrinth.ui.line2" x="158" y="94"/>
+  <List x="19" y="130" repeatY="5" spaceY="6" width="464" height="329" var="awardList">
+    <VScrollBar skin="asset.ui.scroll1.vscroll" x="443" y="0" name="scrollBar" width="18" height="326" scrollSize="5"/>
+    <LabyrinthAwardItemView name="render" runtime="labyrinth.view.LabyrinthAwardItemView"/>
+  </List>
+  <Image skin="asset.labyrinth.rankAlert.title" x="15" y="12"/>
+</View>+LabyrinthShopView.xml�<View width="848" height="390">
+  <List width="808" height="338" repeatX="3" repeatY="3" spaceX="6" spaceY="2" x="21" y="0" var="shopList">
+    <LabyrinthShopItemView name="render" runtime="labyrinth.view.LabyrinthShopItemView"/>
+  </List>
+  <Image skin="asset.labyrinth.view.line" x="0" y="336" width="848" height="54"/>
+  <Image skin="asset.labyrinth.shop.goldLabel" x="21" y="353"/>
+  <Label x="97" y="358" size="14" color="0x68aada" stroke="0x14356d,1,4,4,10" width="92" height="18" bold="true" var="goldLabel"/>
+  <PageNavigaterEx x="621" y="356" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0x68aada,true,0" pageNumStroke="0x14356d,1,4,4,10" pageNumBgStyle="asset.labyrinth.ui.scaleBg2" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="simple" spacing="5"/>
+</View>;LabyrinthViewLeftPageSeat.xml�o<View width="80" height="50">
+  <Image skin="asset.labyrinth.leftView.seat" x="3" y="5" buttonMode="true" var="seatBtn"/>
+  <Image skin="asset.labyrinth.leftView.ceng" x="54" y="0" mouseChildren="false" mouseEnabled="false"/>
+  <Image skin="asset.labyrinth.leftView.di" x="0" y="0" mouseEnabled="false" mouseChildren="false"/>
+  <NumberImageEx skin="asset.labyrinth.leftView.num" x="0" clipX="10" index="2" count="0" var="num" align="center" width="80" mouseChildren="false" mouseEnabled="false" y="0"/>
+  <Image skin="asset.labyrinth.leftView.none" x="14" y="-47" var="noneImg" mouseChildren="false" mouseEnabled="false"/>
+</View>3LabyrinthShopItemView.xml�{<View width="264" height="110">
+  <Image skin="asset.labyrinth.shop.itemBg"/>
+  <Label x="107" y="9" color="0xbbd9ff" size="14" stroke="0x0d3676,1,4,4,10" bold="true" width="150" height="21" var="nameLabel"/>
+  <Button skin="asset.labyrinth.shop.buyBtn" x="190" y="72" stateNum="1" var="buyBtn"/>
+  <Label x="107" y="41" color="0xffc704" size="14" stroke="0x0d3676,1,4,4,10" bold="true" width="90" height="18" var="priceLabel"/>
+  <Label x="191" y="41" color="0xffc704" size="14" stroke="0x0d3676,1,4,4,10" bold="true" width="64" height="18" var="priceValueLabel"/>
+</View>-LabyrinthSweepView.xml�S<View width="540" height="282">
+  <Image skin="asset.labyrinth.ui.scaleBg10" sizeGrid="20,60,20,20" width="540" height="282"/>
+  <Image skin="asset.labyrinth.ui.scaleBg11" x="258" y="52" sizeGrid="70,70,70,70" height="215" width="264"/>
+  <Button skin="asset.ui.btn_close10" x="490" y="3" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.labyrinth.sweep.title" x="12" y="14"/>
+  <Button skin="asset.labyrinth.sweep.cancel" x="396" y="204" stateNum="1" var="cancelBtn"/>
+  <Button skin="asset.labyrinth.sweep.addSpeed" x="281" y="204" stateNum="1" var="addSpeedBtn"/>
+  <Button skin="asset.labyrinth.sweep.start" x="329" y="205" stateNum="1" var="startBtn"/>
+  <Button skin="asset.labyrinth.sweep.chat" x="479" y="61" stateNum="1" var="chatBtn"/>
+  <Image skin="asset.seniorVipIcon.small_7" x="330" y="167"/>
+  <Label text="可以免費加速" x="368" y="176" color="0xffd800" bold="true" stroke="0x042962,1,4,4,10" width="87" height="18"/>
+  <Label x="390" y="84" color="0xffd800" bold="true" stroke="0x042962,1,4,4,10" width="89" height="18" align="center" var="levelLabel"/>
+  <Label x="388" y="115" color="0xfff4d4" bold="true" stroke="0x042962,1,4,4,10" width="91" height="18" var="timeLabel"/>
+  <Label x="388" y="147" color="0xfff4d4" bold="true" stroke="0x042962,1,4,4,10" width="91" height="18" var="expLabel"/>
+  <Image skin="asset.labyrinth.sweep.level" x="302" y="81"/>
+  <Image skin="asset.labyrinth.sweep.time" x="302" y="114" var="page2Label1"/>
+  <Image skin="asset.labyrinth.sweep.totalExp" x="302" y="145" var="page2Label2"/>
+  <Image skin="asset.labyrinth.sweep.needMedal" x="303" y="145" var="page1Label1"/>
+  <Image skin="asset.labyrinth.sweep.totalTime" x="303" y="114" var="page1Label2"/>
+  <Label text="掃蕩小提示：" x="19" y="52" color="0xffd800" bold="true" stroke="0x042962,1,4,4,10" width="92" height="22" size="14" var="page1Label3"/>
+  <Label text="1.可以通過消耗點券來立即完成掃蕩。\n2.掃蕩每關扣除25勳章，並在開始\n  掃蕩時一次性全部扣除。\n3.掃蕩時不可進入戰鬥以及戰鬥房間。\n4.在掃蕩的過程中可點擊“取消”來\n  暫停掃蕩操作。" x="26" y="80" color="0xfff4d4" bold="true" stroke="0x042962,1,4,4,10" width="226" height="160" leading="10" var="page1Label4"/>
+</View>5LabyrinthAwardItemView.xml�<View width="438" height="60">
+  <Clip height="60" clipsUrl="asset.labyrinth.ui.scaleBg3,asset.labyrinth.ui.scaleBg4" sizeGrid="10,10,10,10" index="1" width="438" name="itemBg" x="0" y="0"/>
+  <Label x="4" y="20" size="14" color="0xbddbff" stroke="0x133f82,1,4,4,10" width="131" height="20" autoSize="none" align="center" bold="true" var="rankLabel"/>
+  <Clip x="49" y="15" clipsUrl="asset.coreIcon.orderNo1Asset,asset.coreIcon.orderNo2Asset,asset.coreIcon.orderNo3Asset" index="0" var="rankClip" visible="false"/>
+  <Image skin="asset.labyrinth.ui.line1" x="139" y="2"/>
+</View>3LabyrinthViewLeftPage.xml�o<View width="215" height="358">
+  <Image skin="asset.labyrinth.leftView.line" x="57" y="31" rotation="30" smoothing="true"/>
+  <Image skin="asset.labyrinth.leftView.line" x="60" y="175" rotation="-35" smoothing="true"/>
+  <Image skin="asset.labyrinth.leftView.line" x="63" y="183" rotation="30" smoothing="true"/>
+  <Image skin="asset.labyrinth.leftView.line" x="58" y="316" rotation="-30" smoothing="true"/>
+  <LabyrinthViewLeftPageSeat y="0" var="item5" runtime="labyrinth.view.LabyrinthViewLeftPageSeat"/>
+  <LabyrinthViewLeftPageSeat x="136" y="77" var="item4" runtime="labyrinth.view.LabyrinthViewLeftPageSeat"/>
+  <LabyrinthViewLeftPageSeat x="3" y="154" var="item3" runtime="labyrinth.view.LabyrinthViewLeftPageSeat"/>
+  <LabyrinthViewLeftPageSeat x="136" y="231" var="item2" runtime="labyrinth.view.LabyrinthViewLeftPageSeat"/>
+  <LabyrinthViewLeftPageSeat x="0" y="308" var="item1" runtime="labyrinth.view.LabyrinthViewLeftPageSeat"/>
+</View>#LabyrinthView.xml�<View width="842" height="416">
+  <Image skin="asset.labyrinth.view.mainBg" x="0" y="0"/>
+  <Image skin="asset.labyrinth.view.recordTxt" x="260" y="9"/>
+  <Image skin="asset.labyrinth.view.awardTxt" x="632" y="289"/>
+  <Image skin="asset.labyrinth.view.box" x="727" y="286" var="box" tipDirctions="7,6,2,1,5,4,0,3,6" tipStyle="core.GoodsTip"/>
+  <LevelIconEx size="big" level="50" x="625" y="204" width="67" height="40.66666666666663" visible="false" var="lv"/>
+  <Label x="658" y="210" width="91" height="18" size="14" color="0xffffff" bold="false" align="left" stroke="0x133f82,1,4,4,10" var="nameLabel"/>
+  <Label x="643" y="241" width="75" height="18" size="14" color="0xc2dcff" bold="true" align="left" stroke="0x274390,1,4,4,10" text="挑戰層數:"/>
+  <Label x="643" y="263" width="76" height="18" size="14" color="0xc2dcff" bold="true" align="left" stroke="0x274390,1,4,4,10" text="挑戰回合:"/>
+  <Label x="716" y="264" width="39" height="18" size="14" color="0xc2dcff" bold="true" align="left" stroke="0x274390,1,4,4,10" var="roundLabel" text="0"/>
+  <Label x="715" y="242" width="39" height="18" size="14" color="0xc2dcff" bold="true" align="left" stroke="0x274390,1,4,4,10" var="numLabel" text="0"/>
+  <Label x="337" y="9" width="39" height="18" size="14" color="0x9dff48" bold="true" align="left" stroke="0x274390,1,4,4,10" var="myRecordLabel" text="0"/>
+  <Button label="使用秘境聖石獲得雙倍獎勵" skin="asset.ui.btn_check3" x="616" y="320" labelMargin="25,2,-145,0" labelSize="12" labelColors="0x68aada" labelBold="false" labelStroke="0x14356d,1,4,4,10" var="doubleCheckBtn" stateNum="1" checkButtonSkin="asset.ui.btn_check3" buttonMode="true" toggle="true"/>
+  <Button skin="asset.labyrinth.view.sweepBtn" x="580" y="357" stateNum="1" var="sweepBtn"/>
+  <Button skin="asset.labyrinth.view.startBtn" x="710" y="357" stateNum="1" var="startBtn"/>
+  <Box x="9" y="7" width="236" height="396"/>
+  <Label x="261" y="327" width="165" height="18" size="14" color="0xffffff" bold="false" align="left" stroke="0x580096,1,4,4,10" text="通關獎勵"/>
+  <Button skin="asset.labyrinth.leftView.downArrow" x="100" y="385" stateNum="1" var="downBtn"/>
+  <Button skin="asset.labyrinth.leftView.upArrow" x="100" y="0" stateNum="1" var="upBtn"/>
+  <Image skin="asset.labyrinth.view.none" x="660" y="106" var="noneImg"/>
+  <Image skin="asset.labyrinth.view.rewardBg" x="255" y="239" var="firstRewardBg"/>
+  <Label x="261" y="242" width="165" height="18" size="14" color="0xffffff" bold="false" align="left" stroke="0x580096,1,4,4,10" var="firstRewardLabel" text="首次通關獎勵"/>
+  <Label x="755" y="210" width="72" height="18" size="14" color="0xffffff" bold="false" align="left" stroke="0x133f82,1,4,4,10" var="zoneLabel"/>
+</View>+LabyrinthMainView.xml�<View width="915" height="556">
+  <Image skin="asset.labyrinth.view.bg"/>
+  <TabListEx y="71" var="viewTab" x="55">
+    <TabButtonEx skin="asset.labyrinth.ui.tab1|asset.labyrinth.view.tabLabel1,asset.labyrinth.ui.tab1Select|asset.labyrinth.view.tabLabel1select" name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" width="126" height="40" offsets="24,8,16,9" selected="true"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab1|asset.labyrinth.view.tabLabel2,asset.labyrinth.ui.tab1Select|asset.labyrinth.view.tabLabel2select" name="item1" x="118" offsets="24,8,16,9" y="0"/>
+    <TabButtonEx skin="asset.labyrinth.ui.tab1|asset.labyrinth.view.tabLabel3,asset.labyrinth.ui.tab1Select|asset.labyrinth.view.tabLabel3select" name="item2" x="238" offsets="24,8,16,9" y="0"/>
+  </TabListEx>
+  <LabyrinthRankView x="48" y="116" var="rankView" runtime="labyrinth.view.LabyrinthRankView"/>
+  <Button skin="asset.ui.btn_help4" x="832" y="39" stateNum="1" var="helpBtn"/>
+  <Button skin="asset.ui.btn_close10" x="861" y="36" stateNum="1" var="closeBtn"/>
+  <LabyrinthShopView x="36" y="130" var="shopView" runtime="labyrinth.view.LabyrinthShopView"/>
+  <LabyrinthView x="38" y="112" var="view" runtime="labyrinth.view.LabyrinthView"/>
+</View>

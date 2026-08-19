@@ -1,0 +1,14 @@
+<Result value="true" message="Success!">
+  <item TemplateID="11166" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="10" MinRank="1" Count="20" ValidDate="0" />
+  <item TemplateID="11169" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="10" MinRank="1" Count="20" ValidDate="0" />
+  <item TemplateID="201567" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="10" MinRank="1" Count="10" ValidDate="0" />
+  <item TemplateID="11161" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="10" MinRank="1" Count="10" ValidDate="0" />
+  <item TemplateID="11166" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="50" MinRank="11" Count="10" ValidDate="0" />
+  <item TemplateID="11169" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="50" MinRank="11" Count="10" ValidDate="0" />
+  <item TemplateID="201567" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="50" MinRank="11" Count="6" ValidDate="0" />
+  <item TemplateID="100100" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="50" MinRank="11" Count="30" ValidDate="0" />
+  <item TemplateID="11166" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="100" MinRank="51" Count="5" ValidDate="0" />
+  <item TemplateID="11169" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="100" MinRank="51" Count="5" ValidDate="0" />
+  <item TemplateID="201567" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="100" MinRank="51" Count="3" ValidDate="0" />
+  <item TemplateID="100100" Agility="0" Attack="0" Defense="0" IsBinds="true" Luck="0" MaxRank="100" MinRank="51" Count="15" ValidDate="0" />
+</Result>

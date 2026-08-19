@@ -1,0 +1,103 @@
+<style name="braveDoor" version="1.0.1" source="ui/cn_trad/swf/braveDoor.swf">
+<!-- 勇者之门副本模板数据,每个item字段说明如下：
+	id：副本ID; page:在第几页面显示;x:X坐标; y:Y坐标; icon:该副本 图标; name:副本名称
+ -->
+<maps>
+ 	<map mapUrl="asset.braveDoor.mapIcon" mapWidth="663" mapHeight="433" mapX="29" mapY="56" page="0">
+ 		<items>
+			<item id="9001" x="175" y="267" backStyle="asset.braveDoor.duplicateBtn1" filterString="null,lightFilter,null,grayFilter" name="兵蚁剿穴"/>
+			<item id="9002" x="283" y="300" backStyle="asset.braveDoor.duplicateBtn2" filterString="null,lightFilter,null,grayFilter" name="啵咕舰船"/>
+			<item id="9003" x="513" y="351" backStyle="asset.braveDoor.duplicateBtn3" filterString="null,lightFilter,null,grayFilter" name="部落森林"/>
+		</items>
+ 	</map>
+</maps>	
+<sets>
+	<set type="flash.text.TextFormat" stylename="asset.braveDoor.duplicateRoom.decTxt.tf" args="Arial,14,0xF9EF89,true"/>
+	<set type="flash.filters.GlowFilter" stylename="braveDoor.duplicateRoom.decTxt.gf" args="0x502B0B,1,4,4,6"/>
+	
+	<set type="flash.text.TextFormat" stylename="braveDoor.duplicateRoom.placeCountText.tf" args="Arial,14,0xFEF5D3,true"/>
+	<set type="flash.filters.GlowFilter" stylename="braveDoor.duplicateRoom.placeCountText.gf" args="0x542C0B,1,4,4,6"/>
+	
+	<set type="flash.text.TextFormat" stylename="braveDoor.duplicateRoom.fightText.tf" args="Arial,14,0xFFE76E,true"/>
+	<set type="flash.filters.GlowFilter" stylename="braveDoor.duplicateRoom.fightText.gf" args="0x481E00,1,4,4,6"/>
+	
+	<set type="flash.text.TextFormat" stylename="braveDoor.duplicateRoom.nameText.tf" args="Arial,14,0xFFFFFF,true"/>
+	<set stylename="braveDoor.duplicateRoom.nameText.gf" args="1,95,0x000000,1,1,1,10" type="flash.filters.DropShadowFilter" />
+</sets>
+<components>
+</components>
+<customs>
+			<custom classname="braveDoor.view.BraveDoorFrame"
+			closestyle="core.closebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle"
+			closeInnerRectString="44,12,6,30,14" stylename="ddt.braveDoor.braveDoorFrame"
+			 parentStyle="BaseFrame"  backStyle="SimpleFrameBackgound" 
+			 width="982" height="517"   
+			 escEnable="true"  />
+			
+			<custom classname="braveDoor.view.DuplicateSelectView"
+			closestyle="core.closebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle"
+			closeInnerRectString="44,12,6,30,14" stylename="ddt.braveDoor.duplicateSelectFrame"
+			 parentStyle="BaseFrame"  backStyle="SimpleFrameBackgound" 
+			 width="335" height="360"   
+			 escEnable="true"  />
+			
+			<custom classname="braveDoor.view.DuplicateMapView" stylename="ddt.braveDoor.duplicateMapView" x="0" y="0"/>
+			<custom classname="braveDoor.view.DuplicateListView" stylename="ddt.braveDoor.DuplicateListView" x="0" y="0"/>
+			
+			<custom classname="com.pickgliss.ui.controls.container.SimpleTileList" stylename="braveDoor.duplicateRoom.roomItemList" x='716' y='129' hSpace='-3' vSpace='3'/>
+			
+			<custom classname="ddt.view.common.LevelIcon" stylename="braveDoor.duplicateTemItem.playerItem.LevelIcon" x="9" y="1"/>
+			
+			<custom classname="flash.geom.Rectangle" stylename="braveDoor.duplicateMapView.dropList.scrollPanelRect" width="49" height="49"/>
+</customs>
+
+<components>
+		<!-- 已经创建了的副本房间 -->
+		<!-- 每个副本小图标放一起了,通过设置帧来更改图标。资源暂时放在客户端了，后面多话丢到服务器上动态load -->
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.braveDoor.duplicateRoom.itembg" 
+		resourceLink="asset.braveDoor.room.duplicateIcon0,asset.braveDoor.room.duplicateIcon1,asset.braveDoor.room.duplicateIcon2,asset.braveDoor.room.duplicateIcon3"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="asset.braveDoor.duplicateRoom.decText" 
+		textFormatStyle="asset.braveDoor.duplicateRoom.decTxt.tf" filterString="braveDoor.duplicateRoom.decTxt.gf" x="22" y="43"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="asset.braveDoor.duplicateRoom.placeCountText" 
+		textFormatStyle="braveDoor.duplicateRoom.placeCountText.tf" filterString="braveDoor.duplicateRoom.placeCountText.gf" x="91" y="43"/>
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.duplicateRoom.nextBtn" backStyle="asset.braveDoor.nextBtn" x="841" y="402"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.duplicateRoom.preBtn" backStyle="asset.braveDoor.preBtn" x="732" y="402"/>
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateRoom.createRoomBtn" backStyle="asset.braveDoor.createTemBtn" filterString="null,lightFilter,null,grayFilter" x="726" y="445"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateRoom.fastAddBtn" backStyle="asset.braveDoor.fastAddBtn" filterString="null,lightFilter,null,grayFilter" x="838" y="445"/>
+		
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.duplicateTeamRoom.addFriendButton" backStyle="asset.braveDoor.teamRoom.addFriendAsset"  x="169" y="5" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" />
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.duplicateTeamRoom.kickOutButton" backStyle="asset.braveDoor.teamRoom.kickOutAsset"  x="191" y="7" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" />
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.duplicateTeamRoom.playerInfoButton" backStyle="asset.braveDoor.TeamRoom.playerInfoAsset" x="150" y="5" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0,1,2" />
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="braveDoor.duplicateTeamRoom.fightText" 
+		textFormatStyle="braveDoor.duplicateRoom.fightText.tf" filterString="braveDoor.duplicateRoom.fightText.gf" x="79" y="42"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText"  stylename="braveDoor.duplicateTeamRoom.nameText" 
+		textFormatStyle="braveDoor.duplicateRoom.nameText.tf" filterString="braveDoor.duplicateRoom.nameText.gf" x="44" y="7"/>
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateTeamRoom.startBtn" backStyle="asset.braveDoor.startGameBtn" x="712" y="443" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateTeamRoom.readyBtn" backStyle="asset.braveDoor.ready" x="712" y="443" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateTeamRoom.cancelBtn" backStyle="asset.braveDoor.cancelBtn" x="712" y="443" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateTeamRoom.inviteBtn" backStyle="asset.braveDoor.inviteBtn" x="791" y="443" filterString="null,lightFilter,null,grayFilter"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.duplicateTeamRoom.exitBtn" backStyle="asset.braveDoor.returnBtn" x="869" y="443" filterString="null,lightFilter,null,grayFilter"/>
+		
+		<!-- 选择副本 -->
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="braveDoor.duplicateMapRoom.dropListPanel"  parentStyle="core.ScrollPanel" x="16" y="36" width="280" height="99"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="braveDoor.selectDuplicateView.selectDupBtn" backStyle="asset.braveDoor.selectDuplicateBtn" x="97" y="289" filterString="null,lightFilter,null,grayFilter"/>
+		<!-- 8.6.6优化聊天 -->
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="braveDoor.chatButton" tipStyle="ddt.view.tips.OneLineTip" backStyle="asset.braveDoor.chatBtn" tipDirctions="0,4,5" x="905" y="61"/>
+</components>
+<bitmaps>
+	<bitmapData resourceLink="asset.braveDoor.bgIcon" width="942" height="457" x="19" y="42"/>
+	<bitmapData resourceLink="asset.braveDoor.titleIcon" x="232" y="42"/>
+	<bitmapData resourceLink="asset.braveDoor.room.playerListBg"/>
+	<bitmapData resourceLink="asset.braveDoor.room.homeownersIcon" x="178" y="42"/>
+	<bitmapData resourceLink="asset.braveDoor.hadReady" x="175" y="26"/>
+	<bitmapData resourceLink="asset.braveDoor.dropCellBgAsset" x="0" y="0" width="47" height="47"/>
+	<bitmapData resourceLink="asset.braveDoor.duplicateDrop.bgIcon" x="20" y="166" width="293" height="173"/>
+	<!--<bitmapData resourceLink="asset.braveDoor.mapIcon"/>-->
+</bitmaps>
+</style>

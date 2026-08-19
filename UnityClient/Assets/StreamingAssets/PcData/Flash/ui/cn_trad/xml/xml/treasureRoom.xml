@@ -1,0 +1,22 @@
+﻿<style name="treasureRoom" version="1.0.1" source="ui/cn_trad/swf/treasureRoom.swf">
+<sets>
+	
+</sets>
+<customDisplay>
+	 <custom classname="treasureRoom.view.TreasureRoomView" stylename="core.treasureRoomView" x="7" y="50"/>
+</customDisplay>
+<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="core.TreasureRoomFrame.helpBtn" backStyle="asset.mark.help"/>		 	 
+</components>
+
+<bitmaps>
+	 <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.redMovPos" x="668" y="232" />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.blueMovPos" x="169" y="232"  />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.fireballMovPos" x="351" y="56" />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.TreasureRoomRewardView.cellSpritePos1" x="114" y="24" />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.TreasureRoomRewardView.cellSpritePos2" x="10" y="17"  />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.rewardViewPos0" x="276" y="283"  />
+     <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.rewardViewPos1" x="276" y="244"  />
+   	 <custom classname="flash.geom.Point" stylename="asset.treasureRoom.view.rewardViewPos2" x="276" y="244"  />
+</bitmaps>
+</style>

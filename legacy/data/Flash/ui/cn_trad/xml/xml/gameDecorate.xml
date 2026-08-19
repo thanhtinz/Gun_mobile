@@ -1,0 +1,28 @@
+<style name="gameDecorate" version="7.7.0" source="ui/cn_trad/swf/gameDecorate.swf">
+	<sets>
+	</sets>
+	
+	<components>
+	</components>
+	
+	<customDisplay>
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.gameDecorate.viewBg" x="0" y="-50"/>
+		<bitmapData resourceLink="asset.gameDecorate.viewBg2-1" x="0" y="-72"/>
+		<bitmapData resourceLink="asset.gameDecorate.viewBg2-2" x="0" y="-72"/>
+		<bitmapData resourceLink="asset.gameDecorate.rightPropBarBg1" x="903" y="127"/>
+		<bitmapData resourceLink="asset.gameDecorate.rightPropBarBg2" x="903" y="127"/>
+		<bitmapData resourceLink="asset.gameDecorate.pow" x="898" y="-15"/>
+		<bitmapData resourceLink="asset.gameDecorate.trusteeship" x="-406" y="173"/>
+		
+		<bitmapData resourceLink="asset.battle.gameDecorate.viewBg" x="0" y="-39"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.viewBg2-1" x="-6" y="-22"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.viewBg2-2" x="-6" y="-22"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.rightPropBarBg1" x="874" y="132"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.rightPropBarBg2" x="874" y="132"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.pow" x="898" y="-15"/>
+		<bitmapData resourceLink="asset.battle.gameDecorate.trusteeship" x="-403" y="184"/>
+	</bitmaps>
+</style>

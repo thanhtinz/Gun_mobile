@@ -1,0 +1,54 @@
+﻿<style name="loginDevice" version="1.0.1" source="ui/cn_trad/swf/loginDevice.swf">
+<sets>
+		<!-- <set stylename="ddt.labyrinth.LabyrinthFrame.SelectedCheckButtonTextTF" args="Arial,14,0xfff4d4,true" letterSpacing="1" type="flash.text.TextFormat" />
+		<set stylename="ddt.labyrinth.LabyrinthFrame.SelectedCheckButtonTextGF" args="0x7c4519,1,4,4,30" type="flash.filters.GlowFilter" /> -->
+</sets>
+<customDisplay>
+		<custom classname="flash.geom.Point" stylename="loginDevice.mainFrame.rewardBtn.pos2" x="159" y="38"/>
+		
+</customDisplay>
+<components>
+	<component classname="loginDevice.LoginDeviceMainFrame" backStyle="SimpleFrameBackgoundOne"
+					closestyle="core.closebt" stylename="loginDevice.LoginDeviceMainFrame" titleStyle="FrameTitleTextStyle"
+					titleOuterRectPosString="15,10,5" x="-160" y="-40" closeInnerRectString="44,19,6,30,14" width="588" height="470" />
+			
+	<component classname="com.pickgliss.ui.controls.SelectedButton"
+					stylename="loginDeviceMainFrame.downSelectedBtn" unSelectedStyle="loginDevice.mainframe.downUnSelected"
+					selectedStyle="loginDevice.mainframe.downSelected" filterString="null,lightFilter,null,grayFilter" x="29" y="38" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+					stylename="loginDevice.mainframe.downUnSelected" resourceLink="core.bg6900,loginDevice.mainView.down.unSelected"
+					imageRectString="101|36|0|-17|9,0|101|0|36|13" width="135" height="42" x="17" y="5" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+					stylename="loginDevice.mainframe.downSelected" resourceLink="core.bg6901,loginDevice.mainView.down.selected"
+					imageRectString="135|42|0|0|9,0|135|0|42|13" width="135" height="42" x="0" y="3" />
+					
+	<component classname="com.pickgliss.ui.controls.SelectedButton"
+					stylename="loginDeviceMainFrame.rewardSelectedBtn" unSelectedStyle="loginDevice.mainframe.rewardUnSelected"
+					selectedStyle="loginDevice.mainframe.rewardSelected" filterString="null,lightFilter,null,grayFilter" x="29" y="38" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+					stylename="loginDevice.mainframe.rewardUnSelected" resourceLink="core.bg6900,loginDevice.mainView.reward.unSelected"
+					imageRectString="101|36|0|-17|9,0|101|0|36|13" width="135" height="42" x="17" y="5" />
+	<component classname="com.pickgliss.ui.image.MutipleImage"
+					stylename="loginDevice.mainframe.rewardSelected" resourceLink="core.bg6901,loginDevice.mainView.reward.selected"
+					imageRectString="135|42|0|0|9,0|135|0|42|13" width="135" height="42" x="0" y="3" />
+									
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="loginDevice.mainFrame.bg.scale9cornerImage" width="548" height="292" x="20" y="82" parentStyle="core.bg6920"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="loginDevice.mainFrame.bgbottom.scale9cornerImage" width="548" height="70" x="20" y="381" parentStyle="core.bg6920"/>
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="loginDevice.downView.downBtn" 
+			backStyle="loginDevice.mainView.gotoDownBtn" x="219" y="394"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="loginDevice.downView.getRewardBtn" 
+			backStyle="loginDevice.mainView.getRewardBtn" x="219" y="394"/>
+	
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="loginDevice.downView.rewardsHBox" spacing="5" x="42" y="289"/>
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="loginDevice.dailyView.rewardsHBox" spacing="5" x="42" y="289"/>
+			
+</components>
+
+<bitmaps>
+	<!-- bitmapData -->
+	<bitmapData resourceLink="loginDevice.mainView.downDetailsbg" x="23" y="80"/>
+	<bitmapData resourceLink="loginDevice.mainView.rewardDetailsbg" x="27" y="82"/>
+	
+</bitmaps>
+</style> 

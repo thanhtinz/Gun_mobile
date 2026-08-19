@@ -1,0 +1,75 @@
+<bones>
+	<bone styleName="hallScene.MouseClickMovie" atlasName="ui_common_bones_1" path="ui/cn_trad/starling/default/bones/" loadType="1" />
+	<bone styleName="hallScene.storehouse" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.store" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.roomList" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.ringStation" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.redPlatform" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.laurel" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.labyrinth" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.home" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.gypsy" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.magicHouse" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.guide" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.goldPlatform" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.dungeon" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.drgnBoatBuilding" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.cryptBoss" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.constrion" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.church" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<bone styleName="hallScene.bluePlatform" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.auction" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player"/>
+	<!--<bone styleName="hallScene.halloween" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" /> 万圣节南瓜-->
+	<bone styleName="hallScene.boat" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.butterfly1" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.butterfly2" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.churchEffect" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.dockLight" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.homeEffect" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.hook" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.labyrinthEffect" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.ringStationEffect" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.roomListEffect" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.sea" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.tree" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" />
+	<bone styleName="hallScene.hotspring" atlasName="ui_hallScene_build_bones" path="ui/cn_trad/starling/hall_scene/bones/" loadType="1" boneType="player" />
+
+
+	<bone styleName="game.living.Living392" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living393" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living396" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living399" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living400" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living401" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living405" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living406" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living407" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living408" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living409" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living425" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living428" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living440" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living441" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living442" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living443" atlasName="image_petFollow_1" path="image/petFollow/" loadType="2" />
+	
+	<bone styleName="game.living.Living513" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living515" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living522" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living523" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living517" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living528" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living516" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living546" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living604" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living622" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living623" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living652" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living653" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living654" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living799" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living845" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living874" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living882" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+	<bone styleName="game.living.Living891" atlasName="image_petFollow_2" path="image/petFollow/" loadType="2" />
+</bones>

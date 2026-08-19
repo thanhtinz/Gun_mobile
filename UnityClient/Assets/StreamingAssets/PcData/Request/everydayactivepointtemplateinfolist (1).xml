@@ -1,0 +1,22 @@
+<Result value="true" message="Success!">
+  <item ID="1" MinLevel="1" MaxLevel="70" ActivityType="1" JumpType="0" Description="昨天你也來了" Count="1" ActivePoint="5" MoneyPoint="600" />
+  <item ID="2" MinLevel="1" MaxLevel="70" ActivityType="2" JumpType="0" Description="使用大喇叭1次" Count="1" ActivePoint="10" MoneyPoint="700" />
+  <item ID="3" MinLevel="1" MaxLevel="70" ActivityType="3" JumpType="1" Description="進入勇士秘境" Count="1" ActivePoint="10" MoneyPoint="500" />
+  <item ID="4" MinLevel="1" MaxLevel="70" ActivityType="4" JumpType="2" Description="參加3場聯賽" Count="3" ActivePoint="10" MoneyPoint="500" />
+  <item ID="6" MinLevel="1" MaxLevel="70" ActivityType="6" JumpType="4" Description="遠古巨龍戰鬥1次" Count="1" ActivePoint="10" MoneyPoint="500" />
+  <item ID="7" MinLevel="1" MaxLevel="70" ActivityType="7" JumpType="5" Description="進行榮譽昇華" Count="1" ActivePoint="10" MoneyPoint="500" />
+  <item ID="9" MinLevel="1" MaxLevel="70" ActivityType="9" JumpType="7" Description="公會捐獻100財富" Count="100" ActivePoint="15" MoneyPoint="800" />
+  <item ID="10" MinLevel="1" MaxLevel="70" ActivityType="10" JumpType="8" Description="商城消費1次" Count="1" ActivePoint="15" MoneyPoint="500" />
+  <item ID="12" MinLevel="1" MaxLevel="70" ActivityType="12" JumpType="10" Description="開啟寶珠5次" Count="5" ActivePoint="12" MoneyPoint="800" />
+  <item ID="13" MinLevel="1" MaxLevel="70" ActivityType="13" JumpType="11" Description="公會BOSS戰鬥1次" Count="1" ActivePoint="10" MoneyPoint="500" />
+  <item ID="15" MinLevel="1" MaxLevel="70" ActivityType="15" JumpType="13" Description="開啟副本BOSS戰" Count="1" ActivePoint="15" MoneyPoint="1000" />
+  <item ID="17" MinLevel="1" MaxLevel="70" ActivityType="17" JumpType="15" Description="進入藏寶圖尋寶" Count="1" ActivePoint="8" MoneyPoint="1000" />
+  <item ID="19" MinLevel="1" MaxLevel="70" ActivityType="19" JumpType="4" Description="足球隊長戰鬥1次" Count="1" ActivePoint="10" MoneyPoint="500" />
+  <item ID="20" MinLevel="1" MaxLevel="70" ActivityType="20" JumpType="0" Description="完成每日領取" Count="1" ActivePoint="8" MoneyPoint="200" />
+  <item ID="52" MinLevel="1" MaxLevel="70" ActivityType="59" JumpType="0" Description="任意途徑消費50點券" Count="50" ActivePoint="5" MoneyPoint="500" />
+  <item ID="54" MinLevel="1" MaxLevel="70" ActivityType="54" JumpType="54" Description="通關地穴1次" Count="1" ActivePoint="10" MoneyPoint="0" />
+  <item ID="55" MinLevel="1" MaxLevel="70" ActivityType="55" JumpType="55" Description="使用2個坐騎升級丹" Count="2" ActivePoint="5" MoneyPoint="0" />
+  <item ID="56" MinLevel="1" MaxLevel="70" ActivityType="56" JumpType="56" Description="使用5個技能升級靈珠" Count="5" ActivePoint="5" MoneyPoint="0" />
+  <item ID="57" MinLevel="1" MaxLevel="70" ActivityType="57" JumpType="57" Description="使用5個千葉草" Count="5" ActivePoint="5" MoneyPoint="0" />
+  <item ID="59" MinLevel="1" MaxLevel="70" ActivityType="29" JumpType="0" Description="在試煉之地戰鬥2場" Count="2" ActivePoint="6" MoneyPoint="0" />
+</Result>

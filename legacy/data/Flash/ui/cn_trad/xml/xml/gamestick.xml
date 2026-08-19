@@ -1,0 +1,33 @@
+<style name="gamestick" version="6.4.0" source="ui/cn_trad/swf/gamestick.swf">
+	<components>
+		<component classname="gameStick.view.GameStickShareFrame" stylename="gamestick.GameStickShareFrame"
+			parentStyle="BaseFrame" width="345" height="295" moveEnable="false"
+		/>
+	
+		<component classname="gameStick.view.GameStickRankFrame" stylename="gamestick.GameStickRankFrame"
+			parentStyle="BaseFrame" width="408" height="515" moveEnable="false"
+		/>
+	
+	
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="gamestick.startGameBtn"
+			backStyle="asset.gamestick.okToStart" x="257" y="169"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="gamestick.shareBtn"
+			backStyle="asset.gamestick.okToStart" x="48" y="160"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="gamestick.reStartBtn"
+			backStyle="asset.gamestick.okToStart" x="203" y="160"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="gamestick.exitBtn"
+			backStyle="asset.gamestick.okToStart" x="359" y="160"/>
+	</components>
+	<sets>
+		<set stylename="gamestick.tf" args="Arial,14,0xfff8c9,,,,,,left" type="flash.text.TextFormat" />
+		<set stylename="gamestick.cSend.detail.gf" args="0x5a2200,1,4,4,30" type="flash.filters.GlowFilter"/>
+	</sets>
+	<customs>
+	</customs>
+	<bitmaps>
+	</bitmaps>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="gamestick.Pos" x="572" y="6"/>
+	
+	</customDisplay>
+</style>

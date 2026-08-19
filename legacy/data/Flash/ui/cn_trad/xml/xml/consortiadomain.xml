@@ -1,0 +1,92 @@
+<style name="consortiadomain" version="1.0.1" source="ui/cn_trad/swf/consortiadomain.swf">
+	<sets>
+		<set stylename="consortiadomain.killRankView.rankTypeTF" args="Arial,14,0xffb11b,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.killRankView.blackGF" args="0x0,1,2,2,10" type="flash.filters.GlowFilter"/>
+		<set stylename="consortiadomain.killRankView.rankItem1TF" args="Arial,12,0xf3e443,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.killRankView.rankItem2TF" args="Arial,12,0xbb72ff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.killRankView.rankItem3TF" args="Arial,12,0xf5e80e1,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.killRankView.rankItem4TF" args="Arial,12,0xffffff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.killRankView.myKillTF" args="Arial,12,0xffffff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.state.normalTextTF" args="Arial,12,0xffffff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.focusLeaveSceneCountDownTF" args="Arial,12,0xffffff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+		<set stylename="consortiadomain.nextWave.timeTextTF" args="Arial,14,0xffffff,true" type="flash.text.TextFormat" leading="5" letterSpacing="0" />
+	</sets>
+	
+	<customDisplay>
+			<custom classname="starling.scene.hall.SceneMapGridData" stylename="consortiadomain.map.SceneMapGridData" numX="51"  numY="32"  mapId="3" bgImageW="3208" bgImageH="2000" cellW="64" cellH="64"
+	gridsType="[[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,2,2,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,1,2,2,2,2,2,1,1,1,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2]]" />
+			<custom classname="flash.geom.Point" stylename="consortiadomain.killRankView.item.rankPos" x="25" y="0" />
+			<custom classname="flash.geom.Point" stylename="consortiadomain.killRankView.item.playerNamePos" x="59" y="0" />
+			<custom classname="flash.geom.Point" stylename="consortiadomain.killRankView.item.killNumPos" x="150" y="0" />
+	</customDisplay>
+	
+	<components>
+		<!-- 击杀排行榜 -->
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiadomain.totalInfoBg" consortiadomainnk="asset.core.ddtScale9CornerImage21" scaleGridString="16,12,100,40"  x="42" y="-2" width="200" autoSize="none" height="324"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiadomain.showTotalBtn" x="-14" y="123" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="consortiadomain.showTotalBtnIMG" resourceLink="consortiadomain.totalInfo.show,consortiadomain.totalInfo.hide"  />
+		<component classname="com.pickgliss.ui.image.Image" stylename="consortiadomain.killRankView.title"
+			resourceLink="consortiadomain.killRank.title"  x="-16"  y="-11"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.rankType" textFormatStyle="consortiadomain.killRankView.rankTypeTF"
+			filterString="consortiadomain.killRankView.blackGF" x="8"  y="20" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.playerNameType" textFormatStyle="consortiadomain.killRankView.rankTypeTF"
+			filterString="consortiadomain.killRankView.blackGF" x="54"  y="20" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.killNumType" textFormatStyle="consortiadomain.killRankView.rankTypeTF"
+			filterString="consortiadomain.killRankView.blackGF" x="136"  y="20" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.rankItem1" textFormatStyle="consortiadomain.killRankView.rankItem1TF"
+			filterString="consortiadomain.killRankView.blackGF" x="103"  y="150" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.rankItem2" textFormatStyle="consortiadomain.killRankView.rankItem2TF"
+			filterString="consortiadomain.killRankView.blackGF" x="103"  y="150" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.rankItem3" textFormatStyle="consortiadomain.killRankView.rankItem3TF"
+			filterString="consortiadomain.killRankView.blackGF" x="103"  y="150" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.rankItem4" textFormatStyle="consortiadomain.killRankView.rankItem4TF"
+			filterString="consortiadomain.killRankView.blackGF" x="103"  y="150" />
+			<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.killRankView.myKillTF" textFormatStyle="consortiadomain.killRankView.myKillTF"
+			filterString="consortiadomain.killRankView.blackGF" x="16"  y="270" />
+			<component classname="com.pickgliss.ui.controls.ListPanel" stylename="consortiadomain.killRankView.listPanel" 
+			parentStyle="core.ScrollPanel" 
+			vScrollbarInnerRectString="21,4,0,0,3" vScrollProxy="2" hScrollProxy="2" vUnitIncrement="3"
+			factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|consortiaDomain.view.KillRankCell,19,210" 
+			listStyle="com.pickgliss.ui.controls.list.List" width="210" height="215" x="-2" y="52" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.focusLeaveSceneCountDownText" textFormatStyle="consortiadomain.focusLeaveSceneCountDownTF"
+			filterString="consortiadomain.killRankView.blackGF" x="417"  y="118" />
+		<component classname="com.pickgliss.ui.controls.TextButton" stylename="consortiadomain.buildView.openBtn"  parentStyle="core.simplebt" />	
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiadomain.killRankView.bg" parentStyle="core.commonTipBg" scaleGridString="10,10,42,42" width="206" height="300" x="" y=""/>
+	<component classname="com.pickgliss.ui.image.Image" stylename="consortiadomain.killRankView.split"
+			resourceLink="consortiadomain.killRank.split"  x="3"  y="254" width="200"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiadomain.nextWave.bg" parentStyle="core.commonTipBg" scaleGridString="10,10,42,42" width="152" height="28" x="" y=""/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText"
+			stylename="consortiadomain.nextWave.timeText" textFormatStyle="consortiadomain.nextWave.timeTextTF"
+			filterString="consortiadomain.killRankView.blackGF" x="5"  y="5" />
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="consortiadomain.buildStateView.bg" parentStyle="core.commonTipBg" scaleGridString="10,10,42,42" width="166" height="109" x="0" y="0"/>	
+				
+				
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiadomain.showOrHideMonsterBtn" backStyle="consortiadomain.showOrHideMonster1" 
+			tipStyle="ddt.view.tips.OneLineTip" tipDirctions="6" tipGapV="" tipGapH="" />		
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="consortiadomain.showOrHideMonster.hideBg" 
+			resourceLink="consortiadomain.showOrHideMonster1,consortiadomain.showOrHideMonster2" 
+			imageRectString="0|46|0|46|13,11|24|13|25|13"  />		
+				
+				
+		<!-- 退出场景按钮 -->
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="consortiadomain.switchBtnIMG" resourceLink="consortiadomain.menu.switchBtn1,consortiadomain.menu.switchBtn2,consortiadomain.menu.switchBtn1"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiadomain.switchBtn" backStyle="consortiadomain.switchBtnIMG" />
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="consortiadomain.returnBtnOver" resourceLink="consortiadomain.menu.selected,consortiadomain.menu.return" x="-10"/>
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="consortiadomain.returnBtnIMG" resourceLink="consortiadomain.menu.return,consortiadomain.returnBtnOver,consortiadomain.menu.return"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="consortiadomain.returnBtn" backStyle="consortiadomain.returnBtnIMG" x="45" y="6" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="consortiadomain.switchIMG" resourceLink="consortiadomain.menu.close,consortiadomain.menu.open" x="10" y="10"/>
+	</components>
+
+	<bitmaps>
+	</bitmaps>
+
+</style>

@@ -1,0 +1,123 @@
+<style name="ddtKingFloatgame" version="5.1.0" source="ui/cn_trad/swf/ddtKingFloatgame.swf">
+	<sets>
+		<set type="flash.text.TextFormat" stylename="ddtKing.rankView.titleTxt.tf" args="Arial,14,0xffba00,true"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.rankView.titleTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.countDownView.txt.tf" args="Arial,14,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.countDownView.txt.gf" args="0x781f00,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.rankView.cellTxt.tf" args="Arial,14,0xffffff"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.rankView.cellTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.rankView.cellNameTxt.tf" args="Arial,14,0xffffff,,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.rankView.cellNameTxt.gf" args="0x000000,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.game.playerNameTxt.tf" args="Arial,12,0xffffff,,,,,,center"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.game.playerNameTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.game.buffTitleTxt.tf" args="Arial,14,0xff0000,true"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.game.buffTitleTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.game.buffCountDownTxt.tf" args="Arial,14,0xff0000"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.game.buffCountDownTxt.gf" args="0x000000,1,2,2,10"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.missileFrame.labelTxt.tf" args="Arial,14,0xf6eeba,true"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.missileFrame.labelTxt.gf" args="0x693816,1,4,4,30"/>
+		<set type="flash.text.TextFormat" stylename="ddtKing.missileFrame.nameTxt.tf" args="Arial,18,0xFFFFFF,,,,,,center" />
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.missileFrame.nameTxt.gf" args="0x000000,1,2,2,10"  />
+		<set type="flash.text.TextFormat" stylename="ddtKing.paopaoTxtTF" args="Arial,12,0x000000"  leading="6"/>
+		<set type="flash.filters.GlowFilter" stylename="ddtKing.paopaoTxtGF" args="0xffffff,1,2,2,10"/>
+	</sets>	
+	<customs>
+		<custom classname="flash.geom.Point" stylename="ddtKing.game.waitStartGamePromptPos" x="522" y="249"/>
+		
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.nameTitleTxtPos" x="87" y="37"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.rateTitleTxtPos" x="160" y="37"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.sprintTitleTxtPos" x="220" y="37"/>
+
+		<custom classname="flash.geom.Point" stylename="ddtKing.gameStart.countDownViewPos" x="485" y="217"/>
+		
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.cellNameTxtPos" x="60" y="1"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.cellRateTxtPos" x="148" y="0"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.rankView.cellAwardCellPos" x="179" y="-6"/>
+		
+		<custom classname="flash.geom.Point" stylename="ddtKing.gamePlayer.fightMcPos" x="2" y="-93"/>
+		
+		<custom classname="flash.geom.Point" stylename="ddtKing.missileFrame.btnPos" x="44" y="159"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.game.npcPlayerTipsPos" x="44" y="-30"/>
+		<custom classname="flash.geom.Point" stylename="ddtKing.paopaoPos" x="11" y="16"/>
+	</customs>
+	<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.moveOutBtn" 
+			backStyle="ddtKing.moveOutBtnMC" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.moveInBtn" 
+			backStyle="ddtKing.moveInBtnMC" x="0" y="0"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.returnBtn" 
+			backStyle="ddtKing.returnBtnMC" x="35" y="4"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.leapBtn" 
+			backStyle="ddtKing.leapBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="13"/>
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.invisibilityBtn" 
+			backStyle="ddtKing.invisibilityBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="57"/>
+
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.cleanBtn"
+			backStyle="ddtKing.cleanBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="100"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.missileBtn" 
+			backStyle="ddtKing.missileBtnImg" tipStyle="ddt.view.tips.OneLineTip"  tipDirctions="0,4,1" 
+			x="23" y="144"/>
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.countDownView.txt" 
+			textFormatStyle="ddtKing.countDownView.txt.tf" filterString="ddtKing.countDownView.txt.gf" 
+			x="39" y="10"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.rankViewMoveOutBtn" 
+			backStyle="ddtKing.rankViewMoveOutBtnImg" x="-24" y="37"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.rankViewMoveInBtn" 
+			backStyle="ddtKing.rankViewMoveInBtnImg" x="-24" y="37"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.rankView.titleTxt" 
+			textFormatStyle="ddtKing.rankView.titleTxt.tf" filterString="ddtKing.rankView.titleTxt.gf" 
+			x="10" y="37"/>
+			
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="ddtKing.HelpButton" 
+			backStyle="asset.ddtcore.helpbutton" x="646" y="-2"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.rankView.cellTxt" 
+			textFormatStyle="ddtKing.rankView.cellTxt.tf" filterString="ddtKing.rankView.cellTxt.gf" 
+			x="0" y="0"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.rankView.cellNameTxt" 
+			textFormatStyle="ddtKing.rankView.cellNameTxt.tf" filterString="ddtKing.rankView.cellNameTxt.gf" 
+			autoSize="none" width="100" height="18" x="35" y="0"/>
+
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.game.playerNameTxt" 
+			textFormatStyle="ddtKing.game.playerNameTxt.tf" filterString="ddtKing.game.playerNameTxt.gf" 
+			autoSize="none" x="-220" y="-120" width="250" height="18"/>		
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.game.buffTitleTxt" 
+			textFormatStyle="ddtKing.game.buffTitleTxt.tf" filterString="ddtKing.game.buffTitleTxt.gf" 
+			x="4" y="2"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.game.buffCountDownTxt" 
+			textFormatStyle="ddtKing.game.buffCountDownTxt.tf" filterString="ddtKing.game.buffCountDownTxt.gf" 
+			x="41" y="2"/>
+
+		<component classname="ddtKingFloat.views.DDTKingFloatMissileFrame" backStyle="SimpleFrameBackgoundOneIII"
+			closestyle="core.closebt" stylename="ddtKing.missileFrame.frame" titleStyle="FrameTitleTextStyle"
+			titleOuterRectPosString="15,10,5" containerX="20" containerY="47" escEnable="true"
+			closeInnerRectString="44,19,6,30,14" width="240" height="260" />
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="ddtKing.missileFrame.vbox"
+			x="11" y="42" spacing="-7"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.missileFrame.labelTxt" 
+			textFormatStyle="ddtKing.missileFrame.labelTxt.tf" filterString="ddtKing.missileFrame.labelTxt.gf" 
+			x="24" y="3"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.missileFrame.nameTxt" 
+			autoSize="none" isAutoFitLength="true" textFormatStyle="ddtKing.missileFrame.nameTxt.tf" filterString="ddtKing.missileFrame.nameTxt.gf"
+			x="30" y="5"  width="100" height="25"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="ddtKing.paopaoTxt" 
+			textFormatStyle="ddtKing.paopaoTxtTF" filterString="ddtKing.paopaoTxtGF" 
+			x="60" y="20"/>
+
+	</components>
+	<bitmaps>
+		<bitmapData resourceLink="ddtKing.missile.labelBg" x="-1" y="-1"/>
+		<bitmapData resourceLink="ddtKing.missile.listBg" x="1" y="35"/>
+		<bitmapData resourceLink="ddtKing.missile.selectedLight" x="-11" y="-8"/>
+		<bitmapData resourceLink="ddtKing.leapPromptArrow" x="0" y="-30"/>
+	</bitmaps>
+</style>

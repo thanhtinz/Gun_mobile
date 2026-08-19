@@ -1,0 +1,38 @@
+﻿<style name="scancode" version="7.8.0" source="ui/cn_trad/swf/scancode.swf">
+<sets>
+	<set stylename="hall.scancode.tipsTF" args="Arial,12,0xFFF06E,true" type="flash.text.TextFormat" leading="5"/>
+	<set stylename="hall.scancode.tipsGF" args="0x4F2000,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="hall.scancode.helpTF" args="Arial,12,0xFFF6C9,true" type="flash.text.TextFormat" leading="18"/>
+	<set stylename="hall.scancode.helpGF" args="0x6F5100,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="hall.scancode.TextInputFieldTF" args="Verdana,14,0xFFFFFF" type="flash.text.TextFormat" />
+</sets>
+<components>
+	<component classname="hall.scanCode.ScanCodeFrame" stylename="hall.scanCodeFrame" parentStyle="BaseFrame" 
+		backStyle="SimpleFrameBackgound" escEnable="true" width="713" height="440" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.scancode.tipsText"
+		textFormatStyle="hall.scancode.tipsTF" filterString="hall.scancode.tipsGF" x="375" y="117"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="hall.scancode.helpText"
+		textFormatStyle="hall.scancode.helpTF" filterString="hall.scancode.helpGF" x="37" y="124"/>
+	
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="hall.scancode.hbox" spacing="29.5" x="52" y="329" />
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="hall.scancode.button" 
+		backStyle="asset.hall.scanecodeButton" x="269" y="239"/>
+			
+	<component classname="com.pickgliss.ui.text.FilterFrameText"
+		stylename="hall.scancode.TextInputField" textFormatStyle="hall.scancode.TextInputFieldTF"
+		restrict="A-Z a-z 0-9" maxChars="36" autoSize="none" width="200" height="30" />
+	<component classname="com.pickgliss.ui.controls.TextInput"
+		stylename="hall.scancode.inputText" textInnerRectString="8,8,5,2,0"
+		textStyle="hall.scancode.TextInputField" x="44" y="242" width="200" height="30" />
+</components>
+<customs>
+	
+</customs>
+<bitmaps>
+	
+	<bitmapData resourceLink="asset.hall.scanecodeBg" x="17" y="37" />
+</bitmaps>
+</style>

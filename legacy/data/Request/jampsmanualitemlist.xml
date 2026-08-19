@@ -1,0 +1,23 @@
+<Result value="true" message="Success!">
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="1" MagicAttack="0" MagicResistance="0" Name="初学者手册" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="2" MagicAttack="30" MagicResistance="0" Name="初学者Lv1" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="3" MagicAttack="0" MagicResistance="50" Name="初学者Lv2" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="4" MagicAttack="30" MagicResistance="0" Name="初学者Lv3" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="5" MagicAttack="0" MagicResistance="50" Name="初学者Lv4" Reserved=" " />
+  <Item Boost="10" Describe="探险家手册是在探险家们世界冒险的证明" Level="6" MagicAttack="30" MagicResistance="0" Name="行者手册" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="7" MagicAttack="0" MagicResistance="50" Name="行者Lv1" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="8" MagicAttack="30" MagicResistance="0" Name="行者Lv2" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="9" MagicAttack="0" MagicResistance="50" Name="行者Lv3" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="10" MagicAttack="30" MagicResistance="0" Name="行者Lv4" Reserved=" " />
+  <Item Boost="10" Describe="探险家手册是在探险家们世界冒险的证明" Level="11" MagicAttack="0" MagicResistance="50" Name="大师手册" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="12" MagicAttack="30" MagicResistance="0" Name="大师Lv1" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="13" MagicAttack="0" MagicResistance="50" Name="大师Lv2" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="14" MagicAttack="30" MagicResistance="0" Name="大师Lv3" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="15" MagicAttack="0" MagicResistance="50" Name="大师Lv4" Reserved=" " />
+  <Item Boost="10" Describe="探险家手册是在探险家们世界冒险的证明" Level="16" MagicAttack="30" MagicResistance="0" Name="冒险王手册" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="17" MagicAttack="0" MagicResistance="50" Name="冒险王Lv1" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="18" MagicAttack="30" MagicResistance="0" Name="冒险王Lv2" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="19" MagicAttack="0" MagicResistance="50" Name="冒险王Lv3" Reserved=" " />
+  <Item Boost="0" Describe="探险家手册是在探险家们世界冒险的证明" Level="20" MagicAttack="30" MagicResistance="0" Name="冒险王Lv4" Reserved=" " />
+  <Item Boost="10" Describe="探险家手册是在探险家们世界冒险的证明" Level="21" MagicAttack="0" MagicResistance="50" Name="至尊" Reserved=" " />
+</Result>

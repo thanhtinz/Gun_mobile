@@ -1,0 +1,137 @@
+<style name="horseAmulet" version="8.3.0" source="ui/cn_trad/swf/horseAmulet.swf">
+<sets>
+	<set stylename="horseAmulet.activate.dustTextTF" args="宋体,14,0xFCF3A4,true" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.activate.dustTextGF" args="0x4B113A,1,2,2,15" type="flash.filters.GlowFilter" />
+	
+	<set stylename="horseAmulet.activate.needDustTextTF" args="宋体,14,0xFFEF3A,true" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.activate.needDustTextGF" args="0x3F0302,1,2,2,3" type="flash.filters.GlowFilter" />
+	
+	<set stylename="horseAmulet.activate.propertyTextTF" args="宋体,12,0xFFE7A7,,,,,,center" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.activate.propertyTextGF" args="0x4D3012,1,2,2,15" type="flash.filters.GlowFilter" />
+	
+	<set stylename="horseAmulet.activate.propertyTitleTextTF" args="宋体,12,0xFFE7A7,,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.activate.propertyTitleTextGF" args="0x4D3012,1,2,2,15" type="flash.filters.GlowFilter" />
+	
+	<set stylename="horseAmulet.activate.helpTextTF" args="宋体,11,0xFFDA94" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.activate.helpTextGF" args="0x57110F,1,2,2,15" type="flash.filters.GlowFilter" />
+
+	<set stylename="horseAmulet.smashFrame.qualityTextTF" type="flash.text.TextFormat" args="宋体,12,0x391f00"/>
+	<set stylename="horseAmulet.smashFrame.yesTextTF" type="flash.text.TextFormat" args="宋体,14,0xcc1300,true"/>
+				
+	<set stylename="horseAmulet.smashFrame.textTF" args="宋体,15,0xfff8d6,,,,,,left" type="flash.text.TextFormat" />
+	<set stylename="horseAmulet.smashFrame.textGF" args="0x4b270d,1,4,4,30" type="flash.filters.GlowFilter" />
+		
+	<set stylename="horseAmulet.smashFrame.countTextTF" type="flash.text.TextFormat" args="宋体,15,0x654600,true,,,,,center" leading="10" />
+	<set stylename="horseAmulet.smashFrame.countTextGF" type="flash.filters.GlowFilter" args="0xFFFFFF,1,4,4,30" />
+</sets>
+
+<components>
+	<component classname="horse.amulet.HorseAmuletMainView" stylename="horseAmulet.mainView" parentStyle="BaseFrame" 
+		backStyle="SimpleFrameBackgound" escEnable="true" width="808" height="505" containerY="43" containerX="20"/>
+	<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="horseAmulet.mainViewBg" parentStyle="core.bg6920" width="765" height="442" scaleGridString="5,10,80,20" />	
+
+	<component classname="horse.amulet.HorseAmuletLockButton" stylename="horseAmulet.lockBtn" backStyle="asset.horseAmulet.lockBtn" x="13" y="409" />
+	<component classname="horse.amulet.HorseAmuletSmashButton" stylename="horseAmulet.smashBtn" backStyle="asset.horseAmulet.smashBtn" x="134" y="407" />
+	
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="horseAmulet.equipBtn" backStyle="asset.horseAmulet.equipBtn" x="13" y="370" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="horseAmulet.activateBtn" backStyle="asset.horseAmulet.activateBtn" x="13" y="370" />
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="horseAmulet.smashAllBtn" backStyle="asset.horseAmulet.smashAllBtn" x="220" y="401" />
+	
+	<component classname="uiUtils.SelectPageUI" stylename="horseAmulet.bagViewSelectUI" parentStyle="uiUtils.SimpleSelectPageUI" x="78" y="373" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.activate.dustText"
+		textFormatStyle="horseAmulet.activate.dustTextTF" filterString="horseAmulet.activate.dustTextGF" x="140" y="217" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.activate.needDustText" text="0"
+		textFormatStyle="horseAmulet.activate.needDustTextTF" filterString="horseAmulet.activate.needDustTextGF" x="207" y="217" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.activate.propertyText"
+		textFormatStyle="horseAmulet.activate.propertyTextTF" filterString="horseAmulet.activate.propertyTextGF" 
+		autoSize="none" width="60" height="20" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.activate.propertyTitleText"
+		textFormatStyle="horseAmulet.activate.propertyTitleTextTF" filterString="horseAmulet.activate.propertyTitleTextGF" />
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.activate.helpText" x="15" y="369"
+		textFormatStyle="horseAmulet.activate.helpTextTF" filterString="horseAmulet.activate.helpTextGF" autoSize="none" width="371" height="75" wordWrap="true" />
+	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="horseAmulet.activate.activateBtn" backStyle="asset.horseAmulet.activate.activateBtn" x="133" y="316" />
+	
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="horseAmulet.activate.replaceTxtImage" resourceLink="asset.ui.btn_yellow3,asset.horseAmulet.activate.replaceTxt" width="120" height="48" imageRectString=",28|62|8|31|13" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="horseAmulet.activate.replaceBtn" backStyle="horseAmulet.activate.replaceTxtImage" width="120" height="48" x="65" y="316" filterString="null,lightFilter,null,grayFilter" />
+	
+	<component classname="com.pickgliss.ui.image.MutipleImage" stylename="horseAmulet.activate.cancelTxtImage" resourceLink="core.bg6899,asset.horseAmulet.activate.cancelTxt" width="120" height="48" imageRectString=",28|62|8|31|13" />
+	<component classname="com.pickgliss.ui.controls.BaseButton" stylename="horseAmulet.activate.cancelBtn" backStyle="horseAmulet.activate.cancelTxtImage" width="120" height="48" x="232" y="316" filterString="null,lightFilter,null,grayFilter" />
+	
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="horseAmulet.activate.text" x="89" y="34" 
+		resourceLink="asset.horseAmulet.activate.text0,asset.horseAmulet.activate.text1,asset.horseAmulet.activate.text2,asset.horseAmulet.activate.text3,asset.horseAmulet.activate.text4,asset.horseAmulet.activate.text5" />
+
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.horseAmulet.num" 
+		resourceLink="asset.horseAmulet.num1,asset.horseAmulet.num2,asset.horseAmulet.num3,asset.horseAmulet.num4,asset.horseAmulet.num5,asset.horseAmulet.num6,asset.horseAmulet.num7,asset.horseAmulet.num8,asset.horseAmulet.num9,asset.horseAmulet.num0" />
+	<component classname="com.pickgliss.ui.image.NumberImage" stylename="horseAmulet.num" imageStyle="asset.horseAmulet.num" />
+	
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="horseAmulet.activate.hBox" spacing="0" x="74" y="-3" />
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="horseAmulet.activate.result" resourceLink="asset.horseAmulet.resultUp,asset.horseAmulet.resultDown" visible="false" x="282" y="280" />
+	
+	
+	<!-- frame -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.smashFrame.countText" textFormatStyle="horseAmulet.smashFrame.countTextTF" filterString="horseAmulet.smashFrame.countTextGF" autoSize="none" x="0" y="26" width="270" height="38" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.smashFrame.qualityText" textFormatStyle="horseAmulet.smashFrame.qualityTextTF" x="0" y="53"/>	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.smashFrame.yesText" textFormatStyle="horseAmulet.smashFrame.yesTextTF" x="204" y="51"/>		
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="horseAmulet.smashFrame.inputBg" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG" width="121" height="30" x="73" y="81" />			
+	<component classname="com.pickgliss.ui.controls.TextInput" stylename="horseAmulet.smashFrame.inputText" textStyle="horseAmulet.smashFrame.text" textInnerRectString="10,10,3,2,0" maxChars="3" width="121" height="20" x="80" y="87" />	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="horseAmulet.smashFrame.text" textFormatStyle="horseAmulet.smashFrame.textTF" filterString="horseAmulet.smashFrame.textGF" />
+	<component classname="horse.amulet.HorseAmuletSmashAlert" stylename="horseAmulet.smashFrame" parentStyle="SimpleAlert" 
+			width="310" height="170" moveEnable="false" escEnable="true" enterEnable="true"
+			titleStyle="FrameTitleTextStyle" titleOuterRectPosString="10,10,5"
+			containerX="20" containerY="40" closestyle="core.closebt" closeInnerRectString="44,6,6,30,14" />
+</components>
+
+<customs>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.bagViewPos" x="406" y="-27"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipViewPos" x="0" y="0"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activateViewPos" x="5" y="5"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos0" x="179" y="68"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos1" x="264" y="94"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos2" x="304" y="174"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos3" x="291" y="259"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos4" x="222" y="316"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos5" x="130" y="315"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos6" x="61" y="258"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos7" x="44" y="167"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equipCellPos8" x="92" y="91"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.bagView.keySortBtnPos" x="271" y="367" />
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.bagListViewPos" x="14" y="47" />
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.criticalTextPos" x="50" y="282" />
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.newCriticalTextPos" x="232" y="282" />
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.activateCellPos" x="164" y="120" />
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.extendTypeTextPos" x="51" y="263"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.newExtendTypeTextPos" x="232" y="263"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.haveDustTextPos" x="52" y="217"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.havaDustNumTextPos" x="159" y="218"/>
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.dustTextPos" x="215" y="217" />
+	<custom classname="flash.geom.Point" stylename="horseAmulet.activate.needDustTextPos" x="347" y="218"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equip.horseMcPos" x="175" y="160"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.equip.tipsConPos" x="108" y="124"/>
+	
+	<custom classname="flash.geom.Point" stylename="horseAmulet.helpPos" x="700" y="-38" />
+		
+</customs>
+
+<bitmaps>
+	<bitmapData resourceLink="asset.horseAmulet.cellLock" x="0" y="10"/>
+	
+	<bitmapData resourceLink="asset.horseAmulet.activate.property" x="0" y="-4"/>
+	
+</bitmaps>
+</style>

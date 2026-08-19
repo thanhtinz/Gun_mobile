@@ -1,0 +1,130 @@
+<style name="ddtKingWay" version="1.0.0" source="ui/cn_trad/swf/ddtKingWay.swf">
+<sets>
+   	<set stylename="ddtKingWay.tipsTF" args="宋体,16,0xe8ce97,true,,,,,left" type="flash.text.TextFormat" /> 
+	<set stylename="ddtKingWay.tipsGF" args="0x471822,1,4,4,30" type="flash.filters.GlowFilter" />
+	
+	<set stylename="ddtKingWay.remainingTimeBgTF" args="宋体,14,0x8a00ff,true" type="flash.text.TextFormat" /> 
+	<set stylename="ddtKingWay.remainingTimeBgGF" args="0xFFF4FF,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="ddtKingWay.remainingTimeTF1" args="宋体,14,0xff0000,true,,,,,center" type="flash.text.TextFormat"   /> 
+	
+	<set stylename="ddtKingWay.remainingTimeTF2" args="宋体,14,0xfff6a8,true,,,,,center" type="flash.text.TextFormat" letterSpacing="5"/> 
+	<set stylename="ddtKingWay.remainingTimeGF2" args="0xdc0000,1,4,4,30" type="flash.filters.GlowFilter" />
+	
+	<set stylename="ddtKingWay.taskTarget1TF" args="宋体,14,0xFFEA9C,true,,,,,center"  type="flash.text.TextFormat" /> 
+	<set stylename="ddtKingWay.taskTarget1GF" args="0x311b00,1,4,4,30" type="flash.filters.GlowFilter" />
+	
+	<set stylename="ddtKingWay.taskTarget2TF" args="宋体,14,0x9f9f9f,true"  type="flash.text.TextFormat" /> 
+	<set stylename="ddtKingWay.taskTarget2GF" args="0x272727,1,4,4,30" type="flash.filters.GlowFilter" />
+
+
+	
+	<set type="flash.text.TextFormat" stylename="asset.ddtKingWay.cellConditionTxt.tf" args="宋体,12,0xfefb57" leading="5"/>
+	<set type="flash.filters.GlowFilter" stylename="asset.ddtKingWay.cellConditionTxt.gf" args="0x000000,1,2,2,10"/>
+	
+</sets>
+
+<customDisplay>
+
+</customDisplay>
+
+<components>
+     <component classname="ddtKingWay.view.DDTKingWayMainView" stylename="ddtKingWay.DDTKingWayMainView"
+		backStyle="SimpleFrameBackgound" moveEnable="false" escEnable="true" width="842" height="540"  x="79" y="45"
+		 closestyle="core.closebt" titleStyle="FrameTitleTextStyle"  parentStyle="BaseFrame"
+		titleOuterRectPosString="15,11,5" closeInnerRectString="44,15,6,30,14" />
+		
+	<component classname="com.pickgliss.ui.image.Image" stylename="asset.ddtKingWay.MainBg" 
+	resourceLink="asset.ddtKingWay.bg" x="21" y="44" />	
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.tipsText"
+		textFormatStyle="ddtKingWay.tipsTF" filterString="ddtKingWay.tipsGF" x="28" y="12"/>	
+	
+	<component stylename="ddtKingWay.prevBtn" classname="com.pickgliss.ui.controls.BaseButton" 
+	backStyle="asset.ddtKingWay.prevBtn" x="130" y="68" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<component stylename="ddtKingWay.nextBtn" classname="com.pickgliss.ui.controls.BaseButton" 
+	backStyle="asset.ddtKingWay.nextBtn" x="313" y="68" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="asset.ddtKingWay.levelItemhbox" spacing="80"  />		
+<!-- 等级图标 -->	
+    <component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.levelItemBg3"
+	 resourceLink="asset.ddtKingWay.unthirty,asset.ddtKingWay.thirty"   />
+	 
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.levelItemBg4"
+	 resourceLink="asset.ddtKingWay.unforty,asset.ddtKingWay.forty"  />
+	 
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.levelItemBg5"
+	 resourceLink="asset.ddtKingWay.unfifty,asset.ddtKingWay.fifty" />
+	 
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.levelItemBg6"
+	 resourceLink="asset.ddtKingWay.unsixty,asset.ddtKingWay.sixty" />
+	 
+	 <component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.levelItemBg7"
+	 resourceLink="asset.ddtKingWay.unseventy,asset.ddtKingWay.seventy"  />
+<!-- end -->
+
+<!-- 右上角文字 -->
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.remainingTimeTextBg"
+		textFormatStyle="ddtKingWay.remainingTimeBgTF" filterString="ddtKingWay.remainingTimeBgGF" x="648" y="52"/>	
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.remainingTimeUnitText"
+		parentStyle="asset.ddtKingWay.remainingTimeTextBg" x="747" />	
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.remainingTimeText1"
+		textFormatStyle="ddtKingWay.remainingTimeTF1,ddtKingWay.remainingTimeTF2" filterString="ddtKingWay.remainingTimeBgGF,ddtKingWay.remainingTimeGF2" x="719" y="52"/>
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.remainingTimeText2"
+		textFormatStyle="ddtKingWay.remainingTimeTF1,ddtKingWay.remainingTimeTF2" filterString="ddtKingWay.remainingTimeBgGF,ddtKingWay.remainingTimeGF2" x="719" y="52"/>
+				
+<!-- end -->			
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="asset.ddtKingWay.Vbox" spacing="5" x="62" y="177" />
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.taskTargetText" 
+	    textFormatStyle="ddtKingWay.taskTarget1TF,ddtKingWay.taskTarget2TF" filterString="ddtKingWay.taskTarget1GF,ddtKingWay.taskTarget2GF"
+        x="9" y="12"/>
+			
+	<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="asset.ddtKingWay.completestatusIcom" 
+	resourceLink="asset.ddtKingWay.completestatus1,asset.ddtKingWay.completestatus2" x="199" y="1"/>
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.taskStatusText1"
+		textFormatStyle="ddtKingWay.taskStatusTF" filterString="ddtKingWay.taskStatusGF" x="28" y="12"/>
+	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.taskStatusText2"
+		textFormatStyle="ddtKingWay.taskStatusTF" filterString="ddtKingWay.taskStatusGF" x="128" y="12"/>			
+		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="asset.ddtKingWay.cellConditionTxt" 
+		textFormatStyle="asset.ddtKingWay.cellConditionTxt.tf" filterString="asset.ddtKingWay.cellConditionTxt.gf" 
+		wordWrap="true" width="170" x="228" y="12"/>	
+	
+	<component stylename="asset.ddtKingWay.upgradeBtn" classname="com.pickgliss.ui.controls.BaseButton" 
+	backStyle="asset.ddtKingWay.upgrade" x="295" y="6" filterString="null,lightFilter,null,grayFilter"/>	
+	
+	<component classname="com.pickgliss.ui.controls.container.HBox" stylename="asset.ddtKingWay.Hbox" spacing="42" x="91" y="386" />		
+	
+	<component stylename="asset.ddtKingWay.getAwardBtn" classname="com.pickgliss.ui.controls.BaseButton" 
+	backStyle="asset.ddtKingWay.getAwardBtnBg" x="185" y="448" filterString="null,lightFilter,null,grayFilter"/>
+	
+	<component classname="com.pickgliss.ui.image.Image" stylename="ddtKingWay.receiveItem" 
+	resourceLink="asset.ddtKingWay.receiveItem" x="-4" y="0" />	
+	<component classname="com.pickgliss.ui.image.Image" stylename="ddtKingWay.bgItem" 
+	resourceLink="asset.ddtKingWay.bgItem"  x="189" y="-47"/>	
+</components>
+
+<customs>
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.goodPos" x="-12" y="7" />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.itemPos0" x="62" y="177"  />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.itemPos1" x="62" y="227"  />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.itemPos2" x="62" y="277"  />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.itemPos3" x="62" y="327"  />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.itemPos4" x="62" y="377"  />
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.levelItemPos1" x="31" y="68"/>
+           <custom classname="flash.geom.Point" stylename="asset.ddtKingWay.levelItemPos2" x="207" y="68"/>  
+</customs>
+
+<bitmaps>
+   <bitmapDate  resourceLink=" asset.ddtKingWay.receiveItem" x="0" y="0" />
+   <bitmapDate  resourceLink="asset.ddtKingWay.itembg1" x="0" y="0"/>
+   <bitmapDate  resourceLink="asset.ddtKingWay.itembg2" x="0" y="0"/>
+
+</bitmaps>
+
+</style>

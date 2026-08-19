@@ -1,0 +1,54 @@
+
++EnchantSpiritMain.xml�3<?xml version="1.0" encoding="utf-16"?>
+<View width="330" height="400">
+ <Image x="103" y="11" skin="asset.ddtstore.EquipmentCellBg" />
+ <Button skin="enchant.spiritBtn" x="81" y="283" stateNum="1" var="spiritBtn" />
+ <Image skin="enchant.spiritConsumption" x="1" y="199" />
+ <Box x="24" y="229" width="36" height="36" var="needBox1">
+  <Button skin="asset.horse.frame.buyBtn_small" x="0" y="16" stateNum="1" var="buyBtn1" />
+ </Box>
+ <Box x="178" y="229" width="36" height="36" var="needBox2">
+  <Button skin="asset.horse.frame.buyBtn_small" x="0" y="16" stateNum="1" var="buyBtn2" />
+ </Box>
+ <Label text="10000/900000" x="69" y="239" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" width="103" height="18" var="needTxt1" />
+ <Label text="10000/900000" x="220" y="239" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" width="101" height="18" var="needTxt2" />
+ <Box x="123" y="32" width="68" height="68" var="spiritCellBox" />
+ <Box x="51" y="118" var="desBox">
+  <Label text="白银 LV.0" y="1" size="16" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="curName" />
+  <Label text="白银 LV.1" x="150" y="1" size="16" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextName" />
+  <Label text="魔攻 0%" y="32" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" var="curAtrrack" />
+  <Label text="魔攻 5%" x="150" y="32" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" var="nextAttrack" />
+  <Label text="魔攻 5%" y="55" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" var="curDefend" />
+  <Label text="魔攻 5%" x="150" y="55" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" var="nextDefend" />
+  <Image skin="enchant.next.arrow" x="87" />
+ </Box>
+</View>+NaikuaiSpiritMain.xml�9<?xml version="1.0" encoding="utf-16"?>
+<View width="330" height="400">
+ <Image x="103" y="11" skin="asset.ddtstore.EquipmentCellBg" />
+ <Button skin="enchant.spiritBtn" x="81" y="313" stateNum="1" var="spiritBtn" />
+ <Image skin="enchant.spiritConsumption" x="1" y="219" />
+ <Box x="24" y="249" width="36" height="36" var="needBox1">
+  <Button skin="asset.horse.frame.buyBtn_small" x="0" y="16" stateNum="1" var="buyBtn1" />
+ </Box>
+ <Box x="178" y="249" width="36" height="36" var="needBox2">
+  <Button skin="asset.horse.frame.buyBtn_small" x="0" y="16" stateNum="1" var="buyBtn2" />
+ </Box>
+ <Label text="10000/900000" x="69" y="259" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" width="103" height="18" var="needTxt1" />
+ <Label text="10000/900000" x="220" y="259" size="14" bold="true" color="0xffdb95" stroke="0x6c2e00,1,4,4,30" width="101" height="18" var="needTxt2" />
+ <Box x="123" y="32" width="68" height="68" var="spiritCellBox" />
+ <Box x="51" y="118" var="desBox">
+  <Label text="词条1" y="1" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr1" />
+  <Label text="词条2" y="24" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr2" />
+  <Label text="词条3" y="47" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr3" />
+  <Label text="词条4" y="70" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr4" />
+  <!-- <Label text="词条5" y="93"  size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr5" />
+  <Label text="词条6" y="115" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="attr6" /> -->
+  <Label text="词条1" x="160" y="1" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr1" />
+  <Label text="词条2" x="160" y="24" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr2" />
+  <Label text="词条3" x="160" y="47" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr3" />
+  <Label text="词条4" x="160" y="70" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr4" />
+  <!-- <Label text="词条1" x="150" y="93"  size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr5" />
+  <Label text="词条1" x="150" y="115" size="14" bold="true" color="0xfff000" stroke="0x6c2e00,1,4,4,30" var="nextAttr6" /> -->
+  <Image skin="enchant.next.arrow" x="87" />
+ </Box>
+</View>

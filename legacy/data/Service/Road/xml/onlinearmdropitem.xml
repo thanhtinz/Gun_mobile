@@ -1,0 +1,17 @@
+<Result value="true" message="Success!">
+  <Item ID="1" FloorCount="1" PickAxeLevel="1" Rate1="55" Rate2="33" Rate3="12" Rate4="0" Rate5="0" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="2" FloorCount="1" PickAxeLevel="2" Rate1="51" Rate2="35" Rate3="14" Rate4="0" Rate5="0" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="3" FloorCount="1" PickAxeLevel="3" Rate1="45" Rate2="38" Rate3="17" Rate4="0" Rate5="0" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="4" FloorCount="1" PickAxeLevel="4" Rate1="37" Rate2="42" Rate3="21" Rate4="0" Rate5="0" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="5" FloorCount="1" PickAxeLevel="5" Rate1="27" Rate2="47" Rate3="26" Rate4="0" Rate5="0" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="6" FloorCount="2" PickAxeLevel="2" Rate1="25" Rate2="26" Rate3="33" Rate4="12" Rate5="4" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="7" FloorCount="2" PickAxeLevel="3" Rate1="19" Rate2="23" Rate3="36" Rate4="15" Rate5="7" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="8" FloorCount="2" PickAxeLevel="4" Rate1="11" Rate2="19" Rate3="40" Rate4="19" Rate5="11" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="9" FloorCount="2" PickAxeLevel="5" Rate1="1" Rate2="14" Rate3="45" Rate4="24" Rate5="16" Rate6="0" Rate7="0" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="10" FloorCount="3" PickAxeLevel="3" Rate1="2" Rate2="19" Rate3="26" Rate4="33" Rate5="12" Rate6="6" Rate7="2" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="11" FloorCount="3" PickAxeLevel="4" Rate1="0" Rate2="9" Rate3="22" Rate4="37" Rate5="16" Rate6="10" Rate7="6" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="12" FloorCount="3" PickAxeLevel="5" Rate1="0" Rate2="0" Rate3="11" Rate4="42" Rate5="21" Rate6="15" Rate7="11" Rate8="0" Rate9="0" Rate10="0" Rate11="0" />
+  <Item ID="13" FloorCount="4" PickAxeLevel="4" Rate1="0" Rate2="0" Rate3="19" Rate4="26" Rate5="33" Rate6="12" Rate7="6" Rate8="3" Rate9="1" Rate10="0" Rate11="0" />
+  <Item ID="14" FloorCount="4" PickAxeLevel="5" Rate1="0" Rate2="0" Rate3="9" Rate4="21" Rate5="28" Rate6="17" Rate7="11" Rate8="8" Rate9="6" Rate10="0" Rate11="0" />
+  <Item ID="15" FloorCount="5" PickAxeLevel="5" Rate1="0" Rate2="0" Rate3="0" Rate4="16" Rate5="26" Rate6="33" Rate7="12" Rate8="6" Rate9="4" Rate10="2" Rate11="1" />
+</Result>

@@ -1,0 +1,87 @@
+<style name="wishingTree" version="6.1.0" source="ui/cn_trad/swf/wishingTree.swf">
+<sets>
+	<set stylename="wishingTree.cardCountTF" args="Arial,14,0xFFFAAD,true" type="flash.text.TextFormat" />
+	<set stylename="wishingTree.cardCountGF" args="0x4F1105,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.remainDateTF" args="Arial,12,0xFDDE7E,true" type="flash.text.TextFormat" />
+	<set stylename="wishingTree.remainDateGF" args="0x471E00,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.labelTF" args="Arial,14,0xFFEA9C" type="flash.text.TextFormat" />
+	<set stylename="wishingTree.labelGF" args="0x4A3301,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.recordDescTF" args="Arial,12,0xD39859,true" type="flash.text.TextFormat" />
+	<set stylename="wishingTree.recordDescGF" args="0x381808,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.recordTxtTF" args="Arial,12,0xFFE1BC" type="flash.text.TextFormat"  letterSpacing="1"/>
+	<set stylename="wishingTree.recordTxtGF" args="0x472511,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.successTxtTF" args="Arial,24,0xFFFC1D,true,,,,,center" type="flash.text.TextFormat"  />
+	<set stylename="wishingTree.successTxtGF" args="0x330202,1,4,4,30" type="flash.filters.GlowFilter" />
+	<set stylename="wishingTree.inputTF" args="Arial,14,0xfff8d6,true,,,,,center"  type="flash.text.TextFormat" />
+	<set stylename="wishingTree.inputGF" args="0x4b270d,1,4,4,30" type="flash.filters.GlowFilter" />
+</sets>
+<customs>
+	<custom classname="flash.geom.Point" stylename="wishingTree.mcPos" x="15" y="-10" /> 
+	<custom classname="flash.geom.Point" stylename="wishingTree.spritePos" x="4" y="112" /> 
+	<custom classname="flash.geom.Point" stylename="wishingTree.cellPos" x="138" y="5" /> 
+	<custom classname="flash.geom.Point" stylename="wishingTree.dropListPos" x="9" y="312" />
+	<custom classname="flash.geom.Point" stylename="wishingTree.tileListPos" x="44" y="38" />
+	<custom classname="flash.geom.Point" stylename="wishingTreeFrame.helpBtnPos" x="576" y="-39" />
+	<custom classname="wishingTree.helpText" stylename="wishingTree.helpText" x="181" y="227" />
+</customs>
+<components>
+	<component classname="wishingTree.views.WishingTreeFrame" backStyle="SimpleFrameBackgoundOne"
+		closestyle="core.closebt" stylename="wishingTree.frame" titleStyle="FrameTitleTextStyle"
+		titleOuterRectPosString="15,10,5"  containerX="18" containerY="45" escEnable="true"
+		closeInnerRectString="44,19,6,30,14" width="690" height="480" />	
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wishingTree.wishBtn"  backStyle="wishingTree.wish"
+		x="109" y="293"/>	
+	<component classname="com.pickgliss.ui.controls.SelectedCheckButton" stylename="wishingTree.useAllSelectedBtn"  parentStyle="core.selectedCheck2"  
+		filterString="null,lightFilter,null,grayFilter" displacement="true"  backStyle="wishingTree.useAll" 
+		x="280" y="301"/>
+	<component classname="com.pickgliss.ui.image.ScaleUpDownImage" stylename="wishingTree.prizeScaleBg" resourceLink="wishingTree.prizeBg1,wishingTree.prizeBg2,wishingTree.prizeBg3" 
+		x="0" y="0" width="311" height="97"/>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="wishingTree.dropListPanel"  parentStyle="core.ScrollPanel" 
+		x="44" y="38" width="280" height="54"/>		
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wishingTree.recordBtn"  backStyle="wishingTree.record"
+		x="544" y="328"/>	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.cardCount" 
+		x="355" y="325" width="60" height="20"  textFormatStyle="wishingTree.cardCountTF" filterString="wishingTree.cardCountGF" />		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.wishingTimes" 
+		x="355" y="349" width="60" height="20"  textFormatStyle="wishingTree.cardCountTF" filterString="wishingTree.cardCountGF" />		
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.remainDate" 
+		x="382" y="378" width="60" height="20"  textFormatStyle="wishingTree.remainDateTF" filterString="wishingTree.remainDateGF" />	
+		
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wishingTree.getBtn"  backStyle="wishingTree.get"
+		x="203" y="4"/>	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.label" 
+		x="10" y="10" width="60" height="20"  textFormatStyle="wishingTree.labelTF" filterString="wishingTree.labelGF" />	
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="wishingTree.vbox" spacing="11" 
+		x="345" y="49"/>	
+		
+	<component classname="wishingTree.views.WishingTreeRecordFrame" backStyle="SimpleFrameBackgoundOne"
+		closestyle="core.closebt" stylename="wishingTree.recordframe" titleStyle="FrameTitleTextStyle"
+		titleOuterRectPosString="15,10,5"  containerX="17" containerY="44" escEnable="true"
+		closeInnerRectString="44,19,6,30,14" width="450" height="359" />	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.recordDesc" 
+		x="250" y="274" width="60" height="20"  textFormatStyle="wishingTree.recordDescTF" filterString="wishingTree.recordDescGF" />	
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="wishingTree.scrollPanel" parentStyle="core.ScrollPanel" 
+		x="10"  y="13"  width="400"  height="254"  hScrollProxy="2"  vUnitIncrement="3" vScrollProxy="0" />
+	<component classname="com.pickgliss.ui.controls.container.VBox" stylename="wishingTree.recordVBox" spacing="18" 
+		x="0" y="0"/>	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.recordTxt" 
+		x="0" y="0" width="60" height="20"  textFormatStyle="wishingTree.recordTxtTF" filterString="wishingTree.recordTxtGF" />	
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.successTxt"  autoSize="none"
+		x="0" y="72" width="300" height="40"  textFormatStyle="wishingTree.successTxtTF" filterString="wishingTree.successTxtGF" />
+		
+	<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="wishingTree.inputBg" parentStyle="core.Scale9CornerImage.scale9CornerImageInputBG"  
+			x="219" y="307"  width="40" height="24" />
+	<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="wishingTree.inputTxt" textFormatStyle="wishingTree.inputTF" filterString="wishingTree.inputGF" 
+		x="215" y="310"  autoSize="none" width="50" height="23" type="input"/>
+	<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="wishingTree.maxBtn" backStyle="asset.ddtcore.maxBtn_small"
+		x="263" y="308" />
+</components>
+<bitmaps>
+	<bitmapData  resourceLink="wishingTree.tree" x="15" y="17"/>
+	<bitmapData  resourceLink="wishingTree.alreadyGet" x="203" y="4"/>
+	<bitmapData  resourceLink="wishingTree.border" x="0" y="0"/>
+	<bitmapData  resourceLink="wishingTree.arrow" x="275" y="33"/>
+	<bitmapData  resourceLink="wishingTree.useAll" x="-43" y="5"/>
+</bitmaps>
+</style>

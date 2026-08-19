@@ -1,0 +1,356 @@
+<Result value="true" message="Success!">
+  <Item ID="10101" Name="单体回复lv1" EffectPic="" Description="单体回复lv1" Pic="-1" />
+  <Item ID="10102" Name="单体回复lv2" EffectPic="" Description="单体回复lv2" Pic="-1" />
+  <Item ID="10103" Name="单体回复lv3" EffectPic="" Description="单体回复lv3" Pic="-1" />
+  <Item ID="10104" Name="单体回复lv4" EffectPic="" Description="单体回复lv4" Pic="-1" />
+  <Item ID="10105" Name="单体回复lv5" EffectPic="" Description="单体回复lv5" Pic="-1" />
+  <Item ID="10106" Name="单体回复lv6" EffectPic="" Description="单体回复lv1" Pic="-1" />
+  <Item ID="10107" Name="单体回复lv7" EffectPic="" Description="单体回复lv2" Pic="-1" />
+  <Item ID="10108" Name="单体回复lv8" EffectPic="" Description="单体回复lv3" Pic="-1" />
+  <Item ID="10109" Name="单体回复lv9" EffectPic="" Description="单体回复lv4" Pic="-1" />
+  <Item ID="10110" Name="单体回复lv10" EffectPic="" Description="单体回复lv5" Pic="-1" />
+  <Item ID="10201" Name="群体回复lv1" EffectPic="" Description="群体回复lv1" Pic="-1" />
+  <Item ID="10202" Name="群体回复lv2" EffectPic="" Description="群体回复lv2" Pic="-1" />
+  <Item ID="10203" Name="群体回复lv3" EffectPic="" Description="群体回复lv3" Pic="-1" />
+  <Item ID="10204" Name="群体回复lv4" EffectPic="" Description="群体回复lv4" Pic="-1" />
+  <Item ID="10205" Name="群体回复lv5" EffectPic="" Description="群体回复lv5" Pic="-1" />
+  <Item ID="10206" Name="群体回复lv6" EffectPic="" Description="群体回复lv1" Pic="-1" />
+  <Item ID="10207" Name="群体回复lv7" EffectPic="" Description="群体回复lv2" Pic="-1" />
+  <Item ID="10208" Name="群体回复lv8" EffectPic="" Description="群体回复lv3" Pic="-1" />
+  <Item ID="10209" Name="群体回复lv9" EffectPic="" Description="群体回复lv4" Pic="-1" />
+  <Item ID="10210" Name="群体回复lv10" EffectPic="" Description="群体回复lv5" Pic="-1" />
+  <Item ID="10301" Name="穿防lv1" EffectPic="" Description="穿防lv1" Pic="-1" />
+  <Item ID="10302" Name="穿防lv2" EffectPic="" Description="穿防lv2" Pic="-1" />
+  <Item ID="10303" Name="穿防lv3" EffectPic="" Description="穿防lv3" Pic="-1" />
+  <Item ID="10304" Name="穿防lv4" EffectPic="" Description="穿防lv4" Pic="-1" />
+  <Item ID="10305" Name="穿防lv5" EffectPic="" Description="穿防lv5" Pic="-1" />
+  <Item ID="10306" Name="穿防lv6" EffectPic="" Description="穿防lv6" Pic="-1" />
+  <Item ID="10307" Name="穿防lv7" EffectPic="" Description="穿防lv7" Pic="-1" />
+  <Item ID="10308" Name="穿防lv8" EffectPic="" Description="穿防lv8" Pic="-1" />
+  <Item ID="10309" Name="穿防lv9" EffectPic="" Description="穿防lv9" Pic="-1" />
+  <Item ID="10310" Name="穿防lv10" EffectPic="" Description="穿防lv10" Pic="-1" />
+  <Item ID="10311" Name="穿防lv10" EffectPic="" Description="穿防lv10" Pic="-1" />
+  <Item ID="10312" Name="穿防lv10" EffectPic="" Description="穿防lv10" Pic="-1" />
+  <Item ID="10401" Name="激怒lv1" EffectPic="" Description="激怒lv1" Pic="-1" />
+  <Item ID="10402" Name="激怒lv2" EffectPic="" Description="激怒lv2" Pic="-1" />
+  <Item ID="10403" Name="激怒lv3" EffectPic="" Description="激怒lv3" Pic="-1" />
+  <Item ID="10404" Name="激怒lv4" EffectPic="" Description="激怒lv4" Pic="-1" />
+  <Item ID="10405" Name="激怒lv5" EffectPic="" Description="激怒lv5" Pic="-1" />
+  <Item ID="10501" Name="复活lv1" EffectPic="" Description="复活lv1" Pic="-1" />
+  <Item ID="10502" Name="复活lv2" EffectPic="" Description="复活lv2" Pic="-1" />
+  <Item ID="10503" Name="复活lv3" EffectPic="" Description="复活lv3" Pic="-1" />
+  <Item ID="10504" Name="复活lv4" EffectPic="" Description="复活lv4" Pic="-1" />
+  <Item ID="10505" Name="复活lv5" EffectPic="" Description="复活lv5" Pic="-1" />
+  <Item ID="10601" Name="净化lv1" EffectPic="" Description="净化lv1" Pic="-1" />
+  <Item ID="10602" Name="净化lv2" EffectPic="" Description="净化lv2" Pic="-1" />
+  <Item ID="10603" Name="净化lv3" EffectPic="" Description="净化lv3" Pic="-1" />
+  <Item ID="10604" Name="净化lv4" EffectPic="" Description="净化lv4" Pic="-1" />
+  <Item ID="10605" Name="净化lv5" EffectPic="" Description="净化lv5" Pic="-1" />
+  <Item ID="10606" Name="净化lv6" EffectPic="" Description="净化lv6" Pic="-1" />
+  <Item ID="10607" Name="净化lv7" EffectPic="" Description="净化lv7" Pic="-1" />
+  <Item ID="10608" Name="净化lv8" EffectPic="" Description="净化lv8" Pic="-1" />
+  <Item ID="10609" Name="净化lv9" EffectPic="" Description="净化lv9" Pic="-1" />
+  <Item ID="10610" Name="净化lv10" EffectPic="" Description="净化lv10" Pic="-1" />
+  <Item ID="10701" Name="冻结冰弹lv1" EffectPic="" Description="空属性" Pic="-1" />
+  <Item ID="10702" Name="冻结冰弹lv2" EffectPic="" Description="空属性" Pic="-1" />
+  <Item ID="10703" Name="冻结冰弹lv3" EffectPic="" Description="空属性" Pic="-1" />
+  <Item ID="10704" Name="冻结冰弹lv4" EffectPic="" Description="空属性" Pic="-1" />
+  <Item ID="10705" Name="冻结冰弹lv5" EffectPic="" Description="空属性" Pic="-1" />
+  <Item ID="10801" Name="引导lv1" EffectPic="" Description="引导" Pic="-1" />
+  <Item ID="10802" Name="引导lv2" EffectPic="" Description="引导" Pic="-1" />
+  <Item ID="10803" Name="引导lv3" EffectPic="" Description="引导" Pic="-1" />
+  <Item ID="10804" Name="引导lv4" EffectPic="" Description="引导" Pic="-1" />
+  <Item ID="10805" Name="引导lv5" EffectPic="" Description="引导" Pic="-1" />
+  <Item ID="10901" Name="单体隐身lv1" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="10902" Name="单体隐身lv2" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="10903" Name="单体隐身lv3" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="10904" Name="单体隐身lv4" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="10905" Name="单体隐身lv5" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11001" Name="群体隐身lv1" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11002" Name="群体隐身lv2" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11003" Name="群体隐身lv3" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11004" Name="群体隐身lv4" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11005" Name="群体隐身lv5" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="11101" Name="重创lv1" EffectPic="" Description="攻击时附带4%+100点额外伤害" Pic="16" />
+  <Item ID="11102" Name="重创lv2" EffectPic="" Description="攻击时附带6%+140点额外伤害" Pic="16" />
+  <Item ID="11103" Name="重创lv3" EffectPic="" Description="攻击时附带8%+190点额外伤害" Pic="16" />
+  <Item ID="11104" Name="重创lv4" EffectPic="" Description="攻击时附带10%+245点额外伤害" Pic="16" />
+  <Item ID="11105" Name="重创lv5" EffectPic="" Description="攻击时附带13%+300点额外伤害" Pic="16" />
+  <Item ID="11106" Name="重创lv6" EffectPic="" Description="攻击时附带16%+360点额外伤害" Pic="16" />
+  <Item ID="11107" Name="重创lv7" EffectPic="" Description="攻击时附带19%+435点额外伤害" Pic="16" />
+  <Item ID="11108" Name="重创lv8" EffectPic="" Description="攻击时附带22%+525点额外伤害" Pic="16" />
+  <Item ID="11109" Name="重创lv9" EffectPic="" Description="攻击时附带25%+625点额外伤害" Pic="16" />
+  <Item ID="11110" Name="重创lv10" EffectPic="" Description="攻击时附带30%+730点额外伤害" Pic="16" />
+<Item ID="11111" Name="重创lv10" EffectPic="" Description="攻击时附带30%+730点额外伤害" Pic="16" />
+<Item ID="11112" Name="重创lv10" EffectPic="" Description="攻击时附带30%+730点额外伤害" Pic="16" />
+  <Item ID="11201" Name="免坑lv1" EffectPic="" Description="免坑" Pic="-1" />
+  <Item ID="11202" Name="免坑lv2" EffectPic="" Description="免坑" Pic="-1" />
+  <Item ID="11203" Name="免坑lv3" EffectPic="" Description="免坑" Pic="-1" />
+  <Item ID="11204" Name="免坑lv4" EffectPic="" Description="免坑" Pic="-1" />
+  <Item ID="11205" Name="免坑lv5" EffectPic="" Description="免坑" Pic="-1" />
+  <Item ID="11301" Name="减伤lv1" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11302" Name="减伤lv2" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11303" Name="减伤lv3" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11304" Name="减伤lv4" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11305" Name="减伤lv5" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11306" Name="减伤lv6" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11307" Name="减伤lv7" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11308" Name="减伤lv8" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11309" Name="减伤lv9" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11310" Name="减伤lv10" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11401" Name="提升必杀伤害" EffectPic="" Description="提升必杀伤害" Pic="-1" />
+  <Item ID="11402" Name="提升必杀伤害" EffectPic="" Description="提升必杀伤害" Pic="-1" />
+  <Item ID="11403" Name="提升必杀伤害" EffectPic="" Description="提升必杀伤害" Pic="-1" />
+  <Item ID="11404" Name="提升必杀伤害" EffectPic="" Description="提升必杀伤害" Pic="-1" />
+  <Item ID="11405" Name="提升必杀伤害" EffectPic="" Description="提升必杀伤害" Pic="-1" />
+  <Item ID="11801" Name="减伤" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11802" Name="减伤" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11803" Name="减伤" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11804" Name="减伤" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11805" Name="减伤" EffectPic="" Description="减伤" Pic="-1" />
+  <Item ID="11901" Name="穿甲lv1" EffectPic="" Description="穿甲lv1" Pic="-1" />
+  <Item ID="11902" Name="穿甲lv2" EffectPic="" Description="穿甲lv2" Pic="-1" />
+  <Item ID="11903" Name="穿甲lv3" EffectPic="" Description="穿甲lv3" Pic="-1" />
+  <Item ID="11904" Name="穿甲lv4" EffectPic="" Description="穿甲lv4" Pic="-1" />
+  <Item ID="11905" Name="穿甲lv5" EffectPic="" Description="穿甲lv5" Pic="-1" />
+  <Item ID="11906" Name="穿甲lv6" EffectPic="" Description="穿甲lv6" Pic="-1" />
+  <Item ID="11907" Name="穿甲lv7" EffectPic="" Description="穿甲lv7" Pic="-1" />
+  <Item ID="11908" Name="穿甲lv8" EffectPic="" Description="穿甲lv8" Pic="-1" />
+  <Item ID="11909" Name="穿甲lv9" EffectPic="" Description="穿甲lv9" Pic="-1" />
+  <Item ID="11910" Name="穿甲lv10" EffectPic="" Description="穿甲lv10" Pic="-1" />
+  <Item ID="12001" Name="减伤lv1" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12002" Name="减伤lv2" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12003" Name="减伤lv3" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12004" Name="减伤lv4" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12005" Name="减伤lv5" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12006" Name="减伤lv6" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12007" Name="减伤lv7" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12008" Name="减伤lv8" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12009" Name="减伤lv9" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12010" Name="减伤lv10" EffectPic="" Description="获得新技能" Pic="-1" />
+  <Item ID="12101" Name="减伤lv1" EffectPic="" Description="受到伤害减少3%+65" Pic="15" />
+  <Item ID="12102" Name="减伤lv2" EffectPic="" Description="受到伤害减少5%+90" Pic="15" />
+  <Item ID="12103" Name="减伤lv3" EffectPic="" Description="受到伤害减少7%+125" Pic="15" />
+  <Item ID="12104" Name="减伤lv4" EffectPic="" Description="受到伤害减少9%+165" Pic="15" />
+  <Item ID="12105" Name="减伤lv5" EffectPic="" Description="受到伤害减少12%+225" Pic="15" />
+  <Item ID="12106" Name="减伤lv6" EffectPic="" Description="受到伤害减少15%+295" Pic="15" />
+  <Item ID="12107" Name="减伤lv7" EffectPic="" Description="受到伤害减少18%+395" Pic="15" />
+  <Item ID="12108" Name="减伤lv8" EffectPic="" Description="受到伤害减少21%+405" Pic="15" />
+  <Item ID="12109" Name="减伤lv9" EffectPic="" Description="受到伤害减少24%+515" Pic="15" />
+  <Item ID="12110" Name="减伤lv10" EffectPic="" Description="受到伤害减少28%+625" Pic="15" />
+  <Item ID="13301" Name="移除穿甲lv1" EffectPic="" Description="移除穿甲lv1" Pic="-1" />
+  <Item ID="13302" Name="移除穿甲lv2" EffectPic="" Description="移除穿甲lv2" Pic="-1" />
+  <Item ID="13303" Name="移除穿甲lv3" EffectPic="" Description="移除穿甲lv3" Pic="-1" />
+  <Item ID="13304" Name="移除穿甲lv4" EffectPic="" Description="移除穿甲lv4" Pic="-1" />
+  <Item ID="13305" Name="移除穿甲lv5" EffectPic="" Description="移除穿甲lv5" Pic="-1" />
+  <Item ID="13306" Name="移除穿甲lv6" EffectPic="" Description="移除穿甲lv6" Pic="-1" />
+  <Item ID="13307" Name="移除穿甲lv7" EffectPic="" Description="移除穿甲lv7" Pic="-1" />
+  <Item ID="13308" Name="移除穿甲lv8" EffectPic="" Description="移除穿甲lv8" Pic="-1" />
+  <Item ID="13309" Name="移除穿甲lv9" EffectPic="" Description="移除穿甲lv9" Pic="-1" />
+  <Item ID="13310" Name="移除穿甲lv10" EffectPic="" Description="移除穿甲lv10" Pic="-1" />
+  <Item ID="13311" Name="获得移除穿甲lv1" EffectPic="" Description="获得移除穿甲lv1" Pic="-1" />
+  <Item ID="13312" Name="获得移除穿甲lv2" EffectPic="" Description="获得移除穿甲lv2" Pic="-1" />
+  <Item ID="13313" Name="获得移除穿甲lv3" EffectPic="" Description="获得移除穿甲lv3" Pic="-1" />
+  <Item ID="13314" Name="获得移除穿甲lv4" EffectPic="" Description="获得移除穿甲lv4" Pic="-1" />
+  <Item ID="13315" Name="获得移除穿甲lv5" EffectPic="" Description="获得移除穿甲lv5" Pic="-1" />
+  <Item ID="13316" Name="获得移除穿甲lv6" EffectPic="" Description="获得移除穿甲lv6" Pic="-1" />
+  <Item ID="13317" Name="获得移除穿甲lv7" EffectPic="" Description="获得移除穿甲lv7" Pic="-1" />
+  <Item ID="13318" Name="获得移除穿甲lv8" EffectPic="" Description="获得移除穿甲lv8" Pic="-1" />
+  <Item ID="13319" Name="获得移除穿甲lv9" EffectPic="" Description="获得移除穿甲lv9" Pic="-1" />
+  <Item ID="13320" Name="获得移除穿甲lv10" EffectPic="" Description="获得移除穿甲lv10" Pic="-1" />
+  <Item ID="20000" Name="祝福之灵" EffectPic="" Description="祝福之灵" Pic="-1" />
+  <Item ID="20010" Name="自然之力" EffectPic="" Description="自然之力" Pic="-1" />
+  <Item ID="20020" Name="坚冰" EffectPic="" Description="坚冰" Pic="-1" />
+  <Item ID="20030" Name="隐身" EffectPic="" Description="隐身" Pic="-1" />
+  <Item ID="20040" Name="群体隐身" EffectPic="" Description="群体隐身" Pic="-1" />
+  <Item ID="20050" Name="幽冥鬼眼" EffectPic="" Description="幽冥鬼眼" Pic="-1" />
+  <Item ID="20060" Name="绝望" EffectPic="" Description="绝望" Pic="-1" />
+  <Item ID="20070" Name="灵魂锁链" EffectPic="" Description="获得buff" Pic="-1" />
+  <Item ID="20080" Name="移形换位" EffectPic="" Description="移形换位" Pic="-1" />
+  <Item ID="20090" Name="自爆" EffectPic="effect070" Description="自爆" Pic="-1" />
+  <Item ID="20100" Name="舍生取义" EffectPic="" Description="舍生取义" Pic="-1" />
+  <Item ID="20110" Name="清心" EffectPic="" Description="清心" Pic="-1" />
+  <Item ID="20120" Name="范围爆炸" EffectPic="" Description="范围伤害" Pic="-1" />
+  <Item ID="20121" Name="获得技能" EffectPic="" Description="自爆buff" Pic="-1" />
+  <Item ID="20122" Name="自爆加图片" EffectPic="" Description="增加图片" Pic="-1" />
+  <Item ID="20123" Name="灵魂锁链的buff" EffectPic="" Description="灵魂锁链" Pic="-1" />
+  <Item ID="20501" Name="扰乱伤害" EffectPic="" Description="伤害" Pic="-1" />
+  <Item ID="20502" Name="扰乱buff" EffectPic="" Description="扰乱buff" Pic="-1" />
+  <Item ID="20511" Name="禁锢" EffectPic="" Description="禁锢玩家" Pic="-1" />
+  <Item ID="20521" Name="致盲伤害" EffectPic="" Description="伤害" Pic="-1" />
+  <Item ID="20522" Name="获得致盲技能" EffectPic="" Description="获得致盲技能" Pic="-1" />
+  <Item ID="20531" Name="挑衅buff" EffectPic="" Description="挑衅buff" Pic="-1" />
+  <Item ID="20541" Name="减少怒气" EffectPic="" Description="减少怒气" Pic="-1" />
+  <Item ID="20542" Name="增加伤害" EffectPic="" Description="增加伤害" Pic="-1" />
+  <Item ID="20543" Name="加伤害图标" EffectPic="" Description="加伤害图标" Pic="-1" />
+  <Item ID="20551" Name="正义光环伤害" EffectPic="" Description="正义光环伤害" Pic="-1" />
+  <Item ID="20552" Name="正义光环降低攻击" EffectPic="" Description="降低攻击" Pic="-1" />
+  <Item ID="20553" Name="降低攻击图标" EffectPic="" Description="降低攻击图标" Pic="-1" />
+  <Item ID="20561" Name="虚弱伤害" EffectPic="" Description="虚弱伤害" Pic="-1" />
+  <Item ID="20562" Name="虚弱降低防御" EffectPic="" Description="降低防御" Pic="-1" />
+  <Item ID="20563" Name="降低防御图标" EffectPic="" Description="降低防御图标" Pic="-1" />
+  <Item ID="20571" Name="封印伤害" EffectPic="" Description="封印伤害" Pic="-1" />
+  <Item ID="20572" Name="获得封印技能" EffectPic="" Description="获得封印" Pic="-1" />
+  <Item ID="20573" Name="封印技能图标" EffectPic="" Description="封印技能图标" Pic="-1" />
+  <Item ID="20581" Name="诛心伤害" EffectPic="" Description="诛心伤害" Pic="-1" />
+  <Item ID="20582" Name="获得诛心技能" EffectPic="" Description="获得诛心" Pic="-1" />
+  <Item ID="20591" Name="梵咒伤害" EffectPic="" Description="梵咒伤害" Pic="-1" />
+  <Item ID="20592" Name="灼烧buff" EffectPic="" Description="减少生命" Pic="-1" />
+  <Item ID="20593" Name="梵咒技能图标" EffectPic="" Description="梵咒技能图标" Pic="-1" />
+  <Item ID="21521" Name="致盲buff" EffectPic="" Description="致盲buff" Pic="-1" />
+  <Item ID="21571" Name="封印buff" EffectPic="" Description="封印buff" Pic="-1" />
+  <Item ID="21581" Name="诛心buff" EffectPic="" Description="诛心buff" Pic="-1" />
+  <Item ID="301000" Name="Obter pontos de fúria" EffectPic="" Description="Obter 2 pontos de Raiva para cada hit recebido." Pic="297" />
+  <Item ID="302000" Name="Obter pontos de fúria" EffectPic="" Description="" Pic="298" />
+  <Item ID="303000" Name="Seja imune a combo letal" EffectPic="" Description="Ser imune a um golpe letal." Pic="299" />
+  <Item ID="304000" Name="Aprimorar ataque lv1" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304010" Name="Aprimorar ataque lv2" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304020" Name="Aprimorar ataque lv3" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304030" Name="Aprimorar ataque lv4" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304040" Name="Aprimorar ataque lv5" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304050" Name="Aprimorar ataque lv6" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304060" Name="Aprimorar ataque lv7" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304070" Name="Aprimorar ataque lv8" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304080" Name="Aprimorar ataque lv9" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="304090" Name="Aprimorar ataque lv10" EffectPic="" Description="Aumentar ataque" Pic="300" />
+  <Item ID="305000" Name="Aprimorar defesa lv1" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305010" Name="Aprimorar defesa lv2" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305020" Name="Aprimorar defesa lv3" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305030" Name="Aprimorar defesa lv4" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305040" Name="Aprimorar defesa lv5" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305050" Name="Aprimorar defesa lv6" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305060" Name="Aprimorar defesa lv7" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305070" Name="Aprimorar defesa lv8" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305080" Name="Aprimorar defesa lv9" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="305090" Name="Aprimorar defesa lv10" EffectPic="" Description="Aumentar defesa" Pic="300" />
+  <Item ID="306000" Name="Aprimorar agilidade lv1" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306010" Name="Aprimorar agilidade lv2" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306020" Name="Aprimorar agilidade lv3" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306030" Name="Aprimorar agilidade lv4" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306040" Name="Aprimorar agilidade lv5" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306050" Name="Aprimorar agilidade lv6" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306060" Name="Aprimorar agilidade lv7" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306070" Name="Aprimorar agilidade lv8" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306080" Name="Aprimorar agilidade lv9" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="306090" Name="Aprimorar agilidade lv10" EffectPic="" Description="Aumentar agilidade" Pic="300" />
+  <Item ID="307000" Name="Aprimorar sorte lv1" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307010" Name="Aprimorar sorte lv2" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307020" Name="Aprimorar sorte lv3" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307030" Name="Aprimorar sorte lv4" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307040" Name="Aprimorar sorte lv5" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307050" Name="Aprimorar sorte lv6" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307060" Name="Aprimorar sorte lv7" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307070" Name="Aprimorar sorte lv8" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307080" Name="Aprimorar sorte lv9" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="307090" Name="Aprimorar sorte lv10" EffectPic="" Description="Aumentar sorte" Pic="300" />
+  <Item ID="308000" Name="Aprimorar dano lv1" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308010" Name="Aprimorar dano lv2" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308020" Name="Aprimorar dano lv3" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308030" Name="Aprimorar dano lv4" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308040" Name="Aprimorar dano lv5" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308050" Name="Aprimorar dano lv6" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308060" Name="Aprimorar dano lv7" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308070" Name="Aprimorar dano lv8" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308080" Name="Aprimorar dano lv9" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="308090" Name="Aprimorar dano lv10" EffectPic="" Description="Aumentar dano" Pic="300" />
+  <Item ID="309000" Name="Aprimorar armadura lv1" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309010" Name="Aprimorar armadura lv2" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309020" Name="Aprimorar armadura lv3" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309030" Name="Aprimorar armadura lv4" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309040" Name="Aprimorar armadura lv5" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309050" Name="Aprimorar armadura lv6" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309060" Name="Aprimorar armadura lv7" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309070" Name="Aprimorar armadura lv8" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309080" Name="Aprimorar armadura lv9" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="309090" Name="Aprimorar armadura lv10" EffectPic="" Description="Aumentar armadura" Pic="300" />
+  <Item ID="310000" Name="Aprimorar ataque mágico lv1" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310010" Name="Aprimorar ataque mágico lv2" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310020" Name="Aprimorar ataque mágico lv3" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310030" Name="Aprimorar ataque mágico lv4" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310040" Name="Aprimorar ataque mágico lv5" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310050" Name="Aprimorar ataque mágico lv6" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310060" Name="Aprimorar ataque mágico lv7" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310070" Name="Aprimorar ataque mágico lv8" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310080" Name="Aprimorar ataque mágico lv9" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="310090" Name="Aprimorar ataque mágico lv10" EffectPic="" Description="Aumentar ataque mágico" Pic="300" />
+  <Item ID="311000" Name="Aprimorar resistencia mágica lv1" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311010" Name="Aprimorar resistencia mágica lv2" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311020" Name="Aprimorar resistencia mágica lv3" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311030" Name="Aprimorar resistencia mágica lv4" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311040" Name="Aprimorar resistencia mágica lv5" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311050" Name="Aprimorar resistencia mágica lv6" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311060" Name="Aprimorar resistencia mágica lv7" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311070" Name="Aprimorar resistencia mágica lv8" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311080" Name="Aprimorar resistencia mágica lv9" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="311090" Name="Aprimorar resistencia mágica lv10" EffectPic="" Description="Aumentar resistencia mágica" Pic="300" />
+  <Item ID="312000" Name="Aprimorar hp lv1" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312001" Name="Aprimorar hp lv1" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312010" Name="Aprimorar hp lv2" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312011" Name="Aprimorar hp lv2" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312020" Name="Aprimorar hp lv3" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312021" Name="Aprimorar hp lv3" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312030" Name="Aprimorar hp lv4" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312031" Name="Aprimorar hp lv4" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312040" Name="Aprimorar hp lv5" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312041" Name="Aprimorar hp lv5" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312050" Name="Aprimorar hp lv6" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312051" Name="Aprimorar hp lv6" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312060" Name="Aprimorar hp lv7" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312061" Name="Aprimorar hp lv7" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312070" Name="Aprimorar hp lv8" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312071" Name="Aprimorar hp lv8" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312080" Name="Aprimorar hp lv9" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312081" Name="Aprimorar hp lv9" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="312090" Name="Aprimorar hp lv10" EffectPic="" Description="Aumentar HP" Pic="300" />
+  <Item ID="312091" Name="Aprimorar hp lv10" EffectPic="" Description="Aumentar HP" Pic="-1" />
+  <Item ID="313000" Name="Aprimorar combo crítico lv1" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313010" Name="Aprimorar combo crítico lv2" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313020" Name="Aprimorar combo crítico lv3" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313030" Name="Aprimorar combo crítico lv4" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313040" Name="Aprimorar combo crítico lv5" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313050" Name="Aprimorar combo crítico lv6" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313060" Name="Aprimorar combo crítico lv7" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313070" Name="Aprimorar combo crítico lv8" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313080" Name="Aprimorar combo crítico lv9" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="313090" Name="Aprimorar combo crítico lv10" EffectPic="" Description="Aumentar combo crítico" Pic="300" />
+  <Item ID="314000" Name="Aprimorar dano crítico lv1" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314010" Name="Aprimorar dano crítico lv2" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314020" Name="Aprimorar dano crítico lv3" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314030" Name="Aprimorar dano crítico lv4" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314040" Name="Aprimorar dano crítico lv5" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314050" Name="Aprimorar dano crítico lv6" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314060" Name="Aprimorar dano crítico lv7" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314070" Name="Aprimorar dano crítico lv8" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314080" Name="Aprimorar dano crítico lv9" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="314090" Name="Aprimorar dano crítico lv10" EffectPic="" Description="Aumentar dano crítico" Pic="300" />
+  <Item ID="315000" Name="Aprimorar regeneração lv1" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315010" Name="Aprimorar regeneração lv2" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315020" Name="Aprimorar regeneração lv3" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315030" Name="Aprimorar regeneração lv4" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315040" Name="Aprimorar regeneração lv5" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315050" Name="Aprimorar regeneração lv6" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315060" Name="Aprimorar regeneração lv7" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315070" Name="Aprimorar regeneração lv8" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315080" Name="Aprimorar regeneração lv9" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="315090" Name="Aprimorar regeneração lv10" EffectPic="" Description="Aumentar regeneração" Pic="300" />
+  <Item ID="316000" Name="Aprimorar precisa matar lv1" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316010" Name="Aprimorar precisa matar lv2" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316020" Name="Aprimorar precisa matar lv3" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316030" Name="Aprimorar precisa matar lv4" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316040" Name="Aprimorar precisa matar lv5" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316050" Name="Aprimorar precisa matar lv6" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316060" Name="Aprimorar precisa matar lv7" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316070" Name="Aprimorar precisa matar lv8" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316080" Name="Aprimorar precisa matar lv9" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="316090" Name="Aprimorar precisa matar lv10" EffectPic="" Description="Aumentar precisa matar" Pic="300" />
+  <Item ID="317000" Name="Aprimorar redução de dano lv1" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317010" Name="Aprimorar redução de dano lv2" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317020" Name="Aprimorar redução de dano lv3" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317030" Name="Aprimorar redução de dano lv4" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317040" Name="Aprimorar redução de dano lv5" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317050" Name="Aprimorar redução de dano lv6" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317060" Name="Aprimorar redução de dano lv7" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317070" Name="Aprimorar redução de dano lv8" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317080" Name="Aprimorar redução de dano lv9" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+  <Item ID="317090" Name="Aprimorar redução de dano lv10" EffectPic="" Description="Aumentar redução de dano" Pic="300" />
+</Result>

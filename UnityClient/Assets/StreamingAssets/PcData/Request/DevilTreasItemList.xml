@@ -1,0 +1,10 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Type="2" TemplateID="11166" Value="1" Random="60000" />
+  <Item ID="2" Type="2" TemplateID="11166" Value="2" Random="30000" />
+  <Item ID="3" Type="3" TemplateID="12711" Value="1" Random="8000" />
+  <Item ID="4" Type="2" TemplateID="11166" Value="1" Random="15000" />
+  <Item ID="5" Type="1" TemplateID="11166" Value="10" Random="100" />
+  <Item ID="6" Type="2" TemplateID="11166" Value="5" Random="500" />
+  <Item ID="7" Type="1" TemplateID="11166" Value="5" Random="100" />
+  <Item ID="8" Type="2" TemplateID="11166" Value="1" Random="6000" />
+</Result>

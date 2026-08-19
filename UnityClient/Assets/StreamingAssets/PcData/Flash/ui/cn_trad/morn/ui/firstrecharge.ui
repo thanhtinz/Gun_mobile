@@ -1,0 +1,107 @@
+
+)FirstRechargeBuy.xml�c<?xml version="1.0" encoding="utf-16"?>
+<View width="407" height="257">
+ <Image skin="asset.firstrecharge.img8" x="0" y="0" />
+ <LabelEx text="快速购买" x="18" y="17" color="0xfff4dc" bold="true" stroke="0x9c3933,1,4,4,30" size="16" />
+ <Box x="39" y="80" var="cellBox" width="81" height="77">
+  <Image skin="asset.firstrecharge.img9" x="0" y="0" />
+ </Box>
+ <TextInput text="1" skin="asset.firstrecharge.img6" x="193" y="78" align="center" margin="0,2" var="numInput" color="0xffdba0" size="14" bold="true" stroke="0x5d110b,1,4,4,30" />
+ <Button skin="asset.ui.pageNavBtn.pre2" x="135" y="77" stateNum="1" var="leftBtn" />
+ <Button skin="asset.ui.pageNavBtn.next2" x="326" y="77" stateNum="1" var="rightBtn" />
+ <LabelEx text="消耗" x="186" y="114" color="0xffffff" bold="true" stroke="0x8e1b1d,1,4,4,30" size="14" />
+ <LabelEx text="10" x="221" y="113" color="0xffffff" bold="true" stroke="0x8e1b1d,1,4,4,30" size="14" width="82" height="18" align="center" var="needMoneyTxt" />
+ <Image var="BuyImg" skin="asset.firstrecharge.img5" x="304" y="112" />
+ <LabelEx text="本周还可购买99" x="192" y="143" color="0xffdba0" bold="true" stroke="0x91231a,1,4,4,30" size="14" var="limitTxt" />
+ <Button skin="asset.firstrecharge.img7" x="152" y="185" stateNum="1" var="buyBtn" />
+ <Button skin="asset.firstrecharge.img10" x="359" y="5" stateNum="1" var="closeBtn" />
+</View>+FirstRechargeMain.xml�w<?xml version="1.0" encoding="utf-16"?>
+<View width="821" height="554">
+ <Image skin="asset.firstrecharge.img27" x="0" y="0" />
+ <Image skin="asset.firstrecharge.img30" x="20" y="277" />
+ <Image skin="asset.firstrecharge.img24" x="47" y="3" />
+ <Button skin="asset.firstrecharge.img10" x="748" y="98" stateNum="1" var="closeBtn" />
+ <TabListEx x="84" y="106" var="tab">
+  <TabButtonEx skin="asset.firstrecharge.img14,asset.firstrecharge.img13" x="125" name="item1" y="0" />
+  <TabButtonEx skin="asset.firstrecharge.img29,asset.firstrecharge.img28" name="item0" selected="true" />
+ </TabListEx>
+ <FirstRechargeRewardView x="75" y="160" var="rewardView" runtime="firstRecharge.view.FirstRechargeRewardView" />
+ <FirstRechargeShop x="74" y="161" var="shopView" runtime="firstRecharge.view.FirstRechargeShop" />
+</View>7FirstRechargeRewardView.xml�<?xml version="1.0" encoding="utf-16"?>
+<View width="696" height="363">
+ <List x="9" y="2" repeatX="3" spaceX="8" var="list">
+  <FirstRechargeTypeItem name="render" runtime="firstRecharge.view.FirstRechargeTypeItem" />
+ </List>
+ <Image skin="asset.firstrecharge.img11" x="0" y="242" />
+ <Box x="26" y="258" var="rewardBox" />
+ <Clip x="2" y="234" clipsUrl="asset.firstrecharge.img35,asset.firstrecharge.img4,asset.firstrecharge.img2" var="rechargeTypeImg" index="0" />
+ <Button skin="asset.firstrecharge.img21" x="565" y="281" stateNum="1" var="getRewardBtn" />
+ <LabelEx text="完成本月首冲，可获得由***提供的*** *1" x="56" y="376" color="0xffde43" size="14" stroke="0x9f1008,1,2,2,30" var="dexTxt" mouseChildren="true" mouseEnabled="true" tipStyle="ddt.view.tips.OneLineTip" />
+ <Image skin="asset.uigeneral.awardGained" x="575" y="275" var="hasGetImg" />
+ <LabelEx text="再需要充值100点券" x="57" y="355" color="0xffffff" size="14" stroke="0x9f1008,1,2,2,30" var="needRechargeTxt" bold="true" />
+</View>+FirstRechargeShop.xml�<?xml version="1.0" encoding="utf-16"?>
+<View width="698" height="389">
+ <List x="0" y="0" repeatX="5" repeatY="2" spaceX="5" vScrollBarSkin="asset.firstrecharge.vscroll" width="689" height="344" var="list">
+  <FirstRechargeShopItem name="render" runtime="firstRecharge.view.FirstRechargeShopItem" />
+ </List>
+ <LabelEx text="金豆:" x="453" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" />
+ <LabelEx text="1237896" x="486" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" align="center" width="72" height="18" var="goldMoneyTxt" />
+ <Image skin="asset.firstrecharge.img5" x="562" y="366" />
+ <Image skin="asset.firstrecharge.img40" x="57" y="367" />
+ <LabelEx text=":" x="82" y="366" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" />
+ <LabelEx text="111" x="72" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" align="center" width="72" height="18" var="MoneyTxt01" />
+ <Image skin="asset.firstrecharge.img41" x="157" y="367" />
+ <LabelEx text=":" x="182" y="366" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" />
+ <LabelEx text="111" x="172" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" align="center" width="72" height="18" var="MoneyTxt02" />
+ <Image skin="asset.firstrecharge.img42" x="257" y="367" />
+ <LabelEx text=":" x="282" y="366" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" />
+ <LabelEx text="111" x="272" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" align="center" width="72" height="18" var="MoneyTxt03" />
+ <Image skin="asset.firstrecharge.img43" x="357" y="367" />
+ <LabelEx text=":" x="382" y="366" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" />
+ <LabelEx text="111" x="372" y="367" color="0xfee053" size="16" bold="true" stroke="0x871a11,1,4,4,30" align="center" width="72" height="18" var="MoneyTxt04" />
+ <!-- <LabelEx text="限购刷新时间：每周一0点  " x="82" y="361" color="0xffde43" size="12" bold="false" stroke="0x871a11,1,4,4,30" /> -->
+ <!-- <LabelEx text="抢购刷新时间：每周一12点 " x="83" y="387" color="0xffde43" size="12" stroke="0x871a11,1,4,4,30" /> -->
+</View>3FirstRechargeShopItem.xml�<?xml version="1.0" encoding="utf-16"?>
+<View width="129" height="172">
+ <!-- 这个应该是抢购背景 -->
+ <Image skin="asset.firstrecharge.img23" x="0" y="0" />
+ <!-- 物品展示框 -->
+ <Box x="25" y="12" var="itemBox" width="79" height="67" />
+ <!-- 这个应该是抢购图片 -->
+ <Clip x="6" y="0" clipsUrl="asset.firstrecharge.img22,asset.firstrecharge.img38" var="typeClip" index="0" />
+ <LabelEx text="神仙水" x="17" y="95" size="14" bold="true" color="0xffffff" stroke="0xb55c16,1,4,4,30" width="95" height="18" align="center" var="itemName" />
+ <LabelEx text="抢购数量" x="26" y="116" size="12" color="0xffdba0" stroke="0xa54c00,1,4,4,30" width="56" height="18" />
+ <LabelEx text="11" x="84" y="116" size="12" color="0xffdba0" stroke="0xa54c00,1,4,4,30" height="18" align="left" var="numTxt" />
+ <!--  imageLabel="asset.firstrecharge.img5"  就是豆子 imageLabel 属性，我把他改成其他的试试看 -->
+ <Button skin="asset.firstrecharge.img37" x="25" y="136" stateNum="1" imageLabel="asset.firstrecharge.img5" imageLabelRect="45,2" labelSize="14" labelBold="true" labelColors="0xfff596" labelStroke="0xb65407,1,4,4,30" label="999" labelMargin="-25,-2" var="buyBtn" />
+</View>3FirstRechargeTypeItem.xml�S<?xml version="1.0" encoding="utf-16"?>
+<View width="221" height="240">
+ <Clip x="0" y="6" clipsUrl="asset.firstrecharge.img26,asset.firstrecharge.img36,asset.firstrecharge.img33" index="0" var="bgClip" />
+ <LabelEx text="充值" x="70" y="28" color="0xffe6a4" size="14" bold="true" />
+ <LabelEx text="30000" x="102" y="28" color="0xffe6a4" size="14" bold="true" var="rechargeMoney" width="52" height="18" align="center" />
+ <LabelEx text="领取以下全部奖励" x="48" y="47" color="0xffe6a4" size="14" bold="true" />
+ <Image skin="asset.firstrecharge.img39" x="-10" y="-7" name="selectBox" />
+ <Clip x="-3" y="0" clipsUrl="asset.firstrecharge.img34,asset.firstrecharge.img3,asset.firstrecharge.img1" index="0" var="typeClip" />
+ <Image skin="asset.firstrecharge.img31" x="49" y="147" var="hasRechargeImg" width="138" height="46" />
+ <Button skin="asset.firstrecharge.img20" x="49" y="148" stateNum="1" var="rechargeBtn" />
+ <LabelEx text="点券" x="140" y="28" color="0xffe6a4" size="14" bold="true" width="52" height="18" align="center" />
+</View>EItem/TreasureHuntAwardListItem.xml�W<?xml version="1.0" encoding="utf-16"?>
+<View width="520" height="115">
+ <Image skin="treasureHunting.rewards.listItemBg" x="0" y="0" name="bg" />
+ <List x="159" y="10" width="347" height="101" repeatX="6" repeatY="2" spaceX="8" spaceY="2" var="itemList">
+  <TreasureHuntAwardCell x="0" y="0" name="render" runtime="treasureHunting.items.TreasureHuntAwardCell" />
+ </List>
+ <Image x="26" y="19" var="typeIcon" />
+</View>?View/FirstRechargeShowAlert.xml�C<?xml version="1.0" encoding="utf-16"?>
+<View width="1000" height="650" x="220" y="120">
+ <Image skin="asset.ui.frame.bg2" x="120" y="70" sizeGrid="25,50,25,50" width="358" height="232" />
+ <Button skin="asset.ui.btn_close1" x="419" y="76" stateNum="1" buttonMode="true" var="closeBtn" />
+ <Image skin="asset.ddtstore.ShortcutTextBg" x="140" y="234" sizeGrid="5,5,5,5" width="317" height="48" />
+ <Button label="取 消" x="339" y="240" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="cancelBtn" buttonMode="true" />
+ <Button label="确 定" x="188" y="240" stateNum="1" width="79" height="38" skin="asset.ui.btn_yellow1" labelColors="0xFEF7A7" labelStroke="0x724107,1,4,4,30" labelSize="16" labelBold="true" var="confirmBtn" buttonMode="true" />
+ <TextInput skin="asset.ui.scale.bg4" x="255" y="166" sizeGrid="10,10,10,10" width="141" height="29" align="center" margin="0,6" var="buyCountInput" stroke="0x4b270d,1,4,4,10" size="14" color="0xfff8d6" maxChars="12" />
+ <Label text="" x="137" y="82" size="16" bold="true" color="0xffeebf" stroke="0x442006,1,4,4,30" />
+ <Label text="" x="174" y="211" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10" />
+ <Label text="请输入激活码" x="174" y="171" bold="true" color="0xfff196" size="12" backgroundColor="0x0" stroke="0x5f330d,1,4,4,10" />
+ <LabelEx x="172" y="131" color="0xffd8bd" bold="true" stroke="0x5d1c00,1,4,2,10" size="16" var="tipMsgLab" />
+</View>

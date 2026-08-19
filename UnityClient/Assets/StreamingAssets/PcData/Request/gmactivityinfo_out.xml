@@ -1,0 +1,262 @@
+<Result value="true" message="Success!">
+  <ActiveInfo>
+    <Activity activityId="0707d0ea-109f-9f7f-acc1-2899012475f6" activityName="New server" activityType="-3" activityChildType="-1" getWay="0" desc="" rewardDesc="" beginTime="2014/10/07 00:00:00" beginShowTime="2014/10/07 00:00:00" endTime="2014/11/09 23:59:59" endShowTime="2014/11/09 23:59:59" icon="" isContinue="0" status="1" remain1="0" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="21ae0ff9-25bd-bc11-03f6-eea67800ba8a" activityName="Đại sư cường hóa" activityType="8" activityChildType="0" getWay="0" desc="Đại sư cường hóa, chuyên gia dung luyện" rewardDesc="强化任意装备到 10,可获赠: &#xA;Châu báu thuộc tính  x 30 (不限,绑定,永久有效)&#xA;Mũi khoan cấp 1 x 30 (不限,绑定,永久有效)&#xA;Hộp thẻ bài ngẫu nhiên x 50 (不限,绑定,永久有效)&#xA;&#xA;强化任意装备到 11,可获赠: &#xA;Châu báu thuộc tính  x 20 (不限,绑定,永久有效)&#xA;Túi quà Maria x 5 (不限,绑定,永久有效)&#xA;Thẻ hồn x 20 (不限,绑定,永久有效)&#xA;&#xA;强化任意装备到 12,可获赠: &#xA;Chiến hồn đơn x 60 (不限,绑定,永久有效)&#xA;wow-karaoke x 1 (不限,绑定,7天)&#xA;Châu báu thuộc tính Lv4 x 10 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/09 09:00:00" beginShowTime="2014/10/09 09:00:00" endTime="2014/10/09 23:59:59" endShowTime="2014/10/09 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="15bf6a62-8332-b19b-6d4f-8574db6ecbe3" activityId="21ae0ff9-25bd-bc11-03f6-eea67800ba8a" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="15bf6a62-8332-b19b-6d4f-8574db6ecbe3" conditionIndex="0" conditionValue="10" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="15bf6a62-8332-b19b-6d4f-8574db6ecbe3" templateId="313599" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chau báu thu?c tính " />
+        <Reward giftId="15bf6a62-8332-b19b-6d4f-8574db6ecbe3" templateId="11035" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="M?i khoan c?p 1" />
+        <Reward giftId="15bf6a62-8332-b19b-6d4f-8574db6ecbe3" templateId="112108" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="H?p th? bài ng?u nhiên" />
+      </ActiveReward>
+      <Gift giftbagId="7331756a-0348-5705-5ccf-abb28652d2f1" activityId="21ae0ff9-25bd-bc11-03f6-eea67800ba8a" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="7331756a-0348-5705-5ccf-abb28652d2f1" conditionIndex="0" conditionValue="11" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="7331756a-0348-5705-5ccf-abb28652d2f1" templateId="313599" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chau báu thu?c tính " />
+        <Reward giftId="7331756a-0348-5705-5ccf-abb28652d2f1" templateId="200221" count="5" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Túi quà Maria" />
+        <Reward giftId="7331756a-0348-5705-5ccf-abb28652d2f1" templateId="20150" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Th? h?n" />
+      </ActiveReward>
+      <Gift giftbagId="e9c42a14-bec2-213d-b84d-39714e341db8" activityId="21ae0ff9-25bd-bc11-03f6-eea67800ba8a" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="e9c42a14-bec2-213d-b84d-39714e341db8" conditionIndex="0" conditionValue="12" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="e9c42a14-bec2-213d-b84d-39714e341db8" templateId="100100" count="60" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+        <Reward giftId="e9c42a14-bec2-213d-b84d-39714e341db8" templateId="7053" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="7" property="0,50,50,50,50,0,0,0,0" remain1="wow-karaoke" />
+        <Reward giftId="e9c42a14-bec2-213d-b84d-39714e341db8" templateId="313499" count="10" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chau báu thu?c tính Lv4" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="6086c50f-ee98-c689-7b6f-c56a5594b01f" activityName="Cống hiến(có thể trùng)" activityType="6" activityChildType="1" getWay="0" desc="Cống hiến cá nhân đạt 1000" rewardDesc="每累积1000点贡献度,可领取: &#xA;Mũi khoan cấp 1 x 10 (不限,绑定,永久有效)&#xA;Nước kinh nghiệm 3 x 2 (不限,绑定,永久有效)&#xA;Châu báu thuộc tính x 1 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/09 09:00:00" beginShowTime="2014/10/09 09:00:00" endTime="2014/10/09 23:59:59" endShowTime="2014/10/09 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="6c9b54d6-9d5e-ca45-f305-b04a95cc8773" activityId="6086c50f-ee98-c689-7b6f-c56a5594b01f" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="6c9b54d6-9d5e-ca45-f305-b04a95cc8773" conditionIndex="0" conditionValue="1000" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="6c9b54d6-9d5e-ca45-f305-b04a95cc8773" templateId="11035" count="10" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="M?i khoan c?p 1" />
+        <Reward giftId="6c9b54d6-9d5e-ca45-f305-b04a95cc8773" templateId="11903" count="2" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="N??c kinh nghi?m 3" />
+        <Reward giftId="6c9b54d6-9d5e-ca45-f305-b04a95cc8773" templateId="313999" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chau báu thu?c tính" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="643d0ba2-7255-e873-1873-69636a54b336" activityName="33333333333" activityType="7" activityChildType="0" getWay="0" desc="33333333333333333333" rewardDesc="战斗力达到1,赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;战斗力达到3,赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/07 00:00:00" beginShowTime="2014/10/07 00:00:00" endTime="2014/10/07 23:59:59" endShowTime="2014/10/07 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="8c2b2c96-a5eb-1779-a21c-3727e3fac71a" activityId="643d0ba2-7255-e873-1873-69636a54b336" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="8c2b2c96-a5eb-1779-a21c-3727e3fac71a" conditionIndex="0" conditionValue="3" remain1="0" remain2="" />
+        <Condition giftbagId="8c2b2c96-a5eb-1779-a21c-3727e3fac71a" conditionIndex="1" conditionValue="4" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="8c2b2c96-a5eb-1779-a21c-3727e3fac71a" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="ff1b5832-9013-f4ca-eeb5-e9d5ef437e95" activityId="643d0ba2-7255-e873-1873-69636a54b336" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="ff1b5832-9013-f4ca-eeb5-e9d5ef437e95" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+        <Condition giftbagId="ff1b5832-9013-f4ca-eeb5-e9d5ef437e95" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ff1b5832-9013-f4ca-eeb5-e9d5ef437e95" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" activityName="Vua tiêu phí" activityType="12" activityChildType="0" getWay="0" desc=" " rewardDesc="消费下限：100000&#xA;第1名，可领取: &#xA;Thuốc Tăng Cấp Thú x 200 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 100 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 200 (不限,绑定,永久有效)&#xA;&#xA;第2名，可领取: &#xA;Thuốc Tăng Cấp Thú x 100 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 80 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 100 (不限,绑定,永久有效)&#xA;&#xA;第3名，可领取: &#xA;Thuốc Tăng Cấp Thú x 80 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 50 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 80 (不限,绑定,永久有效)&#xA;&#xA;第4名，可领取: &#xA;Thuốc Tăng Cấp Thú x 50 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 30 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第5名，可领取: &#xA;Thuốc Tăng Cấp Thú x 50 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 30 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第6名，可领取: &#xA;Thuốc Tăng Cấp Thú x 30 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 20 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第7名，可领取: &#xA;Thuốc Tăng Cấp Thú x 30 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 20 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第8名，可领取: &#xA;Thuốc Tăng Cấp Thú x 30 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 20 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第9名，可领取: &#xA;Thuốc Tăng Cấp Thú x 30 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 20 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;&#xA;第10名，可领取: &#xA;Thuốc Tăng Cấp Thú x 30 (不限,绑定,永久有效)&#xA;Tinh hoa vinh dự x 20 (不限,绑定,永久有效)&#xA;Cỏ Thiên Diệp x 40 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/09 09:00:00" beginShowTime="2014/10/09 09:00:00" endTime="2014/10/15 22:30:00" endShowTime="2014/10/15 22:30:00" icon="1" isContinue="0" status="1" remain1="0" remain2="100000" />
+    <ActiveGiftBag>
+      <Gift giftbagId="0913c604-260b-ae61-045c-5b7bc7d20e13" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="7" />
+      <ActiveCondition>
+        <Condition giftbagId="0913c604-260b-ae61-045c-5b7bc7d20e13" conditionIndex="0" conditionValue="8" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="0913c604-260b-ae61-045c-5b7bc7d20e13" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="0913c604-260b-ae61-045c-5b7bc7d20e13" templateId="11917" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="0913c604-260b-ae61-045c-5b7bc7d20e13" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="392ce36a-a11a-8042-13ed-6b90b71ed25b" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="9" />
+      <ActiveCondition>
+        <Condition giftbagId="392ce36a-a11a-8042-13ed-6b90b71ed25b" conditionIndex="0" conditionValue="10" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="392ce36a-a11a-8042-13ed-6b90b71ed25b" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="392ce36a-a11a-8042-13ed-6b90b71ed25b" templateId="11917" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="392ce36a-a11a-8042-13ed-6b90b71ed25b" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="733a03f9-b07a-b555-7969-5258bd32a4e7" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="3" />
+      <ActiveCondition>
+        <Condition giftbagId="733a03f9-b07a-b555-7969-5258bd32a4e7" conditionIndex="0" conditionValue="4" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="733a03f9-b07a-b555-7969-5258bd32a4e7" templateId="11164" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="733a03f9-b07a-b555-7969-5258bd32a4e7" templateId="11917" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="733a03f9-b07a-b555-7969-5258bd32a4e7" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="75e12221-365f-fc83-11cb-5153da69f775" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="75e12221-365f-fc83-11cb-5153da69f775" conditionIndex="0" conditionValue="3" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="75e12221-365f-fc83-11cb-5153da69f775" templateId="11164" count="80" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="75e12221-365f-fc83-11cb-5153da69f775" templateId="11917" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="75e12221-365f-fc83-11cb-5153da69f775" templateId="11163" count="80" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="9d89b4ee-bc1a-ae4c-533e-ed174dec3c87" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="9d89b4ee-bc1a-ae4c-533e-ed174dec3c87" conditionIndex="0" conditionValue="2" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="9d89b4ee-bc1a-ae4c-533e-ed174dec3c87" templateId="11164" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="9d89b4ee-bc1a-ae4c-533e-ed174dec3c87" templateId="11917" count="80" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="9d89b4ee-bc1a-ae4c-533e-ed174dec3c87" templateId="11163" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="ada05faa-95d3-649f-6305-03f3ffaf6b68" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="5" />
+      <ActiveCondition>
+        <Condition giftbagId="ada05faa-95d3-649f-6305-03f3ffaf6b68" conditionIndex="0" conditionValue="6" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ada05faa-95d3-649f-6305-03f3ffaf6b68" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="ada05faa-95d3-649f-6305-03f3ffaf6b68" templateId="11917" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="ada05faa-95d3-649f-6305-03f3ffaf6b68" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="c1471ae1-cc25-a483-e38e-c8acfc9ec1d1" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="4" />
+      <ActiveCondition>
+        <Condition giftbagId="c1471ae1-cc25-a483-e38e-c8acfc9ec1d1" conditionIndex="0" conditionValue="5" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="c1471ae1-cc25-a483-e38e-c8acfc9ec1d1" templateId="11164" count="50" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="c1471ae1-cc25-a483-e38e-c8acfc9ec1d1" templateId="11917" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="c1471ae1-cc25-a483-e38e-c8acfc9ec1d1" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="d1b2f064-0c5b-2e82-b0b4-ed2bfb8f3c4f" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="6" />
+      <ActiveCondition>
+        <Condition giftbagId="d1b2f064-0c5b-2e82-b0b4-ed2bfb8f3c4f" conditionIndex="0" conditionValue="7" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d1b2f064-0c5b-2e82-b0b4-ed2bfb8f3c4f" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="d1b2f064-0c5b-2e82-b0b4-ed2bfb8f3c4f" templateId="11917" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="d1b2f064-0c5b-2e82-b0b4-ed2bfb8f3c4f" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="d1ea7396-a05d-ae77-48cd-a152f25e1498" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="8" />
+      <ActiveCondition>
+        <Condition giftbagId="d1ea7396-a05d-ae77-48cd-a152f25e1498" conditionIndex="0" conditionValue="9" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d1ea7396-a05d-ae77-48cd-a152f25e1498" templateId="11164" count="30" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="d1ea7396-a05d-ae77-48cd-a152f25e1498" templateId="11917" count="20" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="d1ea7396-a05d-ae77-48cd-a152f25e1498" templateId="11163" count="40" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+      <Gift giftbagId="fef46f97-704d-074a-685a-8222d9fa1202" activityId="a308fe8b-2d1f-f8b8-524c-8825eff7938c" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="fef46f97-704d-074a-685a-8222d9fa1202" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="fef46f97-704d-074a-685a-8222d9fa1202" templateId="11164" count="200" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Thu?c T?ng C?p Thú" />
+        <Reward giftId="fef46f97-704d-074a-685a-8222d9fa1202" templateId="11917" count="100" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Tinh hoa vinh d?" />
+        <Reward giftId="fef46f97-704d-074a-685a-8222d9fa1202" templateId="11163" count="200" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="C? Thiên Di?p" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="e4181b11-380a-0956-7336-a410ba2fc28d" activityName="2222222222" activityType="0" activityChildType="3" getWay="0" desc="122222222222222222" rewardDesc="累计充值 1 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 3 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/07 00:00:00" beginShowTime="2014/10/07 00:00:00" endTime="2014/10/07 23:59:59" endShowTime="2014/10/07 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="065676d5-1b79-18fb-1bc4-e83b631874d8" activityId="e4181b11-380a-0956-7336-a410ba2fc28d" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="065676d5-1b79-18fb-1bc4-e83b631874d8" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+        <Condition giftbagId="065676d5-1b79-18fb-1bc4-e83b631874d8" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+        <Condition giftbagId="065676d5-1b79-18fb-1bc4-e83b631874d8" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="065676d5-1b79-18fb-1bc4-e83b631874d8" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="4979866d-3ec9-aea4-b9a5-4b36ad398691" activityId="e4181b11-380a-0956-7336-a410ba2fc28d" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="4979866d-3ec9-aea4-b9a5-4b36ad398691" conditionIndex="0" conditionValue="3" remain1="0" remain2="" />
+        <Condition giftbagId="4979866d-3ec9-aea4-b9a5-4b36ad398691" conditionIndex="1" conditionValue="4" remain1="0" remain2="" />
+        <Condition giftbagId="4979866d-3ec9-aea4-b9a5-4b36ad398691" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="4979866d-3ec9-aea4-b9a5-4b36ad398691" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="e66aebad-87cb-02a1-cbde-d1d9eb10bb92" activityName="44444444444444" activityType="7" activityChildType="1" getWay="0" desc="44444444444444" rewardDesc="等级达到1,赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/07 00:00:00" beginShowTime="2014/10/07 00:00:00" endTime="2014/10/07 23:59:59" endShowTime="2014/10/07 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="d1dcbca8-4e2b-bfe5-4e90-ea117d58279b" activityId="e66aebad-87cb-02a1-cbde-d1d9eb10bb92" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="d1dcbca8-4e2b-bfe5-4e90-ea117d58279b" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+        <Condition giftbagId="d1dcbca8-4e2b-bfe5-4e90-ea117d58279b" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d1dcbca8-4e2b-bfe5-4e90-ea117d58279b" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+  <ActiveInfo>
+    <Activity activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" activityName="111111111" activityType="0" activityChildType="5" getWay="0" desc="1111111111111111" rewardDesc="累计充值 1 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 3 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 5 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 7 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 9 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;&#xA;累计充值 11 点券，赠送: &#xA;Chiến hồn đơn x 1 (不限,绑定,永久有效)&#xA;" beginTime="2014/10/07 00:00:00" beginShowTime="2014/10/07 00:00:00" endTime="2014/10/07 23:59:59" endShowTime="2014/10/07 23:59:59" icon="1" isContinue="0" status="1" remain1="1" remain2="62615df0-435e-b2cf-3c37-43b2153cc29c" />
+    <ActiveGiftBag>
+      <Gift giftbagId="8d53a7bf-afc6-b2cb-3ced-02a763447981" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="2" />
+      <ActiveCondition>
+        <Condition giftbagId="8d53a7bf-afc6-b2cb-3ced-02a763447981" conditionIndex="0" conditionValue="5" remain1="0" remain2="" />
+        <Condition giftbagId="8d53a7bf-afc6-b2cb-3ced-02a763447981" conditionIndex="1" conditionValue="6" remain1="0" remain2="" />
+        <Condition giftbagId="8d53a7bf-afc6-b2cb-3ced-02a763447981" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="8d53a7bf-afc6-b2cb-3ced-02a763447981" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="973d733d-bf48-9269-ce1e-9430afa84ff9" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="1" />
+      <ActiveCondition>
+        <Condition giftbagId="973d733d-bf48-9269-ce1e-9430afa84ff9" conditionIndex="0" conditionValue="3" remain1="0" remain2="" />
+        <Condition giftbagId="973d733d-bf48-9269-ce1e-9430afa84ff9" conditionIndex="1" conditionValue="4" remain1="0" remain2="" />
+        <Condition giftbagId="973d733d-bf48-9269-ce1e-9430afa84ff9" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="973d733d-bf48-9269-ce1e-9430afa84ff9" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="baaeff4e-929a-8989-44c9-f582276ffe83" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="4" />
+      <ActiveCondition>
+        <Condition giftbagId="baaeff4e-929a-8989-44c9-f582276ffe83" conditionIndex="0" conditionValue="9" remain1="0" remain2="" />
+        <Condition giftbagId="baaeff4e-929a-8989-44c9-f582276ffe83" conditionIndex="1" conditionValue="10" remain1="0" remain2="" />
+        <Condition giftbagId="baaeff4e-929a-8989-44c9-f582276ffe83" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="baaeff4e-929a-8989-44c9-f582276ffe83" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="cfa199f7-117b-e789-bec8-0256f1c8156e" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="5" />
+      <ActiveCondition>
+        <Condition giftbagId="cfa199f7-117b-e789-bec8-0256f1c8156e" conditionIndex="0" conditionValue="11" remain1="0" remain2="" />
+        <Condition giftbagId="cfa199f7-117b-e789-bec8-0256f1c8156e" conditionIndex="1" conditionValue="12" remain1="0" remain2="" />
+        <Condition giftbagId="cfa199f7-117b-e789-bec8-0256f1c8156e" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="cfa199f7-117b-e789-bec8-0256f1c8156e" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="d5bbf92f-af66-0520-0208-fe762546d079" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="0" />
+      <ActiveCondition>
+        <Condition giftbagId="d5bbf92f-af66-0520-0208-fe762546d079" conditionIndex="0" conditionValue="1" remain1="0" remain2="" />
+        <Condition giftbagId="d5bbf92f-af66-0520-0208-fe762546d079" conditionIndex="1" conditionValue="2" remain1="0" remain2="" />
+        <Condition giftbagId="d5bbf92f-af66-0520-0208-fe762546d079" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="d5bbf92f-af66-0520-0208-fe762546d079" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+      <Gift giftbagId="ec8e25ae-cae3-df84-8595-2ec70fa604f1" activityId="ec87310a-9cbd-dc49-e25c-8647d10473f4" rewardMark="0" giftbagOrder="3" />
+      <ActiveCondition>
+        <Condition giftbagId="ec8e25ae-cae3-df84-8595-2ec70fa604f1" conditionIndex="0" conditionValue="7" remain1="0" remain2="" />
+        <Condition giftbagId="ec8e25ae-cae3-df84-8595-2ec70fa604f1" conditionIndex="1" conditionValue="8" remain1="0" remain2="" />
+        <Condition giftbagId="ec8e25ae-cae3-df84-8595-2ec70fa604f1" conditionIndex="2" conditionValue="1" remain1="0" remain2="" />
+      </ActiveCondition>
+      <ActiveReward>
+        <Reward giftId="ec8e25ae-cae3-df84-8595-2ec70fa604f1" templateId="100100" count="1" isBind="1" occupationOrSex="0" rewardType="0" validDate="0" property="0,0,0,0,0,0,0,0,0" remain1="Chi?n h?n ??n" />
+      </ActiveReward>
+    </ActiveGiftBag>
+  </ActiveInfo>
+</Result>

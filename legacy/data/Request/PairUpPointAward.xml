@@ -1,0 +1,11 @@
+<Result value="true" message="Success!">
+  <Item Count="1" ID="10" IsBind="true" ItemID="313411" Point="4000" Type="0" Valid="0" />
+  <Item Count="1" ID="11" IsBind="true" ItemID="11560" Point="9000" Type="0" Valid="0" />
+  <Item Count="1" ID="12" IsBind="true" ItemID="46072" Point="15000" Type="0" Valid="15" />
+  <Item Count="5" ID="13" IsBind="true" ItemID="40006" Point="23000" Type="0" Valid="0" />
+  <Item Count="5" ID="14" IsBind="true" ItemID="11150" Point="35000" Type="0" Valid="0" />
+  <Item Count="1" ID="15" IsBind="true" ItemID="14028" Point="50000" Type="0" Valid="7" />
+  <Item Count="80" ID="16" IsBind="true" ItemID="11171" Point="80000" Type="0" Valid="0" />
+  <Item Count="250" ID="17" IsBind="true" ItemID="11164" Point="120000" Type="0" Valid="0" />
+  <Item Count="5" ID="18" IsBind="true" ItemID="1120218" Point="300000" Type="0" Valid="0" />
+</Result>

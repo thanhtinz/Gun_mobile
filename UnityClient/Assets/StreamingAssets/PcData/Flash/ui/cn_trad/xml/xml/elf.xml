@@ -1,0 +1,88 @@
+<style name="elf" version="11.1.0" source="ui/zh_cn/swf/elf.swf">
+	<components>
+	</components>
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="elf.main.viewPos" x="67" y="51" />
+		<custom classname="flash.geom.Rectangle" stylename="elf.main.helpRect0" width="460" height="400" />
+		<custom classname="flash.geom.Rectangle" stylename="elf.main.helpRect1" width="460" height="350" />
+		<custom classname="flash.geom.Rectangle" stylename="elf.main.helpRect2" width="460" height="320" />
+		<custom classname="flash.geom.Rectangle" stylename="elf.main.helpRect3" width="460" height="200" />
+		<custom classname="flash.geom.Rectangle" stylename="elf.main.helpRect4" width="460" height="350" />
+	
+		<custom classname="flash.geom.Point" stylename="elf.shop.cellPos" x="18" y="29" />
+		<custom classname="flash.geom.Point" stylename="elf.summon.viewPos" x="161" y="75" />
+		<custom classname="flash.geom.Point" stylename="elf.summon.rewardCellPos" x="10" y="10" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.cellPos1" x="161" y="298" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.cellPos2" x="526" y="298" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.previewPos" x="303" y="81" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.previewCellPos" x="10" y="10" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.elfMcPos1" x="92" y="73" />	
+		<custom classname="flash.geom.Point" stylename="elf.summon.elfMcPos2" x="455" y="92" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.exerciseCellPos" x="142" y="260" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.growupCellPos" x="27" y="185" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.goodFelingViewPos" x="245" y="97" />	
+		<custom classname="flash.geom.Point" stylename="elf.skill.elfListViewPos" x="315" y="74" />	
+		<custom classname="flash.geom.Point" stylename="elf.skill.atlasViewPos" x="315" y="74" />	
+		<custom classname="elf.view.ElfMovieItem" stylename="elf.property.moviePos" x="251" y="255" />	
+		<custom classname="elf.view.ElfMovieItem" stylename="elf.skill.moviePos" x="239" y="123" />
+		
+		<custom classname="game.objects.GameElfEquip" stylename="elf.equip.moviePos" x="249" y="178" />
+		<custom classname="game.objects.GameElfEquip" stylename="elf.skill.equipMoviePos" x="234" y="44" />	
+		<custom classname="game.objects.GameElfEquip" stylename="elf.equipInfo.moviePos" x="146" y="242" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.equip.curInfoViewPos" x="168" y="97" />
+		<custom classname="flash.geom.Point" stylename="elf.equip.goodFelingViewPos" x="245" y="97" />		
+		
+		<!-- 画图点位~.~醉了 -->
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos" x="153" y="96" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos10" x="0" y="-16" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos11" x="0" y="-23" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos12" x="0" y="-32" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos13" x="0" y="-40" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos14" x="0" y="-50" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos15" x="0" y="-61" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos20" x="0" y="13" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos21" x="0" y="21" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos22" x="0" y="30" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos23" x="0" y="38" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos24" x="0" y="49" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos25" x="0" y="60" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos30" x="-12" y="-8" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos31" x="-18" y="-12" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos32" x="-26" y="-16" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos33" x="-33" y="-21" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos34" x="-42" y="-26" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos35" x="-52" y="-31" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos40" x="13" y="-8" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos41" x="19" y="-12" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos42" x="27" y="-16" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos43" x="34" y="-21" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos44" x="43" y="-26" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos45" x="53" y="-31" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos50" x="-12" y="6" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos51" x="-18" y="10" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos52" x="-26" y="15" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos53" x="-33" y="19" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos54" x="-42" y="24" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos55" x="-52" y="30" />	
+		
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos60" x="13" y="6" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos61" x="19" y="10" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos62" x="27" y="15" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos63" x="34" y="19" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos64" x="43" y="24" />	
+		<custom classname="flash.geom.Point" stylename="elf.property.ratePos65" x="53" y="30" />	
+		
+	</customDisplay>
+	<components>
+	<component classname="elf.view.shop.ElfShopBuyFrame"  stylename="elf.view.alertShopBuyFrame"  parentStyle="BaseFrame" 
+		containerY="30" width="340" height="200"/>	
+		
+	</components>
+	<bitmaps>
+	</bitmaps>
+</style>

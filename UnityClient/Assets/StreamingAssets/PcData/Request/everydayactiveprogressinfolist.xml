@@ -1,0 +1,11 @@
+<Result value="true" message="Success!">
+  <item ID="4" ActiveName="遠古巨龍" ActiveTime="13:55-17:00" Count="不限" Description="榮譽、積分" JumpType="4" LevelLimit="20" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="10" ActiveName="聯賽" ActiveTime="18:30-19:50|21:30-24:00" Count="30" Description="令牌" JumpType="10" LevelLimit="24" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="11" ActiveName="足球隊長" ActiveTime="18:55-22:00" Count="不限" Description="榮譽、積分" JumpType="11" LevelLimit="20" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="12" ActiveName="公會爭霸" ActiveTime="20:00-21:00（週6）" Count="不限" Description="紫晶石" JumpType="12" LevelLimit="17" DayOfWeek="6" />
+  <item ID="13" ActiveName="公會BOSS" ActiveTime="會長開啟" Count="不限" Description="貢獻、榮譽" JumpType="13" LevelLimit="17" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="14" ActiveName="勇士秘境" ActiveTime="全天" Count="1" Description="戰魂丹、經驗、秘境金幣" JumpType="14" LevelLimit="30" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="15" ActiveName="多人副本" ActiveTime="全天" Count="不限" Description="稀有道具" JumpType="15" LevelLimit="10" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="16" ActiveName="多人競技" ActiveTime="全天" Count="不限" Description="經驗" JumpType="16" LevelLimit="3" DayOfWeek="1,2,3,4,5,6,0" />
+  <item ID="17" ActiveName="藏寶圖尋寶" ActiveTime="全天" Count="1" Description="玄獸寶石、稀有道具" JumpType="17" LevelLimit="26" DayOfWeek="1,2,3,4,5,6,0" />
+</Result>

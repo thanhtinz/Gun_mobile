@@ -1,0 +1,21 @@
+
+-HorseQiLingProItem.xml�m<View width="310" height="20">
+  <Image skin="horse.picQiLing.arrow" x="208" y="1" var="arrow"/>
+  <Label text="label" x="0" y="0" size="14" color="0xfff2ac" bold="true" stroke="0x4b2b06,1,4,4,10" var="proNameLabel"/>
+  <Label text="max" x="232" y="0" size="14" color="0x60ff00" bold="true" stroke="0x024300,1,4,4,10" width="48" height="18" align="center" var="nextProLabel"/>
+  <Label text="label" x="86" y="0" size="14" color="0xfff2ac" bold="true" stroke="0x4b2b06,1,4,4,10" var="proLabel"/>
+</View>/HorseQiLingMainView.xml�<View width="430" height="490">
+  <Image skin="asset.ui.frame.bg2" x="0" y="0" width="430" height="490" sizeGrid="10,50,10,10"/>
+  <Image skin="horse.picQiLing.bg" x="16" y="44"/>
+  <Button skin="horse.picQiLing.btn" x="146" y="411" stateNum="1" buttonMode="true" var="qiLingBtn"/>
+  <Label text="消耗:" x="152" y="380" size="14" color="0xfff073" bold="true" stroke="0x663a00,1,4,4,10"/>
+  <Label text="0/123" x="239" y="381" size="14" color="0xfff073" bold="true" stroke="0x663a00,1,4,4,10" width="117" height="19" var="goodsTimesLabel"/>
+  <HorseQiLingProItem x="58" y="255" var="proItem0" runtime="horse.view.HorseQiLingProItem"/>
+  <HorseQiLingProItem x="58" y="277" var="proItem1" runtime="horse.view.HorseQiLingProItem"/>
+  <HorseQiLingProItem x="58" y="299" var="proItem2" runtime="horse.view.HorseQiLingProItem"/>
+  <HorseQiLingProItem x="58" y="321" var="proItem3" runtime="horse.view.HorseQiLingProItem"/>
+  <HorseQiLingProItem x="58" y="343" var="proItem4" runtime="horse.view.HorseQiLingProItem"/>
+  <Image skin="horse.pic.upArrow" x="187" y="82"/>
+  <Button skin="asset.ui.btn_close1" x="369" y="5" stateNum="1" buttonMode="true" var="closeBtn"/>
+  <Label text="坐騎啟靈" x="17" y="12" size="16" color="0xffeebf" bold="true" stroke="0x442006,1,4,4,30"/>
+</View>

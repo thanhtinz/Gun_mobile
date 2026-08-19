@@ -1,0 +1,13 @@
+<Result value="true" message="Success!">
+  <Item Count="1" ID="1" IsBind="true" ItemID="1120217" Price="2000" LimitCount="2" Type="1" Valid="0" />
+  <Item Count="50" ID="2" IsBind="true" ItemID="11170" Price="150" LimitCount="5" Type="1" Valid="0" />
+  <Item Count="50" ID="3" IsBind="true" ItemID="11171" Price="500" LimitCount="5" Type="1" Valid="0" />
+  <Item Count="50" ID="4" IsBind="true" ItemID="11177" Price="150" LimitCount="10" Type="1" Valid="0" />
+  <Item Count="1" ID="5" IsBind="true" ItemID="11025" Price="1" LimitCount="99" Type="1" Valid="0" />
+  <Item Count="1" ID="6" IsBind="true" ItemID="46071" Price="600" LimitCount="1" Type="1" Valid="15" />
+  <Item Count="1" ID="7" IsBind="true" ItemID="12537" Price="60" LimitCount="5" Type="1" Valid="0" />
+  <Item Count="1" ID="8" IsBind="true" ItemID="11160" Price="50" LimitCount="50" Type="1" Valid="0" />
+  <Item Count="1" ID="9" IsBind="true" ItemID="1120218" Price="900" LimitCount="2" Type="1" Valid="0" />
+  <Item Count="1" ID="10" IsBind="true" ItemID="112210" Price="100" LimitCount="3" Type="1" Valid="0" />
+  <Item Count="1" ID="11" IsBind="true" ItemID="11917" Price="5" LimitCount="200" Type="1" Valid="0" />
+</Result>

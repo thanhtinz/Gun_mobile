@@ -1,0 +1,14 @@
+<Result value="true" message="Success!">
+  <Item FoodID="334101" VegetableID="336101" NeedCount="10" />
+  <Item FoodID="334101" VegetableID="336102" NeedCount="10" />
+  <Item FoodID="334101" VegetableID="336103" NeedCount="10" />
+  <Item FoodID="334101" VegetableID="336104" NeedCount="10" />
+  <Item FoodID="334102" VegetableID="336101" NeedCount="10" />
+  <Item FoodID="334102" VegetableID="336105" NeedCount="10" />
+  <Item FoodID="334102" VegetableID="336106" NeedCount="10" />
+  <Item FoodID="334102" VegetableID="336107" NeedCount="10" />
+  <Item FoodID="334103" VegetableID="336101" NeedCount="10" />
+  <Item FoodID="334103" VegetableID="336108" NeedCount="10" />
+  <Item FoodID="334103" VegetableID="336109" NeedCount="10" />
+  <Item FoodID="334103" VegetableID="336110" NeedCount="10" />
+</Result>

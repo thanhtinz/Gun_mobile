@@ -1,0 +1,24 @@
+<Result value="true" message="Success!">
+  <Item ID="1" Level="1" NextID="0" SkillID="20000" Type="1" />
+  <Item ID="2" Level="1" NextID="0" SkillID="20010" Type="2" />
+  <Item ID="3" Level="1" NextID="0" SkillID="20020" Type="3" />
+  <Item ID="4" Level="1" NextID="0" SkillID="20030" Type="4" />
+  <Item ID="5" Level="1" NextID="0" SkillID="20040" Type="5" />
+  <Item ID="6" Level="1" NextID="0" SkillID="20050" Type="6" />
+  <Item ID="7" Level="1" NextID="0" SkillID="20060" Type="7" />
+  <Item ID="8" Level="1" NextID="0" SkillID="20070" Type="8" />
+  <Item ID="9" Level="1" NextID="0" SkillID="20080" Type="9" />
+  <Item ID="10" Level="1" NextID="0" SkillID="20090" Type="10" />
+  <Item ID="11" Level="1" NextID="0" SkillID="20100" Type="11" />
+  <Item ID="12" Level="1" NextID="0" SkillID="20110" Type="12" />
+  <Item ID="13" Level="1" NextID="0" SkillID="20500" Type="13" />
+  <Item ID="14" Level="1" NextID="0" SkillID="20510" Type="14" />
+  <Item ID="15" Level="1" NextID="0" SkillID="20520" Type="15" />
+  <Item ID="16" Level="1" NextID="0" SkillID="20530" Type="16" />
+  <Item ID="17" Level="1" NextID="0" SkillID="20540" Type="17" />
+  <Item ID="18" Level="1" NextID="0" SkillID="20550" Type="18" />
+  <Item ID="19" Level="1" NextID="0" SkillID="20560" Type="19" />
+  <Item ID="20" Level="1" NextID="0" SkillID="20570" Type="20" />
+  <Item ID="21" Level="1" NextID="0" SkillID="20580" Type="21" />
+  <Item ID="22" Level="1" NextID="0" SkillID="20590" Type="22" />
+</Result>

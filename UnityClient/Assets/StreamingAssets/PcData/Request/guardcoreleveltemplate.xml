@@ -1,0 +1,22 @@
+<Result value="true" message="Success!">
+  <Item Exp="0" Gold="0" Grade="1" Guard="0" />
+  <Item Exp="500000" Gold="100000" Grade="2" Guard="10" />
+  <Item Exp="1500000" Gold="200000" Grade="3" Guard="13" />
+  <Item Exp="2500000" Gold="400000" Grade="4" Guard="17" />
+  <Item Exp="3500000" Gold="800000" Grade="5" Guard="22" />
+  <Item Exp="4500000" Gold="1600000" Grade="6" Guard="28" />
+  <Item Exp="5500000" Gold="3200000" Grade="7" Guard="35" />
+  <Item Exp="6500000" Gold="4800000" Grade="8" Guard="43" />
+  <Item Exp="7500000" Gold="6400000" Grade="9" Guard="52" />
+  <Item Exp="8500000" Gold="8500000" Grade="10" Guard="62" />
+  <Item Exp="9500000" Gold="9500000" Grade="11" Guard="73" />
+  <Item Exp="10500000" Gold="10500000" Grade="12" Guard="85" />
+  <Item Exp="11500000" Gold="11500000" Grade="13" Guard="98" />
+  <Item Exp="12500000" Gold="12500000" Grade="14" Guard="112" />
+  <Item Exp="13500000" Gold="13500000" Grade="15" Guard="127" />
+  <Item Exp="14500000" Gold="14500000" Grade="16" Guard="143" />
+  <Item Exp="15500000" Gold="15500000" Grade="17" Guard="160" />
+  <Item Exp="16500000" Gold="16500000" Grade="18" Guard="178" />
+  <Item Exp="17500000" Gold="17500000" Grade="19" Guard="197" />
+  <Item Exp="18500000" Gold="18500000" Grade="20" Guard="217" />
+</Result>

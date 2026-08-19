@@ -1,0 +1,6 @@
+<style name="uicomponent" version="1.0.1" source="ui/cn_trad/swf/uicomponent.swf">
+	<components>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="uicomponent.help.btn1" backStyle="asset.ui.btn_help1"/>
+		<component classname="com.pickgliss.ui.controls.SimpleBitmapButton" stylename="uicomponent.help.btn4" backStyle="asset.ui.btn_help4"/>
+	</components>	
+</style>

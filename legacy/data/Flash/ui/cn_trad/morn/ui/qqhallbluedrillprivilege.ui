@@ -1,0 +1,48 @@
+
+YpageView/QQHallBlueDrillPrivilegeDayItem.xmláU<View width="254" height="22">
+  <Clip clipsUrlSimple="asset.QQHallBludDrill.privilege.drill,8" index="0" var="levelClip"/>
+  <Label text="0x" x="73" color="0xFEFFF8" stroke="0x192A84,1,2,2,10" width="41" height="20" y="2" var="countLabel0"/>
+  <Label text="0x" x="143" color="0xFEFFF8" stroke="0x192A84,1,2,2,10" width="41" height="20" y="2" var="countLabel1"/>
+  <Label text="0x" x="213" color="0xFEFFF8" stroke="0x192A84,1,2,2,10" width="41" height="20" y="2" var="countLabel2"/>
+</View>[pageView/QQHallBlueDrillPrivilegeGiftView.xmlÜw<View width="476" height="330">
+  <Image skin="asset.QQHallBludDrill.privilege.giftBg"/>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillBtn" x="46" y="280" stateNum="1" var="joinBlueDrillBtn"/>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillYearBtn" x="238" y="280" stateNum="1" var="joinYearBlueDrillBtn"/>
+  <Button skin="asset.QQHallBludDrill.privilege.getBtn" x="182" y="157" stateNum="1" var="getBtn"/>
+</View>YpageView/QQHallBlueDrillPrivilegeDayView.xmlä	<View width="504" height="349">
+  <Image skin="asset.QQHallBludDrill.privilege.dayBg"/>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillBtn" x="142" y="300" stateNum="1" var="joinBlueDrillBtn"/>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillYearBtn" x="294" y="300" stateNum="1" var="joinYearBlueDrillBtn"/>
+  <Button skin="asset.QQHallBludDrill.privilege.getBtn" x="21" y="301" stateNum="1" var="getBtn"/>
+  <List x="47" y="74" width="261" height="200" repeatY="9" var="list">
+    <QQHallBlueDrillPrivilegeDayItem name="render" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeDayItem"/>
+  </List>
+</View>apageView/QQHallBlueDrillPrivilegeUpgradeView.xmlâe<View width="500" height="330">
+  <List width="500" height="266" repeatY="3" var="list">
+    <QQHallBlueDrillPrivilegeUpgradeItem name="render" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeUpgradeItem"/>
+    <VScrollBar skin="asset.QQHallBludDrill.privilege.scroll.vscroll" x="478" y="3" width="18" height="265" sliderOffset="0" name="scrollBar"/>
+  </List>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillBtn" x="61" y="286" stateNum="1" var="joinBlueDrillBtn"/>
+  <Button skin="asset.QQHallBludDrill.privilege.joinBlueDrillYearBtn" x="253" y="286" stateNum="1" var="joinYearBlueDrillBtn"/>
+</View>[pageView/QQHallBlueDrillPrivilegeLogoView.xmlÅA<View width="504" height="345">
+  <Image skin="asset.QQHallBludDrill.privilege.logoBg"/>
+</View>AQQHallBlueDrillPrivilegeMain.xmlï<View width="775" height="555">
+  <Image skin="asset.QQHallBludDrill.privilege.bg"/>
+  <Button skin="asset.QQHallBludDrill.privilege.closeBtn" x="734" y="32" stateNum="1" var="closeBtn"/>
+  <TabListEx x="31" y="78" var="viewTab" selectEnable="true">
+    <TabButtonEx skin="asset.QQHallBludDrill.privilege.dayBtn,asset.QQHallBludDrill.privilege.daySelectBtn" name="item1" y="56"/>
+    <TabButtonEx name="item0" skin="asset.QQHallBludDrill.privilege.giftBtn,asset.QQHallBludDrill.privilege.giftSelectBtn"/>
+    <TabButtonEx skin="asset.QQHallBludDrill.privilege.upgraedBtn,asset.QQHallBludDrill.privilege.upgraedSelectBtn" name="item2" y="112"/>
+    <TabButtonEx skin="asset.QQHallBludDrill.privilege.logoBtn,asset.QQHallBludDrill.privilege.logoSelectBtn" name="item3" y="168"/>
+  </TabListEx>
+  <QQHallBlueDrillPrivilegeGiftView x="250" y="192" var="giftView" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeGiftView"/>
+  <QQHallBlueDrillPrivilegeDayView x="235" y="187" var="dayView" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeDayView"/>
+  <QQHallBlueDrillPrivilegeUpgradeView x="235" y="186" var="upgradeView" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeUpgradeView"/>
+  <QQHallBlueDrillPrivilegeLogoView x="235" y="184" var="logoView" runtime="qqhall.blueDrill.pageView.QQHallBlueDrillPrivilegeLogoView"/>
+</View>apageView/QQHallBlueDrillPrivilegeUpgradeItem.xmlá=<View width="476" height="89">
+  <Image skin="asset.QQHallBludDrill.privilege.upgraedItemBg"/>
+  <Clip x="40" y="32" clipsUrlSimple="asset.QQHallBludDrill.privilege.giftLabel,4" index="0" var="titleClip"/>
+  <Image skin="asset.QQHallBludDrill.privilege.upgraedItemCellBg" x="163" y="14"/>
+  <Button skin="asset.QQHallBludDrill.privilege.getBtn" x="343" y="22" stateNum="1" var="getBtn"/>
+  <Image skin="asset.QQHallBludDrill.privilege.upgraedItemCellBg" x="251" y="14"/>
+</View>

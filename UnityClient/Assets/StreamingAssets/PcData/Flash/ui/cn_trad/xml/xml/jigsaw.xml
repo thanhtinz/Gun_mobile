@@ -1,0 +1,15 @@
+﻿<style name="jigsaw" version="1.0.1" source="ui/vietnam/swf/jigsaw.swf">
+<sets>
+</sets>
+<customDisplay>
+	<custom classname="flash.geom.Point" stylename="jigsaw.shopView.cellPos" x="7" y="7" />
+	<custom classname="ddt.view.NameInputDropListTarget" stylename="jigsaw.getFriendPackFrame.nameInput" x="107" y="60"/>
+</customDisplay>
+<components>
+	<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="jigsaw.questView.scrollPanel" parentStyle="core.ScrollPanel"
+			hScrollProxy="2" vScrollProxy="1" vUnitIncrement="10" x="0" y="0" width="540" height="320"/>
+</components>
+
+<bitmaps>
+</bitmaps>
+</style> 

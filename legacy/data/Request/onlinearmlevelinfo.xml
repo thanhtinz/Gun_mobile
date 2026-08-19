@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <Item LevelCount="1" PickAxeExp="0" HeadExp="0" ClothExp="0" SwordExp="0" ShieldExp="0" Attack="0" Defence="0" Agility="0" Lucky="0" />
+  <Item LevelCount="2" PickAxeExp="25000" HeadExp="40000" ClothExp="40000" SwordExp="40000" ShieldExp="40000" Attack="30" Defence="30" Agility="30" Lucky="30" />
+  <Item LevelCount="3" PickAxeExp="225000" HeadExp="160000" ClothExp="160000" SwordExp="160000" ShieldExp="160000" Attack="60" Defence="60" Agility="60" Lucky="60" />
+  <Item LevelCount="4" PickAxeExp="1225000" HeadExp="440000" ClothExp="440000" SwordExp="440000" ShieldExp="440000" Attack="90" Defence="90" Agility="90" Lucky="90" />
+  <Item LevelCount="5" PickAxeExp="3725000" HeadExp="1040000" ClothExp="1040000" SwordExp="1040000" ShieldExp="1040000" Attack="120" Defence="120" Agility="120" Lucky="120" />
+  <Item LevelCount="6" PickAxeExp="0" HeadExp="2240000" ClothExp="2240000" SwordExp="2240000" ShieldExp="2240000" Attack="150" Defence="150" Agility="150" Lucky="150" />
+  <Item LevelCount="7" PickAxeExp="0" HeadExp="4640000" ClothExp="4640000" SwordExp="4640000" ShieldExp="4640000" Attack="180" Defence="180" Agility="180" Lucky="180" />
+  <Item LevelCount="8" PickAxeExp="0" HeadExp="9040000" ClothExp="9040000" SwordExp="9040000" ShieldExp="9040000" Attack="210" Defence="210" Agility="210" Lucky="210" />
+  <Item LevelCount="9" PickAxeExp="0" HeadExp="16540000" ClothExp="16540000" SwordExp="16540000" ShieldExp="16540000" Attack="240" Defence="240" Agility="240" Lucky="240" />
+  <Item LevelCount="10" PickAxeExp="0" HeadExp="28540000" ClothExp="28540000" SwordExp="28540000" ShieldExp="28540000" Attack="270" Defence="270" Agility="270" Lucky="270" />
+</Result>

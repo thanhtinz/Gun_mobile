@@ -1,0 +1,145 @@
+
+)TexpSadasivaView.xml�	<View width="431" height="450">
+  <Image skin="asset.texpSystem.sadasiva.bg"/>
+  <Clip x="66" y="40" clipsUrlSimple="asset.texpSystem.sadasiva.blueEffect,3" index="0" var="setp_effect"/>
+  <Image skin="asset.texpSystem.sadasiva.figureIcon" x="64" y="63" width="286" height="224"/>
+  <Image skin="asset.texpSystem.divineRealm.proBg" x="9" y="356"/>
+  <Image skin="asset.texpSystem.sadasiva.stepTxt" x="58" y="386"/>
+  <NumberImageEx x="29" y="387" clipsUrlSimple="asset.texpSystem.sadasiva.numS,9" count="2" space="-2" var="step_sNumber" width="30" align="center"/>
+  <Image skin="asset.texpSystem.sadasiva.levelTxt" x="210" y="279" var="txt_lev"/>
+  <NumberImageEx x="177" y="280" clipsUrlSimple="asset.texpSystem.sadasiva.numM,9" count="2" space="-2" var="step_mNumber" width="30" align="right"/>
+  <Image skin="asset.texpSystem.sadasiva.stepDesc" x="161" y="57"/>
+  <NumberImageEx x="213" y="59" clipsUrlSimple="asset.texpSystem.sadasiva.numB,9" count="10" var="step_Numb" width="40" align="center"/>
+  <Button skin="asset.texpSystem.buyBtn2" x="337" y="307" stateNum="1" var="buyTexpBtn" buttonMode="true" tipStyle="core.GoodsTip" tipDirctions="7,0"/>
+  <FrameClip x="208" y="182" skin="asset.texpSystem.divineRealm.upStepEffect" frame="stand1" var="fc_upStepEffect"/>
+  <Button skin="asset.texpSystem.sadasiva.sadasivaBtn" x="140" y="156" stateNum="1" var="btn_sadasiva"/>
+  <Button skin="asset.texpSystem.texpBtn" x="167" y="307" stateNum="1" var="btn_texp"/>
+  <CheckBox x="108" y="312" twoURLs="asset.ui.btn_check3,asset.ui.btn_check3$select" stateNum="1" selected="true" imageLabel="asset.texpSystem.divineRealm.allInject" imageLabelX="-75" imageLabelY="7" var="cb_allInjectSCB"/>
+  <Image skin="asset.texpSystem.divineRealm.gMaxIcon" x="171" y="283" var="img_max"/>
+  <Image skin="asset.texpSystem.divineRealm.gressBg" x="94" y="384"/>
+  <ProgressBar skin="asset.texpSystem.progress" x="175" y="389" sizeGrid="4,2,4,2" barLabelY="-1" var="progress" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3" value="0.96"/>
+  <Label x="140" y="388" color="0xFFEC8C" size="16" stroke="0x512E0B,1,4,4,10" bold="true" var="levelLabel" text="0"/>
+  <Image skin="asset.texpSystem.divineRealm.imgLevIcon" x="106" y="390" var="img_levIcon"/>
+  <Label x="204" y="391" color="0xFFEC8C" size="14" stroke="0x512E0B,1,4,4,10" text="0" align="center" width="166" height="18" mouseChildren="false" mouseEnabled="false" var="progressLabel"/>
+</View>!TexpTipsView.xml�I<View width="206" height="329">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="12,12,12,12,1" width="206" height="308" var="imgBg" x="0" y="0"/>
+  <Label color="0xffffff" bold="true" stroke="0x000000,1,2,2,10,1" text="修炼总属性" x="9" y="10" size="14" width="164" height="18"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="血量：" x="11" y="37" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="攻击：" x="11" y="61" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="防御：" x="11" y="85" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="敏捷：" x="11" y="109" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="幸运：" x="11" y="133" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="魔攻：" x="11" y="157" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="魔抗：" x="11" y="181" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="暴击：" x="107" y="37" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="破甲：" x="107" y="61" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="暴伤：" x="107" y="85" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="速度：" x="107" y="109" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="必杀：" x="107" y="133" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="伤害：" x="107" y="157" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="护甲：" x="107" y="181" width="40" height="20"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="37" width="50" height="20" var="texpLabel0"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="61" width="50" height="20" var="texpLabel1"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="85" width="50" height="20" var="texpLabel2"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="109" width="50" height="20" var="texpLabel3"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="133" width="50" height="20" var="texpLabel4"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="157" width="50" height="20" var="texpLabel5"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="181" width="50" height="20" var="texpLabel6"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="37" width="50" height="20" var="texpLabel7"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="61" width="50" height="20" var="texpLabel8"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="85" width="50" height="20" var="texpLabel9"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="109" width="50" height="20" var="texpLabel10"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="133" width="50" height="20" var="texpLabel11"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="157" width="50" height="20" var="texpLabel12"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="181" width="50" height="20" var="texpLabel13"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="免伤：" x="11" y="205" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="韧性：" x="11" y="229" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="火抗：" x="11" y="253" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="风抗：" x="11" y="277" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="必抗：" x="107" y="205" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="守护：" x="107" y="229" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="水抗：" x="107" y="253" width="40" height="20"/>
+  <Label color="0xFF9531" bold="true" stroke="0x000000,1,2,2,10,1" text="土抗：" x="107" y="277" width="40" height="20"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="205" width="50" height="20" var="texpLabel14"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="229" width="50" height="20" var="texpLabel16"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="253" width="50" height="20" var="texpLabel18"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="49" y="277" width="50" height="20" var="texpLabel20"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="205" width="50" height="20" var="texpLabel15"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="229" width="50" height="20" var="texpLabel17"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="253" width="50" height="20" var="texpLabel19"/>
+  <Label color="0xF5CA83" bold="true" stroke="0x000000,1,2,2,10,1" text="+0" x="145" y="277" width="50" height="20" var="texpLabel21"/>
+</View>!TexpMainView.xml��k<View width="429" height="445">
+  <Clip x="0" clipsUrl="asset.texpSystem.tabBg0,asset.texpSystem.tabBg1,asset.texpSystem.tabBg2" index="0" var="tabViewBg"/>
+  <Image skin="asset.texpSystem.propertyBg" x="7" y="356"/>
+  <Clip x="31" y="385" index="0" clipsUrlSimple="asset.texpSystem.propertyLabel,23" var="propertyImage"/>
+  <Label x="94" y="406" color="0xFFFFFF" size="14" stroke="0x623E0C,1,4,4,10" text="当前效果："/>
+  <Label x="252" y="408" color="0xFFFFFF" size="14" stroke="0x623E0C,1,4,4,10" text="下级效果："/>
+  <Label x="163" y="408" color="0xEEA148" size="14" stroke="0x53340F,1,4,4,10" text="0" bold="true" var="effectLabel"/>
+  <Label x="323" y="408" color="0xEEA148" size="14" stroke="0x53340F,1,4,4,10" text="0" bold="true" var="nextEffectLabel"/>
+  <TabListEx x="47" y="54" var="tabList0">
+    <TabButtonEx skin="asset.texpSystem.propertyBtn1,asset.texpSystem.propertyBtn1$select" name="item1" x="126" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn0,asset.texpSystem.propertyBtn0$select" name="item0" y="9" x="26" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn3,asset.texpSystem.propertyBtn3$select" name="item3" y="99" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn4,asset.texpSystem.propertyBtn4$select" name="item4" x="252" y="99" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn2,asset.texpSystem.propertyBtn2$select" name="item2" x="226" y="9" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn5,asset.texpSystem.propertyBtn5$select" name="item5" y="185" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" x="29" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn6,asset.texpSystem.propertyBtn6$select" name="item6" x="223" y="185" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+  </TabListEx>
+  <Button skin="asset.texpSystem.texpBtn" x="167" y="307" stateNum="1" var="texpBtn" buttonMode="true"/>
+  <Label x="139" y="380" color="0xFFEC8C" size="16" stroke="0x512E0B,1,4,4,10" bold="true" var="levelLabel" text="0"/>
+  <Button skin="asset.texpSystem.buyBtn1" x="341" y="312" stateNum="1" var="buyTexpBtn1" buttonMode="true" tipStyle="core.GoodsTip" tipDirctions="7,0"/>
+  <Button skin="asset.texpSystem.buyBtn0" x="341" y="312" stateNum="1" var="buyTexpBtn0" buttonMode="true" tipStyle="core.GoodsTip" tipDirctions="7,0"/>
+  <ProgressBar barSkin="asset.texpSystem.progress" bgSkin="asset.texpSystem.progress" sizeGrid="4,2,4,2" x="175" y="378" var="progress" skin="asset.texpSystem.progress" barLabelY="-1" value="0.96" barMaskOffsetX="1" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3"/>
+  <Label x="206" y="380" color="0xFFEC8C" size="14" stroke="0x512E0B,1,4,4,10" text="0" align="center" width="166" height="18" mouseChildren="false" mouseEnabled="false" var="progressLabel"/>
+  <TabListEx x="36" y="49" var="tabList2" visible="false">
+    <TabButtonEx skin="asset.texpSystem.propertyBtn15,asset.texpSystem.propertyBtn15$select" name="item1" x="182" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn14,asset.texpSystem.propertyBtn14$select" name="item0" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" x="92" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn17,asset.texpSystem.propertyBtn17$select" name="item3" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true" x="280"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn18,asset.texpSystem.propertyBtn18$select" name="item4" y="87" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true" width="81" height="71"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn16,asset.texpSystem.propertyBtn16$select" name="item2" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true" width="81" height="69"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn19,asset.texpSystem.propertyBtn19$select" name="item5" y="87" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" x="280" buttonMode="true" width="81" height="70"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn20,asset.texpSystem.propertyBtn20$select" name="item6" y="177" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true" width="81" height="70"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn21,asset.texpSystem.propertyBtn21$select" name="item7" x="280" y="177" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <Label x="107" y="68" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO1" bold="true" width="50" height="20" align="center"/>
+    <Label x="197" y="68" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO2" bold="true" width="50" height="20" align="center"/>
+    <Label x="15" y="68" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO3" bold="true" width="50" height="20" align="center"/>
+    <Label x="293" y="68" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO4" bold="true" width="50" height="20" align="center"/>
+    <Label x="15" y="154" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO5" bold="true" width="50" height="20" align="center"/>
+    <Label x="293" y="154" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO6" bold="true" width="50" height="20" align="center"/>
+    <Label x="15" y="244" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO7" bold="true" width="50" height="20" align="center"/>
+    <Label x="293" y="244" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabelO8" bold="true" width="50" height="20" align="center"/>
+  </TabListEx>
+  <Button skin="asset.texpSystem.buyBtn2" x="341" y="312" stateNum="1" var="buyTexpBtn2" buttonMode="true" tipStyle="core.GoodsTip" tipDirctions="7,0"/>
+  <TabListEx var="tabList1" visible="false" x="47" y="55">
+    <TabButtonEx skin="asset.texpSystem.propertyBtn8,asset.texpSystem.propertyBtn8$select" name="item1" x="126" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn7,asset.texpSystem.propertyBtn7$select" name="item0" y="9" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" x="26" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn10,asset.texpSystem.propertyBtn10$select" name="item3" y="99" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn11,asset.texpSystem.propertyBtn11$select" name="item4" x="252" y="99" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn9,asset.texpSystem.propertyBtn9$select" name="item2" x="226" y="9" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn12,asset.texpSystem.propertyBtn12$select" name="item5" y="185" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" x="29" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.propertyBtn13,asset.texpSystem.propertyBtn13$select" name="item6" x="223" y="185" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="7,2,3" buttonMode="true"/>
+  </TabListEx>
+  <Box x="63" y="122" var="levelBox1">
+    <Label x="126" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel1" bold="true" width="50" height="20" align="center"/>
+    <Label x="25" y="10" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel0" bold="true" width="50" height="20" align="center"/>
+    <Label x="226" y="10" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel2" bold="true" width="50" height="20" align="center"/>
+    <Label y="99" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel3" bold="true" width="50" height="20" align="center"/>
+    <Label x="252" y="99" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel4" bold="true" width="50" height="20" align="center"/>
+    <Label x="28" y="186" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel5" bold="true" width="50" height="20" align="center"/>
+    <Label x="223" y="186" color="0xF1F7B1" size="12" stroke="0x8C1300,1,4,4,10" text="Lv.0" var="levelLabel6" bold="true" width="50" height="20" align="center"/>
+  </Box>
+  <Box x="168" y="204" var="texpCountBox">
+    <Image skin="asset.texpSystem.texpLabel" x="10"/>
+    <NumberImageEx y="21" index="5" count="0" skin="asset.texpSystem.texpNumber" width="41" height="22" space="-2" var="usableNum" align="right"/>
+    <NumberImageEx x="53" y="21" index="5" count="0" skin="asset.texpSystem.texpNumber" width="41" height="22" space="-2" var="totalNum"/>
+    <Image skin="asset.texpSystem.texpLabelLine" x="42" y="21" width="13" height="17"/>
+  </Box>
+  <TexpSadasivaView var="sadasivaView" runtime="texpSystem.view.TextSadasivaView"/>
+  <Image skin="asset.texpSystem.tabTitleBg" x="25" y="-4" sizeGrid="124,11,124,11" width="368" height="24"/>
+  <TabListEx x="61" y="13" var="viewTab">
+    <TabButtonEx skin="asset.texpSystem.tabBtn0,asset.texpSystem.tabBtn0$select" name="item0" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.tabBtn1,asset.texpSystem.tabBtn1$select" x="96" name="item1" selected="false" buttonMode="true"/>
+    <TabButtonEx skin="asset.texpSystem.tabBtn2,asset.texpSystem.tabBtn2$select" x="197" name="item2" selected="false" buttonMode="true"/>
+  </TabListEx>
+  <Image skin="asset.texpSystem.propertyTips" x="362" y="17" buttonMode="true" tipDirctions="7,2,3" tipStyle="texpSystem.view.TexpTipsView" var="texpAllTips"/>
+</View>

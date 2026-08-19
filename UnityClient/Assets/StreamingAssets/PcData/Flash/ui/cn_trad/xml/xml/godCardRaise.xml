@@ -1,0 +1,182 @@
+<style name="godCardRaise" version="7.7.0" source="ui/cn_trad/swf/godCardRaise.swf">
+	<sets>
+		<set stylename="godCardRaiseMainView.timeTF" args="Arial,12,0xffecc2" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseMainView.timeGF" args="0x854202,1,4,4,10" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseMainView.timeLabelTF" args="Arial,12,0xfff000" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseMainView.timeLabelGF" args="0x814103,1,4,4,10" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseDivineView.tipTxtTF" args="Arial,12,0xff2c00" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseDivineView.tipTxtGF" args="0x2b0b0b,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseDivineView.freeCountTxtTF" args="Arial,12,0xfbff66,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseDivineView.freeCountTxtGF" args="0x0a1d04,1,2,2,10" type="flash.filters.GlowFilter" />
+		
+		<set type="flash.text.TextFormat" args="Arial,14,0xfff0b5,true" stylename="godCardRaiseExchangeLeftView.cellTxtTFNormal"/>
+		<set type="flash.text.TextFormat" args="Arial,14,0xff5400,true" stylename="godCardRaiseExchangeLeftView.cellTxtTFSelected"/>
+		<set type="flash.filters.GlowFilter" args="0x663518,2,4,4,30" stylename="godCardRaiseExchangeLeftView.cellTxtGFNormal" />
+		<set type="flash.filters.GlowFilter" args="0xFFFFFF,2,4,4,30" stylename="godCardRaiseExchangeLeftView.cellTxtGFSelected" />
+		<set stylename="godCardRaiseExchangeRightView.remainCountTxtTF" args="Arial,12,0xffdaa9" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseExchangeRightView.remainCountTxtGF" args="0x1b1a22,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseExchangeRightCard.countTxtTF" args="Arial,12,0xfeef9b,true,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseExchangeRightCard.countTxtGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseAtlasView.myClipTxtTF" args="Arial,12,0xffda41,true" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseAtlasView.myClipTxtGF" args="0x000000,1,2,2,10" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseScoreView.timeTxtTF" args="Arial,14,0xffffff" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseScoreView.timeTxtGF" args="0x2f0c05,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseScoreView.contentTxtTF" args="Arial,14,0xffff7b,true" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseScoreView.contentTxtGF" args="0x27053a,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseScoreViewItem.scoreTxtTF" args="Arial,14,0xfef16c,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseScoreViewItem.scoreTxtGF" args="0x2e1806,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseAtlasCard.useClipCountTxtTF" args="Arial,14,0xfff5d2,bold,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseAtlasCard.useClipCountTxtGF" args="0x794617,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseDivineView.selectBtnTxtTF" args="Arial,12,0xe3a243" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseDivineView.selectBtnTxtGF" args="0x160e02,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseDivineView.dropListComboTxtTF" args="Arial,12,0xffe57c,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="godCardRaiseDivineView.dropListComboTxtGF" args="0x160e02,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="godCardRaiseDivineView.desTxtGF" args="0x2b0b0b,1,4,4,30" type="flash.filters.GlowFilter"/>
+		<set stylename="godCardRaiseDivineView.desTxtTF" args="Arial,12,0xe6b226,,,,,,center" type="flash.text.TextFormat"/>	
+	</sets>
+	
+	<components>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseMainView.time" textFormatStyle="godCardRaiseMainView.timeTF" filterString="godCardRaiseMainView.timeGF" x="563" y="46"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseMainView.doubelTime" parentStyle="godCardRaiseMainView.time" x="563" y="66"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseMainView.doubleTimeLabel" parentStyle="godCardRaiseMainView.timeLabel" x="682" y="66"/>
+
+		<component classname="godCardRaise.view.GodCardRaiseMainView"
+				closestyle="core.closebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle" backStyle="SimpleFrameBackgoundOne" 
+				closeInnerRectString="44,14,6,30,14" stylename="godCardRaise.frame"
+				 x="-160" y="-140" escEnable="true"
+				width="775" height="535" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseMainView.divineBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseMainView.unDivineBtnImg" selectedStyle="asset.godCardRaiseMainView.divineBtnImg" x="20" y="45"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseMainView.exchangeBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseMainView.unExchangeBtnImg" selectedStyle="asset.godCardRaiseMainView.exchangeBtnImg" x="140" y="45"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseMainView.atlasBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseMainView.unAtlasBtnImg" selectedStyle="asset.godCardRaiseMainView.atlasBtnImg" x="260" y="45"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseMainView.scoreBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseMainView.unScoreBtnImg" selectedStyle="asset.godCardRaiseMainView.scoreBtnImg" x="380" y="45"/>
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="godCardRaiseMainView.timeBg" resourceLink="asset.godCardRaiseMainView.timeBg1,asset.godCardRaiseMainView.timeBg2" mouseChildren="false" mouseEnabled="false" x="511" y="48"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseMainView.timeLabel" textFormatStyle="godCardRaiseMainView.timeLabelTF" filterString="godCardRaiseMainView.timeLabelGF" x="643" y="55" autoSize="none" width="125" height="25" />
+		
+		
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="godCardRaiseDivineView.bg" resourceLink="core.bg6920,asset.godCardRaiseDivineView.bg" imageRectString="0|737|0|431|13,5|727|5|421|13" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseDivineView.tipTxt" textFormatStyle="godCardRaiseDivineView.tipTxtTF" filterString="godCardRaiseDivineView.tipTxtGF" x="272" y="400" autoSize="none" width="260" height="25" />
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="godCardRaiseDivineView.divineBtnBG" resourceLink="asset.godCardRaiseDivineView.divineBtn,asset.godCardRaiseDivineView.divineCanelBtn" mouseChildren="false" mouseEnabled="false"/>
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="godCardRaiseDivineView.manyDivineBtnBG" resourceLink="asset.godCardRaiseDivineView.manyDivineBtn,asset.godCardRaiseDivineView.divineCanelBtn" mouseChildren="false" mouseEnabled="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseDivineView.divineBtn" backStyle="godCardRaiseDivineView.divineBtnBG" filterString="null,lightFilter,null,grayFilter" x="185" y="323" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseDivineView.manyDivineBtn" backStyle="godCardRaiseDivineView.manyDivineBtnBG" filterString="null,lightFilter,null,grayFilter"  x="440" y="323" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseDivineView.freeCountTxt" textFormatStyle="godCardRaiseDivineView.freeCountTxtTF" filterString="godCardRaiseDivineView.freeCountTxtGF" x="221" y="299" autoSize="none" width="59" height="25" />
+		
+		<component classname="com.pickgliss.ui.controls.ListPanel" stylename="godCardRaiseExchangeLeftView.unitCellList" 
+			parentStyle="core.ScrollPanel"  factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|godCardRaise.view.GodCardRaiseExchangeLeftCell,33,208" 
+			vScrollbarInnerRectString="21,4,0,0,3" vScrollProxy="1" hScrollProxy="2" vUnitIncrement="10"
+			listStyle="com.pickgliss.ui.controls.list.List" width="223" height="410" x="3" y="7" />	
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="godCardRaiseExchangeLeftView.listCellBG" resourceLink="core.leftrightImage.image5,core.leftrightImage.image6"width="200" height="33"  x="2" y="2"/>
+		<component classname="com.pickgliss.ui.image.Scale9CornerImage" stylename="godCardRaiseExchangeLeftView.listCellLight" parentStyle="core.Scale9CornerImage.scale9CornerSparkBG" width="208" height="39" x="-2" y="-3" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseExchangeLeftView.listCellTxt" autoSize="none"
+			textFormatStyle="godCardRaiseExchangeLeftView.cellTxtTFNormal,godCardRaiseExchangeLeftView.cellTxtTFSelected" width="160" isAutoFitLength="true"
+			filterString="godCardRaiseExchangeLeftView.cellTxtGFNormal,godCardRaiseExchangeLeftView.cellTxtGFSelected"  height="26"  x="35" y="7"/>
+		<component classname="com.pickgliss.ui.image.ScaleBitmapImage" stylename="godCardRaiseExchangeView.bg" parentStyle="core.bg6920" width="740" height="430"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseExchangeRightView.exchangeCellBtn" backStyle="asset.godCardRaiseExchangeRightView.exchangeCellBtn" filterString="null,lightFilter,null,grayFilter" x="215" y="365"/>
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="godCardRaiseAtlasView.bg" resourceLink="core.bg6920,asset.godCardRaiseAtlasView.bg" imageRectString="0|737|0|431|13,4|728|2|425|13" />
+		
+		<component classname="com.pickgliss.ui.image.MutipleImage" stylename="godCardRaiseScoreView.bg" resourceLink="core.bg6920,asset.godCardRaiseScoreView.bg" imageRectString="0|737|0|431|13,5|727|5|421|13" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseExchangeRightView.remainCountTxt" textFormatStyle="godCardRaiseExchangeRightView.remainCountTxtTF" filterString="godCardRaiseExchangeRightView.remainCountTxtGF" x="340" y="400" autoSize="none" width="160" height="25" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseExchangeRightCard.countTxt" textFormatStyle="godCardRaiseExchangeRightCard.countTxtTF" filterString="godCardRaiseExchangeRightCard.countTxtGF" x="53" y="239" autoSize="none" width="59" height="25" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseAtlasCard.countTxt" textFormatStyle="godCardRaiseExchangeRightCard.countTxtTF" filterString="godCardRaiseExchangeRightCard.countTxtGF" x="53" y="239" autoSize="none" width="59" height="25" />
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="godCardRaiseAtlasView.scrollPanel" viewportInnerRectString="13,0,0,0,0" parentStyle="core.ScrollPanel" hScrollProxy="2" vScrollProxy="0" width="710" height="358" x="10" y="62" vUnitIncrement="10"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseAtlasView.whiteCardBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseAtlasView.whiteCardBtn" selectedStyle="asset.godCardRaiseAtlasView.whiteCardBtn2" x="20" y="20"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseAtlasView.greenCardBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseAtlasView.greenCardBtn" selectedStyle="asset.godCardRaiseAtlasView.greenCardBtn2" x="110" y="20"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseAtlasView.blueCardBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseAtlasView.blueCardBtn" selectedStyle="asset.godCardRaiseAtlasView.blueCardBtn2" x="200" y="20"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseAtlasView.purpleCardBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseAtlasView.purpleCardBtn" selectedStyle="asset.godCardRaiseAtlasView.purpleCardBtn2" x="290" y="20"/>
+		<component classname="com.pickgliss.ui.controls.SelectedButton" 
+			stylename="godCardRaiseAtlasView.goldCardBtn" filterString="null,lightFilter,null,grayFilter" 
+			unSelectedStyle="asset.godCardRaiseAtlasView.goldCardBtn" selectedStyle="asset.godCardRaiseAtlasView.goldCardBtn2" x="380" y="20"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseAtlasView.myClipTxt" textFormatStyle="godCardRaiseAtlasView.myClipTxtTF" filterString="godCardRaiseAtlasView.myClipTxtGF" x="670" y="27" autoSize="none" width="59" height="25" />
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseAtlasCard.compositeBtn" backStyle="asset.godCardRaiseAtlasCard.compositeBtn" x="23" y="188"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseAtlasCard.smashBtn" backStyle="asset.godCardRaiseAtlasCard.smashBtn" x="93" y="188"/>
+		
+		<component classname="com.pickgliss.ui.controls.NumberSelecter" stylename="godCardRaiseAtlasCard.NumberSelecter" 
+			backStyle="core.ddtshop.NumberSelecterTextBg"
+			targetFieldStyle='core.ddtshop.NumberSelecterTxt' 
+			upStyle="core.ddtshop.ShopDownButton" 
+			downStyle="core.ddtshop.ShopUpButton" 
+			valueLimit="1,50"
+			x='150' y='75'/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseAtlasCard.contentTxt" textFormatStyle="core.frametitleTF" filterString="core.frametitleGF" x="60" y="75" autoSize="none" width="100" height="25" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseAtlasCard.useClipCountTxt" textFormatStyle="godCardRaiseAtlasCard.useClipCountTxtTF" filterString="godCardRaiseAtlasCard.useClipCountTxtGF" x="70" y="112" autoSize="none" width="280" height="25" />
+		<component classname="godCardRaise.view.GodCardRaiseAtlasCardAlert" stylename="GodCardRaiseAtlasCardAlert" width="400" height="200" moveEnable="false" parentStyle="BaseFrame" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseScoreView.timeTxt" textFormatStyle="godCardRaiseScoreView.timeTxtTF" filterString="godCardRaiseScoreView.timeTxtGF" x="502" y="23" autoSize="none" width="125" height="25" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseScoreView.msgTxt" textFormatStyle="godCardRaiseScoreView.contentTxtTF" filterString="godCardRaiseScoreView.contentTxtGF" x="366" y="88" autoSize="none" width="360" height="25" />
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseScoreView.contentTxt" textFormatStyle="godCardRaiseScoreView.contentTxtTF" filterString="godCardRaiseScoreView.contentTxtGF" x="337" y="57" autoSize="none" width="360" height="45" wordWrap="true"/>
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="godCardRaiseScoreView.scrollPanel" viewportInnerRectString="13,0,0,0,0" parentStyle="core.ScrollPanel" hScrollProxy="2" vScrollProxy="0" width="470" height="246" x="248" y="159" vUnitIncrement="65"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseScoreViewItem.scoreTxt" textFormatStyle="godCardRaiseScoreViewItem.scoreTxtTF" filterString="godCardRaiseScoreViewItem.scoreTxtGF" x="0" y="15" autoSize="none" width="90" height="25" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseScoreViewItem.getBtn" backStyle="asset.godCardRaiseScoreViewItem.getBtn" filterString="null,lightFilter,null,grayFilter" x="318" y="7"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+			stylename="godCardRaiseDivineView.selectBtn" parentStyle="core.simpleSelectBtn"
+			width="103" height="28" x="260" y="367"  unSelectedStyle="asset.core.check2UnSelected" 
+			 selectedStyle="asset.core.check2Selected"
+			displacement='false' textStyle="godCardRaiseDivineView.selectBtnTxt"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseDivineView.selectBtnTxt" textFormatStyle="godCardRaiseDivineView.selectBtnTxtTF" filterString="godCardRaiseDivineView.selectBtnTxtGF" x="28" y="10" autoSize="none" width="230" height="25" />
+		
+		<!-- 神卡募集连续开启优化 -->
+		<component classname="com.pickgliss.ui.controls.SelectedCheckButton"
+			stylename="godCardRaiseDivineView.inputNum.selectBtn" parentStyle="core.simpleSelectBtn"
+			width="103" height="28" x="260" y="389" unSelectedStyle="asset.ui.btn_check3" 
+			selectedStyle="asset.ui.btn_check3$select" displacement='false' textStyle="godCardRaiseDivineView.selectBtnTxt"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseDivineView.inputText" textFormatStyle="godCardRaiseDivineView.dropListComboTxtTF" 
+		    filterString="godCardRaiseDivineView.dropListComboTxtGF" autoSize="none" type="input" width="68" height="24" x="357" y="400"/>	
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="godCardRaiseDivineView.dexText" textFormatStyle="godCardRaiseDivineView.desTxtTF" filterString="godCardRaiseDivineView.desTxtGF" autoSize="none" width="250" height="24" x="244" y="291"/>
+		
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="godCardRaiseDivineView.toSmallBtn" backStyle="asset.godCard.smallview.toSmall" 
+		   filterString="null,lightFilter,null,grayFilter"  x="624" y="16" autoFrame="false"/>
+	</components>
+	
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseMainView.godCardRaiseDivineViewPos" x="18" y="85"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseMainView.godCardRaiseExchangeViewPos" x="18" y="85"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseMainView.godCardRaiseAtlasViewPos" x="18" y="85"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseMainView.godCardRaiseScoreViewPos" x="18" y="85"/>
+		
+		<custom classname="flash.geom.Point" stylename="godCardRaiseExchangeView.godCardRaiseExchangeLeftViewPos" x="5" y="5"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseExchangeView.godCardRaiseExchangeRightViewPos" x="230" y="5"/>
+		
+		<custom classname="flash.geom.Point" stylename="godCardRaiseExchangeRightView.cardsPos" x="5" y="10"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseExchangeRightView.cellPos" x="226" y="302"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseScoreViewItem.cellPos" x="178" y="3"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseDivineView.openCardsMoviePos" x="235" y="32"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseDivineView.inputBgPos" x="351" y="399"/>
+		<custom classname="flash.geom.Point" stylename="godCardRaiseDivineView.dropListComboxPos" x="459" y="376"/>
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.godCardRaiseMainView.unDivineBtnImg" x="5" y="5"/>
+		<bitmapData resourceLink="asset.godCardRaiseMainView.unExchangeBtnImg" x="5" y="5"/>
+		<bitmapData resourceLink="asset.godCardRaiseMainView.unAtlasBtnImg" x="5" y="5"/>
+		<bitmapData resourceLink="asset.godCardRaiseMainView.unScoreBtnImg" x="5" y="5"/>
+		<bitmapData resourceLink="asset.godCardRaiseDivineView.freeCountBg" x="193" y="299"/>
+		<bitmapData resourceLink="asset.godCardRaiseExchangeView.rightBg" x="0" y="0"/>
+		<bitmapData resourceLink="asset.godCardRaiseExchangeLeftView.bg" y="3" width="227" height="420"/>
+		<bitmapData resourceLink="asset.godCardRaiseExchangeRightView.exchangeCellBg" x="215" y="290"/>
+		<bitmapData resourceLink="asset.godCardRaiseScoreViewItem.getBmp" x="331" y="2"/>
+		<bitmapData resourceLink="asset.godCardRaiseExchangeLeftView.getExchangeBmp" x="136" y="-11"/>
+		<bitmapData resourceLink="asset.godCardRaiseAtlasView.whiteCardBtn2" x="-4" y="-4"/>
+		<bitmapData resourceLink="asset.godCardRaiseAtlasView.greenCardBtn2" x="-4" y="-4"/>
+		<bitmapData resourceLink="asset.godCardRaiseAtlasView.blueCardBtn2" x="-4" y="-4"/>
+		<bitmapData resourceLink="asset.godCardRaiseAtlasView.purpleCardBtn2" x="-4" y="-4"/>
+		<bitmapData resourceLink="asset.godCardRaiseAtlasView.goldCardBtn2" x="-4" y="-4"/>
+	</bitmaps>
+</style>

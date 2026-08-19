@@ -1,0 +1,38 @@
+
+3LabyrinthGameBuffView.xml�<View width="520" height="332">
+  <Image skin="asset.ui.frame.bg2" width="520" height="332" x="0" y="0" sizeGrid="20,50,25,20"/>
+  <Image skin="asset.ui.scale.bg2" x="19" y="44" width="481" height="194" sizeGrid="8,8,8,8"/>
+  <Image skin="asset.ui.scale.bg3" x="20" y="242" width="479" height="69" sizeGrid="8,8,8,8"/>
+  <Button skin="asset.game.labyrinth.return" x="71" y="252" stateNum="1" var="returnBtn"/>
+  <Button skin="asset.game.labyrinth.continueBtn" x="291" y="252" stateNum="1" var="continueBtn"/>
+  <Label text="選擇1個BUFF助戰" x="17" y="11" color="0xffecc2" bold="true" size="16" stroke="0x512800,1,4,4,6" width="179" height="20"/>
+  <Image skin="asset.game.labyrinth.ui.scale2" sizeGrid="20,20,20,20" width="121" height="161" x="48" y="61"/>
+  <Clip x="68" y="78" clipsUrlSimple="asset.game.labyrinth.buff,8" var="buffIcon0" index="0"/>
+  <Label text="123123123" x="54" y="161" color="0xffecc2" size="14" bold="true" stroke="0x512800,1,4,4,6" width="107" height="18" align="center" var="buffName0"/>
+  <Image skin="asset.game.labyrinth.select" x="61" y="92" var="selectIcon0" visible="false"/>
+  <Button label="選 擇" skin="asset.ui.btn_yellow7" x="67" y="183" stateNum="1" labelColors="0xffecc2" labelBold="true" labelStroke="0x512800,1,4,4,6" var="selectBtn0"/>
+  <Image skin="asset.game.labyrinth.ui.scale2" sizeGrid="20,20,20,20" width="121" height="161" x="200" y="61"/>
+  <Clip x="220" y="78" clipsUrlSimple="asset.game.labyrinth.buff,8" var="buffIcon1" index="1"/>
+  <Label text="label" x="206" y="161" color="0xffecc2" size="14" bold="true" stroke="0x512800,1,4,4,6" width="107" height="18" align="center" var="buffName1"/>
+  <Image skin="asset.game.labyrinth.select" x="213" y="92" var="selectIcon1" visible="false"/>
+  <Button label="选 择" skin="asset.ui.btn_yellow7" x="219" y="183" stateNum="1" labelColors="0xffecc2" labelBold="true" labelStroke="0x512800,1,4,4,6" var="selectBtn1"/>
+  <Image skin="asset.game.labyrinth.ui.scale2" sizeGrid="20,20,20,20" width="121" height="161" x="352" y="61"/>
+  <Clip x="372" y="78" clipsUrlSimple="asset.game.labyrinth.buff,8" var="buffIcon2" index="1"/>
+  <Label text="label" x="358" y="161" color="0xffecc2" size="14" bold="true" stroke="0x512800,1,4,4,6" width="107" height="18" align="center" var="buffName2"/>
+  <Image skin="asset.game.labyrinth.select" x="365" y="92" var="selectIcon2" visible="false"/>
+  <Button label="选 择" skin="asset.ui.btn_yellow7" x="371" y="183" stateNum="1" labelColors="0xffecc2" labelBold="true" labelStroke="0x512800,1,4,4,6" var="selectBtn2"/>
+</View>3LabyrinthGameBuffTips.xml�}<View width="172" height="232">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="20,20,20,20" width="172" height="232" x="0" y="0"/>
+  <Label text="秘境BUFF" x="8" y="8" width="86" height="25" color="0xFFE32A" bold="true" size="14" stroke="0x000000,1,4,4,5"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="4" y="29" width="158"/>
+  <Label x="10" y="36" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel0"/>
+  <Label x="10" y="56" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel1"/>
+  <Label x="10" y="76" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel2"/>
+  <Label x="10" y="96" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel3"/>
+  <Label x="10" y="116" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel4"/>
+  <Label x="10" y="136" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel5"/>
+  <Label x="10" y="156" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel6"/>
+  <Label x="10" y="176" width="86" height="25" color="0xFF9933" bold="true" size="12" stroke="0x000000,1,4,4,5" var="buffLabel7"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="4" y="195" width="158"/>
+  <Label text="僅在勇士秘境中有效" x="9" y="203" width="149" height="20" color="0xFFE32A" bold="true" size="12" stroke="0x000000,1,4,4,5"/>
+</View>

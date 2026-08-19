@@ -1,0 +1,10 @@
+<Result value="true" message="Success!">
+  <Item Type="1" ChannelName="签到" ChannelDesc="每日签到" AddScore="-1" MaxLimit="-1" JumpTo="1" />
+  <Item Type="2" ChannelName="消耗点券" ChannelDesc="消耗点券增加活跃点" AddScore="-1" MaxLimit="1000" JumpTo="2" />
+  <Item Type="3" ChannelName="战队赛对战胜利" ChannelDesc="战队赛对战胜利增加活跃点" AddScore="60" MaxLimit="2000" JumpTo="3" />
+  <Item Type="4" ChannelName="副本战斗" ChannelDesc="与1个以上队员通关一次副本" AddScore="10" MaxLimit="350" JumpTo="4" />
+  <Item Type="5" ChannelName="自由竞技" ChannelDesc="与1个以上队员组队竞技获胜" AddScore="20" MaxLimit="500" JumpTo="5" />
+  <Item Type="6" ChannelName="参加海盗迷岛" ChannelDesc="与1个以上队员组队海盗迷岛" AddScore="20" MaxLimit="140" JumpTo="4" />
+  <Item Type="7" ChannelName="参加蒸汽工厂" ChannelDesc="与1个以上队员通关蒸汽工厂" AddScore="20" MaxLimit="140" JumpTo="4" />
+  <Item Type="8" ChannelName="增加人鱼宝藏" ChannelDesc="与1个以上队员通关人鱼宝藏" AddScore="20" MaxLimit="140" JumpTo="4" />
+</Result>

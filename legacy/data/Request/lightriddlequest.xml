@@ -1,0 +1,409 @@
+<Result value="true" message="Success!">
+  <Item QuestionID="1" QuestionContent="Động vật nào được đưa vào sách đỏ?" Option1="Thiên nga" Option2="Kỳ nhông" Option3="Khổng tước" Option4="Sếu đầu đỏ" />
+  <Item QuestionID="2" QuestionContent="Tác dụng của bột phấn trong môn cử tạ?" Option1="Giúp tay thô ráp" Option2="Hút mồ hôi tay" Option3="Kích thích cơ bắp" Option4="Bảo vệ da" />
+  <Item QuestionID="3" QuestionContent="Cách ủi quần áo nào sai?" Option1="Xịch nước trước khi ủi" Option2="Ủi thật lâu" Option3="Nhiệt độ thích hợp" Option4="Lót vải ướt giữa quần áo và bàn ủi" />
+  <Item QuestionID="4" QuestionContent="Cung điện lớn nhất thế giới:" Option1="Cố Cung" Option2="Nhà Trắng" Option3="Điện Elysee" Option4="Điện Kremli" />
+  <Item QuestionID="5" QuestionContent="Thủ đô nằm gần cực bắc nhất:" Option1="Stockholm" Option2="Moscow" Option3="Reykjavik" Option4="Copenhagen" />
+  <Item QuestionID="6" QuestionContent="Liên hoan phim Cannes tổ chức ở nước nào?" Option1="Pháp" Option2="Ý" Option3="Anh" Option4="Đức" />
+  <Item QuestionID="7" QuestionContent="Trong gốm sứ truyền thống không có màu nào?" Option1="Lục" Option2="Vàng" Option3="Đỏ" Option4="Đen" />
+  <Item QuestionID="8" QuestionContent="Dãy núi dài nhất thế giới:" Option1="Pyrenees" Option2="Himalayas" Option3="Andes" Option4="Kilimanjaro" />
+  <Item QuestionID="9" QuestionContent="Thành phần chính của vôi sống có công thức hoá học là:" Option1="Ca(OH)2" Option2="CaCO3" Option3="CaO" Option4="CaSO4" />
+  <Item QuestionID="10" QuestionContent="Kênh đào Suez thuộc quốc gia nào?" Option1="Israel" Option2="Palestine" Option3="Jordan" Option4="Ai Cập" />
+  <Item QuestionID="11" QuestionContent="Hành tinh lớn nhất trong Hệ Mặt Trời:" Option1="Sao Thổ" Option2="Sao Mộc" Option3="Sao Hỏa" Option4="Sao Hải Vương" />
+  <Item QuestionID="12" QuestionContent="Trong thi đấu cử tạ, tạ màu gì nặng nhất?" Option1="Xanh" Option2="Lục" Option3="Đỏ" Option4="Vàng" />
+  <Item QuestionID="13" QuestionContent="Chất làm giấy quỳ tím ẩm hoá đỏ là:" Option1="CaO" Option2="SO2" Option3="Na2O    " Option4="CO" />
+  <Item QuestionID="14" QuestionContent="Vòng tròn màu lục trên lá cờ Olympic tượng trưng cho:" Option1="Châu Mỹ" Option2="Châu Âu" Option3="Châu Úc" Option4="Châu Á" />
+  <Item QuestionID="15" QuestionContent="Dân tộc nào có phong tục hát đối?" Option1="Dân tộc Thái" Option2="Dân tộc Miêu" Option3="Dân tộc Choang" Option4="Dân tộc Hồi" />
+  <Item QuestionID="16" QuestionContent="Kích cỡ bàn cờ vây trong thi đấu chính quy:" Option1=" 13 x 13" Option2="15 x 15" Option3="19 x 19" Option4="21 x 21" />
+  <Item QuestionID="17" QuestionContent="Ai được ca ngợi là “Thi nhân dương cầm”?" Option1="Beethoven" Option2="Haydn" Option3="Mozart" Option4="Chopin" />
+  <Item QuestionID="18" QuestionContent="“Tóc để chỏm” dùng để chỉ: " Option1="Nhi đồng" Option2="Thiếu niên" Option3="Trung niên" Option4="Người già" />
+  <Item QuestionID="19" QuestionContent="Bướm phát hiện mật hoa nhờ:" Option1="Nhìn thấy" Option2="Chân trước chạm vào" Option3="Ngửi thấy" Option4="Nếm được" />
+  <Item QuestionID="20" QuestionContent="Dung dịch làm giấy quỳ tím chuyển xanh là:" Option1="NaOH" Option2="HCl " Option3="NaCl " Option4="H2SO4" />
+  <Item QuestionID="21" QuestionContent="Ngoài phổi, ếch nhái còn hô hấp thông qua:" Option1="Thịt" Option2="Da" Option3="Lá lách" Option4="Gan" />
+  <Item QuestionID="22" QuestionContent="Muối ăn có công thức hoá học là:" Option1="NaCl" Option2="Na2SO4" Option3="Na2CO3" Option4="Na2S" />
+  <Item QuestionID="23" QuestionContent="Dầu mỏ có nhiệt độ sôi:" Option1="Tăng dần" Option2="Giảm dần" Option3="Không thay đổi" Option4="Không nhất định" />
+  <Item QuestionID="24" QuestionContent="Hồ nước mặn sâu nhất thế giới:" Option1="Địa Trung Hải" Option2="Biển Chết" Option3="Biển Đỏ" Option4="Biển Đen" />
+  <Item QuestionID="25" QuestionContent="Khi đi con người đung đưa hai cánh tay để:" Option1="Giảm tiêu hao năng lượng" Option2="Điều chỉnh với đầu" Option3="Giữ thăng bằng tư thế" Option4="Đi nhanh hơn" />
+  <Item QuestionID="26" QuestionContent="Quốc gia có địa hình thấp nhất thế giới:" Option1="Phần Lan" Option2="Iceland" Option3="Na Uy" Option4="Hà Lan" />
+  <Item QuestionID="27" QuestionContent="Châu Á lần đầu tổ chức Olympic là kỳ thứ mấy?" Option1="16" Option2="17" Option3="18" Option4="19" />
+  <Item QuestionID="28" QuestionContent="Đàn violin có mấy dây?" Option1="2" Option2="3" Option3="4" Option4="6" />
+  <Item QuestionID="29" QuestionContent="Lấy cái gì để làm ra cái lưới vậy ta?" Option1="Lỗ" Option2="Nhựa cây" Option3="Hốc" Option4="Mạng nhện" />
+  <Item QuestionID="30" QuestionContent="Bạn nghĩ một ký ba khía, một ký sắt cái nào nặng hơn?" Option1="Một ký ba khía" Option2="Một ký sắt" Option3="Hên xui" Option4="Cưỡi ngựa" />
+  <Item QuestionID="31" QuestionContent="Kim loại nào sau đây có tính dẫn điện tốt nhất?" Option1="Đồng" Option2="Nhôm" Option3="Sắt" Option4="Bạc" />
+  <Item QuestionID="32" QuestionContent="Khí thiên nhiên và khí mỏ dầu có thành phần chính là" Option1=" metan" Option2="etilen" Option3="axetilen" Option4="cacbonic" />
+  <Item QuestionID="33" QuestionContent="Môi trường sinh thái bị đe dọa nghiêm trọng do con người:" Option1="Lười biếng" Option2="Hay quên" Option3="Lãng phí" Option4="Tham ăn" />
+  <Item QuestionID="34" QuestionContent="“Kỳ” trong “Cầm kỳ thi họa” là:" Option1="Cờ tướng" Option2="Cờ vây" Option3="Cờ tướng cổ" Option4="Cờ tướng quốc tế" />
+  <Item QuestionID="35" QuestionContent="Khẳng định nào không đúng ? Kim loại đều" Option1="có tính dẫn điện" Option2="có tính dẫn nhiệt" Option3="có ánh kim" Option4=" ở trạng thái rắn" />
+  <Item QuestionID="36" QuestionContent="Chất khí nào sau đây gây hiệu ứng Nhà Kính?" Option1="CO2" Option2="O2" Option3="N2" Option4="H2" />
+  <Item QuestionID="37" QuestionContent="Hệ thống thông tin toàn cầu được gọi là:" Option1="Internet" Option2="Server" Option3="LAN" Option4="Máy tính" />
+  <Item QuestionID="38" QuestionContent="Chất nào góp phần nhiều nhất Mưa Axit?" Option1="CO2" Option2="SO2" Option3="N2" Option4="O3" />
+  <Item QuestionID="39" QuestionContent="&quot;Bực mình chẳng muốn nói ra.Muốn đi ăn...chẳng ma nào mời&quot; bổ sung từ:" Option1="Giỗ" Option2="Cỗ" Option3="Uống" Option4="Đám" />
+  <Item QuestionID="40" QuestionContent="Tuổi của mặt trời?" Option1="3 tỷ năm" Option2="5 tỷ năm" Option3="8 tỷ năm" Option4="10 tỷ năm" />
+  <Item QuestionID="41" QuestionContent="Thành ngữ nào không chính xác:" Option1="Áo ấm cơm no" Option2="Bụng làm dạ chịu" Option3="Ăn miếng trả miếng" Option4="Cáo mượn oai gà" />
+  <Item QuestionID="42" QuestionContent="World Cup lần đầu tiên tổ chức ở đâu?" Option1="Uruguay" Option2="Mexico" Option3="Argentina" Option4="Ý" />
+  <Item QuestionID="43" QuestionContent="Năng lượng sạch nhất:" Option1="Dầu mỏ" Option2="Năng lượng mặt trời" Option3="Khí ga" Option4="Khí đốt" />
+  <Item QuestionID="44" QuestionContent="Bạch Quả thuộc dạng quả gì?" Option1="Quả cứng" Option2="Quả mềm" Option3="Quả hạch" Option4="Quả kép" />
+  <Item QuestionID="45" QuestionContent="Tại sao mũi chó thường ẩm ướt?" Option1="Tế bào khứu giác tiết ra dịch nhờn" Option2="Hay uống nước" Option3="Sổ mũi" Option4="Liếm mũi" />
+  <Item QuestionID="46" QuestionContent="Gunny Viêt Nam mở vào ngày tháng năm nào?" Option1="24/04/2009" Option2="26/04/2009" Option3="28/04/2009" Option4="29/04/2010" />
+  <Item QuestionID="47" QuestionContent="Muỗi thường đốt người là muỗi đực hay muỗi cái?" Option1="Muỗi đực" Option2="Muỗi cái" Option3="cả hai" Option4="Không giới tính" />
+  <Item QuestionID="48" QuestionContent="Điệu nhảy yêu thích của người Brazil:" Option1="Waltz" Option2="Samba" Option3="Tango" Option4="Tap Dance" />
+  <Item QuestionID="49" QuestionContent="Bán kính trái đất bằng bao nhiêu." Option1="63.780 km" Option2="6.378.000 km" Option3="6.378 km" Option4="68.780.000 km" />
+  <Item QuestionID="50" QuestionContent="Sai lầm khi sử dụng bình chữa cháy:" Option1="Đứng nơi đầu gió" Option2="Cách thật xa ngòi lửa" Option3="Nhắm xịt vào ngòi lửa" Option4="Nhắm xịt vào ngọn lửa" />
+  <Item QuestionID="51" QuestionContent="Nhẫn Định Tình nhận được khi cử hành hôn lễ có thể sử dụng bao lâu?" Option1="30 ngày" Option2="7 ngày" Option3="365 ngày" Option4="Vĩnh viễn" />
+  <Item QuestionID="52" QuestionContent="Có thể tăng thuộc tính nào cho Đá Thanh Long?" Option1="Tấn công" Option2="Nhanh nhẹn" Option3="Phòng thủ" Option4="May mắn" />
+  <Item QuestionID="53" QuestionContent="Có thể tăng thuộc tính nào cho Đá Bạch Hổ?" Option1="May mắn" Option2="Tấn công" Option3="Nhanh nhẹn" Option4="Phòng thủ" />
+  <Item QuestionID="54" QuestionContent="Có thể tăng thuộc tính nào cho Đá Chu Tước?" Option1="Phòng thủ" Option2="May mắn" Option3="Tấn công" Option4="Nhanh nhẹn" />
+  <Item QuestionID="55" QuestionContent="Có thể tăng thuộc tính nào cho Đá Huyền Vũ?" Option1="Nhanh nhẹn" Option2="Phòng thủ" Option3="May mắn" Option4="Tấn công" />
+  <Item QuestionID="56" QuestionContent="Lựu Đạn mạnh về thuộc tính nào?" Option1="Tấn công" Option2="Phòng thủ" Option3="Nhanh nhẹn" Option4="May mắn" />
+  <Item QuestionID="57" QuestionContent="Sấm Sét mạnh về thuộc tính nào?" Option1="Tấn công" Option2="Phòng thủ" Option3="Nhanh nhẹn" Option4="May mắn" />
+  <Item QuestionID="58" QuestionContent="Phi Tiêu mạnh về thuộc tính nào?" Option1="Tấn công" Option2="Phòng thủ" Option3="Nhanh nhẹn" Option4="May mắn" />
+  <Item QuestionID="59" QuestionContent="Pháo mạnh về thuộc tính nào?" Option1="Tấn công" Option2="Phòng thủ" Option3="Nhanh nhẹn" Option4="May mắn" />
+  <Item QuestionID="60" QuestionContent="Muốn lập Guild, tối thiểu người chơi phải đạt cấp mấy?" Option1="Cấp 5" Option2="Cấp 10" Option3="Cấp 12" Option4="Cấp 20" />
+  <Item QuestionID="61" QuestionContent="Lập Guild cần bao nhiêu vàng?" Option1="10000" Option2="20000" Option3="50000" Option4="100000" />
+  <Item QuestionID="62" QuestionContent="Shop Guild cần đạt cấp mấy để bán đạo cụ S-Nữ Thần?" Option1="Cấp 1" Option2="Cấp 2" Option3="Cấp 3" Option4="Cấp 4" />
+  <Item QuestionID="63" QuestionContent="Tiệm Rèn Guild tối đa có thể tăng đến cấp mấy?" Option1="Cấp 3" Option2="Cấp 5" Option3="Cấp 10" Option4="Cấp 15" />
+  <Item QuestionID="64" QuestionContent="Tiệm Rèn Guild đạt cấp 10, tỷ lệ cường hóa và hợp thành?" Option1="10%" Option2="20%" Option3="50%" Option4="1" />
+  <Item QuestionID="65" QuestionContent="Két Sắt Guild tối đa có thể tăng đến cấp mấy?" Option1="Cấp 3" Option2="Cấp 5" Option3="Cấp 10" Option4="Cấp 15" />
+  <Item QuestionID="66" QuestionContent="Két Sắt Guild cấp 10 có thể chứa bao nhiêu ô?" Option1="30 ô" Option2="50 ô" Option3="100 ô" Option4="150 ô" />
+  <Item QuestionID="67" QuestionContent="Nước Kinh Nghiệm Lv3 có thể tăng bao nhiêu EXP?" Option1="1000" Option2="2000" Option3="3000" Option4="5000" />
+  <Item QuestionID="68" QuestionContent="Đá Chu Tước có màu gì?" Option1="Đỏ" Option2="Lam" Option3="Lục" Option4="Vàng" />
+  <Item QuestionID="69" QuestionContent="Đá Huyền Vũ có màu gì?" Option1="Đỏ" Option2="Lam" Option3="Lục" Option4="Vàng" />
+  <Item QuestionID="70" QuestionContent="Đá Thanh Long có màu gì?" Option1="Đỏ" Option2="Lam" Option3="Lục" Option4="Vàng" />
+  <Item QuestionID="71" QuestionContent="Đá Bạch Hổ có màu gì?" Option1="Đỏ" Option2="Lam" Option3="Lục" Option4="Vàng" />
+  <Item QuestionID="72" QuestionContent="Nguời đầu tiên đo vận tốc ánh sáng là ai?" Option1="Maxwell" Option2="Faraday" Option3="OLe Rømer" Option4="Galileo" />
+  <Item QuestionID="73" QuestionContent="Bạn cho biết thành phố đông dân nhất Đông Nam Á?" Option1="Thành phố Hồ Chí Minh" Option2="Bangkok" Option3="Jakarta" Option4="Phnôm Pênh" />
+  <Item QuestionID="74" QuestionContent="Trong cổ tích Tấm Cám,Tấm hay cho con cá gì ăn?" Option1="Cá rô" Option2="Cá lóc" Option3="Cá bống" Option4="Cá chép" />
+  <Item QuestionID="75" QuestionContent="Sa mạc nào sau đây lớn nhất?" Option1="Taklamakan" Option2="Badain Jaran" Option3="Tengger" Option4="Qaidam" />
+  <Item QuestionID="76" QuestionContent="&quot;Ăn dầm, nằm...&quot; bổ sung câu sau:" Option1="ngủ" Option2="sấp" Option3="dề" Option4="nghiêng" />
+  <Item QuestionID="77" QuestionContent="Trên bàn có 10 con ruồi, đập chết 4 con, hỏi còn lại mấy con?" Option1="4" Option2="6" Option3="10" Option4="0" />
+  <Item QuestionID="78" QuestionContent="Cái bóng lớn nhất mà bạn có thể nhìn thấy là bóng của cái gì?" Option1="Trái đất" Option2="Mặt trăng" Option3="Mặt trời" Option4="Ngôi sao" />
+  <Item QuestionID="79" QuestionContent="Sử dụng Hồi máu giúp người chơi hồi phục bao nhiêu điểm HP?" Option1="100" Option2="200" Option3="500" Option4="1000" />
+  <Item QuestionID="80" QuestionContent="Hồi máu nhóm giúp đồng đội hồi phục bao nhiêu điểm HP?" Option1="100" Option2="200" Option3="300" Option4="500" />
+  <Item QuestionID="81" QuestionContent="Sử dụng Ẩn thân có thể ẩn hình trong mấy turn?" Option1="2" Option2="3" Option3="4" Option4="5" />
+  <Item QuestionID="82" QuestionContent="Sử dụng Ẩn nhóm giúp đồng đội ẩn thân trong mấy turn?" Option1="2" Option2="3" Option3="4" Option4="5" />
+  <Item QuestionID="83" QuestionContent="Sử dụng Kích nộ đạo cụ có thể tăng bao nhiêu nộ khí?" Option1="30%" Option2="40%" Option3="50%" Option4="0.6" />
+  <Item QuestionID="84" QuestionContent="Thời hạn đấu giá vật phẩm tối đa mỗi lượt là?" Option1="12 tiếng" Option2="24 tiếng" Option3="48 tiếng" Option4="72 tiếng" />
+  <Item QuestionID="85" QuestionContent="Số người tối đa trong mỗi đội đấu đội là?" Option1="2" Option2="3" Option3="4" Option4="5" />
+  <Item QuestionID="86" QuestionContent="Số người tối đa trong mỗi đội khiêu chiến phó bản là?" Option1="2" Option2="3" Option3="4" Option4="5" />
+  <Item QuestionID="87" QuestionContent="Beethoven nổi tiếng về lĩnh vực nào?" Option1="Y học" Option2="Âm nhạc" Option3="Triết học" Option4="Toán học" />
+  <Item QuestionID="88" QuestionContent="Mỗi người chơi được mang theo bao nhiêu thú cưng?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="89" QuestionContent="Mỗi ngày người chơi được tiến hành mấy lần Thăng Hoa Vinh Dự?" Option1="10" Option2="15" Option3="20" Option4="30" />
+  <Item QuestionID="90" QuestionContent="Mỗi lần Thăng Hoa Vinh Dự sễ nhận được bao nhiêu Vinh Dự?" Option1="312" Option2="315" Option3="322" Option4="328" />
+  <Item QuestionID="91" QuestionContent="Lỗ phong ấn châu báu cấp 4 được đặt châu báu cấp bao nhiêu?" Option1="Châu Báu Thuộc Tính cấp 15 trở xuống" Option2="Châu Báu Thuộc Tính cấp 16 trở xuống" Option3="Châu Báu Thuộc Tính cấp 12 trở xuống" Option4="Châu Báu Thuộc Tính cấp 13 trở xuống" />
+  <Item QuestionID="92" QuestionContent="Trong trò chơi hiện có bao nhiêu bộ thẻ bài?" Option1="9" Option2="10" Option3="11" Option4="12" />
+  <Item QuestionID="93" QuestionContent="Luật vua gà nửa năm mỗi ngày được mở BOSS chiến miễn phí mấy lần?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="94" QuestionContent="Luật vua gà nửa năm mỗi ngày được mở châu báu miễn phí mấy lần?" Option1="1" Option2="3" Option3="5" Option4="6" />
+  <Item QuestionID="95" QuestionContent="Luật vua gà nửa năm mỗi ngày được làm mới thú cưng miễn phí mấy lần?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="96" QuestionContent="VIP đạt cấp bao nhiêu thì tất cả nhiệm vụ online đều đạt 3 sao?" Option1="4" Option2="5" Option3="6" Option4="7" />
+  <Item QuestionID="97" QuestionContent="“Gà Mái Tàn Ác” trong Vật Tổ thuộc chương mấy?" Option1="Chương 1" Option2="Chương 2" Option3="Chương 3" Option4="Chương 4" />
+  <Item QuestionID="98" QuestionContent="Thời gian mở BOSS thế giới Đội Trưởng là?" Option1="Mỗi ngày" Option2="Mỗi thứ 2, 4, 6" Option3="Mỗi thứ 3, 5, 7" Option4="Mỗi thứ 7 và chủ nhật" />
+  <Item QuestionID="99" QuestionContent="Thời gian mở BOSS Guild là?" Option1="11:00:00" Option2="19:00:00" Option3="22:00:00" Option4="Tùy thuộc hội trưởng" />
+  <Item QuestionID="100" QuestionContent="&quot;Huy Hiệu Hiệu Úy&quot; trong Cửa Hàng Chiến Thần cần bao nhiêu lệnh bài?" Option1="1000" Option2="1200" Option3="1300" Option4="1500" />
+  <Item QuestionID="101" QuestionContent="Cường hóa vũ khí đạt cấp bao nhiêu thì có thể tăng cấp?" Option1="Cấp 9" Option2="Cấp 10" Option3="Cấp 11" Option4="Cấp 12" />
+  <Item QuestionID="102" QuestionContent="Mỗi dòng thuộc tính của Bao Tay Venus +4 là?" Option1="53" Option2="38" Option3="41" Option4="57" />
+  <Item QuestionID="103" QuestionContent="Cửa Hàng Đá Kho Báu đổi &quot;Búa Đầu Bò-Thường&quot; cần bao nhiêu Đá Thú Linh?" Option1="1200" Option2="1000" Option3="1500" Option4="800" />
+  <Item QuestionID="104" QuestionContent="Tiến hành Lôi Đài Chiến sẽ nhận được đạo cụ gì?" Option1="Xu khóa" Option2="Huy chương" Option3="Vàng" Option4="Lệnh bài" />
+  <Item QuestionID="105" QuestionContent="Trang bị nào không thể tiến hành kích hoạt tiềm năng?" Option1="Kính" Option2=" Tóc&#x9;&#x9;&#x9;&#x9;&#x9;" Option3=" Mặt&#x9;&#x9;&#x9;&#x9;&#x9;" Option4="Vũ khí" />
+  <Item QuestionID="106" QuestionContent="Mở 1 lần VIP nửa năm, cấp VIP có thể trực tiếp đạt đến cấp bao nhiêu?" Option1="Cấp 4" Option2="Cấp 5" Option3="Cấp 6" Option4="Cấp 7" />
+  <Item QuestionID="107" QuestionContent="Tỷ lệ % tăng HP của S-Ares là?" Option1="43" Option2="48" Option3="53" Option4="58" />
+  <Item QuestionID="108" QuestionContent="Cấp sao thú cưng cao nhất trong game hiện tại là?" Option1="4 sao" Option2="5 sao" Option3="6 sao" Option4="7 sao" />
+  <Item QuestionID="109" QuestionContent="Cấp chiến hồn cao nhất trong game là?" Option1="Cấp 4" Option2="Cấp 5" Option3="Cấp 6" Option4="Cấp 7" />
+  <Item QuestionID="110" QuestionContent="Vật phẩm nào sau đây không thể đúc vàng?" Option1="Nón" Option2="Vũ khí" Option3="Áo" Option4="Trang sức" />
+  <Item QuestionID="111" QuestionContent="Tu luyện cấp 2 có thể tăng bao nhiêu điểm kinh nghiệm tu luyện?" Option1="200" Option2="300" Option3="350" Option4="400" />
+  <Item QuestionID="112" QuestionContent="1 Chiến Hồn Đơn có thể tăng bao nhiêu điểm kinh nghiệm chiến hồn?" Option1="5" Option2="10" Option3="15" Option4="20" />
+  <Item QuestionID="113" QuestionContent="Đá Hồi Phục Cấp 5 đạt cấp bao nhiêu thì có thể sử dụng?" Option1="20" Option2="30" Option3="40" Option4="50" />
+  <Item QuestionID="114" QuestionContent="Thời gian chín của cây trồng cao cấp trong nông trường là?" Option1="4 tiếng" Option2="6 tiếng" Option3="8 tiếng" Option4="10 tiếng" />
+  <Item QuestionID="115" QuestionContent="Thần Thức Ăn có thể tăng bao nhiêu kinh nghiệm cho thú cưng?" Option1="600" Option2="700" Option3="800" Option4="900" />
+  <Item QuestionID="116" QuestionContent="Vợ của Sói Xám trong phim Dê Vui Vẻ Và Sói Xám tên gì?" Option1="Sói Đỏ" Option2="Sói Tím" Option3="Sói Hồng" Option4="Sói Vàng" />
+  <Item QuestionID="117" QuestionContent="Tượng &quot;Nữ Thần Tự Do&quot; nằm ở thành phố nào của Mỹ?" Option1="Washington" Option2="New York" Option3="San Francisco" Option4="Seattle" />
+  <Item QuestionID="118" QuestionContent="Vì sao mỗi sáng gà trống đều gáy ò ó o?" Option1="Nó báo đã đến giờ ăn" Option2="Nó báo hiệu ngày mới đến rồi" Option3="Chứng tỏ nó là &quot;gà mái&quot;" Option4="Nó bị ngứa cổ" />
+  <Item QuestionID="119" QuestionContent="Trong Ỷ Thiên Đồ Long Ký, Kim Mao Sư Vương tên gọi là gì?" Option1="Tạ Tốn" Option2="Tạ Hiền" Option3="Tạ Huy" Option4="Tạ Lễ" />
+  <Item QuestionID="120" QuestionContent="Marseillaise là quốc ca của nước nào?" Option1="Đức" Option2="Pháp" Option3="Anh" Option4="Tây Ban Nha" />
+  <Item QuestionID="121" QuestionContent="Cỗ xe Cô Bé Lọ Lem tham gia vũ hội được biến thành từ thực vật nào?" Option1="Bí đao" Option2="Bí rợ" Option3="Dưa hấu" Option4=" Dưa gan" />
+  <Item QuestionID="122" QuestionContent="Ca khúc chủ đề của bộ phim &quot;Titanic&quot; là gì?" Option1="Nothing gonna change my love for you" Option2="The Sound of Billows" Option3="My Heart Will Go On" Option4="A Thousand Years" />
+  <Item QuestionID="123" QuestionContent="Koala, còn gọi là gấu túi, là động vật quý của nước nào?" Option1="Malaysia" Option2="Australia" Option3="New Zealand" Option4="Maldives" />
+  <Item QuestionID="124" QuestionContent="Trụ sở chính của Disney nằm ở nước nào?" Option1="Mỹ" Option2="Anh" Option3="Pháp" Option4="Canada" />
+  <Item QuestionID="125" QuestionContent="Mọi người thường dùng thứ gì để làm tan nhanh tuyết?" Option1="Vỏ kê" Option2="Nước sôi" Option3="Lá cây" Option4="Muối" />
+  <Item QuestionID="126" QuestionContent="Cố đô được xây dựng sớm nhất là?" Option1="Cố đô Hoa Lư" Option2="Cố đô Huế" Option3="Thăng Long" Option4="Ninh Bình" />
+  <Item QuestionID="127" QuestionContent="Trong thi đấu bóng rổ, một đội có bao nhiêu cầu thủ được lên sân?" Option1="5" Option2="6" Option3="7" Option4="8" />
+  <Item QuestionID="128" QuestionContent="Địa điểm du lịch nổi tiếng Hawaii nằm ở đâu?" Option1="Đại Tây Dương" Option2="Bắc Băng Dương" Option3="Thái Bình Dương" Option4="Ấn Độ Dương" />
+  <Item QuestionID="129" QuestionContent="Thực vật nổi tiếng nhất ở Provence của Pháp là?" Option1="Oải hương" Option2="Hải đường" Option3="Hoa hồ điệp" Option4="Cây trinh nữ" />
+  <Item QuestionID="130" QuestionContent="Giới hạn cấp ô thẻ bài trong game là?" Option1="30" Option2="35" Option3="40" Option4="45" />
+  <Item QuestionID="131" QuestionContent="Ngoài thẻ chính ra thì tối đa được trang bị bao nhiêu thẻ bài?" Option1="2" Option2="3" Option3="4" Option4="5" />
+  <Item QuestionID="132" QuestionContent="Ai nhanh già nhất trên thế giới?" Option1="Cô dâu" Option2="Người sắp làm mẹ" Option3="Chính trị gia" Option4="Thợ nhuộm tóc" />
+  <Item QuestionID="133" QuestionContent="Cơ thể người thiếu chất gì sẽ dẫn đến bệnh bướu cổ?" Option1="I-ốt" Option2="Can-xi" Option3="Kẽm" Option4="Sắt" />
+  <Item QuestionID="134" QuestionContent="World Cup được tổ chức mấy năm 1 lần?" Option1="2" Option2="3" Option3="4" Option4="6" />
+  <Item QuestionID="135" QuestionContent="Thành phố nào của Châu Âu được mệnh danh là thủ đô sương mù?" Option1="London" Option2="Venice" Option3="Berlin" Option4="Bern" />
+  <Item QuestionID="136" QuestionContent="Olympics hiện đại bắt nguồn từ nước nào?" Option1="Anh" Option2="Đức" Option3="Pháp" Option4="Hy Lạp" />
+  <Item QuestionID="137" QuestionContent="Mua Lì Xì Công Trạng 5 trong Shop Guild tốn bao nhiêu Công Trạng?" Option1="300" Option2="400" Option3="500" Option4="600" />
+  <Item QuestionID="138" QuestionContent="Mũi Khoan Cấp 4 dùng tăng kinh nghiệm cho lỗ phong ấn cấp mấy?" Option1="Cấp 2" Option2="Cấp 3" Option3="Cấp 4" Option4="Cấp 5" />
+  <Item QuestionID="139" QuestionContent="Túi quà Chúc Phúc Vua Gà có mấy loại tính năng?" Option1="5" Option2="6" Option3="7" Option4="8" />
+  <Item QuestionID="140" QuestionContent="Trợ thủ trồng cây trong nông trường tối đa có thể ủy thác bao lâu?" Option1="12 giờ" Option2="24 giờ" Option3="36 giờ" Option4="48 giờ" />
+  <Item QuestionID="141" QuestionContent="Trong Kho Báu, mỗi ngày được miễn phí ném xúc xắc bao nhiêu lần?" Option1="5" Option2="3" Option3="15" Option4="20" />
+  <Item QuestionID="142" QuestionContent="Thành phố đứng đầu về trung tâm thời trang thế giới là thành phố nào?" Option1="Paris" Option2="Milan" Option3="London" Option4="Quảng Châu" />
+  <Item QuestionID="143" QuestionContent="Cung điện nào thuộc Anh?" Option1="Kremlin" Option2="Versailles" Option3="Buckingham" Option4="Louvre" />
+  <Item QuestionID="144" QuestionContent="Cơ thể người không có thức ăn sẽ sống được trong mấy ngày (có nước uống)?" Option1="7" Option2="60" Option3="90" Option4="180" />
+  <Item QuestionID="145" QuestionContent="8 chia làm hai bằng mấy?" Option1="0" Option2="4" Option3="2" Option4="41" />
+  <Item QuestionID="146" QuestionContent="Bệnh hoại huyết là do cơ thể thiếu chất gì?" Option1="Vitamins A" Option2="Vitamins B" Option3="Vitamins C" Option4="Vitamins E" />
+  <Item QuestionID="147" QuestionContent="Con gì lớn nhất trong tất cả các loài ở sở thú?" Option1="Con người" Option2="Hổ" Option3="Beo" Option4="Hà mã" />
+  <Item QuestionID="148" QuestionContent="Biển nào nối liền Châu Âu và Châu Á?" Option1="Caspian" Option2="Biển Đỏ" Option3="Biển Chết" Option4="Hồ Baikal" />
+  <Item QuestionID="149" QuestionContent="Ở Việt Nam người tỉnh nào nói chuyện nghe rõ nhất?" Option1="Người tỉnh nào cũng được" Option2="Người miền Bắc" Option3="Người miền Nam" Option4="Người Hà Nội" />
+  <Item QuestionID="150" QuestionContent="Vị thần tối cao trong thần thoại La Mã là?" Option1="Patroclus" Option2="Zeus" Option3="Jupiter" Option4="Hades" />
+  <Item QuestionID="151" QuestionContent="Nữ thi sĩ được mệnh danh là &quot; Bà Chúa thơ Nôm&quot; ?" Option1="Bà Huyện Thanh Quan" Option2="Đoàn Thị Điểm" Option3="Hồ Xuân Hương" Option4="Ngọc Hân Công Chúa" />
+  <Item QuestionID="152" QuestionContent="Xét về sức  nặng chịu được, con vật nào sau đây khoẻ nhất" Option1="Voi" Option2="Kiến" Option3="Hà Mã" Option4="Trâu" />
+  <Item QuestionID="153" QuestionContent="Loại cờ nào nhắc đến trong truyện Kiều của Nguyễn Du?" Option1="Cờ vua" Option2="Cờ cá ngựa" Option3="Cờ vây" Option4="Cờ tướng" />
+  <Item QuestionID="154" QuestionContent="Phần mũi của giày múa ba lê có một mảnh nhỏ, đó là?" Option1="Cao su" Option2="Bông vải" Option3="Gỗ" Option4="Than tre" />
+  <Item QuestionID="155" QuestionContent="Ngày thế giới không thuốc lá là ngày?" Option1="2013/5/31" Option2="2013/5/11" Option3="2013/5/21" Option4="41409" />
+  <Item QuestionID="156" QuestionContent="Đại bác có đường kính bao nhiêu mm trở lên ?" Option1="30" Option2="50" Option3="40" Option4="20" />
+  <Item QuestionID="157" QuestionContent="Ngày giấc ngủ thế giới là ngày?" Option1="2013/3/21" Option2="2013/3/20" Option3="2013/3/15" Option4="41361" />
+  <Item QuestionID="158" QuestionContent="Quê hương của Thạch Sanh ở đâu?" Option1="huyện Thuận Thành" Option2="huyện Châu Thành" Option3="huyện Long Thành" Option4="quận Cao Bình" />
+  <Item QuestionID="159" QuestionContent="Uống nhiều rượu có hại cho bộ phận nào trong cơ thể nhất?" Option1="Gan" Option2="Tim" Option3="Thận" Option4="Lá lách" />
+  <Item QuestionID="160" QuestionContent="Động vật nào sau đây là động vật thân mềm?" Option1="Ốc sên" Option2="Bò cạp" Option3="A-mip" Option4="Bọ giáp xác" />
+  <Item QuestionID="161" QuestionContent="Thành phố nào đông dân nhất Việt Nam ?" Option1="Hà Nội" Option2="Đà Nẵng" Option3="TPHCM" Option4="Cần Thơ" />
+  <Item QuestionID="162" QuestionContent="Người uống café, sẽ dùng gì khi muốn cho thêm đường vào café?" Option1="Cái muỗng" Option2="Tay trái" Option3="Tay phải" Option4="Đường" />
+  <Item QuestionID="163" QuestionContent="Nhà kinh doanh đưa ra chiến lược khuyến mãi xài thử, dùng thử đầu tiên?" Option1="Mai An Tiêm" Option2="Vạn Lịch" Option3="Thạch Sùng" Option4="Lý Thông" />
+  <Item QuestionID="164" QuestionContent="Trong số những người sau đây, ai là người ghen tuông ghê gớm nhất?" Option1="Cô Tấm" Option2="Thủy Tinh" Option3="Hoạn Thư" Option4="Trương Sinh" />
+  <Item QuestionID="165" QuestionContent="Trong những loài cây sau đây, loài cây nào có rễ dài nhất?" Option1="Cây Kơ-nia" Option2="Cây đa" Option3="Cây thông" Option4="Cây bắp" />
+  <Item QuestionID="166" QuestionContent="Loài cá nào bay được, và có khả năng bay cao nhất?" Option1="Cá ông tiên" Option2="Cá rô phi" Option3="Cá chuồn" Option4="Cá chim" />
+  <Item QuestionID="167" QuestionContent="Trong tự nhiên, loài cá nào bay được, và có khả năng bay cao nhất?" Option1="Cá chuồn" Option2="Cá ông tiên" Option3="Cá chép" Option4="Cá chim" />
+  <Item QuestionID="168" QuestionContent="Con voi và con cá voi giống nhau nhất ở điểm nào?" Option1="Biết phun nước" Option2="Ham ăn" Option3="Nặng ký" Option4="Sợ chuột" />
+  <Item QuestionID="169" QuestionContent="Loại quả nào sau đây dễ vỡ nhất?" Option1="Cam sành" Option2="Trứng" Option3="Dưa hấu" Option4="Cà chua" />
+  <Item QuestionID="170" QuestionContent="Muốn thực hiện được quả phạt đền, Công Vinh phải sút vào đâu?" Option1="Trái bóng" Option2="Khung thành" Option3="Sân bóng" Option4="Chấm phạt đền" />
+  <Item QuestionID="171" QuestionContent="Có bao nhiêu chữ C trong câu sau đây: &quot;Chè,cháo gì tớ cũng thích ăn!”?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="172" QuestionContent="Con cá nào chết rồi mới bệnh?" Option1="Cá ông" Option2="Cá thác lác" Option3="Cá nhà táng" Option4="Cá đuối" />
+  <Item QuestionID="173" QuestionContent="Con gì chết rồi mà còn cựa?" Option1="Con lật đật" Option2="Con gà" Option3="Con voi ma mút" Option4="Con cò ma" />
+  <Item QuestionID="174" QuestionContent="Cái gì càng chơi càng ra nước?" Option1="Ăn kem" Option2="Chơi cờ" Option3="Đi bộ" Option4="Đi bơi" />
+  <Item QuestionID="175" QuestionContent="Tám con số 8 trong tay.Làm sao để cộng được ngay một ngàn?" Option1="8888+88+8+8=1000" Option2="888+88+8+8+8=1000" Option3="888+888+8+8=1000" Option4="888+88+88+8=1000" />
+  <Item QuestionID="176" QuestionContent="Một Bà 64 tuổi sinh nhật,trên bánh chỉ cắm 16 cây nến.Sinh nhật ngày nào?" Option1="Ngày 10.6" Option2="Ngày 29.2" Option3="Ngày 8.8" Option4="Ngày 26.2" />
+  <Item QuestionID="177" QuestionContent="Cánh gì rộng nhất?" Option1="Cánh buồm" Option2="Cánh đồng" Option3="Cánh cò" Option4="Cánh tiên" />
+  <Item QuestionID="178" QuestionContent="Con gì đi xa nhất?" Option1="Con kiến" Option2="Con tem" Option3="Con sông" Option4="Con trăng" />
+  <Item QuestionID="179" QuestionContent="Rừng gì mà không thấy chim bay chỉ thấy có đàn cá bơi tung tăng?" Option1="Rừng ngập mặn" Option2="Rừng san hô" Option3="Rừng vàng biển bạc" Option4="Rừng hoang" />
+  <Item QuestionID="180" QuestionContent="Trong số những loài cây sau, loài cây nào có thể phát triển cao nhất?" Option1="Cây tre" Option2="Cây mận" Option3="Cây tùng" Option4="Cây vàng" />
+  <Item QuestionID="181" QuestionContent="Cây nào cao nhất?" Option1="Cây cầu" Option2="Cây mưa" Option3="Cây ớt" Option4="Cây chuối" />
+  <Item QuestionID="182" QuestionContent="Trái gì khó chịu nhất?" Option1="Trái ớt" Option2="Trái tai" Option3="Trái mít" Option4="Trái đắng" />
+  <Item QuestionID="183" QuestionContent="Gai gì người ta ghét nhất?" Option1="Gai góc" Option2="Gai mắt" Option3="Gai xương rồng" Option4="Gai thép" />
+  <Item QuestionID="184" QuestionContent="Cầu gì cong cong, dẫu bắt qua sông, không ai sang được?" Option1="Cầu khỉ" Option2="Cầu vồng" Option3="Cầu mây" Option4="Cầu tài" />
+  <Item QuestionID="185" QuestionContent="Làm cách nào để tháo được một nút buộc của sợi tóc?" Option1="Dùng tay, từ từ mà gỡ" Option2="Ngâm nước" Option3="Gỡ làm sao ra mà gỡ" Option4="Lấy kéo cắt" />
+  <Item QuestionID="186" QuestionContent="Vua đánh bài thì gọi là gì?" Option1="Long sàng" Option2="Long sền" Option3="Vua đánh bài" Option4="Long bài" />
+  <Item QuestionID="187" QuestionContent="Cá gì có 4 màu?" Option1="Cá bảy màu" Option2="Cá ngựa" Option3="Cá tứ quý" Option4="Cá tháng tư" />
+  <Item QuestionID="188" QuestionContent="Cá gì có tên gắn liền với một loại ngũ cốc?" Option1="Cá trích" Option2="Cá cơm" Option3="Cá khoai" Option4="Cá quả" />
+  <Item QuestionID="189" QuestionContent="Cá gì khi xuất hiện là lá rơi?" Option1="Cá độ" Option2="Cá thu" Option3="Cá đuối" Option4="Cá vàng" />
+  <Item QuestionID="190" QuestionContent="Hoa gì nhìn choáng váng đầu?" Option1="Hoa mắc cỡ" Option2="Hoa mắt" Option3="Hoa ngũ sắc" Option4="Hoa đồng tiền" />
+  <Item QuestionID="191" QuestionContent="Con gì nhỏ nhất?" Option1="Con virus" Option2="Con út" Option3="Con côn trùng" Option4="Con bọ" />
+  <Item QuestionID="192" QuestionContent="Xe gì có bốn bánh, không có động cơ nhưng có khói?" Option1="Xe cút kít" Option2="Xe đạp" Option3="Xe mì gõ" Option4="Xe bò" />
+  <Item QuestionID="193" QuestionContent="Một người sống Bắc Cực vậy có được chôn ở Nam Cực không?" Option1="Thích thì chôn" Option2="Được" Option3="Không" Option4="Chôn ở Xích đạo" />
+  <Item QuestionID="194" QuestionContent="Một người sống Nam Cực sau khi chết đi có chôn ở Bắc Cực không?" Option1="Thích thì chôn" Option2="Được" Option3="Không" Option4="Chôn ở Xích đạo" />
+  <Item QuestionID="195" QuestionContent="Xe gì càng vô ga lại càng chạy chậm?" Option1="Xe máy" Option2="Xe tay ga" Option3="Xe lửa" Option4="Xe lu" />
+  <Item QuestionID="196" QuestionContent="Tuổi em hai chín vừa tròn.Nhân hai cộng bốn chia mười thì ra.Tuổi em?" Option1="16" Option2="6" Option3="4" Option4="29" />
+  <Item QuestionID="197" QuestionContent="Con gì tên thì cứng người thì mềm?" Option1="Trâu" Option2="Sứa" Option3="Rắn" Option4="Cà cuống" />
+  <Item QuestionID="198" QuestionContent="Cá gì nếu bỏ một dấu thì sẽ thành trò chơi?" Option1="Cá tháng tư" Option2="Cá độ" Option3="Cá rô" Option4="Cá kèo" />
+  <Item QuestionID="199" QuestionContent="Bạn có thể nhảy cao hơn tòa nhà 12 tầng không?" Option1="Chỉ nhảy tới tầng 6" Option2="Không" Option3="Có thể" Option4="Nhảy tới tầng 9 là siêu nhân" />
+  <Item QuestionID="200" QuestionContent="Đi thì đứng, đứng thì ngã!" Option1="Con đường" Option2="Bàn chân" Option3="Xe đạp" Option4="Cục đá" />
+  <Item QuestionID="201" QuestionContent="Có một ông sư nọ bị bệnh, ba ông sư đi thăm, hỏi có bao nhiêu ông sư?" Option1="3" Option2="2" Option3="1" Option4="4" />
+  <Item QuestionID="202" QuestionContent="Cái gì người mua thì chẳng cần mà người cần thì chẳng mua?" Option1="Bình cắm hoa" Option2="Quà tặng" Option3="Tã em bé" Option4="Bánh pizza" />
+  <Item QuestionID="203" QuestionContent="Thương nhau cởi áo cho nhau&#xA;Về nhà mẹ hỏi qua cầu gió bay.&#xA;Là con gì?" Option1="Lừa con" Option2="Con lừa" Option3="Con lừa mẹ" Option4="Lừa mẹ" />
+  <Item QuestionID="204" QuestionContent="Bằng một bước mà bước không qua. Là cái gì?" Option1="Hòn đá" Option2="Cái chày" Option3="Cái bóng" Option4="Sợi chỉ" />
+  <Item QuestionID="205" QuestionContent="Nan giải quá, làm sao bỏ được cục nước đá vào tủ lạnh đang chạy?" Option1="Dừng tủ lạnh lại" Option2="Mở tủ lạnh ra bỏ vào" Option3="Cho nước vào tủ lạnh" Option4="Ướp lạnh tủ lạnh" />
+  <Item QuestionID="206" QuestionContent="Cái gì khi cần thì quăng đi còn khi không cần thì lấy lại?" Option1="Phi tiêu" Option2="Mũi tên" Option3="Neo" Option4="Cần câu" />
+  <Item QuestionID="207" QuestionContent="Con kiến làm sao để cõng con bò qua cầu?" Option1="Không thể làm được" Option2="Chỉ có cột dây dắt qua thôi" Option3="Muốn thì cõng thôi" Option4="Cắn một phát ngay đơ" />
+  <Item QuestionID="208" QuestionContent="Đi qua chỗ lội. Hỏi lội hay nhảy?" Option1="Lội" Option2="Nhảy" Option3="Đi" Option4="Chèo" />
+  <Item QuestionID="209" QuestionContent="Cái gì yếu đến nỗi chỉ cần kêu một tiếng là nó vỡ ngay lập tức?" Option1="Pha lê" Option2="Òa" Option3="Im lặng" Option4="Gió" />
+  <Item QuestionID="210" QuestionContent="Cái gì Adam có hai mà Eva chỉ có một?" Option1="Chữ O" Option2="Chữ E" Option3="Chữ A" Option4="Chữ Y" />
+  <Item QuestionID="211" QuestionContent="Vì sao hải âu bay từ phía Bắc đến phía Nam?" Option1="Nhà hải âu ở phía Bắc" Option2="Nhà hải âu ở phía Nam" Option3="Hải âu biết bay" Option4="Cá ở phía Nam ngon hơn ở phía Bắc" />
+  <Item QuestionID="212" QuestionContent="Vì sao mặt trời mọc ở hướng Đông?" Option1="Trái đất quay từ Tây sang Đông" Option2="Mặt trời lặn ở hướng Tây" Option3="Trái đất quay từ Đông sang Tây" Option4="Đó là hướng Đông" />
+  <Item QuestionID="213" QuestionContent="Cà phê đắng em bỏ thêm đường ngọt.Tình đắng rồi em biết bỏ gì đây?" Option1="Bỏ đường " Option2="Bỏ bột ngọt" Option3="Bỏ bữa" Option4="Bỏ quách" />
+  <Item QuestionID="214" QuestionContent="Trong các loài lưỡng cư sau đây, loài nào không có giống cái?" Option1="Ếch cốm" Option2="Chẫu chuộc" Option3="Nhái bén" Option4="Cóc tía" />
+  <Item QuestionID="215" QuestionContent="Con gì chín mắt, chín đuôi, chín đầu?" Option1="Cua rang me" Option2="Hến xào" Option3="Ếch kho" Option4="Tôm nướng" />
+  <Item QuestionID="216" QuestionContent="Dùng gì để biến chàng trai thành ông lão một cách mau chóng?" Option1="Tiền" Option2="Phụ nữ" Option3="Tình yêu" Option4="Photoshop" />
+  <Item QuestionID="217" QuestionContent="Lỗ rốn của con thằn lằn nằm ở đâu?" Option1="Thân" Option2="Bụng" Option3="Đuôi" Option4="Không có" />
+  <Item QuestionID="218" QuestionContent="Khi nào một xác lá rơi bên hè?" Option1="Mùa thu" Option2="Mùa xuân" Option3="Mùa hạ" Option4="Mùa đông" />
+  <Item QuestionID="219" QuestionContent="Cái gì khi mua về người ta phải đập cho bể thì mới có thể dùng được?" Option1="Trứng voi" Option2="Trứng cá" Option3="Trứng Phục sinh" Option4="Trứng gà" />
+  <Item QuestionID="220" QuestionContent="Thứ gì mặc dù biết là lỗ nhiều mà người ta vẫn cứ bán?" Option1="Lọ thủy tinh" Option2="Cuốc" Option3="Danh tiếng" Option4="Rổ" />
+  <Item QuestionID="221" QuestionContent="Con gì uống mà không ăn?" Option1="Con cá" Option2="Con mực" Option3="Con ấu trùng" Option4="Con muỗi" />
+  <Item QuestionID="222" QuestionContent="Cái gì càng tối lại càng sáng, bạn có biết không?" Option1="Lưu huỳnh" Option2="Mắt cá" Option3="Ngọc bích" Option4="Lân tinh" />
+  <Item QuestionID="223" QuestionContent="Cái gì càng cất thì lại càng làm người ta nhìn thấy vậy?" Option1="Lửa" Option2="Thói xấu" Option3="Nước" Option4="Nhà" />
+  <Item QuestionID="224" QuestionContent="Điểm giống nhau nhất giữa một cục gạch và một con cua?" Option1="Thích bùn đất" Option2="Cứng rắn" Option3="Ngậm nước" Option4="Chín đỏ" />
+  <Item QuestionID="225" QuestionContent="Một người tè bậy nơi công cộng nhưng không bị ai phạt,tại sao vậy cà?" Option1="Không có công an ở đó" Option2="Người đó còn nhỏ" Option3="Không ai quan tâm" Option4="Người đó đang bơi" />
+  <Item QuestionID="226" QuestionContent="Mỗi ngày cạo mặt 10 lần,nhưng trên mặt vẫn có mụn, tại sao vậy?" Option1="Anh Tứ đang trong tuổi dậy thì" Option2="Anh Tứ cạo mặt nhưng không rửa" Option3="Anh Tứ cạo mặt không đúng cách" Option4="Anh Tứ là thợ cắt tóc" />
+  <Item QuestionID="227" QuestionContent="Bạn có biết vỏ trứng gà dùng để làm gì không?" Option1="Vứt đi chứ còn làm gì được nữa?" Option2="Làm rau câu trứng gà" Option3="Xay nhỏ làm thức ăn cho gia súc" Option4="Bọc lòng trắng và lòng đỏ" />
+  <Item QuestionID="228" QuestionContent="Đố bạn ngủ gục trên lớp có gì không tốt?" Option1="Bị thầy giáo phạt" Option2="Không tiếp thu bài được" Option3="Bị bạn bè chê cười" Option4="Không thoải mái như nằm trên giường" />
+  <Item QuestionID="229" QuestionContent="Trứng nào mẹ ăn vào thì con thông minh, con ăn vào thì bị mẹ đánh đòn?&#xA;" Option1="Trứng cá" Option2="Trứng gà" Option3="Trứng rùa" Option4="Trứng ngỗng" />
+  <Item QuestionID="230" QuestionContent="Khi nào cái đồng hồ không chạy?" Option1="Quên lên dây" Option2="Hết pin" Option3="Bị hư" Option4="Lúc nào cũng thế" />
+  <Item QuestionID="231" QuestionContent="Đường nào nhỏ nhất?" Option1="Đường vào tim con gái" Option2="Đường có những người yêu nhau" Option3="Đường hẻm" Option4="Đường có những người ghét nhau" />
+  <Item QuestionID="232" QuestionContent="Từ tiếng Anh nào có nhiều người thích nghe nhất?" Option1="CD" Option2="Love" Option3="Honey" Option4="Money" />
+  <Item QuestionID="233" QuestionContent="Trâm là người biết đáp án bài toán.Sao Trâm không lên bảng giải toán?" Option1="Trâm là cô giáo" Option2="Trâm sợ sai" Option3="Trâm không thích lên bảng" Option4="Trâm ghét môn toán" />
+  <Item QuestionID="234" QuestionContent="Cái gì trời không biết, đất biết; mọi người không biết, chỉ mình mình biết?" Option1="Đế giày bị thủng" Option2="Chuyện tình yêu" Option3="Bị điểm kém" Option4="Làm gì có chuyện như thế!" />
+  <Item QuestionID="235" QuestionContent="Làm sao để viết chữ màu xanh bằng bút màu đỏ?" Option1="Cầm bút lên rồi viết" Option2="Viết xong lấy bút màu xanh tô lên" Option3="Nhảm nhí, không thể nào viết được?" Option4="Đổi ngòi khác" />
+  <Item QuestionID="236" QuestionContent="Ngay khi Christopher Columbus đặt chân lên châu lục mới,ông làm gì tiếp theo?" Option1="Bước chân tiếp theo lên" Option2="Đi gặp tù trưởng" Option3="Neo thuyền lại" Option4="Dỡ hàng xuống" />
+  <Item QuestionID="237" QuestionContent="Con sâu con về nhà nói với ba một câu,ba nó lăn đùng ra xỉu,nó nói gì?" Option1="Ba ơi, mua giày cho con đi!" Option2="Con có bầu rồi!" Option3="Có người tán tỉnh con kìa!" Option4="Con mới gặp má ngoài kia kìa!" />
+  <Item QuestionID="238" QuestionContent="Ở giữa Thái Bình Dương là gì?" Option1="Bình" Option2="Rất nhiều đảo" Option3="Tam giác Bécmuđa" Option4="Đảo Hawai" />
+  <Item QuestionID="239" QuestionContent="Muốn biến giấc mơ thành hiện thực, bạn phải làm gì trước tiên?" Option1="Thức dậy" Option2="Học tập" Option3="Chăm chỉ làm việc" Option4="Tiết kiệm" />
+  <Item QuestionID="240" QuestionContent="Một cành lá chuối có thể che hết cả bầu trời không?" Option1="Có" Option2="Không" Option3="Hên xui" Option4="Không biết" />
+  <Item QuestionID="241" QuestionContent="Tại sao người da đen thích ăn sôcôla trắng?" Option1="Sợ đau" Option2="Sợ đắng" Option3="Sợ mập" Option4="Sôcôla trắng hiếm hơn" />
+  <Item QuestionID="242" QuestionContent="Con vịt trắng và con vịt đen, con nào lợi hại hơn?" Option1="Con vịt đen" Option2="Con vịt trắng" Option3="Con lớn hơn" Option4="Lợi hại như nhau" />
+  <Item QuestionID="243" QuestionContent="Một người phụ nữ 45 tuổi thì bà ta có bao nhiêu ngày sinh nhật?" Option1="1 ngày" Option2="45 ngày" Option3="12 ngày nếu bà ta sinh vào 29 tháng 2" Option4="45x12 ngày" />
+  <Item QuestionID="244" QuestionContent="Tại sao khi bắn súng, các xạ thủ phải nhắm một mắt lại?" Option1="Để thấy đường" Option2="Để bắn chính xác" Option3="Để bắn trúng mục tiêu" Option4="Để mắt điều tiết tốt hơn" />
+  <Item QuestionID="245" QuestionContent="Một con ngựa đầu quay về phía Đông, hỏi đuôi nó quay về phía nào?" Option1="Quay xuống đất" Option2="Phía Tây" Option3="Phía Đông" Option4="Phía Nam" />
+  <Item QuestionID="246" QuestionContent="Cần bao nhiêu con cừu để làm được 1 cái áo lông cừu?" Option1="Không cần con nào" Option2="1 con" Option3="2 con" Option4="Rất nhiều con" />
+  <Item QuestionID="247" QuestionContent="Ngọn sóng thần Tsunami lớn nhất đã xảy ra ở đâu?" Option1="Biển" Option2="Thái Lan" Option3="Inđônêxia" Option4="Phi-lip-pin" />
+  <Item QuestionID="248" QuestionContent="Bác sĩ nói với gia đình bệnh nhân:&quot;Tôi bó tay rồi&quot;.Người nhà thái độ ra sao?" Option1="Không hề lo lắng" Option2="Lo lắng" Option3="Khóc sướt mướt" Option4="Tuyệt vọng" />
+  <Item QuestionID="249" QuestionContent="Con gì có 9 trái tim?" Option1="Con bài" Option2="Con ma" Option3="Con trai" Option4="Con gái" />
+  <Item QuestionID="250" QuestionContent="Nghề gì chuyên môn nói dối, chuyên môn lừa đảo nhưng không phạm pháp?" Option1="Ảo thuật" Option2="Luật sư" Option3="Chính trị gia" Option4="Tiếp thị" />
+  <Item QuestionID="251" QuestionContent="Nghề gì ăn trên đầu thiên hạ?" Option1="Hớt tóc" Option2="Quan chức" Option3="Thương buôn" Option4="Môi giới" />
+  <Item QuestionID="252" QuestionContent="Khi nào thì Giáng Sinh và Năm mới ở trong cùng một năm?" Option1="Mọi năm" Option2="Không có năm nào" Option3="Khi Giáng Sinh trùng với Năm Mới" Option4="1 thế kỷ một lần" />
+  <Item QuestionID="253" QuestionContent="Trên bàn có 10 con ruồi, đập chết 4 con, hỏi còn lại mấy con?" Option1="4 con" Option2="6 con" Option3="10 con" Option4="0 con" />
+  <Item QuestionID="254" QuestionContent="Tại sao những người được ngồi xe taxi suốt mà không phải trả tiền?" Option1="Chả ai dám thu tiền" Option2="Chúng uy hiếp tài xế" Option3="Có thẻ VIP" Option4="Có thẻ taxi" />
+  <Item QuestionID="255" QuestionContent="Chồng da đen,vợ người da trắng vừa sinh 1 đứa bé.Răng đứa bé màu gì?" Option1="Không màu" Option2="Màu trắng" Option3="Màu đen" Option4="Màu vàng" />
+  <Item QuestionID="256" QuestionContent="Có 1 đàn chim đậu trên cành, người thợ săn bắn cái rằm.Hỏi chết mấy con?" Option1="15" Option2="10" Option3="5" Option4="1" />
+  <Item QuestionID="257" QuestionContent="Con gấu trúc ao ước gì mà không bao giờ được?" Option1="Chụp hình màu" Option2="Học kungfu" Option3="Nhảy cao" Option4="Ăn kem" />
+  <Item QuestionID="258" QuestionContent="Ở Việt Nam, có nơi nào rồng bay lên và đáp xuống không?" Option1="Có chứ" Option2="Làm gì có" Option3="Trong truyện cổ tích á" Option4="Thế kỷ XXV chắc có đó" />
+  <Item QuestionID="259" QuestionContent="Bạn làm gì đầu tiên khi ngủ dậy?" Option1="Mở mắt" Option2="Đánh răng" Option3="Rửa mặt" Option4="Đứng dậy" />
+  <Item QuestionID="260" QuestionContent="Loại nước giải khát nào chứa sắt và canxi?&#xA;" Option1="Cà phê" Option2="Nước rau muống luộc" Option3="Nước cam ép" Option4="Sữa đậu nành" />
+  <Item QuestionID="261" QuestionContent="Con cua đỏ dài 10cm chạy đua với cua xanh dài 15cm.Con nào về trước?" Option1="Cua xanh" Option2="Cua đỏ" Option3="2 con về đích cùng lúc" Option4="Chẳng con nào về đích" />
+  <Item QuestionID="262" QuestionContent="Một bức tranh toàn con trai gọi là bức tranh gì?" Option1="Thiếu nữ" Option2="Thiếu nam" Option3="Gọi là tranh chứ gì" Option4="Đồng nam" />
+  <Item QuestionID="263" QuestionContent="Trong các loại răng thì răng nào mọc sau cùng?" Option1="Răng giả" Option2="Răng cùng" Option3="Răng khôn" Option4="Răng nanh" />
+  <Item QuestionID="264" QuestionContent="Bạn có biết nhà nào to nhất trên thế giới không?" Option1="Nhà nước" Option2="Nhà trắng" Option3="Nhà băng" Option4="Nhà đất" />
+  <Item QuestionID="265" QuestionContent="Theo bạn, ai bảo vệ người khác tốt nhất?" Option1="Người chết" Option2="Vệ sĩ" Option3="Cảnh sát" Option4="Siêu nhân" />
+  <Item QuestionID="266" QuestionContent="&quot;Đánh chó phải nể mặt chủ&quot;. Vậy đánh sói thì phải xem cái gì?" Option1="Xem lại mình" Option2="Xem chủ nó là ai" Option3="Xem có ma cà rồng quanh đây không" Option4="Xem con sói dữ không" />
+  <Item QuestionID="267" QuestionContent="Mèo vốn ghét chuột.Khi một con mèo thấy một con chuột, nó sẽ làm gì?" Option1="Chạy" Option2="Rượt theo con chuột" Option3="Trèo lên cây cau" Option4="Về méc mẹ" />
+  <Item QuestionID="268" QuestionContent="Đố bạn siêu nhân và người dơi có điểm gì giống nhau?" Option1="Phong cách thời trang" Option2="Người yêu" Option3="Lý tưởng" Option4="Kẻ thù" />
+  <Item QuestionID="269" QuestionContent="Đố bạn bí quyết trường thọ là gì?" Option1="Thở liên tục" Option2="Ăn nhiều rau" Option3="Uống nhiều nước" Option4="Không thức khuya" />
+  <Item QuestionID="270" QuestionContent="Người nào một năm chỉ làm việc có 1 ngày, còn 364 ngày còn lại nghỉ khỏe?" Option1="Ông già Nôen" Option2="Thợ bắn pháo bông" Option3="Ông Táo" Option4="Thần đèn" />
+  <Item QuestionID="271" QuestionContent="Vợ chồng Tèo làm buôn gạo.Tại sao khi sinh con ra,đứa bé chỉ có một mắt trái?" Option1="Chuyện bình thường" Option2="Buôn gian bán lận" Option3="Bị tật bẩm sinh" Option4="Trúng hơi độc khi mang thai" />
+  <Item QuestionID="272" QuestionContent="Sắt để ở ngoài sẽ bị rỉ sét, còn vàng có bị rỉ không?" Option1="Khoa học còn đang nghiên cứu" Option2="Có" Option3="Không" Option4="Hồi xưa thì không, giờ thì có" />
+  <Item QuestionID="273" QuestionContent="&quot;Đại từ điển Tiếng Việt&quot; xuất bản năm 2000 có bao nhiêu từ?" Option1="9" Option2="20 ngàn" Option3="5" Option4="50 ngàn" />
+  <Item QuestionID="274" QuestionContent="Món gì chưa ăn có màu xanh,đang ăn có màu đỏ,lúc nhả ra có màu đen?" Option1="Tôm" Option2="Cua" Option3="Dưa hấu" Option4="Xôi gấc" />
+  <Item QuestionID="275" QuestionContent="Con kiến qua đường bị một chiếc giày đạp lên.Tại sao Kiến không chết?" Option1="Người mang giày là đứa trẻ" Option2="Người mang giày là đàn ông" Option3="Người mang giày là phụ nữ" Option4="Người mang giày là người già" />
+  <Item QuestionID="276" QuestionContent="Cách tốt nhất để xua tan cơn buồn ngủ là gì?" Option1="Đi rửa mặt" Option2="Đi bộ 300 bước" Option3="Đi ngủ" Option4="Uống cà phê" />
+  <Item QuestionID="277" QuestionContent="Chiếc xe jeep đang cua trái, tại sao có một bánh xe không xoay?" Option1="Bánh xe quá nặng" Option2="Bánh xe bị thủng" Option3="Bánh xe không tiếp đất" Option4="Bánh xe quá nhẹ" />
+  <Item QuestionID="278" QuestionContent="Truyện Kiều Nguyễn Du đã dùng 3 loài vật hổ,chim,bướm để tả nhân vật?" Option1="Thúy Vân" Option2="Kim Trọng" Option3="Từ Hải" Option4="Thúy Kiều" />
+  <Item QuestionID="279" QuestionContent="Châu Phi, Hàn Quốc, trạm vũ trụ, mặt trăng, cái nào gần với chúng ta nhất?" Option1="Hàn Quốc" Option2="Châu Phi" Option3="Mặt trăng" Option4="Trạm vũ trụ" />
+  <Item QuestionID="280" QuestionContent="Ở đâu nhiều người biết thì không nói,còn những người nói thì đa số không biết?" Option1="Văn hóa" Option2="Khoa học" Option3="Kỳ thi" Option4="Công sở" />
+  <Item QuestionID="281" QuestionContent="Một con ngựa đau, cả tàu bỏ cỏ, tại sao vậy?" Option1="Thương yêu nhau" Option2="Đoàn kết" Option3="Sợ bị bệnh" Option4="Say sóng" />
+  <Item QuestionID="282" QuestionContent="Loài gia cầm nào không bị ảnh hưởng bởi dịch cúm gia cầm?" Option1="Chim én" Option2="Gà" Option3="Vịt" Option4="Chim cánh cụt" />
+  <Item QuestionID="283" QuestionContent="Để ngăn chặn mọi cám dỗ xấu, điều gì sau đây là tốt nhất?" Option1="Sách đạo đức" Option2="Công an" Option3="Miệng" Option4="Sức khỏe" />
+  <Item QuestionID="284" QuestionContent="Đố bạn trên đời này có loại phân nào không bốc mùi kinh dị hông?" Option1="Hên xui" Option2="Không " Option3="Có" Option4="Chấp nhận trả lời sai" />
+  <Item QuestionID="285" QuestionContent="Cái gì càng có nhiều lại càng khó nhìn thấy?" Option1="Tiền bạc" Option2="Con cái" Option3="Sương mù" Option4="Kim cương" />
+  <Item QuestionID="286" QuestionContent="Làm thế nào để con sâu qua sông mà không bị ướt?" Option1="Chèo thuyền" Option2="Bơi" Option3="Lớn lên" Option4="Quá giang con chim" />
+  <Item QuestionID="287" QuestionContent="Mèo, chó và chuột chạy đua với nhau thì con nào sẽ thắng?" Option1="Mèo" Option2="Chuột" Option3="Chó" Option4="Con nào chạy nhanh" />
+  <Item QuestionID="288" QuestionContent="Bi đi xem điểm thi, thấy mình được 10 điểm và khóc. Tại sao Bi khóc?" Option1="Có nhiều người 10 điểm quá" Option2="10.5 điểm mới đậu" Option3="Vui" Option4="Thang điểm 100 mà" />
+  <Item QuestionID="289" QuestionContent="Vì sao ngay lần gặp đầu tiên mà Bobo đã nói Bubu là uống sữa dê mà lớn?" Option1="Nhà Bubu bán sữa dê" Option2="Nhà Bubu nuôi dê" Option3="Bubu là con dê" Option4="Bobo là con dê" />
+  <Item QuestionID="290" QuestionContent="Cái gì lại có thể lên và xuống cùng lúc?" Option1="Thang máy" Option2="Kim đồng hồ" Option3="Bập bênh" Option4="Thủy triều" />
+  <Item QuestionID="291" QuestionContent="Vật gì VĐV cử tạ vô địch Lý Đức cả đời không bao giờ nâng lên nổi?" Option1="Quả tạ 10kg" Option2="Trái đất" Option3="Lý Đức" Option4="Quả tạ 100kg" />
+  <Item QuestionID="292" QuestionContent="Con vật nào bị bệnh mất ngủ kinh niên?" Option1="Mèo mun" Option2="Ngựa ô" Option3="Gấu trúc" Option4="Chó mực" />
+  <Item QuestionID="293" QuestionContent="Ai là người muốn được người khác đuổi đi nhất?" Option1="Học trò" Option2="Tù vượt ngục" Option3="Tù trong ngục" Option4="Kẻ nói dối" />
+  <Item QuestionID="294" QuestionContent="Vì sao người ta thích ở trên người khác?" Option1="Trên cao thì mát mẻ" Option2="Người ta thích leo cây" Option3="Khỉ thích leo cây" Option4="Cao cho người khác thấy" />
+  <Item QuestionID="295" QuestionContent="Vì sao hiện nay loài khỉ càng ngày càng ít đi?" Option1="Bị săn trộm" Option2="Buồn bã" Option3="Đang phát triển" Option4="Bị nhiễm H5N1" />
+  <Item QuestionID="296" QuestionContent="Vì sao đôi tất mới mua có 2 cái lỗ?" Option1="Bị người bán hàng lừa" Option2="Mua phải hàng giả" Option3="Để dùng" Option4="Style mới" />
+  <Item QuestionID="297" QuestionContent="Bobo ngủ gật trong lớp học, nhưng vì sao không bị thầy giáo mắng?" Option1="Nội quy không cấm điều đó" Option2="Giờ ra chơi" Option3="Thầy không nhìn thấy" Option4="Thầy chưa mắng" />
+  <Item QuestionID="298" QuestionContent="Cái bóng lớn nhất mà bạn có thể nhìn thấy là bóng của cái gì?" Option1="Mặt trời" Option2="Mặt trăng" Option3="Trái đất" Option4="Ngôi sao" />
+  <Item QuestionID="299" QuestionContent="Vì sao gấu xám cứ ngủ suốt mùa đông như vậy?" Option1="Làm biếng" Option2="Tham gia cuộc thi ngủ" Option3="Ngủ quên" Option4="Ai cũng ngủ nên mình đi ngủ" />
+  <Item QuestionID="300" QuestionContent="Bobo nhảy ở tầng sáu thì chuyện gì xảy ra?" Option1="Gãy chân" Option2="Người yêu Bobo sẽ khóc" Option3="Không có gì" Option4="Chết" />
+  <Item QuestionID="301" QuestionContent="Vì sao cá vàng nhìn lên thì chỉ thấy mờ mờ ảo ảo?" Option1="Bị loạn thị" Option2="Bị cận thị" Option3="Sống trong ao" Option4="Bị viễn thị" />
+  <Item QuestionID="302" QuestionContent="Vì sao thầy giáo biết được ba của Bobo thuận tay trái?" Option1="Nhìn mắt Bobo" Option2="Nhìn tay Bobo" Option3="Nhìn mặt Bobo" Option4="Nhìn tập vở của Bobo" />
+  <Item QuestionID="303" QuestionContent="Khi chuông đồng hồ điểm 13 tiếng, bạn nên làm gì?" Option1="Thích làm gì thì làm" Option2="Đi ngủ" Option3="Ra tiệm đồng hồ" Option4="Xem phim kinh dị" />
+  <Item QuestionID="304" QuestionContent="Ở một tiểu đội nọ.Nam là chạy nhanh nhất.Cấp trên xử với cậu ta thế nào?" Option1="Miễn cho môn chạy" Option2="Khen ngợi" Option3="Phê bình, bỏ đói vài ngày" Option4="Thưởng tiền" />
+  <Item QuestionID="305" QuestionContent="Con đường nào sau đây lạnh nhất mà bạn biết?" Option1="Con đường mưa" Option2="Đường vào tim con trai" Option3="Đường vào tim con gái" Option4="Đường thuỷ" />
+  <Item QuestionID="306" QuestionContent="Chaien hát rất dở, nhưng tại sao lúc Chaien hát mọi người lại vỗ tay liên tục?" Option1="Sợ Chaien buồn" Option2="Sợ bị Chaien đánh" Option3="Sợ mất máu" Option4="Cho đỡ buồn ngủ" />
+  <Item QuestionID="307" QuestionContent="Tại sao người Ấn Độ dùng tay để bốc thức ăn?" Option1="Họ không biết dùng đũa" Option2="Ăn bốc mới ngon" Option3="Họ ở sạch" Option4="Để tiết kiệm tiền mua đũa" />
+  <Item QuestionID="308" QuestionContent="Tại sao hai con hổ cắn nhau thường đến khi 1 con chết đi mới thôi?" Option1="Giành thức ăn" Option2="Giành 1 con hổ cái" Option3="Không ai đủ can đảm" Option4="Không có việc gì để làm" />
+  <Item QuestionID="309" QuestionContent="Đêm giáng sinh, đầu tiên ông già Noel đặt vật gì vào trong chiếc tất?" Option1="Gấu bông" Option2="Đồ chơi" Option3="Bàn chân" Option4="Sôcôla" />
+  <Item QuestionID="310" QuestionContent="Nơi nào trên thế giới phải đóng dấu mới được đi qua?" Option1="Ai Cập" Option2="Ba Tư" Option3="Ấn Độ" Option4="Pháp" />
+  <Item QuestionID="311" QuestionContent="Sắt để bên ngoài sẽ bị gỉ do quá trình oxy hoá, còn vàng thì sao?" Option1="Sẫm màu" Option2="Bị ăn mòn" Option3="Bốc hơi" Option4="Sáng bóng" />
+  <Item QuestionID="312" QuestionContent="Chuột và Mèo chơi oẳn tù tì từ sáng đến chiều.Con nào thắng nhiều hơn?" Option1="Chó con" Option2="Mèo con" Option3="Cả hai đều không thắng được lần nào" Option4="Số lần thắng và thua ngang nhau" />
+  <Item QuestionID="313" QuestionContent="Sơn dương có râu dài là con đực hay con cái?" Option1="Con cái" Option2="Con đực" Option3="Cả hai" Option4="Con già" />
+  <Item QuestionID="314" QuestionContent="Người mù đứng từ sáng đến tối trước cổng nhà thờ.Ổng có thấy gì không?" Option1="Lúc thấy lúc không" Option2="Thấy chết liền" Option3="Có" Option4="Đất trời một màu u ám" />
+  <Item QuestionID="315" QuestionContent="Bà đó bả chết bả bay lên trời. Hỏi bà ấy chết năm bao nhiêu tuổi?" Option1="57 tuổi" Option2="77 tuổi" Option3="73 tuổi" Option4="100 tuổi" />
+  <Item QuestionID="316" QuestionContent="Một ký bông gòn, một ký sắt cái nào nặng hơn?" Option1="Sắt" Option2="Bông gòn" Option3="Chả cái nào cả" Option4="Biết chết liền" />
+  <Item QuestionID="317" QuestionContent="Bạn nghĩ một ký ba khía, một ký sắt cái nào nặng hơn?" Option1="Bằng nhau" Option2="Một ký sắt" Option3="Một ký ba khía" Option4="Hên xui" />
+  <Item QuestionID="318" QuestionContent="Lấy 21000 chia đều cho 2 người cha và 2 người con thì 1 người được?" Option1="3500" Option2="5250" Option3="7000" Option4="10500" />
+  <Item QuestionID="319" QuestionContent="Sáng nay Tí đang đi học, nhìn thấy con cò mù. Tại sao Tí quay về?" Option1="Tí trốn học" Option2="Đem con cò về cho ăn" Option3="Thầy giáo không đến" Option4="Tí bị đau bụng" />
+  <Item QuestionID="320" QuestionContent="Bà nội của Bo đi chợ thấy con cò lùi.Tại sao bà quay về nhà?" Option1="Quên chưa đóng cửa" Option2="Bắt con cò về làm thịt" Option3="Về nhà lấy tiền" Option4="Đem cò về cho Bo nuôi" />
+  <Item QuestionID="321" QuestionContent="Ai nhanh già nhất trên thế giới?" Option1="Chính trị gia" Option2="Người sắp làm mẹ" Option3="Cô dâu" Option4="Thợ nhuộm tóc" />
+  <Item QuestionID="322" QuestionContent="Người da đen có ưu điểm gì so với người da trắng?" Option1="Tóc xoăn" Option2="Răng trắng" Option3="Không sợ nắng" Option4="Khoẻ mạnh" />
+  <Item QuestionID="323" QuestionContent="Một cái hộp vuông có mấy bên?" Option1="6 bên" Option2="4 bên" Option3="2 bên" Option4="8 bên" />
+  <Item QuestionID="324" QuestionContent="Con gì lớn nhất trong tất cả các loài ở sở thú?" Option1="Cá mập" Option2="Hổ" Option3="Con người" Option4="Voi" />
+  <Item QuestionID="325" QuestionContent="Vì sao mỗi sáng gà trống đều gáy ò ó o?" Option1="Chứng tỏ nó là &quot;gà mái&quot;" Option2="Nó báo hiệu ngày mới đến rồi" Option3="Nó báo đã đến giờ ăn" Option4="Nó bị ngứa cổ" />
+  <Item QuestionID="326" QuestionContent="Nàng Hằng Nga xinh đẹp thích ở trên cung trăng.Nàng thích gì nhất ở đây?" Option1="Cây đa" Option2="Chú cuội" Option3="Thỏ ngọc" Option4="Không khí mát mẻ" />
+  <Item QuestionID="327" QuestionContent="8 chia làm hai bằng mấy?" Option1="2" Option2="4" Option3="0" Option4="41" />
+  <Item QuestionID="328" QuestionContent="Lấy cái gì để làm ra cái lưới vậy ta?" Option1="Hốc" Option2="Nhựa cây" Option3="Lỗ" Option4="Mạng nhện" />
+  <Item QuestionID="329" QuestionContent="Vì sao cá chỉ sống trong nước mà không sống trên cạn?" Option1="Thức ăn của cá ở dưới nước" Option2="Cá thích bơi" Option3="Có mèo" Option4="Trên bờ nóng lắm" />
+  <Item QuestionID="330" QuestionContent="Nên hái quả trên cây táo khi nào là tốt nhất?" Option1="Lúc chiều tà" Option2="Khi còn sương sớm" Option3="Khi táo chín" Option4="Khi nào cũng hái được" />
+  <Item QuestionID="331" QuestionContent="Cá thường bơi giỏi, nó bơi suốt ngày, có khi nào cá bơi ngửa không?" Option1="Mới sinh" Option2="Có con" Option3="Chết" Option4="Ăn no" />
+  <Item QuestionID="332" QuestionContent="Khi Bobo ném một cái trứng gà đi xa 2m, tại sao trứng không bể?" Option1="Trứng đã luộc" Option2="Hên xui" Option3="Chưa chạm đất" Option4="Trứng thần kỳ" />
+  <Item QuestionID="333" QuestionContent="Con gì chỉ nằm một góc mà đi khắp thế giới mới tài?" Option1="Con virus" Option2="Con cóc tía" Option3="Con tem" Option4="Con muỗi" />
+  <Item QuestionID="334" QuestionContent="Ở Việt Nam người tỉnh nào nói chuyện nghe rõ nhất?" Option1="Người miền Bắc" Option2="Người Hà Nội" Option3="Người tỉnh nào cũng được" Option4="Người miền Nam" />
+  <Item QuestionID="335" QuestionContent="1. Trang bị nào không thuộc bộ phụ kiện Avengers:" Option1=" Bat – Gà" Option2="Optimus Prime" Option3="Captian Gunny" Option4="Captain America" />
+  <Item QuestionID="336" QuestionContent="2. Level ma thạch cao nhất trong game" Option1="7" Option2="8" Option3="9" Option4="10" />
+  <Item QuestionID="337" QuestionContent="3. Mê cung tầng 42, bạn sẽ đối mặt với:" Option1="Linh Vương mê cung" Option2="Kỵ Sĩ mê cung" Option3="Vệ Sĩ mê cung" Option4="Jasin Mê Cung" />
+  <Item QuestionID="338" QuestionContent="4. Số điểm manh hóa nhận được khi dùng Thú cưng 3 sao Level 0  để manh hóa Pet?" Option1="10" Option2="11" Option3="12" Option4="13" />
+  <Item QuestionID="339" QuestionContent="5. Có tất cả bao nhiêu kỹ năng Thú Cưỡi?" Option1="9" Option2="10" Option3="11" Option4="12" />
+  <Item QuestionID="340" QuestionContent="6. Kỹ năng Xuyên Giáp của thú cưỡi có được khi:" Option1="Tăng thú cưỡi level 1 lên 8 sao" Option2="Tăng thú cưỡi level 1 lên 9 sao" Option3="Tăng thú cưỡi lên level 2 0 sao" Option4="Tăng thú cưỡi level 2 lên 1 sao" />
+  <Item QuestionID="341" QuestionContent="7. Level tiến hóa cao nhất của Pet là:" Option1="30" Option2="40" Option3="50" Option4="60" />
+  <Item QuestionID="342" QuestionContent="8. Với tính năng Manh hóa Pet khi manh hóa trang bị nón cho pet sẽ tăng:" Option1="Công kích và Phòng ngự" Option2="Phòng ngự và Hộ giáp" Option3="Công kích và Sát thương" Option4="Hộ giáp và Công kích" />
+  <Item QuestionID="343" QuestionContent="Con gì không đầu, không mắt, nhưng lại có mũi; không tay, không chân, không miệng mà lại có lưỡi?" Option1="Con ma" Option2="Con dao" Option3="Con Sứa" Option4="Con Ốc" />
+  <Item QuestionID="344" QuestionContent="Kẻ cho lưu hành hàng giả đầu tiên, gây hậu quả tai hại nhất cho người sử dụng là ai?" Option1="Trọng Thủy" Option2="Cô Cám" Option3="Thạch Sùng" Option4="Lý Thông" />
+  <Item QuestionID="345" QuestionContent="3 con mèo ăn hết 3 con chuột trong vòng 3 phút. 100 con mèo ăn 100 con chuột trong bao lâu?" Option1="30 phút" Option2="300 phút" Option3="3 phút" Option4="Nửa giờ" />
+  <Item QuestionID="346" QuestionContent="George có hai anh, một chị, hai bà cô và ba ông chú. Hỏi bố mẹ George có mấy người con?" Option1="5" Option2="9" Option3="4" Option4="3" />
+  <Item QuestionID="347" QuestionContent="Giả sử Bobby thích ăn cam hơn nho, thích dâu hơn táo, thích táo hơn cam, câu nào ở đây không đúng?" Option1="Bobby thích nho hơn dâu" Option2="Bobby thích dâu hơn nho" Option3="Bobby thích táo hơn nho" Option4="Bobby thích dâu hơn cam" />
+  <Item QuestionID="348" QuestionContent="Trong 1 căn phòng có 4 con mèo. Trước mặt mỗi con có 3 con mèo khác. Vậy tổng cộng có mấy con mèo?" Option1="3" Option2="4" Option3="8" Option4="12" />
+  <Item QuestionID="349" QuestionContent="Một đàn nai hăm hở chạy vào rừng. Sụp xuống hầm chông chết mất 7 con. Hỏi đàn nai còn lại mấy con?" Option1="45" Option2="7" Option3="0" Option4="Không đếm được" />
+  <Item QuestionID="350" QuestionContent="Vì sao người ta gọi cái nhà có khuôn viên xung quanh và có rất nhiều phòng... là biệt thự?" Option1="Nhà đặc biệt" Option2="Biệt lập với xung quanh" Option3="Nhà lớn" Option4="Nhà đẹp" />
+  <Item QuestionID="351" QuestionContent="Một người vì chạy ra đường lúc 12 giờ trưa nên tự nhiên lăn ra chết thì gọi là gì?" Option1="Tử vì đạo" Option2="Tử trận" Option3="Tử thần" Option4="Tử tội" />
+  <Item QuestionID="352" QuestionContent="Có một con vịt đi trước một con vịt, một con vịt đi trước hai con vịt. Đếm xem có mấy con vịt?" Option1="3" Option2="4" Option3="5" Option4="6" />
+  <Item QuestionID="353" QuestionContent="Tại sao con voi lại không thích chơi game trên máy tính dù nó biết chơi và rất thích chơi?" Option1="Mũi dài quá che cả bàn phím" Option2="Không nhìn được màn hình bằng hai mắt cùng lúc" Option3="Máy tính bị hư" Option4="Sợ Chuột" />
+  <Item QuestionID="354" QuestionContent="Trên tấm bảng nọ có ghi một chữ, ai nhìn thấy cũng lắc đầu, nói sai rồi. Vậy trên bảng viết chữ gì?" Option1="Đàn ông có bầu" Option2="Sai" Option3="Đúng" Option4="Heo biết bay" />
+  <Item QuestionID="355" QuestionContent="Có một con ngựa giận dữ đi trong chuồng, đố bạn hắt cái gì vào người nó mà không cần dùng sức?" Option1="Nước" Option2="Dầu" Option3="Xì" Option4="Cỏ" />
+  <Item QuestionID="356" QuestionContent="Trong các loại trứng, trứng nào đập không bể, luộc không đông, ăn vào có hại cho sức khỏe?" Option1="Trứng gà" Option2="Trứng khủng long" Option3="Trứng ngỗng" Option4="Trứng rùa" />
+  <Item QuestionID="357" QuestionContent="Một người đàn ông khỏe mạnh với cái bụng trống rỗng có thể ăn nhiều nhất bao nhiêu trứng vịt lộn?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="358" QuestionContent="Một lính cứu hỏa rơi từ chiếc thang dài 30m, nhưng không hề hấn gì, tại sao vậy?" Option1="Ở dưới có lưới phòng hộ" Option2="Anh ta đang say" Option3="Anh ta đang đeo dây phòng hộ" Option4="Cái thang nằm dưới đất" />
+  <Item QuestionID="359" QuestionContent="Trong 1 năm, có 7 tháng có ngày 31, 4 tháng có ngày 30. Vậy có bao nhiêu tháng có ngày 28?" Option1="1 tháng" Option2="12 tháng" Option3="Không có tháng nào" Option4="Nếu năm nhuận thì có 2 tháng" />
+  <Item QuestionID="360" QuestionContent="Cái đầu giống mèo, chân giống mèo, và tai giống con mèo, nhưng không phải con mèo. Vậy là con gì?" Option1="Con Hổ" Option2="Con Báo" Option3="Mèo con" Option4="Cú Mèo" />
+  <Item QuestionID="361" QuestionContent="Có một tàu điện đi về hướng nam. Gió hướng tây bắc. Vậy khói từ con tàu sẽ theo hướng nào?" Option1="Đông Nam" Option2="Nam" Option3="Bắc" Option4="Không theo hướng nào" />
+  <Item QuestionID="362" QuestionContent="Có 1 người không cẩn thận bị té xuống giếng nước. Làm sao để tóc không bị ướt?" Option1="Trùm kín tóc lại" Option2="Mặc áo mưa" Option3="Lên bờ sấy tóc khô ngay" Option4="Không làm gì cả" />
+  <Item QuestionID="363" QuestionContent="Bố mẹ có sáu người con trai, mỗi người con trai có một em gái. Hỏi gia đình đó có bao nhiêu người?" Option1="8 người" Option2="9 người" Option3="12 người " Option4="14 người" />
+  <Item QuestionID="364" QuestionContent="Có 3 con khỉ gồm khỉ xanh, khỉ đỏ, khỉ đen. 2 con nhảy xuống nước. Hỏi trên bờ còn con nào?" Option1="Khỉ đen" Option2="Khỉ xanh" Option3="Khỉ đỏ" Option4="Còn con khỉ khô" />
+  <Item QuestionID="365" QuestionContent="Mẹ ngựa vằn cho con chơi với ngựa trắng.&#xA;Vậy mẹ ngựa trắng có cho con chơi với ngựa vằn không?" Option1="Có" Option2="Không" Option3="Chỉ cho chơi vào ban ngày" Option4="Chỉ cho chơi vào ban đêm" />
+  <Item QuestionID="366" QuestionContent="Một con rết 100 chân đang đi, bỗng nhiên có 1 cục đá rơi xuống. Hỏi lúc đó nó còn lại mấy chân?" Option1="98" Option2="99" Option3="100" Option4="Không còn chân nào" />
+  <Item QuestionID="367" QuestionContent="Gấu con nằm mơ trúng số được 1 tỷ, thức dậy quả nhiên nó trúng 1 tỷ thật. Theo bạn nó nên làm gì?" Option1="Đi ngủ" Option2="Đi nhận tiền" Option3="Rửa mặt" Option4="Ăn mừng" />
+  <Item QuestionID="368" QuestionContent="Con ma xanh đập 1 phát chết, con ma đỏ đập 2 phát chết. Hỏi đập 2 phát con nào chết?" Option1="Ma đỏ" Option2="Ma Xanh" Option3="Cả 2" Option4="Không chết con nào" />
+  <Item QuestionID="369" QuestionContent="Cần bao nhiêu điểm danh vọng để có quân hàm thiếu úy trong đấu trường quần đùi?" Option1="20000" Option2="35000" Option3="51000" Option4="67000" />
+  <Item QuestionID="370" QuestionContent="Level thú cưỡi cao nhất trong game hiện nay là:" Option1="8" Option2="9" Option3="10" Option4="11" />
+  <Item QuestionID="371" QuestionContent="Vip đạt cấp bao nhiêu có thể miễn phí tự động auto mê cung?" Option1="7" Option2="8" Option3="9" Option4="10" />
+  <Item QuestionID="372" QuestionContent="Có 3 người lùn xếp hàng dọc đi vào hang. Người đi sau cầm một thanh kiếm, người đi giữa cầm một cái tẩu thuốc, hỏi người đi trước cầm gì?" Option1="Cầm Gươm" Option2="Cầm Cờ" Option3="Cầm Đầu" Option4="Cầm Dao" />
+  <Item QuestionID="373" QuestionContent="Con chó đen người ta gọi là con chó mực. Con chó vàng, người ta gọi là con chó phèn. Con chó trắng người ta gọi là con chó cò. Vậy con chó đỏ, người ta gọi là con chó gì?" Option1="Chó Đỏ" Option2="Chó Lửa" Option3="Chó Mực" Option4="Làm gì có chó màu đỏ mà gọi" />
+  <Item QuestionID="374" QuestionContent="Nơi nào có đường sá, nhưng không có xe cộ; có nhà ở, nhưng không có người; có siêu thị, công ty... nhưng không có hàng hóa... Đó là nơi nào?" Option1="Sao Hỏa" Option2="Mặt Trăng" Option3="Bản Đồ" Option4="Trái Đất" />
+  <Item QuestionID="375" QuestionContent="Có một cây lê có hai cành, mỗi cành có hai nhánh lớn, mỗi nhánh lớn có hai nhánh nhỏ, mỗi nhánh nhò có hai cái lá, cạnh mỗi cái lá có hai quả. Hỏi trên cây đó có mấy quả táo?" Option1="4 quả" Option2="8 quả" Option3="Không quả nào" Option4="6 quả" />
+  <Item QuestionID="376" QuestionContent="Có hai người: một lớn, một bé đi lên đỉnh một quả núi. Người bé là con của người lớn, nhưng người lớn lại không phải cha của người bé, hỏi người lớn là ai?" Option1="Người cha" Option2="Người mẹ" Option3="Cha dượng" Option4="Mẹ kế" />
+  <Item QuestionID="377" QuestionContent="Ai cũng biết đỉnh núi Everest cao nhất thế giới, vậy trước khi đỉnh Everest được khám phá, đỉnh núi nào cao nhất thế giới?" Option1=" Everest" Option2="Andes" Option3="Himalaya" Option4="Fansipan" />
+  <Item QuestionID="378" QuestionContent="Con gì đầu dê mình ốc?" Option1="Con dê" Option2="Con ốc" Option3="Ốc Sên" Option4="Con dốc" />
+  <Item QuestionID="379" QuestionContent=" Cái gì mà đi thì nằm, đứng cũng nằm, nhưng nằm lại đứng?" Option1="Bàn Chân" Option2="Xe Đạp" Option3="Cái Ghế" Option4="Không có cái nào như thế" />
+  <Item QuestionID="380" QuestionContent="Có 1 đàn chuột điếc đi ngang qua, hỏi có mấy con?" Option1="10 con" Option2="12 con" Option3="24 con" Option4="Không đếm được" />
+  <Item QuestionID="381" QuestionContent="Bỏ ngoài nướng trong, ăn ngoài bỏ trong là gì?" Option1="Cá" Option2="Bắp Ngô" Option3="Thịt lợn" Option4="Thịt bò" />
+  <Item QuestionID="382" QuestionContent="Trong 1 cuộc thi chạy, nếu bạn vượt qua người thứ 2 bạn sẽ đứng thứ mấy?" Option1="Thứ 1" Option2="Thứ 2" Option3="Thứ 3" Option4="Thứ 4" />
+  <Item QuestionID="383" QuestionContent=" Làm sao để cái cân tự cân chính nó?" Option1="Lật ngược cái cân lại" Option2="Để cân lên 1 cái cân khác" Option3="Không cân được" Option4="Cứ cân thôi" />
+  <Item QuestionID="384" QuestionContent="Hai người đào trong hai giờ thì được một cái hố. Vậy hỏi một người đào trong một giờ thì được mấy cái hố?" Option1="2 cái hố" Option2="1 cái hố" Option3="Nửa cái hố" Option4="Không được cái hố nào" />
+  <Item QuestionID="385" QuestionContent="Con gì mang được miếng gỗ lớn nhưng không mang được hòn sỏi?" Option1="Con kiến" Option2="Con ong" Option3="Con người" Option4="Con sông" />
+  <Item QuestionID="386" QuestionContent="Ở Việt Nam, một thằng mù và ba thằng điếc đi ăn phở, mỗi người ăn một tô. Mỗi tô phở là 10 ngàn đồng. Hỏi ăn xong họ phải trả bao nhiêu tiền?" Option1="10 ngàn" Option2="20 ngàn" Option3="30 ngàn" Option4="40 ngàn" />
+  <Item QuestionID="387" QuestionContent="Giả sử ta có 1 khúc vải, cắt nó ra làm 100 khúc, thời gian để cắt 1 khúc vải là 5 giây. Hỏi nếu cắt liên tục không ngừng nghỉ thì trong bao lâu sẽ cắt xong?" Option1="500 giây" Option2="505 giây" Option3="495 giây" Option4="490 giây" />
+  <Item QuestionID="388" QuestionContent="Có ba quả táo trên bàn và bạn lấy đi hai quả. Hỏi bạn còn bao nhiêu quả táo?" Option1="1 quả" Option2="2 quả" Option3="3 quả" Option4="Không còn quả nào" />
+  <Item QuestionID="389" QuestionContent="Nhà Nam có 4 anh chị em, 3 người lớn tên là Xuân, Hạ, Thu. Đố bạn người em út tên gì?" Option1="tên Đông" Option2="tên Nam" Option3="Tên gì không đoán được" Option4="tên Xuân" />
+  <Item QuestionID="390" QuestionContent="Con mèo nào lại sợ con chuột?" Option1="Không có con mèo nào" Option2="Con mèo nào cũng sợ chuột" Option3="Mèo Doremon" Option4="Mèo mướp" />
+  <Item QuestionID="391" QuestionContent="A gọi B bằng bác, B gọi C là ông nội , C kêu D là cậu, D kêu E là dì, E kêu F là chú, F gọi Z là con.&#xA;Hỏi A gọi Z bằng gì ???" Option1="Bằng Ông" Option2="Bằng Bà" Option3="Bằng Bác" Option4="Bằng mồm" />
+  <Item QuestionID="392" QuestionContent="Tôi luôn mang giày đi ngủ. Tôi là ai?" Option1="Ông già Noel" Option2="Mr Bean" Option3="Con ngựa" Option4="Làm gì có ai mang giày khi ngủ" />
+  <Item QuestionID="393" QuestionContent="Có 1 cô gái người ta thường gọi là tam giác , hỏi cô gái đó tên gì?" Option1="Thanh Kiều" Option2="Tam giác" Option3="Tam Nương" Option4="Thanh Tam" />
+  <Item QuestionID="394" QuestionContent="Cái gì trong trắng ngoài xanh trồng đậu trồng hành rồi thả heo vào?" Option1="Vườn" Option2="Ruộng " Option3="Chuồng" Option4="Bánh Chưng" />
+  <Item QuestionID="395" QuestionContent="Cái gì ở giữa bầu trời và trái đất?" Option1="Đường chân trời" Option2="Chân Không" Option3="Và" Option4="Không có gì" />
+  <Item QuestionID="396" QuestionContent="Vip cấp 9 mỗi ngày được miễn phí bao nhiêu lần Chiêm Tinh?" Option1="1" Option2="2" Option3="3" Option4="4" />
+  <Item QuestionID="397" QuestionContent="Võ đài gà 18+ , đi 3 vs 3 chiến thắng nhận bao nhiêu điểm tích lũy?" Option1="16 điểm" Option2="20 điểm" Option3="25 điểm" Option4="40 điểm" />
+  <Item QuestionID="398" QuestionContent="Trong tính năng Đoạt Bảo, bạn có bao nhiêu lần Mở Thưởng miễn phí?" Option1="1 lần" Option2="2 lần " Option3="3 lần " Option4="4 lần" />
+  <Item QuestionID="399" QuestionContent="Sử dụng Thẻ phụ kiện Hạc Tiên, Ma Công được cộng thêm bao nhiêu?" Option1="40 điểm ma công" Option2="30 điểm ma công" Option3="50 điểm ma công" Option4="60 điểm ma công" />
+  <Item QuestionID="400" QuestionContent="Trong tính năng Hầm Mỏ Không Gian, mỗi ngày bạn sẽ có tổng cộng bao nhiêu lượt &quot;Đoạt Tài Nguyên&quot; và &quot; Chiếm Tài Nguyên&quot; miễn phí?" Option1="1 lần" Option2="2 lần" Option3="4 lần" Option4="3 lần" />
+  <Item QuestionID="401" QuestionContent="Có bao nhiêu Ải Xâm Lăng?" Option1="3" Option2="4" Option3="5" Option4="6" />
+  <Item QuestionID="402" QuestionContent="Trong tính năng Quán Bia, mỗi ngày bạn có tối đa bao nhiêu Năng Lượng?" Option1="10 Năng Lượng" Option2="100 Năng lượng" Option3="60 năng lượng" Option4="6 năng lượng" />
+  <Item QuestionID="403" QuestionContent="Phụ ma trang sức từ Bậc 1 LV1 lên Bậc 1 LV3 tốn bao nhiêu Đá Linh Hồn?" Option1="110 viên" Option2="120 viên" Option3="130 viên" Option4="360 viên" />
+  <Item QuestionID="404" QuestionContent="Sử dụng Ma Thạch Tứ Tượng phẩm chất Hoàn Mỹ sẽ tăng bao nhiêu điểm chỉ số?" Option1="16 điểm" Option2="18 điểm" Option3="23 điểm" Option4="21 điểm" />
+  <Item QuestionID="405" QuestionContent="Trong tính năng Nhà Ma Pháp, mỗi ngày được rút miễn phí Rương Phép Thuật bao nhiêu lần?" Option1="1 lần" Option2="3 lần" Option3="5 lần" Option4="6 lần" />
+  <Item QuestionID="406" QuestionContent="Trong tính năng Thu Hồi, dùng 1 nước Tu Luyện Cấp 2 sẽ nhận lại bao nhiêu điểm Tinh Hoa?" Option1="1 điểm" Option2="16 điểm" Option3="8 điểm" Option4="4 điểm" />
+  <Item QuestionID="407" QuestionContent="Trong tính năng Dung Hợp, cần bao nhiêu Tinh Hoa để có thể Dung Hợp được Đá Tím?" Option1="10000 điểm" Option2="70000 điểm" Option3="1000 điểm" Option4="7000 điểm" />
+</Result>

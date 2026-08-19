@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:fee36c8ca314707a13b4670e35ad2d12:1/1$ -->
+<TextureAtlas imagePath="game.png">
+    <SubTexture name="game_HPStrip1" x="357" y="338" width="39" height="6"/>
+    <SubTexture name="game_HPStrip2" x="316" y="338" width="39" height="6"/>
+    <SubTexture name="game_HPStrip3" x="86" y="355" width="39" height="6"/>
+    <SubTexture name="game_HPStrip4" x="128" y="349" width="39" height="6"/>
+    <SubTexture name="game_blood_RBg" x="2" y="2" width="128" height="70" frameX="0" frameY="-4" frameWidth="128" frameHeight="78"/>
+    <SubTexture name="game_blood_addIcon" x="349" y="284" width="21" height="23" frameX="0" frameY="-2" frameWidth="21" frameHeight="27"/>
+    <SubTexture name="game_blood_gNum0" x="480" y="317" width="21" height="27"/>
+    <SubTexture name="game_blood_gNum1" x="198" y="222" width="15" height="27"/>
+    <SubTexture name="game_blood_gNum2" x="207" y="139" width="17" height="27"/>
+    <SubTexture name="game_blood_gNum3" x="44" y="249" width="18" height="27"/>
+    <SubTexture name="game_blood_gNum4" x="457" y="291" width="21" height="27"/>
+    <SubTexture name="game_blood_gNum5" x="349" y="309" width="19" height="27"/>
+    <SubTexture name="game_blood_gNum6" x="350" y="255" width="21" height="27"/>
+    <SubTexture name="game_blood_gNum7" x="468" y="155" width="19" height="27"/>
+    <SubTexture name="game_blood_gNum8" x="486" y="288" width="21" height="27"/>
+    <SubTexture name="game_blood_gNum9" x="463" y="262" width="21" height="27"/>
+    <SubTexture name="game_blood_rNum0" x="489" y="259" width="21" height="27"/>
+    <SubTexture name="game_blood_rNum1" x="207" y="168" width="15" height="27"/>
+    <SubTexture name="game_blood_rNum2" x="476" y="346" width="18" height="27"/>
+    <SubTexture name="game_blood_rNum3" x="456" y="320" width="18" height="27"/>
+    <SubTexture name="game_blood_rNum4" x="489" y="230" width="21" height="27"/>
+    <SubTexture name="game_blood_rNum5" x="468" y="126" width="19" height="27"/>
+    <SubTexture name="game_blood_rNum6" x="489" y="201" width="21" height="27"/>
+    <SubTexture name="game_blood_rNum7" x="490" y="114" width="19" height="27"/>
+    <SubTexture name="game_blood_rNum8" x="489" y="172" width="21" height="27"/>
+    <SubTexture name="game_blood_rNum9" x="489" y="143" width="21" height="27"/>
+    <SubTexture name="game_buff_1" x="468" y="104" width="20" height="20"/>
+    <SubTexture name="game_buff_2" x="490" y="92" width="20" height="20"/>
+    <SubTexture name="game_buff_29" x="468" y="82" width="20" height="20"/>
+    <SubTexture name="game_buff_3" x="490" y="70" width="20" height="20"/>
+    <SubTexture name="game_buff_30" x="44" y="278" width="18" height="20" frameX="-1" frameY="0" frameWidth="20" frameHeight="20"/>
+    <SubTexture name="game_buff_5" x="490" y="48" width="20" height="20"/>
+    <SubTexture name="game_buff_7" x="490" y="26" width="20" height="20"/>
+    <SubTexture name="game_defaultCharacter" x="288" y="2" width="52" height="52"/>
+    <SubTexture name="game_effect_guardAsset" x="2" y="119" width="71" height="21"/>
+    <SubTexture name="game_moveStripAsset" x="398" y="338" width="38" height="4"/>
+    <SubTexture name="game_moveStripBgAsset" x="86" y="349" width="40" height="4"/>
+    <SubTexture name="game_skillBuff_icon1" x="358" y="96" width="24" height="25"/>
+    <SubTexture name="game_skillBuff_icon2" x="464" y="184" width="23" height="27"/>
+    <SubTexture name="game_skillBuff_icon20050" x="44" y="172" width="28" height="25"/>
+    <SubTexture name="game_skillBuff_icon20060" x="200" y="197" width="21" height="23"/>
+    <SubTexture name="game_skillBuff_icon20070" x="463" y="240" width="24" height="20"/>
+    <SubTexture name="game_skillBuff_icon20500" x="352" y="228" width="25" height="25"/>
+    <SubTexture name="game_skillBuff_icon20510" x="464" y="213" width="23" height="25"/>
+    <SubTexture name="game_skillBuff_icon20520" x="358" y="123" width="24" height="24"/>
+    <SubTexture name="game_skillBuff_icon20530" x="44" y="199" width="26" height="23"/>
+    <SubTexture name="game_skillBuff_icon20531" x="352" y="203" width="26" height="23"/>
+    <SubTexture name="game_skillBuff_icon21580" x="352" y="149" width="26" height="26"/>
+    <SubTexture name="game_skillBuff_icon3" x="44" y="224" width="21" height="23"/>
+    <SubTexture name="game_skillBuff_icon4" x="490" y="2" width="20" height="22"/>
+    <SubTexture name="game_skillBuff_icon5" x="45" y="142" width="28" height="28"/>
+    <SubTexture name="game_skillBuff_icon6" x="352" y="177" width="26" height="24"/>
+    <SubTexture name="game_smallHPStripBgAsset" x="2" y="142" width="41" height="8"/>
+    <SubTexture name="game_specialKillAsset" x="226" y="2" width="60" height="60"/>
+    <SubTexture name="game_takeAimAsset" x="87" y="74" width="41" height="58"/>
+    <SubTexture name="game_takeAimAssetBG" x="132" y="2" width="92" height="95"/>
+    <SubTexture name="game_tombAsset" x="342" y="2" width="50" height="52"/>
+    <SubTexture name="game_toxicosis" x="2" y="74" width="83" height="43" frameX="0" frameY="0" frameWidth="83" frameHeight="45"/>
+    <SubTexture name="level_1" x="274" y="314" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_10" x="170" y="318" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_11" x="156" y="211" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_12" x="114" y="211" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_13" x="414" y="302" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_14" x="372" y="302" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_15" x="307" y="278" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_16" x="265" y="244" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_17" x="223" y="214" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_18" x="158" y="175" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_19" x="2" y="228" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_2" x="232" y="314" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_20" x="72" y="210" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_21" x="116" y="175" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_22" x="415" y="266" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_23" x="373" y="266" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_24" x="421" y="230" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_25" x="379" y="230" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_26" x="308" y="242" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_27" x="266" y="208" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_28" x="224" y="178" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_29" x="310" y="206" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_3" x="128" y="315" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_30" x="268" y="172" width="40" height="34" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_31" x="268" y="134" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_32" x="426" y="120" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_33" x="384" y="120" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_34" x="316" y="96" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_35" x="226" y="104" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_36" x="274" y="96" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_37" x="426" y="82" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_38" x="384" y="82" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_39" x="2" y="190" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_4" x="2" y="366" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_40" x="2" y="152" width="40" height="36" frameX="0" frameY="-4" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_41" x="226" y="142" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_42" x="165" y="139" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_43" x="74" y="174" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_44" x="123" y="139" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_45" x="422" y="194" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_46" x="380" y="194" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_47" x="422" y="158" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_48" x="380" y="158" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_49" x="310" y="170" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_5" x="44" y="348" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_50" x="310" y="134" width="40" height="34" frameX="0" frameY="-3" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_51" x="86" y="315" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_52" x="190" y="284" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_53" x="148" y="281" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_54" x="2" y="332" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_55" x="44" y="314" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_56" x="106" y="281" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_57" x="151" y="247" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_58" x="64" y="280" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_59" x="109" y="247" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_6" x="257" y="280" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_60" x="215" y="250" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_61" x="75" y="134" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_62" x="178" y="99" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_63" x="130" y="99" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_64" x="226" y="64" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_65" x="336" y="56" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_66" x="288" y="56" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_67" x="442" y="42" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_68" x="394" y="42" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_69" x="442" y="2" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_7" x="2" y="298" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_70" x="394" y="2" width="46" height="38" frameX="0" frameY="0" frameWidth="46" frameHeight="40"/>
+    <SubTexture name="level_8" x="2" y="264" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+    <SubTexture name="level_9" x="67" y="246" width="40" height="32" frameX="0" frameY="-5" frameWidth="40" frameHeight="40"/>
+</TextureAtlas>

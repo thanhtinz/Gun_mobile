@@ -1,0 +1,12 @@
+﻿<Result value="true" message="Success!">
+  <item BadgeID="1" BadgeName="普通斧头                " Cost="10000" LimitLevel="1" ValidDate="30" />
+  <item BadgeID="2" BadgeName="普通骷髅                " Cost="10000" LimitLevel="1" ValidDate="30" />
+  <item BadgeID="3" BadgeName="普通双剑                " Cost="10000" LimitLevel="1" ValidDate="30" />
+  <item BadgeID="4" BadgeName="豪华骷髅头             " Cost="15000" LimitLevel="4" ValidDate="30" />
+  <item BadgeID="5" BadgeName="豪华狼                   " Cost="15000" LimitLevel="4" ValidDate="30" />
+  <item BadgeID="6" BadgeName="豪华蛇                " Cost="15000" LimitLevel="4" ValidDate="30" />
+  <item BadgeID="7" BadgeName="豪华鹰                " Cost="15000" LimitLevel="4" ValidDate="30" />
+  <item BadgeID="8" BadgeName="豪华皇冠                " Cost="20000" LimitLevel="8" ValidDate="30" />
+  <item BadgeID="9" BadgeName="豪华狮子                " Cost="20000" LimitLevel="8" ValidDate="30" />
+  <item BadgeID="10" BadgeName="豪华心               " Cost="20000" LimitLevel="8" ValidDate="30" />
+</Result>

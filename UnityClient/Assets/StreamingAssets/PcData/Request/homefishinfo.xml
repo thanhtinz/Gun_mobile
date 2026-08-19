@@ -1,0 +1,12 @@
+<Result value="true" message="Success!">
+  <item ID="1" Name="Rương nát" Score="0" Pic="1" />
+  <item ID="2" Name="Cá mồi" Score="5" Pic="2" />
+  <item ID="3" Name="Cá trê" Score="5" Pic="3" />
+  <item ID="4" Name="Cua" Score="7" Pic="4" />
+  <item ID="5" Name="Tép" Score="7" Pic="5" />
+  <item ID="6" Name="Cá cỏ" Score="10" Pic="6" />
+  <item ID="7" Name="Cá vàng nhỏ" Score="10" Pic="7" />
+  <item ID="8" Name="Cá vàng lớn" Score="15" Pic="8" />
+  <item ID="9" Name="Cá chép" Score="15" Pic="9" />
+  <item ID="10" Name="Cá mú" Score="40" Pic="10" />
+</Result>

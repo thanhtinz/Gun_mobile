@@ -1,0 +1,1285 @@
+
+Cshop/ForcesBattleShopBuyAlert.xml�g<View width="600" height="350">
+  <Image skin="asset.fb.ui.shop.alertBg" x="0" y="9" sizeGrid="10,10,10,10"/>
+  <Image skin="asset.ddtstore.TipsTextBg" x="35" y="204" width="496" height="54" sizeGrid="5,5,5,5"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="506" y="34" stateNum="1" var="closeBtn"/>
+  <Label text="购买数量:" x="174" y="136" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="82" height="24"/>
+  <TextInput text="1" skin="asset.fb.ui.shop.inputBg" x="297" y="129" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.fb.ui.shop.add" x="401" y="129" stateNum="1" var="addBtn"/>
+  <Box x="66" y="103" var="itemBox">
+    <Image skin="asset.fb.ui.shop.itemBg" sizeGrid="10,10,10,10"/>
+  </Box>
+  <Button skin="asset.fb.ui.shop.del" x="261" y="129" stateNum="1" var="subtractBtn"/>
+  <Button skin="asset.fb.ui.shop.buyBtn2" x="213" y="266" var="confirmBtn" stateNum="1" clickInterval="500"/>
+  <Label x="63" y="217" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="220" height="24" text="消耗势力徽章数量: {0}" var="pricesLab"/>
+  <Label x="304" y="217" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="200" height="24" text="今日还可购买: {0}" var="limitLab"/>
+</View>Owarpass/ForcesBattleWarPassShopItem.xml�Y<View width="260" height="110">
+  <Image skin="asset.fb.warPass.bit20" x="0" y="0"/>
+  <Button skin="asset.fb.warPass.bit38" stateNum="1" x="171" y="66" labelSize="16" labelColors="0x9F3400,0x9F3400,0x9F3400,0x9F3400" labelStroke="0xF4CB68,1,4,4,10" labelBold="true" var="buyBtn"/>
+  <LabelEx x="107" y="12" color="0x453826" size="14" stroke="0xEAD59B,1,4,4,20" align="left" text="爱心回力镖" var="nameLab" multiline="true" wordWrap="true" height="38" bold="true" width="135"/>
+  <LabelEx x="107" y="48" color="0x903E2E" size="14" stroke="0xECDBA8,1,4,4,20" align="left" text="积分:53333" var="costLab" width="135" bold="true" height="24"/>
+  <Image skin="asset.fb.ui.team.playerHeadBg" x="15" y="7" width="78" height="78"/>
+  <Box x="19" y="11" var="cellBox"/>
+  <LabelEx x="11" y="84" color="0xDD0000" size="12" stroke="0xECDBA8,1,4,4,20" height="22" align="left" text="限购:{0}" var="limitLab2" bold="true" width="140"/>
+</View>Cteam/ForcesBattleTeamListItem.xml�7<View width="108" height="190">
+  <Image skin="asset.fb.ui.team.playerBg" sizeGrid="5,5,5,5"/>
+  <Image skin="asset.fb.ui.team.playerHeadBg" x="10" y="10"/>
+  <LabelEx color="0x453826" size="14" stroke="0xDDCD9E,1,4,4,20" height="40" text="任务名字1" width="110" y="152" align="center" x="0" var="nameLab" bold="true"/>
+  <Image skin="asset.fb.ui.team.add" x="15" y="17" var="addImg"/>
+  <Box var="headBox" x="-9" y="15"/>
+  <Box x="24" y="94" var="petBox">
+    <Image skin="asset.fb.ui.team.petHeadBg" var="petHeadBg"/>
+    <Image skin="asset.fb.ui.team.petHeadTxt" x="13" y="20"/>
+  </Box>
+</View>Owarpass/ForcesBattleWarPassMainView.xml�Y<View width="1050" height="620">
+  <Image skin="asset.fb.warPass.bit13" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="916" y="53" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="876" y="50" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <TabListEx y="102" var="tabView" x="79">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.warPass.bit17,asset.fb.warPass.bit16" rects="0,0,0,0|0,-2,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.warPass.bit15,asset.fb.warPass.bit14" rects="0,0,0,0|0,-2,0,0" selected="false" x="155" y="0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.warPass.bit19,asset.fb.warPass.bit18" rects="0,0,0,0|0,-2,0,0" selected="false" x="310" y="0"/>
+  </TabListEx>
+  <LabelEx color="0xC4A059" size="14" stroke="0x4B2818,1,4,4,20" height="25" width="300" y="131" align="right" x="602" bold="true" var="timeLab"/>
+  <Box x="80" y="164" var="viewBox"/>
+</View>Gskill/ForcesBattleSkillMainView.xml�<View width="1050" height="620">
+  <Image skin="asset.fb.ui.skill.bit15" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="916" y="53" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="876" y="50" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.ui.skill.bit1" x="81" y="109"/>
+  <Image skin="asset.fb.ui.skill.bit39" x="81" y="388"/>
+  <Image skin="asset.fb.ui.skill.bit29" x="501" y="112" sizeGrid="10,10,10,10" width="402" height="100"/>
+  <Image skin="asset.fb.ui.skill.bit30" x="518" y="124"/>
+  <Image skin="asset.fb.ui.skill.bit37" x="517" y="154"/>
+  <Button skin="asset.fb.ui.skill.bit34" x="518" y="178" var="banBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.ui.skill.bit33" x="501" y="217" sizeGrid="10,10,10,10" width="402" height="331"/>
+  <Box x="624" y="119" var="banBox1" width="62" height="62">
+    <Image skin="asset.fb.ui.skill.bit27"/>
+  </Box>
+  <Box x="693" y="119" var="banBox2">
+    <Image skin="asset.fb.ui.skill.bit27"/>
+  </Box>
+  <Box x="771" y="119" var="banBox3">
+    <Image skin="asset.fb.ui.skill.bit27"/>
+  </Box>
+  <Box x="834" y="119" var="banBox4">
+    <Image skin="asset.fb.ui.skill.bit27"/>
+  </Box>
+  <List x="509" y="225" var="skillList2" height="320" sliderOffset="75" spaceX="4" width="340">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="324" y="2"/>
+    <ForcesBattleSkillListItem name="render" runtime="forcesbattle.views.skill.ForcesBattleSkillListItem"/>
+  </List>
+  <TabListEx y="221" var="tabView" x="856" width="81" height="343">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.ui.skill.tab1_un,asset.fb.ui.skill.tab1_sel" rects="0,0,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="107" skin="asset.fb.ui.skill.tab2_un,asset.fb.ui.skill.tab2_sel" rects="0,0,0,0|0,0,0,0" selected="false"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="215" skin="asset.fb.ui.skill.tab3_un,asset.fb.ui.skill.tab3_sel" rects="0,0,0,0|0,0,0,0" selected="false"/>
+  </TabListEx>
+  <List x="133" y="398" repeatX="4" repeatY="2" spaceX="25" spaceY="8" var="curSubSkillList">
+    <ForcesBattleCurSubSkillItem name="render" runtime="forcesbattle.views.skill.ForcesBattleCurSubSkillItem"/>
+  </List>
+  <ForcesBattleCurMainSkillItem x="257" y="121" var="curMainSkill1" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <Image skin="asset.fb.ui.skill.bit14" x="793" y="186"/>
+  <ForcesBattleCurMainSkillItem x="162" y="163" var="curMainSkill4" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <ForcesBattleCurMainSkillItem x="166" y="286" var="curMainSkill2" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <Image skin="asset.fb.ui.skill.bit11" x="703" y="186"/>
+  <ForcesBattleCurMainSkillItem x="253" y="315" var="curMainSkill6" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <ForcesBattleCurMainSkillItem x="345" y="279" var="curMainSkill3" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <ForcesBattleCurMainSkillItem x="353" y="162" var="curMainSkill5" runtime="forcesbattle.views.skill.ForcesBattleCurMainSkillItem"/>
+  <Image skin="asset.fb.ui.skill.bit24" x="651" y="178"/>
+  <Image skin="asset.fb.ui.skill.bit36" x="635" y="186" width="40" height="22"/>
+  <Image skin="asset.fb.ui.skill.bit24" x="721" y="178"/>
+  <Image skin="asset.fb.ui.skill.bit23" x="797" y="180"/>
+  <Box x="81" y="111" var="descViewBox" visible="false">
+    <Image skin="asset.fb.ui.skill.bit18"/>
+    <LabelEx color="0x75582D" size="14" height="298" text="技能名称：啵咕技能LV1→啵咕技能LV2\n技能等级：Lv1→LV2\n技能类型：通用技能\n使用类型：主动技能\n冷却时间：2回合→1回合\n技能效果：\n好长一段技能效果好长一段技能效果好长一段\n技能效果好长一段技能效果好长一段技能效果\n                  ↓\n好长一段技能效果好长一段技能效果好长一段\n技能效果好长一段技能效果好长一段技能效果" width="324" y="44" align="left" x="43" var="skillDescLab" bold="true" multiline="true" wordWrap="true" leading="4"/>
+    <Button skin="asset.fb.ui.team.closeBtn" x="369" y="6" var="hideDescBtn" stateNum="1" clickInterval="500" letterSpacing="3" width="38" height="38"/>
+    <Image skin="asset.fb.ui.skill.bit12" x="53" y="348" var="costBg"/>
+    <Button skin="asset.fb.ui.skill.bit17" x="133" y="389" var="upgradeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <LabelEx color="0xFFD454" size="14" stroke="0xAF5F17,1,4,4,20" height="30" text="升级消耗：2313131311" y="353" align="center" x="64" var="costLab" bold="true" width="280" isHtml="true"/>
+    <Button skin="asset.fb.ui.skill.bit40" x="133" y="389" var="unLockBtn" stateNum="1" clickInterval="500" letterSpacing="3" visible="false"/>
+    <Button skin="asset.fb.ui.skill.bit3" x="133" y="389" var="lvMaxBtn" stateNum="1" clickInterval="500" letterSpacing="3" visible="false"/>
+    <Box x="351" y="345" var="needBox">
+      <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="34" height="34"/>
+    </Box>
+  </Box>
+  <LabelEx color="0x000000" size="16" height="30" text="双击可以穿戴/拆卸相应技能" y="566" align="center" x="372" bold="true" stroke="0xFFFFFF,1,4,4,20"/>
+</View>Iforcesrelic/ForcesRelicEquipCell.xml�<View width="88" height="88">
+  <Box var="mcBox" width="78" height="78" x="47" y="47"/>
+  <Box var="cellBox" width="78" height="78" x="4" y="4" mouseEnabled="true"/>
+  <Label x="7" y="5" multiline="false" wordWrap="false" size="14" stroke="0x7a5731,1,2,2,10" color="0xffe295" var="stageLab" isHtml="true" align="left" width="55" text="1阶" bold="true"/>
+  <Label x="25" y="64" multiline="false" wordWrap="false" size="12" stroke="0x000000,1,2,2,10" color="0xffffff" var="lvLab" isHtml="true" align="right" width="55" text="Lv:5" bold="true"/>
+  <Image skin="asset.fb.relic.bit64" x="13" y="15" var="lockBit" mouseEnabled="true" buttonMode="true"/>
+  <Clip x="29" y="2" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0" visible="false" var="typeClip"/>
+</View>Gforcesrelic/ForcesRelicDescView.xml�7<View width="430" height="450">
+  <Image skin="asset.fb.relic.bit8" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="29" y="6" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" width="38" height="38"/>
+  <Image skin="asset.fb.ui.skill.bit12" x="53" y="348" var="costBg"/>
+  <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="升级消耗：物品ID1" y="353" align="center" x="140" var="costLab" bold="true" width="140" isHtml="true" mouseEnabled="true" underline="true"/>
+  <Button skin="asset.fb.ui.skill.bit3" x="146" y="389" var="lvMaxBtn" stateNum="1" clickInterval="500" letterSpacing="3" visible="false"/>
+  <Button skin="asset.fb.relic.bit27" x="153" y="389" var="upStageBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <LabelEx color="0x59811b" size="16" stroke="0xe7d7a9,1,4,4,20" y="37" x="176" bold="true" var="descRelicNameLab" text="无尽之刃"/>
+  <Box x="77" y="349" var="stageBox">
+    <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="100/2000" align="left" var="costLab2" bold="true" width="110" isHtml="true" y="6" x="31"/>
+    <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="100/2000" align="left" x="184" var="costLab3" bold="true" width="110" isHtml="true" y="5"/>
+    <Box var="needBox2" visible="false" width="28" height="28">
+      <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="28" height="28"/>
+    </Box>
+    <Box var="needBox3" visible="false" width="28" height="28" x="153">
+      <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="28" height="28"/>
+    </Box>
+    <LabelEx color="0x75582d" size="12" text="或" bold="true" var="orLab" x="115" y="5"/>
+  </Box>
+  <Image skin="asset.fb.relic.bit18" x="29" y="132" width="353" height="20" sizeGrid="8,5,5,8"/>
+  <Image skin="asset.fb.relic.bit17" x="49" y="137" sizeGrid="8,5,5,8"/>
+  <LabelEx color="0x75582d" size="14" y="133" x="62" text="基础属性" bold="true"/>
+  <Image skin="asset.fb.relic.bit18" x="29" y="193" width="353" height="20" sizeGrid="8,5,5,8"/>
+  <Image skin="asset.fb.relic.bit17" x="49" y="198" sizeGrid="8,5,5,8"/>
+  <LabelEx color="0x75582d" size="12" y="155" x="36" bold="true" var="descBaseLab" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃" multiline="true" wordWrap="true" width="340" height="35" leading="4" mouseEnabled="true" stroke="0xe7d7a9,4,4,2,20"/>
+  <LabelEx color="0x75582d" size="14" y="193" x="62" text="进阶属性" bold="true"/>
+  <ProgressBar skin="asset.fb.relic.bit28" x="94" y="321" var="expBar"/>
+  <LabelEx color="0xfff1d5" size="16" stroke="0xa13d00,1,4,4,20" y="322" x="47" bold="true" var="lvBarLab" text="Lv.4"/>
+  <LabelEx color="0xfff1d5" size="16" stroke="0xa13d00,1,4,4,20" y="322" x="150" var="barNumLab" text="500/1000" width="150" align="center" height="24"/>
+  <LabelEx color="0x75582d" size="14" y="38" x="276" text="一阶" bold="true" var="descStageLab"/>
+  <Image skin="asset.fb.relic.bit16" x="261" y="39"/>
+  <LabelEx color="0x75582d" size="14" y="69" x="178" text="类型:" bold="true"/>
+  <LabelEx color="0x75582d" size="14" y="69" x="218" text="攻击圣物" bold="true" var="descTypeLab"/>
+  <LabelEx color="0xac582a" size="14" y="101" x="150" bold="true" var="descLvLab" text="Lv.4" isHtml="true"/>
+  <Button skin="asset.fb.relic.bit36" x="329" y="26" var="ZFBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="67" y="31" var="iconBox"/>
+  <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="100/200" y="372" align="center" x="141" var="haveLab" width="140" isHtml="true" mouseEnabled="true" visible="false"/>
+  <CheckBox x="319" y="346" selected="true" var="nextCheckBox" checkButtonSkin="asset.ui.btn_check3" label="升至下级" labelStroke="0xa13d00,1,4,4,20" labelColors="0xfff1d5" labelMargin="0,1" stateNum="1"/>
+  <List x="36" y="220" width="330" height="109" var="descExProList">
+    <Box name="render">
+      <LabelEx color="0x59811b" size="12" bold="true" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃\n之\n222" leading="4" isHtml="true" width="330" x="0" y="0" height="35" name="descExLab" mouseEnabled="true" stroke="0xe7d7a9,4,4,2,20"/>
+    </Box>
+  </List>
+  <Button skin="asset.fb.relic.bit9" x="153" y="389" var="XlBtn" stateNum="1" clickInterval="500" letterSpacing="3" width="113" height="37"/>
+</View>Mforcesrelic/ForcesRelicBagListItem.xml�<View width="74" height="74">
+  <Image skin="asset.fb.ui.skill.bit32" sizeGrid="20,20,20,20"/>
+  <Box var="cellBox" width="68" height="68" x="5" y="2"/>
+  <Label x="7" y="5" multiline="false" wordWrap="false" size="14" stroke="0x7a5731,1,2,2,10" color="0xffe295" var="stageLab" isHtml="true" align="left" width="55" text="1阶" bold="true"/>
+  <Clip index="1" clipsUrl="asset.fb.boss.bit9,asset.fb.boss.bit10" var="stateClip" x="14" y="14" visible="false" width="48" height="40" mouseChildren="false" mouseEnabled="false" alpha="0.68"/>
+  <Label x="15" y="54" multiline="false" wordWrap="false" size="12" stroke="0x000000,1,2,2,10" color="0xffffff" var="lvLab" isHtml="true" align="right" width="55" text="Lv:5" bold="true"/>
+  <Button skin="asset.fb.ui.skill.bit47" x="1" y="50" var="detailBtn" stateNum="1" clickInterval="500" visible="false" mouseChildren="true" mouseEnabled="true"/>
+</View>Qboss/ForcesBattleBossServeRewardCell.xml�Q<View width="300" height="110">
+  <Image skin="asset.fb.boss.bit23" x="0" y="0"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE7d7A9,1,4,4,30" text="个人奉献达到{0}次" x="13" y="6" align="left" height="30" bold="true" width="189" leading="5" var="descLab"/>
+  <Box x="13" y="35" var="cellBox1"/>
+  <Box x="93" y="35" var="cellBox2"/>
+  <Button skin="asset.fb.boss.bit42" stateNum="1" clickInterval="500" letterSpacing="3" x="183" y="42" var="getBtn"/>
+  <Image skin="asset.fb.boss.bit53" x="183" y="36" visible="false" var="gotImg"/>
+</View>7ForcesBattleConfirmView.xml�/<View width="1000" height="600">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="1020" height="620" alpha="0.5" x="-9" y="-10"/>
+  <Box x="93" y="156" var="selBox" visible="false">
+    <Image skin="asset.fb.forcesSel.mainBg" x="147" y="44"/>
+    <Image skin="asset.ddtstore.TipsTextBg" x="247" y="142"/>
+    <RadioGroup skin="asset.ui.btn_check8" var="conditionGroup" labelColors="0xb96f49,0xb96f49,0xb96f49,0xb96f49" labelSize="16" labels="啵咕王城, 邪神部落" labelBold="true" space="70" direction="horizontal" labelStroke="0xF2E7C8,1,4,4,10" labelMargin="0,-3" selectedIndex="0" x="266" y="150"/>
+    <Button skin="asset.fb.forcesSel.confirmBtn" x="331" y="195" var="confirmBtn" stateNum="1" clickInterval="500"/>
+    <Image skin="asset.fb.forcesSel.title" x="322" y="22"/>
+    <Image skin="asset.fb.forcesSel.title2" x="170" y="88"/>
+    <Image skin="asset.fb.forcesSel.img1" x="56" y="1"/>
+    <Image skin="asset.fb.forcesSel.img2" x="542"/>
+    <Image skin="asset.fb.forcesSel.title4" x="665" y="32"/>
+    <Image skin="asset.fb.forcesSel.title3" y="39"/>
+    <Button skin="asset.fb.ui.team.closeBtn" x="597" y="34" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  </Box>
+  <Box x="130" y="152" var="storyBox">
+    <Image skin="asset.fb.forcesSel.mainBg" x="112" y="48"/>
+    <Clip clipsUrl="asset.fb.forcesSel.img3,asset.fb.forcesSel.img1,asset.fb.forcesSel.img2" var="storyClip2" visible="true" index="0" sizeGrid="10,10,10,10"/>
+    <Clip clipsUrl="asset.fb.forcesSel.txtImg1,asset.fb.forcesSel.txtImg2,asset.fb.forcesSel.txtImg3" var="storyClip1" x="182" y="107" visible="true" index="0"/>
+    <Label text="点击屏幕,进行下一步" x="255" y="291" size="16" color="0xfee6b2" stroke="0x753608,1,4,4,30" wordWrap="true" multiline="true" width="227" height="65" align="center" leading="10" var="nextLab"/>
+  </Box>
+</View>Owarpass/ForcesBattleWarPassTaskItem.xml�Q<View width="520" height="60">
+  <Image skin="asset.fb.warPass.bit25"/>
+  <Image skin="asset.fb.warPass.bit9" x="8" y="2"/>
+  <Button skin="asset.fb.warPass.bit22" x="400" y="10" stateNum="1" clickInterval="500" letterSpacing="3" var="goBtn" visible="false"/>
+  <Button skin="asset.fb.warPass.bit24" x="401" y="10" stateNum="1" clickInterval="500" letterSpacing="3" var="getBtn"/>
+  <LabelEx color="0xFF8F63" size="14" stroke="0x85372A,1,4,4,20" text="积分:123213213123" width="85" y="24" align="left" x="18" var="scoreLab" bold="true" height="28"/>
+  <Image skin="asset.fb.warPass.bit46" x="89" y="-18" rotation="40" scale="0.86" var="rateImg"/>
+  <Image skin="asset.fb.warPass.bit47" x="412" y="4" visible="false" var="gotImg"/>
+  <Box x="118" y="14" var="tipbox">
+    <LabelEx color="0x5C4B33" size="14" stroke="0xDAC896,1,4,4,20" text="击败3个邪神部落玩家" align="left" bold="true" height="40" width="275" var="descLab" isHtml="true" multiline="true" wordWrap="true"/>
+  </Box>
+</View>Cforcesrelic/ForcesRelicZFView.xml�I<View width="820" height="520">
+  <Image skin="asset.fb.relic.bit35" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="763" y="22" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="724" y="18" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="353" y="142" var="middleBox">
+    <Box x="16" var="iconBox"/>
+    <LabelEx color="0xf6e7c7" size="16" stroke="0x81543e,1,4,4,20" y="107" x="20" bold="true" var="relicNameLab" text="无尽之刃" isHtml="true"/>
+    <LabelEx color="0x75582d" size="14" y="164" x="37" text="一阶" bold="true" var="relicStageLab"/>
+    <LabelEx color="0x75582d" size="14" y="139" text="类型:" bold="true" x="1"/>
+    <LabelEx color="0x75582d" size="14" y="139" x="41" text="攻击圣物" bold="true" var="relicTypeLab"/>
+    <LabelEx color="0xac582a" size="14" y="87" bold="true" var="LvLab" text="Lv.4" align="center" isHtml="true" width="110"/>
+  </Box>
+  <LabelEx color="0x9b570e" size="16" stroke="0xe7d7a9,1,4,4,20" y="134" x="146" bold="true" text="当前属性"/>
+  <List x="85" y="180" width="200" height="205" var="curProList">
+    <ForcesRelicZFExProListItem name="render" runtime="forcesbattle.views.relic.item.ForcesRelicZFExProListItem"/>
+  </List>
+  <Button skin="asset.fb.relic.bit34" x="343" y="417" var="upgradeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="365" y="329" var="costBox">
+    <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="100/2000" align="left" var="costLab1" bold="true" isHtml="true" y="7" x="31"/>
+    <Box var="needBox1" visible="false" width="28" height="28">
+      <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="28" height="28"/>
+    </Box>
+    <LabelEx color="0xFFD454" size="12" stroke="0xAF5F17,1,4,4,20" height="30" text="100/2000" align="left" x="31" var="costLab2" bold="true" isHtml="true" y="45"/>
+    <Box var="needBox2" visible="false" width="28" height="28" y="39">
+      <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="28" height="28"/>
+    </Box>
+    <LabelEx color="0x75582d" size="12" text="或" bold="true" var="orLab" x="47" y="25"/>
+  </Box>
+</View>;team/ForcesBattleTeamView.xml�U<View width="1000" height="620">
+  <Image skin="asset.fb.ui.team.mainBg"/>
+  <List x="83" y="307" repeatX="4" repeatY="1" var="teamList" spaceX="-1">
+    <ForcesBattleTeamListItem x="0" y="0" name="render" runtime="forcesbattle.views.item.ForcesBattleTeamListHeadItem"/>
+  </List>
+  <List x="523" y="163" var="roomInfoList" repeatX="1" repeatY="6" sliderOffset="50" spaceY="-1">
+    <Box name="render" buttonMode="true" height="50">
+      <Image skin="asset.fb.ui.team.roomItemBg"/>
+      <LabelEx color="0x453826" size="14" stroke="0xDDCD9E,1,4,4,30" text="人物名字8个字啊" x="4" y="14" align="center" name="nameLab" height="30" bold="true" width="180"/>
+      <LabelEx color="0xFFFFFF" size="14" stroke="0x562702,1,4,4,10" height="30" text="忙碌" width="70" x="306" y="13" align="center" name="stateLab"/>
+      <LabelEx color="0x453826" size="14" stroke="0xDDCD9E,1,4,4,30" text="24/30" x="244" y="14" align="center" name="numLab" height="30" bold="true" width="80"/>
+      <Image skin="asset.fb.ui.team.selectBg" name="selectBox" x="-2" y="-4" visible="false"/>
+    </Box>
+  </List>
+  <Image skin="asset.fb.ui.team.showImg" x="83" y="118" var="showImg"/>
+  <Image skin="asset.fb.ui.team.btnBG" x="209" y="493"/>
+  <Image skin="asset.fb.ui.team.btnBG" x="628" y="494"/>
+  <Button skin="asset.fb.ui.team.leaveBtn" x="219" y="492" var="leaveBtn" stateNum="1" clickInterval="500"/>
+  <Button skin="asset.fb.ui.team.quickBtn" x="639" y="492" var="quickBtn" stateNum="1" clickInterval="500"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="876" y="46" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="917" y="55" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.ui.team.toomTitleImg" x="522" y="116"/>
+  <Image skin="asset.fb.ui.team.pageBg" x="522" y="456"/>
+  <PageNavigaterEx x="619" y="462" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.ui.team.leftBtn2" firstButtonStyle="asset.fb.ui.team.leftBtn" lastButtonStyle="asset.fb.ui.team.rightBtn" nextButtonStyle="asset.fb.ui.team.rightBtn2" pageNumBgStyle="asset.fb.ui.team.pageBg2"/>
+</View>Cboss/ForcesBattleBossRankView.xml�E<View width="880" height="430">
+  <Image skin="asset.fb.boss.bit1" x="390" y="39" sizeGrid="10,10,10,10" width="390" height="346"/>
+  <Button skin="asset.fb.boss.bit39" x="108" y="344" var="fightBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.boss.bit16" x="390" y="0"/>
+  <TabListEx y="41" var="viewTab" x="781">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.boss.bit52,asset.fb.boss.bit51" rects="0,0,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="112" skin="asset.fb.boss.bit31,asset.fb.boss.bit30" rects="0,0,0,0|0,0,0,0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="224" skin="asset.fb.boss.bit41,asset.fb.boss.bit40" rects="0,0,0,0|0,0,0,0"/>
+  </TabListEx>
+  <Image skin="asset.fb.boss.bit15" y="10" x="0"/>
+  <Button skin="asset.fb.boss.bit29" x="31" y="264" var="buffBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="403" y="45" width="380" var="rewardBox" visible="false">
+    <Image skin="asset.fb.boss.bit24"/>
+    <List y="47" var="rewardList" repeatX="1" repeatY="5" height="291" sliderOffset="50" x="-17" spaceY="-2">
+      <Box name="render" buttonMode="true" x="-17" y="-3">
+        <Image skin="asset.fb.boss.bit19" x="17" y="3"/>
+        <Image skin="asset.fb.boss.bit17" name="selectBox" visible="false" x="13"/>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" text="1" y="17" align="center" name="rankLab" height="30" bold="true" width="120"/>
+        <Clip clipsUrl="asset.ftb.bit65,asset.ftb.bit63,asset.ftb.bit64" name="rankClip" x="50" y="13"/>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" height="22" text="*1" width="35" x="150" y="22" align="left" name="cellNum1" bold="true"/>
+        <Box x="115" y="9" name="cellBox1">
+          <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="34" height="34"/>
+        </Box>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" height="22" text="*1" width="35" x="227" y="22" align="left" name="cellNum2" bold="true"/>
+        <Box x="192" y="9" name="cellBox2">
+          <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="34" height="34"/>
+        </Box>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" height="22" text="*1" width="35" x="307" y="22" align="left" name="cellNum3" bold="true"/>
+        <Box x="272" y="9" name="cellBox3">
+          <Image skin="asset.fb.boss.bit12" sizeGrid="5,5,5,5" width="34" height="34"/>
+        </Box>
+      </Box>
+      <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="373" y="2"/>
+    </List>
+  </Box>
+  <Box x="400" y="44" var="rankBox">
+    <List y="47" var="rankList" repeatX="1" repeatY="5" spaceY="-2" height="245" sliderOffset="50" x="-8">
+      <Box name="render" buttonMode="true" x="-14" y="-4">
+        <Image skin="asset.fb.boss.bit19" x="14" y="4"/>
+        <Image skin="asset.fb.boss.bit17" name="selectBox" visible="false" x="10"/>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" text="人物名字8个字啊" x="104" y="18" align="center" name="nameLab" height="30" bold="true" width="150"/>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" text="999999999999" x="258" y="18" align="center" name="scoreLab" height="30" bold="true" width="105"/>
+        <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" text="1" y="18" align="center" name="rankLab" height="30" bold="true" width="120"/>
+      </Box>
+      <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="365" y="2"/>
+    </List>
+    <Image skin="asset.fb.boss.bit18" y="287" var="selfRankBg" x="4"/>
+    <Image skin="asset.fb.boss.bit21" x="5"/>
+    <LabelEx color="0x673D29" size="16" stroke="0xDDBA93,1,4,4,30" text="我的名字啦啦啦啦" x="96" y="300" align="center" height="30" bold="true" width="150" var="selfNameLab"/>
+    <LabelEx color="0x673D29" size="16" stroke="0xDDBA93,1,4,4,30" text="123456" x="246" y="300" align="center" height="30" bold="true" width="105" var="selfScoreLab"/>
+    <LabelEx color="0x453826" size="16" stroke="0xDDCD9E,1,4,4,30" text="1" y="300" align="center" height="30" bold="true" width="100" var="selfRankLab"/>
+  </Box>
+  <Button skin="asset.fb.boss.bit34" x="31" y="301" var="debuffBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="181" y="292" var="movieBox"/>
+  <Box x="118" y="30" var="buffBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" width="202" sizeGrid="10,10,10,10" height="300" x="0" y="0" var="buffBg"/>
+    <LabelEx color="0x453826" size="14" stroke="0xffffff,1,4,4,10" text="人物名字8个字啊" x="12" y="17" align="left" height="268" width="176" multiline="true" wordWrap="true" var="buffSkillLab"/>
+  </Box>
+  <LabelEx color="0xA56900" size="14" stroke="0xF5F5F5,1,4,4,30" text="今日剩余次数：{0}" x="88" y="397" align="center" height="30" width="200" leading="5" var="countLab" bold="true"/>
+</View>_warpass/ForcesBattleWarPassLvRewardListItem.xml�<View width="80" height="275">
+  <Image skin="asset.fb.warPass.bit42" sizeGrid="10,10,10,10" name="tabImg"/>
+  <LabelEx color="0x673D29" size="16" stroke="0xDDBA93,1,4,4,20" height="25" text="1级" width="75" y="5" align="center" x="3" bold="true" var="lvLab"/>
+  <Box x="2" y="117" var="exBox">
+    <Image skin="asset.fb.warPass.bit5" sizeGrid="10,10,10,10"/>
+    <Image skin="asset.fb.warPass.bit5" sizeGrid="10,10,10,10" y="80" var="exImg2"/>
+    <Box x="3" y="2" var="exCellBox"/>
+    <Image skin="asset.fb.warPass.bit47" x="10" y="17" visible="false" var="gotImg2"/>
+    <Image skin="asset.fb.warPass.bit47" x="10" y="97" visible="false" var="gotImg3"/>
+  </Box>
+  <Box x="2" y="37" var="norBox">
+    <Image skin="asset.fb.warPass.bit5" sizeGrid="10,10,10,10"/>
+    <Box x="3" y="2" var="norCellBox"/>
+    <Image skin="asset.fb.warPass.bit47" x="7" y="15" visible="false" var="gotImg1"/>
+  </Box>
+</View>[arena/ForcesBattleArenaTierAwardsRankItem.xml�<View width="320" height="60" var="cellBox1">
+  <Image skin="asset.fb.arena.bit23" x="0" y="0" sizeGrid="5,5,5,5"/>
+  <Box x="20" y="2" var="clipBox">
+    <Clip sizeGrid="5,5,5,5" var="bigClip" clipsUrlAuto="asset.fb.arena.bigTier.bit,1,8" index="6"/>
+    <Clip index="0" var="smallClip" clipsUrlAuto="asset.fb.arena.smallTier.bit1_,1,5" x="18" y="18"/>
+  </Box>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="奖励:" y="20" align="left" bold="true" x="109" height="32" width="52"/>
+  <Image skin="asset.fb.arena.bit3" x="208" y="5" sizeGrid="5,5,5,5" width="48" height="48" var="cellBox2"/>
+  <Image skin="asset.fb.arena.bit3" x="258" y="5" sizeGrid="5,5,5,5" width="48" height="48" var="cellBox3"/>
+  <Box x="158" y="5">
+    <Image skin="asset.fb.arena.bit3" sizeGrid="5,5,5,5" width="48" height="48"/>
+  </Box>
+  <List x="157" y="9" width="150" repeatX="3" repeatY="1" var="awardList">
+    <Box name="render"/>
+  </List>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="99星" y="39" align="center" bold="true" x="23" var="starLab" visible="false" width="50"/>
+  <Image skin="asset.fb.arena.bit2" x="35" y="15" sizeGrid="5,5,5,5" var="maxStarImg" mouseEnabled="false"/>
+</View>=boss/ForcesBattleEquipView.xml�s<View width="840" height="420">
+  <Image skin="asset.fb.boss.bit5" x="445" y="0"/>
+  <Image skin="asset.fb.boss.bit4" x="0" y="0"/>
+  <Image skin="asset.fb.boss.bit2" x="51" y="12"/>
+  <List x="22" y="54" var="bagList" repeatX="4" repeatY="3" width="400" height="287" sliderOffset="50" spaceY="4" spaceX="-2">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="378" y="2"/>
+    <ForcesBattleEquipBagItem name="render" runtime="forcesbattle.views.boss.ForcesBattleEquipBagItem"/>
+  </List>
+  <Box x="470" y="51" var="rightBox">
+    <Image skin="asset.fb.boss.bit3" y="129"/>
+    <Image skin="asset.fb.boss.bit25" y="175"/>
+    <Image skin="asset.fb.boss.bit8" y="215"/>
+    <Image skin="asset.fb.boss.bit27" y="251"/>
+    <Button skin="asset.fb.boss.bit50" x="91" y="284" var="equipBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <LabelEx color="0x746045" size="14" stroke="0xE7D7A9,1,4,4,30" text="伤害+100 攻击+500 防御+500\n幸运+200 敏捷+500" x="95" y="129" align="left" height="60" bold="true" width="220" multiline="true" wordWrap="true" leading="10" var="proLab"/>
+    <LabelEx color="0x746045" size="14" stroke="0xE7D7A9,1,4,4,30" x="95" y="220" align="left" height="30" bold="true" width="220" leading="10" var="timeLab" text="永久/暂未获得"/>
+    <LabelEx color="0x746045" size="14" stroke="0xE7D7A9,1,4,4,30" x="95" y="256" align="left" height="45" bold="true" width="220" leading="10" var="getLab" text="至尊6级以上自动获得"/>
+    <Box x="107" var="weaponBox" y="-25"/>
+    <Box x="95" y="181" var="skillBox">
+      <LabelEx color="0x746045" size="14" stroke="0xE7D7A9,1,4,4,30" align="left" height="30" bold="true" leading="10" var="skillLab" text="简短的技能名字" isHtml="true"/>
+    </Box>
+  </Box>
+</View>Oplayerinfo/ForcesBattleTreeMainView.xml�K<View width="800" height="600">
+  <Clip clipsUrl="asset.fb.playerInfo.bit15,asset.fb.playerInfo.bit16" var="stateClip" index="1" x="20" y="0"/>
+  <Clip clipsUrl="asset.fb.playerInfo.bit19,asset.fb.playerInfo.bit45" var="lvDescClip" index="0" x="482" y="394"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="730" y="50" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.playerInfo.bit20" x="502" y="195" var="handInBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.playerInfo.bit32" x="502" y="258" var="exchangeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.playerInfo.bit26" x="482" y="355"/>
+  <LabelEx color="0xDE0034" size="16" stroke="0xFFE8A8,1,4,4,20" height="25" text="5%" width="80" y="360" align="left" x="580" var="proLab" bold="true"/>
+  <LabelEx color="0xDE0034" size="16" stroke="0xFFE8A8,1,4,4,20" height="25" text="5级" width="80" y="398" align="left" x="579" var="lvLab" bold="true"/>
+  <ProgressBar skin="asset.fb.playerInfo.bit17" x="140" y="451" var="treeBar" value="0.5"/>
+  <Button skin="asset.fb.playerInfo.bit11" x="436" y="446" stateNum="1" clickInterval="500" letterSpacing="3" var="tipBtn"/>
+  <Box x="422" y="99" var="handInBox" visible="false">
+    <Image skin="asset.fb.playerInfo.bit40"/>
+    <Button skin="asset.fb.playerInfo.bit42" x="20" y="20" var="meadlBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <Button skin="asset.fb.playerInfo.bit41" x="159" y="20" var="charmBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  </Box>
+  <ForcesBattleStarItem x="227" y="410" var="starView" runtime="forcesbattle.views.playerInfo.ForcesBattleStarItem"/>
+  <Image skin="asset.fb.playerInfo.bit44" var="buffImg" x="674" y="354" width="28" height="28" visible="false"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="686" y="52" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+</View>Cboss/ForcesBattleEquipBagItem.xml�a<View width="95" height="95">
+  <Image skin="asset.fb.boss.bit12" x="6" y="5"/>
+  <Image skin="asset.fb.boss.bit11" name="selectBox" visible="false" x="0" y="0" width="92" height="92"/>
+  <Box x="12" y="1" var="cellBox"/>
+  <Clip index="2" clipsUrl="asset.fb.boss.bit9,asset.fb.boss.bit10" var="stateClip" x="10" y="17" visible="false" width="74" height="62"/>
+</View>Kskill/ForcesBattleCurBanSkillItem.xml�<View width="68" height="68">
+  <Box width="62" height="62" var="cellBox">
+    <Image skin="asset.fb.ui.skill.bit26"/>
+  </Box>
+</View>;shop/ForcesBattleShopItem.xml�<View width="255" height="125">
+  <Image skin="asset.fb.ui.shop.bg2"/>
+  <LabelEx x="107" y="60" color="0xDD0000" size="12" stroke="0xECDBA8,1,4,4,20" height="22" align="left" text="啵咕勇士可购买" var="limitLab" bold="true"/>
+  <Button skin="asset.fb.ui.shop.buyBtn" stateNum="1" x="162" y="82" labelSize="16" labelColors="0x9F3400,0x9F3400,0x9F3400,0x9F3400" labelStroke="0xF4CB68,1,4,4,10" labelBold="true" var="buyBtn" label="购买"/>
+  <LabelEx x="107" y="12" color="0x453826" size="14" stroke="0xEAD59B,1,4,4,20" align="left" text="爱心回力镖" var="nameLab" multiline="true" wordWrap="true" height="28" bold="true"/>
+  <LabelEx x="107" y="37" color="0x903E2E" size="14" stroke="0xECDBA8,1,4,4,20" align="left" text="积分:53333" var="costLab" width="135" bold="true" height="24"/>
+  <Image skin="asset.fb.ui.team.playerHeadBg" x="10" y="10"/>
+  <Box x="14" y="14" width="78" height="78" var="cellBox"/>
+  <LabelEx x="14" y="98" color="0xDD0000" size="12" stroke="0xECDBA8,1,4,4,20" height="22" align="left" text="本日还可购买:{0}" var="limitLab2" bold="true"/>
+</View>Sforcesrelic/ForcesRelicTypeSelectList.xml�g<View width="168" height="135">
+  <Image skin="asset.fb.relic.bit39" sizeGrid="6,6,6,6" x="0" y="0" var="bgImg" width="163" height="106"/>
+  <List x="10" y="10" width="144" repeatY="3" var="list" spaceY="3">
+    <Box name="render">
+      <Image skin="asset.fb.relic.bit38" name="selectBox" visible="false"/>
+      <Label x="10" y="3" color="0xfff3d7" bold="true" stroke="0x542200,1,2,2,10" size="14" text="test" width="111" height="20" align="center" name="stateLabel"/>
+    </Box>
+  </List>
+</View>9view/ForcesSmallMapView2.xml�<View width="645" height="430">
+  <Image skin="asset.fb.map.bit18" x="0" y="0" var="bgImg"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="591" y="-7" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" scale="0.86"/>
+  <Box x="117" y="53" var="shopBox">
+    <Image skin="asset.fb.map.bit14" y="37"/>
+    <Image skin="asset.fb.map.bit1" x="4" y="0"/>
+  </Box>
+  <Box x="381" y="55" var="mainBox">
+    <Image skin="asset.fb.map.bit19" y="22"/>
+    <Image skin="asset.fb.map.bit7" x="118"/>
+  </Box>
+  <Box x="408" y="251" var="skillBox">
+    <Image skin="asset.fb.map.bit15" y="31"/>
+    <Image skin="asset.fb.map.bit2" x="1"/>
+  </Box>
+  <Box x="228" y="28" var="treeBox">
+    <Image skin="asset.fb.map.bit17" x="39" y="23"/>
+    <Image skin="asset.fb.map.bit6"/>
+  </Box>
+  <Box x="42" y="137" var="taskBox">
+    <Image skin="asset.fb.map.bit16" y="33" x="18"/>
+    <Image skin="asset.fb.map.bit3"/>
+  </Box>
+  <Box x="12" y="244" var="doorBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit20"/>
+  </Box>
+</View>;shop/ForcesBattleShopView.xml�y<View width="840" height="520">
+  <Image skin="asset.fb.ui.shop.bg"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="789" y="13" stateNum="1" var="closeBtn"/>
+  <List x="38" y="77" repeatX="3" repeatY="3" var="shopList" spaceY="-3" spaceX="-1">
+    <ForcesBattleShopItem x="0" y="0" name="render" runtime="forcesbattle.views.item.ForcesBattleShopItem"/>
+  </List>
+  <Box x="42" y="447" var="coinBox">
+    <Image skin="asset.fb.ui.shop.coin1" var="costIcon" tipStyle="core.GoodsTip" width="48" height="48"/>
+    <Image skin="asset.fb.ui.team.pageBg3" x="50" y="13" tipStyle="core.GoodsTip"/>
+    <LabelEx x="60" y="15" color="0xFAE9B8" size="18" stroke="0x685B36,1,4,4,20" height="26" align="left" text="50000" var="curScoreLab"/>
+  </Box>
+  <PageNavigaterEx x="332" y="462" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.ui.team.leftBtn2" firstButtonStyle="asset.fb.ui.team.leftBtn" lastButtonStyle="asset.fb.ui.team.rightBtn" nextButtonStyle="asset.fb.ui.team.rightBtn2" pageNumBgStyle="asset.fb.ui.team.pageBg3"/>
+</View>Gteam/ForcesBattleTeanInviteView.xml�<View width="400" height="490">
+  <Image skin="asset.fb.ui.invite.mainBg" var="bg" x="0" y="0"/>
+  <TabListEx y="72" var="viewTab" x="39" width="215" height="48">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" bgSizeGrid="20,15,20,15" x="0" y="0" skin="asset.fb.ui.invite.tab1_un,asset.fb.ui.invite.tab1_sel" rects="0,0,0,0|0,0,0,0" label="好友" labelBold="true" labelSize="16" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,10" selected="true" labelStroke="0xE6D091,1,4,4,20"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" bgSizeGrid="20,15,20,15" x="105" y="0" skin="asset.fb.ui.invite.tab1_un,asset.fb.ui.invite.tab1_sel" rects="0,0,0,0|0,0,0,0" label="大厅" labelBold="true" labelSize="16" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,10" labelStroke="0xE6D091,1,4,4,20"/>
+  </TabListEx>
+  <Button skin="asset.fb.ui.team.closeBtn" x="335" y="22" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.invite.refreshBtn" x="229" y="424" var="refreshBtn" stateNum="1" label="刷新列表" clickInterval="500" labelSize="14" labelStroke="0xFAE9B8,1,4,4,10" labelColors="0x846334" labelBold="true" letterSpacing="3" labelMargin="2,,,2"/>
+  <List x="39" y="118" var="playerList" repeatX="1" repeatY="8" vScrollBarSkin="asset.fb.ui.scroll.vscroll1" sliderOffset="50" width="311" height="300">
+    <Box name="render" width="309" height="38">
+      <Image skin="asset.fb.ui.invite.listBg" name="bg" x="0" y="0" width="296" height="38"/>
+      <LabelEx color="0xFFFFFF" size="14" stroke="0x562702,1,4,4,10" height="22" text="人物名字8个字啊" width="110" x="86" y="9" align="center" name="nameLab"/>
+      <LevelIconEx size="big" height="40.66666666666663" visible="true" y="1" level="1" name="levelIcon"/>
+      <Button skin="asset.fb.ui.invite.inviteBtn" stateNum="1" label="邀请" clickInterval="500" labelSize="12" labelStroke="0xFAE9B8,1,4,4,10" labelColors="0x846334" labelBold="true" letterSpacing="3" labelMargin="2,,,2" x="233" name="inviteBtn" y="3"/>
+      <Clip clipsUrl="asset.core.sex_W,asset.core.sex_M" index="0" x="50" name="sexClip" y="7" sizeGrid="50,50,50,50"/>
+    </Box>
+  </List>
+</View>Mskill/ForcesBattleBanSkillListItem.xml�<View width="70" height="100">
+  <Image skin="asset.fb.ui.skill.bit38" x="0" y="0"/>
+  <Box var="skillBox" x="0" y="0"/>
+  <Button skin="asset.fb.ui.skill.bit2" var="disBtn" stateNum="1" clickInterval="500" letterSpacing="3" x="2" y="72" disabled="true" visible="false"/>
+  <Button skin="asset.fb.ui.skill.bit5" var="selBtn" stateNum="1" clickInterval="500" letterSpacing="3" x="2" y="72"/>
+</View>Oarena/ForcesBattleArenaTierRankItem.xml�{<View width="320" height="52">
+  <Image skin="asset.fb.arena.bit19" x="0" y="0" sizeGrid="5,5,5,5"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="1" y="16" align="center" height="30" bold="true" width="72" x="6" var="rankLab"/>
+  <Box x="249" y="-9" var="clipBox">
+    <Clip sizeGrid="5,5,5,5" var="bigClip" clipsUrlAuto="asset.fb.arena.bigTier.bit,1,8" index="0"/>
+    <Clip index="0" var="smallClip" clipsUrlAuto="asset.fb.arena.smallTier.bit1_,1,5" x="18" y="18"/>
+  </Box>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="未定级" x="237" y="16" align="center" height="30" bold="true" width="80" var="zeroLab" visible="false"/>
+  <Image skin="asset.fb.arena.bit2" x="263" y="5" sizeGrid="5,5,5,5" var="maxStarImg" visible="false" width="21" height="21" mouseEnabled="false"/>
+  <Box x="70" y="16" var="nameBox">
+    <LabelEx color="0x000000" size="14" stroke="0xE2CE96,1,4,4,30" text="人物名字8个字啊" align="center" height="30" bold="true" width="150" var="nameLab" isHtml="true"/>
+  </Box>
+  <Box x="240" y="32" var="starBox" width="68" height="17">
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" index="0" x="0" name="star0" y="0" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="12" index="0" y="0" name="star1" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="24" y="0" index="0" name="star2" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="37" index="0" y="0" name="star3" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="51" index="0" y="0" name="star4" width="16" height="17"/>
+  </Box>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="20星" y="32" align="center" bold="true" x="249" height="32" width="52" var="starLab" visible="false"/>
+</View>Gskill/ForcesBattleSkillListItem.xml�_<View width="78" height="78">
+  <Image skin="asset.fb.ui.skill.bit32" x="2" y="1"/>
+  <Image skin="asset.fb.boss.bit11" name="selectBox" visible="false" x="-2" y="-3" width="82" height="82" sizeGrid="3,3,3,3"/>
+  <Clip index="2" clipsUrl="asset.fb.boss.bit9,asset.fb.boss.bit10" var="stateClip" x="2" y="13" visible="false" width="74" height="62"/>
+  <Box x="6" y="7" var="cellBox"/>
+  <LabelEx color="0xfee6b2" size="14" height="30" text="免费" y="53" align="right" x="26" bold="true" stroke="0x753608,1,4,4,30" width="50" var="stateLab" visible="false"/>
+  <Button skin="asset.fb.ui.skill.bit47" x="4" y="51" var="detailBtn" stateNum="1" clickInterval="500" visible="false" mouseChildren="true" mouseEnabled="true"/>
+  <LabelEx color="0xfee6b2" size="14" height="30" text="Lv:2" y="3" align="left" x="6" bold="true" stroke="0x753608,1,4,4,30" width="50" var="lvLab"/>
+</View>;task/ForcesBattleTaskView.xml�5<View width="860" height="440">
+  <Image skin="asset.fb.ui.task.bg" x="0" y="0"/>
+  <PageNavigaterEx x="324" y="395" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.ui.team.leftBtn2" firstButtonStyle="asset.fb.ui.team.leftBtn" lastButtonStyle="asset.fb.ui.team.rightBtn" nextButtonStyle="asset.fb.ui.team.rightBtn2" pageNumBgStyle="asset.fb.ui.team.pageBg3" visible="false"/>
+  <List x="40" y="78" repeatY="3" var="taskList" vScrollBarSkin="asset.fb.ui.scroll.vscroll1" width="757" height="282">
+    <Box name="render">
+      <Image skin="asset.fb.ui.task.itemBg" x="0" y="0" width="732" height="94"/>
+      <LabelEx color="0x453826" size="16" stroke="0xEAD59B,1,4,4,20" height="40" text="完成战斗任务 (1/4)" y="35" align="center" x="141" bold="true" width="380" name="descLab"/>
+      <Image skin="asset.fb.ui.task.img1" x="40" y="10"/>
+      <LabelEx color="0xFFBA00" size="14" stroke="0xA9452C,1,4,4,20" text="任务1" width="25" y="19" align="center" x="56" bold="true" multiline="true" wordWrap="true" height="65" name="indexLab"/>
+      <Box x="553" y="11" name="stateBox">
+        <LabelEx color="0x903E2E" size="14" stroke="0xEAD59B,1,4,4,20" height="28" text="积分20000" y="45" align="center" x="80" bold="true" width="100" name="rewardLab"/>
+        <Image skin="asset.fb.playerInfo.bit43" x="107" sizeGrid="3,3,3,3" width="43" height="42" y="6"/>
+        <LabelEx color="0x903E2E" size="14" stroke="0xEAD59B,1,4,4,20" height="28" text="徽章20000" y="45" align="center" bold="true" width="100" name="medalLab"/>
+        <Clip index="1" clipsUrl="asset.fb.ui.shop.coin1,asset.fb.ui.shop.coin2" x="20" width="52" height="52" sizeGrid="5,5,5,5" name="medalClip"/>
+      </Box>
+      <Image skin="asset.fb.ui.quest.isCompleteImg" x="604" y="16" name="isComplete" width="68" height="52"/>
+      <Button skin="asset.fb.ui.task.refresh" stateNum="1" clickInterval="500" letterSpacing="3" y="26" name="refreshBtn" x="414"/>
+    </Box>
+  </List>
+  <Button skin="asset.fb.ui.team.helpBtn" x="751" y="12" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="792" y="21" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <LabelEx color="0x903E2E" size="14" stroke="0xEAD59B,1,4,4,20" height="35" text="剩余刷新任务次数:{0}" y="41" align="left" bold="true" width="194" x="38" var="refreshLab"/>
+</View>Uforcesrelic/ForcesRelicZFExProListItem.xml�<View width="200" height="75">
+  <Image skin="asset.fb.relic.bit1" sizeGrid="37,11,37,11" x="22" y="0" width="175" height="69" var="bgImg"/>
+  <Label text="技能1:描述描述描述描述描述描述描述描述描述描述描述描述描述描述" x="27" y="2" color="0x59811b" stroke="0xe7d7a9,4,4,2,20" size="12" var="descLab" multiline="true" width="165" leading="6" wordWrap="true" bold="true" isHtml="true"/>
+  <CheckBox var="checkBox" checkButtonSkin="asset.ui.btn_check3" labelStroke="0xa13d00,1,4,4,20" labelColors="0xfff1d5" labelMargin="0,1" stateNum="1" x="-6" y="4"/>
+</View>3ForcesBattleAlertView.xml�g<View width="600" height="350">
+  <Image skin="asset.fb.ui.shop.alertBg" var="bg" x="0" y="0" sizeGrid="0,100,0,100"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="505" y="22" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.invite.confirmBtn" x="220" y="260" var="confirmBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Panel x="78" y="99" width="432" height="139" vScrollBarSkin="asset.fb.ui.scroll.vscroll1" var="scrollPanel">
+    <LabelEx color="0x903e2e" size="16" stroke="0xd6c288,1,4,4,20" text="确认框提示描述确认框提示描述确认框提示描述确认框提示描述确认框提示描述确认框提示描述确认框提示描述" width="411" align="center" var="descLab" multiline="true" wordWrap="true" leading="10"/>
+  </Panel>
+</View>Garena/ForcesBattleArenaMainView.xml�<View width="1050" height="620">
+  <Image skin="asset.fb.arena.bit6" y="0"/>
+  <Button skin="asset.fb.arena.bit31" x="931" y="28" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.arena.bit39" x="891" y="31" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <TabListEx y="127" var="tabView" x="62">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="3" skin="asset.fb.arena.bit40,asset.fb.arena.bit41" rects="0,-2,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="103" y="4" skin="asset.fb.arena.bit42,asset.fb.arena.bit43" rects="0,-2,0,0|0,0,0,0" selected="false"/>
+  </TabListEx>
+  <TabListEx y="130" var="tabView2" x="629">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.arena.bit44,asset.fb.arena.bit45" rects="0,-2,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="103" y="1" skin="asset.fb.arena.bit46,asset.fb.arena.bit47" rects="0,-2,0,0|0,0,0,0" selected="false"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="205" y="1" skin="asset.fb.arena.bit48,asset.fb.arena.bit49" rects="0,-2,0,0|0,0,0,0" selected="false"/>
+  </TabListEx>
+  <List y="212" var="tierList" repeatX="1" sliderOffset="50" x="620" width="320" height="264">
+    <ForcesBattleArenaTierRankItem name="render" runtime="forcesbattle.views.arena.item.ForcesArenaTierRankItem"/>
+  </List>
+  <Image skin="asset.fb.arena.bit32" x="618" y="471"/>
+  <PageNavigaterEx x="637" y="482" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="100,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="20" prevButtonStyle="asset.fb.ui.team.leftBtn2" firstButtonStyle="asset.fb.ui.team.leftBtn" lastButtonStyle="asset.fb.ui.team.rightBtn" nextButtonStyle="asset.fb.ui.team.rightBtn2" pageNumBgStyle="asset.fb.ui.team.pageBg2"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="我的积分:123212" y="515" align="left" height="30" bold="true" x="631" var="myScoreLab" width="160"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="我的排名:123212" y="515" align="right" height="30" bold="true" x="771" var="myRankLab" width="160"/>
+  <Box x="618" y="171" var="gradeTitleBox">
+    <Image skin="asset.fb.arena.bit20"/>
+    <Image skin="asset.fb.arena.bit30" y="3" x="70"/>
+    <Image skin="asset.fb.arena.bit30" y="3" x="219"/>
+    <Image skin="asset.fb.arena.bit37" y="8" x="249"/>
+    <Image skin="asset.fb.arena.bit13" y="8" x="129"/>
+    <Image skin="asset.fb.arena.bit12" y="8" x="19"/>
+  </Box>
+  <List y="172" var="rankList" repeatX="1" sliderOffset="50" x="620" width="320" height="304">
+    <ForcesBattleArenaRankAwardsItem name="render" runtime="forcesbattle.views.arena.item.ForcesArenaRankAwardsItem"/>
+  </List>
+  <List y="172" var="tierAwardsList" repeatX="1" sliderOffset="50" x="620" width="320" height="304">
+    <ForcesBattleArenaTierAwardsRankItem name="render" runtime="forcesbattle.views.arena.item.ForcesArenaTierAwardsRankItem"/>
+  </List>
+  <ForcesBattleArenaTeamIten x="391" y="264" var="teamItem1" runtime="forcesbattle.views.arena.item.ForcesArenaTeamItem"/>
+  <ForcesBattleArenaTeamIten x="501" y="264" var="teamItem2" runtime="forcesbattle.views.arena.item.ForcesArenaTeamItem"/>
+  <Image skin="asset.fb.arena.bit4" y="451" x="400" var="stateImgBox"/>
+  <Image skin="asset.fb.arena.bit5" y="455" x="463" var="curStateImg"/>
+  <Button skin="asset.fb.arena.bit38" x="392" y="488" stateNum="1" clickInterval="500" letterSpacing="3" var="CHBtn"/>
+  <Button skin="asset.fb.arena.bit7" x="502" y="488" stateNum="1" clickInterval="500" letterSpacing="3" var="cancelCHBtn"/>
+  <List y="169" repeatX="1" sliderOffset="50" x="60" width="320" height="378" var="dayList">
+    <ForcesBattleArenaDayListAwardItem name="render" runtime="forcesbattle.views.arena.item.ForcesArenaDayListItem"/>
+  </List>
+  <LabelEx color="0x746045" size="20" stroke="0xE2CE96,1,4,4,30" text="啵咕" y="72" align="left" bold="true" x="206" var="myForcesLab" width="113" height="40"/>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="活动时间:2024-04-01 至 2024-05-20" align="right" bold="true" x="658" var="timeLab1" y="58" isHtml="true"/>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="战斗的星期数: 6,7" align="right" bold="true" x="658" var="timeLab2" y="80" isHtml="true"/>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="每日的战斗时间: 10:00-12:00|14:00-16:00" align="right" bold="true" x="658" var="timeLab3" y="101" isHtml="true"/>
+</View>Kforcesrelic/ForcesRelicManualView.xml�_<View width="820" height="460">
+  <Image skin="asset.fb.ui.skill.bit33" sizeGrid="20,20,20,20" width="775" height="55" x="0" y="0"/>
+  <TabListEx var="tabView" x="11" y="5">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit41,asset.fb.relic.bit40" rects="0,0,0,0|0,-2,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit49,asset.fb.relic.bit48" rects="0,0,0,0|0,-2,0,0" selected="false" x="125"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit45,asset.fb.relic.bit44" rects="0,0,0,0|0,-2,0,0" selected="false" x="250"/>
+    <TabButtonEx name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit51,asset.fb.relic.bit50" rects="0,0,0,0|0,-2,0,0" selected="false" x="375"/>
+    <TabButtonEx name="item4" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit43,asset.fb.relic.bit42" rects="0,0,0,0|0,-2,0,0" selected="false" x="500"/>
+    <TabButtonEx name="item5" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit53,asset.fb.relic.bit52" rects="0,0,0,0|0,-2,0,0" selected="false" x="625"/>
+  </TabListEx>
+  <Image skin="asset.fb.relic.bit22" x="3" y="59"/>
+  <Image skin="asset.fb.relic.bit2" x="500" y="59"/>
+  <LabelEx color="0x955720" size="14" y="80" x="561" text="所有圣物属性的总和" bold="true" stroke="0xffe8a8,1,4,4,20" width="160" height="28" align="center"/>
+  <List x="536" y="114" width="205" height="291" repeatY="8" var="totalList">
+    <Box name="render">
+      <Image skin="asset.fb.relic.bit1" x="0" y="0"/>
+      <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="16" y="13"/>
+      <LabelEx color="0x6b5646" size="14" y="8" x="29" text="攻击：" bold="true" stroke="0xe7d7a9,1,4,4,20" width="50" height="28" name="typeLab"/>
+      <LabelEx color="0xffc437" size="14" y="8" x="79" text="12345187" bold="true" stroke="0x81543e,1,4,4,20" width="120" height="28" name="valueLab" align="center"/>
+    </Box>
+  </List>
+  <Box x="19" y="71" var="totalBox">
+    <Image skin="asset.fb.relic.bit21" y="38" width="446" height="216" sizeGrid="30,30,30,30" x="7"/>
+    <Image skin="asset.fb.relic.bit20" x="18" height="24" width="420" sizeGrid="30,10,30,10"/>
+    <LabelEx color="0x955720" size="14" y="2" x="174" text="玩家已获得的属性" bold="true" stroke="0xffe8a8,1,4,4,20" width="160" height="28"/>
+    <List x="23" y="52" width="411" height="195" repeatX="2" spaceX="10" repeatY="4" spaceY="15" var="totalCurList">
+      <Box name="render">
+        <Image skin="asset.fb.relic.bit19" sizeGrid="8,5,5,8"/>
+        <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="10" y="10"/>
+        <LabelEx color="0x6b5646" size="14" y="5" x="23" text="攻击：" bold="true" stroke="0xe7d7a9,1,4,4,20" width="50" height="28" name="typeLab"/>
+        <LabelEx color="0x955720" size="14" y="5" x="73" text="0" bold="true" stroke="0xffe8a8,1,4,4,20" width="120" height="28" name="valueLab" align="center"/>
+      </Box>
+    </List>
+    <Image skin="asset.fb.relic.bit13" y="271" sizeGrid="30,30,30,30"/>
+    <LabelEx color="0x955720" size="14" y="278" text="普通宝册" bold="true" stroke="0xffe8a8,1,4,4,20" width="80" height="28" align="center" x="9"/>
+    <LabelEx color="0x955720" size="14" y="278" x="103" text="优秀宝册" bold="true" stroke="0xffe8a8,1,4,4,20" width="80" height="28" align="center"/>
+    <LabelEx color="0x955720" size="14" y="278" x="192" text="精良宝册" bold="true" stroke="0xffe8a8,1,4,4,20" width="80" height="28" align="center"/>
+    <LabelEx color="0x955720" size="14" y="278" x="285" text="卓越宝册" bold="true" stroke="0xffe8a8,1,4,4,20" width="80" height="28" align="center"/>
+    <LabelEx color="0x955720" size="14" y="278" x="376" text="传说宝册" bold="true" stroke="0xffe8a8,1,4,4,20" width="80" height="28" align="center"/>
+    <Button skin="asset.fb.relic.bit15" x="444" y="260" var="helpTipBtn1" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <LabelEx color="0xffc437" size="14" y="306" x="10" text="0" bold="true" stroke="0x81543e,1,4,4,20" width="80" height="28" align="center" var="manualLvLab1"/>
+    <LabelEx color="0xffc437" size="14" y="306" x="100" text="0" bold="true" stroke="0x81543e,1,4,4,20" width="80" height="28" align="center" var="manualLvLab2"/>
+    <LabelEx color="0xffc437" size="14" y="306" x="190" text="0" bold="true" stroke="0x81543e,1,4,4,20" width="80" height="28" align="center" var="manualLvLab3"/>
+    <LabelEx color="0xffc437" size="14" y="306" x="280" text="0" bold="true" stroke="0x81543e,1,4,4,20" width="80" height="28" align="center" var="manualLvLab4"/>
+    <LabelEx color="0xffc437" size="14" y="306" x="373" text="0" bold="true" stroke="0x81543e,1,4,4,20" width="80" height="28" align="center" var="manualLvLab5"/>
+  </Box>
+  <Box x="13" y="70" var="upgradeBox">
+    <Button skin="asset.fb.relic.bit54" x="342" y="318" var="upgradeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <Button skin="asset.fb.relic.bit15" x="307" y="323" var="helpTipBtn2" stateNum="1" clickInterval="500" letterSpacing="3"/>
+    <LabelEx color="0xfff1d5" size="16" y="328" text="Lv:4" bold="true" stroke="0xa13d00,1,4,4,20" var="barLvLab" width="65" height="32"/>
+    <ProgressBar skin="asset.fb.relic.bit28" x="45" y="329" var="expBar"/>
+    <LabelEx color="0xfff1d5" size="16" stroke="0xa13d00,1,4,4,20" height="25" text="500/600" width="120" y="328" align="center" x="121" var="expBarLab" bold="true"/>
+    <Box x="215" y="0" var="nextBox">
+      <Image skin="asset.fb.relic.bit20" x="49" height="24" width="200" sizeGrid="30,10,30,10"/>
+      <LabelEx color="0x955720" size="14" y="2" x="80" text="传说圣物宝册2级" bold="true" stroke="0xffe8a8,1,4,4,20" width="160" height="28" var="nextLvLab" align="center"/>
+      <Image skin="asset.fb.relic.bit30" y="149" sizeGrid="30,30,30,30" var="arrowImg"/>
+      <Image skin="asset.fb.relic.bit21" y="32" width="210" height="282" sizeGrid="30,30,30,30" x="47"/>
+      <List x="53" y="39" var="nextList" repeatX="1" width="200" repeatY="8" spaceY="1">
+        <Box name="render">
+          <Image skin="asset.fb.relic.bit19" sizeGrid="8,5,5,8"/>
+          <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="10" y="10"/>
+          <LabelEx color="0x6b5646" size="14" y="5" x="23" text="攻击：" bold="true" stroke="0xe7d7a9,1,4,4,20" width="50" height="28" name="typeLab"/>
+          <LabelEx color="0x955720" size="14" y="5" x="73" text="12345187" bold="true" stroke="0xffe8a8,1,4,4,20" width="120" height="28" name="valueLab" align="center"/>
+        </Box>
+      </List>
+    </Box>
+    <Box x="2" y="0" var="curBox">
+      <Image skin="asset.fb.relic.bit20" x="6" height="24" width="200" sizeGrid="30,10,30,10"/>
+      <LabelEx color="0x955720" size="14" y="2" x="30" text="传说圣物宝册1级" bold="true" stroke="0xffe8a8,1,4,4,20" width="160" height="28" var="curLvLab" align="center"/>
+      <Image skin="asset.fb.relic.bit21" y="32" width="210" height="282" sizeGrid="30,30,30,30"/>
+      <List x="6" y="39" var="curList" repeatX="1" width="200" repeatY="8" spaceY="1">
+        <Box name="render">
+          <Image skin="asset.fb.relic.bit19" sizeGrid="8,5,5,8"/>
+          <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="10" y="10"/>
+          <LabelEx color="0x6b5646" size="14" y="5" x="23" text="攻击：" bold="true" stroke="0xe7d7a9,1,4,4,20" width="50" height="28" name="typeLab"/>
+          <LabelEx color="0x955720" size="14" y="5" x="73" text="12345187" bold="true" stroke="0xffe8a8,1,4,4,20" width="120" height="28" name="valueLab" align="center"/>
+        </Box>
+      </List>
+    </Box>
+  </Box>
+</View>Gplayerinfo/ForcesBattleStarItem.xml�<View width="130" height="37">
+  <Clip clipsUrl="asset.fb.playerInfo.bit36,asset.fb.playerInfo.bit37,asset.fb.playerInfo.bit38,asset.fb.playerInfo.bit39" var="stateClip1" index="0"/>
+  <Clip clipsUrl="asset.fb.playerInfo.bit36,asset.fb.playerInfo.bit37,asset.fb.playerInfo.bit38,asset.fb.playerInfo.bit39" var="stateClip2" index="0" x="45" y="0"/>
+  <Clip clipsUrl="asset.fb.playerInfo.bit36,asset.fb.playerInfo.bit37,asset.fb.playerInfo.bit38,asset.fb.playerInfo.bit39" var="stateClip3" index="2" x="85" y="0"/>
+</View>Iforcesrelic/ForcesRelicShardView.xml�=<View width="280" height="400">
+  <Image skin="asset.fb.relic.bit2" x="0" y="10"/>
+  <LabelEx color="0x955720" size="14" y="31" x="61" text="当前拥有的圣物碎片" bold="true" stroke="0xffe8a8,1,4,4,20" width="160" height="28" align="center"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="233" y="2" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" scale="0.86"/>
+  <List x="37" y="67" var="shardList" repeatY="6">
+    <Box name="render">
+      <Image skin="asset.fb.relic.bit1" x="0" y="0" sizeGrid="5,5,5,5" width="180"/>
+      <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="16" y="13"/>
+      <LabelEx color="0xffc437" size="14" y="8" x="79" text="圣物1碎片:10个" stroke="0x81543e,1,4,4,20" width="110" height="28" name="numLab" align="left"/>
+      <Box x="29" y="1" name="cellBox"/>
+    </Box>
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="185" y="2"/>
+  </List>
+  <Box x="38" y="302" var="commonBox1">
+    <Image skin="asset.fb.relic.bit1" x="0" y="0" sizeGrid="5,5,5,5" width="180"/>
+    <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="16" y="13"/>
+    <LabelEx color="0xffc437" size="14" y="8" x="79" text="圣物1碎片:10个" stroke="0x81543e,1,4,4,20" width="110" height="28" align="left" var="commonLab1"/>
+    <Box x="29" y="1" var="commonCell1"/>
+  </Box>
+  <Box x="38" y="343" var="commonBox2">
+    <Image skin="asset.fb.relic.bit1" x="0" y="0" sizeGrid="5,5,5,5" width="180"/>
+    <Image skin="asset.fb.relic.bit4" sizeGrid="8,5,5,8" x="16" y="13"/>
+    <LabelEx color="0xffc437" size="14" y="8" x="79" text="圣物1碎片:10个" stroke="0x81543e,1,4,4,20" width="110" height="28" align="left" var="commonLab2"/>
+    <Box x="29" y="8" var="commonCell2"/>
+  </Box>
+</View>Ywarpass/ForcesBattleWarPassShopAlertView.xml�<View width="570" height="350">
+  <Image skin="asset.fb.warPass.bit40" x="0" y="0" sizeGrid="10,10,10,10"/>
+  <Image skin="asset.ddtstore.TipsTextBg" x="35" y="195" width="496" height="54" sizeGrid="5,5,5,5"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="506" y="25" stateNum="1" var="closeBtn"/>
+  <Label text="兑换数量:" x="174" y="127" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="82" height="24"/>
+  <TextInput text="1" skin="asset.fb.ui.shop.inputBg" x="297" y="120" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.fb.ui.shop.add" x="401" y="120" stateNum="1" var="addBtn"/>
+  <Image skin="asset.starCloud.stove.stovebg" x="62" y="64" width="82" height="82"/>
+  <Box x="66" y="94" var="itemBox">
+    <Image skin="asset.fb.ui.shop.itemBg" sizeGrid="10,10,10,10"/>
+  </Box>
+  <Button skin="asset.fb.ui.shop.del" x="261" y="120" stateNum="1" var="subtractBtn"/>
+  <Button skin="asset.fb.playerInfo.bit33" x="213" y="257" var="confirmBtn" stateNum="1" clickInterval="500"/>
+  <Label x="63" y="208" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="220" height="24" text="消耗积分: {0}" var="pricesLab"/>
+  <Label x="304" y="208" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="200" height="24" text="可兑换: {0}" var="limitLab"/>
+  <Image skin="asset.fb.warPass.bit39" x="260" y="22" sizeGrid="10,10,10,10"/>
+</View>?forcesrelic/ForcesRelicView.xml�#<View width="820" height="460">
+  <Image skin="asset.fb.relic.bit3" x="1" y="3"/>
+  <Button skin="asset.fb.relic.bit37" x="614" y="0" stateNum="1" imageLabel="asset.fb.relic.bit11" imageLabelX="128" imageLabelY="8" labelColors="0x673d29" labelSize="14" labelBold="true" labelStroke="0xddba93,1,2,2,10" enableClickMoveDownEffect="false" var="bombox" buttonMode="true" clickInterval="200" labelMargin="-60"/>
+  <Image skin="asset.fb.ui.skill.bit33" x="433" y="37" sizeGrid="20,20,20,20" width="343" height="389"/>
+  <ForcesRelicEquipCell x="71" y="16" var="equipCell1" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem"/>
+  <ForcesRelicEquipCell x="263" y="18" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem" var="equipCell2"/>
+  <ForcesRelicEquipCell x="20" y="147" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem" var="equipCell6"/>
+  <ForcesRelicEquipCell x="317" y="152" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem" var="equipCell3"/>
+  <ForcesRelicEquipCell x="93" y="267" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem" var="equipCell5"/>
+  <ForcesRelicEquipCell x="254" y="267" runtime="forcesbattle.views.relic.item.ForcesRelicEquipItem" var="equipCell4"/>
+  <List repeatX="4" width="325" height="370" spaceX="5" spaceY="4" x="441" y="46" var="relicList">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="312" y="2"/>
+    <ForcesRelicBagListItem runtime="forcesbattle.views.relic.item.ForcesRelicListItem" name="render"/>
+  </List>
+  <LabelEx color="0x673都9" size="14" stroke="0xddba93,1,4,4,20" y="430" x="513" bold="true" text="双击可装备/拆卸圣物" width="168"/>
+  <Box x="5" y="177" var="suitBox2" visible="false">
+    <Image skin="asset.fb.relic.bit5"/>
+    <LabelEx color="0xf6e7c7" size="16" stroke="0x81543e,1,4,4,20" y="12" x="30" bold="true" text="套装效果"/>
+    <Button skin="asset.fb.relic.bit6" x="268" y="10" stateNum="1" imageLabel="asset.fb.relic.bit11" imageLabelX="95" imageLabelY="6" labelColors="0x673d29" labelSize="14" labelBold="true" labelStroke="0xddba93,1,2,2,10" enableClickMoveDownEffect="false" var="hideSuitBtn" buttonMode="true" label="点击收回" labelMargin="-30"/>
+    <Image skin="asset.fb.relic.bit18" x="30" y="44" width="353" height="20" sizeGrid="8,5,5,8"/>
+    <Image skin="asset.fb.relic.bit17" x="50" y="49" sizeGrid="8,5,5,8"/>
+    <LabelEx color="0x75582d" size="14" y="45" x="63" text="奇袭套装效果" bold="true"/>
+    <Image skin="asset.fb.relic.bit18" x="30" y="135" width="353" height="20" sizeGrid="8,5,5,8"/>
+    <Image skin="asset.fb.relic.bit17" x="50" y="140" sizeGrid="8,5,5,8"/>
+    <LabelEx color="0x75582d" size="14" y="136" x="63" text="遁甲套装效果" bold="true" var="exSkillTypeLab"/>
+    <LabelEx color="0x75582d" size="12" stroke="0xe7d7a9,1,4,4,20" y="67" x="37" bold="true" var="suitLab1" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃" multiline="true" wordWrap="true" width="340" height="65" leading="4" isHtml="true" mouseEnabled="true"/>
+    <LabelEx color="0x75582d" size="12" stroke="0xe7d7a9,1,4,4,20" y="161" x="37" bold="true" var="suitLab2" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃" multiline="true" wordWrap="true" width="340" height="65" leading="4" isHtml="true" mouseEnabled="true"/>
+    <Button skin="asset.fb.relic.bit67" x="105" y="9" stateNum="1" buttonMode="true" var="suitTipBtn2"/>
+  </Box>
+  <Box x="5" y="367" var="suitBox1" visible="true">
+    <Image skin="asset.fb.relic.bit7"/>
+    <LabelEx color="0xf6e7c7" size="16" stroke="0x81543e,1,4,4,20" y="20" x="27" bold="true" var="relicNameLab" text="套装效果"/>
+    <Button skin="asset.fb.relic.bit6" x="268" y="12" stateNum="1" imageLabel="asset.fb.relic.bit25" imageLabelX="95" imageLabelY="6" labelColors="0x673d29" labelSize="14" labelBold="true" labelStroke="0xddba93,1,2,2,10" enableClickMoveDownEffect="false" var="showSuitBtn" buttonMode="true" label="查看套装" labelMargin="-30"/>
+    <Button skin="asset.fb.relic.bit67" x="105" y="16" stateNum="1" buttonMode="true" var="suitTipBtn"/>
+  </Box>
+  <ForcesRelicTypeSelectList x="611" y="37" var="relicTypeSelect" runtime="forcesbattle.views.relic.ForcesRelicTypeSelectView" visible="false"/>
+  <Button skin="asset.fb.relic.bit6" x="436" y="2" stateNum="1" labelColors="0x673d29" labelSize="14" labelBold="true" labelStroke="0xddba93,1,2,2,10" enableClickMoveDownEffect="false" var="showShardBtn" buttonMode="true" label="查看碎片" labelMargin="0" width="80"/>
+</View>Eskill/ForcesBattleBanSkillView.xml�1<View width="900" height="540">
+  <Image skin="asset.fb.ui.skill.bit28" x="0" y="0"/>
+  <TabListEx y="101" var="tabView" x="41">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.ui.skill.tab4_un,asset.fb.ui.skill.tab4_sel" rects="0,0,0,0|0,2,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.ui.skill.tab5_un,asset.fb.ui.skill.tab5_sel" rects="0,0,0,0|0,2,0,0" selected="false" x="130" y="0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.ui.skill.tab6_un,asset.fb.ui.skill.tab6_sel" rects="0,0,0,0|0,2,0,0" selected="false" x="260" y="0"/>
+  </TabListEx>
+  <LabelEx color="0x624300" size="16" height="30" text="禁用技能更新时间:" y="73" align="center" x="182" bold="true"/>
+  <Image skin="asset.fb.ui.skill.bit21" x="89" y="74"/>
+  <LabelEx color="0xBD5000" size="16" height="30" text="每周一10点" y="73" align="left" x="340" bold="true" width="120"/>
+  <LabelEx color="0x624300" size="16" height="30" text="投票时间:" y="73" align="center" x="462" bold="true"/>
+  <LabelEx color="0xBD5000" size="16" height="30" text="本周一0点-本周日22点前" y="73" align="left" x="550" bold="true" width="250"/>
+  <List x="49" y="153" repeatX="6" var="skillList" height="220" spaceX="3" sliderOffset="55">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="445" y="2"/>
+    <ForcesBattleBanSkillListItem name="render" runtime="forcesbattle.views.skill.ForcesBattleBanSkillListItem"/>
+  </List>
+  <List x="537" y="107" repeatX="1" spaceY="8" var="rankList" spaceX="10" width="261" height="371">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="245" y="2"/>
+    <Box name="render">
+      <Image skin="asset.fb.ui.skill.bit19" sizeGrid="8,8,8,8" width="240" height="82"/>
+      <Image skin="asset.fb.ui.skill.bit38" x="7" y="7"/>
+      <Box x="11" y="12" name="picBox" width="81" height="21"/>
+      <Image skin="asset.fb.ui.skill.bit20" x="10" y="10" name="rankLabBg"/>
+      <LabelEx color="0xFFD454" size="14" stroke="0xAF5F17,1,4,4,20" text="1" align="center" bold="true" width="30" x="10" y="15" name="rankLab" height="18"/>
+      <LabelEx color="0x724210" size="14" stroke="0xD9C17D,1,4,4,20" text="使用次数:111111111111" align="left" x="78" y="15" name="descLab1" width="158" height="26" isHtml="true" bold="true"/>
+      <LabelEx color="0x724210" size="14" stroke="0xD9C17D,1,4,4,20" text="胜率:11%" align="left" x="78" y="45" name="descLab2" width="158" height="26" isHtml="true" bold="true"/>
+    </Box>
+  </List>
+  <Image skin="asset.fb.ui.skill.bit24" x="141" y="451"/>
+  <Image skin="asset.fb.ui.skill.bit14" x="241" y="459" width="79" height="22"/>
+  <Image skin="asset.fb.ui.skill.bit36" x="123" y="459" width="40" height="22" var="banLabImg"/>
+  <Image skin="asset.fb.ui.skill.bit23" x="245" y="453"/>
+  <Box x="439" y="392" var="rewardBox" width="62" height="62">
+    <Image skin="asset.fb.ui.skill.bit26"/>
+  </Box>
+  <Button skin="asset.fb.ui.skill.bit34" x="423" y="455" var="banBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="796" y="24" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="756" y="21" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <ForcesBattleCurBanSkillItem x="116" y="394" var="banBox1" runtime="forcesbattle.views.skill.ForcesBattleCurBanSkillItem"/>
+  <ForcesBattleCurBanSkillItem x="218" y="394" var="banBox2" runtime="forcesbattle.views.skill.ForcesBattleCurBanSkillItem"/>
+  <ForcesBattleCurBanSkillItem x="288" y="394" var="banBox3" runtime="forcesbattle.views.skill.ForcesBattleCurBanSkillItem"/>
+</View>Wchangecloth/ForcesBattleClothChangeItem.xml�c<View width="97" height="121">
+  <Image skin="asset.fb.clothchange.clothbg" x="0" y="0" width="97" height="121"/>
+  <Button skin="asset.fb.clothchange.usebtn" x="12" y="82" stateNum="1" var="useBtn"/>
+  <Button skin="asset.fb.clothchange.cancelbtn" x="14" y="83" stateNum="1" var="cancelBtn"/>
+  <Image skin="asset.fb.clothchange.useimg" x="-1" y="-1" var="useImg"/>
+  <Box x="16" y="9" width="63" height="66" var="cellBox"/>
+</View>3ForcesFlouchAlertView.xml�1<View width="490" height="300">
+  <Image skin="asset.fb.ui.shop.alertBg" x="3" y="0" width="480" sizeGrid="0,20,0,0" height="300"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="442" y="26" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" scale="0.86"/>
+  <Button x="180" y="200" checkButtonSkin="asset.ui.btn_check3" selected="false" var="checkBtn" toggle="true" stateNum="1" width="30" height="30"/>
+  <LabelEx text="本次场景不再提示" x="213" y="208" stroke="0x692706,1,4,4,30" color="0xfffFFF" size="14" bold="false" width="166" height="36"/>
+  <Label x="164" y="90" color="0xFFEEBF" size="14" stroke="0x442006,1,4,4,10" isHtml="true" align="left" leading="5" var="desLab" bold="true" height="30" width="280" text="是否消耗{0}个{1}驱赶年兽"/>
+  <Box x="63" y="94" width="78" height="78" var="cellBox">
+    <Image skin="asset.fb.ui.team.playerHeadBg"/>
+  </Box>
+  <Label x="164" y="164" color="0xFFEEBF" size="14" stroke="0x442006,1,4,4,10" isHtml="true" align="left" leading="5" var="curLab" height="30" width="240" text="当前拥有:{0}"/>
+  <Label text="使用数量:" x="164" y="126" bold="true" size="14" color="0xfff1bf" stroke="0x632f00,1,4,4,10" width="82" height="24"/>
+  <TextInput text="1" skin="asset.fb.ui.shop.inputBg" x="287" y="119" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.fb.ui.shop.add" x="391" y="119" stateNum="1" var="addBtn"/>
+  <Button skin="asset.fb.ui.shop.del" x="251" y="119" stateNum="1" var="subtractBtn"/>
+  <Button skin="asset.fb.ui.invite.confirmBtn" x="186" y="240" var="confirmBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+</View>Kplayerinfo/ForcesBattleHandinView.xml�q<View width="600" height="400">
+  <Image skin="asset.fb.ui.shop.alertBg" x="0" y="9" sizeGrid="10,10,10,10"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="506" y="34" stateNum="1" var="closeBtn"/>
+  <Label text="是否上传{0} 徽章" x="224" y="183" bold="true" size="16" color="0x903E2E" stroke="0xD6C288,1,4,4,10" width="280" height="60" var="descLab" align="left" multiline="true" wordWrap="true" indent="5"/>
+  <TextInput text="1" skin="asset.fb.ui.shop.inputBg" x="257" y="129" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.fb.ui.shop.add" x="361" y="129" stateNum="1" var="addBtn"/>
+  <Image skin="asset.starCloud.stove.stovebg" x="62" y="73" width="82" height="82"/>
+  <Box x="86" y="103" var="itemBox">
+    <Image skin="asset.fb.ui.shop.itemBg" sizeGrid="10,10,10,10"/>
+  </Box>
+  <Button skin="asset.fb.ui.shop.del" x="221" y="129" stateNum="1" var="subtractBtn"/>
+  <Button skin="asset.fb.playerInfo.bit21" x="223" y="266" var="confirmBtn" stateNum="1" clickInterval="500"/>
+  <Label text="当前拥有:12212125555" x="53" y="195" size="14" color="0x903E2E" stroke="0xD6C288,1,4,4,10" width="158" height="48" var="curLab" leading="5" isHtml="true" multiline="true" wordWrap="true"/>
+</View>Aview/ForcesBattleSceneUIView.xml�1<View width="1000" height="600">
+  <Box x="2" y="1" height="229" var="flouchOutBox">
+    <Image skin="asset.ui.scale.bg16" width="201" sizeGrid="10,10,10,10" height="80" x="-3" y="150"/>
+    <LabelEx color="0xF3B100" size="14" stroke="0x000000,1,4,4,20" height="25" text="当前消耗鞭炮:" width="160" y="163" align="left" x="9" bold="true"/>
+    <LabelEx color="0xF30000" size="14" stroke="0x000000,1,4,4,20" height="25" text="当前消耗鞭炮:" width="180" y="191" align="center" x="8" bold="true" var="curCostLab"/>
+    <Image skin="asset.fb.flouchOut.bit3" x="361" y="-1"/>
+    <Image skin="asset.fb.flouchOut.bit2" x="366" y="-2"/>
+    <ProgressBar skin="asset.fb.flouchOut.bit4" x="420" y="14" var="smallBossHpBar" value="0.75"/>
+    <Image skin="asset.fb.flouchOut.bit1" x="598" y="22"/>
+    <Image skin="asset.fb.flouchOut.bit1" x="537" y="22"/>
+    <Image skin="asset.fb.flouchOut.bit1" x="476" y="22"/>
+  </Box>
+  <Button skin="asset.honor.goodImg" stateNum="1" x="952" y="-1" labelSize="14" labelColors="0xA14B09,0xA14B09,0xA14B09,0xA14B09" labelBold="true" var="setBtnBtn"/>
+  <Box x="816" y="49" var="settingBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" width="178" sizeGrid="10,10,10,10" height="129" x="0" y="0"/>
+    <Button skin="asset.ui.btn_red2" stateNum="1" labelSize="14" labelColors="0xA14B09,0xA14B09,0xA14B09,0xA14B09" labelBold="true" var="refreshBtn" x="9" y="12"/>
+    <Box x="9" y="66" var="hideBtnBox"/>
+  </Box>
+  <LabelEx text="当前玩家位置:" x="15" y="425" color="0xffffff" size="14" stroke="0x875f10,1,4,4,30" var="ChangeNumLab" align="left" width="200" multiline="true" wordWrap="true" height="60"/>
+  <Box y="239" x="0" var="teamBox">
+    <Box var="infoBox">
+      <Image skin="asset.ui.scale.bg16" width="201" sizeGrid="10,10,10,10" height="170" x="0" y="0"/>
+      <List repeatY="4" spaceY="4" x="10" y="40" var="teamList">
+        <Box name="render">
+          <Image skin="asset.fb.ui.invite.listBg" name="bg" width="180" height="25"/>
+          <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="队友名字五个字" width="120" y="3" align="left" x="4" name="nickLab"/>
+          <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="在线" width="50" y="3" align="center" x="124" bold="true" name="stateLab" isHtml="true"/>
+        </Box>
+      </List>
+      <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="当前队伍列表" width="120" y="10" align="left" x="12" bold="true" name="teamDescLab"/>
+    </Box>
+    <Clip index="0" clipsUrl="asset.fb.playerInfo.bit46,asset.fb.playerInfo.bit47" var="teamBoxClip" x="200" y="73" buttonMode="true" mouseChildren="true" mouseEnabled="true"/>
+  </Box>
+  <Box var="headBox" buttonMode="true" x="0" y="0" width="272">
+    <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="房间名字id" width="160" y="4" align="left" x="42" var="roomIdLab" bold="true"/>
+    <Image skin="asset.fb.playerInfo.bit28"/>
+    <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="人物名字7个字" width="120" y="24" align="left" x="92" var="nickLab" bold="true"/>
+    <ProgressBar skin="asset.fb.playerInfo.bit6" x="127" y="58" var="hpBar"/>
+    <LabelEx color="0x903E2E" size="14" stroke="0xD6c288,1,4,4,20" height="25" text="100%" width="50" y="57" align="center" x="83" var="hpLab" bold="true"/>
+    <Image skin="asset.fb.playerInfo.bit44" var="buffImg" x="208" y="20" width="28" height="28" visible="false"/>
+  </Box>
+  <Button skin="asset.fb.map.bit5" stateNum="1" x="881" y="17" labelSize="14" labelColors="0xA14B09,0xA14B09,0xA14B09,0xA14B09" labelBold="true" var="mapBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3"/>
+  <Button skin="asset.fb.warPass.bit8" stateNum="1" x="883" y="107" labelSize="14" labelColors="0xA14B09,0xA14B09,0xA14B09,0xA14B09" labelBold="true" var="passBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="0"/>
+  <Button skin="asset.fb.clothchange.smallBtn" stateNum="1" x="785" y="10" labelSize="14" labelColors="0xA14B09,0xA14B09,0xA14B09,0xA14B09" labelBold="true" var="clothBtn" tipStyle="ddt.view.tips.OneLineTip" tipDirctions="3"/>
+  <LabelEx color="0x000000" size="14" stroke="0xECDAA7,1,4,4,20" height="25" text="正在进行擂台撮合..." y="410" align="center" x="3" bold="true" var="arenaTeamStateLab" width="200" visible="false"/>
+</View>Garena/ForcesBattleArenaTeamIten.xml�<View width="108" height="185">
+  <Clip index="0" var="bgClip" clipsUrl="asset.fb.arena.bit22,asset.fb.arena.bit29"/>
+  <LabelEx color="0x923333" size="14" stroke="0xF4D3C6,1,4,4,20" height="40" text="名字五个字" width="110" y="152" align="center" x="0" var="nameLab" bold="true" isHtml="true"/>
+  <Box var="headBox" x="11" y="15"/>
+  <Box x="21" y="132" var="starBox" width="68" height="17">
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" index="0" x="0" name="star0" y="0" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="12" index="0" y="0" name="star1" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="24" y="0" index="0" name="star2" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="37" index="0" y="0" name="star3" width="16" height="17"/>
+    <Clip clipsUrl="asset.fb.arena.bit27,asset.fb.arena.bit2" x="51" index="0" y="0" name="star4" width="16" height="17"/>
+  </Box>
+  <Box x="30" y="91" var="clipBox" width="50" height="51">
+    <Clip sizeGrid="5,5,5,5" var="bigClip" clipsUrlAuto="asset.fb.arena.bigTier.bit,1,8" index="0"/>
+    <Clip index="0" var="smallClip" clipsUrlAuto="asset.fb.arena.smallTier.bit1_,1,5" x="18" y="18"/>
+  </Box>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="未定级" x="14" y="114" align="center" height="30" bold="true" width="80" var="zeroLab" visible="false"/>
+  <LabelEx color="0x00000" size="12" stroke="0xFFFFFF,1,4,4,10" text="20星" y="133" align="center" bold="true" x="31" height="32" width="52" var="starLab" visible="false"/>
+  <Image skin="asset.fb.arena.bit2" x="44" y="106" sizeGrid="5,5,5,5" var="maxStarImg" visible="false" mouseEnabled="false" width="21" height="21"/>
+</View>Oplayerinfo/ForcesBattleExchangeView.xml�o<View width="600" height="450">
+  <Image skin="asset.fb.ui.shop.alertBg" x="20" y="0" width="560" height="433" sizeGrid="0,100,0,100"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="527" y="27" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.invite.confirmBtn" x="404" y="372" var="exchangeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <PageNavigaterEx x="57" y="377" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xFAE9B8,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.ui.team.leftBtn2" firstButtonStyle="asset.fb.ui.team.leftBtn" lastButtonStyle="asset.fb.ui.team.rightBtn" nextButtonStyle="asset.fb.ui.team.rightBtn2" pageNumBgStyle="asset.fb.ui.team.pageBg3" visible="false" pageNumStroke="0x685B36,1,4,4,20"/>
+  <List x="72" y="78" repeatX="5" repeatY="3" spaceX="0" spaceY="-4" var="itemList">
+    <Box name="render">
+      <Image skin="asset.fb.ui.shop.itemBg" x="3" y="3"/>
+      <Image skin="asset.fb.boss.bit11" name="selectBox"/>
+      <Box x="8" y="11" name="cellBox"/>
+    </Box>
+  </List>
+</View>Owarpass/ForcesBattleWarPassTaskView.xml�A<View width="830" height="420">
+  <Image skin="asset.fb.warPass.bit41" x="276" y="0" sizeGrid="10,10,10,10" width="551" height="328"/>
+  <Image skin="asset.fb.warPass.bit41" x="4" y="0" sizeGrid="10,10,10,10" width="268" height="322"/>
+  <Image skin="asset.fb.warPass.bit3" x="10" y="5"/>
+  <Image skin="asset.fb.warPass.bit4" x="0" y="312"/>
+  <ProgressBar skin="asset.fb.warPass.bit31" x="55" y="331" var="lvBar" value="0.1"/>
+  <Image skin="asset.fb.warPass.bit49" x="210" y="324" width="38" height="38" var="scoreImg" tipStyle="core.GoodsTip"/>
+  <LabelEx color="0x7B1700" size="14" stroke="0xBA8970,1,4,4,20" height="25" text="50/100" width="100" y="362" align="left" x="203" bold="true" var="expLab" mouseEnabled="true"/>
+  <TabListEx y="5" var="tabView" x="279">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" selected="true" label="第一周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="78" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第二周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="156" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第三周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16"/>
+    <TabButtonEx name="item3" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="234" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第四周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16"/>
+    <TabButtonEx name="item4" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="312" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第五周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16" visible="false"/>
+    <TabButtonEx name="item5" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="390" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第六周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16" visible="false"/>
+    <TabButtonEx name="item6" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="468" y="0" skin="asset.fb.warPass.bit43,asset.fb.warPass.bit42" rects="0,0,0,0|0,0,0,0" label="第七周" labelBold="true" labelColors="0x724210,0x724210,0x724210,0x724210" labelMargin="0,5" labelSize="16" visible="false"/>
+  </TabListEx>
+  <List x="283" y="44" var="taskList" height="275" sliderOffset="75" spaceX="2" width="533">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="517" y="2"/>
+    <ForcesBattleWarPassTaskItem x="0" y="0" name="render" runtime="forcesbattle.views.warPass.item.ForcesBattleWarPassTaskListItem"/>
+  </List>
+  <Button skin="asset.fb.warPass.bit28" x="362" y="329" var="oneKeyBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.warPass.bit27" x="559" y="329" var="buyPassBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.warPass.bit48" x="20" y="325"/>
+  <LabelEx color="0xFFF9B9" size="16" stroke="0xA84C10,1,4,4,20" height="25" text="0" width="35" y="334" align="center" x="24" bold="true" var="lvLab"/>
+</View>Oforcesrelic/ForcesRelicShopDescView.xml�y<View width="570" height="420">
+  <Image skin="asset.fb.relic.bit14" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="511" y="22" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <LabelEx color="0x59811b" size="16" stroke="0xe7d7a9,1,4,4,20" y="97" x="186" bold="true" var="descRelicNameLab" text="无尽之刃"/>
+  <Image skin="asset.fb.relic.bit18" x="59" y="167" width="440" height="20" sizeGrid="8,5,5,8"/>
+  <Image skin="asset.fb.relic.bit17" x="79" y="172" sizeGrid="8,5,5,8"/>
+  <LabelEx color="0x75582d" size="14" y="168" x="92" text="基础属性" bold="true"/>
+  <Image skin="asset.fb.relic.bit18" x="59" y="240" width="440" height="20" sizeGrid="8,5,5,8"/>
+  <Image skin="asset.fb.relic.bit17" x="79" y="245" sizeGrid="8,5,5,8"/>
+  <LabelEx color="0x75582d" size="12" stroke="0xe7d7a9,1,4,4,20" y="195" x="66" bold="true" var="descBaseLab" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃" multiline="true" wordWrap="true" width="420" height="35" leading="4" mouseEnabled="true"/>
+  <LabelEx color="0x75582d" size="14" y="240" x="92" text="进阶属性" bold="true" width="64" height="18"/>
+  <LabelEx color="0x75582d" size="14" y="98" x="286" text="一阶" bold="true" var="descStageLab"/>
+  <Image skin="asset.fb.relic.bit16" x="271" y="99"/>
+  <LabelEx color="0x75582d" size="14" y="129" x="188" text="类型:" bold="true"/>
+  <LabelEx color="0x75582d" size="14" y="129" x="228" text="攻击圣物" bold="true" var="descTypeLab"/>
+  <LabelEx color="0xac582a" size="14" y="98" x="334" bold="true" var="descLvLab" text="Lv.4"/>
+  <Box x="81" y="95" var="iconBox"/>
+  <List x="66" y="266" width="420" height="109" var="descExProList" spaceY="3">
+    <Box name="render">
+      <LabelEx color="0x75582d" size="12" stroke="0xe7d7a9,1,4,4,20" bold="true" text="无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃无尽之刃\n之\n222" leading="4" isHtml="true" width="420" x="0" y="0" height="35" name="descExLab" multiline="true" wordWrap="true" mouseEnabled="true"/>
+    </Box>
+  </List>
+  <LabelEx color="0xac582a" size="14" y="128" x="314" bold="true" var="addProLab" text="Lv.4"/>
+</View>=boss/ForcesBattleServeView.xml�<View width="840" height="420">
+  <Image skin="asset.fb.boss.bit7" x="0" y="0" var="showImg"/>
+  <Image skin="asset.fb.boss.bit28" x="4" y="254"/>
+  <Image skin="asset.fb.boss.bit6" x="126" y="332"/>
+  <Image skin="asset.fb.boss.forcesHead1" x="16" y="314"/>
+  <Image skin="asset.fb.boss.forcesHead2" x="376" y="308"/>
+  <Image skin="asset.fb.boss.bit1" x="441" y="1" sizeGrid="10,10,10,10" width="328" height="390"/>
+  <TabListEx y="27" var="viewTab" x="771" width="81" height="343">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.boss.bit44,asset.fb.boss.bit43" rects="0,0,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="132" skin="asset.fb.boss.bit49,asset.fb.boss.bit48" rects="0,0,0,0|0,0,0,0" selected="false"/>
+  </TabListEx>
+  <Button skin="asset.fb.boss.bit47" x="236" y="262" var="serveBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <TextInput text="1" skin="asset.fb.boss.bit14" x="77" y="271" width="97" height="30" margin="5,5,5,5" color="0xfae9b8" size="16" bold="true" align="center" var="numInputText" restrict="0-9" stroke="0x685b36,1,4,4,20"/>
+  <Button skin="asset.fb.ui.shop.add" x="181" y="271" stateNum="1" var="addBtn"/>
+  <Button skin="asset.fb.ui.shop.del" x="41" y="271" stateNum="1" var="subtractBtn"/>
+  <Box var="effBox" x="280" y="350"/>
+  <List x="449" y="8" var="rewarList" repeatX="1" sliderOffset="60" width="313" height="378" spaceY="-2">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="293" y="3"/>
+    <ForcesBattleBossServeRewardCell name="render" runtime="forcesbattle.views.boss.ForcesBattleBossServeRewardCell"/>
+  </List>
+  <Box x="22" y="369" var="bar1Box">
+    <Image skin="asset.fb.boss.forcesProgress1" var="bar1Bg"/>
+    <Image skin="asset.fb.boss.forcesProgress1$bar" y="3" var="bar1Img"/>
+  </Box>
+  <Box x="243" y="368" var="bar2Box">
+    <Image skin="asset.fb.boss.forcesProgress2" var="bar2Bg"/>
+    <Image skin="asset.fb.boss.forcesProgress2$bar" x="177" y="3" sizeGrid="3,3,3,3" scaleX="-1" width="120" var="bar2Img"/>
+  </Box>
+  <Box x="447" y="6" var="buffBox">
+    <List x="3" var="buffList" repeatX="1" sliderOffset="30" width="313" height="330" spaceY="4">
+      <Box name="render" buttonMode="true">
+        <Image skin="asset.fb.boss.bit26"/>
+        <LabelEx color="0x746045" size="14" stroke="0xE7d7A9,1,4,4,30" text="激活条件条件激活条件条件激活条件条件" x="96" y="26" align="left" name="nameLab" height="60" bold="true" width="189" multiline="true" wordWrap="true" leading="5" isHtml="true"/>
+        <Box x="11" y="8" name="skillBox"/>
+      </Box>
+      <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="293" y="3"/>
+    </List>
+    <Image skin="asset.fb.boss.bit22" y="331"/>
+    <LabelEx color="0x746045" size="14" stroke="0xE7d7A9,1,4,4,30" text="供奉超额部分每溢出10000次，为本势力全体玩家额外增加10%伤害。" x="9" y="337" align="left" name="nameLab" height="60" bold="true" width="304" multiline="true" wordWrap="true" leading="6"/>
+  </Box>
+  <LabelEx color="0xA56900" size="14" stroke="0xF5F5F5,1,4,4,30" text="个人供奉次数:{0}次" x="207" y="208" align="right" height="30" width="200" leading="5" var="selfServeLab" bold="true"/>
+</View>CForcesBattleInviteConfirmView.xml�s<View width="455" height="280">
+  <Image skin="asset.fb.ui.shop.alertBg" x="3" y="0" var="bg" width="450" sizeGrid="0,20,0,0" height="266"/>
+  <Label x="37" y="78" color="0xFFEEBF" size="16" stroke="0x442006,1,4,4,10" isHtml="true" align="center" leading="5" var="desLab" bold="true" height="74" width="380" text="{0}邀请您参与{1}是否进入" multiline="true" wordWrap="true"/>
+  <Image skin="asset.ddtstore.TipsTextBg" x="79" y="126" width="294" height="76" sizeGrid="5,5,5,5"/>
+  <Button skin="asset.fb.ui.shop.buyBtn" x="118" y="215" var="confirmBtn" stateNum="1" label="加入" clickInterval="500" labelSize="14" labelStroke="0x442006,20" labelColors="0xFFEEBF" labelBold="true" letterSpacing="3" labelMargin="2,,,2" width="66"/>
+  <Label x="89" y="139" color="0xFFF4D4" size="14" stroke="0x7c4519,1,4,4,10" isHtml="true" align="center" leading="5" text="如果您在10秒没有反应,系统将默认拒绝" bold="true" height="23" var="timeLab"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="402" y="26" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" scale="0.86"/>
+  <Button x="150" y="164" checkButtonSkin="asset.ui.btn_check3" selected="false" var="checkBtn" toggle="true" stateNum="1" width="30" height="30"/>
+  <LabelEx text="不再接受此人邀请" x="183" y="172" stroke="0x692706,1,4,4,30" color="0xfffFFF" size="14" bold="false" width="166" height="36"/>
+  <Button skin="asset.fb.ui.shop.buyBtn" x="278" y="215" var="cancleBtn" stateNum="1" label="取消" clickInterval="500" labelSize="14" labelStroke="0x442006,20" labelColors="0xFFEEBF" labelBold="true" letterSpacing="3" labelMargin="2,,,2" width="66"/>
+</View>=forcesrelic/ForcesRelicTip.xml�#<View width="210" height="360">
+  <Image skin="asset.ui.scale.bg16" x="0" y="0" sizeGrid="59,25,59,25" width="200" height="358" var="bg"/>
+  <Label text="势力圣物" x="11" y="10" size="14" color="0xffffff" bold="true" stroke="0x000000,1,2,2,10" var="nameTxt"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="12" y="36" sizeGrid="95,1,95,1" width="165"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="9" y="91" sizeGrid="95,1,95,1" width="165" var="line1"/>
+  <Image skin="asset.core.tip.GoodsType" x="10" y="70"/>
+  <Label text="攻击" x="42" y="67" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true"/>
+  <Image skin="asset.core.tip::GoodsTipQuality" x="8" y="44"/>
+  <Label text="精良" x="53" y="41" size="12" color="0xffffff" stroke="0x000000,1,2,2,10" bold="true" var="quaTxt"/>
+  <Clip x="119" y="51" clipsUrl="asset.core.tip.Band1,asset.core.tip.Band2" index="0" visible="false"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="185" sizeGrid="95,1,95,1" width="165" var="line2"/>
+  <Label text="圣物描述圣物描述圣物描述圣物描述圣物描述圣物描述圣物描述圣物描述圣物描述&#xD;&#xD;" x="12" y="284" size="12" color="0xffffff" var="descTxt" multiline="true" wordWrap="true" width="177" leading="3"/>
+  <Image skin="asset.core.tip.HRuleAsset" x="10" y="278" sizeGrid="95,1,95,1" width="165" var="line3"/>
+  <Box x="10" y="102" var="baseBox" width="173" height="70">
+    <Label text="基础属性" size="12" color="0x000000" stroke="0xffffff,1,2,2,10" height="16" bold="true"/>
+    <Label text="技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述技能描述" size="12" color="0xff9933" stroke="0x000000,1,2,2,10" height="50" x="0" y="20" multiline="true" wordWrap="true" width="173" indent="12" leading="3"/>
+  </Box>
+  <Box x="9" y="192">
+    <List repeatY="3" var="proList" spaceX="25" spaceY="4" y="20" x="0">
+      <Box name="render">
+        <Label text="攻击：300" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" height="16" name="proTypeTxt"/>
+      </Box>
+    </List>
+    <Label text="进阶属性：" size="12" color="0x000000" stroke="0xffffff,1,2,2,10" height="16" bold="true"/>
+  </Box>
+</View>=ForcesBattleSceneBlockView.xml�A<View width="1000" height="600">
+  <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="1020" height="620" var="bg" alpha="0.5" x="-9" y="-10"/>
+  <Label text="场景加载中，请等候\n加载完成后方可操作" x="378" y="248" size="16" color="0xfee6b2" stroke="0x753608,1,4,4,30" wordWrap="true" multiline="true" width="227" height="65" align="center" leading="10" var="descLab"/>
+  <Button skin="asset.fb.reviveBtn" x="433" y="363" var="reviveBtn" stateNum="1" clickInterval="500" letterSpacing="3" visible="false"/>
+</View>Ochangecloth/ForcesBattleClothChange.xml�%<View width="561" height="410">
+  <Image skin="asset.fb.clothchange.bg" x="0" y="0"/>
+  <Button skin="asset.fb.clothchange.leftbtn" x="218" y="358" stateNum="1" var="leftBtn"/>
+  <Button skin="asset.fb.clothchange.nextBtn" x="318" y="358" stateNum="1" var="rightBtn"/>
+  <TextInput text="1" skin="asset.fb.ui.shop.inputBg" x="251" y="359" width="64" height="32" margin="0,5" align="center" color="0xfff6c9" size="14" bold="true" var="input"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="509" y="19" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <List x="57" y="86" repeatX="4" repeatY="2" spaceX="20" spaceY="10" var="list">
+    <ForcesBattleClothChangeItem runtime="forcesbattle.views.clothchange.ForcesBattleClothChangeItem" name="render"/>
+  </List>
+</View>Gplayerinfo/ForcesBreakAlertView.xml�w<View width="600" height="350">
+  <Image skin="asset.fb.ui.shop.alertBg" var="bg" x="20" y="10" sizeGrid="0,20,0,0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="525" y="32" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.playerInfo.bit10" x="232" y="263" var="breakBtn" stateNum="1" clickInterval="500"/>
+  <Box x="106" y="109" var="cellBox1">
+    <Image skin="asset.fb.ui.shop.itemBg" y="4"/>
+    <Box name="cellBox"/>
+    <LabelEx color="0xFFF77B" size="16" stroke="0x903E2E,1,4,4,20" height="25" text="10/1" width="120" y="97" align="center" bold="true" name="countLab" isHtml="true" x="-18"/>
+  </Box>
+  <Box x="248" y="109" var="cellBox2">
+    <Image skin="asset.fb.ui.shop.itemBg" y="4" x="18"/>
+    <Box name="cellBox" x="18"/>
+    <LabelEx color="0xFFF77B" size="16" stroke="0x903E2E,1,4,4,20" height="25" text="10/1" width="120" y="97" align="center" bold="true" name="countLab" isHtml="true"/>
+  </Box>
+  <Box x="408" y="109" var="cellBox3">
+    <Image skin="asset.fb.ui.shop.itemBg" y="4" x="18"/>
+    <Box name="cellBox" x="18"/>
+    <LabelEx color="0xFFF77B" size="16" stroke="0x903E2E,1,4,4,20" height="25" text="10/1" width="120" y="97" align="center" bold="true" name="countLab" isHtml="true"/>
+  </Box>
+</View>Sarena/ForcesBattleArenaRankAwardsItem.xml�I<View width="320" height="60">
+  <Image skin="asset.fb.arena.bit23" x="0" y="0" sizeGrid="5,5,5,5"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="奖励:" y="20" align="left" bold="true" x="109" height="32" width="52"/>
+  <Image skin="asset.fb.arena.bit3" x="208" y="5" sizeGrid="5,5,5,5" width="48" height="48" var="cellBox2"/>
+  <Image skin="asset.fb.arena.bit3" x="258" y="5" sizeGrid="5,5,5,5" width="48" height="48" var="cellBox3"/>
+  <Box x="158" y="5" var="cellBox1">
+    <Image skin="asset.fb.arena.bit3" sizeGrid="5,5,5,5" width="48" height="48"/>
+  </Box>
+  <LabelEx color="0xA84639" size="12" stroke="0xE2CE96,1,4,4,30" text="第1名" y="20" align="center" bold="true" x="9" var="rankLab" height="32" width="85"/>
+  <List x="157" y="9" width="150" repeatX="3" repeatY="1" var="awardList">
+    <Box name="render"/>
+  </List>
+</View>Kskill/ForcesBattleCurSubSkillItem.xml�<View width="65" height="65">
+  <Image skin="asset.fb.ui.skill.bit38" x="0" y="0"/>
+  <Box var="skillBox" x="4" y="4"/>
+</View>Mskill/ForcesBattleCurMainSkillItem.xml�<View width="65" height="65">
+  <Box var="skillBox"/>
+  <Clip index="2" clipsUrl="asset.fb.ui.skill.bit41,asset.fb.ui.skill.bit43,asset.fb.ui.skill.bit42,asset.fb.ui.skill.bit44,asset.fb.ui.skill.bit45,asset.fb.ui.skill.bit46" var="stateClip" x="42" y="46"/>
+</View>Cboss/ForcesBattleBossMainView.xml�9<View width="1050" height="620">
+  <Image skin="asset.fb.boss.bit13" var="bg"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="916" y="53" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <TabListEx y="104" var="viewTab" x="90">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="0" y="0" skin="asset.fb.boss.bit33,asset.fb.boss.bit32" rects="0,0,0,0|0,0,0,0" selected="true"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="160" y="0" skin="asset.fb.boss.bit36,asset.fb.boss.bit35" rects="0,0,0,0|0,0,0,0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="320" y="0" skin="asset.fb.boss.bit38,asset.fb.boss.bit37" rects="0,0,0,0|0,0,0,0"/>
+  </TabListEx>
+  <Button skin="asset.fb.ui.team.helpBtn" x="876" y="50" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="85" y="168" var="viewBox"/>
+</View>Ywarpass/ForcesBattleWarPassRewardPreView.xml�<View width="570" height="330">
+  <Image skin="asset.fb.warPass.bit40" x="0" y="0" sizeGrid="10,10,10,10"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="506" y="25" stateNum="1" var="closeBtn"/>
+  <Image skin="asset.fb.warPass.bit7" x="206" y="22" sizeGrid="10,10,10,10"/>
+  <List x="55" y="81" var="itemList" height="162" sliderOffset="75" spaceX="10" width="463" repeatX="5" spaceY="6">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="435" y="2"/>
+    <Box name="render" x="0" y="0">
+      <Image skin="asset.fb.ui.shop.itemBg" sizeGrid="10,10,10,10" width="78" height="78"/>
+    </Box>
+  </List>
+  <Button skin="asset.fb.warPass.bit26" x="106" y="255" stateNum="1" var="openBtn"/>
+  <Button skin="asset.fb.ui.invite.cancelBtn" x="306" y="255" stateNum="1" var="cancelBtn"/>
+  <Box x="61" y="215" var="bubbleBox">
+    <Image skin="asset.fb.warPass.bit10" sizeGrid="20,10,20,20" var="bubbleImg" width="393" height="41" x="0" y="0"/>
+    <LabelEx color="0xE05A00" size="12" stroke="0x3B2C1D,1,4,4,20" text="开通即可获得：以上奖励+1000通行证经验+任务额外20%经验！" align="left" bold="true" var="expLab" x="12" y="6" width="375" leading="5" height="28"/>
+  </Box>
+</View>Gforcesrelic/ForcesRelicMainView.xml�<View width="1050" height="620">
+  <Image skin="asset.fb.relic.bit23" x="0" y="0"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="920" y="52" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.team.helpBtn" x="881" y="48" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <TabListEx y="155" var="tabView" x="861">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" x="3" rects="0,0,0,0|0,-2,0,0" selected="true" skin="asset.fb.relic.bit58,asset.fb.relic.bit57"/>
+    <TabButtonEx name="item1" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit62,asset.fb.relic.bit61" rects="0,0,0,0|0,-2,0,0" selected="false" y="140" x="0"/>
+    <TabButtonEx name="item2" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit60,asset.fb.relic.bit59" rects="0,0,0,0|0,-2,0,0" selected="false" y="280" x="0"/>
+  </TabListEx>
+  <Box x="84" y="114" var="viewBox"/>
+</View>Gforcesrelic/ForcesRelicShopItem.xml�<View width="250" height="115">
+  <Image skin="asset.fb.relic.bit26" x="0" y="0"/>
+  <Button skin="asset.fb.warPass.bit38" stateNum="1" x="164" y="75" labelSize="16" labelColors="0x9F3400,0x9F3400,0x9F3400,0x9F3400" labelStroke="0xF4CB68,1,4,4,10" labelBold="true" var="buyBtn"/>
+  <LabelEx x="98" y="8" color="0x453826" size="14" stroke="0xEAD59B,1,4,4,20" align="left" text="爱心回力镖" var="nameLab" bold="true" width="135" height="24"/>
+  <LabelEx x="96" y="51" color="0x903E2E" size="14" stroke="0xECDBA8,1,4,4,20" align="left" text="53333" var="costLab" width="135" bold="true" height="24"/>
+  <Box x="19" y="11" var="cellBox"/>
+  <LabelEx x="177" y="51" color="0xDD0000" size="12" stroke="0xECDBA8,1,4,4,20" height="22" align="right" text="限购:{0}" var="limitLab2" bold="true" width="65"/>
+  <LabelEx x="96" y="31" color="0x75582d" size="12" stroke="0xECDBA8,1,4,4,20" align="left" text="类型：攻击" var="typeLab" width="135" bold="true" height="24"/>
+  <Button skin="asset.fb.relic.bit12" stateNum="1" x="20" y="80" labelSize="16" labelColors="0x9F3400,0x9F3400,0x9F3400,0x9F3400" labelStroke="0xF4CB68,1,4,4,10" labelBold="true" var="descBtn"/>
+  <Image skin="asset.fb.relic.bit24" var="costIcon" tipStyle="core.GoodsTip" scale="0.4" x="93" y="71"/>
+</View>Owarpass/ForcesWarPassRewardPreView2.xml�A<View width="570" height="330">
+  <Image skin="asset.fb.ui.shop.alertBg" x="0" y="0" sizeGrid="10,10,10,10"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="506" y="25" stateNum="1" var="closeBtn"/>
+  <List x="55" y="81" var="itemList" height="162" sliderOffset="75" spaceX="10" width="463" repeatX="5" spaceY="6">
+    <VScrollBar skin="asset.fb.ui.scroll.vscroll2" name="scrollBar" x="435" y="2"/>
+    <Box name="render" x="0" y="0">
+      <Image skin="asset.fb.ui.shop.itemBg" sizeGrid="10,10,10,10" width="78" height="78"/>
+    </Box>
+  </List>
+  <Button skin="asset.fb.ui.invite.confirmBtn" x="216" y="255" stateNum="1" var="confirmBtn"/>
+  <LabelEx color="0x000000" size="16" height="30" text="将获得以上奖励" y="299" align="center" x="217" bold="true" stroke="0xFFFFFF,1,4,4,20"/>
+</View>Splayerinfo/ForcesBattlePlayerInfoView.xml�5<View width="800" height="520">
+  <Image skin="asset.fb.playerInfo.bit14" x="13" y="0" sizeGrid="50,180,50,120" width="778" height="517"/>
+  <Button skin="asset.fb.playerInfo.bit10" x="322" y="430" var="breakBtn" stateNum="1" clickInterval="500"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="716" y="52" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.playerInfo.bit29" x="86" y="105"/>
+  <ProgressBar skin="asset.fb.playerInfo.bit2" x="404" y="120" var="hpBar"/>
+  <ProgressBar skin="asset.fb.playerInfo.bit23" x="404" y="170" var="expBar" value="0.2" width="280"/>
+  <Image skin="asset.fb.playerInfo.bit4" x="369" y="107"/>
+  <Image skin="asset.fb.playerInfo.bit25" x="369" y="158"/>
+  <LabelEx color="0xFFE2A9" size="16" stroke="0xA13D00,1,4,4,20" height="25" text="100%" width="110" y="124" align="center" x="480" var="hpBarLab" bold="true"/>
+  <LabelEx color="0xE8FFBC" size="16" stroke="0x33752A,1,4,4,20" height="25" text="100%" width="110" y="173" align="center" x="480" var="expBarLab" bold="true"/>
+  <Button skin="asset.fb.playerInfo.bit11" x="683" y="112" stateNum="1" clickInterval="500" letterSpacing="3" var="hpTipBtn"/>
+  <Button skin="asset.fb.playerInfo.bit11" x="683" y="163" stateNum="1" clickInterval="500" letterSpacing="3" var="expTipBtn"/>
+  <LabelEx color="0x000000" size="16" stroke="0xECDAA7,1,4,4,20" height="25" text="人物名字7个字" width="140" y="117" align="left" x="212" var="nickLab" bold="true"/>
+  <LevelIconEx size="big" height="40.66666666666663" visible="true" y="113" level="1" x="178" var="levelIcon"/>
+  <Box x="71" y="112" var="headBox"/>
+  <Box x="176" y="145" var="titleBox" width="166" height="47"/>
+  <Image skin="asset.fb.playerInfo.bit22" x="658" y="231" buttonMode="true" var="tipBtn1"/>
+  <Image skin="asset.fb.playerInfo.bit30" x="658" y="282" buttonMode="true" var="tipBtn2"/>
+  <Image skin="asset.fb.playerInfo.bit1" x="658" y="332" buttonMode="true" var="tipBtn3"/>
+  <List x="115" y="231" var="proList" repeatX="2" sliderOffset="50" height="176" spaceX="40" spaceY="5" width="536">
+    <Box name="render">
+      <Image skin="asset.fb.playerInfo.bit12"/>
+      <Image skin="asset.fb.playerInfo.bit5" x="7" y="11"/>
+      <Image skin="asset.fb.playerInfo.bit13" x="98" y="7"/>
+      <LabelEx color="0x746045" size="14" stroke="0xE6CE8B,1,4,4,20" height="25" text="真实伤害:" width="70" y="12" align="center" x="28" bold="true" name="typeLab"/>
+      <LabelEx color="0xFFC437" size="16" stroke="0x7C6C45,1,4,4,20" height="25" text="123456789" width="125" y="12" align="left" x="108" bold="true" name="valueLab"/>
+    </Box>
+  </List>
+  <Box x="411" y="188" var="elementBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="242" height="172" var="elementBg" x="0" y="0"/>
+    <Label text="元素属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="190"/>
+    <Label text="火攻击:0000000" x="11" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="huoAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="11" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="shuiAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="11" y="81" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="fengAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="11" y="99" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="tuAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="huoDefLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="shuiDefLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="81" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="fengDefLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="99" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="tuDefLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="11" y="119" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="guangAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="119" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="guangDefLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="11" y="139" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="anAtkLabel" width="112" height="16"/>
+    <Label text="火攻击:0000000" x="124" y="139" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="anDefLabel" width="112" height="16"/>
+  </Box>
+  <Box x="493" y="308" var="magicBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="160" height="88"/>
+    <Label text="属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="140"/>
+    <Label text="魔攻:0000000" x="11" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="magicAttLab" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="63" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="magicDefLab" width="112" height="16"/>
+  </Box>
+  <Box x="491" y="271" var="secondBox" visible="false">
+    <Image skin="asset.ui.scale.bg16" sizeGrid="59,25,59,25" width="160" height="235" x="0" y="0"/>
+    <Label text="二级属性" x="11" y="11" size="14" color="0x000000" bold="true" stroke="0xffffff,1,2,2,10"/>
+    <Image skin="asset.core.tip.HRuleAsset" x="10" y="37" sizeGrid="95,1,95,1" width="140"/>
+    <Label text="魔攻:0000000" x="11" y="45" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second1" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="65" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second2" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="85" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second3" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="105" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second4" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="125" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second5" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="145" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second6" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="165" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second7" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="185" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second8" width="112" height="16"/>
+    <Label text="魔防:0000000" x="11" y="205" size="12" color="0xff9933" bold="true" stroke="0x000000,1,2,2,10" var="second9" width="112" height="16"/>
+  </Box>
+  <Button skin="asset.fb.ui.team.helpBtn" x="673" y="51" var="helpBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+</View>Gforcesrelic/ForcesRelicShopView.xml�y<View width="820" height="460">
+  <Image skin="asset.fb.ui.skill.bit33" sizeGrid="20,20,20,20" width="775" height="55" x="0" y="0"/>
+  <TabListEx var="tabView" x="11" y="8">
+    <TabButtonEx name="item0" tabItemSizeGrid="15,15,15,15#15,15,15,15" skin="asset.fb.relic.bit47,asset.fb.relic.bit46" rects="0,0,0,0|0,-2,0,0" selected="true"/>
+  </TabListEx>
+  <Image skin="asset.fb.warPass.bit41" x="0" y="60" sizeGrid="10,10,10,10" width="775" height="350"/>
+  <List var="shopList" x="4" y="68" repeatX="3" spaceX="8" spaceY="-2" repeatY="3">
+    <ForcesRelicShopItem name="render" runtime="forcesbattle.views.relic.item.ForcesRelicShopItem"/>
+  </List>
+  <Box x="31" y="415" var="coinBox">
+    <Image skin="asset.fb.relic.bit24" var="costIcon" tipStyle="core.GoodsTip" scale="0.4"/>
+    <Image skin="asset.fb.warPass.bit12" x="31" y="2" tipStyle="core.GoodsTip"/>
+    <LabelEx x="41" y="4" color="0xDEAB91" size="16" stroke="0x685B36,1,4,4,20" height="26" align="left" text="50000" var="curScoreLab"/>
+  </Box>
+  <PageNavigaterEx x="566" y="415" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.warPass.bit45" firstButtonStyle="asset.fb.warPass.bit44" lastButtonStyle="asset.fb.warPass.bit36" nextButtonStyle="asset.fb.warPass.bit37" pageNumBgStyle="asset.fb.warPass.bit12"/>
+</View>Warena/ForcesBattleArenaDayListAwardItem.xml�#<View width="320" height="75">
+  <Image skin="asset.fb.arena.bit16" x="0" y="0"/>
+  <LabelEx color="0x563222" size="14" text="参与(1)场势力擂台对战" y="29" align="left" bold="true" x="10" height="32" width="195" isHtml="true" var="descLab"/>
+  <LabelEx color="0x746045" size="14" stroke="0xE2CE96,1,4,4,30" text="奖励:" y="30" align="left" bold="true" x="206" height="32" width="52"/>
+  <Box x="254" y="13" var="cellBox">
+    <Image skin="asset.fb.arena.bit3" sizeGrid="5,5,5,5" width="52" height="52"/>
+  </Box>
+  <Image skin="asset.fb.warPass.bit47" y="19" x="254" var="gotImg" visible="false"/>
+  <LabelEx color="0x087300" size="12" stroke="0xFFFFFF,1,4,4,10" text="点击\n领取" y="46" align="center" bold="true" x="278" height="32" var="cangetLab" visible="false" multiline="true" wordWrap="true" width="40" isHtml="true"/>
+</View>Owarpass/ForcesBattleWarPassShopView.xml�K<View width="830" height="400">
+  <Image skin="asset.fb.warPass.bit41" x="0" y="0" sizeGrid="10,10,10,10" width="826" height="350"/>
+  <List var="shopList" x="14" y="9" repeatX="3" width="798" height="333" spaceX="8" spaceY="0">
+    <ForcesBattleWarPassShopItem name="render" runtime="forcesbattle.views.warPass.item.ForcesBattleWarPassShopItem"/>
+  </List>
+  <Box x="31" y="355" var="coinBox">
+    <Image skin="asset.fb.warPass.bit49" var="costIcon" tipStyle="core.GoodsTip" width="38" height="38"/>
+    <Image skin="asset.fb.warPass.bit12" x="44" y="4" tipStyle="core.GoodsTip"/>
+    <LabelEx x="54" y="6" color="0xDEAB91" size="16" stroke="0x685B36,1,4,4,20" height="26" align="left" text="50000" var="curScoreLab"/>
+  </Box>
+  <PageNavigaterEx x="596" y="355" isLoop="true" var="selectPage" pageNumStyle="宋体,12,0xfff8d6,false,0" pageNumSize="60,24" pageNumBgSize="4,4,4,4" type="complexity" spacing="7" prevButtonStyle="asset.fb.warPass.bit45" firstButtonStyle="asset.fb.warPass.bit44" lastButtonStyle="asset.fb.warPass.bit36" nextButtonStyle="asset.fb.warPass.bit37" pageNumBgStyle="asset.fb.warPass.bit12"/>
+</View>9view/ForcesSmallMapView1.xml�Q<View width="645" height="430">
+  <Image skin="asset.fb.map.bit8" x="0" y="0" var="bgImg"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="591" y="-7" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3" scale="0.86"/>
+  <Box x="185" y="41" var="shopBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit9" y="37"/>
+    <Image skin="asset.fb.map.bit1" x="19" y="0"/>
+  </Box>
+  <Box x="58" y="45" var="mainBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit13" y="37"/>
+    <Image skin="asset.fb.map.bit7" x="36" y="0"/>
+  </Box>
+  <Box x="165" y="245" var="skillBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit10" y="27" x="2"/>
+    <Image skin="asset.fb.map.bit2"/>
+  </Box>
+  <Box x="312" y="38" var="treeBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit12"/>
+    <Image skin="asset.fb.map.bit4" x="89" y="3"/>
+  </Box>
+  <Box x="463" y="116" var="taskBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit11" y="27"/>
+    <Image skin="asset.fb.map.bit3" x="26"/>
+  </Box>
+  <Box x="432" y="234" var="doorBox" buttonMode="true">
+    <Image skin="asset.fb.map.bit21"/>
+  </Box>
+</View>Swarpass/ForcesBattleWarPassRewardView.xml�<View width="830" height="420">
+  <Image skin="asset.fb.warPass.bit41" x="367" y="43" sizeGrid="10,10,10,10" width="427" height="286"/>
+  <List var="rewardList" sliderOffset="55" repeatY="1" width="420" spaceX="2" x="375" y="52" repeatX="5">
+    <ForcesBattleWarPassLvRewardListItem name="render" runtime="forcesbattle.views.warPass.item.ForcesBattleWarPassLvRewardItem"/>
+  </List>
+  <Image skin="asset.fb.warPass.bit41" x="4" y="2" sizeGrid="10,10,10,10" width="268" height="322"/>
+  <Image skin="asset.fb.warPass.bit3" x="10" y="7"/>
+  <Image skin="asset.fb.warPass.bit4" x="0" y="314"/>
+  <Button skin="asset.fb.warPass.bit6" x="53" y="335" var="preViewBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Box x="279" y="171" var="exBox" disabled="true">
+    <Image skin="asset.fb.warPass.bit29" var="exRewardImg"/>
+    <Image skin="asset.fb.warPass.bit11" x="22" y="62" var="lockImg"/>
+  </Box>
+  <ProgressBar skin="asset.fb.warPass.bit30" x="309" y="8" var="lvBar" value="0.1"/>
+  <Image skin="asset.fb.warPass.bit23" x="279" y="50"/>
+  <Button skin="asset.fb.warPass.bit21" x="365" y="150" var="leftBtn" stateNum="1" clickInterval="500" letterSpacing="3" scaleX="-1"/>
+  <Button skin="asset.fb.warPass.bit34" x="732" y="9" var="buyLvBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.warPass.bit28" x="390" y="331" var="oneKeyBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.warPass.bit27" x="607" y="331" var="buyPassBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Image skin="asset.fb.warPass.bit49" x="636" y="3" width="38" height="38" var="scoreImg" tipStyle="core.GoodsTip"/>
+  <LabelEx color="0x7B1700" size="14" stroke="0xBA8970,1,4,4,20" height="25" text="50/100" width="75" y="14" align="left" x="668" bold="true" var="expLab" mouseEnabled="true"/>
+  <Image skin="asset.fb.warPass.bit48" x="272" y="1"/>
+  <LabelEx color="0xFFF9B9" size="16" stroke="0xA84C10,1,4,4,20" height="25" text="0" width="35" y="10" align="center" x="276" bold="true" var="lvLab"/>
+  <Button skin="asset.fb.warPass.bit21" x="797" y="150" var="rightBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+</View>Garena/ForcesBattleArenaHelpView.xml�<View width="600" height="600">
+  <Image skin="asset.fb.ui.shop.alertBg" var="bg" x="0" y="0" sizeGrid="0,100,0,100" width="591" height="570"/>
+  <Button skin="asset.fb.ui.team.closeBtn" x="505" y="22" var="closeBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Button skin="asset.fb.ui.invite.confirmBtn" x="220" y="508" var="confirmBtn" stateNum="1" clickInterval="500" letterSpacing="3"/>
+  <Panel x="68" y="92" width="460" height="393" vScrollBarSkin="asset.fb.ui.scroll.vscroll1" var="scrollPanel">
+    <LabelEx color="0x903e2e" size="16" stroke="0xd6c288,1,4,4,20" text="1.势力擂台对战属性为势力内属性，适用势力技能塔相关技能  \n2.势力擂台对战为2V2制，玩家需要在进入势力的预组队状态为2人组队，才可参与势力擂台战斗  \n3.比赛为升星制，每获胜一场获得1颗星，每失败一场失去1颗星（琼白段位失败将不失去星级）\n4.势力擂台每隔1周开放1次，开放时间见界面展示  \n5.玩家每日可根据参与/胜利次数获得对应的阶段性奖励  \n6.玩家每突破一个段位将获得相对应的阶段奖励（1个赛季只能获得1次）  \n7.势力擂台为赛季制，每赛季结束时将根据玩家段位发放排名奖励" width="411" align="left" var="descLab" multiline="true" wordWrap="true" leading="10"/>
+    <Image skin="asset.fb.arena.bit50" x="0" y="365"/>
+  </Panel>
+</View>

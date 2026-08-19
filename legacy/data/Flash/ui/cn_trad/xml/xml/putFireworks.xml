@@ -1,0 +1,111 @@
+<style name="putFireworks" version="7.7.0" source="ui/cn_trad/swf/putFireworks.swf">
+	<sets>
+		<set stylename="putFireworksView.countTxtFT" args="Arial,16,0x000000,true" type="flash.text.TextFormat"/>
+		<set stylename="putFireworksView.countTxtGF" args="0x441300,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="putFireworksView.msgTxtTF" args="Arial,12,0xFFCD5F" type="flash.text.TextFormat" leading="5"/>
+		<set stylename="putFireworksView.msgTxtTF2" args="Arial,12,0xFFCD5F,,,,,,center" type="flash.text.TextFormat" />
+		<set stylename="putFireworksView.msgTxtGF" args="0x430203,1,4,4,30" type="flash.filters.GlowFilter" />
+		<set stylename="putFireworks.historyItemView.timeTxtTF" args="Arial,14,0xFDFAD4" type="flash.text.TextFormat"/>
+		<set stylename="putFireworks.historyItemView.timeTxtGF" args="0x74421A,1,2,2,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="putFireworks.historyItemView.moneyTxtFT" args="Arial,14,0x000000,true" type="flash.text.TextFormat"/>
+		<set stylename="putFireworks.historyItemView.moneyTxtGF" args="0x441300,1,2,2,10" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="putFireworks.historyRecordFrame.nickTxtTF" args="Arial,14,0xfffd8a,false,,,,,left" type="flash.text.TextFormat" />
+		<set stylename="putFireworks.historyRecordFrame.nickTxtGF" args="0x4f240a,1,4,4,30" type="flash.filters.GlowFilter"/>
+		
+		<set stylename="putFireworks.historyRecordFrame.nickNameTextTTF" args="Arial,16,0x000000,true" type="flash.text.TextFormat"/>
+	</sets>
+	
+	<components>
+		<component classname="putFireworks.view.PutFireworksMainFrame"
+				closestyle="core.roundClosebt" titleOuterRectPosString="24,10,5" titleStyle="FrameTitleTextStyle" backStyle="asset.putFireworks.frameBg" 
+				closeInnerRectString="42,15,66,42,14" stylename="putFireworks.frame"
+				 x="0" y="0" escEnable="true" containerX="-15" containerY="-118"
+				width="626" height="560" />
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.leftBtn" backStyle="asset.putFireworksView.leftBtn" filterString="null,lightFilter,null,grayFilter" x="35" y="390" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.rightBtn" backStyle="asset.putFireworksView.rightBtn" filterString="null,lightFilter,null,grayFilter" x="590" y="390" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.sendBtn" backStyle="asset.putFireworksView.sendBtn" filterString="null,lightFilter,null,grayFilter" x="272" y="616" autoFrame="false"/>
+				
+		<component classname="com.pickgliss.ui.controls.container.VBox" stylename="putFireworks.view.TabSelectedBtnContainer" spacing="1" x="0" y="223" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="putFireworks.view.putFireworksBtn" 
+			selectedStyle="asset.putFireworks.view.putFireworksBtn" unSelectedStyle="asset.putFireworks.view.unPutFireworksBtn" 
+			x="0" y="0" displacement="false" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="putFireworks.view.historyBtn" 
+			selectedStyle="asset.putFireworks.view.historyBtn" unSelectedStyle="asset.putFireworks.view.unHistoryBtn" 
+			x="0" y="0" displacement="false" />
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworksView.countTxtFFT" textFormatStyle="putFireworksView.countTxtFT" autoSize="none" width="60" height="25" isAutoFitLength="true"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworksView.countTxt" textFieldStyle="putFireworksView.countTxtFFT" colors="0xffffff,0xff9600" filterString="putFireworksView.countTxtGF" alphas="1,1" ratios="30,255" x="143" y="110"/>
+			
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworksView.msgTxt" textFormatStyle="putFireworksView.msgTxtTF" filterString="putFireworksView.msgTxtGF" autoSize="none" type="dynamic" multiline="false" wordWrap="true" x="28" y="177" width="210" height="50"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworksView.posTxt" textFormatStyle="putFireworksView.msgTxtTF2" filterString="putFireworksView.msgTxtGF" autoSize="none" type="dynamic" x="47" y="245" width="150" height="25"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworksView.playerCountTxt" textFormatStyle="putFireworksView.msgTxtTF2" filterString="putFireworksView.msgTxtGF" autoSize="none" type="dynamic" x="47" y="302" width="150" height="25"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.posLeftBtn" backStyle="asset.putFireworks.smallLeftBtn" filterString="null,lightFilter,null,grayFilter" x="87" y="254" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.posRightBtn" backStyle="asset.putFireworks.smallRightBtn" filterString="null,lightFilter,null,grayFilter" x="218" y="254" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.playerCountLeftBtn" backStyle="asset.putFireworks.smallLeftBtn" filterString="null,lightFilter,null,grayFilter" x="87" y="302" autoFrame="false"/>
+		<component classname="com.pickgliss.ui.controls.BaseButton" stylename="putFireworksView.playerCountRightBtn" backStyle="asset.putFireworks.smallRightBtn" filterString="null,lightFilter,null,grayFilter" x="217" y="300" autoFrame="false"/>
+		
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="putFireworks.historyView.sendBtn" 
+			selectedStyle="asset.putFireworks.historyView.sendBtn" unSelectedStyle="asset.putFireworks.historyView.unSendBtn" 
+			x="140" y="-36" displacement="false" />
+		<component classname="com.pickgliss.ui.controls.SelectedButton" stylename="putFireworks.historyView.getBtn" 
+			selectedStyle="asset.putFireworks.historyView.getBtn" unSelectedStyle="asset.putFireworks.historyView.unGetBtn" 
+			x="12" y="-36" displacement="false" />
+		<component classname="com.pickgliss.ui.controls.ScrollPanel" stylename="putFireworks.historyView.scrollPanel" viewportInnerRectString="13,0,0,0,0" parentStyle="core.ScrollPanel" hScrollProxy="2" vScrollProxy="0" width="465" height="285" x="6" y="103" vUnitIncrement="65"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworks.historyItemView.timeTxt" textFormatStyle="putFireworks.historyItemView.timeTxtTF" filterString="putFireworks.historyItemView.timeTxtGF" autoSize="none" type="dynamic" x="53" y="19" width="200" height="25"/>
+		
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworks.historyItemView.moneyTxtFFT" textFormatStyle="putFireworks.historyItemView.moneyTxtFT" autoSize="none" width="50" height="25" isAutoFitLength="true"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.historyItemView.moneyTxt" parentStyle="putFireworksView.countTxt" textFieldStyle="putFireworks.historyItemView.moneyTxtFFT" filterString="putFireworks.historyItemView.moneyTxtGF" x="355" y="18"/>
+		
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.historyGetView.getCountTxt" parentStyle="putFireworksView.countTxt" x="427" y="29"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.historyGetView.getBestCountTxt" parentStyle="putFireworksView.countTxt" x="427" y="56"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.historyGetView.sendCountTxt" parentStyle="putFireworksView.countTxt" x="427" y="43"/>
+		
+		<component classname="putFireworks.view.HistoryRecordFrame" stylename="putFireworks.historyRecordFrame" parentStyle="BaseFrame" width="528" height="371" moveEnable="false" autoExit="true"/>
+		<component classname="com.pickgliss.ui.controls.ListPanel" stylename="putFireworks.historyRecordFrame.ListPanel" parentStyle="core.ScrollPanel" 
+				vScrollbarInnerRectString="21,4,0,0,3" vScrollProxy="0" hScrollProxy="2"
+				factoryStyle="com.pickgliss.ui.controls.cell.SimpleListCellFactory|putFireworks.view.PutFireworksRecordListCell,33,177" 
+				listStyle="com.pickgliss.ui.controls.list.List" width="462" height="156" x="30" y="171" />
+				
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.putFireworksRecordListCell.nameTxt" parentStyle="vipName" x="10" y="12"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.putFireworksRecordListCell.moneyTxt" parentStyle="putFireworks.historyItemView.moneyTxt" x="383" y="12"/>
+		<component classname="com.pickgliss.ui.text.GradientText" stylename="putFireworks.historyRecordFrame.nickNameText" parentStyle="vipName" textFieldStyle="putFireworks.historyRecordFrame.nickNameTextT" x="192" y="59"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworks.historyRecordFrame.nickNameTextT" textFormatStyle="putFireworks.historyRecordFrame.nickNameTextTTF" autoSize="none" width="100" height="25" isAutoFitLength="true"/>
+		<component classname="com.pickgliss.ui.text.FilterFrameText" stylename="putFireworks.historyRecordFrame.nickTxt" textFormatStyle="putFireworks.historyRecordFrame.nickTxtTF" filterString="putFireworks.historyRecordFrame.nickTxtGF" x="192" y="60" width="270" height="22"/>
+		<component classname="com.pickgliss.ui.image.ScaleFrameImage" stylename="putFireworks.channels" resourceLink="asset.putFireworks.channel1,asset.putFireworks.channel2" mouseChildren="false" mouseEnabled="false" x="138" y="258"/>
+		
+	</components>
+	
+	<customDisplay>
+		<custom classname="flash.geom.Point" stylename="putFireworks.putFireworksViewPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyViewViewPos" x="90" y="250"/>
+		<custom classname="flash.geom.Point" stylename="putFireworksView.mainMoviePos" x="282" y="399"/>
+		<custom classname="flash.geom.Point" stylename="putFireworksView.mainSPPos" x="19" y="21"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyView.getViewPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyView.sendViewPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyGetView.getViewContentPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historySendView.sendViewContentPos" x="0" y="0"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyItemView.bindMoneyIconPos" x="321" y="17"/>
+		<custom classname="flash.geom.Point" stylename="putFireworks.putFireworksRecordListCell.bindMoneyIconPos" x="353" y="10" />
+		<custom classname="flash.geom.Point" stylename="putFireworks.putFireworksRecordListCell.bestIconPos" x="269" y="6" />
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyView.numPos" x="218" y="38" />
+		<custom classname="flash.geom.Point" stylename="putFireworks.historyView.scoreTxtPos" x="348" y="12" />
+		
+		
+		<custom classname="ddt.view.PlayerPortraitView" stylename="putFireworks.historyItemView.PlayerPortrait" x="25" y="10" />
+		<custom classname="flash.geom.Point" stylename="putFireworks.playerCountPos" x="149" y="307" />
+		
+	</customDisplay>
+	
+	<bitmaps>
+		<bitmapData resourceLink="asset.putFireworks.view.putFireworksBtn" x="-12" y="0"/>
+		<bitmapData resourceLink="asset.putFireworks.view.historyBtn" x="-12" y="0"/>
+		<bitmapData resourceLink="asset.putFireworks.historyGetView.bg1" x="105" y="36"/>
+		<bitmapData resourceLink="asset.putFireworks.historyGetView.bg2" x="353" y="29"/>
+		<bitmapData resourceLink="asset.putFireworks.historySendView.bg1" x="105" y="36"/>
+		<bitmapData resourceLink="asset.putFireworks.historySendView.bg2" x="353" y="43"/>
+		
+	</bitmaps>
+</style>
