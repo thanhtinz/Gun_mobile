@@ -51,6 +51,7 @@ namespace GunMobile.Logic
         public int FlyingPartical;
         public int BombPartical;
         public int Amount;
+        public int BombType;
 
         public static BallPhysics Default => new BallPhysics
         {

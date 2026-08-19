@@ -191,6 +191,8 @@ namespace GunMobile.Client
         float _nextFightReconnectAt;
         float _battleStartTime;
         int[] _seatPetIds;
+        int[] _weaponIds;
+        int[] _preferredBallIds;
         int _lastShooter;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
@@ -351,6 +353,8 @@ namespace GunMobile.Client
             _battleStartTime = Time.time;
             _ballsByLiving = new BallPhysics[playerCount];
             _seatPetIds = new int[playerCount];
+            _weaponIds = new int[playerCount];
+            _preferredBallIds = new int[playerCount];
             for (int i = 0; i < playerCount; i++) _ballsByLiving[i] = BallPhysics.Default;
             if (_app.Database != null)
             {
@@ -359,21 +363,23 @@ namespace GunMobile.Client
                     for (int i = 0; i < playerCount; i++)
                     {
                         string px = "p" + i + "_";
-                        int wid = JsonInt(_fightStartJson, px + "weaponId", _app.Profile.WeaponId);
-                        int bid = JsonInt(_fightStartJson, px + "preferredBallId", 0);
+                        _weaponIds[i] = JsonInt(_fightStartJson, px + "weaponId", _app.Profile.WeaponId);
+                        _preferredBallIds[i] = JsonInt(_fightStartJson, px + "preferredBallId", 0);
                         _seatPetIds[i] = JsonInt(_fightStartJson, px + "petId", 0);
-                        _ballsByLiving[i] = _app.Database.ResolveBall(wid, bid);
+                        _ballsByLiving[i] = _app.Database.ResolveBall(_weaponIds[i], _preferredBallIds[i]);
                     }
                 }
                 else
                 {
-                    int ballId = _app.Profile.PreferredBallId > 0
-                        ? _app.Profile.PreferredBallId
-                        : _app.Database.DefaultBallId(_app.Profile.WeaponId);
-                    _ballsByLiving[0] = _app.Database.ResolveBall(_app.Profile.WeaponId, ballId);
+                    _weaponIds[0] = _app.Profile.WeaponId;
+                    _preferredBallIds[0] = _app.Profile.PreferredBallId;
                     _seatPetIds[0] = _app.Profile.PetId;
+                    _ballsByLiving[0] = _app.Database.ResolveBall(_weaponIds[0], _preferredBallIds[0]);
                     for (int i = 1; i < playerCount; i++)
-                        _ballsByLiving[i] = _ballsByLiving[0];
+                    {
+                        _weaponIds[i] = 7001;
+                        _ballsByLiving[i] = _app.Database.ResolveBall(7001);
+                    }
                 }
             }
 
@@ -828,12 +834,24 @@ namespace GunMobile.Client
             _shotFromNet = fromNet;
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
-            if (_ballsByLiving != null && who >= 0 && who < _ballsByLiving.Length && _ballsByLiving[who] != null)
+            if (_app?.Database != null && _weaponIds != null && who >= 0 && who < _weaponIds.Length)
+            {
+                int wid = _weaponIds[who];
+                int pref = _preferredBallIds != null && who < _preferredBallIds.Length ? _preferredBallIds[who] : 0;
+                int propForShot = who == MeSeat() ? _propId : 0;
+                _ball = _app.Database.ResolveBallForShot(wid, pref, propForShot);
+                if (_ballsByLiving != null && who < _ballsByLiving.Length)
+                {
+                    _ballsByLiving[who] = _ball;
+                }
+            }
+            else if (_ballsByLiving != null && who >= 0 && who < _ballsByLiving.Length && _ballsByLiving[who] != null)
             {
                 _ball = _ballsByLiving[who];
-                _sim.ApplyBall(_ball);
-                ApplyShotVisuals();
             }
+
+            _sim.ApplyBall(_ball);
+            ApplyShotVisuals();
             Vector2 p = _pos[who];
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
@@ -1264,7 +1282,17 @@ namespace GunMobile.Client
             }
             else
             {
-                _loop.EndMatchTimeout();
+                int me = MeSeat();
+                if (me >= 0 && me < _loop.Livings.Count)
+                {
+                    _loop.ApplyDamage(me, _loop.Livings[me].Hp);
+                }
+
+                _loop.SyncMatchOverIfNeeded();
+                if (_loop.Phase != BattlePhase.MatchOver)
+                {
+                    _loop.EndMatchTimeout();
+                }
             }
         }
 
@@ -1324,7 +1352,8 @@ namespace GunMobile.Client
                 ? _app.Database.ComputeBombHurt(_ball, _propDmg)
                 : DamageCalculator.ComputeBombHurt(_ball, _propDmg);
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
-            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
+            bool armorPierce = _app?.Database != null && _app.Database.PropIgnoresArmour(_propId);
+            int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit, armorPierce);
             _loop.ApplyDamage(index, dmg);
             SpawnDmgPopup(_pos[index], dmg, crit);
         }

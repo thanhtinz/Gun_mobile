@@ -64,11 +64,17 @@ namespace GunMobile.Logic
 
     public static class DamageCalculator
     {
-        public static int Compute(LivingStats attacker, LivingStats defender, int bombHurt, float distancePx, bool isCrit)
+        public static int Compute(LivingStats attacker, LivingStats defender, int bombHurt, float distancePx, bool isCrit, bool armorPierce = false)
         {
             float atk = Mathf.Max(1f, attacker.Attack);
             float def = Mathf.Max(0f, defender.Defence);
-            float mitigation = def / (def + 400f);
+            float denom = armorPierce ? 800f : 400f;
+            float mitigation = def / (def + denom);
+            if (armorPierce)
+            {
+                mitigation *= 0.55f;
+            }
+
             float dist = Mathf.Clamp01(1f - distancePx / 220f);
             float crit = isCrit ? 1.5f + attacker.Luck / 800f : 1f;
             float raw = bombHurt * (atk / 40f) * (1f - mitigation) * (0.55f + 0.45f * dist) * crit;

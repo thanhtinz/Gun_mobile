@@ -1826,8 +1826,7 @@ namespace GunMobile.Net
                         };
                         if (_db != null)
                         {
-                            int bid = p.PreferredBallId > 0 ? p.PreferredBallId : _db.DefaultBallId(p.WeaponId);
-                            room.Balls[i] = _db.ResolveBall(p.WeaponId, bid);
+                            room.Balls[i] = _db.ResolveBall(p.WeaponId, p.PreferredBallId);
                         }
                     }
                     else if (pveNpcId > 0 && _db != null)
@@ -2063,6 +2062,7 @@ namespace GunMobile.Net
 
             ApplyPropModifiers(propId, out float propDmg, out float propRadius, out float propPower, out bool propCrit);
             power = Mathf.Clamp(power + propPower, 1f, 100f);
+            bool armorPierce = _db != null && _db.PropIgnoresArmour(propId);
 
             MapCollision map;
             BallPhysics ball;
@@ -2074,7 +2074,14 @@ namespace GunMobile.Net
             lock (_lock)
             {
                 map = room.Map;
-                ball = (room.Balls != null && who < room.Balls.Length) ? room.Balls[who] : BallPhysics.Default;
+                if (_db != null)
+                {
+                    ball = _db.ResolveBallForShot(player.WeaponId, player.PreferredBallId, propId);
+                }
+                else
+                {
+                    ball = (room.Balls != null && who < room.Balls.Length) ? room.Balls[who] : BallPhysics.Default;
+                }
                 wind = room.Wind;
                 startX = room.PosX[who];
                 startY = room.PosY[who];
@@ -2149,7 +2156,7 @@ namespace GunMobile.Net
                     if (dist > blastRadius) continue;
 
                     bool crit = propCrit || DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
-                    int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit);
+                    int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit, armorPierce);
                     dmg = Mathf.Clamp(dmg, 0, hp[t]);
 
                     lock (_lock)

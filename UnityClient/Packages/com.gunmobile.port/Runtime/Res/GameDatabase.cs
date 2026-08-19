@@ -143,6 +143,8 @@ namespace GunMobile.Res
         public int[] ElementIds = System.Array.Empty<int>();
         public string Description = "";
         public int DamagePercent;
+        public int NewBallId;
+        public int CostMp;
     }
 
     public sealed class CardInfo
@@ -884,23 +886,103 @@ namespace GunMobile.Res
             return 1;
         }
 
-        /// <summary>
-        /// PC bombconfig: Common ball, or CommonMultiBall when it fires more shots.
-        /// </summary>
+        /// <summary>Default ball from bombconfig Common (no prop).</summary>
         public BallPhysics ResolveBall(int weaponTemplateId, int preferredBallId = 0)
         {
-            int ballId = preferredBallId > 0 ? preferredBallId : DefaultBallId(weaponTemplateId);
-            BallPhysics ball = GetBall(ballId);
-            if (Bombs.TryGetValue(weaponTemplateId, out BombInfo bomb) && bomb.CommonMultiBall > 0)
+            return GetBall(ResolveBallId(weaponTemplateId, preferredBallId));
+        }
+
+        public int ResolveBallId(int weaponTemplateId, int preferredBallId = 0)
+        {
+            if (preferredBallId > 0)
             {
-                BallPhysics multi = GetBall(bomb.CommonMultiBall);
-                if (multi.Amount > ball.Amount)
-                {
-                    return multi;
-                }
+                return preferredBallId;
             }
 
-            return ball;
+            return DefaultBallId(weaponTemplateId);
+        }
+
+        /// <summary>
+        /// PC bombconfig shot selection: Common / CommonAddWound / CommonMultiBall by fight prop.
+        /// </summary>
+        public int ResolveBallIdForShot(int weaponTemplateId, int preferredBallId, int propPicId)
+        {
+            if (preferredBallId > 0)
+            {
+                return preferredBallId;
+            }
+
+            if (!Bombs.TryGetValue(weaponTemplateId, out BombInfo bomb))
+            {
+                return DefaultBallId(weaponTemplateId);
+            }
+
+            if (PropUsesMultiBall(propPicId) && bomb.CommonMultiBall > 0)
+            {
+                return bomb.CommonMultiBall;
+            }
+
+            if (PropUsesAddWound(propPicId) && bomb.CommonAddWound > 0)
+            {
+                return bomb.CommonAddWound;
+            }
+
+            return bomb.Common > 0 ? bomb.Common : 1;
+        }
+
+        public BallPhysics ResolveBallForShot(int weaponTemplateId, int preferredBallId, int propPicId)
+        {
+            return GetBall(ResolveBallIdForShot(weaponTemplateId, preferredBallId, propPicId));
+        }
+
+        public BallPhysics ResolveSpecialBall(int weaponTemplateId)
+        {
+            if (Bombs.TryGetValue(weaponTemplateId, out BombInfo bomb) && bomb.Special > 0)
+            {
+                return GetBall(bomb.Special);
+            }
+
+            return ResolveBall(weaponTemplateId);
+        }
+
+        public bool PropUsesMultiBall(int propPicId)
+        {
+            if (propPicId == 4)
+            {
+                return true;
+            }
+
+            if (FightPropsByPic.TryGetValue(propPicId, out FightPropTemplate prop))
+            {
+                return prop.Property1 == 14 || prop.Property1 == 15;
+            }
+
+            return false;
+        }
+
+        public bool PropUsesAddWound(int propPicId)
+        {
+            if (propPicId == 1 || propPicId == 2 || propPicId == 6)
+            {
+                return true;
+            }
+
+            if (FightPropsByPic.TryGetValue(propPicId, out FightPropTemplate prop))
+            {
+                return prop.Property1 == 13 || prop.Property1 == 8;
+            }
+
+            return false;
+        }
+
+        public bool PropIgnoresArmour(int propPicId)
+        {
+            if (FightPropsByPic.TryGetValue(propPicId, out FightPropTemplate prop))
+            {
+                return prop.Property1 == 8;
+            }
+
+            return false;
         }
 
         public int ComputeBombHurt(BallPhysics ball, float propDmgMult = 1f)
@@ -1182,7 +1264,8 @@ namespace GunMobile.Res
                     Mass = Float(row, "Mass"),
                     FlyingPartical = Int(row, "FlyingPartical"),
                     BombPartical = Int(row, "BombPartical"),
-                    Amount = Mathf.Max(1, Int(row, "Amount"))
+                    Amount = Mathf.Max(1, Int(row, "Amount")),
+                    BombType = Int(row, "BombType")
                 };
             }
         }
@@ -1295,7 +1378,9 @@ namespace GunMobile.Res
                     Probability = Int(row, "Probability"),
                     ElementIds = elementIds,
                     Description = desc,
-                    DamagePercent = ParsePetDamagePercent(desc)
+                    DamagePercent = ParsePetDamagePercent(desc),
+                    NewBallId = Int(row, "NewBallID"),
+                    CostMp = Int(row, "CostMP")
                 };
             }
         }
