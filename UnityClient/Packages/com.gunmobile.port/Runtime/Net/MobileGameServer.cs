@@ -1662,7 +1662,9 @@ namespace GunMobile.Net
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)
         {
-            bool win = JI(json, "win", 0) == 1;
+            // Server authoritative: ignore client-provided win flag.
+            int seat = player.Seat;
+            bool win = room != null && room.Hp != null && seat >= 0 && seat < room.Hp.Length && room.Hp[seat] > 0;
             int gold = win ? 800 : 100;
             lock (_lock)
             {
