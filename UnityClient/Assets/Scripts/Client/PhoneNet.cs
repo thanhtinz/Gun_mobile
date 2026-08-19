@@ -153,6 +153,27 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.SignIn, "{}");
         }
 
+        public static void OpenGodCards(int count)
+        {
+            Road?.Send(PhoneMsg.GodCardOpen, "{\"count\":" + count + "}");
+        }
+
+        public static void EquipGodCard(int cardId)
+        {
+            Road?.Send(PhoneMsg.GodCardOpen, "{\"count\":0,\"equipId\":" + cardId + "}");
+        }
+
+        public static void EquipEngraveSet(int setId)
+        {
+            Road?.Send(PhoneMsg.EngraveEquip, "{\"setId\":" + setId + "}");
+        }
+
+        public static void TradeStock(string action, int stockId, int shares)
+        {
+            string act = (action ?? "buy").Replace("\"", "");
+            Road?.Send(PhoneMsg.StockTrade, "{\"action\":\"" + act + "\",\"stockId\":" + stockId + ",\"shares\":" + shares + "}");
+        }
+
         public static void DrawLottery(int count)
         {
             Road?.Send(PhoneMsg.LotteryDraw, "{\"count\":" + count + "}");

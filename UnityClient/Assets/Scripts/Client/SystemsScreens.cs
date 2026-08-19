@@ -820,4 +820,148 @@ namespace GunMobile.Client
             }
         }
     }
+
+    public static class GodCardScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "神卡 · godcardlist");
+            int oneCost = app.Database.ConfigInt("GodCardOpenOneTimeMoney", 5000);
+            int fiveCost = app.Database.ConfigInt("GodCardOpenFiveTimeMoney", 24688);
+            SysUi.Note(body, $"Gold {app.Profile.Gold}  ·  单抽 {oneCost}  ·  五连 {fiveCost}");
+            SysUi.Row(body, "open1", "开启 x1", () => PhoneNet.OpenGodCards(1));
+            SysUi.Row(body, "open5", "开启 x5", () => PhoneNet.OpenGodCards(5));
+
+            if (app.Profile.GodCards != null && app.Profile.GodCards.Count > 0)
+            {
+                SysUi.Note(body, "已拥有 / 点击装备");
+                foreach (GodCardSlot slot in app.Profile.GodCards)
+                {
+                    if (!app.Database.GodCards.TryGetValue(slot.Id, out GodCardInfo card))
+                    {
+                        continue;
+                    }
+
+                    GodCardInfo local = card;
+                    int sid = slot.Id;
+                    bool on = app.Profile.GodCardEquipId == sid;
+                    SysUi.Row(body, "gc" + sid,
+                        $"{(on ? "[装备] " : "")}{local.Name} x{slot.Count}  Lv{local.Level}",
+                        () => PhoneNet.EquipGodCard(sid));
+                }
+            }
+            else
+            {
+                SysUi.Note(body, "还没有神卡，先抽卡。");
+            }
+
+            foreach (GodCardInfo card in app.Database.GodCards.Values)
+            {
+                bool listed = false;
+                foreach (GodCardSlot s in app.Profile.GodCards)
+                {
+                    if (s.Id == card.Id)
+                    {
+                        listed = true;
+                        break;
+                    }
+                }
+
+                if (listed)
+                {
+                    continue;
+                }
+
+                SysUi.Note(body, $"图鉴: {card.Name}  合成{card.Composition}  分解{card.Decompose}");
+            }
+        }
+    }
+
+    public static class EngraveScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "刻印 · engravesetinfo");
+            int minLv = app.Database.ConfigInt("EngraveLimitLevel", 20);
+            SysUi.Note(body, $"Level {app.Profile.Level} (需要 {minLv}+)  ·  套装 {app.Profile.EngraveSetId}");
+            SysUi.Row(body, "clear", "卸下刻印", () => PhoneNet.EquipEngraveSet(0));
+            foreach (EngraveSetInfo set in app.Database.EngraveSets.Values)
+            {
+                EngraveSetInfo local = set;
+                bool on = app.Profile.EngraveSetId == set.SetId;
+                SysUi.Row(body, "eg" + set.SetId,
+                    $"{(on ? "[装备] " : "")}{set.Name}",
+                    () => PhoneNet.EquipEngraveSet(local.SetId));
+                if (!string.IsNullOrEmpty(set.HelpExplain))
+                {
+                    SysUi.Note(body, StripTags(set.HelpExplain));
+                }
+            }
+        }
+
+        static string StripTags(string raw)
+        {
+            if (string.IsNullOrEmpty(raw))
+            {
+                return "";
+            }
+
+            return raw.Replace("&lt;", "<").Replace("&gt;", ">").Replace("\"", "");
+        }
+    }
+
+    public static class StockScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "股票 · StockTemplateInfo");
+            int minLv = app.Database.ConfigInt("StockLimitLevel", 30);
+            SysUi.Note(body, $"Gold {app.Profile.Gold}  ·  需要等级 {minLv}+");
+            foreach (StockInfo stock in app.Database.Stocks.Values)
+            {
+                StockInfo local = stock;
+                int price = app.Database.StockQuote(stock);
+                int owned = 0;
+                foreach (StockSlot h in app.Profile.StockHoldings)
+                {
+                    if (h.StockId == stock.StockId)
+                    {
+                        owned = h.Shares;
+                        break;
+                    }
+                }
+
+                SysUi.Note(body, $"{stock.StockName} #{stock.StockId}  现价 {price}  持有 {owned}");
+                SysUi.Row(body, "buy" + stock.StockId, "买入 x10", () => PhoneNet.TradeStock("buy", local.StockId, 10));
+                if (owned > 0)
+                {
+                    SysUi.Row(body, "sell" + stock.StockId, "卖出 x10", () => PhoneNet.TradeStock("sell", local.StockId, 10));
+                }
+            }
+        }
+    }
+
+    public static class CalendarScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "日历 · 签到");
+            var now = System.DateTime.Now;
+            SysUi.Note(body, $"{now.Year}-{now.Month:D2}  今日 {now.Day}");
+            int signed = Mathf.Min(app.Profile.SignIndex, 28);
+            SysUi.Note(body, signed >= 28 ? "本月签到已完成" : $"签到进度 {signed}/28");
+            SysUi.Row(body, "sign", "今日签到", () => PhoneNet.DoSignIn());
+            foreach (SignReward r in app.Database.SignIn)
+            {
+                if (r.Day > 28)
+                {
+                    break;
+                }
+
+                bool claimed = signed >= 28 || r.Day <= signed;
+                string item = SysUi.ItemName(app, r.TemplateId);
+                SysUi.Note(body, $"Day {r.Day}: {item} x{r.Count} {(claimed ? "✓" : "")}");
+            }
+        }
+    }
 }

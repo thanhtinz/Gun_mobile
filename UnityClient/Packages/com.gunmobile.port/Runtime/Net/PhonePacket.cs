@@ -156,6 +156,13 @@ namespace GunMobile.Net
         public const ushort FightPetSkill = 109;
         public const ushort MailList = 110;
         public const ushort MailListData = 111;
+        public const ushort GodCardOpen = 112;
+        public const ushort GodCardResult = 113;
+        public const ushort EngraveEquip = 114;
+        public const ushort StockTrade = 115;
+        public const ushort StockResult = 116;
+        public const ushort FightShotResult = 117;
+        public const ushort FightSkip = 118;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

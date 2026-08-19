@@ -1163,6 +1163,31 @@ namespace GunMobile.Client
                     continue;
                 }
 
+                if (msg.Id == PhoneMsg.FightShotResult)
+                {
+                    int who = JsonInt(msg.Json, "who", -1);
+                    int hx = JsonInt(msg.Json, "x", -1);
+                    int hy = JsonInt(msg.Json, "y", -1);
+                    if (_flying && who == _lastShooter && hx >= 0 && hy >= 0)
+                    {
+                        EndShot(true, hx, hy);
+                    }
+
+                    continue;
+                }
+
+                if (msg.Id == PhoneMsg.FightSkip)
+                {
+                    int who = JsonInt(msg.Json, "who", -1);
+                    if (_flying && who == _lastShooter)
+                    {
+                        _flying = false;
+                        _loop.EndShot();
+                    }
+
+                    continue;
+                }
+
                 if (msg.Id == PhoneMsg.FightDamage)
                 {
                     int target = JsonInt(msg.Json, "target", -1);

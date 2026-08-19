@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using GunMobile.Net;
 using GunMobile.Res;
 using UnityEngine;
 
@@ -63,6 +64,10 @@ namespace GunMobile.Client
         public List<int> CompletedQuests = new List<int>();
         public List<string> Friends = new List<string>();
         public List<string> ChatLog = new List<string>();
+        public List<GodCardSlot> GodCards = new List<GodCardSlot>();
+        public int GodCardEquipId;
+        public int EngraveSetId;
+        public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public static string PathOnDisk => Path.Combine(Application.persistentDataPath, "player.json");
 
@@ -80,6 +85,8 @@ namespace GunMobile.Client
                         p.CompletedQuests = p.CompletedQuests ?? new List<int>();
                         p.Friends = p.Friends ?? new List<string>();
                         p.ChatLog = p.ChatLog ?? new List<string>();
+                        p.GodCards = p.GodCards ?? new List<GodCardSlot>();
+                        p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
                         p.ConsortiaName = p.ConsortiaName ?? "";
                         return p;
                     }
@@ -318,6 +325,17 @@ namespace GunMobile.Client
                     atk += elf.AttackHint / 3;
                     hp += elf.HpHint / 2;
                 }
+
+                if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
+                {
+                    db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luk, ref hp);
+                }
+
+                int engrDmg = 0;
+                int engrGuard = 0;
+                db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
+                atk += engrDmg;
+                def += engrGuard;
             }
 
             BagItem weapon = Find(EquipWeapon);

@@ -158,7 +158,16 @@ namespace GunMobile.Client
                     SignInScreen.Show(_safe, this);
                     return;
                 case "calendar":
-                    DataBrowserScreen.Show(_safe, this, new ModuleDef("calendar", "日历", "Flash/ui/cn_trad/xml/xml/ddtcalendar.xml"));
+                    CalendarScreen.Show(_safe, this);
+                    return;
+                case "godcard":
+                    GodCardScreen.Show(_safe, this);
+                    return;
+                case "engrave":
+                    EngraveScreen.Show(_safe, this);
+                    return;
+                case "stock":
+                    StockScreen.Show(_safe, this);
                     return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
@@ -323,6 +332,8 @@ namespace GunMobile.Client
                     case PhoneMsg.EquipResult:
                     case PhoneMsg.SignInResult:
                     case PhoneMsg.LotteryResult:
+                    case PhoneMsg.GodCardResult:
+                    case PhoneMsg.StockResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
                         ApplyProfileFromServer(msg.Json);
@@ -449,10 +460,110 @@ namespace GunMobile.Client
             Profile.GemLevel = JsonInt(json, "gemLevel", Profile.GemLevel);
             Profile.KingBlessDay = JsonInt(json, "kingBlessDay", Profile.KingBlessDay);
             Profile.FarmHarvests = JsonInt(json, "farmHarvests", Profile.FarmHarvests);
+            Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
+            Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);
             if (consortia != null) Profile.ConsortiaName = consortia;
             ParseBagFromServer(json);
+            ParseGodCardsFromServer(json);
+            ParseStockFromServer(json);
             Profile.Save();
+        }
+
+        void ParseGodCardsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"godCards\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 11;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            var list = new System.Collections.Generic.List<GodCardSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0)
+                {
+                    break;
+                }
+
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0)
+                {
+                    break;
+                }
+
+                string entry = body.Substring(ob, cb - ob + 1);
+                int id = JsonInt(entry, "id", 0);
+                int count = JsonInt(entry, "count", 1);
+                if (id > 0)
+                {
+                    list.Add(new GodCardSlot { Id = id, Count = count });
+                }
+
+                pos = cb + 1;
+            }
+
+            if (list.Count > 0)
+            {
+                Profile.GodCards = list;
+            }
+        }
+
+        void ParseStockFromServer(string json)
+        {
+            int idx = json.IndexOf("\"stockHoldings\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 16;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            var list = new System.Collections.Generic.List<StockSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0)
+                {
+                    break;
+                }
+
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0)
+                {
+                    break;
+                }
+
+                string entry = body.Substring(ob, cb - ob + 1);
+                int stockId = JsonInt(entry, "stockId", 0);
+                int shares = JsonInt(entry, "shares", 0);
+                int avg = JsonInt(entry, "avgPrice", 0);
+                if (stockId > 0 && shares > 0)
+                {
+                    list.Add(new StockSlot { StockId = stockId, Shares = shares, AvgPrice = avg });
+                }
+
+                pos = cb + 1;
+            }
+
+            Profile.StockHoldings = list;
         }
 
         void ParseBagFromServer(string json)

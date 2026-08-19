@@ -271,6 +271,41 @@ namespace GunMobile.Res
         public int Count;
     }
 
+    public sealed class GodCardInfo
+    {
+        public int Id;
+        public string Name = "";
+        public string Pic = "";
+        public int Composition;
+        public int Decompose;
+        public int Level;
+    }
+
+    public sealed class EngraveSetInfo
+    {
+        public int SetId;
+        public string Name = "";
+        public string HelpExplain = "";
+    }
+
+    public sealed class EngraveElementInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int SetId;
+        public int Demand;
+        public string Attribute = "";
+        public int Quality;
+    }
+
+    public sealed class StockInfo
+    {
+        public int StockId;
+        public string StockName = "";
+        public int BasePrice;
+        public int FlowCoeffcient;
+    }
+
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -303,6 +338,10 @@ namespace GunMobile.Res
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
         public List<SignReward> SignIn { get; } = new List<SignReward>();
+        public Dictionary<int, GodCardInfo> GodCards { get; } = new Dictionary<int, GodCardInfo>();
+        public Dictionary<int, EngraveSetInfo> EngraveSets { get; } = new Dictionary<int, EngraveSetInfo>();
+        public List<EngraveElementInfo> EngraveElements { get; } = new List<EngraveElementInfo>();
+        public Dictionary<int, StockInfo> Stocks { get; } = new Dictionary<int, StockInfo>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -341,6 +380,9 @@ namespace GunMobile.Res
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
             db.LoadSignIn(loader);
+            db.LoadGodCards(loader);
+            db.LoadEngrave(loader);
+            db.LoadStocks(loader);
             db.LoadServerConfig(loader);
             db.LoadFightLabDrops(loader);
             db.LoadLevels(loader);
@@ -1933,6 +1975,164 @@ namespace GunMobile.Res
             }
 
             SignIn.Sort((a, b) => a.Day.CompareTo(b.Day));
+        }
+
+        void LoadGodCards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/godcardlist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                GodCards[id] = new GodCardInfo
+                {
+                    Id = id,
+                    Name = Str(row, "Name"),
+                    Pic = Str(row, "Pic"),
+                    Composition = Int(row, "Composition"),
+                    Decompose = Int(row, "Decompose"),
+                    Level = Int(row, "Level")
+                };
+            }
+        }
+
+        void LoadEngrave(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/engravesetinfo.xml", out XmlResultTable sets))
+            {
+                foreach (var row in sets.Rows)
+                {
+                    int setId = Int(row, "SetId");
+                    EngraveSets[setId] = new EngraveSetInfo
+                    {
+                        SetId = setId,
+                        Name = Str(row, "Name"),
+                        HelpExplain = Str(row, "HelpExplain")
+                    };
+                }
+            }
+
+            if (!TryTable(loader, "Request/engravesetelementinfo.xml", out XmlResultTable elems))
+            {
+                return;
+            }
+
+            foreach (var row in elems.Rows)
+            {
+                EngraveElements.Add(new EngraveElementInfo
+                {
+                    Id = Int(row, "Id"),
+                    Name = Str(row, "Name"),
+                    SetId = Int(row, "SetId"),
+                    Demand = Int(row, "Demand"),
+                    Attribute = Str(row, "Attribute"),
+                    Quality = Int(row, "Quality")
+                });
+            }
+        }
+
+        void LoadStocks(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/StockTemplateInfo.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "StockID");
+                Stocks[id] = new StockInfo
+                {
+                    StockId = id,
+                    StockName = Str(row, "StockName"),
+                    BasePrice = Int(row, "BasePrice"),
+                    FlowCoeffcient = Int(row, "FlowCoeffcient")
+                };
+            }
+        }
+
+        public int StockQuote(StockInfo stock)
+        {
+            if (stock == null)
+            {
+                return 0;
+            }
+
+            int day = DateTime.UtcNow.DayOfYear;
+            int swing = stock.FlowCoeffcient > 0
+                ? (day * stock.FlowCoeffcient / 10000) % Mathf.Max(1, stock.BasePrice / 3)
+                : 0;
+            return Mathf.Max(1, stock.BasePrice + swing - stock.BasePrice / 4);
+        }
+
+        public void ApplyEngraveSetBonus(int setId, ref int atk, ref int def, ref int agi, ref int luk, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (setId <= 0)
+            {
+                return;
+            }
+
+            EngraveElementInfo best = null;
+            foreach (EngraveElementInfo el in EngraveElements)
+            {
+                if (el.SetId != setId || el.Demand != 2 || string.IsNullOrEmpty(el.Attribute) || el.Attribute == "0")
+                {
+                    continue;
+                }
+
+                if (best == null || el.Quality > best.Quality)
+                {
+                    best = el;
+                }
+            }
+
+            if (best == null)
+            {
+                return;
+            }
+
+            ApplyAttributeString(best.Attribute, ref atk, ref def, ref agi, ref luk, ref hp, ref baseDmg, ref baseGuard);
+        }
+
+        public void ApplyGodCardBonus(GodCardInfo card, ref int atk, ref int def, ref int agi, ref int luk, ref int hp)
+        {
+            if (card == null)
+            {
+                return;
+            }
+
+            int bonus = (card.Level + 1) * 5;
+            atk += bonus;
+            def += bonus;
+            agi += bonus;
+            luk += bonus;
+            hp += bonus * 20;
+        }
+
+        static void ApplyAttributeString(string raw, ref int atk, ref int def, ref int agi, ref int luk, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            foreach (string part in raw.Split(','))
+            {
+                string[] seg = part.Split('|');
+                if (seg.Length < 2 || !int.TryParse(seg[0], out int type) || !int.TryParse(seg[1], out int val))
+                {
+                    continue;
+                }
+
+                switch (type)
+                {
+                    case 31: atk += val; break;
+                    case 33: agi += val; break;
+                    case 35: baseGuard += val; break;
+                    case 37: hp += val; break;
+                    case 101: atk += val / 2; break;
+                    case 102: def += val / 2; break;
+                    default: def += val / 4; break;
+                }
+            }
         }
 
         void LoadServerConfig(ResLoader loader)

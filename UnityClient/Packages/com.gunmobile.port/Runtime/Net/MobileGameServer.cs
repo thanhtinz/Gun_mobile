@@ -61,6 +61,10 @@ namespace GunMobile.Net
         public List<string> Friends = new List<string>();
         public List<ServerMail> Mails = new List<ServerMail>();
         public int NextMailId = 1;
+        public List<GodCardSlot> GodCards = new List<GodCardSlot>();
+        public int GodCardEquipId;
+        public int EngraveSetId;
+        public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
@@ -126,6 +130,13 @@ namespace GunMobile.Net
             {
                 hp += mt.AddBlood; atk += mt.AddDamage; baseDmg += mt.AddDamage; baseGuard += mt.AddGuard;
             }
+
+            if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
+            {
+                db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luck, ref hp);
+            }
+
+            db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
 
             atk += Texp / 4;
             hp += GemLevel * 120;
@@ -199,6 +210,24 @@ namespace GunMobile.Net
             J(sb, "gemLevel", GemLevel); sb.Append(",");
             J(sb, "kingBlessDay", KingBlessDay); sb.Append(",");
             J(sb, "farmHarvests", FarmHarvests); sb.Append(",");
+            J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
+            J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
+            sb.Append("\"godCards\":[");
+            for (int i = 0; i < GodCards.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append("{\"id\":").Append(GodCards[i].Id).Append(",\"count\":").Append(GodCards[i].Count).Append("}");
+            }
+            sb.Append("],");
+            sb.Append("\"stockHoldings\":[");
+            for (int i = 0; i < StockHoldings.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                StockSlot sh = StockHoldings[i];
+                sb.Append("{\"stockId\":").Append(sh.StockId).Append(",\"shares\":").Append(sh.Shares)
+                    .Append(",\"avgPrice\":").Append(sh.AvgPrice).Append("}");
+            }
+            sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
             {
@@ -658,7 +687,7 @@ namespace GunMobile.Net
                     {
                         foreach (var r in advance)
                         {
-                            AdvanceTurn(r);
+                            AdvanceTurnFromTimeout(r);
                         }
                     }
 
@@ -1150,6 +1179,18 @@ namespace GunMobile.Net
                     HandleKingBless(player, ns);
                     break;
 
+                case PhoneMsg.GodCardOpen:
+                    HandleGodCardOpen(player, ns, json);
+                    break;
+
+                case PhoneMsg.EngraveEquip:
+                    HandleEngraveEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.StockTrade:
+                    HandleStockTrade(player, ns, json);
+                    break;
+
                 case PhoneMsg.SetNick:
                 {
                     string newNick = JS(json, "nick", player.Nick);
@@ -1422,6 +1463,241 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleGodCardOpen(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.GodCards.Count == 0)
+            {
+                Send(ns, PhoneMsg.GodCardResult, "{\"ok\":false,\"err\":\"no godcard table\"}");
+                return;
+            }
+
+            int count = JI(json, "count", 1);
+            int equipId = JI(json, "equipId", 0);
+            if (count <= 0 && equipId > 0)
+            {
+                if (!OwnsGodCard(player, equipId))
+                {
+                    Send(ns, PhoneMsg.GodCardResult, "{\"ok\":false,\"err\":\"card not owned\"}");
+                    return;
+                }
+
+                player.GodCardEquipId = equipId;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.GodCardResult, "{\"ok\":true,\"profile\":" + player.ToJson() + "}");
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            if (count != 5)
+            {
+                count = 1;
+            }
+
+            if (equipId > 0 && OwnsGodCard(player, equipId))
+            {
+                player.GodCardEquipId = equipId;
+            }
+
+            int cost = count == 5
+                ? _db.ConfigInt("GodCardOpenFiveTimeMoney", 24688)
+                : _db.ConfigInt("GodCardOpenOneTimeMoney", 5000);
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.GodCardResult, "{\"ok\":false,\"err\":\"not enough gold\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            var rolled = new List<int>();
+            for (int i = 0; i < count; i++)
+            {
+                int id = RollGodCard(player);
+                AddGodCard(player, id);
+                rolled.Add(id);
+            }
+
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            var sb = new StringBuilder();
+            sb.Append("{\"ok\":true,\"cards\":[");
+            for (int i = 0; i < rolled.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append(rolled[i]);
+            }
+
+            sb.Append("],\"profile\":").Append(player.ToJson()).Append("}");
+            Send(ns, PhoneMsg.GodCardResult, sb.ToString());
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        int RollGodCard(ServerPlayer player)
+        {
+            int total = 0;
+            foreach (GodCardInfo card in _db.GodCards.Values)
+            {
+                int w = card.Composition > 0 ? card.Composition : Mathf.Max(1, 50 - card.Level * 8);
+                total += w;
+            }
+
+            if (total <= 0)
+            {
+                return 1;
+            }
+
+            int roll = player.Id * 17 + DateTime.UtcNow.Millisecond;
+            lock (_lock)
+            {
+                roll = _rooms.Count * 31 + roll;
+            }
+
+            roll = Mathf.Abs(roll) % total;
+            foreach (GodCardInfo card in _db.GodCards.Values)
+            {
+                int w = card.Composition > 0 ? card.Composition : Mathf.Max(1, 50 - card.Level * 8);
+                roll -= w;
+                if (roll < 0)
+                {
+                    return card.Id;
+                }
+            }
+
+            return 1;
+        }
+
+        static void AddGodCard(ServerPlayer player, int id)
+        {
+            foreach (GodCardSlot slot in player.GodCards)
+            {
+                if (slot.Id == id)
+                {
+                    slot.Count++;
+                    return;
+                }
+            }
+
+            player.GodCards.Add(new GodCardSlot { Id = id, Count = 1 });
+        }
+
+        static bool OwnsGodCard(ServerPlayer player, int id)
+        {
+            foreach (GodCardSlot slot in player.GodCards)
+            {
+                if (slot.Id == id && slot.Count > 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        void HandleEngraveEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int setId = JI(json, "setId", 0);
+            if (setId > 0 && (_db == null || !_db.EngraveSets.ContainsKey(setId)))
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            int minLevel = _db != null ? _db.ConfigInt("EngraveLimitLevel", 20) : 20;
+            if (setId > 0 && player.Level < minLevel)
+            {
+                Send(ns, PhoneMsg.Error, "{\"err\":\"level too low for engrave\"}");
+                return;
+            }
+
+            player.EngraveSetId = setId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandleStockTrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.Stocks.Count == 0)
+            {
+                Send(ns, PhoneMsg.StockResult, "{\"ok\":false,\"err\":\"no stock table\"}");
+                return;
+            }
+
+            int minLevel = _db.ConfigInt("StockLimitLevel", 30);
+            if (player.Level < minLevel)
+            {
+                Send(ns, PhoneMsg.StockResult, "{\"ok\":false,\"err\":\"level too low\"}");
+                return;
+            }
+
+            string action = JS(json, "action", "buy");
+            int stockId = JI(json, "stockId", 0);
+            int shares = Mathf.Max(1, JI(json, "shares", 1));
+            if (!_db.Stocks.TryGetValue(stockId, out StockInfo stock))
+            {
+                Send(ns, PhoneMsg.StockResult, "{\"ok\":false,\"err\":\"unknown stock\"}");
+                return;
+            }
+
+            int price = _db.StockQuote(stock);
+            if (action == "sell")
+            {
+                StockSlot holding = FindStock(player, stockId);
+                if (holding == null || holding.Shares < shares)
+                {
+                    Send(ns, PhoneMsg.StockResult, "{\"ok\":false,\"err\":\"not enough shares\"}");
+                    return;
+                }
+
+                holding.Shares -= shares;
+                if (holding.Shares <= 0)
+                {
+                    player.StockHoldings.Remove(holding);
+                }
+
+                player.Gold += price * shares;
+            }
+            else
+            {
+                int cost = price * shares;
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.StockResult, "{\"ok\":false,\"err\":\"not enough gold\"}");
+                    return;
+                }
+
+                player.Gold -= cost;
+                StockSlot holding = FindStock(player, stockId);
+                if (holding == null)
+                {
+                    player.StockHoldings.Add(new StockSlot { StockId = stockId, Shares = shares, AvgPrice = price });
+                }
+                else
+                {
+                    int totalCost = holding.AvgPrice * holding.Shares + cost;
+                    holding.Shares += shares;
+                    holding.AvgPrice = holding.Shares > 0 ? totalCost / holding.Shares : price;
+                }
+            }
+
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StockResult, "{\"ok\":true,\"price\":" + price + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        static StockSlot FindStock(ServerPlayer player, int stockId)
+        {
+            foreach (StockSlot s in player.StockHoldings)
+            {
+                if (s.StockId == stockId)
+                {
+                    return s;
+                }
+            }
+
+            return null;
         }
 
         void HandleSurrender(ServerPlayer player, GameRoom room)
@@ -2503,6 +2779,9 @@ namespace GunMobile.Net
                 int hitMapX = Mathf.RoundToInt(state.X);
                 int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
 
+                string shotJson = "{\"who\":" + who + ",\"shot\":" + s + ",\"x\":" + hitMapX + ",\"y\":" + hitMapY + "}";
+                BroadcastToRoom(room, PhoneMsg.FightShotResult, shotJson, -1);
+
                 int cutRadius = Mathf.Max(8, blastRadius / 3);
                 map.CutCircle(hitMapX, hitMapY, cutRadius);
                 string craterJson = "{\"x\":" + hitMapX +
@@ -3014,6 +3293,19 @@ namespace GunMobile.Net
             return teams.Count;
         }
 
+        void AdvanceTurnFromTimeout(GameRoom room)
+        {
+            if (room == null)
+            {
+                return;
+            }
+
+            int skipped = room.CurrentPlayer;
+            string skipJson = "{\"who\":" + skipped + ",\"reason\":\"timeout\"}";
+            BroadcastToRoom(room, PhoneMsg.FightSkip, skipJson, -1);
+            AdvanceTurn(room);
+        }
+
         void AdvanceTurn(GameRoom room)
         {
             bool ended = false;
@@ -3419,8 +3711,11 @@ namespace GunMobile.Net
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
+            public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
+            public List<GodCardSlotSave> GodCards = new List<GodCardSlotSave>();
+            public List<StockSlotSave> StockHoldings = new List<StockSlotSave>();
             public List<int> AcceptedQuests = new List<int>();
             public List<int> CompletedQuests = new List<int>();
             public List<string> Friends = new List<string>();
@@ -3442,6 +3737,12 @@ namespace GunMobile.Net
         [Serializable]
         class BagSlotSave { public int t; public int c = 1; public int s; }
 
+        [Serializable]
+        class GodCardSlotSave { public int id; public int count = 1; }
+
+        [Serializable]
+        class StockSlotSave { public int stockId; public int shares; public int avgPrice; }
+
         static ServerPlayerSave ToSave(ServerPlayer p)
         {
             var s = new ServerPlayerSave
@@ -3455,10 +3756,13 @@ namespace GunMobile.Net
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
+                GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
             };
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
+            foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
+            foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
             foreach (ServerMail m in p.Mails)
             {
                 s.Mails.Add(new ServerMailSave
@@ -3483,6 +3787,7 @@ namespace GunMobile.Net
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName,
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
+                GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
                 Friends = s.Friends ?? new List<string>(),
@@ -3490,6 +3795,19 @@ namespace GunMobile.Net
                 Mails = new List<ServerMail>()
             };
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
+            if (s.GodCards != null)
+            {
+                foreach (GodCardSlotSave g in s.GodCards) p.GodCards.Add(new GodCardSlot { Id = g.id, Count = g.count });
+            }
+
+            if (s.StockHoldings != null)
+            {
+                foreach (StockSlotSave sh in s.StockHoldings)
+                {
+                    p.StockHoldings.Add(new StockSlot { StockId = sh.stockId, Shares = sh.shares, AvgPrice = sh.avgPrice });
+                }
+            }
+
             if (s.Mails != null)
             {
                 foreach (ServerMailSave m in s.Mails)
