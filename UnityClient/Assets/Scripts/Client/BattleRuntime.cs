@@ -140,6 +140,7 @@ namespace GunMobile.Client
         int _mapId;
         int _npcId;
         string _foeName = "Bot";
+        string[] _playerNames;
         int _serverRewardGold;
         bool _serverRewardWin;
         int _serverQuestGold;
@@ -218,9 +219,11 @@ namespace GunMobile.Client
             {
                 playerCount = JsonInt(_fightStartJson, "playerCount", 2);
                 allLivings = new LivingStats[playerCount];
+                _playerNames = new string[playerCount];
                 for (int i = 0; i < playerCount; i++)
                 {
                     string px = "p" + i + "_";
+                    _playerNames[i] = JsonStr(_fightStartJson, px + "nick", "P" + (i + 1));
                     allLivings[i] = new LivingStats
                     {
                         Attack = JsonInt(_fightStartJson, px + "atk", 110),
@@ -232,7 +235,24 @@ namespace GunMobile.Client
                         Team = JsonInt(_fightStartJson, px + "team", (i % 2) + 1)
                     };
                 }
-                _foeName = playerCount > 2 ? "Team" : "P2";
+                int me = MeSeat();
+                if (playerCount == 2)
+                {
+                    _foeName = _playerNames[1 - me];
+                }
+                else
+                {
+                    var foes = new List<string>();
+                    int myTeam = allLivings[me].Team;
+                    for (int i = 0; i < playerCount; i++)
+                    {
+                        if (i != me && allLivings[i].Team != myTeam)
+                        {
+                            foes.Add(_playerNames[i]);
+                        }
+                    }
+                    _foeName = foes.Count > 0 ? string.Join(", ", foes) : "Team";
+                }
             }
             else
             {
@@ -556,6 +576,10 @@ namespace GunMobile.Client
             if (!PhoneNet.NetBattle)
             {
                 _loop.TickClock(Time.deltaTime);
+            }
+            else
+            {
+                _loop.TickClockDisplay(Time.deltaTime);
             }
 
             PumpNet();
@@ -920,6 +944,18 @@ namespace GunMobile.Client
         static int JsonInt(string json, string key, int fallback)
         {
             return Mathf.RoundToInt(JsonFloat(json, key, fallback));
+        }
+
+        static string JsonStr(string json, string key, string fallback)
+        {
+            if (string.IsNullOrEmpty(json)) return fallback;
+            string needle = "\"" + key + "\":\"";
+            int i = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (i < 0) return fallback;
+            i += needle.Length;
+            int j = json.IndexOf('"', i);
+            if (j < 0) return fallback;
+            return json.Substring(i, j - i);
         }
 
         static float JsonFloat(string json, string key, float fallback)
@@ -1697,11 +1733,13 @@ namespace GunMobile.Client
 
             int seat = MeSeat();
             var me = _loop.Livings[seat];
-            var foe = _loop.Livings[1 - seat];
+            string turnName = _playerNames != null && _loop.CurrentLiving >= 0 && _loop.CurrentLiving < _playerNames.Length
+                ? _playerNames[_loop.CurrentLiving]
+                : "P" + (_loop.CurrentLiving + 1);
             string aim = _aim != null ? $"{_aim.AngleDeg:0}° {_aim.Power:0}" : "";
-            _hud.text = $"Map {_mapId}  {_foeName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp} vs {foe.Hp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}" +
+            _hud.text = $"Map {_mapId}  vs {_foeName}  Turn:{turnName}  Wind {_loop.Wind:+0;-0}  HP {me.Hp}/{me.MaxHp}  {_loop.Phase}  {aim}  t{_loop.TurnTimeLeft:0}s  ball {_ball.Id}" +
                 (_propId > 0 ? "  prop " + _propId : "") +
-                (PhoneNet.NetBattle ? "  LAN seat " + MeSeat() : "");
+                (PhoneNet.NetBattle ? "  seat " + seat : "");
         }
 
         int MeSeat()

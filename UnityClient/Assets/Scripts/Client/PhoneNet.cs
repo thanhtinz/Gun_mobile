@@ -19,6 +19,18 @@ namespace GunMobile.Client
         public static int BattleSeed;
         public static int RoomId = -1;
         public static string LastRankJson;
+        public static string LastRoomListJson;
+
+        static float _keepAliveT;
+
+        public static void TickKeepAlive(float dt)
+        {
+            _keepAliveT -= dt;
+            if (_keepAliveT > 0f) return;
+            _keepAliveT = 15f;
+            if (Road != null && Road.Connected) Road.Send(PhoneMsg.Ping, "{}");
+            if (Fight != null && Fight.Connected) Fight.Send(PhoneMsg.Ping, "{}");
+        }
 
         public static void RequestRank()
         {

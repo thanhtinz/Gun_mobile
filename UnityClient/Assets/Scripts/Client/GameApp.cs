@@ -285,6 +285,7 @@ namespace GunMobile.Client
 
         void Update()
         {
+            PhoneNet.TickKeepAlive(Time.deltaTime);
             PumpRoad();
             PumpFight();
         }
@@ -332,6 +333,9 @@ namespace GunMobile.Client
                         break;
                     case PhoneMsg.RankData:
                         PhoneNet.LastRankJson = msg.Json;
+                        break;
+                    case PhoneMsg.RoomListData:
+                        PhoneNet.LastRoomListJson = msg.Json;
                         break;
                 }
             }

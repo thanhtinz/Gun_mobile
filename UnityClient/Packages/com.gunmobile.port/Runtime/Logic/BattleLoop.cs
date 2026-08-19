@@ -187,6 +187,12 @@ namespace GunMobile.Logic
             return aliveTeams.Count == 1 && aliveTeams.Contains(myTeam);
         }
 
+        public void TickClockDisplay(float dt)
+        {
+            if (Phase != BattlePhase.Aiming) return;
+            TurnTimeLeft = Mathf.Max(0f, TurnTimeLeft - dt);
+        }
+
         public void TickClock(float dt)
         {
             if (Phase != BattlePhase.Aiming)

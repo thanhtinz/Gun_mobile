@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Net;
@@ -305,6 +306,147 @@ namespace GunMobile.Client
             PhoneNet.ConnectFight(host);
         }
 
+        static IEnumerator JoinRoomWhenLogged(GameApp app, string host, int roomId)
+        {
+            float t = 0f;
+            while (t < 10f)
+            {
+                if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
+                {
+                    PhoneNet.JoinServerRoom(roomId);
+                    float wait = 0f;
+                    while (wait < 5f)
+                    {
+                        if (PhoneNet.RoomId == roomId)
+                        {
+                            PhoneNet.ConnectFight(host);
+                            yield break;
+                        }
+                        wait += Time.deltaTime;
+                        yield return null;
+                    }
+                    PhoneNet.ConnectFight(host);
+                    yield break;
+                }
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            PhoneNet.JoinServerRoom(roomId);
+            PhoneNet.ConnectFight(host);
+        }
+
+        static IEnumerator RefreshRoomList(GameApp app, Transform content, string host)
+        {
+            for (int i = content.childCount - 1; i >= 0; i--)
+            {
+                Object.Destroy(content.GetChild(i).gameObject);
+            }
+
+            float t = 0f;
+            while (t < 10f)
+            {
+                if (PhoneNet.PlayerId > 0 && PhoneNet.Road != null && PhoneNet.Road.Connected)
+                {
+                    break;
+                }
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            PhoneNet.LastRoomListJson = null;
+            PhoneNet.RequestRoomList();
+
+            string json = null;
+            t = 0f;
+            while (t < 5f)
+            {
+                if (!string.IsNullOrEmpty(PhoneNet.LastRoomListJson))
+                {
+                    json = PhoneNet.LastRoomListJson;
+                    break;
+                }
+                t += Time.deltaTime;
+                yield return null;
+            }
+
+            if (string.IsNullOrEmpty(json))
+            {
+                AddRoomLine(content, "无法加载房间列表", null);
+                yield break;
+            }
+
+            int idx = json.IndexOf("[", System.StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", System.StringComparison.Ordinal);
+            if (idx < 0 || end < 0)
+            {
+                AddRoomLine(content, "房间数据格式错误", null);
+                yield break;
+            }
+
+            string arr = json.Substring(idx + 1, end - idx - 1);
+            int pos = 0;
+            int count = 0;
+            while (pos < arr.Length)
+            {
+                int ob = arr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = arr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = arr.Substring(ob, cb - ob + 1);
+                pos = cb + 1;
+
+                int roomId = GameApp.JsonInt(entry, "id", 0);
+                string name = GameApp.JsonStr(entry, "name", "Room");
+                int map = GameApp.JsonInt(entry, "map", 0);
+                int players = GameApp.JsonInt(entry, "players", 0);
+                int max = GameApp.JsonInt(entry, "max", 2);
+                bool inBattle = entry.IndexOf("\"inBattle\":true", System.StringComparison.Ordinal) >= 0;
+                if (roomId <= 0) continue;
+
+                count++;
+                string status = inBattle ? "战斗中" : $"{players}/{max}";
+                string caption = $"#{roomId}  {name}  Map{map}  {status}";
+                if (inBattle || players >= max)
+                {
+                    AddRoomLine(content, caption + "  (不可加入)", null);
+                }
+                else
+                {
+                    int rid = roomId;
+                    AddRoomLine(content, caption, () =>
+                    {
+                        PhoneNet.Seat = players;
+                        PhoneNet.NetBattle = true;
+                        PhoneNet.UseExternalServer();
+                        app.StartCoroutine(JoinRoomWhenLogged(app, host, rid));
+                    });
+                }
+            }
+
+            if (count == 0)
+            {
+                AddRoomLine(content, "暂无在线房间 — 点「创建房间」开一局", null);
+            }
+        }
+
+        static void AddRoomLine(Transform content, string caption, UnityEngine.Events.UnityAction click)
+        {
+            if (click == null)
+            {
+                var label = UiKit.Label(content, "room", caption, 20, Color.white);
+                var le = label.gameObject.AddComponent<LayoutElement>();
+                le.preferredHeight = 36f;
+                le.flexibleWidth = 1f;
+                return;
+            }
+
+            var btn = UiKit.Button(content, "room", caption, click, new Vector2(0f, 36f));
+            var btnLe = btn.gameObject.AddComponent<LayoutElement>();
+            btnLe.preferredHeight = 36f;
+            btnLe.flexibleWidth = 1f;
+        }
+
         public static void Show(RectTransform safe, GameApp app)
         {
             UiKit.ClearChildren(safe);
@@ -330,7 +472,7 @@ namespace GunMobile.Client
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMin = Vector2.zero;
             bg.transform.Find("Title").GetComponent<RectTransform>().offsetMax = Vector2.zero;
 
-            InputField ip = UiKit.Field(bg.transform, "Ip", "LAN IP", new Vector2(280f, 48f));
+            InputField ip = UiKit.Field(bg.transform, "Ip", "Server IP", new Vector2(280f, 48f));
             ip.text = PhoneNet.PeerHost;
             ip.characterLimit = 48;
             ip.GetComponent<RectTransform>().anchorMin = ip.GetComponent<RectTransform>().anchorMax = new Vector2(0.22f, 0.82f);
@@ -367,6 +509,21 @@ namespace GunMobile.Client
                 app.StartCoroutine(CreateRoomWhenLogged(app, ip.text, mapId, app.Profile.Nick));
             }, new Vector2(140f, 48f));
             srvRoom.GetComponent<RectTransform>().anchorMin = srvRoom.GetComponent<RectTransform>().anchorMax = new Vector2(0.78f, 0.82f);
+
+            var roomListBtn = UiKit.Button(bg.transform, "RoomList", "在线房间", () =>
+            {
+                PhoneNet.NetBattle = true;
+                PhoneNet.UseExternalServer();
+                PhoneNet.ConnectHall(ip.text, app.Profile.Nick);
+            }, new Vector2(120f, 48f));
+            roomListBtn.GetComponent<RectTransform>().anchorMin = roomListBtn.GetComponent<RectTransform>().anchorMax = new Vector2(0.92f, 0.82f);
+
+            var roomScroll = UiKit.Scroll(bg.transform, "OnlineRooms");
+            var roomSrt = roomScroll.GetComponent<RectTransform>();
+            roomSrt.anchorMin = new Vector2(0.05f, 0.76f);
+            roomSrt.anchorMax = new Vector2(0.95f, 0.81f);
+            roomSrt.offsetMin = roomSrt.offsetMax = Vector2.zero;
+            roomListBtn.onClick.AddListener(() => app.StartCoroutine(RefreshRoomList(app, roomScroll.content, ip.text)));
 
             var scroll = UiKit.Scroll(bg.transform, "Maps");
             var srt = scroll.GetComponent<RectTransform>();

@@ -284,6 +284,9 @@ namespace GunMobile.Net
         // Cached FightStart JSON for reconnecting clients.
         public string LastFightStartJson = "";
 
+        // Crater cuts applied during battle — replayed to reconnecting clients.
+        public List<string> CraterHistory = new List<string>();
+
         // Cached final battle reward so late/duplicated clients (reconnect, late ack)
         // still receive the exact same gold/win as computed by the server.
         public int[] LastFightGolds;
@@ -676,6 +679,19 @@ namespace GunMobile.Net
                                     }
                                     sb.Append("}");
                                     Send(ns, PhoneMsg.FightState, sb.ToString());
+
+                                    if (inBattle && snapRoom != null && snapRoom.CraterHistory.Count > 0)
+                                    {
+                                        List<string> craters;
+                                        lock (_lock)
+                                        {
+                                            craters = new List<string>(snapRoom.CraterHistory);
+                                        }
+                                        foreach (string craterJson in craters)
+                                        {
+                                            Send(ns, PhoneMsg.FightCrater, craterJson);
+                                        }
+                                    }
 
                                     // If battle already ended, resend reward+profile so client can finish UI.
                                     if (!inBattle && snapRoom != null)
@@ -1541,6 +1557,7 @@ namespace GunMobile.Net
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 room.CurrentPlayer = 0;
                 room.CurrentPropMask = GeneratePropMask(room);
+                room.CraterHistory.Clear();
 
                 room.Map = null;
                 if (_loader != null)
@@ -1594,6 +1611,16 @@ namespace GunMobile.Net
                 }
                 sb.Append(",\"").Append(p).Append("weaponId\":").Append(wid);
                 sb.Append(",\"").Append(p).Append("preferredBallId\":").Append(ballId);
+
+                string nick = "Player";
+                lock (_lock)
+                {
+                    if (i < room.PlayerIds.Count && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer spNick))
+                    {
+                        nick = spNick.Nick ?? "Player";
+                    }
+                }
+                sb.Append(",\"").Append(p).Append("nick\":\"").Append((nick ?? "Player").Replace("\"", "")).Append("\"");
             }
             sb.Append("}");
             string startJson = sb.ToString();
@@ -1780,6 +1807,10 @@ namespace GunMobile.Net
                 string craterJson = "{\"x\":" + hitMapX +
                                     ",\"y\":" + hitMapY +
                                     ",\"r\":" + cutRadius + "}";
+                lock (_lock)
+                {
+                    room.CraterHistory.Add(craterJson);
+                }
                 BroadcastToRoom(room, PhoneMsg.FightCrater, craterJson, -1);
 
                 int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(ball.Power) * 80f);
