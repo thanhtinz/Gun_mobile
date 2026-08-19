@@ -1201,16 +1201,17 @@ namespace GunMobile.Net
         {
             int mapId = JI(json, "mapId", 1056);
             string name = JS(json, "name", player.Nick + "'s Room");
+            int maxPlayers = Mathf.Clamp(JI(json, "maxPlayers", 2), 2, 4);
             GameRoom room;
             lock (_lock)
             {
-                room = new GameRoom { Id = _nextRoomId++, MapId = mapId, Name = name };
+                room = new GameRoom { Id = _nextRoomId++, MapId = mapId, Name = name, MaxPlayers = maxPlayers };
                 room.PlayerIds.Add(player.Id);
                 player.RoomId = room.Id;
                 player.Seat = 0;
                 _rooms[room.Id] = room;
             }
-            Send(ns, PhoneMsg.RoomCreated, "{\"roomId\":" + room.Id + ",\"seat\":0}");
+            Send(ns, PhoneMsg.RoomCreated, "{\"roomId\":" + room.Id + ",\"seat\":0,\"maxPlayers\":" + maxPlayers + "}");
         }
 
         void HandleJoinRoom(ServerPlayer player, NetworkStream ns, string json)
@@ -1234,12 +1235,7 @@ namespace GunMobile.Net
         {
             int mapId = JI(json, "map", room.MapId);
             int seed = JI(json, "seed", Environment.TickCount);
-            int[] atk = new int[] { 110, 110 };
-            int[] def = new int[] { 85, 85 };
-            int[] agi = new int[] { 70, 70 };
-            int[] luck = new int[] { 40, 40 };
-            int[] weaponId = new int[] { 7001, 7001 };
-            int[] preferredBallId = new int[] { 0, 0 };
+            int n;
             lock (_lock)
             {
                 room.MapId = mapId;
@@ -1247,7 +1243,7 @@ namespace GunMobile.Net
                 room.Seed = seed;
                 room.CurrentTurn = 0;
                 room.Wind = new System.Random(seed).Next(-3, 4) * 10;
-                int n = room.PlayerIds.Count;
+                n = room.PlayerIds.Count;
                 room.Hp = new int[n];
                 room.MaxHp = new int[n];
                 room.Livings = new LivingStats[n];
@@ -1257,26 +1253,19 @@ namespace GunMobile.Net
                 room.Facing = new int[n];
                 for (int i = 0; i < n; i++)
                 {
+                    // Team: even seats = team 1, odd seats = team 2
+                    int team = (i % 2) + 1;
                     room.Balls[i] = BallPhysics.Default;
                     if (_players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
                     {
                         p.RecalcStats(_db);
-                        if (i < 2)
-                        {
-                            atk[i] = p.Attack;
-                            def[i] = p.Defence;
-                            agi[i] = p.Agility;
-                            luck[i] = p.Luck;
-                            weaponId[i] = p.WeaponId;
-                            preferredBallId[i] = p.PreferredBallId;
-                        }
                         room.Hp[i] = p.Hp;
                         room.MaxHp[i] = p.Hp;
                         room.Livings[i] = new LivingStats
                         {
                             Attack = p.Attack, Defence = p.Defence,
                             Agility = p.Agility, Luck = p.Luck,
-                            Hp = p.Hp, MaxHp = p.Hp, Team = i + 1
+                            Hp = p.Hp, MaxHp = p.Hp, Team = team
                         };
                         if (_db != null)
                         {
@@ -1291,7 +1280,7 @@ namespace GunMobile.Net
                         room.Livings[i] = new LivingStats
                         {
                             Attack = 110, Defence = 85, Agility = 70, Luck = 40,
-                            Hp = 1200, MaxHp = 1200, Team = i + 1
+                            Hp = 1200, MaxHp = 1200, Team = team
                         };
                     }
                 }
@@ -1299,7 +1288,6 @@ namespace GunMobile.Net
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 room.CurrentPlayer = 0;
 
-                // Load map collision for server-authoritative physics
                 room.Map = null;
                 if (_loader != null)
                 {
@@ -1311,45 +1299,50 @@ namespace GunMobile.Net
                     }
                 }
 
-                // Init positions (same as client default)
                 int mapW = room.Map != null ? room.Map.Width : 1250;
-                room.PosX[0] = 140f;
-                room.PosY[0] = room.Map != null ? room.Map.FindStandY(140, 0) : 0f;
-                room.Facing[0] = 1;
-                if (n > 1)
+                // Spread positions evenly across the map
+                for (int i = 0; i < n; i++)
                 {
-                    room.PosX[1] = mapW - 160f;
-                    room.PosY[1] = room.Map != null ? room.Map.FindStandY(mapW - 160, 0) : 0f;
-                    room.Facing[1] = -1;
+                    float frac = n <= 1 ? 0.1f : (float)i / (n - 1);
+                    int px = Mathf.RoundToInt(Mathf.Lerp(140f, mapW - 160f, frac));
+                    room.PosX[i] = px;
+                    room.PosY[i] = room.Map != null ? room.Map.FindStandY(Mathf.Clamp(px, 0, mapW - 1), 0) : 0f;
+                    room.Facing[i] = frac < 0.5f ? 1 : -1;
                 }
             }
-            int p0Hp = room.Hp != null && room.Hp.Length > 0 ? room.Hp[0] : 1200;
-            int p0MaxHp = room.MaxHp != null && room.MaxHp.Length > 0 ? room.MaxHp[0] : p0Hp;
-            int p1Hp = room.Hp != null && room.Hp.Length > 1 ? room.Hp[1] : 1200;
-            int p1MaxHp = room.MaxHp != null && room.MaxHp.Length > 1 ? room.MaxHp[1] : p1Hp;
 
-            string startJson = "{"
-                + "\"map\":" + mapId
-                + ",\"seed\":" + seed
-                + ",\"wind\":" + room.Wind
-                + ",\"p0_atk\":" + atk[0]
-                + ",\"p0_def\":" + def[0]
-                + ",\"p0_agi\":" + agi[0]
-                + ",\"p0_luck\":" + luck[0]
-                + ",\"p0_hp\":" + p0Hp
-                + ",\"p0_maxhp\":" + p0MaxHp
-                + ",\"p0_weaponId\":" + weaponId[0]
-                + ",\"p0_preferredBallId\":" + preferredBallId[0]
-                + ",\"p1_atk\":" + atk[1]
-                + ",\"p1_def\":" + def[1]
-                + ",\"p1_agi\":" + agi[1]
-                + ",\"p1_luck\":" + luck[1]
-                + ",\"p1_hp\":" + p1Hp
-                + ",\"p1_maxhp\":" + p1MaxHp
-                + ",\"p1_weaponId\":" + weaponId[1]
-                + ",\"p1_preferredBallId\":" + preferredBallId[1]
-                + "}";
-            BroadcastToRoom(room, PhoneMsg.FightStart, startJson, -1);
+            // Build dynamic FightStart JSON with per-player stats
+            var sb = new StringBuilder("{\"map\":").Append(mapId)
+                .Append(",\"seed\":").Append(seed)
+                .Append(",\"wind\":").Append(room.Wind)
+                .Append(",\"playerCount\":").Append(n);
+            for (int i = 0; i < n; i++)
+            {
+                string p = "p" + i + "_";
+                var ls = room.Livings[i];
+                sb.Append(",\"").Append(p).Append("atk\":").Append(ls.Attack);
+                sb.Append(",\"").Append(p).Append("def\":").Append(ls.Defence);
+                sb.Append(",\"").Append(p).Append("agi\":").Append(ls.Agility);
+                sb.Append(",\"").Append(p).Append("luck\":").Append(ls.Luck);
+                sb.Append(",\"").Append(p).Append("hp\":").Append(room.Hp[i]);
+                sb.Append(",\"").Append(p).Append("maxhp\":").Append(room.MaxHp[i]);
+                sb.Append(",\"").Append(p).Append("team\":").Append(ls.Team);
+
+                // Weapon/ball info
+                int wid = 7001, ballId = 0;
+                lock (_lock)
+                {
+                    if (i < room.PlayerIds.Count && _players.TryGetValue(room.PlayerIds[i], out ServerPlayer sp))
+                    {
+                        wid = sp.WeaponId;
+                        ballId = sp.PreferredBallId;
+                    }
+                }
+                sb.Append(",\"").Append(p).Append("weaponId\":").Append(wid);
+                sb.Append(",\"").Append(p).Append("preferredBallId\":").Append(ballId);
+            }
+            sb.Append("}");
+            BroadcastToRoom(room, PhoneMsg.FightStart, sb.ToString(), -1);
         }
 
         void HandleFightDamage(ServerPlayer player, GameRoom room, string json)
@@ -1499,14 +1492,10 @@ namespace GunMobile.Net
                 }
             }
 
-            // Check game over
             bool gameOver;
             lock (_lock)
             {
-                int alive = 0;
-                for (int i = 0; i < room.Hp.Length; i++)
-                    if (room.Hp[i] > 0) alive++;
-                gameOver = alive <= 1;
+                gameOver = CountAliveTeams(room) <= 1;
             }
             if (gameOver)
             {
@@ -1514,14 +1503,22 @@ namespace GunMobile.Net
             }
         }
 
+        int CountAliveTeams(GameRoom room)
+        {
+            var teams = new HashSet<int>();
+            for (int i = 0; i < room.Hp.Length; i++)
+            {
+                if (room.Hp[i] > 0 && room.Livings != null && i < room.Livings.Length)
+                    teams.Add(room.Livings[i].Team);
+            }
+            return teams.Count;
+        }
+
         void AdvanceTurn(GameRoom room)
         {
             lock (_lock)
             {
-                int alive = 0;
-                for (int i = 0; i < room.Hp.Length; i++)
-                    if (room.Hp[i] > 0) alive++;
-                if (alive <= 1)
+                if (CountAliveTeams(room) <= 1)
                 {
                     room.InBattle = false;
                     return;

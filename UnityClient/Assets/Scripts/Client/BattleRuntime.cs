@@ -200,39 +200,33 @@ namespace GunMobile.Client
             BuildWorld(root.transform);
             BuildHud(root.transform);
 
-            LivingStats player;
-            LivingStats bot;
+            int playerCount;
+            LivingStats[] allLivings;
 
-            // LAN: use server-provided stats so both sides start from the same HP/attributes.
             if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
             {
-                player = new LivingStats
+                playerCount = JsonInt(_fightStartJson, "playerCount", 2);
+                allLivings = new LivingStats[playerCount];
+                for (int i = 0; i < playerCount; i++)
                 {
-                    Attack = JsonInt(_fightStartJson, "p0_atk", _app.Profile.Attack),
-                    Defence = JsonInt(_fightStartJson, "p0_def", _app.Profile.Defence),
-                    Agility = JsonInt(_fightStartJson, "p0_agi", _app.Profile.Agility),
-                    Luck = JsonInt(_fightStartJson, "p0_luck", _app.Profile.Luck),
-                    Hp = JsonInt(_fightStartJson, "p0_hp", _app.Profile.Hp),
-                    MaxHp = JsonInt(_fightStartJson, "p0_maxhp", _app.Profile.Hp),
-                    Team = 1
-                };
-
-                bot = new LivingStats
-                {
-                    Attack = JsonInt(_fightStartJson, "p1_atk", 110),
-                    Defence = JsonInt(_fightStartJson, "p1_def", 85),
-                    Agility = JsonInt(_fightStartJson, "p1_agi", 70),
-                    Luck = JsonInt(_fightStartJson, "p1_luck", 40),
-                    Hp = JsonInt(_fightStartJson, "p1_hp", 1200),
-                    MaxHp = JsonInt(_fightStartJson, "p1_maxhp", 1200),
-                    Team = 2
-                };
-
-                _foeName = "P2";
+                    string px = "p" + i + "_";
+                    allLivings[i] = new LivingStats
+                    {
+                        Attack = JsonInt(_fightStartJson, px + "atk", 110),
+                        Defence = JsonInt(_fightStartJson, px + "def", 85),
+                        Agility = JsonInt(_fightStartJson, px + "agi", 70),
+                        Luck = JsonInt(_fightStartJson, px + "luck", 40),
+                        Hp = JsonInt(_fightStartJson, px + "hp", 1200),
+                        MaxHp = JsonInt(_fightStartJson, px + "maxhp", 1200),
+                        Team = JsonInt(_fightStartJson, px + "team", (i % 2) + 1)
+                    };
+                }
+                _foeName = playerCount > 2 ? "Team" : "P2";
             }
             else
             {
-                player = new LivingStats
+                playerCount = 2;
+                var player = new LivingStats
                 {
                     Attack = _app.Profile.Attack,
                     Defence = _app.Profile.Defence,
@@ -243,6 +237,7 @@ namespace GunMobile.Client
                     Team = 1
                 };
 
+                LivingStats bot;
                 NpcInfo npc = _npcId != 0 && _app.Database != null ? _app.Database.GetNpc(_npcId) : null;
                 if (npc != null)
                 {
@@ -253,16 +248,12 @@ namespace GunMobile.Client
                 {
                     bot = new LivingStats
                     {
-                        Attack = 110,
-                        Defence = 85,
-                        Agility = 70,
-                        Luck = 40,
-                        Hp = 1200,
-                        MaxHp = 1200,
-                        Team = 2
+                        Attack = 110, Defence = 85, Agility = 70, Luck = 40,
+                        Hp = 1200, MaxHp = 1200, Team = 2
                     };
                     _foeName = PhoneNet.NetBattle ? "P2" : "Bot";
                 }
+                allLivings = new[] { player, bot };
             }
 
             int seed = PhoneNet.NetBattle && PhoneNet.BattleSeed != 0 ? PhoneNet.BattleSeed : 0;
@@ -272,22 +263,21 @@ namespace GunMobile.Client
                 if (serverSeed != 0) seed = serverSeed;
             }
 
-            _loop.Reset(new[] { player, bot }, 20f, seed);
-            _ballsByLiving = new BallPhysics[2] { BallPhysics.Default, BallPhysics.Default };
+            _loop.Reset(allLivings, 20f, seed);
+            _ballsByLiving = new BallPhysics[playerCount];
+            for (int i = 0; i < playerCount; i++) _ballsByLiving[i] = BallPhysics.Default;
             if (_app.Database != null)
             {
                 if (PhoneNet.NetBattle && !string.IsNullOrEmpty(_fightStartJson))
                 {
-                    int p0WeaponId = JsonInt(_fightStartJson, "p0_weaponId", _app.Profile.WeaponId);
-                    int p0PreferredBallId = JsonInt(_fightStartJson, "p0_preferredBallId", _app.Profile.PreferredBallId);
-                    int p1WeaponId = JsonInt(_fightStartJson, "p1_weaponId", _app.Profile.WeaponId);
-                    int p1PreferredBallId = JsonInt(_fightStartJson, "p1_preferredBallId", 0);
-
-                    int ballId0 = p0PreferredBallId > 0 ? p0PreferredBallId : _app.Database.DefaultBallId(p0WeaponId);
-                    int ballId1 = p1PreferredBallId > 0 ? p1PreferredBallId : _app.Database.DefaultBallId(p1WeaponId);
-
-                    _ballsByLiving[0] = _app.Database.GetBall(ballId0);
-                    _ballsByLiving[1] = _app.Database.GetBall(ballId1);
+                    for (int i = 0; i < playerCount; i++)
+                    {
+                        string px = "p" + i + "_";
+                        int wid = JsonInt(_fightStartJson, px + "weaponId", _app.Profile.WeaponId);
+                        int bid = JsonInt(_fightStartJson, px + "preferredBallId", 0);
+                        int ballId = bid > 0 ? bid : _app.Database.DefaultBallId(wid);
+                        _ballsByLiving[i] = _app.Database.GetBall(ballId);
+                    }
                 }
                 else
                 {
@@ -295,16 +285,22 @@ namespace GunMobile.Client
                         ? _app.Profile.PreferredBallId
                         : _app.Database.DefaultBallId(_app.Profile.WeaponId);
                     _ballsByLiving[0] = _app.Database.GetBall(ballId);
-                    _ballsByLiving[1] = _ballsByLiving[0]; // Solo bot uses same ball physics.
+                    for (int i = 1; i < playerCount; i++)
+                        _ballsByLiving[i] = _ballsByLiving[0];
                 }
             }
 
             _ball = _ballsByLiving[0];
             _sim.ApplyBall(_ball);
-            _pos = new[] { new Vector2(140f, 0f), new Vector2(_map.Width - 160f, 0f) };
-            _facing = new[] { 1, -1 };
-            PlaceOnGround(0);
-            PlaceOnGround(1);
+            _pos = new Vector2[playerCount];
+            _facing = new int[playerCount];
+            for (int i = 0; i < playerCount; i++)
+            {
+                float frac = playerCount <= 1 ? 0.1f : (float)i / (playerCount - 1);
+                _pos[i] = new Vector2(Mathf.Lerp(140f, _map.Width - 160f, frac), 0f);
+                _facing[i] = frac < 0.5f ? 1 : -1;
+                PlaceOnGround(i);
+            }
             BuildActors(root.transform);
             yield return null;
         }
@@ -1115,9 +1111,10 @@ namespace GunMobile.Client
                 }
             }
 
-            _livingImg = new RawImage[2];
-            _hpFill = new RawImage[2];
-            for (int i = 0; i < 2; i++)
+            int actorCount = _loop != null ? _loop.Livings.Count : 2;
+            _livingImg = new RawImage[actorCount];
+            _hpFill = new RawImage[actorCount];
+            for (int i = 0; i < actorCount; i++)
             {
                 var go = new GameObject("Living" + i, typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage));
                 go.transform.SetParent(_world, false);
@@ -1165,11 +1162,16 @@ namespace GunMobile.Client
                 _npcSprite = PcArt.DefaultLiving(_app.Loader);
             }
 
-            if (_npcSprite != null && _livingImg[1] != null)
+            // Apply NPC/opponent sprite to all non-self actors
+            for (int ai = 0; ai < actorCount; ai++)
             {
-                _livingImg[1].texture = _npcSprite;
-                _livingImg[1].uvRect = new Rect(0f, 0f, 1f, 1f);
-                _livingImg[1].color = Color.white;
+                if (ai == MeSeat()) continue;
+                if (_npcSprite != null && _livingImg[ai] != null)
+                {
+                    _livingImg[ai].texture = _npcSprite;
+                    _livingImg[ai].uvRect = new Rect(0f, 0f, 1f, 1f);
+                    _livingImg[ai].color = Color.white;
+                }
             }
 
             if (_app.Database != null)
@@ -1328,7 +1330,7 @@ namespace GunMobile.Client
                 }
 
                 SheetFrame frame = PickFrame(i == me && (walking || firing));
-                if (i == 1 && _npcSprite != null)
+                if (i != me && _npcSprite != null)
                 {
                     _livingImg[i].uvRect = new Rect(0f, 0f, 1f, 1f);
                     frame = new SheetFrame { Uv = _livingImg[i].uvRect, Size = FitSprite(_npcSprite.width, _npcSprite.height, 96f, 120f) };
@@ -1446,9 +1448,10 @@ namespace GunMobile.Client
                 (PhoneNet.NetBattle ? "  LAN seat " + MeSeat() : "");
         }
 
-        static int MeSeat()
+        int MeSeat()
         {
-            return PhoneNet.NetBattle ? Mathf.Clamp(PhoneNet.Seat, 0, 1) : 0;
+            int max = _loop != null ? Mathf.Max(1, _loop.Livings.Count - 1) : 1;
+            return PhoneNet.NetBattle ? Mathf.Clamp(PhoneNet.Seat, 0, max) : 0;
         }
 
         static Vector2 FitSprite(float w, float h, float maxW, float maxH)
