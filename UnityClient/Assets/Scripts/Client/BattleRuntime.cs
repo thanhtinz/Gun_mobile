@@ -168,6 +168,7 @@ namespace GunMobile.Client
         int _lastWalkDir;
         RawImage _petImg;
         RawImage _titleImg;
+        float _nextFightReconnectAt;
 
         public void Run(GameApp app, int mapId, int npcId = 0, string fightStartJson = null)
         {
@@ -750,6 +751,18 @@ namespace GunMobile.Client
                 return;
             }
 
+            // Lightweight auto-reconnect for online battle.
+            // This allows the new server "reconnect grace" logic to be exercised.
+            if (!PhoneNet.Fight.Connected)
+            {
+                if (PhoneNet.PlayerId > 0 && Time.realtimeSinceStartup >= _nextFightReconnectAt)
+                {
+                    _nextFightReconnectAt = Time.realtimeSinceStartup + 3f;
+                    PhoneNet.ConnectFight(PhoneNet.PeerHost);
+                }
+                return;
+            }
+
             while (PhoneNet.Fight.TryDequeue(out var msg))
             {
                 if (msg.Id == PhoneMsg.FightTurn)
@@ -757,10 +770,9 @@ namespace GunMobile.Client
                     int turn = JsonInt(msg.Json, "turn", _loop.TurnIndex);
                     int player = JsonInt(msg.Json, "player", _loop.CurrentLiving);
                     float wind = JsonFloat(msg.Json, "wind", _loop.Wind);
-                    if (_loop.Phase != BattlePhase.Flying)
-                    {
+                    // If we were mid-flight during reconnect, still resync when turn index changes.
+                    if (_loop.Phase != BattlePhase.Flying || turn != _loop.TurnIndex)
                         _loop.SyncTurn(turn, player, wind);
-                    }
                     continue;
                 }
 
