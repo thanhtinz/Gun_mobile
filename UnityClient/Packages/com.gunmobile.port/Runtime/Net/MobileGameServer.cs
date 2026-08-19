@@ -241,6 +241,10 @@ namespace GunMobile.Net
         public float[] PosX;
         public float[] PosY;
         public int[] Facing;
+
+        // Server-authoritative props available for the current turn player.
+        // Bit mapping uses propIds = [1,2,4,5,6,7] -> bits 0..5.
+        public int CurrentPropMask;
     }
 
     /// <summary>
@@ -1346,6 +1350,7 @@ namespace GunMobile.Net
                 room.Rng = new System.Random(seed);
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 room.CurrentPlayer = 0;
+                room.CurrentPropMask = GeneratePropMask(room);
 
                 room.Map = null;
                 if (_loader != null)
@@ -1402,6 +1407,10 @@ namespace GunMobile.Net
             }
             sb.Append("}");
             BroadcastToRoom(room, PhoneMsg.FightStart, sb.ToString(), -1);
+
+            // Push current turn available props to clients.
+            string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
+            BroadcastToRoom(room, PhoneMsg.FightProp, propJson, -1);
         }
 
         void HandleFightDamage(ServerPlayer player, GameRoom room, string json)
@@ -1444,6 +1453,40 @@ namespace GunMobile.Net
             }
         }
 
+        static int PropBitIndex(int propId)
+        {
+            // propIds order must match client prop buttons:
+            // [1,2,4,5,6,7] -> bits [0..5]
+            switch (propId)
+            {
+                case 1: return 0;
+                case 2: return 1;
+                case 4: return 2;
+                case 5: return 3;
+                case 6: return 4;
+                case 7: return 5;
+                default: return -1;
+            }
+        }
+
+        int GeneratePropMask(GameRoom room)
+        {
+            // Randomly choose 3 props among [1,2,4,5,6,7].
+            int mask = 0;
+            int[] pool = new int[] { 1, 2, 4, 5, 6, 7 };
+            // Fisher-Yates shuffle (only need first 3)
+            for (int i = 0; i < 3; i++)
+            {
+                int j = room.Rng != null ? room.Rng.Next(i, pool.Length) : i;
+                int tmp = pool[i];
+                pool[i] = pool[j];
+                pool[j] = tmp;
+                int bit = PropBitIndex(pool[i]);
+                if (bit >= 0) mask |= 1 << bit;
+            }
+            return mask;
+        }
+
         void ServerSimulateFire(ServerPlayer player, GameRoom room, string json)
         {
             int who = player.Seat;
@@ -1451,6 +1494,19 @@ namespace GunMobile.Net
             float power = JF(json, "power", 50f);
             int facing = JI(json, "facing", room.Facing[who]);
             int propId = JI(json, "prop", 0);
+
+            // Server validates propId based on the props available for the current turn player.
+            // If not available, treat as no-prop (propId=0).
+            int propMask;
+            lock (_lock) { propMask = room.CurrentPropMask; }
+            if (propId != 0)
+            {
+                int bit = PropBitIndex(propId);
+                if (bit < 0 || (propMask & (1 << bit)) == 0)
+                {
+                    propId = 0;
+                }
+            }
 
             ApplyPropModifiers(propId, out float propDmg, out float propRadius, out float propPower, out bool propCrit);
             power = Mathf.Clamp(power + propPower, 1f, 100f);
@@ -1595,9 +1651,13 @@ namespace GunMobile.Net
                 }
                 room.Wind = room.Rng != null ? room.Rng.Next(-3, 4) * 10 : 0;
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
+                room.CurrentPropMask = GeneratePropMask(room);
             }
             string turnJson = "{\"turn\":" + room.CurrentTurn + ",\"player\":" + room.CurrentPlayer + ",\"wind\":" + room.Wind + "}";
             BroadcastToRoom(room, PhoneMsg.FightTurn, turnJson, -1);
+
+            string propJson = "{\"player\":" + room.CurrentPlayer + ",\"mask\":" + room.CurrentPropMask + "}";
+            BroadcastToRoom(room, PhoneMsg.FightProp, propJson, -1);
         }
 
         void HandleFightOver(ServerPlayer player, GameRoom room, string json)
