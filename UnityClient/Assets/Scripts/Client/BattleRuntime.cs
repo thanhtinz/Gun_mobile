@@ -140,6 +140,8 @@ namespace GunMobile.Client
         int _mapId;
         int _npcId;
         string _foeName = "Bot";
+        int _serverRewardGold;
+        bool _serverRewardWin;
         SpriteSheet _livingSheet;
         List<SheetFrame> _walkFrames = new List<SheetFrame>();
         List<SheetFrame> _atkFrames = new List<SheetFrame>();
@@ -718,6 +720,14 @@ namespace GunMobile.Client
                     continue;
                 }
 
+                if (msg.Id == PhoneMsg.FightReward)
+                {
+                    // Server reward after FightOver — store for result screen.
+                    _serverRewardGold = JsonInt(msg.Json, "gold", 0);
+                    _serverRewardWin = JsonInt(msg.Json, "win", 0) != 0;
+                    continue;
+                }
+
                 if (msg.Id != PhoneMsg.FightFire)
                 {
                     continue;
@@ -952,12 +962,16 @@ namespace GunMobile.Client
             PhoneNet.ReportFightOver(win);
             bool net = PhoneNet.NetBattle;
 
-            int gold = win ? (net ? 800 : 800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
+            int gold;
             int questGold = 0;
-
-            // When NetBattle, server is the source of truth for battle reward base gold
-            // (HandleFightOver: win=800, lose=100). Avoid touching pending quest/labyrinth
-            // client-side because server ProfileData may overwrite them.
+            if (net && _serverRewardGold > 0)
+            {
+                gold = _serverRewardGold;
+            }
+            else
+            {
+                gold = win ? (net ? 800 : 800 + Mathf.Max(0, _app.Profile.PendingReward)) : 100;
+            }
             if (win)
             {
                 _app.Profile.Win++;
