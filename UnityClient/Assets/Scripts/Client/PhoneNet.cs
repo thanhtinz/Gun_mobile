@@ -190,7 +190,13 @@ namespace GunMobile.Client
             Fight?.Send(PhoneMsg.FightOver, "{\"win\":" + (win ? "1" : "0") + "}");
         }
 
-        public static bool ConnectHall(string host)
+        public static void UseExternalServer()
+        {
+            try { GameServer?.Stop(); } catch { }
+            GameServer = null;
+        }
+
+        public static bool ConnectHall(string host, string nick = null)
         {
             PeerHost = string.IsNullOrWhiteSpace(host) ? "127.0.0.1" : host.Trim();
             Road?.Disconnect();
@@ -198,7 +204,7 @@ namespace GunMobile.Client
             bool ok = Road.Connect(PeerHost, PhonePacket.RoadPort);
             if (ok)
             {
-                Road.Send(PhoneMsg.Login, "{\"nick\":\"phone\"}");
+                Road.Send(PhoneMsg.Login, "{\"nick\":\"" + (nick ?? "phone").Replace("\"", "") + "\"}");
             }
 
             return ok;
@@ -284,7 +290,7 @@ namespace GunMobile.Client
         {
             string srv = GameServer != null && GameServer.Running
                 ? "Server 开 " + GameServer.PlayerCount + "p " + GameServer.RoomCount + "r"
-                : "Server 关";
+                : (Road != null && Road.Connected ? "Server Ext 已连" : "Server 关");
             string link = Fight != null && Fight.Connected ? " 已连" : "";
             string err = GameServer != null && !string.IsNullOrEmpty(GameServer.LastError) ? "  " + GameServer.LastError : "";
             return srv + link + err + "  IP " + LanIPv4() + "  id " + PlayerId;
