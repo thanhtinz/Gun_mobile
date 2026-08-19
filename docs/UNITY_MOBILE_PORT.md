@@ -23,7 +23,7 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 
 ## Mục tiêu mobile
 
-- Unity 2021.3+ LTS, **landscape** 16:9 / 20:9, Android trước, iOS sau.
+- Unity **6.3 LTS**, **landscape** 16:9 / 20:9, Android trước, iOS sau.
 - Giữ luật chơi PC: turn-based, góc + lực, gió, địa hình phá được, bomb template.
 - Không nhúng Flash/SWF. Sprite PNG/atlas + logic C#.
 - Server: giữ Road/Fight nếu cần online; hoặc replay offline 1-2 người cho milestone 1.
@@ -33,12 +33,12 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Import 3 zip Ok lên git (LFS)
 - [x] Extract XML/UI đã giải zlib → `legacy/data/`
 - [x] Helper zlib / map / atlas / Morn / đạn
-- [x] Unity project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
+- [x] Unity 6.3 LTS project Android + iOS (`UnityClient/`, bundle `com.gunmobile.client`)
 - [x] Client: login → hall (shop / bag / quest / character / sign-in) → **all packed maps** → trận vs bot (PC gravity 0.7/frame)
 - [x] `GameDatabase` loads TemplateAlllist / Shop / Quest / Ball / Map / NPC
 - [x] Unpack `tools/unpack_pc_dump.py` + Editor menu; ExtraRoots `legacy/unpacked`
 
-Mở `UnityClient/` bằng Unity 2021.3, Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
+Mở `UnityClient/` bằng Unity 6.3 LTS (`6000.3.22f1`), Play hoặc menu **GunMobile / Build Android APK** / **Build iOS Xcode Project**.
 
 Chạy kiểm tra:
 

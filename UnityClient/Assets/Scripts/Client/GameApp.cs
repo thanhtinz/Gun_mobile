@@ -36,7 +36,7 @@ namespace GunMobile.Client
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoBoot()
         {
-            if (FindObjectOfType<GameApp>() != null)
+            if (FindFirstObjectByType<GameApp>() != null)
             {
                 return;
             }
@@ -201,7 +201,7 @@ namespace GunMobile.Client
 
         static void EnsureEventSystem()
         {
-            if (FindObjectOfType<EventSystem>() != null)
+            if (FindFirstObjectByType<EventSystem>() != null)
             {
                 return;
             }

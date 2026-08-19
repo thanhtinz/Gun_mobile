@@ -2,7 +2,7 @@
   "name": "com.gunmobile.port",
   "displayName": "Gun Mobile Port",
   "version": "0.1.0",
-  "unity": "2021.3",
+  "unity": "6000.3",
   "description": "Helpers to read DDTank/Gun PC resources, scale UI for phones, and run artillery battle logic in Unity.",
   "documentationUrl": "https://github.com/thanhtinz/Gun_mobile",
   "keywords": ["ddtank", "gun", "mobile", "port"],

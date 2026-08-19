@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Unity 2021.3 project files + .meta GUIDs for the mobile client."""
+"""Generate Unity 6.3 LTS project files + .meta GUIDs for the mobile client."""
 
 from __future__ import annotations
 
@@ -99,7 +99,7 @@ def main() -> None:
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ide.rider": "3.0.28",
     "com.unity.ide.visualstudio": "2.0.22",
-    "com.unity.ugui": "1.0.0",
+    "com.unity.ugui": "2.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",
     "com.unity.modules.audio": "1.0.0",
@@ -117,7 +117,7 @@ def main() -> None:
 """,
     )
 
-    write("ProjectSettings/ProjectVersion.txt", "m_EditorVersion: 2021.3.33f1\nm_EditorVersionWithRevision: 2021.3.33f1 (ee4a6c32c57d)\n")
+    write("ProjectSettings/ProjectVersion.txt", "m_EditorVersion: 6000.3.22f1\nm_EditorVersionWithRevision: 6000.3.22f1 (1c726e1fb402)\n")
 
     write(
         "ProjectSettings/EditorBuildSettings.asset",

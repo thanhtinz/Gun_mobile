@@ -1,6 +1,6 @@
 # Build APK / IPA on GitHub
 
-GitHub Actions dùng [GameCI](https://game.ci/docs/github/builder) + Unity **2021.3.33f1**.
+GitHub Actions dùng [GameCI](https://game.ci/docs/github/builder) + Unity **6.3 LTS** (`6000.3.22f1`).
 
 ## 1. License Unity (bắt buộc)
 

@@ -117,7 +117,7 @@ namespace GunMobile.UI
                 var text = textGo.gameObject.AddComponent<UnityEngine.UI.Text>();
                 text.text = label;
                 text.alignment = TextAnchor.MiddleCenter;
-                text.font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                text.font = UiFonts.Default;
                 text.fontSize = Mathf.Max(12, (int)F(el, "labelSize", 14f));
                 text.raycastTarget = false;
             }

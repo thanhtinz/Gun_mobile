@@ -1,9 +1,9 @@
 # Unity client (Android + iOS)
 
-Open **this folder** (`UnityClient/`) in Unity **2021.3 LTS**.
+Open **this folder** (`UnityClient/`) in Unity **6.3 LTS** (`6000.3.22f1`).
 
 ## Run
-1. Install Unity 2021.3 with **Android Build Support** (SDK/NDK/OpenJDK) and **iOS Build Support**.
+1. Install Unity 6.3 LTS with **Android Build Support** (SDK/NDK/OpenJDK) and **iOS Build Support**.
 2. File → Open Project → `Gun_mobile/UnityClient`.
 3. Press Play. `GameApp` boots from `Assets/Scenes/Boot.unity`.
 4. Login → Hall:
@@ -28,10 +28,10 @@ Menu **GunMobile**:
 
 Bundle id: `com.gunmobile.client`  
 Orientation: landscape  
-Android min SDK 23 / ARM64 IL2CPP  
-iOS 12+ IL2CPP
+Android min SDK 23 / target 35 / ARM64 IL2CPP  
+iOS 13+ IL2CPP
 
-This environment has no Unity Editor, so the APK/IPA must be built on a machine with Unity 2021.3.
+This environment has no Unity Editor, so the APK/IPA must be built on a machine with Unity 6.3 LTS, or via GitHub Actions.
 
 ## PC data
 `Assets/StreamingAssets/PcData` is packed from the Ok dump (templates, shop, quests, balls, **all maps with fore.png+fore.map**, bombs, hall/game atlases).

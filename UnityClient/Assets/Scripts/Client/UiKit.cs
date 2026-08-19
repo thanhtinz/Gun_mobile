@@ -1,3 +1,4 @@
+using GunMobile.UI;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -14,7 +15,7 @@ namespace GunMobile.Client
             {
                 if (_font == null)
                 {
-                    _font = Resources.GetBuiltinResource<Font>("Arial.ttf");
+                    _font = UiFonts.Default;
                 }
 
                 return _font;

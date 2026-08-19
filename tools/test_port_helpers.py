@@ -125,6 +125,8 @@ class MapAndBallistics(unittest.TestCase):
 class MobilePack(unittest.TestCase):
     def test_unity_project_exists(self):
         self.assertTrue((ROOT / "UnityClient" / "ProjectSettings" / "ProjectVersion.txt").exists())
+        version = (ROOT / "UnityClient" / "ProjectSettings" / "ProjectVersion.txt").read_text(encoding="utf-8")
+        self.assertIn("6000.3.22f1", version)
         self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scenes" / "Boot.unity").exists())
         self.assertTrue((ROOT / "UnityClient" / "Assets" / "Scripts" / "Client" / "GameApp.cs").exists())
 
