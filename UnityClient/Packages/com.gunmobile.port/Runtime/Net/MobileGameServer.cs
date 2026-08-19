@@ -61,6 +61,8 @@ namespace GunMobile.Net
         public NetworkStream FightStream;
         public int RoomId = -1;
         public int Seat = -1;
+        public bool FightPendingLose;
+        public long FightDisconnectedAtMs;
 
         // PvE pending context
         public int PveNpcId;
@@ -452,6 +454,7 @@ namespace GunMobile.Net
             // Online battle: if a client doesn't send FightTurn in time,
             // server will auto-advance (skip turn) to prevent deadlocks.
             const long turnMs = 20000; // must match client BattleLoop default (20s)
+            const long reconnectGraceMs = 30000; // allow quick Fight-socket reconnect
             const int tickMs = 200;
 
             while (_run)
@@ -460,6 +463,9 @@ namespace GunMobile.Net
                 {
                     long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     List<GameRoom> advance = null;
+                    // Collect reconnect-expired disconnects and process outside _lock.
+                    class LoseItem { public ServerPlayer Player; public GameRoom Room; }
+                    List<LoseItem> toSurrender = null;
 
                     lock (_lock)
                     {
@@ -476,6 +482,21 @@ namespace GunMobile.Net
                                 advance.Add(room);
                             }
                         }
+
+                        // Reconnect grace: if a player disconnected during battle and
+                        // didn't come back in time, treat it as surrender.
+                        foreach (var p in _players.Values)
+                        {
+                            if (p == null || !p.FightPendingLose) continue;
+                            if (p.RoomId < 0) continue;
+                            if (!_rooms.TryGetValue(p.RoomId, out var room)) continue;
+                            if (room == null || !room.InBattle) continue;
+                            if (p.FightDisconnectedAtMs <= 0) continue;
+                            if (now - p.FightDisconnectedAtMs < reconnectGraceMs) continue;
+
+                            toSurrender ??= new List<LoseItem>();
+                            toSurrender.Add(new LoseItem { Player = p, Room = room });
+                        }
                     }
 
                     if (advance != null)
@@ -483,6 +504,25 @@ namespace GunMobile.Net
                         foreach (var r in advance)
                         {
                             AdvanceTurn(r);
+                        }
+                    }
+
+                    if (toSurrender != null)
+                    {
+                        foreach (var item in toSurrender)
+                        {
+                            if (item == null || item.Player == null || item.Room == null) continue;
+
+                            lock (_lock)
+                            {
+                                if (!item.Player.FightPendingLose) continue;
+                                if (item.Player.RoomId != item.Room.Id) continue;
+                                item.Player.FightPendingLose = false;
+                                item.Player.FightDisconnectedAtMs = 0;
+                            }
+
+                            // HandleSurrender() re-checks room state and will no-op if needed.
+                            HandleSurrender(item.Player, item.Room);
                         }
                     }
                 }
@@ -521,6 +561,8 @@ namespace GunMobile.Net
                                     {
                                         player.FightTcp = client;
                                         player.FightStream = ns;
+                                    player.FightPendingLose = false;
+                                    player.FightDisconnectedAtMs = 0;
                                     }
                                 }
                                 Send(ns, PhoneMsg.RoomOk, "{\"ok\":true}");
@@ -543,19 +585,30 @@ namespace GunMobile.Net
             {
                 if (player != null)
                 {
-                    // Auto-lose on disconnect
+                    // Reconnect grace:
+                    // if the client disconnects while in a battle, wait a while and only
+                    // surrender if they don't reconnect in time.
                     GameRoom dcRoom = null;
+                    long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     lock (_lock)
                     {
                         player.FightTcp = null;
                         player.FightStream = null;
                         if (player.RoomId >= 0 && _rooms.TryGetValue(player.RoomId, out dcRoom))
                         {
-                            if (dcRoom.InBattle) { }
-                            else dcRoom = null;
+                            if (dcRoom.InBattle)
+                            {
+                                player.FightPendingLose = true;
+                                player.FightDisconnectedAtMs = now;
+                            }
+                            else
+                            {
+                                player.FightPendingLose = false;
+                                player.FightDisconnectedAtMs = 0;
+                                dcRoom = null;
+                            }
                         }
                     }
-                    if (dcRoom != null) HandleSurrender(player, dcRoom);
                 }
             }
         }
