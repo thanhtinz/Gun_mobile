@@ -24,12 +24,12 @@ namespace GunMobile.Client
             Boot(null);
         }
 
-        public static void Boot(GunMobile.Res.GameDatabase db)
+        public static void Boot(GunMobile.Res.GameDatabase db, GunMobile.Res.ResLoader loader = null)
         {
             if (GameServer != null) return;
 
             GameServer = new MobileGameServer();
-            GameServer.Start(db);
+            GameServer.Start(db, loader);
 
             Road = new PhoneRoadClient();
             Fight = new PhoneRoadClient();

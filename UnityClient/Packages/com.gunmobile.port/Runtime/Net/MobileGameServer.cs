@@ -228,6 +228,14 @@ namespace GunMobile.Net
         public int[] MaxHp;
         public long TurnStartMs;
         public System.Random Rng;
+
+        // Server-authoritative battle state
+        public MapCollision Map;
+        public LivingStats[] Livings;
+        public BallPhysics[] Balls;
+        public float[] PosX;
+        public float[] PosY;
+        public int[] Facing;
     }
 
     /// <summary>
@@ -251,6 +259,7 @@ namespace GunMobile.Net
         Thread _timerThread;
         volatile bool _run;
         GameDatabase _db;
+        ResLoader _loader;
         System.Random _rng = new System.Random();
         string _savePath;
 
@@ -261,8 +270,14 @@ namespace GunMobile.Net
 
         public void Start(GameDatabase db, string savePath = null)
         {
+            Start(db, null, savePath);
+        }
+
+        public void Start(GameDatabase db, ResLoader loader, string savePath = null)
+        {
             if (Running) return;
             _db = db;
+            _loader = loader;
             _savePath = savePath ?? Path.Combine(Application.persistentDataPath, "server_players");
             try
             {
@@ -697,17 +712,33 @@ namespace GunMobile.Net
                     HandleFightStart(player, room, json);
                     break;
 
-                case PhoneMsg.FightFire:
                 case PhoneMsg.FightWalk:
-                    // Enforce: only the room.CurrentPlayer is allowed to act.
-                    bool allow;
+                {
+                    bool allowW;
+                    lock (_lock) { allowW = room.InBattle && player.Seat == room.CurrentPlayer; }
+                    if (!allowW) return;
+                    float wx = JF(json, "x", room.PosX[player.Seat]);
+                    int wf = JI(json, "facing", room.Facing[player.Seat]);
                     lock (_lock)
                     {
-                        allow = room.InBattle && player.Seat == room.CurrentPlayer;
+                        room.PosX[player.Seat] = wx;
+                        room.Facing[player.Seat] = wf >= 0 ? 1 : -1;
+                        if (room.Map != null)
+                            room.PosY[player.Seat] = room.Map.FindStandY(Mathf.Clamp(Mathf.RoundToInt(wx), 0, room.Map.Width - 1), 0);
                     }
-                    if (!allow) return;
                     BroadcastToRoom(room, id, json, player.Id);
                     break;
+                }
+
+                case PhoneMsg.FightFire:
+                {
+                    bool allowF;
+                    lock (_lock) { allowF = room.InBattle && player.Seat == room.CurrentPlayer; }
+                    if (!allowF) return;
+                    BroadcastToRoom(room, PhoneMsg.FightFire, json, player.Id);
+                    ServerSimulateFire(player, room, json);
+                    break;
+                }
 
                 case PhoneMsg.FightTurn:
                 {
@@ -730,7 +761,8 @@ namespace GunMobile.Net
                 }
 
                 case PhoneMsg.FightDamage:
-                    HandleFightDamage(player, room, json);
+                    // Server-authoritative: ignore client-reported damage.
+                    // Damage is computed by ServerSimulateFire().
                     break;
 
                 case PhoneMsg.FightOver:
@@ -1032,7 +1064,6 @@ namespace GunMobile.Net
         {
             int mapId = JI(json, "map", room.MapId);
             int seed = JI(json, "seed", Environment.TickCount);
-            // Defaults match the client-side fallback bot stats.
             int[] atk = new int[] { 110, 110 };
             int[] def = new int[] { 85, 85 };
             int[] agi = new int[] { 70, 70 };
@@ -1046,14 +1077,21 @@ namespace GunMobile.Net
                 room.Seed = seed;
                 room.CurrentTurn = 0;
                 room.Wind = new System.Random(seed).Next(-3, 4) * 10;
-                room.Hp = new int[room.PlayerIds.Count];
-                room.MaxHp = new int[room.PlayerIds.Count];
-                for (int i = 0; i < room.PlayerIds.Count; i++)
+                int n = room.PlayerIds.Count;
+                room.Hp = new int[n];
+                room.MaxHp = new int[n];
+                room.Livings = new LivingStats[n];
+                room.Balls = new BallPhysics[n];
+                room.PosX = new float[n];
+                room.PosY = new float[n];
+                room.Facing = new int[n];
+                for (int i = 0; i < n; i++)
                 {
+                    room.Balls[i] = BallPhysics.Default;
                     if (_players.TryGetValue(room.PlayerIds[i], out ServerPlayer p))
                     {
                         p.RecalcStats(_db);
-                        if (i >= 0 && i < 2)
+                        if (i < 2)
                         {
                             atk[i] = p.Attack;
                             def[i] = p.Defence;
@@ -1064,17 +1102,56 @@ namespace GunMobile.Net
                         }
                         room.Hp[i] = p.Hp;
                         room.MaxHp[i] = p.Hp;
+                        room.Livings[i] = new LivingStats
+                        {
+                            Attack = p.Attack, Defence = p.Defence,
+                            Agility = p.Agility, Luck = p.Luck,
+                            Hp = p.Hp, MaxHp = p.Hp, Team = i + 1
+                        };
+                        if (_db != null)
+                        {
+                            int bid = p.PreferredBallId > 0 ? p.PreferredBallId : _db.DefaultBallId(p.WeaponId);
+                            room.Balls[i] = _db.GetBall(bid);
+                        }
                     }
                     else
                     {
                         room.Hp[i] = 1200;
                         room.MaxHp[i] = 1200;
+                        room.Livings[i] = new LivingStats
+                        {
+                            Attack = 110, Defence = 85, Agility = 70, Luck = 40,
+                            Hp = 1200, MaxHp = 1200, Team = i + 1
+                        };
                     }
                 }
-            }
                 room.Rng = new System.Random(seed);
                 room.TurnStartMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                 room.CurrentPlayer = 0;
+
+                // Load map collision for server-authoritative physics
+                room.Map = null;
+                if (_loader != null)
+                {
+                    string mapPath = GamePaths.MapCollision(mapId);
+                    if (_loader.TryReadBytes(mapPath, out byte[] mapBytes))
+                    {
+                        try { room.Map = MapCollision.Load(mapBytes); }
+                        catch { }
+                    }
+                }
+
+                // Init positions (same as client default)
+                int mapW = room.Map != null ? room.Map.Width : 1250;
+                room.PosX[0] = 140f;
+                room.PosY[0] = room.Map != null ? room.Map.FindStandY(140, 0) : 0f;
+                room.Facing[0] = 1;
+                if (n > 1)
+                {
+                    room.PosX[1] = mapW - 160f;
+                    room.PosY[1] = room.Map != null ? room.Map.FindStandY(mapW - 160, 0) : 0f;
+                    room.Facing[1] = -1;
+                }
             }
             int p0Hp = room.Hp != null && room.Hp.Length > 0 ? room.Hp[0] : 1200;
             int p0MaxHp = room.MaxHp != null && room.MaxHp.Length > 0 ? room.MaxHp[0] : p0Hp;
@@ -1126,6 +1203,125 @@ namespace GunMobile.Net
                 }
             }
             BroadcastToRoom(room, PhoneMsg.FightDamage, json, -1);
+            if (gameOver)
+            {
+                AdvanceTurn(room);
+            }
+        }
+
+        void ServerSimulateFire(ServerPlayer player, GameRoom room, string json)
+        {
+            int who = player.Seat;
+            float angle = JF(json, "angle", 45f);
+            float power = JF(json, "power", 50f);
+            int facing = JI(json, "facing", room.Facing[who]);
+
+            MapCollision map;
+            BallPhysics ball;
+            float wind;
+            float startX, startY;
+            LivingStats[] livings;
+            float[] posX, posY;
+            int[] hp;
+            lock (_lock)
+            {
+                map = room.Map;
+                ball = (room.Balls != null && who < room.Balls.Length) ? room.Balls[who] : BallPhysics.Default;
+                wind = room.Wind;
+                startX = room.PosX[who];
+                startY = room.PosY[who];
+                livings = (LivingStats[])room.Livings.Clone();
+                posX = (float[])room.PosX.Clone();
+                posY = (float[])room.PosY.Clone();
+                hp = (int[])room.Hp.Clone();
+                room.Facing[who] = facing >= 0 ? 1 : -1;
+            }
+
+            if (map == null) return; // can't simulate without collision data
+
+            var sim = new ProjectileSimulator();
+            sim.ApplyBall(ball);
+
+            int mapH = map.Height;
+            int mapW = map.Width;
+            float unityY = mapH - startY - 18f;
+
+            int shotCount = Mathf.Max(1, ball.Amount);
+            int blastRadius = Mathf.Max(20, ball.Radii);
+
+            for (int s = 0; s < shotCount; s++)
+            {
+                float spreadX = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 16.0 - 8.0) : 0f);
+                float spreadA = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 10.0 - 5.0) : 0f);
+                float spreadP = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 12.0 - 6.0) : 0f);
+
+                var state = sim.FlyUntil(
+                    sim.Launch(startX + spreadX, unityY, angle + spreadA, Mathf.Clamp(power + spreadP, 1f, 100f), facing >= 0 ? 1 : -1),
+                    wind,
+                    (fx, fy) =>
+                    {
+                        int mx = Mathf.RoundToInt(fx);
+                        int my = mapH - 1 - Mathf.RoundToInt(fy);
+                        return map.IsSolid(mx, my);
+                    },
+                    (fx, fy) =>
+                    {
+                        int mx = Mathf.RoundToInt(fx);
+                        int my = mapH - 1 - Mathf.RoundToInt(fy);
+                        return mx < -200 || mx > mapW + 200 || my > mapH + 200;
+                    },
+                    12f);
+
+                int hitMapX = Mathf.RoundToInt(state.X);
+                int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
+
+                // Destroy terrain
+                map.CutCircle(hitMapX, hitMapY, blastRadius / 3);
+
+                // Compute damage for each living
+                int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(ball.Power) * 80f);
+                if (bombHurt < 40) bombHurt = 140;
+
+                for (int t = 0; t < hp.Length; t++)
+                {
+                    if (hp[t] <= 0) continue;
+                    float tx = posX[t];
+                    float ty = posY[t];
+                    float dx = hitMapX - tx;
+                    float dy = hitMapY - ty;
+                    float dist = Mathf.Sqrt(dx * dx + dy * dy);
+                    if (dist > blastRadius) continue;
+
+                    bool crit = DamageCalculator.RollCrit(livings[who].Luck, who + (room.CurrentTurn + s));
+                    int dmg = DamageCalculator.Compute(livings[who], livings[t], bombHurt, dist, crit);
+                    dmg = Mathf.Clamp(dmg, 0, hp[t]);
+
+                    lock (_lock)
+                    {
+                        room.Hp[t] = Mathf.Max(0, room.Hp[t] - dmg);
+                        if (room.Livings != null && t < room.Livings.Length)
+                        {
+                            var ls = room.Livings[t];
+                            ls.Hp = room.Hp[t];
+                            room.Livings[t] = ls;
+                        }
+                    }
+                    hp[t] = Mathf.Max(0, hp[t] - dmg);
+
+                    string dmgJson = "{\"target\":" + t + ",\"dmg\":" + dmg + ",\"crit\":" + (crit ? "true" : "false") + "}";
+                    BroadcastToRoom(room, PhoneMsg.FightDamage, dmgJson, -1);
+                }
+            }
+
+            // Check game over
+            bool gameOver;
+            lock (_lock)
+            {
+                int alive = 0;
+                for (int i = 0; i < room.Hp.Length; i++)
+                    if (room.Hp[i] > 0) alive++;
+                gameOver = alive <= 1;
+            }
             if (gameOver)
             {
                 AdvanceTurn(room);

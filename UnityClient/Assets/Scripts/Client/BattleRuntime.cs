@@ -686,13 +686,25 @@ namespace GunMobile.Client
             {
                 if (msg.Id == PhoneMsg.FightTurn)
                 {
-                    // Realign online turn order from server.
                     int turn = JsonInt(msg.Json, "turn", _loop.TurnIndex);
                     int player = JsonInt(msg.Json, "player", _loop.CurrentLiving);
                     float wind = JsonFloat(msg.Json, "wind", _loop.Wind);
                     if (_loop.Phase != BattlePhase.Flying)
                     {
                         _loop.SyncTurn(turn, player, wind);
+                    }
+                    continue;
+                }
+
+                if (msg.Id == PhoneMsg.FightDamage)
+                {
+                    int target = JsonInt(msg.Json, "target", -1);
+                    int dmg = JsonInt(msg.Json, "dmg", 0);
+                    bool crit = JsonInt(msg.Json, "crit", 0) != 0;
+                    if (target >= 0 && target < _loop.Livings.Count)
+                    {
+                        _loop.ApplyDamage(target, dmg);
+                        SpawnDmgPopup(_pos[target], dmg, crit);
                     }
                     continue;
                 }
@@ -867,6 +879,13 @@ namespace GunMobile.Client
 
         void Hurt(int index, float dist)
         {
+            if (PhoneNet.NetBattle)
+            {
+                // Server-authoritative: don't compute damage locally.
+                // Server will broadcast FightDamage with correct values.
+                return;
+            }
+
             int src = _loop.CurrentLiving;
             int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(_ball.Power) * 80f);
             if (bombHurt < 40)
@@ -878,10 +897,6 @@ namespace GunMobile.Client
             bool crit = _propCrit || DamageCalculator.RollCrit(_loop.Livings[src].Luck, src + _loop.TurnIndex);
             int dmg = DamageCalculator.Compute(_loop.Livings[src], _loop.Livings[index], bombHurt, dist, crit);
             _loop.ApplyDamage(index, dmg);
-            if (!_shotFromNet)
-            {
-                PhoneNet.ReportDamage(index, dmg);
-            }
             SpawnDmgPopup(_pos[index], dmg, crit);
         }
 

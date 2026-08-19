@@ -84,7 +84,7 @@ namespace GunMobile.Client
             Database = GameDatabase.Load(Loader) ?? new GameDatabase();
             Profile.EnsureStarterBag();
             Profile.RecalcStats(Database);
-            PhoneNet.Boot(Database);
+            PhoneNet.Boot(Database, Loader);
             ShowLogin();
         }
 

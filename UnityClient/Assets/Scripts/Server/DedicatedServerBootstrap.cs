@@ -44,7 +44,7 @@ namespace GunMobile.Server
             string savePath = System.IO.Path.Combine(Application.persistentDataPath, "server_players");
 
             _server = new MobileGameServer();
-            _server.Start(db, savePath);
+            _server.Start(db, loader, savePath);
             Debug.Log($"[DedicatedServer] Online! Road={PhonePacket.RoadPort} Fight={PhonePacket.FightPort} save={savePath}");
 
             while (_server.Running)
