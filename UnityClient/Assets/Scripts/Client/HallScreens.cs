@@ -38,6 +38,7 @@ namespace GunMobile.Client
             Button enter = UiKit.Button(bg.transform, "Enter", "进入大厅", () =>
             {
                 app.Profile.Nick = string.IsNullOrWhiteSpace(nick.text) ? "Player" : nick.text.Trim();
+                PhoneNet.Login(app.Profile.Nick);
                 app.ShowHall();
             }, new Vector2(360f, 72f));
             var enterRt = enter.GetComponent<RectTransform>();
