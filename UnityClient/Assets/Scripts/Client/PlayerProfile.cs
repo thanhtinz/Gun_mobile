@@ -82,6 +82,8 @@ namespace GunMobile.Client
         public List<int> NewYearPointClaimed = new List<int>();
         public int WorshipMoonDraws;
         public int SuperLuckerDraws;
+        public int JigsawClaims;
+        public int BibleClaims;
         public int SweepCount;
         public bool FirstRechargeClaimed;
         public int DreamlandChapter = 1;

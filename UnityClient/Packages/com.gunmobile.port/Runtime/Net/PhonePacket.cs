@@ -226,6 +226,8 @@ namespace GunMobile.Net
         public const ushort RedPacketSend = 179;
         public const ushort CalendarClaim = 180;
         public const ushort AuditoriumAction = 181;
+        public const ushort JigsawAction = 182;
+        public const ushort BibleAction = 183;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

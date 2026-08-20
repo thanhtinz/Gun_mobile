@@ -1018,6 +1018,58 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+
+        public static void JigsawScreen(RectTransform safe, GameApp app)
+        {
+            ShowPcActivityScreen(safe, app, "jigsaw", "拼图", "jigsaw.ui", app.Profile.JigsawClaims,
+                PhoneNet.LastJigsawJson, PhoneNet.JigsawAction);
+        }
+
+        public static void BibleScreen(RectTransform safe, GameApp app)
+        {
+            ShowPcActivityScreen(safe, app, "bible", "圣经", "bible.ui", app.Profile.BibleClaims,
+                PhoneNet.LastBibleJson, PhoneNet.BibleAction);
+        }
+
+        static void ShowPcActivityScreen(RectTransform safe, GameApp app, string moduleId, string title,
+            string uiFile, int claims, string lastJson, System.Action claimAction)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef(moduleId, title, null, false, uiFile), uiFile);
+            PcActivityBinding binding = app.Database != null ? app.Database.ResolvePcActivity(moduleId) : null;
+            int maxClaims = app.Database != null && binding != null
+                ? app.Database.GetPcActivityDailyMax(binding)
+                : 1;
+            string source = binding != null ? binding.Source : "TS_ActivityConfig";
+            string note = binding != null ? binding.Note : "no PC activity table";
+            SysUi.Note(body, source + "  ·  " + note + "  ·  今日 " + claims + " / " + maxClaims);
+            if (app.Database != null && binding != null)
+            {
+                var rewards = app.Database.GetPcActivityRewardRows(binding);
+                int shown = 0;
+                foreach (var pair in rewards)
+                {
+                    SysUi.Note(body, SysUi.ItemName(app, pair.templateId) + " x" + pair.count);
+                    shown++;
+                    if (shown >= 6)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (claims < maxClaims)
+            {
+                SysUi.Row(body, "claim", "每日领取", claimAction);
+            }
+
+            if (!string.IsNullOrEmpty(lastJson))
+            {
+                SysUi.Note(body, lastJson);
+            }
+        }
+
+
         public static void CarnivalSuperLuckerScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,

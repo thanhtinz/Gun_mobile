@@ -34,6 +34,8 @@ namespace GunMobile.Client
         public static string LastCalendarJson;
         public static string LastAuditoriumJson;
         public static string LastBoguAdventureJson;
+        public static string LastJigsawJson;
+        public static string LastBibleJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -373,6 +375,16 @@ namespace GunMobile.Client
         {
             Road?.Send(PhoneMsg.BoguAdventureAction,
                 "{\"action\":\"" + (action ?? "spin").Replace("\"", "") + "\",\"activityNum\":" + activityNum + ",\"tier\":" + tier + "}");
+        }
+
+        public static void JigsawAction(string action = "claim")
+        {
+            Road?.Send(PhoneMsg.JigsawAction, "{\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\"}");
+        }
+
+        public static void BibleAction(string action = "claim")
+        {
+            Road?.Send(PhoneMsg.BibleAction, "{\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\"}");
         }
 
         public static void ClaimRedPacket()
