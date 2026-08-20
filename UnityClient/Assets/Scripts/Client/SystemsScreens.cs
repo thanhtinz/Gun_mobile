@@ -706,6 +706,26 @@ namespace GunMobile.Client
                     });
                 ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
+
+            SysUi.Note(body, "— 结拜 ts_swornitem.xml —");
+            SwornItemInfo sworn = app.Database != null ? app.Database.GetSwornItem(UnityEngine.Mathf.Max(1, app.Profile.SwornLevel)) : null;
+            string partner = string.IsNullOrEmpty(app.Profile.SwornNick) ? "未结拜" : app.Profile.SwornNick;
+            SysUi.Note(body, partner + "  Lv" + app.Profile.SwornLevel + "  GP " + app.Profile.SwornGp +
+                (sworn != null ? "  ATK+" + sworn.Attack + " DEF+" + sworn.Defen : ""));
+            if (app.Profile.Friends != null)
+            {
+                int n = 0;
+                foreach (string fn in app.Profile.Friends)
+                {
+                    if (string.IsNullOrEmpty(fn)) continue;
+                    string nick = fn;
+                    SysUi.Row(body, "sworn" + n, "结拜 " + nick, () => PhoneNet.SwornAction("bond", nick));
+                    n++;
+                    if (n >= 8) break;
+                }
+            }
+            SysUi.Row(body, "swornup", "使用金兰佩升级", () => PhoneNet.SwornAction("use"));
+            if (!string.IsNullOrEmpty(PhoneNet.LastSwornJson)) SysUi.Note(body, PhoneNet.LastSwornJson);
         }
 
         static void RenderMarket(Transform body, GameApp app, string json)
@@ -769,16 +789,39 @@ namespace GunMobile.Client
             {
                 PhoneNet.UpgradeVip();
             });
-            foreach (ShopOffer offer in app.Database.VipShop)
+            app.Profile.EnsureVipStoreBought();
+            var rows = app.Database != null && app.Database.VipStoreList.Count > 0
+                ? app.Database.VipStoreList
+                : null;
+            if (rows != null)
             {
-                ShopOffer local = offer;
-                string name = SysUi.ItemName(app, offer.TemplateId);
-                var btn = SysUi.Row(body, "v" + offer.Id, $"{name}  {offer.AValue1}点券", () =>
+                foreach (VipStoreItem offer in rows)
                 {
-                    PhoneNet.ShopBuy(local.Id);
-                });
-                ShopScreen.DecorateIcon(app, btn, offer.TemplateId);
+                    VipStoreItem local = offer;
+                    string name = SysUi.ItemName(app, offer.GoodsId);
+                    int cost = GameDatabase.VipStoreCost(offer);
+                    bool gift = GameDatabase.VipStoreIsGift(offer);
+                    int limit = GameDatabase.VipStoreLimit(offer, app.Profile.VipLevel);
+                    int bought = 0;
+                    for (int i = 0; i < app.Profile.VipStoreBought.Count; i++)
+                        if (app.Profile.VipStoreBought[i] == offer.Id) bought++;
+                    string cur = gift ? "点券" : "金";
+                    string cap = name + "  " + cost + cur + "  " + bought + "/" + limit;
+                    var btn = SysUi.Row(body, "v" + offer.Id, cap, () => PhoneNet.VipStoreBuy(local.Id, local.GoodsId));
+                    ShopScreen.DecorateIcon(app, btn, offer.GoodsId);
+                }
             }
+            else
+            {
+                foreach (ShopOffer offer in app.Database.VipShop)
+                {
+                    ShopOffer local = offer;
+                    string name = SysUi.ItemName(app, offer.TemplateId);
+                    var btn = SysUi.Row(body, "v" + offer.Id, $"{name}  {offer.AValue1}点券", () => PhoneNet.VipStoreBuy(local.Id));
+                    ShopScreen.DecorateIcon(app, btn, offer.TemplateId);
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastVipStoreJson)) SysUi.Note(body, PhoneNet.LastVipStoreJson);
         }
     }
 

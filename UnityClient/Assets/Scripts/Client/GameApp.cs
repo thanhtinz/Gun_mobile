@@ -632,6 +632,21 @@ namespace GunMobile.Client
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && (_currentModuleId == "oneyuan" || _currentModuleId == "shop")) RefreshCurrentModule();
                         break;
+                    case PhoneMsg.ActivityQuestClaim:
+                        PhoneNet.LastActivityQuestJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "quest" || _currentModuleId == "activityquest")) RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SwornAction:
+                        PhoneNet.LastSwornJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "auction" || _currentModuleId == "friend")) RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.VipStoreBuy:
+                        PhoneNet.LastVipStoreJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "vip") RefreshCurrentModule();
+                        break;
                     case PhoneMsg.AuditoriumAction:
                         PhoneNet.LastAuditoriumJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -855,6 +870,14 @@ namespace GunMobile.Client
             ParseNewYearClaimedFromServer(json);
             ParseIntListFromServer(json, "calendarClaimedDays", Profile.CalendarClaimedDays ?? (Profile.CalendarClaimedDays = new List<int>()));
             ParseIntListFromServer(json, "oneYuanBought", Profile.OneYuanBought ?? (Profile.OneYuanBought = new List<int>()));
+            ParseIntListFromServer(json, "activityQuestClaimed", Profile.ActivityQuestClaimed ?? (Profile.ActivityQuestClaimed = new List<int>()));
+            ParseIntListFromServer(json, "activityQuestCompleted", Profile.ActivityQuestCompleted ?? (Profile.ActivityQuestCompleted = new List<int>()));
+            ParseIntListFromServer(json, "vipStoreBought", Profile.VipStoreBought ?? (Profile.VipStoreBought = new List<int>()));
+            Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
+            string swornNick = JsonStr(json, "swornNick", null);
+            if (swornNick != null) Profile.SwornNick = swornNick;
+            Profile.SwornLevel = JsonInt(json, "swornLevel", Profile.SwornLevel);
+            Profile.SwornGp = JsonInt(json, "swornGp", Profile.SwornGp);
             ParseBankDepositsFromServer(json);
             ParseSweepMissionClearsFromServer(json);
             ParseIntListFromServer(json, "jampsDebrisOwned", Profile.JampsDebrisOwned ?? (Profile.JampsDebrisOwned = new List<int>()));

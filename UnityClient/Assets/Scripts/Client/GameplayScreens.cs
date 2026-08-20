@@ -191,6 +191,28 @@ namespace GunMobile.Client
                     break;
                 }
             }
+
+            ShopScreen.AddNote(scroll.content, "— 活动任务 activityquestlist_out.xml —");
+            if (app.Database != null)
+            {
+                app.Profile.EnsureActivityQuestClaimed();
+                int shownAct = 0;
+                foreach (ActivityQuestInfo aq in app.Database.ActivityQuestList)
+                {
+                    bool claimed = app.Profile.ActivityQuestClaimed.Contains(aq.Id) || app.Profile.ActivityQuestClaimed.Contains(aq.Id * 100);
+                    string state = claimed ? "已领" : "领取";
+                    string cap = "活动 " + aq.Title + "  T" + aq.QuestType + " D" + aq.Period + "  [" + state + "]";
+                    ActivityQuestInfo local = aq;
+                    var btn = UiKit.Button(scroll.content, "aq" + aq.Id, cap, () => PhoneNet.ClaimActivityQuest(local.Id), new Vector2(0f, 72f));
+                    btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
+                    shownAct++;
+                    if (shownAct >= 40) break;
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastActivityQuestJson))
+            {
+                ShopScreen.AddNote(scroll.content, PhoneNet.LastActivityQuestJson);
+            }
         }
 
         static string FormatQuestProgress(GameApp app, QuestInfo q)
