@@ -257,6 +257,9 @@ namespace GunMobile.Net
         public const ushort MountDraw = 210;
         public const ushort PetFightProperty = 211;
         public const ushort NewYearRankClaim = 212;
+        public const ushort DailyAwardClaim = 213;
+        public const ushort ElfTemplateSelect = 214;
+        public const ushort ButterflyAction = 215;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

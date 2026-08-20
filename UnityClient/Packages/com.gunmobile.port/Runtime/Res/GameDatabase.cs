@@ -977,9 +977,35 @@ namespace GunMobile.Res
     {
         public int TemplateId;
         public string Name = "";
+        public int ElfType;
         public int StarLevel;
         public int AttackHint;
         public int HpHint;
+        public int MaxSkillCount;
+        public string Description = "";
+    }
+
+    public sealed class DailyAwardInfo
+    {
+        public int Id;
+        public int Count;
+        public int TemplateId;
+        public int Type;
+        public int ValidDate;
+        public int GetWay;
+        public int AwardDays;
+        public bool IsBinds;
+        public string CountRemark = "";
+    }
+
+    public sealed class ButterflyGradeInfo
+    {
+        public int Grades;
+        public int Gp;
+        public int FeelingMax;
+        public int DayFeeling;
+        public int DayFondMax;
+        public int GradeRewardItemId;
     }
 
     public sealed class FarmRecipe
@@ -1509,6 +1535,9 @@ namespace GunMobile.Res
         public Dictionary<int, HonorSystemLevelInfo> HonorSystemLevels { get; } = new Dictionary<int, HonorSystemLevelInfo>();
         public Dictionary<int, TotemHonorEntry> TotemHonorEntries { get; } = new Dictionary<int, TotemHonorEntry>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
+        public Dictionary<int, DailyAwardInfo> DailyAwards { get; } = new Dictionary<int, DailyAwardInfo>();
+        public List<DailyAwardInfo> DailyAwardList { get; } = new List<DailyAwardInfo>();
+        public Dictionary<int, ButterflyGradeInfo> ButterflyGrades { get; } = new Dictionary<int, ButterflyGradeInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
         public List<SignReward> SignIn { get; } = new List<SignReward>();
@@ -1611,6 +1640,8 @@ namespace GunMobile.Res
             db.LoadFirstPayShop(loader);
             db.LoadFirstCopy(loader);
             db.LoadElves(loader);
+            db.LoadDailyAwards(loader);
+            db.LoadButterfly(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
             db.LoadSignIn(loader);
@@ -6834,21 +6865,72 @@ namespace GunMobile.Res
 
         void LoadElves(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/TS_ElfTemplate.xml", out XmlResultTable table))
-            {
-                return;
-            }
+            LoadElfFile(loader, "Request/Elf_Template_Info.xml");
+            LoadElfFile(loader, "Request/TS_ElfTemplate.xml");
+        }
 
+        void LoadElfFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
             foreach (var row in table.Rows)
             {
-                int id = Int(row, "TemplateId");
-                Elves[id] = new ElfInfo
+                int id = FirstInt(row, "TemplateId", "TemplateID");
+                if (id <= 0) continue;
+                var info = new ElfInfo
                 {
                     TemplateId = id,
                     Name = Str(row, "TemplateName"),
+                    ElfType = Int(row, "ElfType"),
                     StarLevel = Int(row, "StarLevel"),
                     AttackHint = FirstInt(Str(row, "AtckRandoms")),
-                    HpHint = FirstInt(Str(row, "HPRandoms"))
+                    HpHint = FirstInt(Str(row, "HPRandoms")),
+                    MaxSkillCount = Int(row, "MaxSkillCount"),
+                    Description = Str(row, "Description")
+                };
+                if (!Elves.ContainsKey(id) || path.IndexOf("Elf_Template_Info", StringComparison.OrdinalIgnoreCase) >= 0)
+                    Elves[id] = info;
+            }
+        }
+
+        void LoadDailyAwards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/DailyAwardList.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = FirstInt(row, "ID", "Id");
+                if (id <= 0 || DailyAwards.ContainsKey(id)) continue;
+                var info = new DailyAwardInfo
+                {
+                    Id = id,
+                    Count = Int(row, "Count"),
+                    TemplateId = FirstInt(row, "TemplateID", "TemplateId"),
+                    Type = Int(row, "Type"),
+                    ValidDate = Int(row, "ValidDate"),
+                    GetWay = Int(row, "GetWay"),
+                    AwardDays = Int(row, "AwardDays"),
+                    IsBinds = Bool(row, "IsBinds"),
+                    CountRemark = Str(row, "CountRemark")
+                };
+                DailyAwards[id] = info;
+                DailyAwardList.Add(info);
+            }
+        }
+
+        void LoadButterfly(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_Butterfly.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int grades = Int(row, "Grades");
+                if (grades <= 0 || ButterflyGrades.ContainsKey(grades)) continue;
+                ButterflyGrades[grades] = new ButterflyGradeInfo
+                {
+                    Grades = grades,
+                    Gp = Int(row, "Gp"),
+                    FeelingMax = Int(row, "FeelingMax"),
+                    DayFeeling = Int(row, "DayFeeling"),
+                    DayFondMax = Int(row, "DayFondMax"),
+                    GradeRewardItemId = Int(row, "GradeRewardItemId")
                 };
             }
         }
@@ -8478,6 +8560,89 @@ namespace GunMobile.Res
             atk += intimacyLevel * 2;
             def += intimacyLevel * 2;
             hp += intimacyLevel * 10;
+        }
+
+        public ElfInfo GetElf(int templateId)
+        {
+            Elves.TryGetValue(templateId, out ElfInfo row);
+            return row;
+        }
+
+        public void ApplyElfTemplateBonus(int elfId, ref int atk, ref int def, ref int hp)
+        {
+            if (elfId <= 0) return;
+            ElfInfo elf = GetElf(elfId);
+            if (elf == null) return;
+            atk += elf.AttackHint / 3;
+            def += elf.StarLevel;
+            hp += elf.HpHint / 2;
+        }
+
+        public DailyAwardInfo GetDailyAward(int id)
+        {
+            DailyAwards.TryGetValue(id, out DailyAwardInfo row);
+            return row;
+        }
+
+        public bool IsDailyAwardDailyReset(int getWay)
+        {
+            return getWay == 1 || getWay == 2 || getWay == 3;
+        }
+
+        public bool IsDailyAwardEligible(DailyAwardInfo award, int dayOfMonth, int loginDays, int streakDays)
+        {
+            if (award == null) return false;
+            switch (award.GetWay)
+            {
+                case 0: return award.AwardDays <= 0 || dayOfMonth == award.AwardDays;
+                case 1:
+                case 2:
+                case 3: return true;
+                case 4: return loginDays >= Mathf.Max(1, award.AwardDays);
+                case 11: return streakDays >= Mathf.Max(1, award.AwardDays);
+                default: return award.AwardDays <= 0 || dayOfMonth == award.AwardDays || loginDays >= award.AwardDays;
+            }
+        }
+
+        public ButterflyGradeInfo GetButterflyGrade(int grade)
+        {
+            ButterflyGrades.TryGetValue(grade, out ButterflyGradeInfo row);
+            return row;
+        }
+
+        public ButterflyGradeInfo GetButterflyNextGrade(int currentGrade)
+        {
+            return GetButterflyGrade(currentGrade <= 0 ? 1 : currentGrade + 1);
+        }
+
+        public int ButterflyFeedGoldCost()
+        {
+            return ConfigCsvInt("ButterflyFeed", 1, 500);
+        }
+
+        public int ButterflyFeedFeelingGain(ButterflyGradeInfo row)
+        {
+            int cfg = ConfigCsvInt("ButterflyFeed", 2, 0);
+            if (cfg > 0) return cfg;
+            return row != null ? Mathf.Max(1, row.DayFeeling) : 10;
+        }
+
+        public int ConfigCsvInt(string name, int index, int fallback = 0)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw)) return fallback;
+            string[] parts = raw.Split(',');
+            if (index < 0 || index >= parts.Length) return fallback;
+            return int.TryParse(parts[index].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) ? n : fallback;
+        }
+
+        public void ApplyButterflyBonus(int equipped, int grade, ref int atk, ref int def, ref int hp)
+        {
+            if (equipped <= 0 || grade <= 0) return;
+            atk += grade * 2;
+            def += grade;
+            hp += grade * 8;
+            ButterflyGradeInfo row = GetButterflyGrade(grade);
+            if (row != null && row.FeelingMax > 0) hp += row.FeelingMax / 30;
         }
 
         public static bool Bool(IReadOnlyDictionary<string, string> row, string key)

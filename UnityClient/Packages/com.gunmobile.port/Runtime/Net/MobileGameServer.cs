@@ -185,6 +185,17 @@ namespace GunMobile.Net
         public int ElfIntimacyLevel;
         public int ElfIntimacyDay = -1;
         public int ElfIntimacyActions;
+        public List<int> DailyAwardClaimed = new List<int>();
+        public List<int> DailyAwardDayClaimed = new List<int>();
+        public int DailyAwardDay = -1;
+        public int DailyAwardLoginDays;
+        public int DailyAwardStreak;
+        public int ButterflyGrade;
+        public int ButterflyGp;
+        public int ButterflyFeeling;
+        public int ButterflyDayFond;
+        public int ButterflyEquipped;
+        public int ButterflyDay = -1;
         public int NextEmblemId = 1;
         public int NextSoulStampId = 1;
         public int CalendarMonth;
@@ -424,6 +435,47 @@ namespace GunMobile.Net
         }
         public void SyncElfIntimacyLevel(GameDatabase db) { ElfIntimacyLevel = db != null ? db.ElfIntimacyLevelFromExp(ElfIntimacyExp) : 0; }
         public void TouchElfIntimacyDay() { int day = DateTime.UtcNow.DayOfYear; if (ElfIntimacyDay != day) { ElfIntimacyDay = day; ElfIntimacyActions = 0; } }
+        public void EnsureDailyAwardClaimed()
+        {
+            if (DailyAwardClaimed == null) DailyAwardClaimed = new List<int>();
+            if (DailyAwardDayClaimed == null) DailyAwardDayClaimed = new List<int>();
+        }
+        public void TouchDailyAwardDay()
+        {
+            EnsureDailyAwardClaimed();
+            int day = DateTime.UtcNow.DayOfYear;
+            if (DailyAwardDay != day)
+            {
+                if (DailyAwardDay >= 0)
+                {
+                    int prev = DailyAwardDay;
+                    if (day == prev + 1 || (prev >= 365 && day == 1)) DailyAwardStreak++;
+                    else DailyAwardStreak = 1;
+                    DailyAwardLoginDays++;
+                }
+                else
+                {
+                    DailyAwardStreak = Mathf.Max(1, DailyAwardStreak);
+                    if (DailyAwardLoginDays <= 0) DailyAwardLoginDays = 1;
+                }
+                DailyAwardDay = day;
+                DailyAwardDayClaimed.Clear();
+            }
+        }
+        public void EnsureButterfly()
+        {
+            if (ButterflyGrade < 0) ButterflyGrade = 0;
+            if (ButterflyFeeling < 0) ButterflyFeeling = 0;
+            if (ButterflyGp < 0) ButterflyGp = 0;
+            if (ButterflyDayFond < 0) ButterflyDayFond = 0;
+            if (ButterflyEquipped < 0) ButterflyEquipped = 0;
+        }
+        public void TouchButterflyDay()
+        {
+            EnsureButterfly();
+            int day = DateTime.UtcNow.DayOfYear;
+            if (ButterflyDay != day) { ButterflyDay = day; ButterflyDayFond = 0; }
+        }
 
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
@@ -562,6 +614,9 @@ namespace GunMobile.Net
             db.ApplyCardBookletBonus(OwnedCardTemplateIds, CardBookletProfiles, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             SyncElfIntimacyLevel(db);
             db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);
+            db.ApplyElfTemplateBonus(ElfId, ref atk, ref def, ref hp);
+            EnsureButterfly();
+            db.ApplyButterflyBonus(ButterflyEquipped, ButterflyGrade, ref atk, ref def, ref hp);
             db.ApplyGuildLevelBonus(GuildLevel, ref atk);
 
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
@@ -793,6 +848,21 @@ namespace GunMobile.Net
             J(sb, "elfIntimacyExp", ElfIntimacyExp); sb.Append(",");
             J(sb, "elfIntimacyLevel", ElfIntimacyLevel); sb.Append(",");
             J(sb, "elfIntimacyActions", ElfIntimacyActions); sb.Append(",");
+            EnsureDailyAwardClaimed();
+            sb.Append("\"dailyAwardClaimed\":[");
+            for (int i = 0; i < DailyAwardClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DailyAwardClaimed[i]); }
+            sb.Append("],");
+            sb.Append("\"dailyAwardDayClaimed\":[");
+            for (int i = 0; i < DailyAwardDayClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DailyAwardDayClaimed[i]); }
+            sb.Append("],");
+            J(sb, "dailyAwardLoginDays", DailyAwardLoginDays); sb.Append(",");
+            J(sb, "dailyAwardStreak", DailyAwardStreak); sb.Append(",");
+            EnsureButterfly();
+            J(sb, "butterflyGrade", ButterflyGrade); sb.Append(",");
+            J(sb, "butterflyGp", ButterflyGp); sb.Append(",");
+            J(sb, "butterflyFeeling", ButterflyFeeling); sb.Append(",");
+            J(sb, "butterflyDayFond", ButterflyDayFond); sb.Append(",");
+            J(sb, "butterflyEquipped", ButterflyEquipped); sb.Append(",");
             EnsureCalendarClaimed();
             J(sb, "calendarMonth", CalendarMonth); sb.Append(",");
             sb.Append("\"calendarClaimedDays\":["); for (int i = 0; i < CalendarClaimedDays.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CalendarClaimedDays[i]); } sb.Append("],");
@@ -2125,6 +2195,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.NewYearRankClaim:
                     HandleNewYearRankClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.DailyAwardClaim:
+                    HandleDailyAwardClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.ElfTemplateSelect:
+                    HandleElfTemplateSelect(player, ns, json);
+                    break;
+
+                case PhoneMsg.ButterflyAction:
+                    HandleButterflyAction(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -3495,6 +3577,128 @@ namespace GunMobile.Net
 
             int maxRank = _db != null ? _db.ConfigInt("NewYearRankCount", 2000) : 2000;
             return Mathf.Clamp(better + 1, 1, Mathf.Max(1, maxRank));
+        }
+
+
+        void HandleDailyAwardClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.DailyAwardList.Count == 0)
+            { Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchDailyAwardDay();
+            int awardId = JI(json, "awardId", JI(json, "id", 0));
+            DailyAwardInfo award = awardId > 0 ? _db.GetDailyAward(awardId) : null;
+            if (award == null)
+            {
+                int dayOfMonth = DateTime.Now.Day;
+                foreach (DailyAwardInfo row in _db.DailyAwardList)
+                {
+                    bool daily = _db.IsDailyAwardDailyReset(row.GetWay);
+                    if (daily && player.DailyAwardDayClaimed.Contains(row.Id)) continue;
+                    if (!daily && player.DailyAwardClaimed.Contains(row.Id)) continue;
+                    if (!_db.IsDailyAwardEligible(row, dayOfMonth, player.DailyAwardLoginDays, player.DailyAwardStreak)) continue;
+                    award = row; break;
+                }
+            }
+            if (award == null) { Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            bool isDaily = _db.IsDailyAwardDailyReset(award.GetWay);
+            if (isDaily && player.DailyAwardDayClaimed.Contains(award.Id))
+            { Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (!isDaily && player.DailyAwardClaimed.Contains(award.Id))
+            { Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (!_db.IsDailyAwardEligible(award, DateTime.Now.Day, player.DailyAwardLoginDays, player.DailyAwardStreak))
+            { Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":false,\"err\":\"eligible\"}"); return; }
+            int count = Mathf.Max(0, award.Count);
+            if (_db.IsGoldTemplate(award.TemplateId))
+            { int goldGain = count > 0 ? count : 100; player.Gold += goldGain; count = goldGain; }
+            else if (award.TemplateId > 0)
+            { int give = count > 0 ? count : 1; player.AddItem(award.TemplateId, give); count = give; }
+            else if (award.Type == 2) { player.Gold += 50; count = 50; }
+            if (isDaily) player.DailyAwardDayClaimed.Add(award.Id); else player.DailyAwardClaimed.Add(award.Id);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DailyAwardClaim, "{\"ok\":true,\"awardId\":" + award.Id + ",\"templateId\":" + award.TemplateId + ",\"count\":" + count + ",\"getWay\":" + award.GetWay + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleElfTemplateSelect(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.ElfTemplateSelect, "{\"ok\":false}"); return; }
+            int elfId = JI(json, "elfId", JI(json, "templateId", 0));
+            if (elfId < 0) elfId = 0;
+            if (elfId > 0 && _db.GetElf(elfId) == null)
+            { Send(ns, PhoneMsg.ElfTemplateSelect, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            player.ElfId = elfId; player.RecalcStats(_db); SavePlayer(player);
+            ElfInfo elf = _db.GetElf(elfId);
+            Send(ns, PhoneMsg.ElfTemplateSelect, "{\"ok\":true,\"elfId\":" + elfId +
+                (elf != null ? ",\"name\":\"" + (elf.Name ?? "").Replace("\"", "") + "\",\"star\":" + elf.StarLevel + ",\"atk\":" + elf.AttackHint + ",\"hp\":" + elf.HpHint : "") + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleButterflyAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ButterflyGrades.Count == 0)
+            { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchButterflyDay();
+            string action = JS(json, "action", "equip");
+            if (string.IsNullOrEmpty(action)) action = "equip";
+            action = action.ToLowerInvariant();
+            if (action == "equip")
+            {
+                if (player.ButterflyGrade <= 0)
+                {
+                    ButterflyGradeInfo first = _db.GetButterflyGrade(1);
+                    if (first == null) { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+                    player.ButterflyGrade = 1;
+                    player.ButterflyGp = Mathf.Max(player.ButterflyGp, first.Gp);
+                    if (first.GradeRewardItemId > 0) player.AddItem(first.GradeRewardItemId, 1);
+                }
+                player.ButterflyEquipped = 1; player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":true,\"action\":\"equip\",\"butterflyGrade\":" + player.ButterflyGrade + ",\"butterflyEquipped\":1}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson()); return;
+            }
+            if (action == "unequip")
+            {
+                player.ButterflyEquipped = 0; player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":true,\"action\":\"unequip\",\"butterflyEquipped\":0}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson()); return;
+            }
+            if (action == "feed" || action == "fond")
+            {
+                ButterflyGradeInfo row = _db.GetButterflyGrade(Mathf.Max(1, player.ButterflyGrade));
+                if (row == null) row = _db.GetButterflyGrade(1);
+                if (row == null) { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+                if (player.ButterflyDayFond >= Mathf.Max(1, row.DayFondMax))
+                { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+                int cost = _db.ButterflyFeedGoldCost();
+                if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (cost > 0) player.Gold -= cost;
+                int gain = _db.ButterflyFeedFeelingGain(row);
+                player.ButterflyFeeling = Mathf.Min(Mathf.Max(1, row.FeelingMax), player.ButterflyFeeling + gain);
+                player.ButterflyDayFond++; player.ButterflyGp += Mathf.Max(1, gain / 5);
+                if (player.ButterflyGrade <= 0) player.ButterflyGrade = 1;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":true,\"action\":\"" + action + "\",\"cost\":" + cost + ",\"feeling\":" + player.ButterflyFeeling + ",\"gp\":" + player.ButterflyGp + ",\"dayFond\":" + player.ButterflyDayFond + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson()); return;
+            }
+            if (action == "upgrade")
+            {
+                ButterflyGradeInfo next = _db.GetButterflyNextGrade(player.ButterflyGrade);
+                if (next == null) { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                if (player.ButterflyGp < next.Gp)
+                {
+                    int cost = Mathf.Max(100, next.Gp - player.ButterflyGp);
+                    if (player.Gold < cost) { Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"gp\",\"need\":" + next.Gp + "}"); return; }
+                    player.Gold -= cost; player.ButterflyGp = next.Gp;
+                }
+                player.ButterflyGrade = next.Grades;
+                if (next.GradeRewardItemId > 0) player.AddItem(next.GradeRewardItemId, 1);
+                ButterflyGradeInfo cur = _db.GetButterflyGrade(player.ButterflyGrade);
+                if (cur != null) player.ButterflyFeeling = Mathf.Min(player.ButterflyFeeling, cur.FeelingMax);
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":true,\"action\":\"upgrade\",\"butterflyGrade\":" + player.ButterflyGrade + ",\"butterflyGp\":" + player.ButterflyGp + (next.GradeRewardItemId > 0 ? ",\"rewardItem\":" + next.GradeRewardItemId : "") + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson()); return;
+            }
+            Send(ns, PhoneMsg.ButterflyAction, "{\"ok\":false,\"err\":\"action\"}");
         }
 
         void HandlePeakBattleStart(ServerPlayer player, NetworkStream ns, string json)
@@ -8914,6 +9118,17 @@ namespace GunMobile.Net
             public int ElfIntimacyLevel;
             public int ElfIntimacyDay = -1;
             public int ElfIntimacyActions;
+            public List<int> DailyAwardClaimed = new List<int>();
+            public List<int> DailyAwardDayClaimed = new List<int>();
+            public int DailyAwardDay = -1;
+            public int DailyAwardLoginDays;
+            public int DailyAwardStreak;
+            public int ButterflyGrade;
+            public int ButterflyGp;
+            public int ButterflyFeeling;
+            public int ButterflyDayFond;
+            public int ButterflyEquipped;
+            public int ButterflyDay = -1;
             public int CalendarMonth;
             public List<int> CalendarClaimedDays = new List<int>();
             public int AuditoriumDay = -1, AuditoriumActions;
@@ -9052,6 +9267,17 @@ namespace GunMobile.Net
                 ElfIntimacyLevel = p.ElfIntimacyLevel,
                 ElfIntimacyDay = p.ElfIntimacyDay,
                 ElfIntimacyActions = p.ElfIntimacyActions,
+                DailyAwardClaimed = p.DailyAwardClaimed ?? new List<int>(),
+                DailyAwardDayClaimed = p.DailyAwardDayClaimed ?? new List<int>(),
+                DailyAwardDay = p.DailyAwardDay,
+                DailyAwardLoginDays = p.DailyAwardLoginDays,
+                DailyAwardStreak = p.DailyAwardStreak,
+                ButterflyGrade = p.ButterflyGrade,
+                ButterflyGp = p.ButterflyGp,
+                ButterflyFeeling = p.ButterflyFeeling,
+                ButterflyDayFond = p.ButterflyDayFond,
+                ButterflyEquipped = p.ButterflyEquipped,
+                ButterflyDay = p.ButterflyDay,
                 CalendarMonth = p.CalendarMonth,
                 CalendarClaimedDays = p.CalendarClaimedDays ?? new List<int>(),
                 AuditoriumDay = p.AuditoriumDay, AuditoriumActions = p.AuditoriumActions,
@@ -9192,6 +9418,17 @@ namespace GunMobile.Net
                 ElfIntimacyLevel = s.ElfIntimacyLevel,
                 ElfIntimacyDay = s.ElfIntimacyDay,
                 ElfIntimacyActions = s.ElfIntimacyActions,
+                DailyAwardClaimed = s.DailyAwardClaimed ?? new List<int>(),
+                DailyAwardDayClaimed = s.DailyAwardDayClaimed ?? new List<int>(),
+                DailyAwardDay = s.DailyAwardDay,
+                DailyAwardLoginDays = s.DailyAwardLoginDays,
+                DailyAwardStreak = s.DailyAwardStreak,
+                ButterflyGrade = s.ButterflyGrade,
+                ButterflyGp = s.ButterflyGp,
+                ButterflyFeeling = s.ButterflyFeeling,
+                ButterflyDayFond = s.ButterflyDayFond,
+                ButterflyEquipped = s.ButterflyEquipped,
+                ButterflyDay = s.ButterflyDay,
                 CalendarMonth = s.CalendarMonth,
                 CalendarClaimedDays = s.CalendarClaimedDays ?? new List<int>(),
                 AuditoriumDay = s.AuditoriumDay, AuditoriumActions = s.AuditoriumActions,

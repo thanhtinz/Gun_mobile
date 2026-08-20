@@ -214,6 +214,9 @@ namespace GunMobile.Client
                 case "elf":
                     ElfScreen.Show(_safe, this);
                     return;
+                case "butterfly":
+                    ButterflyScreen.Show(_safe, this);
+                    return;
                 case "farm":
                     FarmScreen.Show(_safe, this);
                     return;
@@ -510,11 +513,16 @@ namespace GunMobile.Client
                     case PhoneMsg.PetSkillUnlock:
                     case PhoneMsg.MountDraw:
                     case PhoneMsg.PetFightProperty:
+                    case PhoneMsg.DailyAwardClaim:
+                    case PhoneMsg.ElfTemplateSelect:
+                    case PhoneMsg.ButterflyAction:
                     case PhoneMsg.NewYearRankClaim:
                         if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
                         if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
                         if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
                         if (msg.Id == PhoneMsg.NewYearRankClaim) PhoneNet.LastNewYearJson = msg.Json;
+                        if (msg.Id == PhoneMsg.DailyAwardClaim) PhoneNet.LastDailyAwardJson = msg.Json;
+                        if (msg.Id == PhoneMsg.ButterflyAction) PhoneNet.LastButterflyJson = msg.Json;
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -845,6 +853,16 @@ namespace GunMobile.Client
             Profile.ElfIntimacyExp = JsonInt(json, "elfIntimacyExp", Profile.ElfIntimacyExp);
             Profile.ElfIntimacyLevel = JsonInt(json, "elfIntimacyLevel", Profile.ElfIntimacyLevel);
             Profile.ElfIntimacyActions = JsonInt(json, "elfIntimacyActions", Profile.ElfIntimacyActions);
+            Profile.EnsureDailyAwardClaimed();
+            ParseIntListFromServer(json, "dailyAwardClaimed", Profile.DailyAwardClaimed);
+            ParseIntListFromServer(json, "dailyAwardDayClaimed", Profile.DailyAwardDayClaimed);
+            Profile.DailyAwardLoginDays = JsonInt(json, "dailyAwardLoginDays", Profile.DailyAwardLoginDays);
+            Profile.DailyAwardStreak = JsonInt(json, "dailyAwardStreak", Profile.DailyAwardStreak);
+            Profile.ButterflyGrade = JsonInt(json, "butterflyGrade", Profile.ButterflyGrade);
+            Profile.ButterflyGp = JsonInt(json, "butterflyGp", Profile.ButterflyGp);
+            Profile.ButterflyFeeling = JsonInt(json, "butterflyFeeling", Profile.ButterflyFeeling);
+            Profile.ButterflyDayFond = JsonInt(json, "butterflyDayFond", Profile.ButterflyDayFond);
+            Profile.ButterflyEquipped = JsonInt(json, "butterflyEquipped", Profile.ButterflyEquipped);
             Profile.CalendarMonth = JsonInt(json, "calendarMonth", Profile.CalendarMonth);
             Profile.AuditoriumActions = JsonInt(json, "auditoriumActions", Profile.AuditoriumActions);
             Profile.BoguAdventureActions = JsonInt(json, "boguAdventureActions", Profile.BoguAdventureActions);

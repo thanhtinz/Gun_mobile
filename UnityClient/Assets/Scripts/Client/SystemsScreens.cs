@@ -426,7 +426,40 @@ namespace GunMobile.Client
         }
     }
 
-    public static class ElfScreen    public static class ElfScreen
+
+    public static class ButterflyScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "蝶妖 / Butterfly");
+            SysUi.Note(body, "Grade " + app.Profile.ButterflyGrade +
+                "  GP " + app.Profile.ButterflyGp +
+                "  Feeling " + app.Profile.ButterflyFeeling +
+                "  Fond " + app.Profile.ButterflyDayFond +
+                (app.Profile.ButterflyEquipped > 0 ? "  [装备中]" : "  [未装备]"));
+            SysUi.Row(body, "bfEquip", "装备蝶妖", () => PhoneNet.ButterflyAction("equip"));
+            SysUi.Row(body, "bfUnequip", "卸下蝶妖", () => PhoneNet.ButterflyAction("unequip"));
+            SysUi.Row(body, "bfFeed", "喂养 / 亲昵", () => PhoneNet.ButterflyAction("feed"));
+            SysUi.Row(body, "bfUp", "升级蝶妖", () => PhoneNet.ButterflyAction("upgrade"));
+            int shown = 0;
+            if (app.Database != null)
+            {
+                foreach (var kv in app.Database.ButterflyGrades)
+                {
+                    ButterflyGradeInfo g = kv.Value;
+                    bool on = app.Profile.ButterflyGrade == g.Grades;
+                    SysUi.Note(body, (on ? "[当前] " : "") + "Lv" + g.Grades +
+                        "  GP≥" + g.Gp + "  FeelMax " + g.FeelingMax +
+                        "  FondMax " + g.DayFondMax + "  Reward#" + g.GradeRewardItemId);
+                    if (++shown >= 20) break;
+                }
+                if (app.Database.ButterflyGrades.Count == 0) SysUi.Note(body, "Missing TS_Butterfly.xml");
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastButterflyJson)) SysUi.Note(body, PhoneNet.LastButterflyJson);
+        }
+    }
+
+    public static class ElfScreen
     {
         public static void Show(RectTransform safe, GameApp app)
         {
@@ -440,16 +473,16 @@ namespace GunMobile.Client
                 ElfInfo local = e;
                 bool on = app.Profile.ElfId == e.TemplateId;
                 SysUi.Row(body, "e" + e.TemplateId,
-                    $"{(on ? "[跟随] " : "")}{e.Name}  ★{e.StarLevel}  ATK~{e.AttackHint} HP~{e.HpHint}",
+                    $"{(on ? "[跟随] " : "")}{e.Name}  ★{e.StarLevel}  T{e.ElfType}  ATK~{e.AttackHint} HP~{e.HpHint}",
                     () =>
                     {
-                        PhoneNet.SelectElf(local.TemplateId);
+                        PhoneNet.SelectElfTemplate(local.TemplateId);
                     });
             }
 
             if (app.Database.Elves.Count == 0)
             {
-                SysUi.Note(body, "Missing TS_ElfTemplate.xml");
+                SysUi.Note(body, "Missing Elf_Template_Info.xml / TS_ElfTemplate.xml");
             }
         }
     }
@@ -1715,6 +1748,29 @@ namespace GunMobile.Client
                     SysUi.Row(body, "cal" + r.Day, label, claimed || r.Day > today ? null : (System.Action)(() => PhoneNet.CalendarClaim(day)));
                 }
             }
+            SysUi.Note(body, "— 每日领取 DailyAwardList.xml —");
+            app.Profile.EnsureDailyAwardClaimed();
+            SysUi.Note(body, "登录 " + app.Profile.DailyAwardLoginDays + " 天  连续 " + app.Profile.DailyAwardStreak + " 天");
+            SysUi.Row(body, "daAuto", "领取可用每日奖励", () => PhoneNet.ClaimDailyAward(0));
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (DailyAwardInfo a in app.Database.DailyAwardList)
+                {
+                    bool daily = app.Database.IsDailyAwardDailyReset(a.GetWay);
+                    bool claimed = daily
+                        ? app.Profile.DailyAwardDayClaimed.Contains(a.Id)
+                        : app.Profile.DailyAwardClaimed.Contains(a.Id);
+                    string label = (claimed ? "[已领] " : "") + "#" + a.Id + " GetWay" + a.GetWay +
+                        " Day" + a.AwardDays + "  T" + a.TemplateId + " x" + a.Count;
+                    int id = a.Id;
+                    SysUi.Row(body, "da" + a.Id, label, claimed ? null : (System.Action)(() => PhoneNet.ClaimDailyAward(id)));
+                    if (++shown >= 24) break;
+                }
+                if (app.Database.DailyAwardList.Count == 0) SysUi.Note(body, "Missing DailyAwardList.xml");
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastDailyAwardJson)) SysUi.Note(body, PhoneNet.LastDailyAwardJson);
+
             if (!string.IsNullOrEmpty(PhoneNet.LastCalendarJson)) SysUi.Note(body, PhoneNet.LastCalendarJson);
 
             SysUi.Note(body, "— 成就快捷 —");

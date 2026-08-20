@@ -32,6 +32,8 @@ namespace GunMobile.Client
         public static string LastWorshipMoonJson;
         public static string LastSuperLuckerJson;
         public static string LastCalendarJson;
+        public static string LastDailyAwardJson;
+        public static string LastButterflyJson;
         public static string LastAchievementJson;
         public static string LastLinkPalJson;
         public static string LastMountSkillJson;
@@ -417,7 +419,22 @@ namespace GunMobile.Client
 
         public static void NewYearRankClaim(int rewardId = 0)
         {
-            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}");
+            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}
+
+        public static void ClaimDailyAward(int awardId = 0)
+        {
+            Road?.Send(PhoneMsg.DailyAwardClaim, "{"awardId":" + awardId + "}");
+        }
+
+        public static void SelectElfTemplate(int elfId)
+        {
+            Road?.Send(PhoneMsg.ElfTemplateSelect, "{"elfId":" + elfId + "}");
+        }
+
+        public static void ButterflyAction(string action)
+        {
+            Road?.Send(PhoneMsg.ButterflyAction, "{"action":"" + (action ?? "equip").Replace(""", "") + ""}");
+        }");
         }
 
         public static void CarnivalDraw()

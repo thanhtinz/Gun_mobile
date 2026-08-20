@@ -134,6 +134,15 @@ namespace GunMobile.Client
         public int ElfIntimacyExp;
         public int ElfIntimacyLevel;
         public int ElfIntimacyActions;
+        public List<int> DailyAwardClaimed = new List<int>();
+        public List<int> DailyAwardDayClaimed = new List<int>();
+        public int DailyAwardLoginDays;
+        public int DailyAwardStreak;
+        public int ButterflyGrade;
+        public int ButterflyGp;
+        public int ButterflyFeeling;
+        public int ButterflyDayFond;
+        public int ButterflyEquipped;
         public int CalendarMonth;
         public List<int> CalendarClaimedDays = new List<int>();
         public int AuditoriumActions;
@@ -183,6 +192,11 @@ namespace GunMobile.Client
         public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
+        public void EnsureDailyAwardClaimed()
+        {
+            if (DailyAwardClaimed == null) DailyAwardClaimed = new List<int>();
+            if (DailyAwardDayClaimed == null) DailyAwardDayClaimed = new List<int>();
+        }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
@@ -649,11 +663,8 @@ namespace GunMobile.Client
                 atk += magicAtk / 4;
                 def += magicDef / 4;
 
-                if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
-                {
-                    atk += elf.AttackHint / 3;
-                    hp += elf.HpHint / 2;
-                }
+                db.ApplyElfTemplateBonus(ElfId, ref atk, ref def, ref hp);
+                db.ApplyButterflyBonus(ButterflyEquipped, ButterflyGrade, ref atk, ref def, ref hp);
 
                 int engrDmg = 0;
                 int engrGuard = 0;
@@ -835,7 +846,8 @@ namespace GunMobile.Client
             new ModuleDef("horse", "坐骑", "Request/mounttemplateOUT.xml"),
             new ModuleDef("achievement", "成就", "Request/achievementlist.xml"),
             new ModuleDef("linkpal", "灵宝", "Request/TS_LinkPalTemplate.xml"),
-            new ModuleDef("elf", "精灵", "Request/TS_ElfIntimacy.xml"),
+            new ModuleDef("elf", "精灵", "Request/Elf_Template_Info.xml"),
+            new ModuleDef("butterfly", "蝶妖", "Request/TS_Butterfly.xml"),
             new ModuleDef("farm", "农场", "Request/foodcomposelist.xml"),
             new ModuleDef("church", "教堂", "Request/TS_EveryDaySignIn.xml"),
             new ModuleDef("consortia", "公会", "Request/CelebByConsortiaRiches.xml"),
