@@ -38,6 +38,8 @@ namespace GunMobile.Client
         public static string LastBoguAdventureJson;
         public static string LastJigsawJson;
         public static string LastBibleJson;
+        public static string LastQuizJson;
+        public static string LastOneYuanJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -177,6 +179,31 @@ namespace GunMobile.Client
         public static void UpgradeManor()
         {
             Road?.Send(PhoneMsg.ManorUpgrade, "{}");
+        }
+
+        public static void UpgradeGoldEquip(int oldTemplateId)
+        {
+            Road?.Send(PhoneMsg.GoldEquipUpgrade, "{\"oldTemplateId\":" + oldTemplateId + "}");
+        }
+
+        public static void UpgradeGlory(int templateId)
+        {
+            Road?.Send(PhoneMsg.GloryUpgrade, "{\"templateId\":" + templateId + "}");
+        }
+
+        public static void RollSigil(int quality)
+        {
+            Road?.Send(PhoneMsg.SigilRoll, "{\"quality\":" + quality + "}");
+        }
+
+        public static void QuizAnswer(int questionId, int option)
+        {
+            Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
+        }
+
+        public static void OneYuanBuy(int id, int goodsId)
+        {
+            Road?.Send(PhoneMsg.OneYuanBuy, "{\"id\":" + id + ",\"goodsId\":" + goodsId + "}");
         }
 
         public static void DoSignIn()

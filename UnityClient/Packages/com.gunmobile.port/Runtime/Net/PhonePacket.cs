@@ -236,6 +236,9 @@ namespace GunMobile.Net
         public const ushort ManorUpgrade = 189;
         public const ushort QuizAnswer = 190;
         public const ushort OneYuanBuy = 191;
+        public const ushort GoldEquipUpgrade = 192;
+        public const ushort GloryUpgrade = 193;
+        public const ushort SigilRoll = 194;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

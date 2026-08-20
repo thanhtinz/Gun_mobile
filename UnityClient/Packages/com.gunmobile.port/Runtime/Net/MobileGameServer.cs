@@ -47,6 +47,11 @@ namespace GunMobile.Net
         public int MountGrade;
         public int MountTalismanId;
         public int ManorGrade = 1;
+        public int GoldEquipId;
+        public int GloryTemplateId;
+        public int SigilQuality = 1;
+        public int SigilProType;
+        public int SigilProValue;
         public int VipLevel;
         public int Honor;
         public int Texp;
@@ -406,6 +411,8 @@ namespace GunMobile.Net
             }
 
             db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+            db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luck, ref hp);
+            db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luck, ref hp);
 
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
@@ -424,6 +431,7 @@ namespace GunMobile.Net
             int magicAtk = 0;
             int magicDef = 0;
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
+            db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
             db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref magicDef);
@@ -521,6 +529,11 @@ namespace GunMobile.Net
             J(sb, "mountGrade", MountGrade); sb.Append(",");
             J(sb, "mountTalismanId", MountTalismanId); sb.Append(",");
             J(sb, "manorGrade", ManorGrade); sb.Append(",");
+            J(sb, "goldEquipId", GoldEquipId); sb.Append(",");
+            J(sb, "gloryTemplateId", GloryTemplateId); sb.Append(",");
+            J(sb, "sigilQuality", SigilQuality); sb.Append(",");
+            J(sb, "sigilProType", SigilProType); sb.Append(",");
+            J(sb, "sigilProValue", SigilProValue); sb.Append(",");
             J(sb, "vipLevel", VipLevel); sb.Append(",");
             J(sb, "honor", Honor); sb.Append(",");
             J(sb, "texp", Texp); sb.Append(",");
@@ -1813,6 +1826,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ManorUpgrade:
                     HandleManorUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.GoldEquipUpgrade:
+                    HandleGoldEquipUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.GloryUpgrade:
+                    HandleGloryUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.SigilRoll:
+                    HandleSigilRoll(player, ns, json);
                     break;
 
                 case PhoneMsg.QuizAnswer:
@@ -4278,17 +4303,40 @@ namespace GunMobile.Net
 
         void HandleQuizAnswer(ServerPlayer player, NetworkStream ns, string json)
         {
-            if (_db == null) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
             player.TouchQuizDay();
             int max = _db.DailyQuizMax();
             if (player.QuizAttempts >= max)
-            { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"limit\",\"attempts\":" + player.QuizAttempts + ",\"max\":" + max + "}"); return; }
+            {
+                Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"limit\",\"attempts\":" + player.QuizAttempts + ",\"max\":" + max + "}");
+                return;
+            }
+
             int questionId = JI(json, "questionId", 0);
             QuizQuestion q = _db.GetQuizQuestion(questionId) ?? _db.PickQuizQuestion(player.QuizAttempts);
-            if (q == null) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            if (q == null)
+            {
+                Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+
             int option = JI(json, "option", 0);
-            if (option <= 0) option = JI(json, "answer", 0);
-            if (option < 1 || option > 4) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"option\"}"); return; }
+            if (option <= 0)
+            {
+                option = JI(json, "answer", 0);
+            }
+
+            if (option < 1 || option > 4)
+            {
+                Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"option\"}");
+                return;
+            }
+
             int gold = _db.QuizGoldReward();
             bool correct = option == q.CorrectOption;
             player.Gold += gold;
@@ -4302,28 +4350,61 @@ namespace GunMobile.Net
 
         void HandleOneYuanBuy(ServerPlayer player, NetworkStream ns, string json)
         {
-            if (_db == null) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
             int id = JI(json, "id", 0);
             int goodsId = JI(json, "goodsId", 0);
             OneYuanGoods row = _db.GetOneYuanGoods(id, goodsId);
-            if (row == null) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"goods\"}"); return; }
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"goods\"}");
+                return;
+            }
+
             player.TouchOneYuanDay();
             int bought = 0;
-            for (int i = 0; i < player.OneYuanBought.Count; i++) if (player.OneYuanBought[i] == row.GoodsId) bought++;
+            for (int i = 0; i < player.OneYuanBought.Count; i++)
+            {
+                if (player.OneYuanBought[i] == row.GoodsId)
+                {
+                    bought++;
+                }
+            }
+
             int limit = _db.OneYuanDailyLimit(row);
-            if (bought >= limit) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"limit\",\"goodsId\":" + row.GoodsId + "}"); return; }
+            if (bought >= limit)
+            {
+                Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"limit\",\"goodsId\":" + row.GoodsId + "}");
+                return;
+            }
+
             int cost = Mathf.Max(0, row.Cost);
             bool gift = row.IsBindMoney != 0;
             if (gift)
             {
-                if (player.Gift < cost) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+                if (player.Gift < cost)
+                {
+                    Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gift\"}");
+                    return;
+                }
+
                 player.Gift -= cost;
             }
             else
             {
-                if (player.Gold < cost) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+
                 player.Gold -= cost;
             }
+
             player.AddItem(row.GoodsId, 1);
             player.OneYuanBought.Add(row.GoodsId);
             SavePlayer(player);
@@ -5518,6 +5599,72 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":true,\"grade\":" + player.ManorGrade + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleGoldEquipUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.GoldEquipUpgrade, "{\"ok\":false}"); return; }
+            int oldId = JI(json, "oldTemplateId", player.EquipWeapon);
+            GoldEquipTemplate row = _db.GetGoldEquipByOld(oldId);
+            if (row == null || row.NewTemplateId <= 0) { Send(ns, PhoneMsg.GoldEquipUpgrade, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            if (player.EquipWeapon != row.OldTemplateId) { Send(ns, PhoneMsg.GoldEquipUpgrade, "{\"ok\":false,\"err\":\"weapon\"}"); return; }
+            int cost = _db.GoldEquipUpgradeGoldCost(row);
+            if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.GoldEquipUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            if (cost > 0) player.Gold -= cost;
+            foreach (BagSlot slot in player.Bag)
+            {
+                if (slot.TemplateId == row.OldTemplateId) slot.TemplateId = row.NewTemplateId;
+            }
+            player.EquipWeapon = row.NewTemplateId;
+            player.WeaponId = row.NewTemplateId;
+            player.GoldEquipId = row.Id;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GoldEquipUpgrade, "{\"ok\":true,\"oldTemplateId\":" + row.OldTemplateId + ",\"newTemplateId\":" + row.NewTemplateId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleGloryUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.GloryUpgrade, "{\"ok\":false}"); return; }
+            int templateId = JI(json, "templateId", player.GloryTemplateId);
+            GloryItemUpgrade row = _db.GetGloryUpgrade(templateId);
+            if (row == null) { Send(ns, PhoneMsg.GloryUpgrade, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            int goldCost = _db.GloryUpgradeGoldCost(row);
+            bool usedItem = row.CostItemId > 0 && player.Consume(row.CostItemId, 1);
+            if (!usedItem && row.CostItemId > 0) goldCost += _db.GloryCostItemGoldFallback(row);
+            if (goldCost > 0 && player.Gold < goldCost)
+            {
+                if (usedItem) player.AddItem(row.CostItemId, 1);
+                Send(ns, PhoneMsg.GloryUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+            if (goldCost > 0) player.Gold -= goldCost;
+            player.GloryTemplateId = row.NextTemplateId > 0 ? row.NextTemplateId : row.TemplateId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GloryUpgrade, "{\"ok\":true,\"templateId\":" + player.GloryTemplateId + ",\"cost\":" + goldCost + ",\"usedItem\":" + (usedItem ? "true" : "false") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSigilRoll(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.SigilRoll, "{\"ok\":false}"); return; }
+            int quality = JI(json, "quality", player.SigilQuality > 0 ? player.SigilQuality : 1);
+            if (quality <= 0) quality = 1;
+            int cost = _db.SigilRollGoldCost();
+            if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.SigilRoll, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            SigilProLimit rolled;
+            lock (_lock) { rolled = _db.RollSigil(quality, _rng); }
+            if (rolled == null) { Send(ns, PhoneMsg.SigilRoll, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            if (cost > 0) player.Gold -= cost;
+            player.SigilQuality = quality;
+            player.SigilProType = rolled.ProType;
+            player.SigilProValue = _db.SigilBonusValue(rolled);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SigilRoll, "{\"ok\":true,\"quality\":" + quality + ",\"proType\":" + player.SigilProType + ",\"proValue\":" + player.SigilProValue + ",\"cost\":" + cost + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -7562,7 +7709,7 @@ namespace GunMobile.Net
             public int Win, Lose;
             public int WeaponId = 7001;
             public int EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon = 7001;
-            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, VipLevel, Honor, Texp;
+            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, VipLevel, Honor, Texp;
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int GuildLevel;
@@ -7673,6 +7820,8 @@ namespace GunMobile.Net
                 EquipCloth = p.EquipCloth, EquipGlass = p.EquipGlass, EquipWeapon = p.EquipWeapon,
                 PetId = p.PetId, CardId = p.CardId, TitleId = p.TitleId, TotemId = p.TotemId,
                 MountGrade = p.MountGrade, MountTalismanId = p.MountTalismanId, ManorGrade = p.ManorGrade,
+                GoldEquipId = p.GoldEquipId, GloryTemplateId = p.GloryTemplateId,
+                SigilQuality = p.SigilQuality, SigilProType = p.SigilProType, SigilProValue = p.SigilProValue,
                 VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName, GuildLevel = p.GuildLevel,
@@ -7789,6 +7938,8 @@ namespace GunMobile.Net
                 PetId = s.PetId, CardId = s.CardId, TitleId = s.TitleId, TotemId = s.TotemId,
                 MountGrade = s.MountGrade, MountTalismanId = s.MountTalismanId,
                 ManorGrade = s.ManorGrade > 0 ? s.ManorGrade : 1,
+                GoldEquipId = s.GoldEquipId, GloryTemplateId = s.GloryTemplateId,
+                SigilQuality = s.SigilQuality > 0 ? s.SigilQuality : 1, SigilProType = s.SigilProType, SigilProValue = s.SigilProValue,
                 VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName, GuildLevel = s.GuildLevel,

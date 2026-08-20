@@ -48,6 +48,11 @@ namespace GunMobile.Client
         public int MountGrade;
         public int MountTalismanId;
         public int ManorGrade = 1;
+        public int GoldEquipId;
+        public int GloryTemplateId;
+        public int SigilQuality = 1;
+        public int SigilProType;
+        public int SigilProValue;
         public int VipLevel;
         public int Texp;
         public int LabyrinthFloor = 1;
@@ -143,6 +148,7 @@ namespace GunMobile.Client
         public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
+        public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
@@ -507,6 +513,8 @@ namespace GunMobile.Client
                 }
 
                 db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+                db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luk, ref hp);
+                db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luk, ref hp);
 
                 if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo spirit))
                 {
@@ -523,6 +531,10 @@ namespace GunMobile.Client
                 int magicAtk = 0;
                 int magicDef = 0;
                 db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
+                int sDmg = 0, sGuard = 0;
+                db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                atk += sDmg;
+                def += sGuard;
                 atk += magicAtk / 4;
                 def += magicDef / 4;
                 db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
@@ -786,6 +798,7 @@ namespace GunMobile.Client
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
+            new ModuleDef("glory", "光辉", "Request/GloryItemUpgradeList.xml"),
             new ModuleDef("firstrecharge", "首充", "Request/ts_firstpayshoptemp.xml", false, "firstrecharge.ui"),
             new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
@@ -793,6 +806,7 @@ namespace GunMobile.Client
             new ModuleDef("worshipthemoon", "拜月", "Request/ServerConfig.xml", false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", "Request/cityoccupationsystems.xml", false, "forcesbattle.ui"),
             new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"),
+            new ModuleDef("sigil", "符印", "Request/TS_SigilProValueLimitTemp.xml"),
             new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化淬炼", "Request/TS_UpgradeTemplate.xml", false, "culture.ui"),

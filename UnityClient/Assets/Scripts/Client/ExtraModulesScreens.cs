@@ -525,6 +525,26 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     SysUi.Row(body, "ref" + id, label + "  ·  精炼 →G" + (slot.Grade + 1) + " " + refineCost + " 金", () => PhoneNet.RefineSoulStamp(id));
                 else SysUi.Note(body, label);
             }
+
+            SysUi.Note(body, "--- 符印 TS_SigilProValueLimitTemp.xml ---");
+            int sigilCost = app.Database != null ? app.Database.SigilRollGoldCost() : 500;
+            SysUi.Note(body, "当前 ProType " + app.Profile.SigilProType + " +" + app.Profile.SigilProValue);
+            SysUi.Row(body, "sigilroll", "重铸符印  Q" + UnityEngine.Mathf.Max(1, app.Profile.SigilQuality) + "  " + sigilCost + "金",
+                () => PhoneNet.RollSigil(UnityEngine.Mathf.Max(1, app.Profile.SigilQuality)));
+        }
+
+        public static void SigilScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "符印 · Sigil");
+            int cost = app.Database != null ? app.Database.SigilRollGoldCost() : 500;
+            SysUi.Note(body, "TS_SigilProValueLimitTemp.xml  ·  RandomConfig 权重  ·  SigilRollGold");
+            SysUi.Note(body, "当前 Q" + UnityEngine.Mathf.Max(1, app.Profile.SigilQuality) + "  ProType " + app.Profile.SigilProType + " +" + app.Profile.SigilProValue);
+            if (app.Database == null) return;
+            for (int q = 1; q <= 5; q++)
+            {
+                int quality = q;
+                SysUi.Row(body, "sigil" + q, "品质" + q + "  重铸  " + cost + "金", () => PhoneNet.RollSigil(quality));
+            }
         }
 
         public static void DreamlandScreen(RectTransform safe, GameApp app)
@@ -726,6 +746,42 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 int claimLv = lv;
                 if (!claimed)
                     SysUi.Row(body, "hc" + lv, "领取 Lv" + lv + "  #" + row.LevelGift, () => PhoneNet.HonorSystemClaim(claimLv));
+            }
+            SysUi.Note(body, "--- 光辉 GloryItemUpgradeList.xml ---");
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (GloryItemUpgrade row in app.Database.GloryUpgradeList)
+                {
+                    int cost = app.Database.GloryUpgradeGoldCost(row);
+                    int tid = row.TemplateId;
+                    ItemTemplate item = app.Database.GetItem(tid);
+                    string name = item != null ? item.Name : ("#" + tid);
+                    bool current = app.Profile.GloryTemplateId == tid || app.Profile.GloryTemplateId == row.NextTemplateId;
+                    SysUi.Row(body, "glory" + tid, (current ? "[当前] " : "") + name + "  " + cost + "金",
+                        () => PhoneNet.UpgradeGlory(tid));
+                    if (++shown >= 8) break;
+                }
+            }
+        }
+
+        public static void GloryScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "光辉 · Glory");
+            SysUi.Note(body, "GloryItemUpgradeList.xml  ·  NeedExp 金币  ·  CostItemID 背包优先");
+            SysUi.Note(body, "当前模板 " + app.Profile.GloryTemplateId);
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (GloryItemUpgrade row in app.Database.GloryUpgradeList)
+            {
+                int cost = app.Database.GloryUpgradeGoldCost(row);
+                int tid = row.TemplateId;
+                ItemTemplate item = app.Database.GetItem(tid);
+                string name = item != null ? item.Name : ("#" + tid);
+                string next = row.NextTemplateId > 0 ? (" → #" + row.NextTemplateId) : "";
+                SysUi.Row(body, "gl" + tid, name + next + "  " + cost + "金  材料#" + row.CostItemId,
+                    () => PhoneNet.UpgradeGlory(tid));
+                if (++shown >= 16) break;
             }
         }
 
@@ -1117,18 +1173,34 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, "缺少 Request/loadallquestions.xml");
                 return;
             }
+
             QuizQuestion q = app.Database.PickQuizQuestion(app.Profile.QuizAttempts);
-            if (q == null) return;
+            if (q == null)
+            {
+                return;
+            }
+
             SysUi.Note(body, "#" + q.QuestionId + "  " + q.Content);
             if (app.Profile.QuizAttempts < max)
             {
-                if (!string.IsNullOrEmpty(q.Option1)) SysUi.Row(body, "q1", "1. " + q.Option1, () => PhoneNet.QuizAnswer(q.QuestionId, 1));
-                if (!string.IsNullOrEmpty(q.Option2)) SysUi.Row(body, "q2", "2. " + q.Option2, () => PhoneNet.QuizAnswer(q.QuestionId, 2));
-                if (!string.IsNullOrEmpty(q.Option3)) SysUi.Row(body, "q3", "3. " + q.Option3, () => PhoneNet.QuizAnswer(q.QuestionId, 3));
-                if (!string.IsNullOrEmpty(q.Option4)) SysUi.Row(body, "q4", "4. " + q.Option4, () => PhoneNet.QuizAnswer(q.QuestionId, 4));
+                if (!string.IsNullOrEmpty(q.Option1))
+                    SysUi.Row(body, "q1", "1. " + q.Option1, () => PhoneNet.QuizAnswer(q.QuestionId, 1));
+                if (!string.IsNullOrEmpty(q.Option2))
+                    SysUi.Row(body, "q2", "2. " + q.Option2, () => PhoneNet.QuizAnswer(q.QuestionId, 2));
+                if (!string.IsNullOrEmpty(q.Option3))
+                    SysUi.Row(body, "q3", "3. " + q.Option3, () => PhoneNet.QuizAnswer(q.QuestionId, 3));
+                if (!string.IsNullOrEmpty(q.Option4))
+                    SysUi.Row(body, "q4", "4. " + q.Option4, () => PhoneNet.QuizAnswer(q.QuestionId, 4));
             }
-            else SysUi.Note(body, "今日答题次数已满");
-            if (!string.IsNullOrEmpty(PhoneNet.LastQuizJson)) SysUi.Note(body, PhoneNet.LastQuizJson);
+            else
+            {
+                SysUi.Note(body, "今日答题次数已满");
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastQuizJson))
+            {
+                SysUi.Note(body, PhoneNet.LastQuizJson);
+            }
         }
 
         public static void OneYuanScreen(RectTransform safe, GameApp app)
@@ -1141,22 +1213,34 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, "缺少 Request/oneyuanbuyallgoodstemplate.xml");
                 return;
             }
+
             int shown = 0;
             foreach (OneYuanGoods goods in app.Database.OneYuanGoodsList)
             {
                 int bought = 0;
                 for (int i = 0; i < app.Profile.OneYuanBought.Count; i++)
-                    if (app.Profile.OneYuanBought[i] == goods.GoodsId) bought++;
+                {
+                    if (app.Profile.OneYuanBought[i] == goods.GoodsId)
+                    {
+                        bought++;
+                    }
+                }
+
                 int limit = app.Database.OneYuanDailyLimit(goods);
                 string cur = goods.IsBindMoney != 0 ? "礼券" : "金";
                 string name = string.IsNullOrEmpty(goods.Name) ? ("#" + goods.GoodsId) : goods.Name;
                 string cap = name + "  " + goods.Cost + cur + "  Goods " + goods.GoodsId;
-                if (bought >= limit) SysUi.Note(body, "[已购] " + cap);
+                if (bought >= limit)
+                {
+                    cap = "[已购] " + cap;
+                    SysUi.Note(body, cap);
+                }
                 else
                 {
                     OneYuanGoods local = goods;
                     SysUi.Row(body, "oy" + goods.Id, cap, () => PhoneNet.OneYuanBuy(local.Id, local.GoodsId));
                 }
+
                 shown++;
                 if (shown >= 40)
                 {
@@ -1164,10 +1248,14 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     break;
                 }
             }
-            if (!string.IsNullOrEmpty(PhoneNet.LastOneYuanJson)) SysUi.Note(body, PhoneNet.LastOneYuanJson);
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastOneYuanJson))
+            {
+                SysUi.Note(body, PhoneNet.LastOneYuanJson);
+            }
         }
 
-                static int JsonFieldInt(string json, string key, int fallback)
+        static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))
             {
