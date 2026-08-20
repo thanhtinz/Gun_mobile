@@ -31,6 +31,9 @@ namespace GunMobile.Client
         public static string LastNewYearJson;
         public static string LastWorshipMoonJson;
         public static string LastSuperLuckerJson;
+        public static string LastCalendarJson;
+        public static string LastAuditoriumJson;
+        public static string LastBoguAdventureJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -351,6 +354,25 @@ namespace GunMobile.Client
         public static void SuperLuckerDraw(int count = 1)
         {
             Road?.Send(PhoneMsg.SuperLuckerDraw, "{\"count\":" + count + "}");
+        }
+
+        public static void CalendarClaim(int dayIndex) { Road?.Send(PhoneMsg.CalendarClaim, "{\"dayIndex\":" + dayIndex + "}"); }
+
+        public static void AuditoriumAction(string action, int tierOrIndex = 0)
+        {
+            string act = (action ?? "wedding").Replace("\"", "");
+            if (string.Equals(act, "fire", System.StringComparison.OrdinalIgnoreCase))
+                Road?.Send(PhoneMsg.AuditoriumAction, "{\"action\":\"fire\",\"index\":" + tierOrIndex + "}");
+            else if (string.Equals(act, "wedding", System.StringComparison.OrdinalIgnoreCase))
+                Road?.Send(PhoneMsg.AuditoriumAction, "{\"action\":\"wedding\",\"tier\":" + tierOrIndex + "}");
+            else
+                Road?.Send(PhoneMsg.AuditoriumAction, "{\"action\":\"" + act + "\"}");
+        }
+
+        public static void BoguAdventureAction(string action, int activityNum = 5, int tier = 0)
+        {
+            Road?.Send(PhoneMsg.BoguAdventureAction,
+                "{\"action\":\"" + (action ?? "spin").Replace("\"", "") + "\",\"activityNum\":" + activityNum + ",\"tier\":" + tier + "}");
         }
 
         public static void ClaimRedPacket()

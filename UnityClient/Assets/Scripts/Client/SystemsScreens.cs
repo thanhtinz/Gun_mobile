@@ -1310,23 +1310,43 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
-            Transform body = SysUi.Begin(safe, app, "日历 · 签到");
+            Transform body = SysUi.Begin(safe, app, "日历 · TS_ActivityConfig");
             var now = System.DateTime.Now;
-            SysUi.Note(body, $"{now.Year}-{now.Month:D2}  今日 {now.Day}");
-            int signed = Mathf.Min(app.Profile.SignIndex, 28);
-            SysUi.Note(body, signed >= 28 ? "本月签到已完成" : $"签到进度 {signed}/28");
-            SysUi.Row(body, "sign", "今日签到", () => PhoneNet.DoSignIn());
-            foreach (SignReward r in app.Database.SignIn)
+            SysUi.Note(body, $"{now.Year}-{now.Month:D2}  今日 {now.Day}  ·  金 {app.Profile.Gold}");
+            app.Profile.EnsureCalendarClaimed();
+            if (app.Database != null)
             {
-                if (r.Day > 28)
+                SysUi.Note(body, "活动列表 (TS_ActivityConfig.xml)");
+                int actShown = 0;
+                foreach (ActivityConfigEntry entry in app.Database.ActivityConfigs.Values)
                 {
-                    break;
+                    SysUi.Note(body, "Num" + entry.Num + "  " + entry.Name);
+                    if (++actShown >= 8) break;
                 }
-
-                bool claimed = signed >= 28 || r.Day <= signed;
-                string item = SysUi.ItemName(app, r.TemplateId);
-                SysUi.Note(body, $"Day {r.Day}: {item} x{r.Count} {(claimed ? "✓" : "")}");
+                if (app.Database.GmActivities.Count > 0)
+                {
+                    SysUi.Note(body, "GM 活动 (gmactivityinfo.xml)");
+                    int gmShown = 0;
+                    foreach (GmActivityInfo gm in app.Database.GmActivities)
+                    {
+                        SysUi.Note(body, "T" + gm.ActivityType + "  " + gm.ActivityName);
+                        if (++gmShown >= 6) break;
+                    }
+                }
+                SysUi.Note(body, "每日日历奖励 (TS_EveryDaySignIn.xml)");
+                int today = now.Day;
+                foreach (SignReward r in app.Database.SignIn)
+                {
+                    if (r.Day > 28) break;
+                    bool claimed = app.Profile.CalendarClaimedDays.Contains(r.Day);
+                    string label = "Day " + r.Day + ": " + SysUi.ItemName(app, r.TemplateId) + " x" + r.Count;
+                    if (claimed) label = "[已领] " + label;
+                    else if (r.Day > today) label += "  (未到)";
+                    int day = r.Day;
+                    SysUi.Row(body, "cal" + r.Day, label, claimed || r.Day > today ? null : (System.Action)(() => PhoneNet.CalendarClaim(day)));
+                }
             }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCalendarJson)) SysUi.Note(body, PhoneNet.LastCalendarJson);
         }
     }
 }

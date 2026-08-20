@@ -108,6 +108,10 @@ namespace GunMobile.Client
         public int ElfIntimacyExp;
         public int ElfIntimacyLevel;
         public int ElfIntimacyActions;
+        public int CalendarMonth;
+        public List<int> CalendarClaimedDays = new List<int>();
+        public int AuditoriumActions;
+        public int BoguAdventureActions;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -132,6 +136,7 @@ namespace GunMobile.Client
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
+        public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
         public void EnsureJampsLists() { if (JampsDebrisOwned == null) JampsDebrisOwned = new List<int>(); if (JampsPagesCollected == null) JampsPagesCollected = new List<int>(); if (JampsPagesActivated == null) JampsPagesActivated = new List<int>(); }

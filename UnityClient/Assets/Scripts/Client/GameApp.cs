@@ -346,6 +346,9 @@ namespace GunMobile.Client
                 case "carnivalSuperLucker":
                     ExtraModulesScreens.CarnivalSuperLuckerScreen(_safe, this);
                     return;
+                case "boguadventure":
+                    ExtraModulesScreens.BoguAdventureScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -556,10 +559,22 @@ namespace GunMobile.Client
                     case PhoneMsg.SuperLuckerDraw:
                         PhoneNet.LastSuperLuckerJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
-                        if (State == AppState.Module && _currentModuleId == "carnivalSuperLucker")
-                        {
-                            RefreshCurrentModule();
-                        }
+                        if (State == AppState.Module && _currentModuleId == "carnivalSuperLucker") RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CalendarClaim:
+                        PhoneNet.LastCalendarJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "calendar") RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.AuditoriumAction:
+                        PhoneNet.LastAuditoriumJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "auditorium") RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.BoguAdventureAction:
+                        PhoneNet.LastBoguAdventureJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "boguadventure") RefreshCurrentModule();
                         break;
                     case PhoneMsg.Error:
                     {
@@ -700,6 +715,9 @@ namespace GunMobile.Client
             Profile.ElfIntimacyExp = JsonInt(json, "elfIntimacyExp", Profile.ElfIntimacyExp);
             Profile.ElfIntimacyLevel = JsonInt(json, "elfIntimacyLevel", Profile.ElfIntimacyLevel);
             Profile.ElfIntimacyActions = JsonInt(json, "elfIntimacyActions", Profile.ElfIntimacyActions);
+            Profile.CalendarMonth = JsonInt(json, "calendarMonth", Profile.CalendarMonth);
+            Profile.AuditoriumActions = JsonInt(json, "auditoriumActions", Profile.AuditoriumActions);
+            Profile.BoguAdventureActions = JsonInt(json, "boguAdventureActions", Profile.BoguAdventureActions);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.GodCardPoints = JsonInt(json, "godCardPoints", Profile.GodCardPoints);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
@@ -718,6 +736,7 @@ namespace GunMobile.Client
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
             ParseNewYearClaimedFromServer(json);
+            ParseIntListFromServer(json, "calendarClaimedDays", Profile.CalendarClaimedDays ?? (Profile.CalendarClaimedDays = new List<int>()));
             ParseBankDepositsFromServer(json);
             ParseSweepMissionClearsFromServer(json);
             ParseIntListFromServer(json, "jampsDebrisOwned", Profile.JampsDebrisOwned ?? (Profile.JampsDebrisOwned = new List<int>()));

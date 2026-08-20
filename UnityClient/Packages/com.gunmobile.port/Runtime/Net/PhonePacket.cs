@@ -224,6 +224,8 @@ namespace GunMobile.Net
         public const ushort ElfIntimacyAction = 177;
         public const ushort DevilTreasPointClaim = 178;
         public const ushort RedPacketSend = 179;
+        public const ushort CalendarClaim = 180;
+        public const ushort AuditoriumAction = 181;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

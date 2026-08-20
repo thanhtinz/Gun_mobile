@@ -260,20 +260,25 @@ public static void BankScreen(RectTransform safe, GameApp app)
             Transform body = ShowMornModule(safe, app,
                 new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml", false, "auditorium.ui"),
                 "auditorium.ui");
-            if (app.Database == null)
+            if (app.Database == null) return;
+            int maxActions = app.Database.ConfigInt("HonorSystemAwardLimit", 6);
+            SysUi.Note(body, "CelebByDayGPList  ·  荣誉 " + app.Profile.Honor + "  ·  今日 " + app.Profile.AuditoriumActions + " / " + maxActions);
+            SysUi.Row(body, "wedding", "举办婚礼  " + app.Database.AuditoriumWeddingCost(0) + " 金", () => PhoneNet.AuditoriumAction("wedding", 0));
+            if (app.Database.Fireworks.Count == 0) app.Database.LoadFireworksFromConfig();
+            for (int i = 0; i < app.Database.Fireworks.Count && i < 4; i++)
             {
-                return;
+                FireworkEntry fw = app.Database.Fireworks[i];
+                int index = i;
+                SysUi.Row(body, "fire" + i, "烟花  " + SysUi.ItemName(app, fw.TemplateId) + "  " + fw.GoldCost + "金  +" + fw.HonorGain + "荣誉",
+                    () => PhoneNet.AuditoriumAction("fire", index));
             }
-
+            SysUi.Row(body, "redpacket", "红包主持  " + (app.Database.ConfigInt("RedPacketMinGold", 100) * 10) + " 金", () => PhoneNet.AuditoriumAction("redpacket"));
+            if (!string.IsNullOrEmpty(PhoneNet.LastAuditoriumJson)) SysUi.Note(body, PhoneNet.LastAuditoriumJson);
             int shown = 0;
             foreach (CelebEntry e in app.Database.CelebGpDay)
             {
-                SysUi.Note(body, "#" + e.Rank + "  " + e.Nick + "  Lv" + e.Grade + "  GP+" + e.Gp + "  " + e.ConsortiaName);
-                shown++;
-                if (shown >= 15)
-                {
-                    break;
-                }
+                SysUi.Note(body, "#" + e.Rank + "  " + e.Nick + "  Lv" + e.Grade + "  GP+" + e.Gp);
+                if (++shown >= 10) break;
             }
         }
 
@@ -772,6 +777,26 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     }
                 }
             }
+        }
+
+        public static void BoguAdventureScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("boguadventure", "啵咕冒险", "Request/TS_ActivityConfig.xml", false, "boguadventure.ui"),
+                "boguadventure.ui");
+            ActivityConfigEntry activity = null;
+            if (app.Database != null) app.Database.ActivityConfigs.TryGetValue(5, out activity);
+            int maxActions = app.Database != null ? app.Database.ConfigInt("MineDayLimit", 5) * 4 : 20;
+            SysUi.Note(body, "TS_ActivityConfig Num=5  ·  " + (activity != null ? activity.Name : "啵咕转盘") +
+                "  ·  今日 " + app.Profile.BoguAdventureActions + " / " + maxActions);
+            int spinCost = app.Database != null ? app.Database.BoguAdventureSpinCost(0) : 125;
+            SysUi.Row(body, "spin", "转盘  " + spinCost + " 金", () => PhoneNet.BoguAdventureAction("spin", 5, 0));
+            SysUi.Row(body, "sign", "签到 (免费)", () => PhoneNet.BoguAdventureAction("sign", 5));
+            SysUi.Row(body, "find", "寻宝", () => PhoneNet.BoguAdventureAction("findMine", 5));
+            SysUi.Row(body, "reset", "重置", () => PhoneNet.BoguAdventureAction("reset", 5));
+            SysUi.Row(body, "award", "领奖", () => PhoneNet.BoguAdventureAction("getAward", 5));
+            if (!string.IsNullOrEmpty(PhoneNet.LastBoguAdventureJson)) SysUi.Note(body, PhoneNet.LastBoguAdventureJson);
+        }
 
         public static void ForcesBattleScreen(RectTransform safe, GameApp app)
         {

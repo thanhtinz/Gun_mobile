@@ -154,9 +154,19 @@ namespace GunMobile.Net
         public int ElfIntimacyActions;
         public int NextEmblemId = 1;
         public int NextSoulStampId = 1;
+        public int CalendarMonth;
+        public List<int> CalendarClaimedDays = new List<int>();
+        public int AuditoriumDay = -1;
+        public int AuditoriumActions;
+        public int BoguAdventureDay = -1;
+        public int BoguAdventureActions;
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
+        public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
+        public void TouchCalendarMonth() { EnsureCalendarClaimed(); int mk = DateTime.Now.Year * 100 + DateTime.Now.Month; if (CalendarMonth != mk) { CalendarMonth = mk; CalendarClaimedDays.Clear(); } }
+        public void TouchAuditoriumDay() { int t = DateTime.Now.DayOfYear; if (AuditoriumDay != t) { AuditoriumDay = t; AuditoriumActions = 0; } }
+        public void TouchBoguAdventureDay() { int t = DateTime.Now.DayOfYear; if (BoguAdventureDay != t) { BoguAdventureDay = t; BoguAdventureActions = 0; } }
 
         public void EnsureFightSpirits()
         {
@@ -609,6 +619,11 @@ namespace GunMobile.Net
             J(sb, "elfIntimacyExp", ElfIntimacyExp); sb.Append(",");
             J(sb, "elfIntimacyLevel", ElfIntimacyLevel); sb.Append(",");
             J(sb, "elfIntimacyActions", ElfIntimacyActions); sb.Append(",");
+            EnsureCalendarClaimed();
+            J(sb, "calendarMonth", CalendarMonth); sb.Append(",");
+            sb.Append("\"calendarClaimedDays\":["); for (int i = 0; i < CalendarClaimedDays.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CalendarClaimedDays[i]); } sb.Append("],");
+            J(sb, "auditoriumActions", AuditoriumActions); sb.Append(",");
+            J(sb, "boguAdventureActions", BoguAdventureActions); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "godCardPoints", GodCardPoints); sb.Append(",");
             sb.Append("\"godCardPointClaimed\":[");
@@ -1781,6 +1796,10 @@ namespace GunMobile.Net
                 case PhoneMsg.ElfIntimacyAction:
                     HandleElfIntimacyAction(player, ns, json);
                     break;
+
+                case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
+                case PhoneMsg.AuditoriumAction: HandleAuditoriumAction(player, ns, json); break;
+                case PhoneMsg.BoguAdventureAction: HandleBoguAdventureAction(player, ns, json); break;
 
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
                 case PhoneMsg.EmblemEquip: HandleEmblemEquip(player, ns, json); break;
@@ -3963,6 +3982,72 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.SuperLuckerDraw,
                 "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.SuperLuckerDraws +
                 ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCalendarClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.CalendarClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchCalendarMonth();
+            int dayIndex = JI(json, "dayIndex", DateTime.Now.Day);
+            if (dayIndex < 1 || dayIndex > DateTime.Now.Day) { Send(ns, PhoneMsg.CalendarClaim, "{\"ok\":false,\"err\":\"day\"}"); return; }
+            if (player.CalendarClaimedDays.Contains(dayIndex)) { Send(ns, PhoneMsg.CalendarClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            SignReward reward = _db.GetCalendarDayReward(dayIndex);
+            if (reward == null || reward.TemplateId <= 0) { Send(ns, PhoneMsg.CalendarClaim, "{\"ok\":false,\"err\":\"reward\"}"); return; }
+            player.CalendarClaimedDays.Add(dayIndex);
+            player.AddItem(reward.TemplateId, Mathf.Max(1, reward.Count));
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CalendarClaim, "{\"ok\":true,\"dayIndex\":" + dayIndex + ",\"itemId\":" + reward.TemplateId + ",\"count\":" + reward.Count + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleAuditoriumAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "wedding");
+            player.TouchAuditoriumDay();
+            if (player.AuditoriumActions >= _db.ConfigInt("HonorSystemAwardLimit", 6)) { Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            int cost = 0, honorGain = _db.HonorSystemLikeHonorGain(), itemId = 0;
+            if (string.Equals(action, "wedding", StringComparison.OrdinalIgnoreCase)) { cost = _db.AuditoriumWeddingCost(JI(json, "tier", 0)); honorGain = Mathf.Max(honorGain, cost / 3000); }
+            else if (string.Equals(action, "fire", StringComparison.OrdinalIgnoreCase))
+            {
+                FireworkEntry fw = _db.GetFireworkEntry(JI(json, "index", 0));
+                if (fw == null) { Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":false,\"err\":\"firework\"}"); return; }
+                cost = fw.GoldCost; honorGain = fw.HonorGain; itemId = fw.TemplateId;
+            }
+            else if (string.Equals(action, "redpacket", StringComparison.OrdinalIgnoreCase)) { cost = _db.ConfigInt("RedPacketMinGold", 100) * 10; honorGain = Mathf.Max(honorGain, 15); }
+            else { Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":false,\"err\":\"action\"}"); return; }
+            if (player.Gold < cost) { Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost; player.Honor += honorGain; if (itemId > 0) player.AddItem(itemId, 1);
+            player.AuditoriumActions++; player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.AuditoriumAction, "{\"ok\":true,\"action\":\"" + action + "\",\"cost\":" + cost + ",\"honorGain\":" + honorGain + ",\"actions\":" + player.AuditoriumActions + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleBoguAdventureAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int activityNum = JI(json, "activityNum", 5);
+            string action = JS(json, "action", "spin");
+            player.TouchBoguAdventureDay();
+            if (player.BoguAdventureActions >= _db.ConfigInt("MineDayLimit", 5) * 4) { Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            if (!_db.ActivityConfigs.TryGetValue(activityNum, out ActivityConfigEntry cfg) || cfg == null)
+            { Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":false,\"err\":\"activity\",\"activityNum\":" + activityNum + "}"); return; }
+            int cost = 0, itemId = 0, count = 1;
+            if (string.Equals(action, "spin", StringComparison.OrdinalIgnoreCase)) { cost = _db.BoguAdventureSpinCost(JI(json, "tier", 0)); itemId = _db.BoguAdventureRewardItemId(); }
+            else if (string.Equals(action, "reset", StringComparison.OrdinalIgnoreCase))
+            {
+                cost = 200;
+                if (!string.IsNullOrEmpty(cfg.Params2)) { string[] p = cfg.Params2.Split(','); if (p.Length > 1 && int.TryParse(p[1].Trim(), out int rc)) cost = Mathf.Abs(rc); }
+            }
+            else if (string.Equals(action, "sign", StringComparison.OrdinalIgnoreCase) || string.Equals(action, "findMine", StringComparison.OrdinalIgnoreCase))
+            { itemId = _db.BoguAdventureRewardItemId(); count = string.Equals(action, "findMine", StringComparison.OrdinalIgnoreCase) ? 2 : 1; }
+            else if (string.Equals(action, "getAward", StringComparison.OrdinalIgnoreCase)) { itemId = _db.BoguAdventureRewardItemId(); count = 3; }
+            else { Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":false,\"err\":\"action\"}"); return; }
+            if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            if (cost > 0) player.Gold -= cost; if (itemId > 0) player.AddItem(itemId, count);
+            player.BoguAdventureActions++; SavePlayer(player);
+            Send(ns, PhoneMsg.BoguAdventureAction, "{\"ok\":true,\"action\":\"" + action + "\",\"activityNum\":" + activityNum + ",\"activityName\":\"" + (cfg.Name ?? "").Replace("\"", "") + "\",\"cost\":" + cost + ",\"itemId\":" + itemId + ",\"count\":" + count + ",\"actions\":" + player.BoguAdventureActions + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -6939,6 +7024,10 @@ namespace GunMobile.Net
             public int ElfIntimacyLevel;
             public int ElfIntimacyDay = -1;
             public int ElfIntimacyActions;
+            public int CalendarMonth;
+            public List<int> CalendarClaimedDays = new List<int>();
+            public int AuditoriumDay = -1, AuditoriumActions;
+            public int BoguAdventureDay = -1, BoguAdventureActions;
             public int GodCardEquipId, EngraveSetId;
             public int GodCardPoints;
             public List<int> GodCardPointClaimed = new List<int>();
@@ -7043,6 +7132,10 @@ namespace GunMobile.Net
                 ElfIntimacyLevel = p.ElfIntimacyLevel,
                 ElfIntimacyDay = p.ElfIntimacyDay,
                 ElfIntimacyActions = p.ElfIntimacyActions,
+                CalendarMonth = p.CalendarMonth,
+                CalendarClaimedDays = p.CalendarClaimedDays ?? new List<int>(),
+                AuditoriumDay = p.AuditoriumDay, AuditoriumActions = p.AuditoriumActions,
+                BoguAdventureDay = p.BoguAdventureDay, BoguAdventureActions = p.BoguAdventureActions,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
@@ -7148,6 +7241,10 @@ namespace GunMobile.Net
                 ElfIntimacyLevel = s.ElfIntimacyLevel,
                 ElfIntimacyDay = s.ElfIntimacyDay,
                 ElfIntimacyActions = s.ElfIntimacyActions,
+                CalendarMonth = s.CalendarMonth,
+                CalendarClaimedDays = s.CalendarClaimedDays ?? new List<int>(),
+                AuditoriumDay = s.AuditoriumDay, AuditoriumActions = s.AuditoriumActions,
+                BoguAdventureDay = s.BoguAdventureDay, BoguAdventureActions = s.BoguAdventureActions,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,
