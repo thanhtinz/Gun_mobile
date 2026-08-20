@@ -997,7 +997,7 @@ namespace GunMobile.Res
     {
         public int PetTemplateId;
         public int KindId;
-        public int GetType;
+        public int SkillGetType;
         public int SkillId;
         public int SkillBookId;
         public int MinLevel;
@@ -6864,7 +6864,7 @@ namespace GunMobile.Res
                 {
                     PetTemplateId = FirstInt(row, "PetTemplateID", "PetTemplateId"),
                     KindId = FirstInt(row, "KindID", "KindId"),
-                    GetType = Int(row, "GetType"),
+                    SkillGetType = Int(row, "GetType"),
                     SkillId = skillId,
                     SkillBookId = FirstInt(row, "SkillBookID", "SkillBookId"),
                     MinLevel = Int(row, "MinLevel"),
