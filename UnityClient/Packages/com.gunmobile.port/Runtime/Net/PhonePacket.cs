@@ -266,6 +266,12 @@ namespace GunMobile.Net
         public const ushort PairUpClaim = 219;
         public const ushort ShopShowBuy = 220;
         public const ushort StockNotice = 221;
+        // 222-227 reserved for other features
+        public const ushort ScrollUse = 228;
+        public const ushort SigilSkillUnlock = 229;
+        public const ushort ConsortiaBufferBuy = 230;
+        public const ushort ElfSkillBook = 231;
+        public const ushort ButterflyTaskClaim = 232;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

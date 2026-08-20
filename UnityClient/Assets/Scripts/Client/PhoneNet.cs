@@ -51,6 +51,11 @@ namespace GunMobile.Client
         public static string LastPairUpJson;
         public static string LastShopShowJson;
         public static string LastStockNoticeJson;
+        public static string LastScrollJson;
+        public static string LastSigilSkillJson;
+        public static string LastConsortiaBufferJson;
+        public static string LastElfSkillBookJson;
+        public static string LastButterflyTaskJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -321,6 +326,36 @@ namespace GunMobile.Client
             string act = (action ?? "list").Replace("\"", "");
             Road?.Send(PhoneMsg.StockNotice,
                 "{\"action\":\"" + act + "\",\"newsId\":" + newsId + ",\"stockId\":" + stockId + "}");
+        }
+
+
+        public static void UseScroll(int templateId = 0, int types = 0, int profile = 0)
+        {
+            Road?.Send(PhoneMsg.ScrollUse,
+                "{"templateId":" + templateId + ","types":" + types + ","profile":" + profile + "}");
+        }
+
+        public static void UnlockSigilSkill(int skillId)
+        {
+            Road?.Send(PhoneMsg.SigilSkillUnlock, "{"skillId":" + skillId + "}");
+        }
+
+        public static void ConsortiaBuffer(string action = "buy", int bufferId = 0, int badgeId = 0, int rank = 0)
+        {
+            string act = (action ?? "buy").Replace(""", "");
+            Road?.Send(PhoneMsg.ConsortiaBufferBuy,
+                "{"action":"" + act + "","bufferId":" + bufferId + ","badgeId":" + badgeId + ","rank":" + rank + "}");
+        }
+
+        public static void UseElfSkillBook(int templateId = 0, int elfType = -1)
+        {
+            Road?.Send(PhoneMsg.ElfSkillBook, "{"templateId":" + templateId + ","elfType":" + elfType + "}");
+        }
+
+        public static void ButterflyTask(string action = "claim", int taskId = 0)
+        {
+            string act = (action ?? "claim").Replace(""", "");
+            Road?.Send(PhoneMsg.ButterflyTaskClaim, "{"action":"" + act + "","taskId":" + taskId + "}");
         }
 
         public static void DrawLottery(int count)

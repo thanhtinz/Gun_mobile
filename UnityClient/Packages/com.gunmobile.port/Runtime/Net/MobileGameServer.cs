@@ -225,6 +225,18 @@ namespace GunMobile.Net
         public int PairUpPlays;
         public List<int> PairUpClaimed = new List<int>();
         public List<int> StockNoticeClaimed = new List<int>();
+        public int ScrollBuffTypes;
+        public int ScrollBuffProfile;
+        public int ScrollBuffValue;
+        public List<int> SigilSkillIds = new List<int>();
+        public int ConsortiaBufferId;
+        public int ConsortiaBadgeId;
+        public int ConsortiaWeekClaimWeek = -1;
+        public List<int> ElfSkillIds = new List<int>();
+        public List<int> ButterflyTaskClaimed = new List<int>();
+        public int ButterflyTaskDay = -1;
+        public int ButterflyTaskActive;
+        public int ButterflyTaskStartDay = -1;
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -261,6 +273,9 @@ namespace GunMobile.Net
             if (PairUpDay != t) { PairUpDay = t; PairUpPlays = 0; }
         }
         public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
+        public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
+        public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
+        public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
@@ -605,6 +620,10 @@ namespace GunMobile.Net
             magicAtk += jadeMa + debrisMa; magicDef += jadeMd + debrisMd;
             db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
             db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            EnsureSigilSkills();
+            db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            db.ApplyScrollBuff(ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            db.ApplyConsortiaBufferBonus(ConsortiaBufferId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
             db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref magicDef);
@@ -716,6 +735,24 @@ namespace GunMobile.Net
             J(sb, "sigilQuality", SigilQuality); sb.Append(",");
             J(sb, "sigilProType", SigilProType); sb.Append(",");
             J(sb, "sigilProValue", SigilProValue); sb.Append(",");
+            EnsureSigilSkills();
+            sb.Append("\"sigilSkillIds\":[");
+            for (int i = 0; i < SigilSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(SigilSkillIds[i]); }
+            sb.Append("],");
+            J(sb, "scrollBuffTypes", ScrollBuffTypes); sb.Append(",");
+            J(sb, "scrollBuffProfile", ScrollBuffProfile); sb.Append(",");
+            J(sb, "scrollBuffValue", ScrollBuffValue); sb.Append(",");
+            J(sb, "consortiaBufferId", ConsortiaBufferId); sb.Append(",");
+            J(sb, "consortiaBadgeId", ConsortiaBadgeId); sb.Append(",");
+            EnsureElfSkills();
+            sb.Append("\"elfSkillIds\":[");
+            for (int i = 0; i < ElfSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ElfSkillIds[i]); }
+            sb.Append("],");
+            EnsureButterflyTasks();
+            sb.Append("\"butterflyTaskClaimed\":[");
+            for (int i = 0; i < ButterflyTaskClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ButterflyTaskClaimed[i]); }
+            sb.Append("],");
+            J(sb, "butterflyTaskActive", ButterflyTaskActive); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2264,6 +2301,26 @@ namespace GunMobile.Net
 
                 case PhoneMsg.StockNotice:
                     HandleStockNotice(player, ns, json);
+                    break;
+
+                case PhoneMsg.ScrollUse:
+                    HandleScrollUse(player, ns, json);
+                    break;
+
+                case PhoneMsg.SigilSkillUnlock:
+                    HandleSigilSkillUnlock(player, ns, json);
+                    break;
+
+                case PhoneMsg.ConsortiaBufferBuy:
+                    HandleConsortiaBufferBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.ElfSkillBook:
+                    HandleElfSkillBook(player, ns, json);
+                    break;
+
+                case PhoneMsg.ButterflyTaskClaim:
+                    HandleButterflyTaskClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -6473,6 +6530,242 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.StockNotice, sb.ToString());
         }
 
+        void HandleScrollUse(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ScrollList.Count == 0)
+            { Send(ns, PhoneMsg.ScrollUse, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            ScrollTemplate row = _db.GetScroll(templateId);
+            if (row == null)
+            {
+                int types = JI(json, "types", 0);
+                int profile = JI(json, "profile", 0);
+                for (int i = 0; i < _db.ScrollList.Count; i++)
+                {
+                    ScrollTemplate s = _db.ScrollList[i];
+                    if (s.Types == types && s.Profile == profile) { row = s; break; }
+                }
+            }
+            if (row == null) { Send(ns, PhoneMsg.ScrollUse, "{\"ok\":false,\"err\":\"scroll\"}"); return; }
+            if (!player.Consume(row.TemplateId, 1))
+            {
+                int fallback = _db.ScrollUseGoldReward(row);
+                if (player.Gold < fallback)
+                { Send(ns, PhoneMsg.ScrollUse, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                player.Gold -= fallback;
+            }
+            int buff = _db.ScrollBuffValue(row);
+            int reward = _db.ScrollUseGoldReward(row);
+            player.ScrollBuffTypes = row.Types;
+            player.ScrollBuffProfile = row.Profile;
+            player.ScrollBuffValue = buff;
+            player.Gold += reward;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.ScrollUse, "{\"ok\":true,\"templateId\":" + row.TemplateId + ",\"types\":" + row.Types +
+                ",\"profile\":" + row.Profile + ",\"buff\":" + buff + ",\"gold\":" + reward + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSigilSkillUnlock(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.SigilSkillList.Count == 0)
+            { Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int skillId = JI(json, "skillId", 0);
+            SigilSkillTemplate row = _db.GetSigilSkill(skillId);
+            if (row == null) { Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":false,\"err\":\"skill\"}"); return; }
+            if (player.SigilProType <= 0 && player.SigilProValue <= 0)
+            { Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":false,\"err\":\"sigil\"}"); return; }
+            player.EnsureSigilSkills();
+            if (player.SigilSkillIds.Contains(skillId))
+            {
+                Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"already\":true}");
+                return;
+            }
+            if (row.SkillLv > 1)
+            {
+                bool hasPrev = false;
+                for (int i = 0; i < _db.SigilSkillList.Count; i++)
+                {
+                    SigilSkillTemplate prev = _db.SigilSkillList[i];
+                    if (prev.SkillType == row.SkillType && prev.SkillLv == row.SkillLv - 1 &&
+                        player.SigilSkillIds.Contains(prev.SkillId)) { hasPrev = true; break; }
+                }
+                if (!hasPrev) { Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":false,\"err\":\"prev\"}"); return; }
+            }
+            int cost = _db.SigilSkillUnlockGoldCost(row);
+            if (cost > 0 && player.Gold < cost)
+            { Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            if (cost > 0) player.Gold -= cost;
+            for (int i = player.SigilSkillIds.Count - 1; i >= 0; i--)
+            {
+                SigilSkillTemplate owned = _db.GetSigilSkill(player.SigilSkillIds[i]);
+                if (owned != null && owned.SkillType == row.SkillType && owned.SkillLv < row.SkillLv)
+                    player.SigilSkillIds.RemoveAt(i);
+            }
+            player.SigilSkillIds.Add(skillId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.SigilSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"skillType\":" + row.SkillType +
+                ",\"skillLv\":" + row.SkillLv + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleConsortiaBufferBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ConsortiaBufferList.Count == 0)
+            { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            if (string.IsNullOrEmpty(player.ConsortiaName))
+            { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"guild\"}"); return; }
+            string action = JS(json, "action", "buy");
+            int guildLv = ResolveGuildLevel(player);
+
+            if (string.Equals(action, "week", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "claim", StringComparison.OrdinalIgnoreCase))
+            {
+                int rank = JI(json, "rank", Mathf.Clamp(11 - Mathf.Max(1, guildLv), 1, 10));
+                ConsortiaWeekReward reward = _db.GetConsortiaWeekReward(rank);
+                if (reward == null) { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"reward\"}"); return; }
+                int week = DateTime.Now.Year * 100 + ((DateTime.Now.DayOfYear - 1) / 7 + 1);
+                if (player.ConsortiaWeekClaimWeek == week)
+                { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+                player.ConsortiaWeekClaimWeek = week;
+                player.GrantTemplateReward(_db, reward.TemplateId, reward.Count);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":true,\"action\":\"week\",\"rank\":" + rank +
+                    ",\"templateId\":" + reward.TemplateId + ",\"count\":" + reward.Count + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "badge", StringComparison.OrdinalIgnoreCase))
+            {
+                int badgeId = JI(json, "badgeId", 0);
+                ConsortiaBadgeConfig badge = _db.GetConsortiaBadge(badgeId);
+                if (badge == null) { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"badge\"}"); return; }
+                if (guildLv < badge.LimitLevel)
+                { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"level\"}"); return; }
+                if (badge.Cost > 0 && player.Gold < badge.Cost)
+                { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (badge.Cost > 0) player.Gold -= badge.Cost;
+                player.ConsortiaBadgeId = badgeId;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":true,\"action\":\"badge\",\"badgeId\":" + badgeId +
+                    ",\"cost\":" + badge.Cost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int bufferId = JI(json, "bufferId", JI(json, "id", 0));
+            ConsortiaBufferTemp buf = _db.GetConsortiaBuffer(bufferId);
+            if (buf == null) { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"buffer\"}"); return; }
+            if (guildLv < buf.Level)
+            { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            int needRichesGate = _db.ConsortiaBufferRichesNeed(guildLv);
+            if (buf.Riches > 0 && player.Honor < buf.Riches)
+            { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"riches\",\"need\":" + buf.Riches + "}"); return; }
+            if (buf.Metal > 0 && player.Gift < buf.Metal)
+            { Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":false,\"err\":\"metal\",\"need\":" + buf.Metal + "}"); return; }
+            if (buf.Riches > 0) player.Honor -= buf.Riches;
+            if (buf.Metal > 0) player.Gift -= buf.Metal;
+            player.ConsortiaBufferId = buf.Id;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.ConsortiaBufferBuy, "{\"ok\":true,\"action\":\"buy\",\"bufferId\":" + buf.Id +
+                ",\"value\":" + buf.Value + ",\"group\":" + buf.Group + ",\"riches\":" + buf.Riches +
+                ",\"metal\":" + buf.Metal + ",\"gate\":" + needRichesGate + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleElfSkillBook(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ElfSkillBookList.Count == 0)
+            { Send(ns, PhoneMsg.ElfSkillBook, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            ElfSkillBookTemp book = templateId > 0 ? _db.GetElfSkillBook(templateId) : null;
+            int elfType = JI(json, "elfType", -1);
+            if (book != null)
+            {
+                int need = Mathf.Max(1, book.NeedBookCount);
+                if (!player.Consume(book.TemplateId, need))
+                { Send(ns, PhoneMsg.ElfSkillBook, "{\"ok\":false,\"err\":\"book\"}"); return; }
+                elfType = book.ElfType;
+            }
+            else
+            {
+                int cost = _db.ConfigInt("ElfSkillBookGold", 200);
+                if (cost > 0 && player.Gold < cost)
+                { Send(ns, PhoneMsg.ElfSkillBook, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (cost > 0) player.Gold -= cost;
+            }
+            ElfSkillBookTemp rolled = book != null && book.SkillTempId > 0
+                ? book
+                : _db.RollElfSkillBook(elfType, _rng);
+            if (rolled == null || rolled.SkillTempId <= 0)
+            { Send(ns, PhoneMsg.ElfSkillBook, "{\"ok\":false,\"err\":\"roll\"}"); return; }
+            player.EnsureElfSkills();
+            if (!player.ElfSkillIds.Contains(rolled.SkillTempId))
+                player.ElfSkillIds.Add(rolled.SkillTempId);
+            while (player.ElfSkillIds.Count > 12) player.ElfSkillIds.RemoveAt(0);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ElfSkillBook, "{\"ok\":true,\"templateId\":" + rolled.TemplateId +
+                ",\"skillTempId\":" + rolled.SkillTempId + ",\"elfType\":" + rolled.ElfType + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleButterflyTaskClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ButterflyTaskList.Count == 0)
+            { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureButterfly();
+            player.EnsureButterflyTasks();
+            string action = JS(json, "action", "claim");
+            int today = DateTime.Now.DayOfYear;
+            if (player.ButterflyTaskDay != today) player.ButterflyTaskDay = today;
+
+            if (string.Equals(action, "start", StringComparison.OrdinalIgnoreCase))
+            {
+                int taskId = JI(json, "taskId", 0);
+                ButterflyTaskInfo task = _db.GetButterflyTask(taskId);
+                if (task == null) { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"task\"}"); return; }
+                int grade = Mathf.Max(0, player.ButterflyGrade);
+                if (grade < task.GradeMin || (task.GradeMax > 0 && grade > task.GradeMax))
+                { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+                if (player.ButterflyFeeling < task.NeedFeeling)
+                { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"feeling\"}"); return; }
+                player.ButterflyTaskActive = taskId;
+                player.ButterflyTaskStartDay = today;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":true,\"action\":\"start\",\"taskId\":" + taskId +
+                    ",\"needTime\":" + task.NeedTime + "}");
+                return;
+            }
+
+            int claimId = JI(json, "taskId", player.ButterflyTaskActive);
+            ButterflyTaskInfo row = _db.GetButterflyTask(claimId);
+            if (row == null) { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"task\"}"); return; }
+            if (player.ButterflyTaskClaimed.Contains(claimId))
+            { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            int gradeNow = Mathf.Max(0, player.ButterflyGrade);
+            if (gradeNow < row.GradeMin || (row.GradeMax > 0 && gradeNow > row.GradeMax))
+            { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+            if (player.ButterflyFeeling < row.NeedFeeling)
+            { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"feeling\"}"); return; }
+            if (player.ButterflyTaskActive == claimId && player.ButterflyTaskStartDay > 0)
+            {
+                int elapsed = today - player.ButterflyTaskStartDay;
+                if (elapsed < 0) elapsed += 365;
+                int needDays = row.NeedTime >= 1440 ? Mathf.Max(1, row.NeedTime / 1440) : 0;
+                if (elapsed < needDays)
+                { Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":false,\"err\":\"time\"}"); return; }
+            }
+            player.ButterflyTaskClaimed.Add(claimId);
+            if (row.RewardGp > 0) { player.ButterflyGp += row.RewardGp; player.AddGp(_db, row.RewardGp); }
+            if (row.RewardItemId > 0) player.AddItem(row.RewardItemId, 1);
+            if (player.ButterflyTaskActive == claimId) { player.ButterflyTaskActive = 0; player.ButterflyTaskStartDay = -1; }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ButterflyTaskClaim, "{\"ok\":true,\"action\":\"claim\",\"taskId\":" + claimId +
+                ",\"rewardGp\":" + row.RewardGp + ",\"rewardItem\":" + row.RewardItemId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -9553,6 +9846,12 @@ namespace GunMobile.Net
             public int PairUpPlays;
             public List<int> PairUpClaimed = new List<int>();
             public List<int> StockNoticeClaimed = new List<int>();
+            public int ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue;
+            public List<int> SigilSkillIds = new List<int>();
+            public int ConsortiaBufferId, ConsortiaBadgeId, ConsortiaWeekClaimWeek = -1;
+            public List<int> ElfSkillIds = new List<int>();
+            public List<int> ButterflyTaskClaimed = new List<int>();
+            public int ButterflyTaskDay = -1, ButterflyTaskActive, ButterflyTaskStartDay = -1;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -9706,6 +10005,14 @@ namespace GunMobile.Net
                 PairUpPoints = p.PairUpPoints, PairUpDay = p.PairUpDay, PairUpPlays = p.PairUpPlays,
                 PairUpClaimed = p.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = p.StockNoticeClaimed ?? new List<int>(),
+                ScrollBuffTypes = p.ScrollBuffTypes, ScrollBuffProfile = p.ScrollBuffProfile, ScrollBuffValue = p.ScrollBuffValue,
+                SigilSkillIds = p.SigilSkillIds ?? new List<int>(),
+                ConsortiaBufferId = p.ConsortiaBufferId, ConsortiaBadgeId = p.ConsortiaBadgeId,
+                ConsortiaWeekClaimWeek = p.ConsortiaWeekClaimWeek,
+                ElfSkillIds = p.ElfSkillIds ?? new List<int>(),
+                ButterflyTaskClaimed = p.ButterflyTaskClaimed ?? new List<int>(),
+                ButterflyTaskDay = p.ButterflyTaskDay, ButterflyTaskActive = p.ButterflyTaskActive,
+                ButterflyTaskStartDay = p.ButterflyTaskStartDay,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -9863,6 +10170,14 @@ namespace GunMobile.Net
                 PairUpPoints = s.PairUpPoints, PairUpDay = s.PairUpDay, PairUpPlays = s.PairUpPlays,
                 PairUpClaimed = s.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = s.StockNoticeClaimed ?? new List<int>(),
+                ScrollBuffTypes = s.ScrollBuffTypes, ScrollBuffProfile = s.ScrollBuffProfile, ScrollBuffValue = s.ScrollBuffValue,
+                SigilSkillIds = s.SigilSkillIds ?? new List<int>(),
+                ConsortiaBufferId = s.ConsortiaBufferId, ConsortiaBadgeId = s.ConsortiaBadgeId,
+                ConsortiaWeekClaimWeek = s.ConsortiaWeekClaimWeek,
+                ElfSkillIds = s.ElfSkillIds ?? new List<int>(),
+                ButterflyTaskClaimed = s.ButterflyTaskClaimed ?? new List<int>(),
+                ButterflyTaskDay = s.ButterflyTaskDay, ButterflyTaskActive = s.ButterflyTaskActive,
+                ButterflyTaskStartDay = s.ButterflyTaskStartDay,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

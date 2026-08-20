@@ -1167,6 +1167,80 @@ namespace GunMobile.Res
         public string NewsContent = "";
     }
 
+    public sealed class ScrollTemplate
+    {
+        public int TemplateId;
+        public string TemplateName = "";
+        public int Types;
+        public int Profile;
+    }
+
+    public sealed class SigilSkillTemplate
+    {
+        public int SkillId;
+        public int SkillType;
+        public int SkillLv;
+        public string SkillName = "";
+        public int IsNotice;
+    }
+
+    public sealed class ConsortiaBufferTemp
+    {
+        public int Id;
+        public string Name = "";
+        public string Descript = "";
+        public int Type;
+        public int Level;
+        public int Value;
+        public int Riches;
+        public int Metal;
+        public int Pic;
+        public int Group;
+    }
+
+    public sealed class ConsortiaBadgeConfig
+    {
+        public int BadgeId;
+        public string BadgeName = "";
+        public int Cost;
+        public int LimitLevel;
+        public int ValidDate;
+    }
+
+    public sealed class ConsortiaWeekReward
+    {
+        public int Rank;
+        public int TemplateId;
+        public int StrengthenLevel;
+        public int Count = 1;
+        public bool IsBind;
+        public int ValidDate;
+    }
+
+    public sealed class ElfSkillBookTemp
+    {
+        public int TemplateId;
+        public string TemplateName = "";
+        public int ElfType;
+        public int NeedBookCount = 1;
+        public int Randoms;
+        public int SkillTempId;
+        public string Description = "";
+    }
+
+    public sealed class ButterflyTaskInfo
+    {
+        public int TaskId;
+        public string TaskName = "";
+        public int GradeMin;
+        public int GradeMax;
+        public int NeedFeeling;
+        public int NeedTime;
+        public int RewardGp;
+        public int RewardItemId;
+        public string TaskDescr = "";
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1618,6 +1692,20 @@ namespace GunMobile.Res
         public Dictionary<int, StockNoticeInfo> StockNotices { get; } = new Dictionary<int, StockNoticeInfo>();
         public List<StockNoticeInfo> StockNoticeList { get; } = new List<StockNoticeInfo>();
         public Dictionary<int, int> StockNoticePriceBoost { get; } = new Dictionary<int, int>();
+        public Dictionary<int, ScrollTemplate> Scrolls { get; } = new Dictionary<int, ScrollTemplate>();
+        public List<ScrollTemplate> ScrollList { get; } = new List<ScrollTemplate>();
+        public Dictionary<int, SigilSkillTemplate> SigilSkills { get; } = new Dictionary<int, SigilSkillTemplate>();
+        public List<SigilSkillTemplate> SigilSkillList { get; } = new List<SigilSkillTemplate>();
+        public Dictionary<int, ConsortiaBufferTemp> ConsortiaBuffers { get; } = new Dictionary<int, ConsortiaBufferTemp>();
+        public List<ConsortiaBufferTemp> ConsortiaBufferList { get; } = new List<ConsortiaBufferTemp>();
+        public Dictionary<int, ConsortiaBadgeConfig> ConsortiaBadges { get; } = new Dictionary<int, ConsortiaBadgeConfig>();
+        public List<ConsortiaBadgeConfig> ConsortiaBadgeList { get; } = new List<ConsortiaBadgeConfig>();
+        public Dictionary<int, ConsortiaWeekReward> ConsortiaWeekRewards { get; } = new Dictionary<int, ConsortiaWeekReward>();
+        public List<ConsortiaWeekReward> ConsortiaWeekRewardList { get; } = new List<ConsortiaWeekReward>();
+        public Dictionary<int, ElfSkillBookTemp> ElfSkillBooks { get; } = new Dictionary<int, ElfSkillBookTemp>();
+        public List<ElfSkillBookTemp> ElfSkillBookList { get; } = new List<ElfSkillBookTemp>();
+        public Dictionary<int, ButterflyTaskInfo> ButterflyTasks { get; } = new Dictionary<int, ButterflyTaskInfo>();
+        public List<ButterflyTaskInfo> ButterflyTaskList { get; } = new List<ButterflyTaskInfo>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1728,6 +1816,11 @@ namespace GunMobile.Res
             db.LoadPairUpPointAwards(loader);
             db.LoadShopGoodsShow(loader);
             db.LoadStockNotices(loader);
+            db.LoadScrolls(loader);
+            db.LoadSigilSkills(loader);
+            db.LoadConsortiaBuffers(loader);
+            db.LoadElfSkillBooks(loader);
+            db.LoadButterflyTasks(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1749,7 +1842,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -1964,6 +2057,153 @@ namespace GunMobile.Res
                 case 9: hp += proValue * 5; break;
                 default: atk += Mathf.Max(1, proValue / 2); break;
             }
+        }
+
+        public ScrollTemplate GetScroll(int templateId)
+        {
+            if (templateId > 0 && Scrolls.TryGetValue(templateId, out ScrollTemplate row)) return row;
+            return null;
+        }
+
+        public int ScrollBuffValue(ScrollTemplate row)
+        {
+            if (row == null) return 0;
+            int profile = Mathf.Max(1, row.Profile);
+            return profile * ConfigInt("ScrollBuffPerProfile", 10);
+        }
+
+        public int ScrollUseGoldReward(ScrollTemplate row)
+        {
+            if (row == null) return 0;
+            int profile = Mathf.Max(1, row.Profile);
+            return Mathf.Max(50, profile * ConfigInt("ScrollUseGoldPerProfile", 100));
+        }
+
+        public void ApplyScrollBuff(int types, int profile, int value, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (value <= 0) return;
+            int v = value;
+            switch (types)
+            {
+                case 1: atk += v; baseDmg += Mathf.Max(1, v / 2); break;
+                case 2: luck += v; break;
+                case 3: def += v; baseGuard += Mathf.Max(1, v / 2); break;
+                case 4: hp += v * 5; agi += Mathf.Max(1, v / 2); break;
+                case 5: atk += v; def += v; break;
+                case 6: hp += v * 8; break;
+                default:
+                    atk += Mathf.Max(1, v / 2);
+                    def += Mathf.Max(1, v / 2);
+                    break;
+            }
+            if (profile > 3) luck += profile;
+        }
+
+        public SigilSkillTemplate GetSigilSkill(int skillId)
+        {
+            if (skillId > 0 && SigilSkills.TryGetValue(skillId, out SigilSkillTemplate row)) return row;
+            return null;
+        }
+
+        public int SigilSkillUnlockGoldCost(SigilSkillTemplate row)
+        {
+            if (row == null) return 0;
+            int lv = Mathf.Max(1, row.SkillLv);
+            return ConfigInt("SigilSkillUnlockGold", 300) * lv;
+        }
+
+        public void ApplySigilSkillBonuses(IReadOnlyList<int> skillIds, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard, ref int magicAtk, ref int magicDef)
+        {
+            if (skillIds == null || skillIds.Count == 0) return;
+            for (int i = 0; i < skillIds.Count; i++)
+            {
+                SigilSkillTemplate row = GetSigilSkill(skillIds[i]);
+                if (row == null) continue;
+                int bonus = Mathf.Max(1, row.SkillLv) * ConfigInt("SigilSkillBonusPerLv", 8);
+                ApplySigilBonus(row.SkillType, bonus, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            }
+        }
+
+        public ConsortiaBufferTemp GetConsortiaBuffer(int id)
+        {
+            if (id > 0 && ConsortiaBuffers.TryGetValue(id, out ConsortiaBufferTemp row)) return row;
+            return null;
+        }
+
+        public ConsortiaBadgeConfig GetConsortiaBadge(int badgeId)
+        {
+            if (badgeId > 0 && ConsortiaBadges.TryGetValue(badgeId, out ConsortiaBadgeConfig row)) return row;
+            return null;
+        }
+
+        public ConsortiaWeekReward GetConsortiaWeekReward(int rank)
+        {
+            if (rank > 0 && ConsortiaWeekRewards.TryGetValue(rank, out ConsortiaWeekReward row)) return row;
+            return null;
+        }
+
+        public int ConsortiaBufferRichesNeed(int guildLevel)
+        {
+            if (guildLevel > 0 && ConsortiaLevels.TryGetValue(guildLevel, out ConsortiaLevelInfo lv) && lv != null)
+                return Mathf.Max(0, lv.BufferRiches);
+            return 0;
+        }
+
+        public void ApplyConsortiaBufferBonus(int bufferId, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg)
+        {
+            ConsortiaBufferTemp row = GetConsortiaBuffer(bufferId);
+            if (row == null || row.Value <= 0) return;
+            int v = row.Value;
+            switch (row.Group)
+            {
+                case 1: hp += v; break;
+                case 2: baseDmg += v; break;
+                case 3: baseDmg += v; luck += Mathf.Max(1, v / 50); break;
+                case 4: hp += Mathf.Max(1, hp * v / 100); break;
+                case 5: atk += v; def += v; agi += v; luck += v; break;
+                case 6: agi += v; break;
+                case 7: hp += v * 2; break;
+                case 11: hp += Mathf.Max(1, v); break;
+                case 13: hp += v; break;
+                default: atk += Mathf.Max(1, v / 2); def += Mathf.Max(1, v / 2); break;
+            }
+        }
+
+        public ElfSkillBookTemp GetElfSkillBook(int templateId)
+        {
+            if (templateId > 0 && ElfSkillBooks.TryGetValue(templateId, out ElfSkillBookTemp row)) return row;
+            return null;
+        }
+
+        public ElfSkillBookTemp RollElfSkillBook(int elfType, System.Random rng)
+        {
+            int total = 0;
+            for (int i = 0; i < ElfSkillBookList.Count; i++)
+            {
+                ElfSkillBookTemp row = ElfSkillBookList[i];
+                if (elfType >= 0 && row.ElfType != 0 && row.ElfType != elfType) continue;
+                total += Mathf.Max(0, row.Randoms);
+            }
+            if (total <= 0)
+            {
+                for (int i = 0; i < ElfSkillBookList.Count; i++) total += Mathf.Max(0, ElfSkillBookList[i].Randoms);
+            }
+            if (total <= 0) return ElfSkillBookList.Count > 0 ? ElfSkillBookList[0] : null;
+            int roll = rng != null ? rng.Next(0, total) : 0;
+            for (int i = 0; i < ElfSkillBookList.Count; i++)
+            {
+                ElfSkillBookTemp row = ElfSkillBookList[i];
+                if (elfType >= 0 && row.ElfType != 0 && row.ElfType != elfType) continue;
+                roll -= Mathf.Max(0, row.Randoms);
+                if (roll < 0) return row;
+            }
+            return ElfSkillBookList.Count > 0 ? ElfSkillBookList[ElfSkillBookList.Count - 1] : null;
+        }
+
+        public ButterflyTaskInfo GetButterflyTask(int taskId)
+        {
+            if (taskId > 0 && ButterflyTasks.TryGetValue(taskId, out ButterflyTaskInfo row)) return row;
+            return null;
         }
 
         public JadeTemp GetJade(int id)
@@ -8114,6 +8354,175 @@ namespace GunMobile.Res
                     default: def += val / 4; break;
                 }
             }
+        }
+
+        void LoadScrolls(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_Scroll.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateId");
+                if (templateId <= 0) templateId = Int(row, "TemplateID");
+                if (templateId <= 0 || Scrolls.ContainsKey(templateId)) continue;
+                var info = new ScrollTemplate
+                {
+                    TemplateId = templateId,
+                    TemplateName = Str(row, "TemplateName"),
+                    Types = Int(row, "Types"),
+                    Profile = Int(row, "Profile")
+                };
+                Scrolls[templateId] = info;
+                ScrollList.Add(info);
+            }
+        }
+
+        void LoadSigilSkills(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_SigilSkillTemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int skillId = Int(row, "SkillID");
+                if (skillId <= 0) skillId = Int(row, "SkillId");
+                if (skillId <= 0 || SigilSkills.ContainsKey(skillId)) continue;
+                var info = new SigilSkillTemplate
+                {
+                    SkillId = skillId,
+                    SkillType = Int(row, "SkillType"),
+                    SkillLv = Int(row, "SkillLv"),
+                    SkillName = Str(row, "SkillName"),
+                    IsNotice = Int(row, "IsNotice")
+                };
+                SigilSkills[skillId] = info;
+                SigilSkillList.Add(info);
+            }
+            SigilSkillList.Sort((a, b) =>
+            {
+                int c = a.SkillType.CompareTo(b.SkillType);
+                return c != 0 ? c : a.SkillLv.CompareTo(b.SkillLv);
+            });
+        }
+
+        void LoadConsortiaBuffers(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/consortiabuffertemp.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/consortiabuffertemp1.xml", out table))
+            {
+                return;
+            }
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "id");
+                if (id <= 0) id = Int(row, "ID");
+                if (id <= 0 || ConsortiaBuffers.ContainsKey(id)) continue;
+                var info = new ConsortiaBufferTemp
+                {
+                    Id = id,
+                    Name = Str(row, "name"),
+                    Descript = Str(row, "descript"),
+                    Type = Int(row, "type"),
+                    Level = Int(row, "level"),
+                    Value = Int(row, "value"),
+                    Riches = Int(row, "riches"),
+                    Metal = Int(row, "metal"),
+                    Pic = Int(row, "pic"),
+                    Group = Int(row, "group")
+                };
+                ConsortiaBuffers[id] = info;
+                ConsortiaBufferList.Add(info);
+            }
+            ConsortiaBufferList.Sort((a, b) => a.Id.CompareTo(b.Id));
+
+            if (TryTable(loader, "Request/consortiabadgeconfig.xml", out XmlResultTable badges))
+            {
+                foreach (var row in badges.Rows)
+                {
+                    int badgeId = Int(row, "BadgeID");
+                    if (badgeId <= 0) badgeId = Int(row, "BadgeId");
+                    if (badgeId <= 0 || ConsortiaBadges.ContainsKey(badgeId)) continue;
+                    var badge = new ConsortiaBadgeConfig
+                    {
+                        BadgeId = badgeId,
+                        BadgeName = (Str(row, "BadgeName") ?? "").Trim(),
+                        Cost = Int(row, "Cost"),
+                        LimitLevel = Int(row, "LimitLevel"),
+                        ValidDate = Int(row, "ValidDate")
+                    };
+                    ConsortiaBadges[badgeId] = badge;
+                    ConsortiaBadgeList.Add(badge);
+                }
+            }
+
+            if (TryTable(loader, "Request/consortiaweekreward.xml", out XmlResultTable weeks))
+            {
+                foreach (var row in weeks.Rows)
+                {
+                    int rank = Int(row, "Rank");
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0) templateId = Int(row, "TemplateId");
+                    if (rank <= 0 || templateId <= 0 || ConsortiaWeekRewards.ContainsKey(rank)) continue;
+                    var reward = new ConsortiaWeekReward
+                    {
+                        Rank = rank,
+                        TemplateId = templateId,
+                        StrengthenLevel = Int(row, "StrengthenLevel"),
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        IsBind = Bool(row, "IsBind"),
+                        ValidDate = Int(row, "ValidDate")
+                    };
+                    ConsortiaWeekRewards[rank] = reward;
+                    ConsortiaWeekRewardList.Add(reward);
+                }
+                ConsortiaWeekRewardList.Sort((a, b) => a.Rank.CompareTo(b.Rank));
+            }
+        }
+
+        void LoadElfSkillBooks(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_ElfSkillBook.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateId");
+                if (templateId <= 0) templateId = Int(row, "TemplateID");
+                if (templateId <= 0 || ElfSkillBooks.ContainsKey(templateId)) continue;
+                var info = new ElfSkillBookTemp
+                {
+                    TemplateId = templateId,
+                    TemplateName = Str(row, "TemplateName"),
+                    ElfType = Int(row, "ElfType"),
+                    NeedBookCount = Mathf.Max(1, Int(row, "NeedBookCount")),
+                    Randoms = Int(row, "Randoms"),
+                    SkillTempId = Int(row, "SkillTempId"),
+                    Description = Str(row, "Description")
+                };
+                ElfSkillBooks[templateId] = info;
+                ElfSkillBookList.Add(info);
+            }
+        }
+
+        void LoadButterflyTasks(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_ButterflyTask.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int taskId = Int(row, "TaskId");
+                if (taskId <= 0) taskId = Int(row, "TaskID");
+                if (taskId <= 0 || ButterflyTasks.ContainsKey(taskId)) continue;
+                var info = new ButterflyTaskInfo
+                {
+                    TaskId = taskId,
+                    TaskName = Str(row, "TaskName"),
+                    GradeMin = Int(row, "GradeMin"),
+                    GradeMax = Int(row, "GradeMax"),
+                    NeedFeeling = Int(row, "NeedFeeling"),
+                    NeedTime = Int(row, "NeedTime"),
+                    RewardGp = Int(row, "RewardGp"),
+                    RewardItemId = Int(row, "RewardItemId"),
+                    TaskDescr = Str(row, "TaskDescr")
+                };
+                ButterflyTasks[taskId] = info;
+                ButterflyTaskList.Add(info);
+            }
+            ButterflyTaskList.Sort((a, b) => a.TaskId.CompareTo(b.TaskId));
         }
 
         void LoadServerConfig(ResLoader loader)
