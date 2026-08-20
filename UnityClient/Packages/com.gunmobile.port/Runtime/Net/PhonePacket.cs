@@ -197,6 +197,8 @@ namespace GunMobile.Net
         public const ushort HonorSystemClaim = 154;
         public const ushort WarriorFamStart = 155;
         public const ushort WarriorFamClaim = 156;
+        public const ushort FirstRechargeClaim = 161;
+        public const ushort FirstRechargeShop = 162;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

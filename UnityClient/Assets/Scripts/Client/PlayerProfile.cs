@@ -69,6 +69,7 @@ namespace GunMobile.Client
         public int RedPacketClaims;
         public int DevilTurnSpins;
         public int SweepCount;
+        public bool FirstRechargeClaimed;
         public int DreamlandChapter = 1;
         public int DreamlandSection = 1;
         public int DreamlandClearedSection;
@@ -669,7 +670,7 @@ namespace GunMobile.Client
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
-            new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
+            new ModuleDef("firstrecharge", "首充", "Request/ts_firstpayshoptemp.xml", false, "firstrecharge.ui"),
             new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),

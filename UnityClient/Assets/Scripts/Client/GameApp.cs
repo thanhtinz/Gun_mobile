@@ -312,6 +312,9 @@ namespace GunMobile.Client
                 case "darkboundary":
                     ExtraModulesScreens.DarkBoundaryScreen(_safe, this);
                     return;
+                case "firstrecharge":
+                    ExtraModulesScreens.FirstRechargeScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -457,11 +460,15 @@ namespace GunMobile.Client
                     case PhoneMsg.DreamlandClaim:
                     case PhoneMsg.WarriorFamClaim:
                     case PhoneMsg.SweepLabyrinth:
+                    case PhoneMsg.FirstRechargeClaim:
+                    case PhoneMsg.FirstRechargeShop:
+                    case PhoneMsg.MailSend:
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
                         {
                             RefreshCurrentModule();
                         }
+                        break;
                     case PhoneMsg.Error:
                     {
                         string err = JsonStr(msg.Json, "err", "error");
@@ -568,6 +575,7 @@ namespace GunMobile.Client
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
+            Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);
             Profile.DreamlandSection = JsonInt(json, "dreamlandSection", Profile.DreamlandSection);
             Profile.DreamlandClearedSection = JsonInt(json, "dreamlandClearedSection", Profile.DreamlandClearedSection);

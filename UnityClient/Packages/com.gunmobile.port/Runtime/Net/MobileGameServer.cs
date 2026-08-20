@@ -78,6 +78,8 @@ namespace GunMobile.Net
         public int DevilTurnSpins;
         public int SweepDay = -1;
         public int SweepCount;
+        public bool FirstRechargeClaimed;
+        public Dictionary<int, int> FirstRechargeShopBuys = new Dictionary<int, int>();
         public int DreamlandChapter = 1;
         public int DreamlandSection = 1;
         public int DreamlandClearedSection;
@@ -429,6 +431,16 @@ namespace GunMobile.Net
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
+            J(sb, "firstRechargeClaimed", FirstRechargeClaimed ? 1 : 0); sb.Append(",");
+            sb.Append("\"firstRechargeShopBuys\":[");
+            bool firstBuy = true;
+            foreach (KeyValuePair<int, int> kv in FirstRechargeShopBuys)
+            {
+                if (!firstBuy) sb.Append(",");
+                firstBuy = false;
+                sb.Append("{\"templateId\":").Append(kv.Key).Append(",\"count\":").Append(kv.Value).Append("}");
+            }
+            sb.Append("],");
             J(sb, "dreamlandChapter", DreamlandChapter); sb.Append(",");
             J(sb, "dreamlandSection", DreamlandSection); sb.Append(",");
             J(sb, "dreamlandClearedSection", DreamlandClearedSection); sb.Append(",");
@@ -1467,6 +1479,15 @@ namespace GunMobile.Net
                 case PhoneMsg.SweepLabyrinth:
                     HandleSweepLabyrinth(player, ns);
                     break;
+
+                case PhoneMsg.FirstRechargeClaim:
+                    HandleFirstRechargeClaim(player, ns);
+                    break;
+
+                case PhoneMsg.FirstRechargeShop:
+                    HandleFirstRechargeShop(player, ns, json);
+                    break;
+
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
                 case PhoneMsg.EmblemEquip: HandleEmblemEquip(player, ns, json); break;
                 case PhoneMsg.SoulStampCompose: HandleSoulStampCompose(player, ns, json); break;
@@ -3096,6 +3117,118 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.MailSend, "{\"ok\":true,\"to\":\"" + to.Replace("\"", "") + "\"}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
             SendTo(target, PhoneMsg.MailListData, BuildMailListJson(target));
+        }
+
+        void HandleFirstRechargeClaim(ServerPlayer player, NetworkStream ns)
+        {
+            if (player.FirstRechargeClaimed)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false}");
+                return;
+            }
+
+            FirstRechargeConfig cfg = _db.GetFirstRechargeConfig();
+            if (cfg == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            var granted = new StringBuilder("[");
+            bool first = true;
+            for (int i = 0; i < cfg.RewardItemIds.Length; i++)
+            {
+                int itemId = cfg.RewardItemIds[i];
+                if (itemId <= 0)
+                {
+                    continue;
+                }
+
+                int count = i < cfg.RewardCounts.Length ? cfg.RewardCounts[i] : 1;
+                count = Mathf.Max(1, count);
+                player.AddItem(itemId, count);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(itemId).Append(",\"count\":").Append(count).Append("}");
+            }
+
+            if (cfg.ExtraItemId1 > 0)
+            {
+                player.AddItem(cfg.ExtraItemId1, 1);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(cfg.ExtraItemId1).Append(",\"count\":1}");
+            }
+
+            if (cfg.ExtraItemId2 > 0)
+            {
+                player.AddItem(cfg.ExtraItemId2, 1);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(cfg.ExtraItemId2).Append(",\"count\":1}");
+            }
+
+            if (cfg.RankAwardId > 0)
+            {
+                player.AddItem(cfg.RankAwardId, 1);
+                if (!first) granted.Append(",");
+                granted.Append("{\"itemId\":").Append(cfg.RankAwardId).Append(",\"count\":1}");
+            }
+
+            granted.Append("]");
+            player.FirstRechargeClaimed = true;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":true,\"items\":" + granted + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleFirstRechargeShop(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int templateId = JI(json, "templateId", 0);
+            int count = Mathf.Clamp(JI(json, "count", 1), 1, 99);
+            if (templateId <= 0 || _db == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false}");
+                return;
+            }
+
+            FirstPayShopItem offer = _db.GetFirstPayShopItem(templateId);
+            if (offer == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"item\"}");
+                return;
+            }
+
+            player.FirstRechargeShopBuys.TryGetValue(templateId, out int bought);
+            if (bought + count > offer.LimitBuyCount)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int cost = offer.NeedGoldBeans * count;
+            if (player.Gift < cost)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"beans\"}");
+                return;
+            }
+
+            player.Gift -= cost;
+            int giveCount = offer.ItemTempCount * count;
+            player.AddItem(offer.ItemTempId, giveCount);
+            player.FirstRechargeShopBuys[templateId] = bought + count;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FirstRechargeShop,
+                "{\"ok\":true,\"templateId\":" + templateId + ",\"count\":" + count +
+                ",\"itemId\":" + offer.ItemTempId + ",\"itemCount\":" + giveCount +
+                ",\"cost\":" + cost + ",\"bought\":" + (bought + count) + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleSweepLabyrinth(ServerPlayer player, NetworkStream ns)
@@ -5485,6 +5618,8 @@ namespace GunMobile.Net
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
+            public bool FirstRechargeClaimed;
+            public List<FirstRechargeBuySave> FirstRechargeShopBuys = new List<FirstRechargeBuySave>();
             public int DreamlandChapter = 1, DreamlandSection = 1, DreamlandClearedSection;
             public int DreamlandDay = -1, DreamlandAttempts;
             public int WarriorFamHardType, WarriorFamLevel = 1, WarriorFamClearedLevel;
@@ -5503,6 +5638,13 @@ namespace GunMobile.Net
             public List<EmblemSlotSave> Emblems = new List<EmblemSlotSave>();
             public List<SoulStampSlotSave> SoulStamps = new List<SoulStampSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
+        }
+
+        [Serializable]
+        class FirstRechargeBuySave
+        {
+            public int templateId;
+            public int count;
         }
 
         [Serializable]
@@ -5550,6 +5692,7 @@ namespace GunMobile.Net
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
+                FirstRechargeClaimed = p.FirstRechargeClaimed,
                 DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
                 DreamlandClearedSection = p.DreamlandClearedSection, DreamlandDay = p.DreamlandDay,
                 DreamlandAttempts = p.DreamlandAttempts,
@@ -5576,6 +5719,10 @@ namespace GunMobile.Net
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
+            foreach (KeyValuePair<int, int> kv in p.FirstRechargeShopBuys)
+            {
+                s.FirstRechargeShopBuys.Add(new FirstRechargeBuySave { templateId = kv.Key, count = kv.Value });
+            }
             foreach (ServerMail m in p.Mails)
             {
                 s.Mails.Add(new ServerMailSave
@@ -5611,6 +5758,7 @@ namespace GunMobile.Net
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
+                FirstRechargeClaimed = s.FirstRechargeClaimed,
                 DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
                 DreamlandSection = s.DreamlandSection > 0 ? s.DreamlandSection : 1,
                 DreamlandClearedSection = s.DreamlandClearedSection,
@@ -5646,6 +5794,16 @@ namespace GunMobile.Net
 
             p.EnsureFightSpirits();
             p.EnsureMagicStones();
+            if (s.FirstRechargeShopBuys != null)
+            {
+                foreach (FirstRechargeBuySave buy in s.FirstRechargeShopBuys)
+                {
+                    if (buy.templateId > 0 && buy.count > 0)
+                    {
+                        p.FirstRechargeShopBuys[buy.templateId] = buy.count;
+                    }
+                }
+            }
             if (s.Emblems != null) foreach (EmblemSlotSave e in s.Emblems) p.Emblems.Add(new EmblemSlot { Id = e.id, TemplateId = e.templateId, Types = e.types, Profile = e.profile, MainType = e.mainType, MainValue = e.mainValue, SubValue = e.subValue, SkillId = e.skillId, Equipped = e.equipped });
             if (s.SoulStamps != null) foreach (SoulStampSlotSave ss in s.SoulStamps) p.SoulStamps.Add(new SoulStampSlot { Id = ss.id, TempId = ss.tempId, Type = ss.type, Quality = ss.quality, Grade = ss.grade, ProType = ss.proType, ProValue = ss.proValue, SkillId = ss.skillId, Equipped = ss.equipped });
             p.EnsureEmblems(); p.EnsureSoulStamps();
