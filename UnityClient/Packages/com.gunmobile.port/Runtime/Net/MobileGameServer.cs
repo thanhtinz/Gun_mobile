@@ -76,6 +76,16 @@ namespace GunMobile.Net
         public int RedPacketClaims;
         public int DevilTurnDay = -1;
         public int DevilTurnSpins;
+        public int SpaRoomDay = -1;
+        public int SpaRoomDayScore;
+        public bool SpaRoomActive;
+        public int SpaRoomWidth;
+        public int SpaRoomHeight;
+        public List<int> SpaRoomMap = new List<int>();
+        public List<int> SpaRoomPicked = new List<int>();
+        public int SpaRoomScore;
+        public int TreasureRoomDay = -1;
+        public int TreasureRoomDraws;
         public int SweepDay = -1;
         public int SweepCount;
         public bool FirstRechargeClaimed;
@@ -451,6 +461,8 @@ namespace GunMobile.Net
             J(sb, "honorSystemLevel", HonorSystemLevel); sb.Append(",");
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
+            J(sb, "spaRoomDayScore", SpaRoomDayScore); sb.Append(",");
+            J(sb, "treasureRoomDraws", TreasureRoomDraws); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
             J(sb, "firstRechargeClaimed", FirstRechargeClaimed ? 1 : 0); sb.Append(",");
             sb.Append("\"firstRechargeShopBuys\":[");
@@ -1525,6 +1537,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.FirstRechargeShop:
                     HandleFirstRechargeShop(player, ns, json);
+                    break;
+
+                case PhoneMsg.SpaRoomStart:
+                    HandleSpaRoomStart(player, ns);
+                    break;
+
+                case PhoneMsg.SpaRoomBomb:
+                    HandleSpaRoomBomb(player, ns, json);
+                    break;
+
+                case PhoneMsg.TreasureRoomDraw:
+                    HandleTreasureRoomDraw(player, ns, json);
                     break;
 
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
@@ -3096,6 +3120,234 @@ namespace GunMobile.Net
             rewards.Append("]");
             Send(ns, PhoneMsg.DevilTurnSpin,
                 "{\"ok\":true,\"cost\":" + cost + ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSpaRoomStart(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.SpaRoomDay != today)
+            {
+                player.SpaRoomDay = today;
+                player.SpaRoomDayScore = 0;
+            }
+
+            int dayLimit = _db != null ? _db.SpaRoomDayScoreLimit() : 100;
+            if (player.SpaRoomDayScore >= dayLimit)
+            {
+                Send(ns, PhoneMsg.SpaRoomStart, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            SpaRoomFixedLevel fixedRow = _db != null ? _db.GetSpaRoomFixedLevel(player.Level) : null;
+            int width = fixedRow != null && fixedRow.XAxes > 0 ? fixedRow.XAxes : 10;
+            int height = fixedRow != null && fixedRow.YAxes > 0 ? fixedRow.YAxes : 10;
+            int[] map;
+            lock (_lock)
+            {
+                map = _db != null ? _db.BuildSpaRoomMap(player.Level, _rng) : new int[width * height];
+            }
+
+            if (map.Length != width * height && map.Length > 0)
+            {
+                width = fixedRow != null && fixedRow.XAxes > 0 ? fixedRow.XAxes : 4;
+                height = Mathf.Max(1, map.Length / width);
+            }
+
+            player.SpaRoomActive = true;
+            player.SpaRoomWidth = width;
+            player.SpaRoomHeight = height;
+            player.SpaRoomMap = new List<int>(map);
+            player.SpaRoomPicked = new List<int>();
+            player.SpaRoomScore = 0;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SpaRoomStart,
+                "{\"ok\":true,\"width\":" + width + ",\"height\":" + height +
+                ",\"level\":" + player.Level + ",\"dayScore\":" + player.SpaRoomDayScore +
+                ",\"dayLimit\":" + dayLimit + ",\"gameLimit\":" +
+                (_db != null ? _db.SpaRoomGameScoreLimit() : 200) + "}");
+        }
+
+        void HandleSpaRoomBomb(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (!player.SpaRoomActive || player.SpaRoomMap == null || player.SpaRoomMap.Count == 0)
+            {
+                Send(ns, PhoneMsg.SpaRoomBomb, "{\"ok\":false,\"err\":\"no game\"}");
+                return;
+            }
+
+            int index = JI(json, "index", -1);
+            if (index < 0 || index >= player.SpaRoomMap.Count)
+            {
+                Send(ns, PhoneMsg.SpaRoomBomb, "{\"ok\":false,\"err\":\"index\"}");
+                return;
+            }
+
+            if (player.SpaRoomPicked != null)
+            {
+                for (int i = 0; i < player.SpaRoomPicked.Count; i++)
+                {
+                    if (player.SpaRoomPicked[i] == index)
+                    {
+                        Send(ns, PhoneMsg.SpaRoomBomb, "{\"ok\":false,\"err\":\"picked\"}");
+                        return;
+                    }
+                }
+            }
+            else
+            {
+                player.SpaRoomPicked = new List<int>();
+            }
+
+            int cellType = player.SpaRoomMap[index];
+            player.SpaRoomPicked.Add(index);
+            int gold = 0;
+            int itemId = 0;
+            int itemCount = 0;
+            bool gameOver = false;
+            int scoreGain = 0;
+            int dayLimit = _db != null ? _db.SpaRoomDayScoreLimit() : 100;
+            int gameLimit = _db != null ? _db.SpaRoomGameScoreLimit() : 200;
+
+            if (cellType == 6)
+            {
+                gameOver = true;
+            }
+            else if (cellType >= 1 && cellType <= 5)
+            {
+                scoreGain = cellType * 10;
+                gold = cellType * 20;
+                if (_db != null)
+                {
+                    itemId = _db.SpaRoomGiftForCellType(cellType);
+                    if (itemId > 0)
+                    {
+                        itemCount = 1;
+                        player.AddItem(itemId, itemCount);
+                    }
+                }
+            }
+            else if (cellType > 0)
+            {
+                scoreGain = 5;
+                gold = 10;
+            }
+
+            int remainingDay = dayLimit - player.SpaRoomDayScore;
+            if (scoreGain > remainingDay)
+            {
+                scoreGain = remainingDay;
+            }
+
+            int remainingGame = gameLimit - player.SpaRoomScore;
+            if (scoreGain > remainingGame)
+            {
+                scoreGain = remainingGame;
+            }
+
+            player.SpaRoomScore += scoreGain;
+            player.SpaRoomDayScore += scoreGain;
+            player.Gold += gold;
+
+            if (player.SpaRoomDayScore >= dayLimit || player.SpaRoomScore >= gameLimit)
+            {
+                gameOver = true;
+            }
+
+            if (gameOver)
+            {
+                player.SpaRoomActive = false;
+            }
+
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SpaRoomBomb,
+                "{\"ok\":true,\"index\":" + index + ",\"cellType\":" + cellType +
+                ",\"gold\":" + gold + ",\"item\":" + itemId + ",\"count\":" + itemCount +
+                ",\"score\":" + scoreGain + ",\"sessionScore\":" + player.SpaRoomScore +
+                ",\"dayScore\":" + player.SpaRoomDayScore + ",\"gameOver\":" +
+                (gameOver ? "true" : "false") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleTreasureRoomDraw(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int count = JI(json, "count", 1);
+            count = Mathf.Clamp(count, 1, 10);
+            int today = DateTime.Now.DayOfYear;
+            if (player.TreasureRoomDay != today)
+            {
+                player.TreasureRoomDay = today;
+                player.TreasureRoomDraws = 0;
+            }
+
+            int freeLeft = _db != null ? _db.ConfigInt("SearchGoodsFreeCount", 15) : 15;
+            freeLeft = Mathf.Max(0, freeLeft - player.TreasureRoomDraws);
+            int paidDraws = count;
+            if (freeLeft >= count)
+            {
+                paidDraws = 0;
+            }
+            else
+            {
+                paidDraws = count - freeLeft;
+            }
+
+            int unitCost = _db != null ? _db.TreasureRoomDrawCost(player.TreasureRoomDraws + 1) : 20;
+            int cost = paidDraws * unitCost;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.TreasureRoomResult, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (_db == null || _db.TreasureRoomPool().Count == 0)
+            {
+                Send(ns, PhoneMsg.TreasureRoomResult, "{\"ok\":false,\"err\":\"pool\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            var rewards = new StringBuilder("[");
+            for (int i = 0; i < count; i++)
+            {
+                CarnivalActivityItem drop;
+                lock (_lock)
+                {
+                    drop = _db.RollTreasureRoomItem(_rng);
+                }
+
+                if (drop == null)
+                {
+                    continue;
+                }
+
+                int templateId = drop.TemplateId;
+                int amount = Mathf.Max(1, drop.Count);
+                if (templateId > 100)
+                {
+                    player.AddItem(templateId, amount);
+                }
+                else
+                {
+                    player.Gold += amount * 50;
+                }
+
+                if (i > 0)
+                {
+                    rewards.Append(",");
+                }
+
+                rewards.Append("{\"item\":").Append(templateId)
+                    .Append(",\"count\":").Append(amount)
+                    .Append(",\"quality\":").Append(drop.Quality).Append("}");
+            }
+
+            player.TreasureRoomDraws += count;
+            SavePlayer(player);
+            rewards.Append("]");
+            Send(ns, PhoneMsg.TreasureRoomResult,
+                "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.TreasureRoomDraws +
+                ",\"rewards\":" + rewards + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -5794,6 +6046,8 @@ namespace GunMobile.Net
             public List<int> HonorSystemClaimed = new List<int>();
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
+            public int SpaRoomDay = -1, SpaRoomDayScore;
+            public int TreasureRoomDay = -1, TreasureRoomDraws;
             public int SweepDay = -1, SweepCount;
             public bool FirstRechargeClaimed;
             public List<FirstRechargeBuySave> FirstRechargeShopBuys = new List<FirstRechargeBuySave>();
@@ -5873,6 +6127,8 @@ namespace GunMobile.Net
                 HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
+                SpaRoomDay = p.SpaRoomDay, SpaRoomDayScore = p.SpaRoomDayScore,
+                TreasureRoomDay = p.TreasureRoomDay, TreasureRoomDraws = p.TreasureRoomDraws,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
                 FirstRechargeClaimed = p.FirstRechargeClaimed,
                 DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
@@ -5945,6 +6201,8 @@ namespace GunMobile.Net
                 HonorSystemClaimed = s.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
+                SpaRoomDay = s.SpaRoomDay, SpaRoomDayScore = s.SpaRoomDayScore,
+                TreasureRoomDay = s.TreasureRoomDay, TreasureRoomDraws = s.TreasureRoomDraws,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
                 FirstRechargeClaimed = s.FirstRechargeClaimed,
                 DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
