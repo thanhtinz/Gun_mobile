@@ -108,6 +108,23 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "卡片");
+            CardMainLevelInfo main = app.Database != null ? app.Database.GetCardMainLevel(app.Profile.CardMainLevel) : null;
+            CardMainLevelInfo next = app.Database != null ? app.Database.GetCardMainLevel(app.Profile.CardMainLevel + 1) : null;
+            SysUi.Note(body, "CardMain Lv" + app.Profile.CardMainLevel +
+                (main != null ? $"  ATK+{main.Attack} DEF+{main.Defence}" : ""));
+            if (next != null && next.NeedItem1Count > 0)
+                SysUi.Row(body, "cardMainUp", $"升级CardMain  {next.NeedItem1Count} 金币", () => PhoneNet.UpgradeCardMain());
+            app.Profile.EnsureOwnedCards();
+            int suitN = 0;
+            foreach (CardSuitInfo suit in app.Database.CardSuits)
+            {
+                bool complete = suit.NeedCardTempIds != null && suit.NeedCardTempIds.Length > 0;
+                if (complete)
+                    for (int i = 0; i < suit.NeedCardTempIds.Length; i++)
+                        if (!GameDatabase.ListHasInt(app.Profile.OwnedCardTemplateIds, suit.NeedCardTempIds[i])) { complete = false; break; }
+                SysUi.Note(body, $"{(complete ? "[套装] " : "")}{suit.SuitName}  ATK+{suit.Attack} HP+{suit.Hp}");
+                if (++suitN >= 12) break;
+            }
             int n = 0;
             foreach (CardInfo card in app.Database.Cards)
             {
@@ -220,6 +237,10 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "精灵");
+            app.Profile.SyncElfIntimacyLevel(app.Database);
+            SysUi.Note(body, $"亲密度 Lv{app.Profile.ElfIntimacyLevel}  EXP {app.Profile.ElfIntimacyExp}  今日 {app.Profile.ElfIntimacyActions}/10");
+            SysUi.Row(body, "elfGift", "赠送礼物 +15 EXP", () => PhoneNet.ElfIntimacyAction("gift"));
+            SysUi.Row(body, "elfTalk", "互动 +10 EXP", () => PhoneNet.ElfIntimacyAction("interact"));
             foreach (ElfInfo e in app.Database.Elves.Values)
             {
                 ElfInfo local = e;
@@ -236,6 +257,54 @@ namespace GunMobile.Client
             {
                 SysUi.Note(body, "Missing TS_ElfTemplate.xml");
             }
+        }
+    }
+
+    public static class JampsScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "探险手册");
+            JampsManualInfo manual = app.Database != null ? app.Database.GetJampsManual(app.Profile.JampsManualLevel) : null;
+            JampsManualInfo nextManual = app.Database != null ? app.Database.GetJampsManual(app.Profile.JampsManualLevel + 1) : null;
+            SysUi.Note(body, $"手册 Lv{app.Profile.JampsManualLevel}  {(manual != null ? manual.Name : "")}" +
+                (nextManual != null ? "  → " + nextManual.Name : ""));
+            if (nextManual != null) SysUi.Row(body, "jampsUp", "升级手册", () => PhoneNet.UpgradeJamps());
+            foreach (JampsChapterInfo chapter in app.Database.JampsChapters.Values)
+            {
+                SysUi.Note(body, $"— {chapter.Name} —");
+                int shown = 0;
+                foreach (KeyValuePair<int, JampsPageInfo> kv in app.Database.JampsPages)
+                {
+                    if (kv.Value.ChapterId != chapter.Id) continue;
+                    JampsPageInfo page = kv.Value;
+                    int owned = app.Database.CountJampsDebrisForPage(app.Profile.JampsDebrisOwned, page.Id);
+                    bool collected = app.Profile.HasJampsPageCollected(page.Id);
+                    bool activated = app.Profile.HasJampsPageActivated(page.Id);
+                    SysUi.Note(body, $"{(activated ? "[已激活]" : collected ? "[已收集]" : $"碎片 {owned}/{page.DebrisCount}")} {page.Name}");
+                    if (!collected && owned >= page.DebrisCount)
+                    {
+                        int pageId = page.Id;
+                        SysUi.Row(body, "jc" + pageId, $"收集 {page.Name}", () => PhoneNet.JampsClaimPage("collect", pageId, 0));
+                    }
+                    else if (collected && !activated)
+                    {
+                        int pageId = page.Id;
+                        SysUi.Row(body, "ja" + pageId, $"激活 {page.Name}  {page.ActivateCurrency}金", () => PhoneNet.JampsClaimPage("activate", pageId, 0));
+                    }
+                    if (++shown >= 5) break;
+                }
+            }
+            int debrisN = 0;
+            foreach (KeyValuePair<int, JampsDebrisInfo> kv in app.Database.JampsDebris)
+            {
+                if (app.Profile.HasJampsDebris(kv.Value.Id) || app.Profile.HasJampsPageCollected(kv.Value.PageId)) continue;
+                int debrisId = kv.Value.Id;
+                SysUi.Row(body, "jd" + debrisId, $"购买碎片 #{debrisId}  {kv.Value.JampsCurrency}金",
+                    () => PhoneNet.JampsClaimPage("debris", kv.Value.PageId, debrisId));
+                if (++debrisN >= 20) break;
+            }
+            if (app.Database.JampsPages.Count == 0) SysUi.Note(body, "Missing jampspageitemlist.xml");
         }
     }
 
