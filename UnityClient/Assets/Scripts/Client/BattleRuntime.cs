@@ -1110,7 +1110,16 @@ namespace GunMobile.Client
                     float timeLeft = JsonFloat(msg.Json, "timeLeft", 20f);
                     // If we were mid-flight during reconnect, still resync when turn index changes.
                     if (_loop.Phase != BattlePhase.Flying || turn != _loop.TurnIndex)
+                    {
+                        if (turn != _loop.TurnIndex)
+                        {
+                            _flying = false;
+                            _netShotsPending = 0;
+                            _netPathReplay = false;
+                            _netShotDonePending = false;
+                        }
                         _loop.SyncTurn(turn, player, wind, timeLeft);
+                    }
                     continue;
                 }
 

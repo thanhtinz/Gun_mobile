@@ -612,6 +612,10 @@ namespace GunMobile.Client
                             Profile.ChatLog.Add(from + ": " + cm);
                             if (Profile.ChatLog.Count > 100) Profile.ChatLog.RemoveAt(0);
                         }
+                        if (State == AppState.Module && _currentModuleId == "im")
+                        {
+                            RefreshCurrentModule();
+                        }
                         break;
                     case PhoneMsg.RoomCreated:
                         PhoneNet.RoomId = JsonInt(msg.Json, "roomId", -1);
@@ -813,6 +817,28 @@ namespace GunMobile.Client
                 if (int.TryParse(part.Trim(), out int id) && id > 0) Profile.SweepMissionClears.Add(id);
         }
 
+        static int FindMatchingJsonBrace(string json, int openBrace)
+        {
+            if (json == null || openBrace < 0 || openBrace >= json.Length || json[openBrace] != '{')
+            {
+                return -1;
+            }
+
+            int depth = 0;
+            for (int i = openBrace; i < json.Length; i++)
+            {
+                char c = json[i];
+                if (c == '{') depth++;
+                else if (c == '}')
+                {
+                    depth--;
+                    if (depth == 0) return i;
+                }
+            }
+
+            return -1;
+        }
+
         void ParseIntListFromServer(string json, string key, List<int> target)
         {
             string needle = "\"" + key + "\":[";
@@ -882,42 +908,72 @@ namespace GunMobile.Client
 
         void ParseQuestsFromServer(string json)
         {
-            ParseIntListFromServer(json, "acceptedQuests", Profile.AcceptedQuests ?? (Profile.AcceptedQuests = new List<int>()));
-            ParseIntListFromServer(json, "completedQuests", Profile.CompletedQuests ?? (Profile.CompletedQuests = new List<int>()));
+            Profile.AcceptedQuests = Profile.AcceptedQuests ?? new List<int>();
+            Profile.CompletedQuests = Profile.CompletedQuests ?? new List<int>();
             Profile.QuestProgress = Profile.QuestProgress ?? new Dictionary<int, List<int>>();
+            ParseIntListFromServer(json, "acceptedQuests", Profile.AcceptedQuests);
+            ParseIntListFromServer(json, "completedQuests", Profile.CompletedQuests);
             int idx = json.IndexOf("\"questProgress\":{", System.StringComparison.Ordinal);
-            if (idx < 0) return;
-            int start = idx + 17;
-            int end = json.IndexOf('}', start);
-            if (end <= start) return;
-            Profile.QuestProgress.Clear();
-            string body = json.Substring(start, end - start);
-            int pos = 0;
-            while (pos < body.Length)
+            if (idx >= 0)
             {
-                int qk = body.IndexOf('"', pos);
-                if (qk < 0) break;
-                int qk2 = body.IndexOf('"', qk + 1);
-                if (qk2 < 0) break;
-                if (!int.TryParse(body.Substring(qk + 1, qk2 - qk - 1), out int questId) || questId <= 0)
+                int openBrace = idx + 17;
+                int end = FindMatchingJsonBrace(json, openBrace);
+                if (end > openBrace)
                 {
-                    pos = qk2 + 1;
-                    continue;
-                }
-                int arrStart = body.IndexOf('[', qk2);
-                int arrEnd = arrStart >= 0 ? body.IndexOf(']', arrStart) : -1;
-                if (arrStart < 0 || arrEnd <= arrStart) break;
-                var prog = new List<int>();
-                string arr = body.Substring(arrStart + 1, arrEnd - arrStart - 1);
-                if (!string.IsNullOrWhiteSpace(arr))
-                {
-                    foreach (string part in arr.Split(','))
+                    Profile.QuestProgress.Clear();
+                    string body = json.Substring(openBrace + 1, end - openBrace - 1);
+                    int pos = 0;
+                    while (pos < body.Length)
                     {
-                        if (int.TryParse(part.Trim(), out int v)) prog.Add(v);
+                        int qk = body.IndexOf('"', pos);
+                        if (qk < 0) break;
+                        int qk2 = body.IndexOf('"', qk + 1);
+                        if (qk2 < 0) break;
+                        if (!int.TryParse(body.Substring(qk + 1, qk2 - qk - 1), out int questId) || questId <= 0)
+                        {
+                            pos = qk2 + 1;
+                            continue;
+                        }
+                        int arrStart = body.IndexOf('[', qk2);
+                        int arrEnd = arrStart >= 0 ? body.IndexOf(']', arrStart) : -1;
+                        if (arrStart < 0 || arrEnd <= arrStart) break;
+                        var prog = new List<int>();
+                        string arr = body.Substring(arrStart + 1, arrEnd - arrStart - 1);
+                        if (!string.IsNullOrWhiteSpace(arr))
+                        {
+                            foreach (string part in arr.Split(','))
+                            {
+                                if (int.TryParse(part.Trim(), out int v)) prog.Add(v);
+                            }
+                        }
+                        Profile.QuestProgress[questId] = prog;
+                        pos = arrEnd + 1;
                     }
                 }
-                Profile.QuestProgress[questId] = prog;
-                pos = arrEnd + 1;
+            }
+
+            PruneStaleQuestProgress();
+        }
+
+        void PruneStaleQuestProgress()
+        {
+            if (Profile.QuestProgress == null || Profile.QuestProgress.Count == 0)
+            {
+                return;
+            }
+
+            var remove = new List<int>();
+            foreach (int qid in Profile.QuestProgress.Keys)
+            {
+                if (Profile.CompletedQuests.Contains(qid) || !Profile.AcceptedQuests.Contains(qid))
+                {
+                    remove.Add(qid);
+                }
+            }
+
+            for (int i = 0; i < remove.Count; i++)
+            {
+                Profile.QuestProgress.Remove(remove[i]);
             }
         }
 
