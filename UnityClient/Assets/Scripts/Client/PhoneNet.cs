@@ -54,6 +54,9 @@ namespace GunMobile.Client
         public static string LastJewelJson;
         public static string LastWarPassJson;
         public static string LastTimeLimitShopJson;
+        public static string LastBattleTeamJson;
+        public static string LastBattleTeamShopJson;
+        public static string LastDailyLeagueJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -342,6 +345,21 @@ namespace GunMobile.Client
         public static void TimeLimitShopBuy(int shopId)
         {
             Road?.Send(PhoneMsg.TimeLimitShopBuy, "{\"shopId\":" + shopId + "}");
+        }
+
+        public static void BattleTeamUpgrade()
+        {
+            Road?.Send(PhoneMsg.BattleTeamUpgrade, "{}");
+        }
+
+        public static void BattleTeamShopBuy(int id)
+        {
+            Road?.Send(PhoneMsg.BattleTeamShopBuy, "{\"id\":" + id + "}");
+        }
+
+        public static void DailyLeagueClaim(int level = 0)
+        {
+            Road?.Send(PhoneMsg.DailyLeagueClaim, "{\"level\":" + level + "}");
         }
 
         public static void DrawLottery(int count)

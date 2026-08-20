@@ -169,6 +169,9 @@ namespace GunMobile.Client
         public List<int> WarPassClaimed = new List<int>();
         public List<int> WarPassCompleted = new List<int>();
         public int WarPassGp;
+        public int BattleTeamLevel = 1;
+        public int DailyLeagueLevel = 1;
+        public List<int> DailyLeagueClaimed = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -210,6 +213,7 @@ namespace GunMobile.Client
             if (WarPassClaimed == null) WarPassClaimed = new List<int>();
             if (WarPassCompleted == null) WarPassCompleted = new List<int>();
         }
+        public void EnsureDailyLeagueClaimed() { if (DailyLeagueClaimed == null) DailyLeagueClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -902,6 +906,9 @@ namespace GunMobile.Client
             new ModuleDef("jewel", "首饰加工", "Request/TS_Jewel_Addition.xml"),
             new ModuleDef("warpass", "战令", "Request/TS_WarPass_QuestTemplate.xml"),
             new ModuleDef("timelimitshop", "限时商店", "Request/TS_TimeLimitShopTemp.xml"),
+            new ModuleDef("battleteam", "战队", "Request/battleteamlevellist.xml"),
+            new ModuleDef("battleteamshop", "战队商店", "Request/battleteamshopitemlist1.xml"),
+            new ModuleDef("dailyleague", "每日联赛", "Request/dailyleagueaward.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

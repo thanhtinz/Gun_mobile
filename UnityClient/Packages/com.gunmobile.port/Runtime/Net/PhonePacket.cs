@@ -269,6 +269,9 @@ namespace GunMobile.Net
         public const ushort JewelEquip = 222;
         public const ushort WarPassClaim = 223;
         public const ushort TimeLimitShopBuy = 224;
+        public const ushort BattleTeamUpgrade = 225;
+        public const ushort BattleTeamShopBuy = 226;
+        public const ushort DailyLeagueClaim = 227;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

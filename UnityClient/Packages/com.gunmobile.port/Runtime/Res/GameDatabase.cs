@@ -1236,6 +1236,73 @@ namespace GunMobile.Res
         public int Value;
     }
 
+    public sealed class BattleTeamLevelInfo
+    {
+        public int Level;
+        public int MaxPlayerNum;
+        public int NeedActive;
+        public int BuffParam;
+        public int BuffTwoParam;
+    }
+
+    public sealed class BattleTeamSegmentInfo
+    {
+        public int SegmentId;
+        public string SegmentName = "";
+        public int NeedScore;
+        public string Icon = "";
+        public int GiftBagId;
+    }
+
+    public sealed class BattleTeamSeasonInfo
+    {
+        public int SeasonId;
+        public string BeginDate = "";
+        public string EndDate = "";
+        public string WeekDay = "";
+        public string DayHours = "";
+        public string RankGift = "";
+    }
+
+    public sealed class BattleTeamActiveTemplate
+    {
+        public int Type;
+        public string ChannelName = "";
+        public string ChannelDesc = "";
+        public int AddScore;
+        public int MaxLimit;
+        public int JumpTo;
+    }
+
+    public sealed class BattleTeamShopItem
+    {
+        public int Id;
+        public int TemplateId;
+        public int ShopType;
+        public int NeedLevel;
+        public int Price;
+        public int Condition;
+        public int Value;
+    }
+
+    public sealed class DailyLeagueAward
+    {
+        public int Level;
+        public int Class;
+        public int Count;
+        public int TemplateId;
+        public int RewardId;
+        public int StrengthenLevel;
+        public bool IsBind;
+    }
+
+    public sealed class DailyLeagueLevelInfo
+    {
+        public int Level;
+        public int NeedScore;
+        public string Name = "";
+    }
+
     public sealed class StoryCopyChapter
     {
         public int Chapter;
@@ -1566,6 +1633,17 @@ namespace GunMobile.Res
         public static readonly int[] DefaultMagicStoneTemplateIds = { 100101, 100201, 100301, 100401 };
         public List<MagicFusionRecipe> MagicFusions { get; } = new List<MagicFusionRecipe>();
         public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
+        public Dictionary<int, BattleTeamLevelInfo> BattleTeamLevels { get; } = new Dictionary<int, BattleTeamLevelInfo>();
+        public List<BattleTeamLevelInfo> BattleTeamLevelList { get; } = new List<BattleTeamLevelInfo>();
+        public List<BattleTeamSegmentInfo> BattleTeamSegments { get; } = new List<BattleTeamSegmentInfo>();
+        public List<BattleTeamSeasonInfo> BattleTeamSeasons { get; } = new List<BattleTeamSeasonInfo>();
+        public List<BattleTeamActiveTemplate> BattleTeamActiveTemplates { get; } = new List<BattleTeamActiveTemplate>();
+        public Dictionary<int, BattleTeamShopItem> BattleTeamShopItems { get; } = new Dictionary<int, BattleTeamShopItem>();
+        public List<BattleTeamShopItem> BattleTeamShopItemList { get; } = new List<BattleTeamShopItem>();
+        public List<DailyLeagueAward> DailyLeagueAwards { get; } = new List<DailyLeagueAward>();
+        public Dictionary<int, List<DailyLeagueAward>> DailyLeagueAwardsByClass { get; } = new Dictionary<int, List<DailyLeagueAward>>();
+        public Dictionary<int, DailyLeagueLevelInfo> DailyLeagueLevels { get; } = new Dictionary<int, DailyLeagueLevelInfo>();
+        public List<DailyLeagueLevelInfo> DailyLeagueLevelList { get; } = new List<DailyLeagueLevelInfo>();
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
         public Dictionary<int, ConsortiaLevelInfo> ConsortiaLevels { get; } = new Dictionary<int, ConsortiaLevelInfo>();
         public List<ConsortiaBossConfig> ConsortiaBossConfigs { get; } = new List<ConsortiaBossConfig>();
@@ -1733,6 +1811,9 @@ namespace GunMobile.Res
             db.LoadMagicStones(loader);
             db.LoadMagicFusions(loader);
             db.LoadTeamDungeonShop(loader);
+            db.LoadBattleTeam(loader);
+            db.LoadBattleTeamShopVariant(loader);
+            db.LoadDailyLeague(loader);
             db.LoadCampWar(loader);
             db.LoadConsortia(loader);
             db.LoadNecklace(loader);
@@ -6248,6 +6329,229 @@ namespace GunMobile.Res
                     Value = Int(row, "Value")
                 });
             }
+        }
+
+
+        void LoadBattleTeam(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/battleteamlevellist.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0 || BattleTeamLevels.ContainsKey(level)) continue;
+                    var info = new BattleTeamLevelInfo
+                    {
+                        Level = level,
+                        MaxPlayerNum = Int(row, "MaxPlayerNum"),
+                        NeedActive = Int(row, "NeedActive"),
+                        BuffParam = Int(row, "BuffParam"),
+                        BuffTwoParam = Int(row, "BuffTwoParam")
+                    };
+                    BattleTeamLevels[level] = info;
+                    BattleTeamLevelList.Add(info);
+                }
+                BattleTeamLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
+            }
+            if (TryTable(loader, "Request/battleteamsegmentlist.xml", out XmlResultTable segments))
+            {
+                foreach (var row in segments.Rows)
+                {
+                    int id = Int(row, "SegmentID");
+                    if (id <= 0) continue;
+                    BattleTeamSegments.Add(new BattleTeamSegmentInfo
+                    {
+                        SegmentId = id,
+                        SegmentName = Str(row, "SegmentName"),
+                        NeedScore = Int(row, "NeedScore"),
+                        Icon = Str(row, "Icon"),
+                        GiftBagId = Int(row, "GiftBagId")
+                    });
+                }
+            }
+            if (TryTable(loader, "Request/battleteamseasonlist.xml", out XmlResultTable seasons))
+            {
+                foreach (var row in seasons.Rows)
+                {
+                    int id = Int(row, "SeasonId");
+                    if (id <= 0) continue;
+                    BattleTeamSeasons.Add(new BattleTeamSeasonInfo
+                    {
+                        SeasonId = id,
+                        BeginDate = Str(row, "BeginDate"),
+                        EndDate = Str(row, "EndDate"),
+                        WeekDay = Str(row, "WeekDay"),
+                        DayHours = Str(row, "DayHours"),
+                        RankGift = Str(row, "RankGift")
+                    });
+                }
+            }
+            if (TryTable(loader, "Request/battleteamactivetemplatelist.xml", out XmlResultTable actives))
+            {
+                foreach (var row in actives.Rows)
+                {
+                    int type = Int(row, "Type");
+                    if (type <= 0) continue;
+                    BattleTeamActiveTemplates.Add(new BattleTeamActiveTemplate
+                    {
+                        Type = type,
+                        ChannelName = Str(row, "ChannelName"),
+                        ChannelDesc = Str(row, "ChannelDesc"),
+                        AddScore = Int(row, "AddScore"),
+                        MaxLimit = Int(row, "MaxLimit"),
+                        JumpTo = Int(row, "JumpTo")
+                    });
+                }
+            }
+        }
+
+        void LoadBattleTeamShopVariant(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/battleteamshopitemlist1.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || BattleTeamShopItems.ContainsKey(id)) continue;
+                int shopType = Int(row, "ShopType");
+                var item = new BattleTeamShopItem
+                {
+                    Id = id,
+                    TemplateId = BattleTeamShopTemplateId(id, shopType),
+                    ShopType = shopType,
+                    NeedLevel = Int(row, "NeedLevel"),
+                    Price = Int(row, "Price"),
+                    Condition = Int(row, "Condition"),
+                    Value = Int(row, "Value")
+                };
+                BattleTeamShopItems[id] = item;
+                BattleTeamShopItemList.Add(item);
+            }
+        }
+
+        void LoadDailyLeague(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/dailyleagueaward.xml", out XmlResultTable awards))
+            {
+                foreach (var row in awards.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0) continue;
+                    int classLv = Int(row, "Class");
+                    if (classLv <= 0) classLv = 1;
+                    bool isBind = true;
+                    if (row.TryGetValue("IsBind", out string bindRaw) && !string.IsNullOrEmpty(bindRaw))
+                        isBind = Bool(row, "IsBind");
+                    var award = new DailyLeagueAward
+                    {
+                        Level = Int(row, "Level"),
+                        Class = classLv,
+                        Count = Int(row, "Count"),
+                        TemplateId = templateId,
+                        RewardId = Int(row, "RewardID"),
+                        StrengthenLevel = Int(row, "StrengthenLevel"),
+                        IsBind = isBind
+                    };
+                    DailyLeagueAwards.Add(award);
+                    if (!DailyLeagueAwardsByClass.TryGetValue(classLv, out List<DailyLeagueAward> list))
+                    {
+                        list = new List<DailyLeagueAward>();
+                        DailyLeagueAwardsByClass[classLv] = list;
+                    }
+                    list.Add(award);
+                }
+            }
+            if (TryTable(loader, "Request/dailyleaguelevel.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = FirstInt(row, "Level", "Class", "ID");
+                    if (level <= 0 || DailyLeagueLevels.ContainsKey(level)) continue;
+                    var info = new DailyLeagueLevelInfo
+                    {
+                        Level = level,
+                        NeedScore = FirstInt(row, "NeedScore", "Score", "Need"),
+                        Name = Str(row, "Name")
+                    };
+                    if (string.IsNullOrEmpty(info.Name)) info.Name = Str(row, "LevelName");
+                    DailyLeagueLevels[level] = info;
+                    DailyLeagueLevelList.Add(info);
+                }
+            }
+            if (DailyLeagueLevelList.Count == 0)
+            {
+                foreach (var kv in DailyLeagueAwardsByClass)
+                {
+                    var info = new DailyLeagueLevelInfo { Level = kv.Key, NeedScore = 0, Name = "联赛段位" + kv.Key };
+                    DailyLeagueLevels[kv.Key] = info;
+                    DailyLeagueLevelList.Add(info);
+                }
+            }
+            DailyLeagueLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        public static int BattleTeamShopTemplateId(int id, int shopType)
+        {
+            if (id <= 0) return 0;
+            if (shopType >= 100 && shopType < 1000 && id > shopType && id % 1000 == shopType) return id / 1000;
+            if (shopType >= 10 && shopType < 100 && id > shopType && id % 100 == shopType) return id / 100;
+            return id;
+        }
+
+        public BattleTeamLevelInfo GetBattleTeamLevel(int level)
+        {
+            if (level > 0 && BattleTeamLevels.TryGetValue(level, out BattleTeamLevelInfo info)) return info;
+            return null;
+        }
+
+        public int BattleTeamMaxLevel()
+        {
+            int max = 1;
+            for (int i = 0; i < BattleTeamLevelList.Count; i++)
+                if (BattleTeamLevelList[i].Level > max) max = BattleTeamLevelList[i].Level;
+            return max;
+        }
+
+        public int BattleTeamUpgradeGold(int nextLevel)
+        {
+            BattleTeamLevelInfo info = GetBattleTeamLevel(nextLevel);
+            return info == null ? 0 : Mathf.Max(0, info.NeedActive);
+        }
+
+        public BattleTeamShopItem GetBattleTeamShopItem(int id)
+        {
+            if (id > 0 && BattleTeamShopItems.TryGetValue(id, out BattleTeamShopItem item)) return item;
+            return null;
+        }
+
+        public List<DailyLeagueAward> GetDailyLeagueAwardsForClass(int classLevel)
+        {
+            if (classLevel > 0 && DailyLeagueAwardsByClass.TryGetValue(classLevel, out List<DailyLeagueAward> list)) return list;
+            return null;
+        }
+
+        public DailyLeagueLevelInfo GetDailyLeagueLevel(int level)
+        {
+            if (level > 0 && DailyLeagueLevels.TryGetValue(level, out DailyLeagueLevelInfo info)) return info;
+            return null;
+        }
+
+        public int DailyLeagueMaxClass()
+        {
+            int max = 0;
+            for (int i = 0; i < DailyLeagueLevelList.Count; i++)
+                if (DailyLeagueLevelList[i].Level > max) max = DailyLeagueLevelList[i].Level;
+            return max;
+        }
+
+        public int ResolveDailyLeagueLevel(int playerLevel, int stored)
+        {
+            int max = DailyLeagueMaxClass();
+            if (max <= 0) return Mathf.Max(1, stored);
+            int minPlayer = ConfigInt("DailyLeagueMinPlayerLevel", 24);
+            int derived = 1;
+            if (playerLevel >= minPlayer)
+                derived = Mathf.Clamp(1 + (playerLevel - minPlayer) / 3, 1, max);
+            return Mathf.Clamp(Mathf.Max(stored, derived), 1, max);
         }
 
         void LoadStoryCopy(ResLoader loader)

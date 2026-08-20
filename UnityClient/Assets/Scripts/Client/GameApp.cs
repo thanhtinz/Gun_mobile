@@ -199,6 +199,15 @@ namespace GunMobile.Client
                 case "timelimitshop":
                     ExtraModulesScreens.TimeLimitShopScreen(_safe, this);
                     return;
+                case "battleteam":
+                    ExtraModulesScreens.BattleTeamScreen(_safe, this);
+                    return;
+                case "battleteamshop":
+                    ExtraModulesScreens.BattleTeamShopScreen(_safe, this);
+                    return;
+                case "dailyleague":
+                    ExtraModulesScreens.DailyLeagueScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -726,6 +735,30 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.BattleTeamUpgrade:
+                        PhoneNet.LastBattleTeamJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "battleteam" || _currentModuleId == "battleteamshop" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.BattleTeamShopBuy:
+                        PhoneNet.LastBattleTeamShopJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "battleteamshop" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.DailyLeagueClaim:
+                        PhoneNet.LastDailyLeagueJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "dailyleague" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -987,6 +1020,10 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "warPassClaimed", Profile.WarPassClaimed);
             ParseIntListFromServer(json, "warPassCompleted", Profile.WarPassCompleted);
             Profile.WarPassGp = JsonInt(json, "warPassGp", Profile.WarPassGp);
+            Profile.BattleTeamLevel = JsonInt(json, "battleTeamLevel", Profile.BattleTeamLevel > 0 ? Profile.BattleTeamLevel : 1);
+            Profile.DailyLeagueLevel = JsonInt(json, "dailyLeagueLevel", Profile.DailyLeagueLevel > 0 ? Profile.DailyLeagueLevel : 1);
+            Profile.EnsureDailyLeagueClaimed();
+            ParseIntListFromServer(json, "dailyLeagueClaimed", Profile.DailyLeagueClaimed);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;
