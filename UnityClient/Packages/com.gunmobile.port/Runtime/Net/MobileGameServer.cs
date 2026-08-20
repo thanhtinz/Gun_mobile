@@ -65,6 +65,52 @@ namespace GunMobile.Net
         public int GodCardEquipId;
         public int EngraveSetId;
         public List<StockSlot> StockHoldings = new List<StockSlot>();
+        public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
+
+        public void EnsureFightSpirits()
+        {
+            if (FightSpirits == null)
+            {
+                FightSpirits = new List<FightSpiritSlot>();
+            }
+
+            if (FightSpirits.Count == 0 && GameDatabase.DefaultFightSpiritIds != null)
+            {
+                foreach (int spiritId in GameDatabase.DefaultFightSpiritIds)
+                {
+                    FightSpirits.Add(new FightSpiritSlot { SpiritId = spiritId, Level = 0 });
+                }
+            }
+        }
+
+        public int GetFightSpiritLevel(int spiritId)
+        {
+            EnsureFightSpirits();
+            for (int i = 0; i < FightSpirits.Count; i++)
+            {
+                if (FightSpirits[i].SpiritId == spiritId)
+                {
+                    return FightSpirits[i].Level;
+                }
+            }
+
+            return 0;
+        }
+
+        public void SetFightSpiritLevel(int spiritId, int level)
+        {
+            EnsureFightSpirits();
+            for (int i = 0; i < FightSpirits.Count; i++)
+            {
+                if (FightSpirits[i].SpiritId == spiritId)
+                {
+                    FightSpirits[i].Level = level;
+                    return;
+                }
+            }
+
+            FightSpirits.Add(new FightSpiritSlot { SpiritId = spiritId, Level = level });
+        }
 
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
@@ -138,8 +184,18 @@ namespace GunMobile.Net
 
             db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
 
+            EnsureFightSpirits();
+            db.ApplyFightSpiritStats(FightSpirits, ref atk, ref def, ref agi, ref luck, ref hp);
+
+            if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
+            {
+                atk += weaponSpirit.AttackAdd;
+                def += weaponSpirit.DefendAdd;
+                agi += weaponSpirit.AgilityAdd;
+                luck += weaponSpirit.LuckAdd;
+            }
+
             atk += Texp / 4;
-            hp += GemLevel * 120;
             if (db.Levels.Count > 0)
             {
                 hp += db.BloodForLevel(Level);
@@ -226,6 +282,22 @@ namespace GunMobile.Net
                 StockSlot sh = StockHoldings[i];
                 sb.Append("{\"stockId\":").Append(sh.StockId).Append(",\"shares\":").Append(sh.Shares)
                     .Append(",\"avgPrice\":").Append(sh.AvgPrice).Append("}");
+            }
+            sb.Append("],");
+            sb.Append("\"friends\":[");
+            for (int i = 0; i < Friends.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append("\"").Append((Friends[i] ?? "").Replace("\"", "\\\"")).Append("\"");
+            }
+            sb.Append("],");
+            EnsureFightSpirits();
+            sb.Append("\"fightSpirits\":[");
+            for (int i = 0; i < FightSpirits.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append("{\"spiritId\":").Append(FightSpirits[i].SpiritId)
+                    .Append(",\"level\":").Append(FightSpirits[i].Level).Append("}");
             }
             sb.Append("],");
             sb.Append("\"bag\":[");
@@ -442,6 +514,9 @@ namespace GunMobile.Net
         int _suicideTimeSec = 120;
         System.Random _rng = new System.Random();
         string _savePath;
+        string _auctionPath;
+        readonly List<AuctionListing> _auctionList = new List<AuctionListing>();
+        int _nextAuctionId = 1;
 
         public bool Running { get; private set; }
         public string LastError { get; private set; } = "";
@@ -460,11 +535,14 @@ namespace GunMobile.Net
             _loader = loader;
             _suicideTimeSec = ReadSuicideTimeSec(loader);
             _savePath = savePath ?? Path.Combine(Application.persistentDataPath, "server_players");
+            _auctionPath = Path.Combine(_savePath, "auction_list.json");
             try
             {
                 Directory.CreateDirectory(_savePath);
             }
             catch { }
+
+            LoadAuctionList();
 
             try
             {
@@ -1000,28 +1078,18 @@ namespace GunMobile.Net
                         player.ConsortiaName = gName;
                         SavePlayer(player);
                     }
-                    // Return guild info with member list
-                    var gMembers = new StringBuilder();
-                    lock (_lock)
-                    {
-                        int gm = 0;
-                        foreach (var p in _players.Values)
-                        {
-                            if (string.Equals(p.ConsortiaName, player.ConsortiaName, StringComparison.OrdinalIgnoreCase))
-                            {
-                                if (gm > 0) gMembers.Append(",");
-                                gMembers.Append("{\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
-                                    .Append("\",\"level\":").Append(p.Level)
-                                    .Append(",\"online\":").Append(p.RoadStream != null ? "true" : "false")
-                                    .Append("}");
-                                gm++;
-                            }
-                        }
-                    }
-                    Send(ns, PhoneMsg.GuildResult, "{\"ok\":true,\"name\":\"" + (player.ConsortiaName ?? "").Replace("\"", "") + "\",\"members\":[" + gMembers + "]}");
+                    SendGuildResult(player, ns);
                     Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
                 }
+
+                case PhoneMsg.GuildCreate:
+                    HandleGuildCreate(player, ns, json);
+                    break;
+
+                case PhoneMsg.GuildLeave:
+                    HandleGuildLeave(player, ns);
+                    break;
 
                 case PhoneMsg.GuildDonate:
                 {
@@ -1042,7 +1110,14 @@ namespace GunMobile.Net
                 {
                     string fn = JS(json, "name", "");
                     bool friendFound = false;
-                    if (!string.IsNullOrEmpty(fn) && !player.Friends.Contains(fn))
+                    if (string.IsNullOrEmpty(fn))
+                    {
+                        SendFriendResult(player, ns);
+                        Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                        break;
+                    }
+
+                    if (!player.Friends.Contains(fn))
                     {
                         player.Friends.Add(fn);
                         SavePlayer(player);
@@ -1065,30 +1140,14 @@ namespace GunMobile.Net
                         }
                     }
                     // Return friend list
-                    var fl = new StringBuilder();
-                    for (int fi = 0; fi < player.Friends.Count; fi++)
-                    {
-                        if (fi > 0) fl.Append(",");
-                        string fname = player.Friends[fi];
-                        bool online = false;
-                        lock (_lock)
-                        {
-                            foreach (var fp in _players.Values)
-                            {
-                                if (string.Equals(fp.Nick, fname, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    online = fp.RoadStream != null;
-                                    break;
-                                }
-                            }
-                        }
-                        fl.Append("{\"nick\":\"").Append(fname.Replace("\"", ""))
-                          .Append("\",\"online\":").Append(online ? "true" : "false").Append("}");
-                    }
-                    Send(ns, PhoneMsg.FriendResult, "{\"ok\":true,\"found\":" + (friendFound ? "true" : "false") + ",\"friends\":[" + fl + "]}");
+                    SendFriendResult(player, ns);
                     Send(ns, PhoneMsg.ProfileData, player.ToJson());
                     break;
                 }
+
+                case PhoneMsg.FriendRemove:
+                    HandleFriendRemove(player, ns, json);
+                    break;
 
                 case PhoneMsg.MailClaim:
                     HandleMailClaim(player, ns, json);
@@ -1149,6 +1208,10 @@ namespace GunMobile.Net
                     HandleGemUpgrade(player, ns);
                     break;
 
+                case PhoneMsg.GemSpiritUpgrade:
+                    HandleGemSpiritUpgrade(player, ns, json);
+                    break;
+
                 case PhoneMsg.PveStart:
                 {
                     player.PveNpcId = JI(json, "npcId", 0);
@@ -1166,6 +1229,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.AuctionSell:
                     HandleAuctionSell(player, ns, json);
+                    break;
+
+                case PhoneMsg.AuctionList:
+                    Send(ns, PhoneMsg.AuctionListData, BuildAuctionListJson());
+                    break;
+
+                case PhoneMsg.AuctionBuy:
+                    HandleAuctionBuy(player, ns, json);
                     break;
 
                 case PhoneMsg.ElfSelect:
@@ -1435,15 +1506,482 @@ namespace GunMobile.Net
                 count = 1;
             }
 
+            bool listOnMarket = JI(json, "list", 0) != 0;
+            int askPrice = JI(json, "price", 0);
+            BagSlot slot = null;
+            for (int i = 0; i < player.Bag.Count; i++)
+            {
+                if (player.Bag[i].TemplateId == templateId && player.Bag[i].Count >= count)
+                {
+                    slot = player.Bag[i];
+                    break;
+                }
+            }
+
+            if (slot == null)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
             ItemTemplate item = _db != null ? _db.GetItem(templateId) : null;
-            int unitPrice = _db != null ? _db.AuctionPrice(item) : 80;
+            int floorPrice = _db != null ? _db.AuctionPrice(item) : 80;
+            int strengthen = slot.Strengthen;
+            if (listOnMarket)
+            {
+                int price = askPrice > 0 ? askPrice : floorPrice;
+                if (!player.Consume(templateId, count))
+                {
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    return;
+                }
+
+                AuctionListing listing;
+                lock (_lock)
+                {
+                    listing = new AuctionListing
+                    {
+                        Id = _nextAuctionId++,
+                        SellerId = player.Id,
+                        SellerNick = player.Nick ?? "",
+                        TemplateId = templateId,
+                        Count = count,
+                        Price = price,
+                        Strengthen = strengthen
+                    };
+                    _auctionList.Add(listing);
+                    SaveAuctionList();
+                }
+
+                Send(ns, PhoneMsg.AuctionListData,
+                    "{\"ok\":true,\"listed\":" + listing.Id + ",\"listings\":" + BuildAuctionListJson() + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
             if (!player.Consume(templateId, count))
             {
                 Send(ns, PhoneMsg.StatResult, player.ToJson());
                 return;
             }
 
-            player.Gold += unitPrice * count;
+            player.Gold += floorPrice * count;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleAuctionBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int listingId = JI(json, "listingId", 0);
+            AuctionListing listing = null;
+            lock (_lock)
+            {
+                for (int i = 0; i < _auctionList.Count; i++)
+                {
+                    if (_auctionList[i].Id == listingId)
+                    {
+                        listing = _auctionList[i];
+                        break;
+                    }
+                }
+            }
+
+            if (listing == null)
+            {
+                Send(ns, PhoneMsg.AuctionListData, "{\"ok\":false,\"err\":\"listing gone\"}");
+                return;
+            }
+
+            int total = listing.Price * listing.Count;
+            if (player.Gold < total)
+            {
+                Send(ns, PhoneMsg.AuctionListData, "{\"ok\":false,\"err\":\"not enough gold\"}");
+                return;
+            }
+
+            player.Gold -= total;
+            player.AddItem(listing.TemplateId, listing.Count);
+            for (int i = 0; i < player.Bag.Count; i++)
+            {
+                if (player.Bag[i].TemplateId == listing.TemplateId)
+                {
+                    player.Bag[i].Strengthen = Mathf.Max(player.Bag[i].Strengthen, listing.Strengthen);
+                    break;
+                }
+            }
+
+            ServerPlayer seller = null;
+            lock (_lock)
+            {
+                _auctionList.Remove(listing);
+                SaveAuctionList();
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (p.Id == listing.SellerId)
+                    {
+                        seller = p;
+                        break;
+                    }
+                }
+            }
+
+            if (seller != null)
+            {
+                seller.Gold += total;
+                SavePlayer(seller);
+                SendTo(seller, PhoneMsg.ProfileData, seller.ToJson());
+            }
+            else
+            {
+                CreditOfflineSeller(listing.SellerId, total);
+            }
+
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.AuctionListData,
+                "{\"ok\":true,\"bought\":" + listingId + ",\"listings\":" + BuildAuctionListJson() + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        string BuildAuctionListJson()
+        {
+            var sb = new StringBuilder(512);
+            sb.Append("[");
+            lock (_lock)
+            {
+                for (int i = 0; i < _auctionList.Count; i++)
+                {
+                    if (i > 0) sb.Append(",");
+                    AuctionListing a = _auctionList[i];
+                    sb.Append("{\"id\":").Append(a.Id)
+                        .Append(",\"seller\":\"").Append((a.SellerNick ?? "").Replace("\"", ""))
+                        .Append("\",\"templateId\":").Append(a.TemplateId)
+                        .Append(",\"count\":").Append(a.Count)
+                        .Append(",\"price\":").Append(a.Price)
+                        .Append(",\"strengthen\":").Append(a.Strengthen).Append("}");
+                }
+            }
+            sb.Append("]");
+            return sb.ToString();
+        }
+
+        void LoadAuctionList()
+        {
+            _auctionList.Clear();
+            _nextAuctionId = 1;
+            try
+            {
+                if (!File.Exists(_auctionPath))
+                {
+                    SeedAuctionIfEmpty();
+                    return;
+                }
+
+                string json = File.ReadAllText(_auctionPath);
+                int idx = json.IndexOf("[", StringComparison.Ordinal);
+                int end = json.LastIndexOf("]", StringComparison.Ordinal);
+                if (idx < 0 || end <= idx)
+                {
+                    SeedAuctionIfEmpty();
+                    return;
+                }
+
+                string body = json.Substring(idx + 1, end - idx - 1);
+                int pos = 0;
+                while (pos < body.Length)
+                {
+                    int ob = body.IndexOf('{', pos);
+                    if (ob < 0) break;
+                    int cb = body.IndexOf('}', ob);
+                    if (cb < 0) break;
+                    string entry = body.Substring(ob, cb - ob + 1);
+                    pos = cb + 1;
+                    var listing = new AuctionListing
+                    {
+                        Id = JI(entry, "id", 0),
+                        SellerId = JI(entry, "sellerId", 0),
+                        SellerNick = JS(entry, "sellerNick", "NPC"),
+                        TemplateId = JI(entry, "templateId", 0),
+                        Count = JI(entry, "count", 1),
+                        Price = JI(entry, "price", 0),
+                        Strengthen = JI(entry, "strengthen", 0)
+                    };
+                    if (listing.Id <= 0 || listing.TemplateId <= 0)
+                    {
+                        continue;
+                    }
+
+                    _auctionList.Add(listing);
+                    _nextAuctionId = Mathf.Max(_nextAuctionId, listing.Id + 1);
+                }
+
+                if (_auctionList.Count == 0)
+                {
+                    SeedAuctionIfEmpty();
+                }
+            }
+            catch
+            {
+                SeedAuctionIfEmpty();
+            }
+        }
+
+        void SaveAuctionList()
+        {
+            if (string.IsNullOrEmpty(_auctionPath))
+            {
+                return;
+            }
+
+            var sb = new StringBuilder(512);
+            sb.Append("{\"listings\":[");
+            lock (_lock)
+            {
+                for (int i = 0; i < _auctionList.Count; i++)
+                {
+                    if (i > 0) sb.Append(",");
+                    AuctionListing a = _auctionList[i];
+                    sb.Append("{\"id\":").Append(a.Id)
+                        .Append(",\"sellerId\":").Append(a.SellerId)
+                        .Append(",\"sellerNick\":\"").Append((a.SellerNick ?? "").Replace("\"", ""))
+                        .Append("\",\"templateId\":").Append(a.TemplateId)
+                        .Append(",\"count\":").Append(a.Count)
+                        .Append(",\"price\":").Append(a.Price)
+                        .Append(",\"strengthen\":").Append(a.Strengthen).Append("}");
+                }
+            }
+            sb.Append("],\"nextId\":").Append(_nextAuctionId).Append("}");
+            try
+            {
+                File.WriteAllText(_auctionPath, sb.ToString());
+            }
+            catch { }
+        }
+
+        void SeedAuctionIfEmpty()
+        {
+            if (_db == null || _db.Shop.Count == 0)
+            {
+                return;
+            }
+
+            lock (_lock)
+            {
+                if (_auctionList.Count > 0)
+                {
+                    return;
+                }
+
+                int seeded = 0;
+                for (int i = 0; i < _db.Shop.Count && seeded < 12; i++)
+                {
+                    ShopOffer offer = _db.Shop[i];
+                    ItemTemplate item = _db.GetItem(offer.TemplateId);
+                    if (item == null || offer.TemplateId <= 0)
+                    {
+                        continue;
+                    }
+
+                    _auctionList.Add(new AuctionListing
+                    {
+                        Id = _nextAuctionId++,
+                        SellerId = 0,
+                        SellerNick = "系统",
+                        TemplateId = offer.TemplateId,
+                        Count = 1,
+                        Price = Mathf.Max(offer.AValue1, _db.AuctionPrice(item)),
+                        Strengthen = 0
+                    });
+                    seeded++;
+                }
+
+                SaveAuctionList();
+            }
+        }
+
+        void CreditOfflineSeller(int sellerId, int gold)
+        {
+            if (sellerId <= 0 || gold <= 0)
+            {
+                return;
+            }
+
+            try
+            {
+                string path = Path.Combine(_savePath, sellerId + ".json");
+                if (!File.Exists(path))
+                {
+                    return;
+                }
+
+                ServerPlayerSave save = JsonUtility.FromJson<ServerPlayerSave>(File.ReadAllText(path));
+                if (save == null)
+                {
+                    return;
+                }
+
+                save.Gold += gold;
+                File.WriteAllText(path, JsonUtility.ToJson(save, true));
+            }
+            catch { }
+        }
+
+        void SendGuildResult(ServerPlayer player, NetworkStream ns)
+        {
+            var gMembers = new StringBuilder();
+            lock (_lock)
+            {
+                int gm = 0;
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (!string.Equals(p.ConsortiaName, player.ConsortiaName, StringComparison.OrdinalIgnoreCase) ||
+                        string.IsNullOrEmpty(player.ConsortiaName))
+                    {
+                        continue;
+                    }
+
+                    if (gm > 0) gMembers.Append(",");
+                    gMembers.Append("{\"nick\":\"").Append((p.Nick ?? "").Replace("\"", ""))
+                        .Append("\",\"level\":").Append(p.Level)
+                        .Append(",\"online\":").Append(p.RoadStream != null ? "true" : "false")
+                        .Append("}");
+                    gm++;
+                }
+            }
+
+            Send(ns, PhoneMsg.GuildResult,
+                "{\"ok\":true,\"name\":\"" + (player.ConsortiaName ?? "").Replace("\"", "") + "\",\"members\":[" + gMembers + "]}");
+        }
+
+        void HandleGuildCreate(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string gName = JS(json, "name", "").Trim();
+            if (string.IsNullOrEmpty(gName))
+            {
+                Send(ns, PhoneMsg.GuildResult, "{\"ok\":false,\"err\":\"name required\"}");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(player.ConsortiaName))
+            {
+                Send(ns, PhoneMsg.GuildResult, "{\"ok\":false,\"err\":\"already in guild\"}");
+                return;
+            }
+
+            int cost = _db != null ? _db.ConsortiaCreateCost() : 4000;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.GuildResult, "{\"ok\":false,\"err\":\"not enough gold\"}");
+                return;
+            }
+
+            lock (_lock)
+            {
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (string.Equals(p.ConsortiaName, gName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        Send(ns, PhoneMsg.GuildResult, "{\"ok\":false,\"err\":\"name taken\"}");
+                        return;
+                    }
+                }
+            }
+
+            player.Gold -= cost;
+            player.ConsortiaName = gName;
+            SavePlayer(player);
+            SendGuildResult(player, ns);
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleGuildLeave(ServerPlayer player, NetworkStream ns)
+        {
+            if (string.IsNullOrEmpty(player.ConsortiaName))
+            {
+                Send(ns, PhoneMsg.GuildResult, "{\"ok\":false,\"err\":\"not in guild\"}");
+                return;
+            }
+
+            player.ConsortiaName = "";
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GuildResult, "{\"ok\":true,\"name\":\"\",\"members\":[]}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleFriendRemove(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string fn = JS(json, "name", "");
+            if (!string.IsNullOrEmpty(fn))
+            {
+                player.Friends.RemoveAll(x => string.Equals(x, fn, StringComparison.OrdinalIgnoreCase));
+                SavePlayer(player);
+                lock (_lock)
+                {
+                    foreach (ServerPlayer fp in _players.Values)
+                    {
+                        if (string.Equals(fp.Nick, fn, StringComparison.OrdinalIgnoreCase))
+                        {
+                            fp.Friends.RemoveAll(x => string.Equals(x, player.Nick, StringComparison.OrdinalIgnoreCase));
+                            SavePlayer(fp);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            SendFriendResult(player, ns);
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void SendFriendResult(ServerPlayer player, NetworkStream ns)
+        {
+            var fl = new StringBuilder();
+            for (int fi = 0; fi < player.Friends.Count; fi++)
+            {
+                if (fi > 0) fl.Append(",");
+                string fname = player.Friends[fi];
+                bool online = false;
+                lock (_lock)
+                {
+                    foreach (ServerPlayer fp in _players.Values)
+                    {
+                        if (string.Equals(fp.Nick, fname, StringComparison.OrdinalIgnoreCase))
+                        {
+                            online = fp.RoadStream != null;
+                            break;
+                        }
+                    }
+                }
+                fl.Append("{\"nick\":\"").Append(fname.Replace("\"", ""))
+                  .Append("\",\"online\":").Append(online ? "true" : "false").Append("}");
+            }
+
+            Send(ns, PhoneMsg.FriendResult, "{\"ok\":true,\"friends\":[" + fl + "]}");
+        }
+
+        void HandleGemSpiritUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int spiritId = JI(json, "spiritId", 100001);
+            player.EnsureFightSpirits();
+            int level = player.GetFightSpiritLevel(spiritId);
+            int cost = _db != null ? _db.FightSpiritUpgradeCost(spiritId, level) : 0;
+            if (cost <= 0 || player.Gold < cost || level >= 12)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            player.Gold -= cost;
+            player.SetFightSpiritLevel(spiritId, level + 1);
+            int maxLevel = 0;
+            for (int i = 0; i < player.FightSpirits.Count; i++)
+            {
+                maxLevel = Mathf.Max(maxLevel, player.FightSpirits[i].Level);
+            }
+
+            player.GemLevel = maxLevel;
+            player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
@@ -3720,6 +4258,9 @@ namespace GunMobile.Net
         }
 
         [Serializable]
+        class FightSpiritSlotSave { public int spiritId; public int level; }
+
+        [Serializable]
         class ServerPlayerSave
         {
             public string Nick = "Player";
@@ -3743,6 +4284,7 @@ namespace GunMobile.Net
             public List<int> AcceptedQuests = new List<int>();
             public List<int> CompletedQuests = new List<int>();
             public List<string> Friends = new List<string>();
+            public List<FightSpiritSlotSave> FightSpirits = new List<FightSpiritSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
         }
 
@@ -3784,6 +4326,11 @@ namespace GunMobile.Net
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
             };
+            p.EnsureFightSpirits();
+            foreach (FightSpiritSlot fs in p.FightSpirits)
+            {
+                s.FightSpirits.Add(new FightSpiritSlotSave { spiritId = fs.SpiritId, level = fs.Level });
+            }
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
@@ -3818,6 +4365,15 @@ namespace GunMobile.Net
                 NextMailId = s.NextMailId > 0 ? s.NextMailId : 1,
                 Mails = new List<ServerMail>()
             };
+            if (s.FightSpirits != null)
+            {
+                foreach (FightSpiritSlotSave fs in s.FightSpirits)
+                {
+                    p.FightSpirits.Add(new FightSpiritSlot { SpiritId = fs.spiritId, Level = fs.level });
+                }
+            }
+
+            p.EnsureFightSpirits();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {

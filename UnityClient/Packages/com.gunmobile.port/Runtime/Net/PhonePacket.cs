@@ -163,6 +163,13 @@ namespace GunMobile.Net
         public const ushort StockResult = 116;
         public const ushort FightShotResult = 117;
         public const ushort FightSkip = 118;
+        public const ushort GuildCreate = 119;
+        public const ushort GuildLeave = 120;
+        public const ushort FriendRemove = 121;
+        public const ushort AuctionList = 122;
+        public const ushort AuctionListData = 123;
+        public const ushort AuctionBuy = 124;
+        public const ushort GemSpiritUpgrade = 125;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

@@ -63,6 +63,7 @@ namespace GunMobile.Client
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
         public List<string> Friends = new List<string>();
+        public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
         public List<string> ChatLog = new List<string>();
         public List<GodCardSlot> GodCards = new List<GodCardSlot>();
         public int GodCardEquipId;
@@ -84,6 +85,8 @@ namespace GunMobile.Client
                         p.AcceptedQuests = p.AcceptedQuests ?? new List<int>();
                         p.CompletedQuests = p.CompletedQuests ?? new List<int>();
                         p.Friends = p.Friends ?? new List<string>();
+                        p.FightSpirits = p.FightSpirits ?? new List<FightSpiritSlot>();
+                        p.EnsureFightSpirits();
                         p.ChatLog = p.ChatLog ?? new List<string>();
                         p.GodCards = p.GodCards ?? new List<GodCardSlot>();
                         p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
@@ -99,7 +102,24 @@ namespace GunMobile.Client
 
             var fresh = new PlayerProfile();
             fresh.EnsureStarterBag();
+            fresh.EnsureFightSpirits();
             return fresh;
+        }
+
+        public void EnsureFightSpirits()
+        {
+            if (FightSpirits == null)
+            {
+                FightSpirits = new List<FightSpiritSlot>();
+            }
+
+            if (FightSpirits.Count == 0)
+            {
+                foreach (int spiritId in GameDatabase.DefaultFightSpiritIds)
+                {
+                    FightSpirits.Add(new FightSpiritSlot { SpiritId = spiritId, Level = 0 });
+                }
+            }
         }
 
         public void Save()
@@ -148,6 +168,8 @@ namespace GunMobile.Client
                 Friends.Add("小鸡助手");
                 Friends.Add("训练教官");
             }
+
+            EnsureFightSpirits();
 
             if (ChatLog == null)
             {
@@ -319,6 +341,9 @@ namespace GunMobile.Client
                     agi += spirit.AgilityAdd;
                     luk += spirit.LuckAdd;
                 }
+
+                EnsureFightSpirits();
+                db.ApplyFightSpiritStats(FightSpirits, ref atk, ref def, ref agi, ref luk, ref hp);
 
                 if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
                 {

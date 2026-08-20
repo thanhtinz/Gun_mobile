@@ -341,6 +341,7 @@ namespace GunMobile.Client
                     case PhoneMsg.StockResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
+                        PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
                         {
@@ -362,8 +363,18 @@ namespace GunMobile.Client
                         }
                         break;
                     case PhoneMsg.FriendResult:
+                        PhoneNet.LastFriendListJson = msg.Json;
+                        ParseFriendsFromServer(msg.Json);
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.AuctionListData:
+                        PhoneNet.LastAuctionListJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "auction")
                         {
                             RefreshCurrentModule();
                         }
@@ -472,7 +483,121 @@ namespace GunMobile.Client
             ParseBagFromServer(json);
             ParseGodCardsFromServer(json);
             ParseStockFromServer(json);
+            ParseFriendsFromServer(json);
+            ParseFightSpiritsFromServer(json);
             Profile.Save();
+        }
+
+        void ParseFriendsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"friends\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 10;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            var names = new System.Collections.Generic.List<string>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob >= 0)
+                {
+                    int cb = body.IndexOf('}', ob);
+                    if (cb < 0)
+                    {
+                        break;
+                    }
+
+                    string entry = body.Substring(ob, cb - ob + 1);
+                    string nick = JsonStr(entry, "nick", null);
+                    if (!string.IsNullOrEmpty(nick))
+                    {
+                        names.Add(nick);
+                    }
+
+                    pos = cb + 1;
+                    continue;
+                }
+
+                int q1 = body.IndexOf('"', pos);
+                if (q1 < 0)
+                {
+                    break;
+                }
+
+                int q2 = body.IndexOf('"', q1 + 1);
+                if (q2 < 0)
+                {
+                    break;
+                }
+
+                names.Add(body.Substring(q1 + 1, q2 - q1 - 1));
+                pos = q2 + 1;
+            }
+
+            if (names.Count > 0)
+            {
+                Profile.Friends = names;
+            }
+        }
+
+        void ParseFightSpiritsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"fightSpirits\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 15;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            var list = new System.Collections.Generic.List<FightSpiritSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0)
+                {
+                    break;
+                }
+
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0)
+                {
+                    break;
+                }
+
+                string entry = body.Substring(ob, cb - ob + 1);
+                int spiritId = JsonInt(entry, "spiritId", 0);
+                int level = JsonInt(entry, "level", 0);
+                if (spiritId > 0)
+                {
+                    list.Add(new FightSpiritSlot { SpiritId = spiritId, Level = level });
+                }
+
+                pos = cb + 1;
+            }
+
+            if (list.Count > 0)
+            {
+                Profile.FightSpirits = list;
+                Profile.EnsureFightSpirits();
+            }
         }
 
         void ParseGodCardsFromServer(string json)

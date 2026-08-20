@@ -22,6 +22,9 @@ namespace GunMobile.Client
         public static string LastRoomListJson;
         public static string LastMailListJson;
         public static string LastRoomStateJson;
+        public static string LastAuctionListJson;
+        public static string LastFriendListJson;
+        public static string LastGuildJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -204,6 +207,11 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.GemUpgrade, "{}");
         }
 
+        public static void UpgradeFightSpirit(int spiritId)
+        {
+            Road?.Send(PhoneMsg.GemSpiritUpgrade, "{\"spiritId\":" + spiritId + "}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");
@@ -212,6 +220,22 @@ namespace GunMobile.Client
         public static void SellAuction(int templateId, int count = 1)
         {
             Road?.Send(PhoneMsg.AuctionSell, "{\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
+        public static void ListAuction(int templateId, int price, int count = 1)
+        {
+            Road?.Send(PhoneMsg.AuctionSell,
+                "{\"templateId\":" + templateId + ",\"count\":" + count + ",\"list\":1,\"price\":" + price + "}");
+        }
+
+        public static void RequestAuctionList()
+        {
+            Road?.Send(PhoneMsg.AuctionList, "{}");
+        }
+
+        public static void BuyAuction(int listingId)
+        {
+            Road?.Send(PhoneMsg.AuctionBuy, "{\"listingId\":" + listingId + "}");
         }
 
         public static void SelectElf(int elfId)
@@ -267,6 +291,16 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.GuildJoin, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");
         }
 
+        public static void CreateGuild(string name)
+        {
+            Road?.Send(PhoneMsg.GuildCreate, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");
+        }
+
+        public static void LeaveGuild()
+        {
+            Road?.Send(PhoneMsg.GuildLeave, "{}");
+        }
+
         public static void DonateGuild()
         {
             Road?.Send(PhoneMsg.GuildDonate, "{}");
@@ -275,6 +309,16 @@ namespace GunMobile.Client
         public static void AddFriend(string name)
         {
             Road?.Send(PhoneMsg.FriendAdd, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");
+        }
+
+        public static void RemoveFriend(string name)
+        {
+            Road?.Send(PhoneMsg.FriendRemove, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");
+        }
+
+        public static void RefreshFriends()
+        {
+            Road?.Send(PhoneMsg.FriendAdd, "{\"name\":\"\"}");
         }
 
         public static void SendChat(string msg)

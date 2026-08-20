@@ -269,16 +269,26 @@ namespace GunMobile.Client
 
     public static class ConsortiaScreen
     {
+        static string _createName = "弹弹公会";
+
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "公会  " + (string.IsNullOrEmpty(app.Profile.ConsortiaName) ? "未加入" : app.Profile.ConsortiaName));
             int donateGold = app.Database != null ? app.Database.ConfigInt("ConsortiaMinOffer", 500) : 500;
-            SysUi.Note(body, "点选加入。捐献 " + donateGold + " 金币 → 荣誉（ServerConfig ConsortiaMinOffer）。");
+            int createCost = app.Database != null ? app.Database.ConsortiaCreateCost() : 4000;
+            SysUi.Note(body, "创建 " + createCost + " 金 · 加入已有公会 · 捐献 " + donateGold + " 金 → 荣誉");
+
             if (!string.IsNullOrEmpty(app.Profile.ConsortiaName))
             {
-                SysUi.Row(body, "donate", "捐献 " + donateGold + " 金币", () =>
+                SysUi.Row(body, "donate", "捐献 " + donateGold + " 金币", PhoneNet.DonateGuild);
+                SysUi.Row(body, "leave", "退出公会", PhoneNet.LeaveGuild);
+                ShowMembers(body, PhoneNet.LastGuildJson);
+            }
+            else
+            {
+                SysUi.Row(body, "create", "创建公会「" + _createName + "」  " + createCost + " 金", () =>
                 {
-                    PhoneNet.DonateGuild();
+                    PhoneNet.CreateGuild(_createName);
                 });
             }
 
@@ -307,6 +317,39 @@ namespace GunMobile.Client
                     PhoneNet.JoinGuild(local);
                 });
                 n++;
+            }
+        }
+
+        static void ShowMembers(Transform body, string json)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return;
+            }
+
+            int idx = json.IndexOf("[", StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", StringComparison.Ordinal);
+            if (idx < 0 || end <= idx)
+            {
+                return;
+            }
+
+            string arr = json.Substring(idx + 1, end - idx - 1);
+            int pos = 0;
+            int shown = 0;
+            while (pos < arr.Length && shown < 20)
+            {
+                int ob = arr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = arr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = arr.Substring(ob, cb - ob + 1);
+                pos = cb + 1;
+                string nick = GameApp.JsonStr(entry, "nick", "?");
+                int level = GameApp.JsonInt(entry, "level", 1);
+                bool online = entry.IndexOf("\"online\":true", StringComparison.Ordinal) >= 0;
+                SysUi.Note(body, "成员  " + nick + "  Lv" + level + (online ? "  在线" : "  离线"));
+                shown++;
             }
         }
     }
@@ -382,18 +425,74 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
-            Transform body = SysUi.Begin(safe, app, "拍卖");
-            SysUi.Note(body, "出售背包道具，价格来自 PC 表 ReclaimValue。");
+            PhoneNet.RequestAuctionList();
+            Transform body = SysUi.Begin(safe, app, "拍卖行");
+            SysUi.Note(body, "购买市场物品 · 挂售背包道具（ReclaimValue 底价）");
+            RenderMarket(body, app, PhoneNet.LastAuctionListJson);
+
+            SysUi.Note(body, "— 挂售 / 快速出售 —");
             foreach (BagItem slot in app.Profile.Bag)
             {
                 BagItem local = slot;
                 ItemTemplate item = app.Database.GetItem(slot.TemplateId);
                 int price = app.Database != null ? app.Database.AuctionPrice(item) : 80;
-                var btn = SysUi.Row(body, "a" + slot.TemplateId, $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  卖 {price} 金", () =>
-                {
-                    PhoneNet.SellAuction(local.TemplateId, 1);
-                });
+                var btn = SysUi.Row(body, "a" + slot.TemplateId,
+                    $"{(item != null ? item.Name : "#" + slot.TemplateId)} x{slot.Count}  挂售 {price} 金", () =>
+                    {
+                        PhoneNet.ListAuction(local.TemplateId, price, 1);
+                    });
                 ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
+            }
+        }
+
+        static void RenderMarket(Transform body, GameApp app, string json)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                SysUi.Note(body, "正在加载拍卖行...");
+                return;
+            }
+
+            int idx = json.IndexOf("[", StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", StringComparison.Ordinal);
+            if (idx < 0 || end <= idx)
+            {
+                SysUi.Note(body, "暂无拍卖物品");
+                return;
+            }
+
+            string arr = json.Substring(idx + 1, end - idx - 1);
+            int pos = 0;
+            int shown = 0;
+            while (pos < arr.Length && shown < 30)
+            {
+                int ob = arr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = arr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = arr.Substring(ob, cb - ob + 1);
+                pos = cb + 1;
+
+                int id = GameApp.JsonInt(entry, "id", 0);
+                int templateId = GameApp.JsonInt(entry, "templateId", 0);
+                int count = GameApp.JsonInt(entry, "count", 1);
+                int price = GameApp.JsonInt(entry, "price", 0);
+                int strengthen = GameApp.JsonInt(entry, "strengthen", 0);
+                string seller = GameApp.JsonStr(entry, "seller", "?");
+                string name = SysUi.ItemName(app, templateId);
+                int listingId = id;
+                var btn = SysUi.Row(body, "buy" + id,
+                    seller + "  " + name + " x" + count + "  +" + strengthen + "  " + price + " 金", () =>
+                    {
+                        PhoneNet.BuyAuction(listingId);
+                    });
+                ShopScreen.DecorateIcon(app, btn, templateId);
+                shown++;
+            }
+
+            if (shown == 0)
+            {
+                SysUi.Note(body, "暂无拍卖物品");
             }
         }
     }
@@ -616,17 +715,41 @@ namespace GunMobile.Client
 
     public static class GemScreen
     {
+        static readonly string[] SpiritLabels = { "攻击之魂", "防御之魂", "敏捷之魂", "幸运之魂", "生命之魂" };
+
         public static void Show(RectTransform safe, GameApp app)
         {
-            int gemCost = app.Database != null ? app.Database.GemUpgradeCost(app.Profile.GemLevel) : 0;
+            app.Profile.EnsureFightSpirits();
             Transform body = SysUi.Begin(safe, app, "战魂  Lv." + app.Profile.GemLevel);
+            SysUi.Note(body, "fightspirittemplatelist.xml · SpiritInfoList 武器镶嵌 Lv." + app.Profile.GemLevel);
+
+            int gemCost = app.Database != null ? app.Database.GemUpgradeCost(app.Profile.GemLevel) : 0;
             if (gemCost > 0 && app.Profile.GemLevel < 12)
             {
-                SysUi.Row(body, "gem", "提升战魂  " + gemCost + " 金币", () => PhoneNet.UpgradeGem());
+                SysUi.Row(body, "gem", "武器战魂 +1  " + gemCost + " 金币", PhoneNet.UpgradeGem);
             }
-            foreach (SpiritInfo s in app.Database.Spirits.Values)
+
+            for (int i = 0; i < app.Profile.FightSpirits.Count; i++)
             {
-                SysUi.Note(body, $"Lv{s.Level}  ATK+{s.AttackAdd} DEF+{s.DefendAdd} AGI+{s.AgilityAdd}");
+                FightSpiritSlot slot = app.Profile.FightSpirits[i];
+                string label = i < SpiritLabels.Length ? SpiritLabels[i] : ("魂" + slot.SpiritId);
+                FightSpiritTemplate row = app.Database.GetFightSpirit(slot.SpiritId, slot.Level);
+                FightSpiritTemplate next = app.Database.GetFightSpirit(slot.SpiritId, slot.Level + 1);
+                int cost = app.Database.FightSpiritUpgradeCost(slot.SpiritId, slot.Level);
+                string stats = row != null
+                    ? $"ATK{row.Attack / 100} DEF{row.Defence / 100} AGI{row.Agility / 100} LUK{row.Lucky / 100} HP{row.Blood / 100}"
+                    : "Lv0";
+                if (next != null && cost > 0 && slot.Level < 12)
+                {
+                    int spiritId = slot.SpiritId;
+                    SysUi.Row(body, "fs" + spiritId,
+                        label + "  Lv" + slot.Level + "  " + stats + "  → Lv" + (slot.Level + 1) + "  " + cost + " 金",
+                        () => PhoneNet.UpgradeFightSpirit(spiritId));
+                }
+                else
+                {
+                    SysUi.Note(body, label + "  Lv" + slot.Level + "  " + stats);
+                }
             }
         }
     }
@@ -654,19 +777,58 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
+            PhoneNet.RefreshFriends();
             Transform body = SysUi.Begin(safe, app, "好友");
             app.Profile.EnsureStarterBag();
-            SysUi.Row(body, "add", "添加 路人甲", () =>
+            SysUi.Row(body, "add", "添加在线玩家", () =>
             {
-                string name = "路人" + (app.Profile.Friends.Count + 1);
-                if (!app.Profile.Friends.Contains(name))
-                {
-                    PhoneNet.AddFriend(name);
-                }
+                string name = "Player" + ((PhoneNet.PlayerId % 9) + 1);
+                PhoneNet.AddFriend(name);
             });
-            foreach (string f in app.Profile.Friends)
+            RenderFriends(body, app, PhoneNet.LastFriendListJson);
+            if (string.IsNullOrEmpty(PhoneNet.LastFriendListJson))
             {
-                SysUi.Note(body, "好友  " + f);
+                foreach (string f in app.Profile.Friends)
+                {
+                    string local = f;
+                    SysUi.Row(body, "f" + f, "好友  " + f, () => PhoneNet.RemoveFriend(local));
+                }
+            }
+        }
+
+        static void RenderFriends(Transform body, GameApp app, string json)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return;
+            }
+
+            int idx = json.IndexOf("[", StringComparison.Ordinal);
+            int end = json.LastIndexOf("]", StringComparison.Ordinal);
+            if (idx < 0 || end <= idx)
+            {
+                return;
+            }
+
+            string arr = json.Substring(idx + 1, end - idx - 1);
+            int pos = 0;
+            while (pos < arr.Length)
+            {
+                int ob = arr.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = arr.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = arr.Substring(ob, cb - ob + 1);
+                pos = cb + 1;
+                string nick = GameApp.JsonStr(entry, "nick", null);
+                if (string.IsNullOrEmpty(nick))
+                {
+                    continue;
+                }
+
+                bool online = entry.IndexOf("\"online\":true", StringComparison.Ordinal) >= 0;
+                string local = nick;
+                SysUi.Row(body, "fr" + nick, nick + (online ? "  在线" : "  离线"), () => PhoneNet.RemoveFriend(local));
             }
         }
     }

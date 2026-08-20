@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Xml.Linq;
 using GunMobile.Core;
 using GunMobile.Logic;
+using GunMobile.Net;
 using UnityEngine;
 
 namespace GunMobile.Res
@@ -246,6 +247,21 @@ namespace GunMobile.Res
         public int AgilityAdd;
         public int LuckAdd;
         public int ReferenceCost;
+        public int CategoryId;
+        public int BagPlace;
+    }
+
+    public sealed class FightSpiritTemplate
+    {
+        public int SpiritId;
+        public int Level;
+        public string Icon = "";
+        public int Exp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int Blood;
     }
 
     public sealed class ElfInfo
@@ -334,6 +350,8 @@ namespace GunMobile.Res
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
         public List<PveMission> Pve { get; } = new List<PveMission>();
         public Dictionary<int, SpiritInfo> Spirits { get; } = new Dictionary<int, SpiritInfo>();
+        public Dictionary<long, FightSpiritTemplate> FightSpirits { get; } = new Dictionary<long, FightSpiritTemplate>();
+        public static readonly int[] DefaultFightSpiritIds = { 100001, 100002, 100003, 100004, 100005 };
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -376,6 +394,7 @@ namespace GunMobile.Res
             db.LoadVip(loader);
             db.LoadPve(loader);
             db.LoadSpirits(loader);
+            db.LoadFightSpirits(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -483,6 +502,64 @@ namespace GunMobile.Res
             }
 
             return ConfigInt("MustFusionGold", 400);
+        }
+
+        public static long FightSpiritKey(int spiritId, int level)
+        {
+            return ((long)spiritId << 16) | (uint)level;
+        }
+
+        public FightSpiritTemplate GetFightSpirit(int spiritId, int level)
+        {
+            FightSpirits.TryGetValue(FightSpiritKey(spiritId, level), out FightSpiritTemplate row);
+            return row;
+        }
+
+        public int FightSpiritUpgradeCost(int spiritId, int currentLevel)
+        {
+            FightSpiritTemplate next = GetFightSpirit(spiritId, currentLevel + 1);
+            if (next == null)
+            {
+                return 0;
+            }
+
+            FightSpiritTemplate cur = GetFightSpirit(spiritId, currentLevel);
+            int delta = cur != null ? next.Exp - cur.Exp : next.Exp;
+            return Mathf.Max(100, delta / 100);
+        }
+
+        public void ApplyFightSpiritStats(IReadOnlyList<FightSpiritSlot> slots, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            if (slots == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                FightSpiritSlot slot = slots[i];
+                if (slot == null || slot.Level <= 0)
+                {
+                    continue;
+                }
+
+                FightSpiritTemplate row = GetFightSpirit(slot.SpiritId, slot.Level);
+                if (row == null)
+                {
+                    continue;
+                }
+
+                atk += row.Attack / 100;
+                def += row.Defence / 100;
+                agi += row.Agility / 100;
+                luck += row.Lucky / 100;
+                hp += row.Blood / 100;
+            }
+        }
+
+        public int ConsortiaCreateCost()
+        {
+            return ConfigInt("MustFusionGold", 400) * 10;
         }
 
         public int LotteryDrawCost(int count)
@@ -1894,13 +1971,41 @@ namespace GunMobile.Res
                     DefendAdd = Int(row, "DefendAdd"),
                     AgilityAdd = Int(row, "AgilityAdd"),
                     LuckAdd = Int(row, "LuckAdd"),
-                    ReferenceCost = Int(row, "RefrenceValue")
+                    ReferenceCost = Int(row, "RefrenceValue"),
+                    CategoryId = Int(row, "CategoryId"),
+                    BagPlace = Int(row, "BagPlace")
                 };
                 if (!Spirits.TryGetValue(level, out SpiritInfo prev) ||
                     info.AttackAdd + info.DefendAdd > prev.AttackAdd + prev.DefendAdd)
                 {
                     Spirits[level] = info;
                 }
+            }
+        }
+
+        void LoadFightSpirits(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/fightspirittemplatelist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int spiritId = Int(row, "FightSpiritID");
+                int level = Int(row, "Level");
+                FightSpirits[FightSpiritKey(spiritId, level)] = new FightSpiritTemplate
+                {
+                    SpiritId = spiritId,
+                    Level = level,
+                    Icon = Str(row, "FightSpiritIcon"),
+                    Exp = Int(row, "Exp"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    Blood = Int(row, "Blood")
+                };
             }
         }
 
