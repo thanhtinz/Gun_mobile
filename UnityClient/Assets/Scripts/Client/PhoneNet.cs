@@ -199,7 +199,7 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.SigilRoll, "{\"quality\":" + quality + "}");
         }
 
-                public static void UnlockMountSkill(int skillId)
+        public static void UnlockMountSkill(int skillId)
         {
             Road?.Send(PhoneMsg.MountSkillUnlock, "{\"skillId\":" + skillId + "}");
         }
@@ -219,7 +219,23 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.LinkPalAction, "{\"action\":\"upgrade\"}");
         }
 
-public static void QuizAnswer(int questionId, int option)
+        public static void EquipJade(int jadeId)
+        {
+            Road?.Send(PhoneMsg.JadeEquip, "{\"jadeId\":" + jadeId + "}");
+        }
+
+        public static void EquipRune(int templateId)
+        {
+            Road?.Send(PhoneMsg.RuneEquip, "{\"templateId\":" + templateId + "}");
+        }
+
+        public static void UpgradeHorseAmulet(string mode = "level")
+        {
+            if (string.IsNullOrEmpty(mode)) mode = "level";
+            Road?.Send(PhoneMsg.HorseAmuletUpgrade, "{\"mode\":\"" + mode + "\"}");
+        }
+
+        public static void QuizAnswer(int questionId, int option)
         {
             Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
         }

@@ -284,6 +284,85 @@ namespace GunMobile.Res
         public int RandomConfig;
     }
 
+    public sealed class JadeTemp
+    {
+        public int Id;
+        public int TemplateId;
+        public string TemplateName = "";
+        public int Types;
+        public int Level;
+        public int NeedItem;
+        public int NeedItemCount;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int Hp;
+        public int MagicAttack;
+        public int MagicDefence;
+        public int FireAttack;
+        public int WaterAttack;
+        public int WindAttack;
+        public int LandAttack;
+        public int SkillId;
+    }
+
+    public sealed class RuneTemplate
+    {
+        public int TemplateId;
+        public int NextTemplateId;
+        public string Name = "";
+        public int BaseLevel;
+        public int MaxLevel;
+        public int Type1;
+        public string Attribute1 = "";
+        public int Turn1;
+        public int Rate1;
+        public int Type2;
+        public string Attribute2 = "";
+        public int Turn2;
+        public int Rate2;
+        public int Type3;
+        public string Attribute3 = "";
+        public int Turn3;
+        public int Rate3;
+    }
+
+    public sealed class HorseAmuletInfo
+    {
+        public int Level;
+        public int Hp;
+        public int GuaranteeTimes;
+        public int LvlupStep;
+        public int WashsStep;
+        public int SuccessChance;
+    }
+
+    public sealed class HorseAmuletGrade
+    {
+        public int WashLevel;
+        public int WashTimes;
+        public int MinValue;
+        public int MaxValue;
+    }
+
+    public sealed class HorseAmuletPhase
+    {
+        public int AmuletLevel;
+        public int Phase;
+        public int AvoidInjury;
+        public int Crit;
+        public int Expend;
+        public int Guard;
+        public int Kill;
+        public int LockPrice;
+        public int Speed;
+        public int SunderArmor;
+        public int Tenacity;
+        public int ViolenceInjury;
+        public int WillFight;
+    }
+
     public sealed class MountTalismanInfo
     {
         public int Id;
@@ -1161,6 +1240,13 @@ namespace GunMobile.Res
         public List<GloryItemUpgrade> GloryUpgradeList { get; } = new List<GloryItemUpgrade>();
         public Dictionary<int, GloryLevelInfo> GloryLevels { get; } = new Dictionary<int, GloryLevelInfo>();
         public List<SigilProLimit> SigilProLimits { get; } = new List<SigilProLimit>();
+        public Dictionary<int, JadeTemp> Jades { get; } = new Dictionary<int, JadeTemp>();
+        public List<JadeTemp> JadeList { get; } = new List<JadeTemp>();
+        public Dictionary<int, RuneTemplate> Runes { get; } = new Dictionary<int, RuneTemplate>();
+        public List<RuneTemplate> RuneList { get; } = new List<RuneTemplate>();
+        public Dictionary<int, HorseAmuletInfo> HorseAmuletInfos { get; } = new Dictionary<int, HorseAmuletInfo>();
+        public Dictionary<int, HorseAmuletGrade> HorseAmuletGrades { get; } = new Dictionary<int, HorseAmuletGrade>();
+        public List<HorseAmuletPhase> HorseAmuletPhases { get; } = new List<HorseAmuletPhase>();
         public Dictionary<int, MountTalismanInfo> MountTalismans { get; } = new Dictionary<int, MountTalismanInfo>();
         public Dictionary<int, ManorPlantInfo> ManorPlants { get; } = new Dictionary<int, ManorPlantInfo>();
         public Dictionary<int, QuizQuestion> QuizQuestions { get; } = new Dictionary<int, QuizQuestion>();
@@ -1291,6 +1377,9 @@ namespace GunMobile.Res
             db.LoadGoldEquip(loader);
             db.LoadGlory(loader);
             db.LoadSigil(loader);
+            db.LoadJade(loader);
+            db.LoadRunes(loader);
+            db.LoadHorseAmulet(loader);
             db.LoadMountTalismans(loader);
             db.LoadManorPlants(loader);
             db.LoadQuizQuestions(loader);
@@ -1573,6 +1662,187 @@ namespace GunMobile.Res
                 case 8: magicDef += proValue; break;
                 case 9: hp += proValue * 5; break;
                 default: atk += Mathf.Max(1, proValue / 2); break;
+            }
+        }
+
+        public JadeTemp GetJade(int id)
+        {
+            if (id > 0 && Jades.TryGetValue(id, out JadeTemp row)) return row;
+            return null;
+        }
+
+        public void ApplyJadeBonus(int jadeId, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int magicAtk, ref int magicDef)
+        {
+            JadeTemp row = GetJade(jadeId);
+            if (row == null) return;
+            atk += row.Attack;
+            def += row.Defence;
+            agi += row.Agility;
+            luck += row.Luck;
+            hp += row.Hp;
+            magicAtk += row.MagicAttack;
+            magicDef += row.MagicDefence;
+            int elem = row.FireAttack + row.WaterAttack + row.WindAttack + row.LandAttack;
+            if (elem > 0) magicAtk += elem;
+        }
+
+        public RuneTemplate GetRune(int templateId)
+        {
+            if (templateId > 0 && Runes.TryGetValue(templateId, out RuneTemplate row)) return row;
+            return null;
+        }
+
+        static int ParsePipeFirst(string raw)
+        {
+            if (string.IsNullOrEmpty(raw)) return 0;
+            int pipe = raw.IndexOf('|');
+            string part = pipe >= 0 ? raw.Substring(0, pipe) : raw;
+            return int.TryParse(part.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) ? n : 0;
+        }
+
+        public void ApplyRuneBonus(int runeTemplateId, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            RuneTemplate row = GetRune(runeTemplateId);
+            if (row == null) return;
+            ApplyRuneTypeBonus(row.Type1, row.Attribute1, row.Rate1, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            ApplyRuneTypeBonus(row.Type2, row.Attribute2, row.Rate2, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            ApplyRuneTypeBonus(row.Type3, row.Attribute3, row.Rate3, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+        }
+
+        static void ApplyRuneTypeBonus(int type, string attr, int rate, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (type <= 0) return;
+            int v = ParsePipeFirst(attr);
+            if (v <= 0) v = rate;
+            if (v <= 0) return;
+            switch (type)
+            {
+                case 1:
+                case 5:
+                case 12:
+                case 22:
+                    atk += Mathf.Max(1, v / 10);
+                    baseDmg += Mathf.Max(1, v / 20);
+                    break;
+                case 2:
+                case 6:
+                    def += Mathf.Max(1, v / 10);
+                    baseGuard += Mathf.Max(1, v / 20);
+                    break;
+                case 3:
+                case 18:
+                    agi += Mathf.Max(1, rate > 0 ? rate : Mathf.Max(1, v / 10));
+                    break;
+                case 4:
+                    luck += Mathf.Max(1, v / 10);
+                    break;
+                case 35:
+                case 36:
+                case 37:
+                case 39:
+                    hp += v;
+                    break;
+                default:
+                    if (v >= 50) hp += Mathf.Max(1, v / 5);
+                    else atk += Mathf.Max(1, v);
+                    break;
+            }
+        }
+
+        public HorseAmuletInfo GetHorseAmuletInfo(int level)
+        {
+            if (level > 0 && HorseAmuletInfos.TryGetValue(level, out HorseAmuletInfo row)) return row;
+            return null;
+        }
+
+        public HorseAmuletGrade GetHorseAmuletGrade(int washLevel)
+        {
+            if (washLevel > 0 && HorseAmuletGrades.TryGetValue(washLevel, out HorseAmuletGrade row)) return row;
+            return null;
+        }
+
+        public HorseAmuletPhase GetHorseAmuletPhaseForLevel(int level)
+        {
+            HorseAmuletPhase best = null;
+            for (int i = 0; i < HorseAmuletPhases.Count; i++)
+            {
+                HorseAmuletPhase row = HorseAmuletPhases[i];
+                if (row.AmuletLevel <= level && (best == null || row.AmuletLevel >= best.AmuletLevel))
+                    best = row;
+            }
+            return best;
+        }
+
+        public HorseAmuletPhase GetHorseAmuletPhase(int phase)
+        {
+            for (int i = 0; i < HorseAmuletPhases.Count; i++)
+                if (HorseAmuletPhases[i].Phase == phase) return HorseAmuletPhases[i];
+            return null;
+        }
+
+        public int HorseAmuletLevelGoldCost(int currentLevel)
+        {
+            HorseAmuletPhase nextPhase = GetHorseAmuletPhaseForLevel(currentLevel + 1);
+            if (nextPhase != null)
+            {
+                if (nextPhase.Expend > 0) return nextPhase.Expend;
+                if (nextPhase.LockPrice > 0) return nextPhase.LockPrice;
+            }
+            HorseAmuletPhase cur = GetHorseAmuletPhaseForLevel(Mathf.Max(1, currentLevel));
+            if (cur != null)
+            {
+                if (cur.Expend > 0) return cur.Expend;
+                if (cur.LockPrice > 0) return cur.LockPrice;
+            }
+            HorseAmuletInfo info = GetHorseAmuletInfo(currentLevel + 1);
+            if (info != null && info.GuaranteeTimes > 0) return info.GuaranteeTimes;
+            return ConfigInt("HorseAmuletUpgradeGold", 100);
+        }
+
+        public int HorseAmuletGradeGoldCost(int currentGrade)
+        {
+            HorseAmuletGrade next = GetHorseAmuletGrade(currentGrade + 1);
+            if (next == null) return 0;
+            if (next.WashTimes > 0) return next.WashTimes;
+            HorseAmuletPhase phase = GetHorseAmuletPhaseForLevel(1);
+            if (phase != null && phase.LockPrice > 0) return phase.LockPrice;
+            return ConfigInt("HorseAmuletGradeGold", 200);
+        }
+
+        public int HorseAmuletPhaseGoldCost(int currentPhase)
+        {
+            HorseAmuletPhase next = null;
+            for (int i = 0; i < HorseAmuletPhases.Count; i++)
+            {
+                HorseAmuletPhase row = HorseAmuletPhases[i];
+                if (row.Phase > currentPhase && (next == null || row.Phase < next.Phase)) next = row;
+            }
+            if (next == null) return 0;
+            if (next.Expend > 0) return next.Expend;
+            if (next.LockPrice > 0) return next.LockPrice;
+            return ConfigInt("HorseAmuletPhaseGold", 200);
+        }
+
+        public void ApplyHorseAmuletBonus(int level, int grade, int phase, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            HorseAmuletInfo info = GetHorseAmuletInfo(Mathf.Max(1, level));
+            if (info != null) hp += info.Hp;
+            HorseAmuletPhase phaseRow = phase > 0 ? GetHorseAmuletPhase(phase) : GetHorseAmuletPhaseForLevel(Mathf.Max(1, level));
+            if (phaseRow != null)
+            {
+                atk += phaseRow.Kill / 10;
+                def += phaseRow.Guard / 10;
+                agi += phaseRow.Speed;
+                luck += phaseRow.Crit / 10;
+                baseDmg += phaseRow.SunderArmor / 10;
+                baseGuard += phaseRow.AvoidInjury / 10;
+                hp += phaseRow.Tenacity;
+            }
+            HorseAmuletGrade gradeRow = GetHorseAmuletGrade(Mathf.Max(1, grade));
+            if (gradeRow != null && gradeRow.MinValue > 0)
+            {
+                int bonus = Mathf.Max(1, gradeRow.MinValue / 100);
+                atk += bonus; def += bonus;
             }
         }
 
@@ -4521,6 +4791,125 @@ namespace GunMobile.Res
                     Quality = Int(row, "Quality"), ProType = Int(row, "ProType"),
                     Name = Str(row, "Name"), RandomConfig = Int(row, "RandomConfig")
                 });
+            }
+        }
+
+        void LoadJade(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_JadeTemp.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) continue;
+                var info = new JadeTemp
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateId"),
+                    TemplateName = Str(row, "TemplateName"),
+                    Types = Int(row, "Types"),
+                    Level = Int(row, "Level"),
+                    NeedItem = Int(row, "NeedItem"),
+                    NeedItemCount = Int(row, "NeedItemCount"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defenc"),
+                    Agility = Int(row, "Agility"),
+                    Luck = Int(row, "Lucky"),
+                    Hp = Int(row, "HP"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefenc"),
+                    FireAttack = Int(row, "FireAtck"),
+                    WaterAttack = Int(row, "WateAtck"),
+                    WindAttack = Int(row, "WindAtck"),
+                    LandAttack = Int(row, "LandAtck"),
+                    SkillId = Int(row, "SkillId")
+                };
+                Jades[id] = info;
+                JadeList.Add(info);
+            }
+        }
+
+        void LoadRunes(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/runetemplatelist.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/runetemplatelist_out.xml", out table)) return;
+            foreach (var row in table.Rows)
+            {
+                int tid = Int(row, "TemplateID");
+                if (tid <= 0) continue;
+                var info = new RuneTemplate
+                {
+                    TemplateId = tid,
+                    NextTemplateId = Int(row, "NextTemplateID"),
+                    Name = Str(row, "Name"),
+                    BaseLevel = Int(row, "BaseLevel"),
+                    MaxLevel = Int(row, "MaxLevel"),
+                    Type1 = Int(row, "Type1"), Attribute1 = Str(row, "Attribute1"), Turn1 = Int(row, "Turn1"), Rate1 = Int(row, "Rate1"),
+                    Type2 = Int(row, "Type2"), Attribute2 = Str(row, "Attribute2"), Turn2 = Int(row, "Turn2"), Rate2 = Int(row, "Rate2"),
+                    Type3 = Int(row, "Type3"), Attribute3 = Str(row, "Attribute3"), Turn3 = Int(row, "Turn3"), Rate3 = Int(row, "Rate3")
+                };
+                Runes[tid] = info;
+                RuneList.Add(info);
+            }
+        }
+
+        void LoadHorseAmulet(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/amuletinfoitemlist.xml", out XmlResultTable infoTable))
+            {
+                foreach (var row in infoTable.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0) continue;
+                    HorseAmuletInfos[level] = new HorseAmuletInfo
+                    {
+                        Level = level,
+                        Hp = Int(row, "HP"),
+                        GuaranteeTimes = Int(row, "GuaranteeTimes"),
+                        LvlupStep = Int(row, "LvlupStep"),
+                        WashsStep = Int(row, "WashsStep"),
+                        SuccessChance = Int(row, "SuccessChance")
+                    };
+                }
+            }
+            if (TryTable(loader, "Request/amuletgradeitemlist.xml", out XmlResultTable gradeTable))
+            {
+                foreach (var row in gradeTable.Rows)
+                {
+                    int wash = Int(row, "WahsLevel");
+                    if (wash <= 0) wash = Int(row, "WashLevel");
+                    if (wash <= 0) continue;
+                    HorseAmuletGrades[wash] = new HorseAmuletGrade
+                    {
+                        WashLevel = wash,
+                        WashTimes = Int(row, "WahsTimes") != 0 ? Int(row, "WahsTimes") : Int(row, "WashTimes"),
+                        MinValue = Int(row, "Minvalue"),
+                        MaxValue = Int(row, "Maxvalue")
+                    };
+                }
+            }
+            if (TryTable(loader, "Request/amuletphaseitemlist.xml", out XmlResultTable phaseTable))
+            {
+                foreach (var row in phaseTable.Rows)
+                {
+                    int amuletLevel = Int(row, "AmuletLevel");
+                    if (amuletLevel <= 0) continue;
+                    HorseAmuletPhases.Add(new HorseAmuletPhase
+                    {
+                        AmuletLevel = amuletLevel,
+                        Phase = Int(row, "Phase"),
+                        AvoidInjury = Int(row, "AvoidInjury"),
+                        Crit = Int(row, "Crit"),
+                        Expend = Int(row, "Expend"),
+                        Guard = Int(row, "Guard"),
+                        Kill = Int(row, "Kill"),
+                        LockPrice = Int(row, "LockPrice"),
+                        Speed = Int(row, "Speed"),
+                        SunderArmor = Int(row, "SunderArmor"),
+                        Tenacity = Int(row, "Tenacity"),
+                        ViolenceInjury = Int(row, "ViolenceInjury"),
+                        WillFight = Int(row, "WillFight")
+                    });
+                }
             }
         }
 

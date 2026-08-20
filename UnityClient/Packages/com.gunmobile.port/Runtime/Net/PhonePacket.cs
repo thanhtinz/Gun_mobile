@@ -242,6 +242,9 @@ namespace GunMobile.Net
         public const ushort MountSkillUnlock = 195;
         public const ushort AchievementClaim = 196;
         public const ushort LinkPalAction = 197;
+        public const ushort JadeEquip = 198;
+        public const ushort RuneEquip = 199;
+        public const ushort HorseAmuletUpgrade = 200;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

@@ -547,6 +547,79 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+        public static void JadeScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "玉石 · Jade");
+            SysUi.Note(body, "TS_JadeTemp.xml  ·  PhoneMsg 198 JadeEquip");
+            JadeTemp equipped = app.Database != null ? app.Database.GetJade(app.Profile.JadeEquipId) : null;
+            SysUi.Note(body, equipped != null
+                ? "已装备 " + equipped.TemplateName + " Lv" + equipped.Level + "  ATK+" + equipped.Attack + " HP+" + equipped.Hp
+                : "未装备玉石");
+            if (app.Profile.JadeEquipId > 0)
+                SysUi.Row(body, "jadeoff", "卸下玉石", () => PhoneNet.EquipJade(0));
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (JadeTemp row in app.Database.JadeList)
+            {
+                if (row.Level != 1 && row.Level != 5 && row.Level != 10) continue;
+                JadeTemp local = row;
+                bool on = app.Profile.JadeEquipId == row.Id;
+                string stats = "ATK" + row.Attack + " DEF" + row.Defence + " LUK" + row.Luck + " HP" + row.Hp + " MAG" + row.MagicAttack;
+                SysUi.Row(body, "jade" + row.Id,
+                    (on ? "[装备] " : "") + row.TemplateName + " T" + row.Types + "  " + stats,
+                    () => PhoneNet.EquipJade(local.Id));
+                if (++shown >= 36) break;
+            }
+        }
+
+        public static void RuneScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "符文 · Rune");
+            SysUi.Note(body, "runetemplatelist.xml  ·  PhoneMsg 199 RuneEquip");
+            RuneTemplate equipped = app.Database != null ? app.Database.GetRune(app.Profile.RuneTemplateId) : null;
+            SysUi.Note(body, equipped != null
+                ? "已装备 " + equipped.Name + " #" + equipped.TemplateId + " Type" + equipped.Type1
+                : "未装备符文");
+            if (app.Profile.RuneTemplateId > 0)
+                SysUi.Row(body, "runeoff", "卸下符文", () => PhoneNet.EquipRune(0));
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (RuneTemplate row in app.Database.RuneList)
+            {
+                if (row.BaseLevel > 3) continue;
+                RuneTemplate local = row;
+                bool on = app.Profile.RuneTemplateId == row.TemplateId;
+                SysUi.Row(body, "rune" + row.TemplateId,
+                    (on ? "[装备] " : "") + row.Name + " Lv" + row.BaseLevel + "  Type" + row.Type1 + " " + row.Attribute1,
+                    () => PhoneNet.EquipRune(local.TemplateId));
+                if (++shown >= 24) break;
+            }
+        }
+
+        public static void HorseAmuletScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "坐骑护符 · HorseAmulet");
+            SysUi.Note(body, "amuletinfo / amuletgrade / amuletphase  ·  PhoneMsg 200");
+            int level = UnityEngine.Mathf.Max(1, app.Profile.HorseAmuletLevel);
+            int grade = UnityEngine.Mathf.Max(1, app.Profile.HorseAmuletGrade);
+            int phase = UnityEngine.Mathf.Max(1, app.Profile.HorseAmuletPhase);
+            HorseAmuletInfo info = app.Database != null ? app.Database.GetHorseAmuletInfo(level) : null;
+            HorseAmuletPhase phaseRow = app.Database != null ? app.Database.GetHorseAmuletPhase(phase) : null;
+            SysUi.Note(body, "等级 " + level + "  品阶 " + grade + "  阶段 " + phase +
+                (info != null ? ("  HP+" + info.Hp) : "") +
+                (phaseRow != null ? ("  Kill" + phaseRow.Kill + " Guard" + phaseRow.Guard) : ""));
+            if (app.Database == null) return;
+            int levelCost = app.Database.HorseAmuletLevelGoldCost(level);
+            int gradeCost = app.Database.HorseAmuletGradeGoldCost(grade);
+            int phaseCost = app.Database.HorseAmuletPhaseGoldCost(phase);
+            if (app.Database.GetHorseAmuletInfo(level + 1) != null || app.Database.HorseAmuletInfos.Count == 0)
+                SysUi.Row(body, "halvl", "升级护符  " + levelCost + "金 (Expend/LockPrice)", () => PhoneNet.UpgradeHorseAmulet("level"));
+            if (gradeCost > 0)
+                SysUi.Row(body, "hagrade", "提升品阶  " + gradeCost + "金 (WahsTimes)", () => PhoneNet.UpgradeHorseAmulet("grade"));
+            if (phaseCost > 0)
+                SysUi.Row(body, "haphase", "提升阶段  " + phaseCost + "金 (Expend)", () => PhoneNet.UpgradeHorseAmulet("phase"));
+        }
+
         public static void DreamlandScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
