@@ -40,6 +40,11 @@ namespace GunMobile.Client
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         static void AutoBoot()
         {
+            if (Application.isBatchMode)
+            {
+                return;
+            }
+
             if (FindFirstObjectByType<GameApp>() != null)
             {
                 return;

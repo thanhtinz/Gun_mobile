@@ -41,6 +41,16 @@ namespace GunMobile.Server
             var db = GameDatabase.Load(loader) ?? new GameDatabase();
             Debug.Log($"[DedicatedServer] DB loaded: items={db.Items.Count} shop={db.Shop.Count} maps={db.Maps.Count} npcs={db.Npcs.Count}");
 
+            var collisionMaps = GameDatabase.DiscoverCollisionIds(loader);
+            if (collisionMaps.Count == 0)
+            {
+                Debug.LogError("[DedicatedServer] No Service/Road/map/*/fore.map found — battles will use flat ground. Run bootstrap_pc_assets.py.");
+            }
+            else
+            {
+                Debug.Log($"[DedicatedServer] {collisionMaps.Count} maps with collision data (e.g. {collisionMaps[0]})");
+            }
+
             string savePath = System.IO.Path.Combine(Application.persistentDataPath, "server_players");
 
             _server = new MobileGameServer();

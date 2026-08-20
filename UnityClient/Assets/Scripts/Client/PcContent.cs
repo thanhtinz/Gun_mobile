@@ -94,6 +94,11 @@ namespace GunMobile.Client
 
         static IEnumerator EnsureEquipArmAssets(Action<string> status)
         {
+            if (Application.isBatchMode)
+            {
+                yield break;
+            }
+
             string marker = Path.Combine(PersistentPcData, ".equip_ready");
             if (File.Exists(marker))
             {

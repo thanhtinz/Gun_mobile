@@ -196,6 +196,8 @@ namespace GunMobile.Client
         int[] _preferredBallIds;
         int _lastShooter;
         bool _specialNextShot;
+        int _netShotsPending;
+        float _netShotTimeout;
         int[] _petMp;
         float[] _petSkillCd;
         const int PetMpMax = 100;
@@ -924,14 +926,14 @@ namespace GunMobile.Client
             Fire(1, bestA, bestP, false);
         }
 
-        public void ApplyNetFire(int who, float angle, float power)
+        public void ApplyNetFire(int who, float angle, float power, int propId = 0, bool special = false)
         {
-            if (_flying || _map == null)
+            if (_flying || _map == null || who == MeSeat())
             {
                 return;
             }
 
-            Fire(who, angle, power, true);
+            Fire(who, angle, power, true, propId, special);
         }
 
         public void ApplyNetWalk(int who, float x, int facing)
@@ -1004,19 +1006,23 @@ namespace GunMobile.Client
             }
         }
 
-        void Fire(int who, float angle, float power, bool fromNet)
+        void Fire(int who, float angle, float power, bool fromNet, int netPropId = -1, bool netSpecial = false)
         {
             _lastShooter = who;
             _shotFromNet = fromNet;
             _loop.BeginShot();
             _aim?.SetFacing(_facing[who]);
-            bool specialShot = false;
+            bool specialShot = netSpecial;
             if (_app?.Database != null && _weaponIds != null && who >= 0 && who < _weaponIds.Length)
             {
                 int wid = _weaponIds[who];
                 int pref = _preferredBallIds != null && who < _preferredBallIds.Length ? _preferredBallIds[who] : 0;
-                int propForShot = who == MeSeat() ? _propId : 0;
-                specialShot = who == MeSeat() && _specialNextShot;
+                int propForShot = netPropId >= 0 ? netPropId : (who == MeSeat() ? _propId : 0);
+                if (!specialShot)
+                {
+                    specialShot = who == MeSeat() && _specialNextShot;
+                }
+
                 _specialNextShot = false;
                 _ball = specialShot
                     ? _app.Database.ResolveSpecialBall(wid)
@@ -1037,7 +1043,17 @@ namespace GunMobile.Client
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
             _flying = true;
-            _shotRemaining = Mathf.Max(0, _ball.Amount - 1);
+            if (PhoneNet.NetBattle)
+            {
+                _netShotsPending = Mathf.Max(1, _ball != null ? _ball.Amount : 1);
+                _netShotTimeout = 12f;
+                _shotRemaining = 0;
+            }
+            else
+            {
+                _shotRemaining = Mathf.Max(0, _ball.Amount - 1);
+            }
+
             if (!fromNet && PhoneNet.NetBattle)
             {
                 PhoneNet.SendFire(who, angle, power, _facing[who], _propId, specialShot);
@@ -1170,7 +1186,11 @@ namespace GunMobile.Client
                     int hy = JsonInt(msg.Json, "y", -1);
                     if (_flying && who == _lastShooter && hx >= 0 && hy >= 0)
                     {
-                        EndShot(true, hx, hy);
+                        _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
+                        if (_netShotsPending <= 0)
+                        {
+                            EndShot(true, hx, hy);
+                        }
                     }
 
                     continue;
@@ -1182,7 +1202,9 @@ namespace GunMobile.Client
                     if (_flying && who == _lastShooter)
                     {
                         _flying = false;
+                        _netShotsPending = 0;
                         _loop.EndShot();
+                        _loop.FinishSettleOnline();
                     }
 
                     continue;
@@ -1277,12 +1299,17 @@ namespace GunMobile.Client
                 float angle = JsonFloat(msg.Json, "angle", 45f);
                 float power = JsonFloat(msg.Json, "power", 50f);
                 int facing = JsonInt(msg.Json, "facing", _facing[Mathf.Clamp(who, 0, 1)]);
+                int prop = JsonInt(msg.Json, "prop", 0);
+                int special = JsonInt(msg.Json, "special", 0);
                 if (who >= 0 && who < _facing.Length)
                 {
                     _facing[who] = facing >= 0 ? 1 : -1;
                 }
 
-                ApplyNetFire(who, angle, power);
+                if (who != MeSeat())
+                {
+                    ApplyNetFire(who, angle, power, prop, special != 0);
+                }
             }
         }
 
@@ -1334,6 +1361,24 @@ namespace GunMobile.Client
 
         void StepShot()
         {
+            if (PhoneNet.NetBattle)
+            {
+                _netShotTimeout -= Time.deltaTime;
+                for (int i = 0; i < 2; i++)
+                {
+                    _shot = _sim.StepFrame(_shot, _loop.Wind);
+                }
+
+                if (_netShotTimeout <= 0f)
+                {
+                    int mx = Mathf.RoundToInt(_shot.X);
+                    int my = _map.Height - Mathf.RoundToInt(_shot.Y);
+                    EndShot(false, mx, my);
+                }
+
+                return;
+            }
+
             for (int i = 0; i < 2; i++)
             {
                 _shot = _sim.StepFrame(_shot, _loop.Wind);
@@ -1431,7 +1476,7 @@ namespace GunMobile.Client
                 _blastImg.gameObject.SetActive(true);
             }
 
-            if (_shotRemaining > 0)
+            if (_shotRemaining > 0 && !PhoneNet.NetBattle)
             {
                 _shotRemaining--;
                 float spread = UnityEngine.Random.Range(-8f, 8f);
@@ -1445,12 +1490,11 @@ namespace GunMobile.Client
             }
 
             _flying = false;
+            _netShotsPending = 0;
             _loop.EndShot();
             if (PhoneNet.NetBattle)
             {
-                // Server advances turn after fire; do NOT advance locally (prevents desync).
                 _loop.FinishSettleOnline();
-                PhoneNet.SendFightTurn(_loop.TurnIndex, _loop.CurrentLiving, _loop.Wind);
             }
             else
             {

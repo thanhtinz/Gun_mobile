@@ -1309,8 +1309,9 @@ namespace GunMobile.Net
                     bool allowF;
                     lock (_lock) { allowF = room.InBattle && player.Seat == room.CurrentPlayer; }
                     if (!allowF) return;
-                    BroadcastToRoom(room, PhoneMsg.FightFire, json, player.Id);
-                    ServerSimulateFire(player, room, json);
+                    string firePayload = EnsureJsonField(json, "who", player.Seat);
+                    BroadcastToRoom(room, PhoneMsg.FightFire, firePayload, player.Id);
+                    ServerSimulateFire(player, room, firePayload);
                     break;
                 }
 
@@ -2779,10 +2780,11 @@ namespace GunMobile.Net
                 int hitMapX = Mathf.RoundToInt(state.X);
                 int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
 
-                string shotJson = "{\"who\":" + who + ",\"shot\":" + s + ",\"x\":" + hitMapX + ",\"y\":" + hitMapY + "}";
+                int cutRadius = Mathf.Max(24, Mathf.RoundToInt((ball.Radii > 0 ? ball.Radii / 2f : 38f) * propRadius));
+                string shotJson = "{\"who\":" + who + ",\"shot\":" + s + ",\"x\":" + hitMapX +
+                                  ",\"y\":" + hitMapY + ",\"r\":" + cutRadius + "}";
                 BroadcastToRoom(room, PhoneMsg.FightShotResult, shotJson, -1);
 
-                int cutRadius = Mathf.Max(8, blastRadius / 3);
                 map.CutCircle(hitMapX, hitMapY, cutRadius);
                 string craterJson = "{\"x\":" + hitMapX +
                                     ",\"y\":" + hitMapY +
@@ -3563,10 +3565,11 @@ namespace GunMobile.Net
                 }
             }
 
-            string fireJson = "{\"angle\":" + angle.ToString(CultureInfo.InvariantCulture) +
+            string fireJson = "{\"who\":" + npcSeat +
+                              ",\"angle\":" + angle.ToString(CultureInfo.InvariantCulture) +
                               ",\"power\":" + power.ToString(CultureInfo.InvariantCulture) +
                               ",\"facing\":" + (dxShot >= 0 ? 1 : -1) +
-                              ",\"prop\":" + propId + "}";
+                              ",\"prop\":" + propId + ",\"special\":0}";
             var npcPlayer = new ServerPlayer { Seat = npcSeat, Id = -1 };
             BroadcastToRoom(room, PhoneMsg.FightFire, fireJson, -1);
             ServerSimulateFire(npcPlayer, room, fireJson);
@@ -3669,6 +3672,27 @@ namespace GunMobile.Net
         static int JI(string json, string key, int fallback)
         {
             return Mathf.RoundToInt(JF(json, key, fallback));
+        }
+
+        static string EnsureJsonField(string json, string key, int value)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return "{\"" + key + "\":" + value + "}";
+            }
+
+            if (json.IndexOf("\"" + key + "\"", StringComparison.Ordinal) >= 0)
+            {
+                return json;
+            }
+
+            string trimmed = json.Trim();
+            if (trimmed.StartsWith("{", StringComparison.Ordinal) && trimmed.EndsWith("}", StringComparison.Ordinal))
+            {
+                return "{\"" + key + "\":" + value + "," + trimmed.Substring(1);
+            }
+
+            return json;
         }
 
         static float JF(string json, string key, float fallback)
