@@ -1182,14 +1182,40 @@ namespace GunMobile.Client
                 if (msg.Id == PhoneMsg.FightShotResult)
                 {
                     int who = JsonInt(msg.Json, "who", -1);
+                    int shot = JsonInt(msg.Json, "shot", 0);
                     int hx = JsonInt(msg.Json, "x", -1);
                     int hy = JsonInt(msg.Json, "y", -1);
+                    int blast = JsonInt(msg.Json, "blast", 0);
+                    int total = JsonInt(msg.Json, "total", 0);
+                    bool done = msg.Json.IndexOf("\"done\":true", System.StringComparison.Ordinal) >= 0;
                     if (_flying && who == _lastShooter && hx >= 0 && hy >= 0)
                     {
-                        _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
-                        if (_netShotsPending <= 0)
+                        if (total > 0 && shot == 0)
+                        {
+                            _netShotsPending = total;
+                        }
+
+                        int mapY = _map != null ? _map.Height - hy - 1 : hy;
+                        _shot = new ProjectileState { X = hx, Y = mapY, Vx = 0f, Vy = 0f, Alive = false };
+
+                        if (_blastImg != null)
+                        {
+                            _blastT = 0.35f;
+                            var rt = _blastImg.rectTransform;
+                            rt.anchorMin = rt.anchorMax = MapAnchor(hx, hy);
+                            float blastSize = blast > 0 ? blast * 1.6f : 72f;
+                            rt.sizeDelta = new Vector2(blastSize, blastSize);
+                            _blastImg.gameObject.SetActive(true);
+                        }
+
+                        if (done || _netShotsPending <= 1)
                         {
                             EndShot(true, hx, hy);
+                        }
+                        else
+                        {
+                            _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
+                            _netShotTimeout = 12f;
                         }
                     }
 

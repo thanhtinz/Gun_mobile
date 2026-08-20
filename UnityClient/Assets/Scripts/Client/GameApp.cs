@@ -280,6 +280,12 @@ namespace GunMobile.Client
                     ExtraModulesScreens.PeakBattleScreen(_safe, this);
                     return;
                 default:
+                    if (!string.IsNullOrEmpty(module.MornUiFile))
+                    {
+                        ExtraModulesScreens.ShowMornModule(_safe, this, module, module.MornUiFile);
+                        return;
+                    }
+
                     DataBrowserScreen.Show(_safe, this, module);
                     return;
             }
@@ -512,6 +518,7 @@ namespace GunMobile.Client
             ParseStockFromServer(json);
             ParseFriendsFromServer(json);
             ParseFightSpiritsFromServer(json);
+            ParseMagicStonesFromServer(json);
             Profile.Save();
         }
 
@@ -624,6 +631,56 @@ namespace GunMobile.Client
             {
                 Profile.FightSpirits = list;
                 Profile.EnsureFightSpirits();
+            }
+        }
+
+        void ParseMagicStonesFromServer(string json)
+        {
+            int idx = json.IndexOf("\"magicStones\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 14;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            var list = new System.Collections.Generic.List<MagicStoneSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0)
+                {
+                    break;
+                }
+
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0)
+                {
+                    break;
+                }
+
+                string entry = body.Substring(ob, cb - ob + 1);
+                int templateId = JsonInt(entry, "templateId", 0);
+                int level = JsonInt(entry, "level", 0);
+                if (templateId > 0)
+                {
+                    list.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
+                }
+
+                pos = cb + 1;
+            }
+
+            if (list.Count > 0)
+            {
+                Profile.MagicStones = list;
+                Profile.EnsureMagicStones();
             }
         }
 

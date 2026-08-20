@@ -26,6 +26,8 @@ namespace GunMobile.Net
         public int Defence = 40;
         public int Agility = 40;
         public int Luck = 30;
+        public int MagicAttack;
+        public int MagicDefence;
         public int BaseDamage = 50;
         public int BaseGuard;
         public int Hp = 1200;
@@ -66,6 +68,7 @@ namespace GunMobile.Net
         public int EngraveSetId;
         public List<StockSlot> StockHoldings = new List<StockSlot>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
+        public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
 
         public void EnsureFightSpirits()
         {
@@ -110,6 +113,51 @@ namespace GunMobile.Net
             }
 
             FightSpirits.Add(new FightSpiritSlot { SpiritId = spiritId, Level = level });
+        }
+
+        public void EnsureMagicStones()
+        {
+            if (MagicStones == null)
+            {
+                MagicStones = new List<MagicStoneSlot>();
+            }
+
+            if (MagicStones.Count == 0 && GameDatabase.DefaultMagicStoneTemplateIds != null)
+            {
+                foreach (int templateId in GameDatabase.DefaultMagicStoneTemplateIds)
+                {
+                    MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = 0 });
+                }
+            }
+        }
+
+        public int GetMagicStoneLevel(int templateId)
+        {
+            EnsureMagicStones();
+            for (int i = 0; i < MagicStones.Count; i++)
+            {
+                if (MagicStones[i].TemplateId == templateId)
+                {
+                    return MagicStones[i].Level;
+                }
+            }
+
+            return 0;
+        }
+
+        public void SetMagicStoneLevel(int templateId, int level)
+        {
+            EnsureMagicStones();
+            for (int i = 0; i < MagicStones.Count; i++)
+            {
+                if (MagicStones[i].TemplateId == templateId)
+                {
+                    MagicStones[i].Level = level;
+                    return;
+                }
+            }
+
+            MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
         }
 
         public TcpClient RoadTcp;
@@ -187,6 +235,13 @@ namespace GunMobile.Net
             EnsureFightSpirits();
             db.ApplyFightSpiritStats(FightSpirits, ref atk, ref def, ref agi, ref luck, ref hp);
 
+            EnsureMagicStones();
+            int magicAtk = 0;
+            int magicDef = 0;
+            db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
+            MagicAttack = magicAtk;
+            MagicDefence = magicDef;
+
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
                 atk += weaponSpirit.AttackAdd;
@@ -239,6 +294,8 @@ namespace GunMobile.Net
             J(sb, "defence", Defence); sb.Append(",");
             J(sb, "agility", Agility); sb.Append(",");
             J(sb, "luck", Luck); sb.Append(",");
+            J(sb, "magicAttack", MagicAttack); sb.Append(",");
+            J(sb, "magicDefence", MagicDefence); sb.Append(",");
             J(sb, "hp", Hp); sb.Append(",");
             J(sb, "win", Win); sb.Append(",");
             J(sb, "lose", Lose); sb.Append(",");
@@ -298,6 +355,15 @@ namespace GunMobile.Net
                 if (i > 0) sb.Append(",");
                 sb.Append("{\"spiritId\":").Append(FightSpirits[i].SpiritId)
                     .Append(",\"level\":").Append(FightSpirits[i].Level).Append("}");
+            }
+            sb.Append("],");
+            EnsureMagicStones();
+            sb.Append("\"magicStones\":[");
+            for (int i = 0; i < MagicStones.Count; i++)
+            {
+                if (i > 0) sb.Append(",");
+                sb.Append("{\"templateId\":").Append(MagicStones[i].TemplateId)
+                    .Append(",\"level\":").Append(MagicStones[i].Level).Append("}");
             }
             sb.Append("],");
             sb.Append("\"bag\":[");
@@ -1113,7 +1179,6 @@ namespace GunMobile.Net
                 case PhoneMsg.FriendAdd:
                 {
                     string fn = JS(json, "name", "");
-                    bool friendFound = false;
                     if (string.IsNullOrEmpty(fn))
                     {
                         SendFriendResult(player, ns);
@@ -1132,7 +1197,6 @@ namespace GunMobile.Net
                             {
                                 if (string.Equals(fp.Nick, fn, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    friendFound = true;
                                     if (!fp.Friends.Contains(player.Nick))
                                     {
                                         fp.Friends.Add(player.Nick);
@@ -1214,6 +1278,10 @@ namespace GunMobile.Net
 
                 case PhoneMsg.GemSpiritUpgrade:
                     HandleGemSpiritUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.MagicStoneUpgrade:
+                    HandleMagicStoneUpgrade(player, ns, json);
                     break;
 
                 case PhoneMsg.PveStart:
@@ -1985,6 +2053,26 @@ namespace GunMobile.Net
             }
 
             player.GemLevel = maxLevel;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMagicStoneUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int templateId = JI(json, "templateId", 100101);
+            player.EnsureMagicStones();
+            int level = player.GetMagicStoneLevel(templateId);
+            int cost = _db != null ? _db.MagicStoneUpgradeCost(templateId, level) : 0;
+            if (cost <= 0 || player.Gold < cost || level >= 10)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            player.Gold -= cost;
+            player.SetMagicStoneLevel(templateId, level + 1);
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
@@ -3006,6 +3094,7 @@ namespace GunMobile.Net
                         {
                             Attack = p.Attack, Defence = p.Defence,
                             Agility = p.Agility, Luck = p.Luck,
+                            MagicAttack = p.MagicAttack, MagicDefence = p.MagicDefence,
                             BaseDamage = p.BaseDamage, BaseGuard = p.BaseGuard,
                             Grade = p.Level > 0 ? p.Level : 1,
                             Hp = p.Hp, MaxHp = p.Hp, Team = team
@@ -3323,8 +3412,11 @@ namespace GunMobile.Net
                 int hitMapY = mapH - 1 - Mathf.RoundToInt(state.Y);
 
                 int cutRadius = Mathf.Max(24, Mathf.RoundToInt((ball.Radii > 0 ? ball.Radii / 2f : 38f) * propRadius));
+                bool lastShot = s >= shotCount - 1;
                 string shotJson = "{\"who\":" + who + ",\"shot\":" + s + ",\"x\":" + hitMapX +
-                                  ",\"y\":" + hitMapY + ",\"r\":" + cutRadius + "}";
+                                  ",\"y\":" + hitMapY + ",\"r\":" + cutRadius +
+                                  ",\"blast\":" + blastRadius + ",\"total\":" + shotCount +
+                                  ",\"done\":" + (lastShot ? "true" : "false") + "}";
                 BroadcastToRoom(room, PhoneMsg.FightShotResult, shotJson, -1);
 
                 map.CutCircle(hitMapX, hitMapY, cutRadius);
@@ -4264,6 +4356,8 @@ namespace GunMobile.Net
         [Serializable]
         class FightSpiritSlotSave { public int spiritId; public int level; }
 
+        class MagicStoneSlotSave { public int templateId; public int level; }
+
         [Serializable]
         class ServerPlayerSave
         {
@@ -4289,6 +4383,7 @@ namespace GunMobile.Net
             public List<int> CompletedQuests = new List<int>();
             public List<string> Friends = new List<string>();
             public List<FightSpiritSlotSave> FightSpirits = new List<FightSpiritSlotSave>();
+            public List<MagicStoneSlotSave> MagicStones = new List<MagicStoneSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
         }
 
@@ -4335,6 +4430,11 @@ namespace GunMobile.Net
             {
                 s.FightSpirits.Add(new FightSpiritSlotSave { spiritId = fs.SpiritId, level = fs.Level });
             }
+            p.EnsureMagicStones();
+            foreach (MagicStoneSlot ms in p.MagicStones)
+            {
+                s.MagicStones.Add(new MagicStoneSlotSave { templateId = ms.TemplateId, level = ms.Level });
+            }
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
@@ -4377,7 +4477,16 @@ namespace GunMobile.Net
                 }
             }
 
+            if (s.MagicStones != null)
+            {
+                foreach (MagicStoneSlotSave ms in s.MagicStones)
+                {
+                    p.MagicStones.Add(new MagicStoneSlot { TemplateId = ms.templateId, Level = ms.level });
+                }
+            }
+
             p.EnsureFightSpirits();
+            p.EnsureMagicStones();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {

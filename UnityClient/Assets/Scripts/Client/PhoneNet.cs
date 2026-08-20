@@ -212,6 +212,11 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.GemSpiritUpgrade, "{\"spiritId\":" + spiritId + "}");
         }
 
+        public static void UpgradeMagicStone(int templateId)
+        {
+            Road?.Send(PhoneMsg.MagicStoneUpgrade, "{\"templateId\":" + templateId + "}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

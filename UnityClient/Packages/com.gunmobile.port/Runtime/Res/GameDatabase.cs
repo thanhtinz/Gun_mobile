@@ -264,6 +264,19 @@ namespace GunMobile.Res
         public int Blood;
     }
 
+    public sealed class MagicStoneTemplate
+    {
+        public int TemplateId;
+        public int Level;
+        public int Exp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int MagicAttack;
+        public int MagicDefence;
+    }
+
     public sealed class ElfInfo
     {
         public int TemplateId;
@@ -352,6 +365,8 @@ namespace GunMobile.Res
         public Dictionary<int, SpiritInfo> Spirits { get; } = new Dictionary<int, SpiritInfo>();
         public Dictionary<long, FightSpiritTemplate> FightSpirits { get; } = new Dictionary<long, FightSpiritTemplate>();
         public static readonly int[] DefaultFightSpiritIds = { 100001, 100002, 100003, 100004, 100005 };
+        public Dictionary<long, MagicStoneTemplate> MagicStones { get; } = new Dictionary<long, MagicStoneTemplate>();
+        public static readonly int[] DefaultMagicStoneTemplateIds = { 100101, 100201, 100301, 100401 };
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -397,6 +412,7 @@ namespace GunMobile.Res
             db.LoadPve(loader);
             db.LoadSpirits(loader);
             db.LoadFightSpirits(loader);
+            db.LoadMagicStones(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -558,6 +574,60 @@ namespace GunMobile.Res
                 agi += row.Agility / 100;
                 luck += row.Lucky / 100;
                 hp += row.Blood / 100;
+            }
+        }
+
+        public static long MagicStoneKey(int templateId, int level)
+        {
+            return ((long)templateId << 16) | (uint)level;
+        }
+
+        public MagicStoneTemplate GetMagicStone(int templateId, int level)
+        {
+            MagicStones.TryGetValue(MagicStoneKey(templateId, level), out MagicStoneTemplate row);
+            return row;
+        }
+
+        public int MagicStoneUpgradeCost(int templateId, int currentLevel)
+        {
+            MagicStoneTemplate next = GetMagicStone(templateId, currentLevel + 1);
+            if (next == null)
+            {
+                return 0;
+            }
+
+            MagicStoneTemplate cur = GetMagicStone(templateId, currentLevel);
+            int delta = cur != null ? next.Exp - cur.Exp : next.Exp;
+            return Mathf.Max(100, delta / 100);
+        }
+
+        public void ApplyMagicStoneStats(IReadOnlyList<MagicStoneSlot> slots, ref int atk, ref int def, ref int agi, ref int luck, ref int magicAtk, ref int magicDef)
+        {
+            if (slots == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < slots.Count; i++)
+            {
+                MagicStoneSlot slot = slots[i];
+                if (slot == null || slot.Level <= 0)
+                {
+                    continue;
+                }
+
+                MagicStoneTemplate row = GetMagicStone(slot.TemplateId, slot.Level);
+                if (row == null)
+                {
+                    continue;
+                }
+
+                atk += row.Attack;
+                def += row.Defence;
+                agi += row.Agility;
+                luck += row.Luck;
+                magicAtk += row.MagicAttack;
+                magicDef += row.MagicDefence;
             }
         }
 
@@ -2009,6 +2079,32 @@ namespace GunMobile.Res
                     Agility = Int(row, "Agility"),
                     Lucky = Int(row, "Lucky"),
                     Blood = Int(row, "Blood")
+                };
+            }
+        }
+
+        void LoadMagicStones(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/magicstonetemplate.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateID");
+                int level = Int(row, "Level");
+                MagicStones[MagicStoneKey(templateId, level)] = new MagicStoneTemplate
+                {
+                    TemplateId = templateId,
+                    Level = level,
+                    Exp = Int(row, "Exp"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Luck = Int(row, "Luck"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefence")
                 };
             }
         }

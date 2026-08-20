@@ -64,6 +64,7 @@ namespace GunMobile.Client
         public List<int> CompletedQuests = new List<int>();
         public List<string> Friends = new List<string>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
+        public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
         public List<string> ChatLog = new List<string>();
         public List<GodCardSlot> GodCards = new List<GodCardSlot>();
         public int GodCardEquipId;
@@ -87,6 +88,8 @@ namespace GunMobile.Client
                         p.Friends = p.Friends ?? new List<string>();
                         p.FightSpirits = p.FightSpirits ?? new List<FightSpiritSlot>();
                         p.EnsureFightSpirits();
+                        p.MagicStones = p.MagicStones ?? new List<MagicStoneSlot>();
+                        p.EnsureMagicStones();
                         p.ChatLog = p.ChatLog ?? new List<string>();
                         p.GodCards = p.GodCards ?? new List<GodCardSlot>();
                         p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
@@ -103,6 +106,7 @@ namespace GunMobile.Client
             var fresh = new PlayerProfile();
             fresh.EnsureStarterBag();
             fresh.EnsureFightSpirits();
+            fresh.EnsureMagicStones();
             return fresh;
         }
 
@@ -120,6 +124,51 @@ namespace GunMobile.Client
                     FightSpirits.Add(new FightSpiritSlot { SpiritId = spiritId, Level = 0 });
                 }
             }
+        }
+
+        public void EnsureMagicStones()
+        {
+            if (MagicStones == null)
+            {
+                MagicStones = new List<MagicStoneSlot>();
+            }
+
+            if (MagicStones.Count == 0)
+            {
+                foreach (int templateId in GameDatabase.DefaultMagicStoneTemplateIds)
+                {
+                    MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = 0 });
+                }
+            }
+        }
+
+        public int GetMagicStoneLevel(int templateId)
+        {
+            EnsureMagicStones();
+            for (int i = 0; i < MagicStones.Count; i++)
+            {
+                if (MagicStones[i].TemplateId == templateId)
+                {
+                    return MagicStones[i].Level;
+                }
+            }
+
+            return 0;
+        }
+
+        public void SetMagicStoneLevel(int templateId, int level)
+        {
+            EnsureMagicStones();
+            for (int i = 0; i < MagicStones.Count; i++)
+            {
+                if (MagicStones[i].TemplateId == templateId)
+                {
+                    MagicStones[i].Level = level;
+                    return;
+                }
+            }
+
+            MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
         }
 
         public void Save()
@@ -345,6 +394,13 @@ namespace GunMobile.Client
                 EnsureFightSpirits();
                 db.ApplyFightSpiritStats(FightSpirits, ref atk, ref def, ref agi, ref luk, ref hp);
 
+                EnsureMagicStones();
+                int magicAtk = 0;
+                int magicDef = 0;
+                db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
+                atk += magicAtk / 4;
+                def += magicDef / 4;
+
                 if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
                 {
                     atk += elf.AttackHint / 3;
@@ -475,13 +531,15 @@ namespace GunMobile.Client
         public string Title;
         public string TablePath;
         public bool OpensBattle;
+        public string MornUiFile;
 
-        public ModuleDef(string id, string title, string tablePath = null, bool opensBattle = false)
+        public ModuleDef(string id, string title, string tablePath = null, bool opensBattle = false, string mornUiFile = null)
         {
             Id = id;
             Title = title;
             TablePath = tablePath;
             OpensBattle = opensBattle;
+            MornUiFile = mornUiFile;
         }
     }
 
@@ -529,15 +587,38 @@ namespace GunMobile.Client
             new ModuleDef("godcard", "神卡", "Request/godcardlist.xml"),
             new ModuleDef("engrave", "刻印", "Request/engravesetinfo.xml"),
             new ModuleDef("stock", "股票", "Request/StockTemplateInfo.xml"),
-            new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml"),
-            new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml"),
-            new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml"),
-            new ModuleDef("carnival", "嘉年华", "Request/newlotteryitem.xml"),
-            new ModuleDef("bank", "银行", null),
-            new ModuleDef("mines", "矿山", null),
-            new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml"),
-            new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml"),
-            new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml"),
+            new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
+            new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
+            new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
+            new ModuleDef("carnival", "嘉年华", "Request/newlotteryitem.xml", false, "carnival.ui"),
+            new ModuleDef("bank", "银行", null, false, "bank.ui"),
+            new ModuleDef("mines", "矿山", null, false, "mines.ui"),
+            new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml", false, "auditorium.ui"),
+            new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml", false, "treasureHunting.ui"),
+            new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml", false, "peakBattle.ui"),
+            new ModuleDef("christmas", "圣诞", null, false, "christmas.ui"),
+            new ModuleDef("newyear", "新年", null, false, "newyear.ui"),
+            new ModuleDef("redpacket", "红包", null, false, "redpacket.ui"),
+            new ModuleDef("devilturn", "恶魔转盘", null, false, "devilturn.ui"),
+            new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
+            new ModuleDef("bible", "圣经", null, false, "bible.ui"),
+            new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),
+            new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
+            new ModuleDef("dreamland", "梦境", null, false, "dreamlandChallenge.ui"),
+            new ModuleDef("darkboundary", "暗界", null, false, "darkboundary.ui"),
+            new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
+            new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
+            new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
+            new ModuleDef("soulmark", "魂印", null, false, "soulMark.ui"),
+            new ModuleDef("magicwardrobe", "魔衣橱", null, false, "magicwardrobe.ui"),
+            new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
+            new ModuleDef("culture", "文化", null, false, "culture.ui"),
+            new ModuleDef("emblem", "徽章", null, false, "emblem.ui"),
+            new ModuleDef("treasureroom", "藏宝室", null, false, "treasureroom.ui"),
+            new ModuleDef("labyrinthgame", "迷宫游戏", null, false, "labyrinthgame.ui"),
+            new ModuleDef("godcardraise", "神卡养成", "Request/godcardlist.xml", false, "godcardraise.ui"),
+            new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
+            new ModuleDef("carnivalSuperLucker", "超级幸运", null, false, "carnivalSuperLucker.ui"),
         };
     }
 }
