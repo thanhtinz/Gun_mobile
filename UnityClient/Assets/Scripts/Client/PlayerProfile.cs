@@ -53,6 +53,11 @@ namespace GunMobile.Client
         public int SigilQuality = 1;
         public int SigilProType;
         public int SigilProValue;
+        public int JadeEquipId;
+        public int RuneTemplateId;
+        public int HorseAmuletLevel = 1;
+        public int HorseAmuletGrade = 1;
+        public int HorseAmuletPhase = 1;
         public int VipLevel;
         public int Texp;
         public int LabyrinthFloor = 1;
@@ -515,6 +520,14 @@ namespace GunMobile.Client
                 db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
                 db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luk, ref hp);
                 db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luk, ref hp);
+                int jadeMa = 0, jadeMd = 0;
+                db.ApplyJadeBonus(JadeEquipId, ref atk, ref def, ref agi, ref luk, ref hp, ref jadeMa, ref jadeMd);
+                int rDmg = 0, rGuard = 0;
+                db.ApplyRuneBonus(RuneTemplateId, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref rGuard);
+                atk += rDmg; def += rGuard;
+                int aDmg = 0, aGuard = 0;
+                db.ApplyHorseAmuletBonus(HorseAmuletLevel, HorseAmuletGrade, HorseAmuletPhase, ref atk, ref def, ref agi, ref luk, ref hp, ref aDmg, ref aGuard);
+                atk += aDmg; def += aGuard;
 
                 if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo spirit))
                 {
@@ -531,6 +544,7 @@ namespace GunMobile.Client
                 int magicAtk = 0;
                 int magicDef = 0;
                 db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
+                magicAtk += jadeMa; magicDef += jadeMd;
                 int sDmg = 0, sGuard = 0;
                 db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 atk += sDmg;
@@ -799,6 +813,9 @@ namespace GunMobile.Client
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
             new ModuleDef("glory", "光辉", "Request/GloryItemUpgradeList.xml"),
+            new ModuleDef("jade", "玉石", "Request/TS_JadeTemp.xml"),
+            new ModuleDef("rune", "符文", "Request/runetemplatelist.xml"),
+            new ModuleDef("horseamulet", "坐骑护符", "Request/amuletinfoitemlist.xml"),
             new ModuleDef("firstrecharge", "首充", "Request/ts_firstpayshoptemp.xml", false, "firstrecharge.ui"),
             new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),

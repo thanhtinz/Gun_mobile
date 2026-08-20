@@ -52,6 +52,11 @@ namespace GunMobile.Net
         public int SigilQuality = 1;
         public int SigilProType;
         public int SigilProValue;
+        public int JadeEquipId;
+        public int RuneTemplateId;
+        public int HorseAmuletLevel = 1;
+        public int HorseAmuletGrade = 1;
+        public int HorseAmuletPhase = 1;
         public int VipLevel;
         public int Honor;
         public int Texp;
@@ -413,6 +418,10 @@ namespace GunMobile.Net
             db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
             db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luck, ref hp);
             db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luck, ref hp);
+            int jadeMa = 0, jadeMd = 0;
+            db.ApplyJadeBonus(JadeEquipId, ref atk, ref def, ref agi, ref luck, ref hp, ref jadeMa, ref jadeMd);
+            db.ApplyRuneBonus(RuneTemplateId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            db.ApplyHorseAmuletBonus(HorseAmuletLevel, HorseAmuletGrade, HorseAmuletPhase, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
 
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
@@ -431,6 +440,7 @@ namespace GunMobile.Net
             int magicAtk = 0;
             int magicDef = 0;
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
+            magicAtk += jadeMa; magicDef += jadeMd;
             db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
@@ -534,6 +544,11 @@ namespace GunMobile.Net
             J(sb, "sigilQuality", SigilQuality); sb.Append(",");
             J(sb, "sigilProType", SigilProType); sb.Append(",");
             J(sb, "sigilProValue", SigilProValue); sb.Append(",");
+            J(sb, "jadeEquipId", JadeEquipId); sb.Append(",");
+            J(sb, "runeTemplateId", RuneTemplateId); sb.Append(",");
+            J(sb, "horseAmuletLevel", HorseAmuletLevel); sb.Append(",");
+            J(sb, "horseAmuletGrade", HorseAmuletGrade); sb.Append(",");
+            J(sb, "horseAmuletPhase", HorseAmuletPhase); sb.Append(",");
             J(sb, "vipLevel", VipLevel); sb.Append(",");
             J(sb, "honor", Honor); sb.Append(",");
             J(sb, "texp", Texp); sb.Append(",");
@@ -1838,6 +1853,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SigilRoll:
                     HandleSigilRoll(player, ns, json);
+                    break;
+
+                case PhoneMsg.JadeEquip:
+                    HandleJadeEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.RuneEquip:
+                    HandleRuneEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.HorseAmuletUpgrade:
+                    HandleHorseAmuletUpgrade(player, ns, json);
                     break;
 
                 case PhoneMsg.QuizAnswer:
@@ -5668,7 +5695,126 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
-        void HandleSignIn(ServerPlayer player, NetworkStream ns)
+        
+        void HandleJadeEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.JadeEquip, "{\"ok\":false}"); return; }
+            int jadeId = JI(json, "jadeId", 0);
+            if (jadeId < 0) jadeId = 0;
+            if (jadeId > 0 && _db.GetJade(jadeId) == null)
+            {
+                Send(ns, PhoneMsg.JadeEquip, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+            player.JadeEquipId = jadeId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.JadeEquip, "{\"ok\":true,\"jadeId\":" + jadeId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleRuneEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.RuneEquip, "{\"ok\":false}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            if (templateId < 0) templateId = 0;
+            if (templateId > 0 && _db.GetRune(templateId) == null)
+            {
+                Send(ns, PhoneMsg.RuneEquip, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+            player.RuneTemplateId = templateId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.RuneEquip, "{\"ok\":true,\"templateId\":" + templateId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHorseAmuletUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false}"); return; }
+            string mode = JS(json, "mode", "level");
+            if (string.IsNullOrEmpty(mode)) mode = "level";
+            mode = mode.ToLowerInvariant();
+            int cost = 0;
+            if (mode == "grade")
+            {
+                cost = _db.HorseAmuletGradeGoldCost(player.HorseAmuletGrade);
+                if (cost <= 0 || _db.GetHorseAmuletGrade(player.HorseAmuletGrade + 1) == null)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                    return;
+                }
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                player.Gold -= cost;
+                player.HorseAmuletGrade++;
+            }
+            else if (mode == "phase")
+            {
+                cost = _db.HorseAmuletPhaseGoldCost(player.HorseAmuletPhase);
+                HorseAmuletPhase next = null;
+                for (int i = 0; i < _db.HorseAmuletPhases.Count; i++)
+                {
+                    HorseAmuletPhase row = _db.HorseAmuletPhases[i];
+                    if (row.Phase > player.HorseAmuletPhase && (next == null || row.Phase < next.Phase)) next = row;
+                }
+                if (next == null || cost <= 0)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                    return;
+                }
+                if (player.HorseAmuletLevel < next.AmuletLevel)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"level\"}");
+                    return;
+                }
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                player.Gold -= cost;
+                player.HorseAmuletPhase = next.Phase;
+            }
+            else
+            {
+                int nextLevel = Mathf.Max(1, player.HorseAmuletLevel) + 1;
+                if (_db.GetHorseAmuletInfo(nextLevel) == null && _db.HorseAmuletInfos.Count > 0)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                    return;
+                }
+                cost = _db.HorseAmuletLevelGoldCost(player.HorseAmuletLevel);
+                if (cost > 0 && player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.HorseAmuletUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                if (cost > 0) player.Gold -= cost;
+                player.HorseAmuletLevel = nextLevel;
+                HorseAmuletPhase phase = _db.GetHorseAmuletPhaseForLevel(player.HorseAmuletLevel);
+                if (phase != null) player.HorseAmuletPhase = phase.Phase;
+                HorseAmuletInfo info = _db.GetHorseAmuletInfo(player.HorseAmuletLevel);
+                if (info != null && info.WashsStep > player.HorseAmuletGrade)
+                    player.HorseAmuletGrade = info.WashsStep;
+            }
+            if (player.HorseAmuletLevel < 1) player.HorseAmuletLevel = 1;
+            if (player.HorseAmuletGrade < 1) player.HorseAmuletGrade = 1;
+            if (player.HorseAmuletPhase < 1) player.HorseAmuletPhase = 1;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.HorseAmuletUpgrade,
+                "{\"ok\":true,\"mode\":\"" + mode + "\",\"level\":" + player.HorseAmuletLevel +
+                ",\"grade\":" + player.HorseAmuletGrade + ",\"phase\":" + player.HorseAmuletPhase +
+                ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+void HandleSignIn(ServerPlayer player, NetworkStream ns)
         {
             int today = DateTime.Now.DayOfYear;
             if (player.LastSignDay == today)
@@ -7709,7 +7855,7 @@ namespace GunMobile.Net
             public int Win, Lose;
             public int WeaponId = 7001;
             public int EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon = 7001;
-            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, VipLevel, Honor, Texp;
+            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, JadeEquipId, RuneTemplateId, HorseAmuletLevel = 1, HorseAmuletGrade = 1, HorseAmuletPhase = 1, VipLevel, Honor, Texp;
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int GuildLevel;
@@ -7822,6 +7968,8 @@ namespace GunMobile.Net
                 MountGrade = p.MountGrade, MountTalismanId = p.MountTalismanId, ManorGrade = p.ManorGrade,
                 GoldEquipId = p.GoldEquipId, GloryTemplateId = p.GloryTemplateId,
                 SigilQuality = p.SigilQuality, SigilProType = p.SigilProType, SigilProValue = p.SigilProValue,
+                JadeEquipId = p.JadeEquipId, RuneTemplateId = p.RuneTemplateId,
+                HorseAmuletLevel = p.HorseAmuletLevel, HorseAmuletGrade = p.HorseAmuletGrade, HorseAmuletPhase = p.HorseAmuletPhase,
                 VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName, GuildLevel = p.GuildLevel,
@@ -7940,6 +8088,10 @@ namespace GunMobile.Net
                 ManorGrade = s.ManorGrade > 0 ? s.ManorGrade : 1,
                 GoldEquipId = s.GoldEquipId, GloryTemplateId = s.GloryTemplateId,
                 SigilQuality = s.SigilQuality > 0 ? s.SigilQuality : 1, SigilProType = s.SigilProType, SigilProValue = s.SigilProValue,
+                JadeEquipId = s.JadeEquipId, RuneTemplateId = s.RuneTemplateId,
+                HorseAmuletLevel = s.HorseAmuletLevel > 0 ? s.HorseAmuletLevel : 1,
+                HorseAmuletGrade = s.HorseAmuletGrade > 0 ? s.HorseAmuletGrade : 1,
+                HorseAmuletPhase = s.HorseAmuletPhase > 0 ? s.HorseAmuletPhase : 1,
                 VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName, GuildLevel = s.GuildLevel,

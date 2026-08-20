@@ -325,6 +325,15 @@ namespace GunMobile.Client
                 case "sigil":
                     ExtraModulesScreens.SigilScreen(_safe, this);
                     return;
+                case "jade":
+                    ExtraModulesScreens.JadeScreen(_safe, this);
+                    return;
+                case "rune":
+                    ExtraModulesScreens.RuneScreen(_safe, this);
+                    return;
+                case "horseamulet":
+                    ExtraModulesScreens.HorseAmuletScreen(_safe, this);
+                    return;
                 case "dreamland":
                     ExtraModulesScreens.DreamlandScreen(_safe, this);
                     return;
@@ -481,6 +490,9 @@ namespace GunMobile.Client
                     case PhoneMsg.GoldEquipUpgrade:
                     case PhoneMsg.GloryUpgrade:
                     case PhoneMsg.SigilRoll:
+                    case PhoneMsg.JadeEquip:
+                    case PhoneMsg.RuneEquip:
+                    case PhoneMsg.HorseAmuletUpgrade:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -723,6 +735,11 @@ namespace GunMobile.Client
             Profile.SigilQuality = JsonInt(json, "sigilQuality", Profile.SigilQuality);
             Profile.SigilProType = JsonInt(json, "sigilProType", Profile.SigilProType);
             Profile.SigilProValue = JsonInt(json, "sigilProValue", Profile.SigilProValue);
+            Profile.JadeEquipId = JsonInt(json, "jadeEquipId", Profile.JadeEquipId);
+            Profile.RuneTemplateId = JsonInt(json, "runeTemplateId", Profile.RuneTemplateId);
+            Profile.HorseAmuletLevel = JsonInt(json, "horseAmuletLevel", Profile.HorseAmuletLevel);
+            Profile.HorseAmuletGrade = JsonInt(json, "horseAmuletGrade", Profile.HorseAmuletGrade);
+            Profile.HorseAmuletPhase = JsonInt(json, "horseAmuletPhase", Profile.HorseAmuletPhase);
             Profile.VipLevel = JsonInt(json, "vipLevel", Profile.VipLevel);
             Profile.Honor = JsonInt(json, "honor", Profile.Honor);
             Profile.Texp = JsonInt(json, "texp", Profile.Texp);
