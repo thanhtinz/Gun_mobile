@@ -260,6 +260,41 @@ namespace GunMobile.Res
         public int Weight;
     }
 
+    public sealed class SpaRoomFixedLevel
+    {
+        public int Level;
+        public int Number;
+        public int XAxes;
+        public int YAxes;
+        public int[] Map;
+    }
+
+    public sealed class SpaRoomRandomConfig
+    {
+        public int LevelMin;
+        public int LevelMax;
+        public int XAxes;
+        public int YAxes;
+        public int Number;
+        public int[] ElementMin;
+        public int[] ElementMax;
+    }
+
+    public sealed class CarnivalActivityItem
+    {
+        public int Id;
+        public int ActivityType;
+        public int Quality;
+        public int TemplateId;
+        public int Count;
+    }
+
+    public sealed class SearchGoodsPayEntry
+    {
+        public int Number;
+        public int NeedMoney;
+    }
+
     public sealed class ActivityConfigEntry
     {
         public int Num;
@@ -652,6 +687,10 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
+        public List<SpaRoomFixedLevel> SpaRoomFixed { get; } = new List<SpaRoomFixedLevel>();
+        public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
+        public List<CarnivalActivityItem> CarnivalActivityItems { get; } = new List<CarnivalActivityItem>();
+        public List<SearchGoodsPayEntry> SearchGoodsPay { get; } = new List<SearchGoodsPayEntry>();
         public Dictionary<int, ActivityConfigEntry> ActivityConfigs { get; } = new Dictionary<int, ActivityConfigEntry>();
         public List<FirstPayShopItem> FirstPayShop { get; } = new List<FirstPayShopItem>();
         public List<EmblemTemplate> EmblemList { get; } = new List<EmblemTemplate>();
@@ -732,6 +771,9 @@ namespace GunMobile.Res
             db.LoadHonorSystem(loader);
             db.LoadTotemHonor(loader);
             db.LoadDevilTreas(loader);
+            db.LoadSpaRoom(loader);
+            db.LoadCarnivalActivityItems(loader);
+            db.LoadSearchGoodsPay(loader);
             db.LoadActivityConfig(loader);
             db.LoadFirstPayShop(loader);
             db.LoadFirstCopy(loader);
@@ -1103,6 +1145,187 @@ namespace GunMobile.Res
         {
             return ConfigInt("CarnivalDrawMoney", 500);
         }
+
+        public int TreasureRoomDrawCost(int drawNumber)
+        {
+            for (int i = 0; i < SearchGoodsPay.Count; i++)
+            {
+                if (SearchGoodsPay[i].Number == drawNumber)
+                {
+                    return SearchGoodsPay[i].NeedMoney;
+                }
+            }
+
+            return ConfigInt("SearchGoodsPayMoney", 20);
+        }
+
+        public int SpaRoomDayScoreLimit()
+        {
+            return ConfigInt("SpaRoomGameDayBaseSorce", 100);
+        }
+
+        public int SpaRoomGameScoreLimit()
+        {
+            return ConfigInt("SpaRoomGameTotalBaseSorce", 200);
+        }
+
+        static readonly int[] SpaRoomGiftIds = { 1120662, 1120661, 1120660, 1120659, 1120658 };
+
+        public int SpaRoomGiftForCellType(int cellType)
+        {
+            if (cellType >= 1 && cellType <= SpaRoomGiftIds.Length)
+            {
+                return SpaRoomGiftIds[cellType - 1];
+            }
+
+            return 0;
+        }
+
+        public SpaRoomFixedLevel GetSpaRoomFixedLevel(int level)
+        {
+            SpaRoomFixedLevel best = null;
+            for (int i = 0; i < SpaRoomFixed.Count; i++)
+            {
+                SpaRoomFixedLevel row = SpaRoomFixed[i];
+                if (row.Level <= level && (best == null || row.Level > best.Level))
+                {
+                    best = row;
+                }
+            }
+
+            return best;
+        }
+
+        public SpaRoomRandomConfig GetSpaRoomRandomConfig(int level)
+        {
+            for (int i = 0; i < SpaRoomRandom.Count; i++)
+            {
+                SpaRoomRandomConfig row = SpaRoomRandom[i];
+                if (level >= row.LevelMin && level <= row.LevelMax)
+                {
+                    return row;
+                }
+            }
+
+            return SpaRoomRandom.Count > 0 ? SpaRoomRandom[SpaRoomRandom.Count - 1] : null;
+        }
+
+        public int[] BuildSpaRoomMap(int playerLevel, System.Random rng)
+        {
+            SpaRoomFixedLevel fixedRow = GetSpaRoomFixedLevel(playerLevel);
+            if (fixedRow != null && fixedRow.Map != null && fixedRow.Map.Length > 0)
+            {
+                var copy = new int[fixedRow.Map.Length];
+                Buffer.BlockCopy(fixedRow.Map, 0, copy, 0, fixedRow.Map.Length * 4);
+                return copy;
+            }
+
+            SpaRoomRandomConfig cfg = GetSpaRoomRandomConfig(playerLevel);
+            if (cfg == null)
+            {
+                return new[] { 5, 5, 5, 5, 1, 6, 5, 5, 5, 5, 1, 6, 5, 5, 5, 5 };
+            }
+
+            int w = Mathf.Max(4, cfg.XAxes);
+            int h = Mathf.Max(4, cfg.YAxes);
+            int size = w * h;
+            var cells = new int[size];
+            var slots = new List<int>(size);
+            for (int e = 0; e < 7; e++)
+            {
+                int min = cfg.ElementMin != null && e < cfg.ElementMin.Length ? cfg.ElementMin[e] : 0;
+                int max = cfg.ElementMax != null && e < cfg.ElementMax.Length ? cfg.ElementMax[e] : min;
+                int count = min;
+                if (max > min && rng != null)
+                {
+                    count = rng.Next(min, max + 1);
+                }
+
+                for (int n = 0; n < count; n++)
+                {
+                    slots.Add(e);
+                }
+            }
+
+            while (slots.Count < size)
+            {
+                slots.Add(5);
+            }
+
+            while (slots.Count > size)
+            {
+                slots.RemoveAt(slots.Count - 1);
+            }
+
+            for (int i = slots.Count - 1; i > 0; i--)
+            {
+                int j = rng != null ? rng.Next(0, i + 1) : i;
+                int tmp = slots[i];
+                slots[i] = slots[j];
+                slots[j] = tmp;
+            }
+
+            for (int i = 0; i < size; i++)
+            {
+                cells[i] = slots[i];
+            }
+
+            return cells;
+        }
+
+        public List<CarnivalActivityItem> TreasureRoomPool()
+        {
+            var pool = new List<CarnivalActivityItem>();
+            for (int i = 0; i < CarnivalActivityItems.Count; i++)
+            {
+                CarnivalActivityItem item = CarnivalActivityItems[i];
+                if (item.ActivityType == 1011 && item.TemplateId > 100)
+                {
+                    pool.Add(item);
+                }
+            }
+
+            if (pool.Count == 0)
+            {
+                for (int i = 0; i < CarnivalActivityItems.Count; i++)
+                {
+                    if (CarnivalActivityItems[i].ActivityType == 1011)
+                    {
+                        pool.Add(CarnivalActivityItems[i]);
+                    }
+                }
+            }
+
+            return pool;
+        }
+
+        public CarnivalActivityItem RollTreasureRoomItem(System.Random rng)
+        {
+            List<CarnivalActivityItem> pool = TreasureRoomPool();
+            if (pool.Count == 0)
+            {
+                return null;
+            }
+
+            int total = 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                total += Mathf.Max(1, pool[i].Quality);
+            }
+
+            int roll = rng.Next(0, total);
+            for (int i = 0; i < pool.Count; i++)
+            {
+                roll -= Mathf.Max(1, pool[i].Quality);
+                if (roll < 0)
+                {
+                    return pool[i];
+                }
+            }
+
+            return pool[0];
+        }
+
 
         public List<LotteryDrop> LotteryPool(int minType, int maxType)
         {
@@ -3290,6 +3513,109 @@ namespace GunMobile.Res
                 });
             }
         }
+
+
+        void LoadSpaRoom(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/sparoomfixedbomb.xml", out XmlResultTable fixedTable))
+            {
+                foreach (var row in fixedTable.Rows)
+                {
+                    string mapRaw = Str(row, "Map");
+                    int[] map = ParseIntCsv(mapRaw);
+                    SpaRoomFixed.Add(new SpaRoomFixedLevel
+                    {
+                        Level = Int(row, "Level"),
+                        Number = Int(row, "Number"),
+                        XAxes = Int(row, "XAxes"),
+                        YAxes = Int(row, "YAxes"),
+                        Map = map
+                    });
+                }
+            }
+
+            if (TryTable(loader, "Request/sparoomrandombomb.xml", out XmlResultTable randomTable))
+            {
+                foreach (var row in randomTable.Rows)
+                {
+                    var cfg = new SpaRoomRandomConfig
+                    {
+                        LevelMin = Int(row, "LevelMin"),
+                        LevelMax = Int(row, "LevelMax"),
+                        XAxes = Int(row, "XAxes"),
+                        YAxes = Int(row, "YAxes"),
+                        Number = Int(row, "Number"),
+                        ElementMin = new int[7],
+                        ElementMax = new int[7]
+                    };
+                    for (int e = 0; e < 7; e++)
+                    {
+                        cfg.ElementMin[e] = Int(row, "Element" + e + "MinCount");
+                        cfg.ElementMax[e] = Int(row, "Element" + e + "MaxCount");
+                    }
+
+                    SpaRoomRandom.Add(cfg);
+                }
+            }
+        }
+
+        void LoadCarnivalActivityItems(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/CarnivalActivityItems.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                CarnivalActivityItems.Add(new CarnivalActivityItem
+                {
+                    Id = Int(row, "ID"),
+                    ActivityType = Int(row, "ActivityType"),
+                    Quality = Mathf.Max(1, Int(row, "Quality")),
+                    TemplateId = Int(row, "TemplateID"),
+                    Count = Mathf.Max(1, Int(row, "Count"))
+                });
+            }
+        }
+
+        void LoadSearchGoodsPay(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/searchgoodspaymoney.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                SearchGoodsPay.Add(new SearchGoodsPayEntry
+                {
+                    Number = Int(row, "Number"),
+                    NeedMoney = Int(row, "NeedMoney")
+                });
+            }
+        }
+
+        static int[] ParseIntCsv(string raw)
+        {
+            if (string.IsNullOrEmpty(raw))
+            {
+                return Array.Empty<int>();
+            }
+
+            string[] parts = raw.Split(',');
+            var values = new List<int>(parts.Length);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n))
+                {
+                    values.Add(n);
+                }
+            }
+
+            return values.ToArray();
+        }
+
 
         void LoadActivityConfig(ResLoader loader)
         {

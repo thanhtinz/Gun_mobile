@@ -315,6 +315,12 @@ namespace GunMobile.Client
                 case "firstrecharge":
                     ExtraModulesScreens.FirstRechargeScreen(_safe, this);
                     return;
+                case "labyrinthgame":
+                    ExtraModulesScreens.LabyrinthGameScreen(_safe, this);
+                    return;
+                case "treasureroom":
+                    ExtraModulesScreens.TreasureRoomScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -469,6 +475,23 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.SpaRoomStart:
+                    case PhoneMsg.SpaRoomBomb:
+                        PhoneNet.LastSpaRoomJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "labyrinthgame")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.TreasureRoomResult:
+                        PhoneNet.LastTreasureRoomJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "treasureroom")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.Error:
                     {
                         string err = JsonStr(msg.Json, "err", "error");
@@ -574,6 +597,8 @@ namespace GunMobile.Client
             Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
+            Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
+            Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
             Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);

@@ -715,5 +715,100 @@ namespace GunMobile.Client
             }
         }
 
+        public static void LabyrinthGameScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("labyrinthgame", "温泉炸弹房", "Request/sparoomfixedbomb.xml", false, "labyrinthgame.ui"),
+                "labyrinthgame.ui");
+            int dayLimit = app.Database != null ? app.Database.SpaRoomDayScoreLimit() : 100;
+            int gameLimit = app.Database != null ? app.Database.SpaRoomGameScoreLimit() : 200;
+            SysUi.Note(body, "sparoomfixedbomb.xml / sparoomrandombomb.xml  ·  今日积分 " +
+                app.Profile.SpaRoomDayScore + " / " + dayLimit + "  ·  单局上限 " + gameLimit);
+            SysUi.Row(body, "start", "开始扫雷", PhoneNet.SpaRoomStart);
+            if (!string.IsNullOrEmpty(PhoneNet.LastSpaRoomJson))
+            {
+                SysUi.Note(body, PhoneNet.LastSpaRoomJson);
+            }
+
+            int width = JsonFieldInt(PhoneNet.LastSpaRoomJson, "width", 0);
+            int height = JsonFieldInt(PhoneNet.LastSpaRoomJson, "height", 0);
+            if (width > 0 && height > 0)
+            {
+                int maxCells = Mathf.Min(width * height, 20);
+                for (int i = 0; i < maxCells; i++)
+                {
+                    int idx = i;
+                    SysUi.Row(body, "cell" + i, "翻开 #" + (i + 1), () => PhoneNet.SpaRoomBomb(idx));
+                }
+            }
+        }
+
+        public static void SpaRoomScreen(RectTransform safe, GameApp app)
+        {
+            LabyrinthGameScreen(safe, app);
+        }
+
+        public static void TreasureRoomScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("treasureroom", "藏宝室", "Request/CarnivalActivityItems.xml", false, "treasureroom.ui"),
+                "treasureroom.ui");
+            int unitCost = app.Database != null ? app.Database.TreasureRoomDrawCost(app.Profile.TreasureRoomDraws + 1) : 20;
+            int freeCount = app.Database != null ? app.Database.ConfigInt("SearchGoodsFreeCount", 15) : 15;
+            int freeLeft = Mathf.Max(0, freeCount - app.Profile.TreasureRoomDraws);
+            SysUi.Note(body, "CarnivalActivityItems.xml / searchgoodspaymoney.xml  ·  今日已探 " +
+                app.Profile.TreasureRoomDraws + "  ·  免费剩余 " + freeLeft + "  ·  " + unitCost + " 金/次");
+            SysUi.Row(body, "draw1", "探宝 1 次", () => PhoneNet.TreasureRoomDraw(1));
+            SysUi.Row(body, "draw10", "探宝 10 次  " + (unitCost * 10) + " 金", () => PhoneNet.TreasureRoomDraw(10));
+            if (!string.IsNullOrEmpty(PhoneNet.LastTreasureRoomJson))
+            {
+                SysUi.Note(body, PhoneNet.LastTreasureRoomJson);
+            }
+
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (CarnivalActivityItem item in app.Database.TreasureRoomPool())
+                {
+                    if (item.TemplateId <= 100)
+                    {
+                        continue;
+                    }
+
+                    SysUi.Note(body, "Q" + item.Quality + "  " + SysUi.ItemName(app, item.TemplateId) +
+                        " x" + item.Count);
+                    shown++;
+                    if (shown >= 8)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        static int JsonFieldInt(string json, string key, int fallback)
+        {
+            if (string.IsNullOrEmpty(json))
+            {
+                return fallback;
+            }
+
+            string needle = "\"" + key + "\":";
+            int idx = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return fallback;
+            }
+
+            idx += needle.Length;
+            int end = idx;
+            while (end < json.Length && (char.IsDigit(json[end]) || json[end] == '-'))
+            {
+                end++;
+            }
+
+            return int.TryParse(json.Substring(idx, end - idx), out int n) ? n : fallback;
+        }
+
     }
 }

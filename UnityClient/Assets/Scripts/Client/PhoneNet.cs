@@ -25,6 +25,8 @@ namespace GunMobile.Client
         public static string LastAuctionListJson;
         public static string LastFriendListJson;
         public static string LastGuildJson;
+        public static string LastSpaRoomJson;
+        public static string LastTreasureRoomJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -265,6 +267,21 @@ namespace GunMobile.Client
         public static void DevilTurnSpin(int count = 1)
         {
             Road?.Send(PhoneMsg.DevilTurnSpin, "{\"count\":" + count + "}");
+        }
+
+        public static void SpaRoomStart()
+        {
+            Road?.Send(PhoneMsg.SpaRoomStart, "{}");
+        }
+
+        public static void SpaRoomBomb(int index)
+        {
+            Road?.Send(PhoneMsg.SpaRoomBomb, "{\"index\":" + index + "}");
+        }
+
+        public static void TreasureRoomDraw(int count = 1)
+        {
+            Road?.Send(PhoneMsg.TreasureRoomDraw, "{\"count\":" + count + "}");
         }
 
         public static void ClaimRedPacket()

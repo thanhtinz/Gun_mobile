@@ -68,6 +68,8 @@ namespace GunMobile.Client
         public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
+        public int SpaRoomDayScore;
+        public int TreasureRoomDraws;
         public int SweepCount;
         public bool FirstRechargeClaimed;
         public int DreamlandChapter = 1;
@@ -681,8 +683,8 @@ namespace GunMobile.Client
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化", null, false, "culture.ui"),
             new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"),
-            new ModuleDef("treasureroom", "藏宝室", null, false, "treasureroom.ui"),
-            new ModuleDef("labyrinthgame", "迷宫游戏", null, false, "labyrinthgame.ui"),
+            new ModuleDef("treasureroom", "藏宝室", "Request/CarnivalActivityItems.xml", false, "treasureroom.ui"),
+            new ModuleDef("labyrinthgame", "温泉炸弹房", "Request/sparoomfixedbomb.xml", false, "labyrinthgame.ui"),
             new ModuleDef("godcardraise", "神卡养成", "Request/godcardlist.xml", false, "godcardraise.ui"),
             new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
             new ModuleDef("carnivalSuperLucker", "超级幸运", null, false, "carnivalSuperLucker.ui"),
