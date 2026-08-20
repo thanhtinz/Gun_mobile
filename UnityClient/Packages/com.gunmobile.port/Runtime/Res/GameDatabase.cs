@@ -1144,6 +1144,29 @@ namespace GunMobile.Res
         public int FlowCoeffcient;
     }
 
+    public sealed class PairUpPointAward
+    {
+        public int Id;
+        public int ItemId;
+        public int Count = 1;
+        public int Point;
+        public int Type;
+        public int Valid;
+        public bool IsBind;
+    }
+
+    public sealed class ShopShowEntry
+    {
+        public int Type;
+        public int ShopId;
+    }
+
+    public sealed class StockNoticeInfo
+    {
+        public int NewsId;
+        public string NewsContent = "";
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1587,6 +1610,14 @@ namespace GunMobile.Res
         public Dictionary<int, List<PetSkillTemplateInfo>> PetSkillTemplatesBySkillId { get; } = new Dictionary<int, List<PetSkillTemplateInfo>>();
         public Dictionary<string, string> PetConfig { get; } = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
         public Dictionary<int, StockInfo> Stocks { get; } = new Dictionary<int, StockInfo>();
+        public Dictionary<int, PairUpPointAward> PairUpAwards { get; } = new Dictionary<int, PairUpPointAward>();
+        public List<PairUpPointAward> PairUpAwardList { get; } = new List<PairUpPointAward>();
+        public List<ShopShowEntry> ShopShowList { get; } = new List<ShopShowEntry>();
+        public Dictionary<int, ShopOffer> ShopById { get; } = new Dictionary<int, ShopOffer>();
+        public Dictionary<int, ShopOffer> ShopShowOffers { get; } = new Dictionary<int, ShopOffer>();
+        public Dictionary<int, StockNoticeInfo> StockNotices { get; } = new Dictionary<int, StockNoticeInfo>();
+        public List<StockNoticeInfo> StockNoticeList { get; } = new List<StockNoticeInfo>();
+        public Dictionary<int, int> StockNoticePriceBoost { get; } = new Dictionary<int, int>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1594,6 +1625,8 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebGpDay { get; } = new List<CelebEntry>();
         public List<CelebEntry> CelebFightPowerDay { get; } = new List<CelebEntry>();
         public List<CelebEntry> CelebOfferDay { get; } = new List<CelebEntry>();
+        public List<CelebEntry> CelebUsers { get; } = new List<CelebEntry>();
+        public List<CelebEntry> CelebBestEquip { get; } = new List<CelebEntry>();
 #if !GUNMOBILE_STANDALONE
         public CharacterDefine CharacterDef { get; private set; }
 #endif
@@ -1692,6 +1725,9 @@ namespace GunMobile.Res
             db.LoadPetSkillTemplates(loader);
             db.LoadPetConfig(loader);
             db.LoadStocks(loader);
+            db.LoadPairUpPointAwards(loader);
+            db.LoadShopGoodsShow(loader);
+            db.LoadStockNotices(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1713,7 +1749,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -4748,9 +4784,10 @@ namespace GunMobile.Res
 
             foreach (var row in table.Rows)
             {
-                Shop.Add(new ShopOffer
+                int id = Int(row, "ID");
+                var offer = new ShopOffer
                 {
-                    Id = Int(row, "ID"),
+                    Id = id,
                     ShopId = Int(row, "ShopID"),
                     TemplateId = Int(row, "TemplateID"),
                     AUnit = Int(row, "AUnit"),
@@ -4758,7 +4795,12 @@ namespace GunMobile.Res
                     AValue1 = Int(row, "AValue1"),
                     CanBuy = Bool(row, "CanBuy"),
                     LimitGrade = Int(row, "LimitGrade")
-                });
+                };
+                Shop.Add(offer);
+                if (id > 0 && !ShopById.ContainsKey(id))
+                {
+                    ShopById[id] = offer;
+                }
             }
         }
 
@@ -7800,6 +7842,187 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadPairUpPointAwards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/PairUpPointAward.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                int itemId = Int(row, "ItemID");
+                if (id <= 0 || itemId <= 0 || PairUpAwards.ContainsKey(id))
+                {
+                    continue;
+                }
+
+                var award = new PairUpPointAward
+                {
+                    Id = id,
+                    ItemId = itemId,
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    Point = Int(row, "Point"),
+                    Type = Int(row, "Type"),
+                    Valid = Int(row, "Valid"),
+                    IsBind = Bool(row, "IsBind")
+                };
+                PairUpAwards[id] = award;
+                PairUpAwardList.Add(award);
+            }
+
+            PairUpAwardList.Sort((a, b) => a.Point.CompareTo(b.Point));
+        }
+
+        void LoadShopGoodsShow(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ShopGoodsShowList.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/newxml/ShopGoodsShowList.xml", out table))
+            {
+                return;
+            }
+
+            var needed = new HashSet<int>();
+            foreach (var row in table.Rows)
+            {
+                int shopId = Int(row, "ShopId");
+                if (shopId <= 0)
+                {
+                    shopId = Int(row, "ShopID");
+                }
+
+                if (shopId <= 0)
+                {
+                    continue;
+                }
+
+                ShopShowList.Add(new ShopShowEntry
+                {
+                    Type = Int(row, "Type"),
+                    ShopId = shopId
+                });
+                needed.Add(shopId);
+                if (ShopById.TryGetValue(shopId, out ShopOffer existing) && !ShopShowOffers.ContainsKey(shopId))
+                {
+                    ShopShowOffers[shopId] = existing;
+                }
+            }
+
+            if (needed.Count > ShopShowOffers.Count &&
+                TryTable(loader, "Request/ShopItemList.xml", out XmlResultTable shopTable))
+            {
+                foreach (var row in shopTable.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || !needed.Contains(id) || ShopShowOffers.ContainsKey(id))
+                    {
+                        continue;
+                    }
+
+                    var offer = new ShopOffer
+                    {
+                        Id = id,
+                        ShopId = Int(row, "ShopID"),
+                        TemplateId = Int(row, "TemplateID"),
+                        AUnit = Int(row, "AUnit"),
+                        APrice1 = Int(row, "APrice1"),
+                        AValue1 = Int(row, "AValue1"),
+                        CanBuy = Bool(row, "CanBuy"),
+                        LimitGrade = Int(row, "LimitGrade")
+                    };
+                    ShopShowOffers[id] = offer;
+                    if (!ShopById.ContainsKey(id))
+                    {
+                        ShopById[id] = offer;
+                    }
+                }
+            }
+        }
+
+        void LoadStockNotices(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/StockNoticeList.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "NewsId");
+                if (id <= 0 || StockNotices.ContainsKey(id))
+                {
+                    continue;
+                }
+
+                var notice = new StockNoticeInfo
+                {
+                    NewsId = id,
+                    NewsContent = Str(row, "NewsContent")
+                };
+                StockNotices[id] = notice;
+                StockNoticeList.Add(notice);
+            }
+        }
+
+        public PairUpPointAward GetPairUpAward(int id)
+        {
+            if (id > 0 && PairUpAwards.TryGetValue(id, out PairUpPointAward award))
+            {
+                return award;
+            }
+
+            return null;
+        }
+
+        public ShopOffer GetShopShowOffer(int shopId)
+        {
+            if (shopId <= 0)
+            {
+                return null;
+            }
+
+            if (ShopShowOffers.TryGetValue(shopId, out ShopOffer show))
+            {
+                return show;
+            }
+
+            if (ShopById.TryGetValue(shopId, out ShopOffer byId))
+            {
+                return byId;
+            }
+
+            return null;
+        }
+
+        public bool IsShopShowItem(int shopId)
+        {
+            if (shopId <= 0)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < ShopShowList.Count; i++)
+            {
+                if (ShopShowList[i].ShopId == shopId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public StockNoticeInfo GetStockNotice(int newsId)
+        {
+            if (newsId > 0 && StockNotices.TryGetValue(newsId, out StockNoticeInfo notice))
+            {
+                return notice;
+            }
+
+            return null;
+        }
+
         public int StockQuote(StockInfo stock)
         {
             if (stock == null)
@@ -7811,7 +8034,19 @@ namespace GunMobile.Res
             int swing = stock.FlowCoeffcient > 0
                 ? (day * stock.FlowCoeffcient / 10000) % Mathf.Max(1, stock.BasePrice / 3)
                 : 0;
-            return Mathf.Max(1, stock.BasePrice + swing - stock.BasePrice / 4);
+            StockNoticePriceBoost.TryGetValue(stock.StockId, out int boost);
+            return Mathf.Max(1, stock.BasePrice + swing - stock.BasePrice / 4 + boost);
+        }
+
+        public void ApplyStockNoticeBoost(int stockId, int delta)
+        {
+            if (stockId <= 0 || delta == 0)
+            {
+                return;
+            }
+
+            StockNoticePriceBoost.TryGetValue(stockId, out int cur);
+            StockNoticePriceBoost[stockId] = cur + delta;
         }
 
         public void ApplyEngraveSetBonus(int setId, ref int atk, ref int def, ref int agi, ref int luk, ref int hp, ref int baseDmg, ref int baseGuard)
@@ -7906,6 +8141,8 @@ namespace GunMobile.Res
             LoadCelebFile(loader, "Request/CelebByDayFightPowerList.xml", CelebFightPowerDay, "FightPower");
             LoadCelebFile(loader, "Request/CelebByDayOfferList.xml", CelebOfferDay, "AddDayOffer");
             LoadCelebFile(loader, "Request/areacelebbydayfightpowerlist.xml", CelebAreaFightPower, "FightPower");
+            LoadCelebFile(loader, "Request/CelebForUsers.xml", CelebUsers, "GP");
+            LoadCelebFile(loader, "Request/CelebForBestEquip.xml", CelebBestEquip, "FightPower");
         }
 
         void LoadCelebFile(ResLoader loader, string path, List<CelebEntry> target, string sortKey)
@@ -7920,17 +8157,29 @@ namespace GunMobile.Res
                 int rank = Int(row, "ID");
                 if (rank == 0)
                 {
+                    rank = Int(row, "Repute");
+                }
+
+                if (rank == 0)
+                {
                     rank = target.Count + 1;
                 }
 
+                int metric = sortKey == "AddDayOffer"
+                    ? Int(row, "AddDayOffer")
+                    : sortKey == "FightPower"
+                        ? Int(row, "FightPower")
+                        : sortKey == "GP"
+                            ? Int(row, "GP")
+                            : Int(row, "AddDayGP");
                 target.Add(new CelebEntry
                 {
                     Rank = rank,
                     Nick = Str(row, "NickName"),
                     Grade = Int(row, "Grade"),
-                    Gp = Int(row, sortKey == "AddDayOffer" ? "AddDayOffer" : sortKey == "FightPower" ? "FightPower" : "AddDayGP"),
+                    Gp = metric,
                     FightPower = Int(row, "FightPower"),
-                    Offer = Int(row, "AddDayOffer"),
+                    Offer = Int(row, "AddDayOffer") > 0 ? Int(row, "AddDayOffer") : Int(row, "Offer"),
                     VipLevel = Int(row, "VIPLevel"),
                     ConsortiaName = Str(row, "ConsortiaName"),
                     WinCount = Int(row, "WinCount"),
@@ -7971,6 +8220,16 @@ namespace GunMobile.Res
             if (string.Equals(type, "offer", StringComparison.OrdinalIgnoreCase))
             {
                 return CelebOfferDay;
+            }
+
+            if (string.Equals(type, "users", StringComparison.OrdinalIgnoreCase))
+            {
+                return CelebUsers;
+            }
+
+            if (string.Equals(type, "equip", StringComparison.OrdinalIgnoreCase))
+            {
+                return CelebBestEquip;
             }
 
             return CelebGpDay;

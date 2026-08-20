@@ -263,6 +263,9 @@ namespace GunMobile.Net
         public const ushort DevilTreasRankClaim = 216;
         public const ushort RecycleActivityClaim = 217;
         public const ushort MagicItemUpgrade = 218;
+        public const ushort PairUpClaim = 219;
+        public const ushort ShopShowBuy = 220;
+        public const ushort StockNotice = 221;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

@@ -1403,6 +1403,84 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+
+        public static void PairUpScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "配对积分 · PairUpPointAward");
+            app.Profile.EnsurePairUpClaimed();
+            int free = app.Database != null ? app.Database.ConfigInt("PairUpDailyFreeCount", 5) : 5;
+            int cost = app.Database != null ? app.Database.ConfigInt("PairUpCardCost", 150) : 150;
+            int gain = app.Database != null ? app.Database.ConfigInt("PairUpOnePoint", 300) : 300;
+            SysUi.Note(body, "积分 " + app.Profile.PairUpPoints + "  ·  今日 " + app.Profile.PairUpPlays + "/" + free +
+                "  ·  金 " + app.Profile.Gold);
+            SysUi.Row(body, "play", "配对一局  +" + gain + (app.Profile.PairUpPlays >= free ? ("  花费" + cost) : "  免费"),
+                () => PhoneNet.PairUpClaim(0, "play"));
+            if (app.Database == null || app.Database.PairUpAwardList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/PairUpPointAward.xml");
+                return;
+            }
+
+            foreach (PairUpPointAward award in app.Database.PairUpAwardList)
+            {
+                bool claimed = app.Profile.PairUpClaimed.Contains(award.Id);
+                bool ready = !claimed && app.Profile.PairUpPoints >= award.Point;
+                string name = SysUi.ItemName(app, award.ItemId);
+                string cap = (claimed ? "[已领] " : ready ? "[可领] " : "") +
+                    "需" + award.Point + "分  " + name + " x" + award.Count;
+                int rid = award.Id;
+                SysUi.Row(body, "pu" + award.Id, cap,
+                    ready ? (System.Action)(() => PhoneNet.PairUpClaim(rid, "claim")) : null);
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastPairUpJson))
+            {
+                SysUi.Note(body, PhoneNet.LastPairUpJson);
+            }
+        }
+
+        public static void ShopShowScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "精选商城 · ShopGoodsShowList");
+            SysUi.Note(body, "金 " + app.Profile.Gold + "  ·  礼券 " + app.Profile.Gift);
+            if (app.Database == null || app.Database.ShopShowList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/ShopGoodsShowList.xml");
+                return;
+            }
+
+            int shown = 0;
+            var seen = new System.Collections.Generic.HashSet<int>();
+            foreach (ShopShowEntry entry in app.Database.ShopShowList)
+            {
+                if (!seen.Add(entry.ShopId)) continue;
+                ShopOffer offer = app.Database.GetShopShowOffer(entry.ShopId);
+                if (offer == null || offer.TemplateId <= 0 || offer.AValue1 <= 0) continue;
+                string name = SysUi.ItemName(app, offer.TemplateId);
+                bool gift = offer.APrice1 != -1 && offer.APrice1 <= -2;
+                string cur = gift ? "点券" : "金币";
+                string cap = "T" + entry.Type + "  " + name + "  " + offer.AValue1 + cur;
+                int sid = entry.ShopId;
+                var btn = SysUi.Row(body, "ss" + entry.ShopId, cap, () => PhoneNet.ShopShowBuy(sid));
+                ShopScreen.DecorateIcon(app, btn, offer.TemplateId);
+                if (++shown >= 40)
+                {
+                    SysUi.Note(body, "… " + (app.Database.ShopShowList.Count - shown) + " more");
+                    break;
+                }
+            }
+
+            if (shown == 0)
+            {
+                SysUi.Note(body, "精选商品无法解析到 ShopItemList");
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastShopShowJson))
+            {
+                SysUi.Note(body, PhoneNet.LastShopShowJson);
+            }
+        }
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))

@@ -220,6 +220,11 @@ namespace GunMobile.Net
         public int SwornGp;
         public int VipStoreDay = -1;
         public List<int> VipStoreBought = new List<int>();
+        public int PairUpPoints;
+        public int PairUpDay = -1;
+        public int PairUpPlays;
+        public List<int> PairUpClaimed = new List<int>();
+        public List<int> StockNoticeClaimed = new List<int>();
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -249,6 +254,13 @@ namespace GunMobile.Net
             int t = DateTime.Now.DayOfYear;
             if (VipStoreDay != t) { VipStoreDay = t; VipStoreBought.Clear(); }
         }
+        public void EnsurePairUpClaimed() { if (PairUpClaimed == null) PairUpClaimed = new List<int>(); }
+        public void TouchPairUpDay()
+        {
+            int t = DateTime.Now.DayOfYear;
+            if (PairUpDay != t) { PairUpDay = t; PairUpPlays = 0; }
+        }
+        public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
@@ -977,6 +989,16 @@ namespace GunMobile.Net
             EnsureVipStoreBought();
             sb.Append("\"vipStoreBought\":[");
             for (int i = 0; i < VipStoreBought.Count; i++) { if (i > 0) sb.Append(","); sb.Append(VipStoreBought[i]); }
+            sb.Append("],");
+            J(sb, "pairUpPoints", PairUpPoints); sb.Append(",");
+            J(sb, "pairUpPlays", PairUpPlays); sb.Append(",");
+            EnsurePairUpClaimed();
+            sb.Append("\"pairUpClaimed\":[");
+            for (int i = 0; i < PairUpClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(PairUpClaimed[i]); }
+            sb.Append("],");
+            EnsureStockNoticeClaimed();
+            sb.Append("\"stockNoticeClaimed\":[");
+            for (int i = 0; i < StockNoticeClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(StockNoticeClaimed[i]); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -2230,6 +2252,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.MagicItemUpgrade:
                     HandleMagicItemUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.PairUpClaim:
+                    HandlePairUpClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.ShopShowBuy:
+                    HandleShopShowBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.StockNotice:
+                    HandleStockNotice(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -6236,6 +6270,209 @@ namespace GunMobile.Net
             return null;
         }
 
+        void HandlePairUpClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.PairUpAwardList.Count == 0)
+            {
+                Send(ns, PhoneMsg.PairUpClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            string action = JS(json, "action", "claim");
+            if (string.Equals(action, "play", StringComparison.OrdinalIgnoreCase))
+            {
+                player.TouchPairUpDay();
+                int free = _db.ConfigInt("PairUpDailyFreeCount", 5);
+                int cost = _db.ConfigInt("PairUpCardCost", 150);
+                int gain = Mathf.Max(1, _db.ConfigInt("PairUpOnePoint", 300));
+                if (player.PairUpPlays >= free)
+                {
+                    if (player.Gold < cost)
+                    {
+                        Send(ns, PhoneMsg.PairUpClaim, "{\"ok\":false,\"err\":\"gold\"}");
+                        return;
+                    }
+                    player.Gold -= cost;
+                }
+                player.PairUpPlays++;
+                player.PairUpPoints += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.PairUpClaim,
+                    "{\"ok\":true,\"action\":\"play\",\"gain\":" + gain +
+                    ",\"points\":" + player.PairUpPoints + ",\"plays\":" + player.PairUpPlays + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int rewardId = JI(json, "rewardId", JI(json, "id", 0));
+            PairUpPointAward award = rewardId > 0 ? _db.GetPairUpAward(rewardId) : null;
+            if (award == null)
+            {
+                Send(ns, PhoneMsg.PairUpClaim, "{\"ok\":false,\"err\":\"reward\"}");
+                return;
+            }
+
+            player.EnsurePairUpClaimed();
+            if (player.PairUpClaimed.Contains(award.Id))
+            {
+                Send(ns, PhoneMsg.PairUpClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+
+            if (player.PairUpPoints < award.Point)
+            {
+                Send(ns, PhoneMsg.PairUpClaim, "{\"ok\":false,\"err\":\"points\"}");
+                return;
+            }
+
+            player.PairUpClaimed.Add(award.Id);
+            player.AddItem(award.ItemId, award.Count > 0 ? award.Count : 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PairUpClaim,
+                "{\"ok\":true,\"rewardId\":" + award.Id + ",\"item\":" + award.ItemId +
+                ",\"count\":" + award.Count + ",\"points\":" + player.PairUpPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleShopShowBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            int shopId = JI(json, "shopId", JI(json, "offerId", JI(json, "id", 0)));
+            if (!_db.IsShopShowItem(shopId))
+            {
+                Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"show\"}");
+                return;
+            }
+
+            ShopOffer offer = _db.GetShopShowOffer(shopId);
+            if (offer == null || offer.TemplateId <= 0 || offer.AValue1 <= 0)
+            {
+                Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"goods\"}");
+                return;
+            }
+
+            if (offer.LimitGrade > 0 && player.Level < offer.LimitGrade)
+            {
+                Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            // PC APrice1: -1 gold, -2 gift; other negatives are gift-currency codes.
+            bool gift = offer.APrice1 != -1 && offer.APrice1 <= -2;
+            int price = offer.AValue1;
+            if (gift)
+            {
+                if (player.Gift < price)
+                {
+                    Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"gift\"}");
+                    return;
+                }
+                player.Gift -= price;
+            }
+            else
+            {
+                if (player.Gold < price)
+                {
+                    Send(ns, PhoneMsg.ShopShowBuy, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                player.Gold -= price;
+            }
+
+            player.AddItem(offer.TemplateId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ShopShowBuy,
+                "{\"ok\":true,\"shopId\":" + shopId + ",\"templateId\":" + offer.TemplateId +
+                ",\"cost\":" + price + ",\"gift\":" + (gift ? "true" : "false") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleStockNotice(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.StockNoticeList.Count == 0)
+            {
+                Send(ns, PhoneMsg.StockNotice, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            string action = JS(json, "action", "list");
+            player.EnsureStockNoticeClaimed();
+            if (string.Equals(action, "claim", StringComparison.OrdinalIgnoreCase))
+            {
+                int newsId = JI(json, "newsId", JI(json, "id", 0));
+                StockNoticeInfo notice = _db.GetStockNotice(newsId);
+                if (notice == null)
+                {
+                    Send(ns, PhoneMsg.StockNotice, "{\"ok\":false,\"err\":\"notice\"}");
+                    return;
+                }
+
+                if (player.StockNoticeClaimed.Contains(newsId))
+                {
+                    Send(ns, PhoneMsg.StockNotice, "{\"ok\":false,\"err\":\"claimed\"}");
+                    return;
+                }
+
+                int stockId = JI(json, "stockId", 0);
+                StockInfo stock = null;
+                if (stockId > 0)
+                {
+                    _db.Stocks.TryGetValue(stockId, out stock);
+                }
+                if (stock == null && _db.Stocks.Count > 0)
+                {
+                    foreach (StockInfo s in _db.Stocks.Values)
+                    {
+                        stock = s;
+                        break;
+                    }
+                }
+
+                string stockName = stock != null ? (stock.StockName ?? "") : "";
+                string content = (notice.NewsContent ?? "").Replace("{0}", stockName).Replace("\"", "");
+                int reward = Mathf.Max(0, _db.ConfigInt("StockNoticeReward", 50));
+                int boost = Mathf.Max(0, _db.ConfigInt("StockNoticeBoost", 25));
+                player.StockNoticeClaimed.Add(newsId);
+                if (reward > 0)
+                {
+                    player.Gold += reward;
+                }
+                if (stock != null && boost > 0)
+                {
+                    _db.ApplyStockNoticeBoost(stock.StockId, boost);
+                    stockId = stock.StockId;
+                }
+                SavePlayer(player);
+                int quote = stock != null ? _db.StockQuote(stock) : 0;
+                Send(ns, PhoneMsg.StockNotice,
+                    "{\"ok\":true,\"action\":\"claim\",\"newsId\":" + newsId +
+                    ",\"stockId\":" + stockId + ",\"quote\":" + quote +
+                    ",\"reward\":" + reward + ",\"content\":\"" + content + "\"}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            var sb = new StringBuilder("{\"ok\":true,\"action\":\"list\",\"notices\":[");
+            int shown = 0;
+            for (int i = 0; i < _db.StockNoticeList.Count && shown < 40; i++)
+            {
+                StockNoticeInfo n = _db.StockNoticeList[i];
+                if (shown > 0) sb.Append(",");
+                bool claimed = player.StockNoticeClaimed.Contains(n.NewsId);
+                sb.Append("{\"newsId\":").Append(n.NewsId)
+                  .Append(",\"claimed\":").Append(claimed ? "true" : "false")
+                  .Append(",\"content\":\"").Append((n.NewsContent ?? "").Replace("\"", "")).Append("\"}");
+                shown++;
+            }
+            sb.Append("]}");
+            Send(ns, PhoneMsg.StockNotice, sb.ToString());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -9311,6 +9548,11 @@ namespace GunMobile.Net
             public int SwornLevel, SwornGp;
             public int VipStoreDay = -1;
             public List<int> VipStoreBought = new List<int>();
+            public int PairUpPoints;
+            public int PairUpDay = -1;
+            public int PairUpPlays;
+            public List<int> PairUpClaimed = new List<int>();
+            public List<int> StockNoticeClaimed = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -9461,6 +9703,9 @@ namespace GunMobile.Net
                 ActivityQuestCompleted = p.ActivityQuestCompleted ?? new List<int>(),
                 SwornNick = p.SwornNick ?? "", SwornLevel = p.SwornLevel, SwornGp = p.SwornGp,
                 VipStoreDay = p.VipStoreDay, VipStoreBought = p.VipStoreBought ?? new List<int>(),
+                PairUpPoints = p.PairUpPoints, PairUpDay = p.PairUpDay, PairUpPlays = p.PairUpPlays,
+                PairUpClaimed = p.PairUpClaimed ?? new List<int>(),
+                StockNoticeClaimed = p.StockNoticeClaimed ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -9615,6 +9860,9 @@ namespace GunMobile.Net
                 ActivityQuestCompleted = s.ActivityQuestCompleted ?? new List<int>(),
                 SwornNick = s.SwornNick ?? "", SwornLevel = s.SwornLevel, SwornGp = s.SwornGp,
                 VipStoreDay = s.VipStoreDay, VipStoreBought = s.VipStoreBought ?? new List<int>(),
+                PairUpPoints = s.PairUpPoints, PairUpDay = s.PairUpDay, PairUpPlays = s.PairUpPlays,
+                PairUpClaimed = s.PairUpClaimed ?? new List<int>(),
+                StockNoticeClaimed = s.StockNoticeClaimed ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),
