@@ -162,6 +162,21 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.MountUpgrade, "{}");
         }
 
+        public static void UpgradePetStar()
+        {
+            Road?.Send(PhoneMsg.PetStarUpgrade, "{}");
+        }
+
+        public static void EquipMountTalisman(int talismanId)
+        {
+            Road?.Send(PhoneMsg.MountTalismanEquip, "{\"talismanId\":" + talismanId + "}");
+        }
+
+        public static void UpgradeManor()
+        {
+            Road?.Send(PhoneMsg.ManorUpgrade, "{}");
+        }
+
         public static void DoSignIn()
         {
             Road?.Send(PhoneMsg.SignIn, "{}");

@@ -234,6 +234,52 @@ namespace GunMobile.Res
         public int MagicAttack;
     }
 
+
+    public sealed class PetStarUpgrade
+    {
+        public int OldId;
+        public int NewId;
+        public int Exp;
+    }
+
+    public sealed class MountTalismanInfo
+    {
+        public int Id;
+        public string AmuletName = "";
+        public int BaseType1;
+        public int BaseType1Value;
+        public int BaseType2;
+        public int BaseType2Value;
+        public int Consume;
+        public int Quality;
+        public int Score;
+        public string PicUrl = "";
+    }
+
+    public sealed class ManorPlantInfo
+    {
+        public int UpgradeType;
+        public int Grade;
+        public int NeedGrade1;
+        public int NeedGrade2;
+        public int NeedItem1;
+        public int NeedItemCount1;
+        public int NeedItem2;
+        public int NeedItemCount2;
+        public int PlantSpeedValue;
+        public int Style;
+        public int WorkMax;
+    }
+
+    public sealed class MountSkillTemplate
+    {
+        public int Id;
+        public string Name = "";
+        public int CostEnergy;
+        public int UseCount;
+        public int Pic;
+    }
+
     public sealed class LotteryDrop
     {
         public int Id;
@@ -932,6 +978,10 @@ namespace GunMobile.Res
         public Dictionary<int, TitleInfo> Titles { get; } = new Dictionary<int, TitleInfo>();
         public Dictionary<int, TotemInfo> Totems { get; } = new Dictionary<int, TotemInfo>();
         public Dictionary<int, MountGrade> Mounts { get; } = new Dictionary<int, MountGrade>();
+        public Dictionary<int, PetStarUpgrade> PetStarUpgrades { get; } = new Dictionary<int, PetStarUpgrade>();
+        public Dictionary<int, MountTalismanInfo> MountTalismans { get; } = new Dictionary<int, MountTalismanInfo>();
+        public Dictionary<int, ManorPlantInfo> ManorPlants { get; } = new Dictionary<int, ManorPlantInfo>();
+        public Dictionary<int, MountSkillTemplate> MountSkills { get; } = new Dictionary<int, MountSkillTemplate>();
         public List<LotteryDrop> Lottery { get; } = new List<LotteryDrop>();
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
         public List<PveMission> Pve { get; } = new List<PveMission>();
@@ -1041,6 +1091,10 @@ namespace GunMobile.Res
             db.LoadTitles(loader);
             db.LoadTotems(loader);
             db.LoadMounts(loader);
+            db.LoadPetStarExp(loader);
+            db.LoadMountTalismans(loader);
+            db.LoadManorPlants(loader);
+            db.LoadMountSkills(loader);
             db.LoadLottery(loader);
             db.LoadVip(loader);
             db.LoadPve(loader);
@@ -1182,6 +1236,77 @@ namespace GunMobile.Res
             }
 
             return Mathf.Max(0, nextGrade.Experience - prevExp);
+        }
+
+        public PetStarUpgrade GetPetStarUpgrade(int oldId)
+        {
+            PetStarUpgrades.TryGetValue(oldId, out PetStarUpgrade row);
+            return row;
+        }
+
+        public MountTalismanInfo GetMountTalisman(int id)
+        {
+            MountTalismans.TryGetValue(id, out MountTalismanInfo row);
+            return row;
+        }
+
+        public static int ManorPlantKey(int upgradeType, int grade)
+        {
+            return (upgradeType << 8) | grade;
+        }
+
+        public ManorPlantInfo GetManorPlant(int upgradeType, int grade)
+        {
+            ManorPlants.TryGetValue(ManorPlantKey(upgradeType, grade), out ManorPlantInfo row);
+            return row;
+        }
+
+        public int ManorUpgradeCost(int currentGrade)
+        {
+            ManorPlantInfo next = GetManorPlant(1, currentGrade + 1);
+            if (next == null)
+            {
+                return 0;
+            }
+
+            int cost = next.NeedItemCount1 * 20 + next.NeedItemCount2 * 50;
+            if (cost <= 0)
+            {
+                cost = (next.NeedItemCount1 + next.NeedItemCount2) * 100;
+            }
+
+            return cost;
+        }
+
+        public int ManorHarvestGold(int manorGrade)
+        {
+            int grade = Mathf.Max(1, manorGrade);
+            ManorPlantInfo row = GetManorPlant(1, grade);
+            if (row == null)
+            {
+                return grade * 50;
+            }
+
+            return Mathf.Max(grade * 20, (1000 - row.PlantSpeedValue) / 2);
+        }
+
+        public void ApplyMountTalismanBonus(int talismanId, ref int hp)
+        {
+            MountTalismanInfo row = GetMountTalisman(talismanId);
+            if (row == null)
+            {
+                return;
+            }
+
+            if (row.BaseType1 == 37)
+            {
+                hp += row.BaseType1Value;
+            }
+
+            if (row.BaseType2 == 37)
+            {
+                hp += row.BaseType2Value;
+            }
         }
 
         public int GemUpgradeCost(int currentLevel)
@@ -3762,6 +3887,120 @@ namespace GunMobile.Res
                     AddDamage = Int(row, "AddDamage"),
                     AddGuard = Int(row, "AddGuard"),
                     MagicAttack = Int(row, "MagicAttack")
+                };
+            }
+        }
+
+        void LoadPetStarExp(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/loadpetstarexp.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int oldId = Int(row, "OldID");
+                if (oldId <= 0)
+                {
+                    continue;
+                }
+
+                PetStarUpgrades[oldId] = new PetStarUpgrade
+                {
+                    OldId = oldId,
+                    NewId = Int(row, "NewID"),
+                    Exp = Int(row, "Exp")
+                };
+            }
+        }
+
+        void LoadMountTalismans(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/mounttalismansinfolist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                MountTalismans[id] = new MountTalismanInfo
+                {
+                    Id = id,
+                    AmuletName = Str(row, "AmuletName"),
+                    BaseType1 = Int(row, "BaseType1"),
+                    BaseType1Value = Int(row, "BaseType1Value"),
+                    BaseType2 = Int(row, "BaseType2"),
+                    BaseType2Value = Int(row, "BaseType2Value"),
+                    Consume = Int(row, "Consume"),
+                    Quality = Int(row, "Quality"),
+                    Score = Int(row, "Score"),
+                    PicUrl = Str(row, "PicUrl")
+                };
+            }
+        }
+
+        void LoadManorPlants(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ts_manorplant.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int type = Int(row, "UpgradeType");
+                int grade = Int(row, "Grade");
+                if (type <= 0 || grade <= 0)
+                {
+                    continue;
+                }
+
+                ManorPlants[ManorPlantKey(type, grade)] = new ManorPlantInfo
+                {
+                    UpgradeType = type,
+                    Grade = grade,
+                    NeedGrade1 = Int(row, "NeedGrade1"),
+                    NeedGrade2 = Int(row, "NeedGrade2"),
+                    NeedItem1 = Int(row, "NeedItem1"),
+                    NeedItemCount1 = Int(row, "NeedItemCount1"),
+                    NeedItem2 = Int(row, "NeedItem2"),
+                    NeedItemCount2 = Int(row, "NeedItemCount2"),
+                    PlantSpeedValue = Int(row, "PlantSpeedValue"),
+                    Style = Int(row, "Style"),
+                    WorkMax = Int(row, "WorkMax")
+                };
+            }
+        }
+
+        void LoadMountSkills(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/mountskilltemplate_out.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                MountSkills[id] = new MountSkillTemplate
+                {
+                    Id = id,
+                    Name = Str(row, "Name"),
+                    CostEnergy = Int(row, "CostEnergy"),
+                    UseCount = Int(row, "UseCount"),
+                    Pic = Int(row, "Pic")
                 };
             }
         }
