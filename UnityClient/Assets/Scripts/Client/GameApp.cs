@@ -184,6 +184,12 @@ namespace GunMobile.Client
                 case "stock":
                     StockScreen.Show(_safe, this);
                     return;
+                case "pairup":
+                    ExtraModulesScreens.PairUpScreen(_safe, this);
+                    return;
+                case "shopshow":
+                    ExtraModulesScreens.ShopShowScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -646,6 +652,30 @@ namespace GunMobile.Client
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && (_currentModuleId == "auction" || _currentModuleId == "friend")) RefreshCurrentModule();
                         break;
+                    case PhoneMsg.PairUpClaim:
+                        PhoneNet.LastPairUpJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "pairup" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.ShopShowBuy:
+                        PhoneNet.LastShopShowJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "shopshow" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.StockNotice:
+                        PhoneNet.LastStockNoticeJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "stock" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -880,6 +910,12 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "activityQuestClaimed", Profile.ActivityQuestClaimed ?? (Profile.ActivityQuestClaimed = new List<int>()));
             ParseIntListFromServer(json, "activityQuestCompleted", Profile.ActivityQuestCompleted ?? (Profile.ActivityQuestCompleted = new List<int>()));
             ParseIntListFromServer(json, "vipStoreBought", Profile.VipStoreBought ?? (Profile.VipStoreBought = new List<int>()));
+            Profile.PairUpPoints = JsonInt(json, "pairUpPoints", Profile.PairUpPoints);
+            Profile.PairUpPlays = JsonInt(json, "pairUpPlays", Profile.PairUpPlays);
+            Profile.EnsurePairUpClaimed();
+            ParseIntListFromServer(json, "pairUpClaimed", Profile.PairUpClaimed);
+            Profile.EnsureStockNoticeClaimed();
+            ParseIntListFromServer(json, "stockNoticeClaimed", Profile.StockNoticeClaimed);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

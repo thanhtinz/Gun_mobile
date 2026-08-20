@@ -46,6 +46,9 @@ namespace GunMobile.Client
         public static string LastActivityQuestJson;
         public static string LastSwornJson;
         public static string LastVipStoreJson;
+        public static string LastPairUpJson;
+        public static string LastShopShowJson;
+        public static string LastStockNoticeJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -298,6 +301,24 @@ namespace GunMobile.Client
         {
             string act = (action ?? "buy").Replace("\"", "");
             Road?.Send(PhoneMsg.StockTrade, "{\"action\":\"" + act + "\",\"stockId\":" + stockId + ",\"shares\":" + shares + "}");
+        }
+
+        public static void PairUpClaim(int rewardId = 0, string action = "claim")
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.PairUpClaim, "{\"action\":\"" + act + "\",\"rewardId\":" + rewardId + "}");
+        }
+
+        public static void ShopShowBuy(int shopId)
+        {
+            Road?.Send(PhoneMsg.ShopShowBuy, "{\"shopId\":" + shopId + "}");
+        }
+
+        public static void StockNotice(string action = "list", int newsId = 0, int stockId = 0)
+        {
+            string act = (action ?? "list").Replace("\"", "");
+            Road?.Send(PhoneMsg.StockNotice,
+                "{\"action\":\"" + act + "\",\"newsId\":" + newsId + ",\"stockId\":" + stockId + "}");
         }
 
         public static void DrawLottery(int count)

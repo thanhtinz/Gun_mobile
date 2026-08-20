@@ -653,6 +653,8 @@ namespace GunMobile.Client
             SysUi.Row(body, "gp", _rankType == "gp" ? "[经验日增]" : "经验日增", () => { _rankType = "gp"; Show(safe, app); });
             SysUi.Row(body, "fight", _rankType == "fight" ? "[战斗力]" : "战斗力", () => { _rankType = "fight"; Show(safe, app); });
             SysUi.Row(body, "offer", _rankType == "offer" ? "[功勋日增]" : "功勋日增", () => { _rankType = "offer"; Show(safe, app); });
+            SysUi.Row(body, "users", _rankType == "users" ? "[总榜 CelebForUsers]" : "总榜 CelebForUsers", () => { _rankType = "users"; Show(safe, app); });
+            SysUi.Row(body, "equip", _rankType == "equip" ? "[神装 CelebForBestEquip]" : "神装 CelebForBestEquip", () => { _rankType = "equip"; Show(safe, app); });
             SysUi.Note(body, $"你: {app.Profile.Nick}  Lv.{app.Profile.Level}  GP {app.Profile.Gp}  {app.Profile.Win}W/{app.Profile.Lose}L");
 
             string json = PhoneNet.LastRankJson;
@@ -693,11 +695,13 @@ namespace GunMobile.Client
                 string consortia = GameApp.JsonStr(entry, "consortia", "");
                 bool self = entry.IndexOf("\"self\":true", StringComparison.Ordinal) >= 0;
                 string tag = self ? " (你)" : "";
-                string metric = _rankType == "fight"
+                string metric = _rankType == "fight" || _rankType == "equip"
                     ? $"战力 {fightPower}"
                     : _rankType == "offer"
                         ? $"功勋 {offer}"
-                        : $"GP {gp}";
+                        : _rankType == "users"
+                            ? $"总GP {gp}"
+                            : $"GP {gp}";
                 SysUi.Note(body, $"#{listed}  {nick}{tag}  Lv{level}  {metric}  {win}胜  VIP{vip}  {consortia}");
                 rank++;
             }
@@ -1648,9 +1652,40 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
-            Transform body = SysUi.Begin(safe, app, "股票 · StockTemplateInfo");
-            int minLv = app.Database.ConfigInt("StockLimitLevel", 30);
+            PhoneNet.StockNotice("list");
+            Transform body = SysUi.Begin(safe, app, "股票 · StockTemplateInfo + StockNoticeList");
+            int minLv = app.Database != null ? app.Database.ConfigInt("StockLimitLevel", 30) : 30;
             SysUi.Note(body, $"Gold {app.Profile.Gold}  ·  需要等级 {minLv}+");
+            app.Profile.EnsureStockNoticeClaimed();
+            if (app.Database != null && app.Database.StockNoticeList.Count > 0)
+            {
+                SysUi.Note(body, "— 股市公告 StockNoticeList —");
+                int firstStockId = 0;
+                foreach (StockInfo s in app.Database.Stocks.Values)
+                {
+                    firstStockId = s.StockId;
+                    break;
+                }
+                int shown = 0;
+                foreach (StockNoticeInfo notice in app.Database.StockNoticeList)
+                {
+                    bool claimed = app.Profile.StockNoticeClaimed.Contains(notice.NewsId);
+                    string preview = notice.NewsContent ?? "";
+                    if (preview.Length > 42) preview = preview.Substring(0, 42) + "…";
+                    int nid = notice.NewsId;
+                    int sid = firstStockId;
+                    string label = (claimed ? "[已领] " : "") + "#" + nid + "  " + preview;
+                    SysUi.Row(body, "sn" + nid, label,
+                        claimed ? null : (System.Action)(() => PhoneNet.StockNotice("claim", nid, sid)));
+                    if (++shown >= 12) break;
+                }
+                if (!string.IsNullOrEmpty(PhoneNet.LastStockNoticeJson))
+                {
+                    SysUi.Note(body, PhoneNet.LastStockNoticeJson);
+                }
+            }
+
+            if (app.Database == null) return;
             foreach (StockInfo stock in app.Database.Stocks.Values)
             {
                 StockInfo local = stock;
