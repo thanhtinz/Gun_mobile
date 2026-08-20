@@ -506,9 +506,13 @@ namespace GunMobile.Client
                     case PhoneMsg.StrengthenGoodsMap:
                     case PhoneMsg.BoxOpen:
                     case PhoneMsg.ItemFusion:
+                    case PhoneMsg.MountDraw:
+                    case PhoneMsg.PetFightProperty:
+                    case PhoneMsg.NewYearRankClaim:
                         if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
                         if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
                         if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
+                        if (msg.Id == PhoneMsg.NewYearRankClaim) PhoneNet.LastNewYearJson = msg.Json;
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -740,6 +744,7 @@ namespace GunMobile.Client
             Profile.EquipGlass = JsonInt(json, "equipGlass", Profile.EquipGlass);
             Profile.EquipWeapon = JsonInt(json, "equipWeapon", Profile.EquipWeapon);
             Profile.PetId = JsonInt(json, "petId", Profile.PetId);
+            Profile.PetFightLevel = JsonInt(json, "petFightLevel", Profile.PetFightLevel);
             Profile.CardId = JsonInt(json, "cardId", Profile.CardId);
             Profile.TitleId = JsonInt(json, "titleId", Profile.TitleId);
             Profile.TotemId = JsonInt(json, "totemId", Profile.TotemId);
@@ -845,6 +850,8 @@ namespace GunMobile.Client
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
             ParseNewYearClaimedFromServer(json);
+            Profile.EnsureNewYearRankClaimed();
+            ParseIntListFromServer(json, "newYearRankClaimed", Profile.NewYearRankClaimed);
             ParseIntListFromServer(json, "calendarClaimedDays", Profile.CalendarClaimedDays ?? (Profile.CalendarClaimedDays = new List<int>()));
             ParseIntListFromServer(json, "oneYuanBought", Profile.OneYuanBought ?? (Profile.OneYuanBought = new List<int>()));
             ParseBankDepositsFromServer(json);

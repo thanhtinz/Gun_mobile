@@ -644,6 +644,38 @@ namespace GunMobile.Res
         public string ViewIds = "";
     }
 
+    public sealed class MountDrawTemplate
+    {
+        public int Id;
+        public int TemplateId;
+        public int AddHurt;
+        public int AddGuard;
+        public int MagicAttack;
+        public int MagicDefence;
+        public int AddBlood;
+        public string Name = "";
+    }
+
+    public sealed class PetFightPropertyLevel
+    {
+        public int Id;
+        public int Exp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int Blood;
+    }
+
+    public sealed class NewYearRankReward
+    {
+        public int Id;
+        public int RankMin;
+        public int RankMax;
+        public int RewardId;
+        public string Desc = "";
+    }
+
     public sealed class HalloweenRewardItem
     {
         public int RewardLevel;
@@ -1343,6 +1375,10 @@ namespace GunMobile.Res
         public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
         public List<CarnivalActivityItem> CarnivalActivityItems { get; } = new List<CarnivalActivityItem>();
         public List<NewYearPointReward> NewYearPointRewards { get; } = new List<NewYearPointReward>();
+        public Dictionary<int, MountDrawTemplate> MountDrawTemplates { get; } = new Dictionary<int, MountDrawTemplate>();
+        public List<MountDrawTemplate> MountDrawList { get; } = new List<MountDrawTemplate>();
+        public Dictionary<int, PetFightPropertyLevel> PetFightProperties { get; } = new Dictionary<int, PetFightPropertyLevel>();
+        public List<NewYearRankReward> NewYearRankRewards { get; } = new List<NewYearRankReward>();
         public List<HalloweenRewardItem> HalloweenActivityItems { get; } = new List<HalloweenRewardItem>();
         public List<ChristmasGiftTier> ChristmasGifts { get; } = new List<ChristmasGiftTier>();
         public List<SearchGoodsPayEntry> SearchGoodsPay { get; } = new List<SearchGoodsPayEntry>();
@@ -1477,6 +1513,9 @@ namespace GunMobile.Res
             db.LoadSpaRoom(loader);
             db.LoadCarnivalActivityItems(loader);
             db.LoadNewYearPointRewards(loader);
+            db.LoadMountDraw(loader);
+            db.LoadPetFightProperty(loader);
+            db.LoadNewYearRankRewards(loader);
             db.LoadHalloweenActivityItems(loader);
             db.LoadSearchGoodsPay(loader);
             db.LoadActivityConfig(loader);
@@ -2453,6 +2492,102 @@ namespace GunMobile.Res
         public int TreasureDrawCost()
         {
             return ConfigInt("TreasureHuntMoney", 200);
+        }
+
+        public int MountDrawCost()
+        {
+            return ConfigInt("MountDrawMoney", ConfigInt("TreasureHuntMoney", 200));
+        }
+
+        public MountDrawTemplate RollMountDraw(System.Random rng)
+        {
+            if (MountDrawList.Count == 0 || rng == null)
+            {
+                return null;
+            }
+
+            return MountDrawList[rng.Next(0, MountDrawList.Count)];
+        }
+
+        public PetFightPropertyLevel GetPetFightProperty(int level)
+        {
+            PetFightProperties.TryGetValue(level, out PetFightPropertyLevel row);
+            return row;
+        }
+
+        public int PetFightPropertyMaxLevel()
+        {
+            int max = 0;
+            foreach (var kv in PetFightProperties)
+            {
+                if (kv.Key > max) max = kv.Key;
+            }
+
+            int cfgCap = ConfigInt("PetExFightPropertyLevel", 0);
+            if (cfgCap > 0)
+            {
+                max = max > 0 ? Mathf.Min(max, cfgCap) : cfgCap;
+            }
+
+            return max;
+        }
+
+        public int PetFightPropertyUpgradeCost(int currentLevel)
+        {
+            PetFightPropertyLevel next = GetPetFightProperty(currentLevel + 1);
+            return next != null ? Mathf.Max(0, next.Exp) : 0;
+        }
+
+        public void ApplyPetFightPropertyBonus(int petId, int fightLevel, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            if (petId <= 0 || fightLevel <= 0)
+            {
+                return;
+            }
+
+            PetFightPropertyLevel row = GetPetFightProperty(fightLevel);
+            if (row == null)
+            {
+                return;
+            }
+
+            atk += row.Attack;
+            def += row.Defence;
+            agi += row.Agility;
+            luck += row.Lucky;
+            hp += row.Blood;
+        }
+
+        public NewYearRankReward GetNewYearRankReward(int rewardId)
+        {
+            for (int i = 0; i < NewYearRankRewards.Count; i++)
+            {
+                if (NewYearRankRewards[i].Id == rewardId)
+                {
+                    return NewYearRankRewards[i];
+                }
+            }
+
+            return null;
+        }
+
+        public NewYearRankReward FindNewYearRankRewardForRank(int rank)
+        {
+            if (rank <= 0)
+            {
+                return null;
+            }
+
+            for (int i = 0; i < NewYearRankRewards.Count; i++)
+            {
+                NewYearRankReward row = NewYearRankRewards[i];
+                if (rank >= row.RankMin && rank <= row.RankMax)
+                {
+                    return row;
+                }
+            }
+
+            return null;
         }
 
         public int CarnivalDrawCost()
@@ -6122,6 +6257,105 @@ namespace GunMobile.Res
                     Id = id,
                     Points = Int(row, "Points"),
                     ViewIds = Str(row, "ViewIDs")
+                });
+            }
+        }
+
+        void LoadMountDraw(ResLoader loader)
+        {
+            LoadMountDrawFile(loader, "Request/mountdrawtemplateOUT.xml");
+            LoadMountDrawFile(loader, "Request/MountDrawTemplate.xml");
+            LoadMountDrawFile(loader, "Request/mountdrawtemplate.xml");
+        }
+
+        void LoadMountDrawFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                int templateId = Int(row, "TemplateId");
+                if (id <= 0 || templateId <= 0 || MountDrawTemplates.ContainsKey(id))
+                {
+                    continue;
+                }
+
+                var info = new MountDrawTemplate
+                {
+                    Id = id,
+                    TemplateId = templateId,
+                    AddHurt = Int(row, "AddHurt"),
+                    AddGuard = Int(row, "AddGuard"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefence"),
+                    AddBlood = Int(row, "AddBlood"),
+                    Name = Str(row, "Name")
+                };
+                MountDrawTemplates[id] = info;
+                MountDrawList.Add(info);
+            }
+        }
+
+        void LoadPetFightProperty(ResLoader loader)
+        {
+            LoadPetFightPropertyFile(loader, "Request/loadpetfightproperty_out.xml");
+            LoadPetFightPropertyFile(loader, "Request/loadpetfightproperty.xml");
+        }
+
+        void LoadPetFightPropertyFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || PetFightProperties.ContainsKey(id))
+                {
+                    continue;
+                }
+
+                PetFightProperties[id] = new PetFightPropertyLevel
+                {
+                    Id = id,
+                    Exp = Int(row, "Exp"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    Blood = Int(row, "Blood")
+                };
+            }
+        }
+
+        void LoadNewYearRankRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_NewYearRankReward.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                NewYearRankRewards.Add(new NewYearRankReward
+                {
+                    Id = id,
+                    RankMin = Int(row, "RankMin"),
+                    RankMax = Int(row, "RankMax"),
+                    RewardId = Int(row, "RewardId"),
+                    Desc = Str(row, "Desc")
                 });
             }
         }

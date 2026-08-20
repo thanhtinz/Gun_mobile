@@ -42,6 +42,7 @@ namespace GunMobile.Client
         public int LastSignDay = -1;
         public int SignIndex;
         public int PetId;
+        public int PetFightLevel;
         public int CardId;
         public int TotemId;
         public int TitleId;
@@ -99,6 +100,7 @@ namespace GunMobile.Client
         public int NewYearPoints;
         public int NewYearFreeUsed;
         public List<int> NewYearPointClaimed = new List<int>();
+        public List<int> NewYearRankClaimed = new List<int>();
         public int WorshipMoonDraws;
         public int SuperLuckerDraws;
         public int JigsawClaims;
@@ -163,6 +165,7 @@ namespace GunMobile.Client
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
+        public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureAchievements()
@@ -503,6 +506,8 @@ namespace GunMobile.Client
                     luk += pet.Luck;
                     hp += pet.Blood;
                 }
+
+                db.ApplyPetFightPropertyBonus(PetId, PetFightLevel, ref atk, ref def, ref agi, ref luk, ref hp);
 
                 CardInfo card = db.GetCard(CardId);
                 if (card != null)
