@@ -506,6 +506,8 @@ namespace GunMobile.Client
                     case PhoneMsg.StrengthenGoodsMap:
                     case PhoneMsg.BoxOpen:
                     case PhoneMsg.ItemFusion:
+                    case PhoneMsg.EngraveDebrisAction:
+                    case PhoneMsg.PetSkillUnlock:
                         if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
                         if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
                         if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
@@ -830,6 +832,12 @@ namespace GunMobile.Client
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.GodCardPoints = JsonInt(json, "godCardPoints", Profile.GodCardPoints);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
+            Profile.EnsureEngraveDebris();
+            ParseIntListFromServer(json, "engraveDebrisIds", Profile.EngraveDebrisIds);
+            ParseIntListFromServer(json, "engraveDebrisPropTypes", Profile.EngraveDebrisPropTypes);
+            ParseIntListFromServer(json, "engraveDebrisPropValues", Profile.EngraveDebrisPropValues);
+            Profile.EnsurePetSkills();
+            ParseIntListFromServer(json, "petSkillIds", Profile.PetSkillIds);
             string consortia = JsonStr(json, "consortiaName", null);
             if (consortia != null) Profile.ConsortiaName = consortia;
             ParseBagFromServer(json);

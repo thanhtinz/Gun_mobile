@@ -83,6 +83,25 @@ namespace GunMobile.Client
                     $"升星 #{star.OldId} → #{star.NewId}  {star.Exp} 金币/GP",
                     PhoneNet.UpgradePetStar);
             }
+            app.Profile.EnsurePetSkills();
+            int payCost = app.Database != null ? app.Database.PetSkillUnlockCost() : 0;
+            SysUi.Note(body, "宠技解锁  已学 " + app.Profile.PetSkillIds.Count + "  ·  费用 " + payCost + " 金/GP");
+            if (app.Database != null && app.Profile.PetId > 0 && app.Database.Pets.TryGetValue(app.Profile.PetId, out PetInfo activePet))
+            {
+                int shown = 0;
+                foreach (PetSkillTemplateInfo tmpl in app.Database.PetSkillTemplates)
+                {
+                    if (tmpl.PetTemplateId > 0 && tmpl.PetTemplateId != activePet.TemplateId) continue;
+                    if (tmpl.PetTemplateId <= 0 && tmpl.KindId != activePet.KindId) continue;
+                    if (!app.Database.PetSkills.TryGetValue(tmpl.SkillId, out PetSkillInfo skill)) continue;
+                    bool owned = app.Profile.PetSkillIds.Contains(tmpl.SkillId);
+                    int sid = tmpl.SkillId;
+                    SysUi.Row(body, "pskill" + sid,
+                        (owned ? "[已学] " : "") + skill.Name + " #" + sid + "  Lv" + tmpl.MinLevel,
+                        owned ? null : (System.Action)(() => PhoneNet.UnlockPetSkill(sid)));
+                    if (++shown >= 24) break;
+                }
+            }
             int n = 0;
             foreach (PetInfo pet in app.Database.Pets.Values)
             {
@@ -1516,6 +1535,22 @@ namespace GunMobile.Client
             int minLv = app.Database.ConfigInt("EngraveLimitLevel", 20);
             SysUi.Note(body, $"Level {app.Profile.Level} (需要 {minLv}+)  ·  套装 {app.Profile.EngraveSetId}");
             SysUi.Row(body, "clear", "卸下刻印", () => PhoneNet.EquipEngraveSet(0));
+            app.Profile.EnsureEngraveDebris();
+            SysUi.Note(body, "刻印碎片  已镶 " + app.Profile.EngraveDebrisIds.Count +
+                " / " + (app.Database.EngraveDebris.Count > 0 ? "cfg" + app.Database.EngraveDebris.Count : "0"));
+            SysUi.Row(body, "debrisClear", "清空碎片属性", () => PhoneNet.EngraveDebris(0, "clear"));
+            int debrisShown = 0;
+            foreach (EngraveDebrisInfo debris in app.Database.EngraveDebris.Values)
+            {
+                EngraveDebrisInfo local = debris;
+                bool on = app.Profile.EngraveDebrisIds.Contains(debris.Id);
+                bool setOk = app.Profile.EngraveSetId == 0 || app.Profile.EngraveSetId == debris.SetId;
+                if (!setOk && app.Profile.EngraveSetId > 0) continue;
+                SysUi.Row(body, "ed" + debris.Id,
+                    (on ? "[镶嵌] " : "") + "碎片#" + debris.Id + "  Place" + debris.Place + "  Set" + debris.SetId,
+                    () => PhoneNet.EngraveDebris(local.Id, on ? "clear" : "apply"));
+                if (++debrisShown >= 30) break;
+            }
             foreach (EngraveSetInfo set in app.Database.EngraveSets.Values)
             {
                 EngraveSetInfo local = set;

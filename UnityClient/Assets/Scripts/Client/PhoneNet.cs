@@ -280,6 +280,17 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.EngraveEquip, "{\"setId\":" + setId + "}");
         }
 
+        public static void EngraveDebris(int debrisId, string action = "apply")
+        {
+            if (string.IsNullOrEmpty(action)) action = "apply";
+            Road?.Send(PhoneMsg.EngraveDebrisAction, "{\"action\":\"" + action.Replace("\"", "") + "\",\"debrisId\":" + debrisId + "}");
+        }
+
+        public static void UnlockPetSkill(int skillId)
+        {
+            Road?.Send(PhoneMsg.PetSkillUnlock, "{\"skillId\":" + skillId + "}");
+        }
+
         public static void TradeStock(string action, int stockId, int shares)
         {
             string act = (action ?? "buy").Replace("\"", "");

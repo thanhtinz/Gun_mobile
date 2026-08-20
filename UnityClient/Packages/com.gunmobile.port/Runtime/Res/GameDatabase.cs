@@ -975,6 +975,35 @@ namespace GunMobile.Res
         public int Quality;
     }
 
+
+    public sealed class EngraveDebrisInfo
+    {
+        public int Id;
+        public int Place;
+        public int Character;
+        public int SetId;
+        public int[] AttributeAdds = new int[15];
+    }
+
+    public sealed class DebrisPropertyRange
+    {
+        public int DebrisId;
+        public int AttributeType;
+        public int MinValue;
+        public int MaxValue;
+    }
+
+    public sealed class PetSkillTemplateInfo
+    {
+        public int PetTemplateId;
+        public int KindId;
+        public int GetType;
+        public int SkillId;
+        public int SkillBookId;
+        public int MinLevel;
+        public int[] DeleteSkillIds = System.Array.Empty<int>();
+    }
+
     public sealed class StockInfo
     {
         public int StockId;
@@ -1402,6 +1431,12 @@ namespace GunMobile.Res
         public List<GodCardGroupEntry> GodCardGroups { get; } = new List<GodCardGroupEntry>();
         public Dictionary<int, EngraveSetInfo> EngraveSets { get; } = new Dictionary<int, EngraveSetInfo>();
         public List<EngraveElementInfo> EngraveElements { get; } = new List<EngraveElementInfo>();
+        public Dictionary<int, EngraveDebrisInfo> EngraveDebris { get; } = new Dictionary<int, EngraveDebrisInfo>();
+        public List<DebrisPropertyRange> DebrisPropertyRanges { get; } = new List<DebrisPropertyRange>();
+        public Dictionary<int, List<DebrisPropertyRange>> DebrisPropertyById { get; } = new Dictionary<int, List<DebrisPropertyRange>>();
+        public List<PetSkillTemplateInfo> PetSkillTemplates { get; } = new List<PetSkillTemplateInfo>();
+        public Dictionary<int, List<PetSkillTemplateInfo>> PetSkillTemplatesBySkillId { get; } = new Dictionary<int, List<PetSkillTemplateInfo>>();
+        public Dictionary<string, string> PetConfig { get; } = new Dictionary<string, string>(System.StringComparer.OrdinalIgnoreCase);
         public Dictionary<int, StockInfo> Stocks { get; } = new Dictionary<int, StockInfo>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
@@ -1492,6 +1527,10 @@ namespace GunMobile.Res
             db.LoadGodCardPointRewards(loader);
             db.LoadGodCardGroups(loader);
             db.LoadEngrave(loader);
+            db.LoadEngraveDebris(loader);
+            db.LoadDebrisProperty(loader);
+            db.LoadPetSkillTemplates(loader);
+            db.LoadPetConfig(loader);
             db.LoadStocks(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
@@ -6730,6 +6769,234 @@ namespace GunMobile.Res
                     Attribute = Str(row, "Attribute"),
                     Quality = Int(row, "Quality")
                 });
+            }
+        }
+
+
+        void LoadEngraveDebris(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/engravedebrisinfo.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/EngraveDebrisInfo.xml", out table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = FirstInt(row, "Id", "ID");
+                if (id <= 0) continue;
+                var info = new EngraveDebrisInfo
+                {
+                    Id = id,
+                    Place = Int(row, "Place"),
+                    Character = Int(row, "Character"),
+                    SetId = FirstInt(row, "SetID", "SetId")
+                };
+                for (int i = 1; i <= 14; i++)
+                {
+                    info.AttributeAdds[i] = Int(row, "AttributeAdd" + i);
+                }
+                EngraveDebris[id] = info;
+            }
+        }
+
+        void LoadDebrisProperty(ResLoader loader)
+        {
+            LoadDebrisPropertyFile(loader, "Request/DebrisPropertyConfig.xml");
+            LoadDebrisPropertyFile(loader, "Request/DebrisPropertyConfig1.xml");
+        }
+
+        void LoadDebrisPropertyFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = FirstInt(row, "ID", "Id");
+                int attrType = Int(row, "AttributeType");
+                if (id <= 0 || attrType <= 0) continue;
+                var range = new DebrisPropertyRange
+                {
+                    DebrisId = id,
+                    AttributeType = attrType,
+                    MinValue = Int(row, "MinValue"),
+                    MaxValue = Int(row, "MaxValue")
+                };
+                DebrisPropertyRanges.Add(range);
+                if (!DebrisPropertyById.TryGetValue(id, out List<DebrisPropertyRange> list))
+                {
+                    list = new List<DebrisPropertyRange>();
+                    DebrisPropertyById[id] = list;
+                }
+                for (int i = list.Count - 1; i >= 0; i--)
+                {
+                    if (list[i].AttributeType == attrType) list.RemoveAt(i);
+                }
+                list.Add(range);
+            }
+        }
+
+        void LoadPetSkillTemplates(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/petskilltemplateinfo.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int skillId = FirstInt(row, "SkillID", "SkillId");
+                if (skillId <= 0) continue;
+                string deleteRaw = Str(row, "DeleteSkillIDs");
+                int[] deleteIds = System.Array.Empty<int>();
+                if (!string.IsNullOrEmpty(deleteRaw))
+                {
+                    string[] parts = deleteRaw.Split(new[] { ',', '|', ';' }, System.StringSplitOptions.RemoveEmptyEntries);
+                    var list = new List<int>(parts.Length);
+                    for (int i = 0; i < parts.Length; i++)
+                    {
+                        if (int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int sid) && sid > 0)
+                            list.Add(sid);
+                    }
+                    deleteIds = list.ToArray();
+                }
+
+                var info = new PetSkillTemplateInfo
+                {
+                    PetTemplateId = FirstInt(row, "PetTemplateID", "PetTemplateId"),
+                    KindId = FirstInt(row, "KindID", "KindId"),
+                    GetType = Int(row, "GetType"),
+                    SkillId = skillId,
+                    SkillBookId = FirstInt(row, "SkillBookID", "SkillBookId"),
+                    MinLevel = Int(row, "MinLevel"),
+                    DeleteSkillIds = deleteIds
+                };
+                PetSkillTemplates.Add(info);
+                if (!PetSkillTemplatesBySkillId.TryGetValue(skillId, out List<PetSkillTemplateInfo> bySkill))
+                {
+                    bySkill = new List<PetSkillTemplateInfo>();
+                    PetSkillTemplatesBySkillId[skillId] = bySkill;
+                }
+                bySkill.Add(info);
+            }
+        }
+
+        void LoadPetConfig(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/petconfiginfo.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/petconfiginfo_out.xml", out table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                foreach (KeyValuePair<string, string> kv in row)
+                {
+                    if (!string.IsNullOrEmpty(kv.Key) && !string.IsNullOrEmpty(kv.Value))
+                        PetConfig[kv.Key] = kv.Value;
+                }
+            }
+        }
+
+        public EngraveDebrisInfo GetEngraveDebris(int debrisId)
+        {
+            if (debrisId > 0 && EngraveDebris.TryGetValue(debrisId, out EngraveDebrisInfo row)) return row;
+            return null;
+        }
+
+        public int PetConfigInt(string name, int fallback = 0)
+        {
+            if (!PetConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw)) return fallback;
+            int comma = raw.IndexOf(',');
+            string head = comma < 0 ? raw : raw.Substring(0, comma);
+            return int.TryParse(head.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) ? n : fallback;
+        }
+
+        public int PetSkillUnlockCost() => Mathf.Max(0, PetConfigInt("PaySkillCost", 5000));
+
+        public int PetSkillMaxPayCount() => Mathf.Max(0, PetConfigInt("MaxPaySkillCount", 1));
+
+        public PetSkillTemplateInfo FindPetSkillTemplate(int skillId, int petTemplateId, int kindId)
+        {
+            if (skillId <= 0 || !PetSkillTemplatesBySkillId.TryGetValue(skillId, out List<PetSkillTemplateInfo> list))
+                return null;
+            PetSkillTemplateInfo fallback = null;
+            for (int i = 0; i < list.Count; i++)
+            {
+                PetSkillTemplateInfo row = list[i];
+                if (row.PetTemplateId > 0 && row.PetTemplateId == petTemplateId) return row;
+                if (row.PetTemplateId <= 0 && row.KindId == kindId) return row;
+                if (row.PetTemplateId <= 0 && row.KindId <= 0 && fallback == null) fallback = row;
+            }
+            return fallback;
+        }
+
+        public List<DebrisPropertyRange> GetDebrisPropertyRanges(int debrisId)
+        {
+            if (debrisId > 0 && DebrisPropertyById.TryGetValue(debrisId, out List<DebrisPropertyRange> list))
+                return list;
+            return null;
+        }
+
+        public void RollDebrisProperties(int debrisId, System.Random rng, List<int> typesOut, List<int> valuesOut)
+        {
+            if (typesOut == null || valuesOut == null) return;
+            typesOut.Clear();
+            valuesOut.Clear();
+            List<DebrisPropertyRange> ranges = GetDebrisPropertyRanges(debrisId);
+            if (ranges == null || ranges.Count == 0 || rng == null) return;
+            for (int i = 0; i < ranges.Count; i++)
+            {
+                DebrisPropertyRange r = ranges[i];
+                int min = r.MinValue;
+                int max = r.MaxValue;
+                if (max < min) { int t = min; min = max; max = t; }
+                typesOut.Add(r.AttributeType);
+                valuesOut.Add(rng.Next(min, max + 1));
+            }
+        }
+
+        public void ApplyEngraveDebrisBonuses(IReadOnlyList<int> debrisIds, IReadOnlyList<int> propTypes, IReadOnlyList<int> propValues,
+            ref int atk, ref int def, ref int agi, ref int luk, ref int hp, ref int baseDmg, ref int baseGuard, ref int magicAtk, ref int magicDef)
+        {
+            if (debrisIds != null)
+            {
+                for (int i = 0; i < debrisIds.Count; i++)
+                {
+                    EngraveDebrisInfo debris = GetEngraveDebris(debrisIds[i]);
+                    if (debris == null || debris.AttributeAdds == null) continue;
+                    for (int a = 1; a < debris.AttributeAdds.Length; a++)
+                    {
+                        int val = debris.AttributeAdds[a];
+                        if (val != 0) ApplyDebrisAttributeType(a, val, ref atk, ref def, ref agi, ref luk, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+                    }
+                }
+            }
+
+            if (propTypes == null || propValues == null) return;
+            int n = Mathf.Min(propTypes.Count, propValues.Count);
+            for (int i = 0; i < n; i++)
+            {
+                if (propValues[i] != 0)
+                    ApplyDebrisAttributeType(propTypes[i], propValues[i], ref atk, ref def, ref agi, ref luk, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            }
+        }
+
+        static void ApplyDebrisAttributeType(int type, int value, ref int atk, ref int def, ref int agi, ref int luk, ref int hp,
+            ref int baseDmg, ref int baseGuard, ref int magicAtk, ref int magicDef)
+        {
+            switch (type)
+            {
+                case 1: atk += value; break;
+                case 2: def += value; break;
+                case 3: agi += value; break;
+                case 4: luk += value; break;
+                case 5: hp += value; break;
+                case 6: magicAtk += value; break;
+                case 7: baseDmg += value; break;
+                case 8: baseGuard += value; break;
+                case 9: magicDef += value; break;
+                default: atk += Mathf.Max(1, value / 2); break;
             }
         }
 

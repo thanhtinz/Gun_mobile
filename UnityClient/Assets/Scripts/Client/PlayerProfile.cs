@@ -158,6 +158,10 @@ namespace GunMobile.Client
         public int GodCardPoints;
         public List<int> GodCardPointClaimed = new List<int>();
         public int EngraveSetId;
+        public List<int> EngraveDebrisIds = new List<int>();
+        public List<int> EngraveDebrisPropTypes = new List<int>();
+        public List<int> EngraveDebrisPropValues = new List<int>();
+        public List<int> PetSkillIds = new List<int>();
         public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
@@ -165,6 +169,13 @@ namespace GunMobile.Client
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
+        public void EnsureEngraveDebris()
+        {
+            if (EngraveDebrisIds == null) EngraveDebrisIds = new List<int>();
+            if (EngraveDebrisPropTypes == null) EngraveDebrisPropTypes = new List<int>();
+            if (EngraveDebrisPropValues == null) EngraveDebrisPropValues = new List<int>();
+        }
+        public void EnsurePetSkills() { if (PetSkillIds == null) PetSkillIds = new List<int>(); }
         public void EnsureAchievements()
         {
             if (CompletedAchievements == null) CompletedAchievements = new List<int>();
@@ -637,8 +648,12 @@ namespace GunMobile.Client
                 }
 
                 db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
-                atk += engrDmg;
-                def += engrGuard;
+                EnsureEngraveDebris();
+                int debrisMa = 0, debrisMd = 0;
+                db.ApplyEngraveDebrisBonuses(EngraveDebrisIds, EngraveDebrisPropTypes, EngraveDebrisPropValues,
+                    ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard, ref debrisMa, ref debrisMd);
+                atk += engrDmg + debrisMa / 4;
+                def += engrGuard + debrisMd / 4;
 
             }
 

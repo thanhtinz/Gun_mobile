@@ -249,6 +249,8 @@ namespace GunMobile.Net
         public const ushort StrengthenGoodsMap = 202;
         public const ushort BoxOpen = 203;
         public const ushort ItemFusion = 204;
+        public const ushort EngraveDebrisAction = 205;
+        public const ushort PetSkillUnlock = 206;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

@@ -152,6 +152,10 @@ namespace GunMobile.Net
         public int GodCardPoints;
         public List<int> GodCardPointClaimed = new List<int>();
         public int EngraveSetId;
+        public List<int> EngraveDebrisIds = new List<int>();
+        public List<int> EngraveDebrisPropTypes = new List<int>();
+        public List<int> EngraveDebrisPropValues = new List<int>();
+        public List<int> PetSkillIds = new List<int>();
         public List<StockSlot> StockHoldings = new List<StockSlot>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
         public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
@@ -202,6 +206,13 @@ namespace GunMobile.Net
         public void TouchQuizDay() { int t = DateTime.Now.DayOfYear; if (QuizDay != t) { QuizDay = t; QuizAttempts = 0; } }
         public void TouchOneYuanDay() { EnsureOneYuanBought(); int t = DateTime.Now.DayOfYear; if (OneYuanDay != t) { OneYuanDay = t; OneYuanBought.Clear(); } }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
+        public void EnsureEngraveDebris()
+        {
+            if (EngraveDebrisIds == null) EngraveDebrisIds = new List<int>();
+            if (EngraveDebrisPropTypes == null) EngraveDebrisPropTypes = new List<int>();
+            if (EngraveDebrisPropValues == null) EngraveDebrisPropValues = new List<int>();
+        }
+        public void EnsurePetSkills() { if (PetSkillIds == null) PetSkillIds = new List<int>(); }
         public void EnsureAchievements()
         {
             if (CompletedAchievements == null) CompletedAchievements = new List<int>();
@@ -479,6 +490,10 @@ namespace GunMobile.Net
             }
 
             db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            EnsureEngraveDebris();
+            int debrisMa = 0, debrisMd = 0;
+            db.ApplyEngraveDebrisBonuses(EngraveDebrisIds, EngraveDebrisPropTypes, EngraveDebrisPropValues,
+                ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref debrisMa, ref debrisMd);
 
             EnsureFightSpirits();
             db.ApplyFightSpiritStats(FightSpirits, ref atk, ref def, ref agi, ref luck, ref hp);
@@ -487,7 +502,7 @@ namespace GunMobile.Net
             int magicAtk = 0;
             int magicDef = 0;
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
-            magicAtk += jadeMa; magicDef += jadeMd;
+            magicAtk += jadeMa + debrisMa; magicDef += jadeMd + debrisMd;
             db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
@@ -758,6 +773,20 @@ namespace GunMobile.Net
             for (int i = 0; i < GodCardPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(GodCardPointClaimed[i]); }
             sb.Append("],");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
+            EnsureEngraveDebris();
+            sb.Append("\"engraveDebrisIds\":[");
+            for (int i = 0; i < EngraveDebrisIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(EngraveDebrisIds[i]); }
+            sb.Append("],");
+            sb.Append("\"engraveDebrisPropTypes\":[");
+            for (int i = 0; i < EngraveDebrisPropTypes.Count; i++) { if (i > 0) sb.Append(","); sb.Append(EngraveDebrisPropTypes[i]); }
+            sb.Append("],");
+            sb.Append("\"engraveDebrisPropValues\":[");
+            for (int i = 0; i < EngraveDebrisPropValues.Count; i++) { if (i > 0) sb.Append(","); sb.Append(EngraveDebrisPropValues[i]); }
+            sb.Append("],");
+            EnsurePetSkills();
+            sb.Append("\"petSkillIds\":[");
+            for (int i = 0; i < PetSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(PetSkillIds[i]); }
+            sb.Append("],");
             sb.Append("\"godCards\":[");
             for (int i = 0; i < GodCards.Count; i++)
             {
@@ -2010,6 +2039,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ItemFusion:
                     HandleItemFusion(player, ns, json);
+                    break;
+
+                case PhoneMsg.EngraveDebrisAction:
+                    HandleEngraveDebrisAction(player, ns, json);
+                    break;
+
+                case PhoneMsg.PetSkillUnlock:
+                    HandlePetSkillUnlock(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -5403,9 +5440,120 @@ namespace GunMobile.Net
             }
 
             player.EngraveSetId = setId;
+            player.EnsureEngraveDebris();
+            if (setId <= 0)
+            {
+                player.EngraveDebrisIds.Clear();
+                player.EngraveDebrisPropTypes.Clear();
+                player.EngraveDebrisPropValues.Clear();
+            }
+            else if (_db != null)
+            {
+                for (int i = player.EngraveDebrisIds.Count - 1; i >= 0; i--)
+                {
+                    EngraveDebrisInfo debris = _db.GetEngraveDebris(player.EngraveDebrisIds[i]);
+                    if (debris == null || debris.SetId != setId)
+                        player.EngraveDebrisIds.RemoveAt(i);
+                }
+            }
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandleEngraveDebrisAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "apply");
+            player.EnsureEngraveDebris();
+            if (string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "unequip", StringComparison.OrdinalIgnoreCase))
+            {
+                int clearId = JI(json, "debrisId", 0);
+                if (clearId > 0) player.EngraveDebrisIds.Remove(clearId);
+                else
+                {
+                    player.EngraveDebrisIds.Clear();
+                    player.EngraveDebrisPropTypes.Clear();
+                    player.EngraveDebrisPropValues.Clear();
+                }
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":true,\"action\":\"clear\",\"profile\":" + player.ToJson() + "}");
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            int debrisId = JI(json, "debrisId", 0);
+            EngraveDebrisInfo debris = _db.GetEngraveDebris(debrisId);
+            if (debris == null) { Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":false,\"err\":\"debris\"}"); return; }
+            int minLevel = _db.ConfigInt("EngraveLimitLevel", 20);
+            if (player.Level < minLevel) { Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            if (!HasEnoughBag(player, debrisId, 1) && !player.EngraveDebrisIds.Contains(debrisId))
+            { Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":false,\"err\":\"bag\"}"); return; }
+
+            for (int i = player.EngraveDebrisIds.Count - 1; i >= 0; i--)
+            {
+                EngraveDebrisInfo owned = _db.GetEngraveDebris(player.EngraveDebrisIds[i]);
+                if (owned != null && owned.Place == debris.Place)
+                    player.EngraveDebrisIds.RemoveAt(i);
+            }
+            if (player.EngraveSetId <= 0 || player.EngraveSetId != debris.SetId)
+                player.EngraveSetId = debris.SetId;
+            if (!player.EngraveDebrisIds.Contains(debrisId))
+            {
+                if (HasEnoughBag(player, debrisId, 1)) player.Consume(debrisId, 1);
+                player.EngraveDebrisIds.Add(debrisId);
+            }
+
+            var rolledTypes = new List<int>();
+            var rolledValues = new List<int>();
+            lock (_lock) { _db.RollDebrisProperties(debrisId, _rng, rolledTypes, rolledValues); }
+            player.EngraveDebrisPropTypes.Clear();
+            player.EngraveDebrisPropValues.Clear();
+            player.EngraveDebrisPropTypes.AddRange(rolledTypes);
+            player.EngraveDebrisPropValues.AddRange(rolledValues);
+
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.EngraveDebrisAction, "{\"ok\":true,\"debrisId\":" + debrisId + ",\"setId\":" + player.EngraveSetId +
+                ",\"place\":" + debris.Place + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandlePetSkillUnlock(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int skillId = JI(json, "skillId", 0);
+            if (player.PetId <= 0) { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"pet\"}"); return; }
+            if (!_db.Pets.TryGetValue(player.PetId, out PetInfo pet))
+            { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"pet\"}"); return; }
+            PetSkillTemplateInfo tmpl = _db.FindPetSkillTemplate(skillId, player.PetId, pet.KindId);
+            if (tmpl == null || !_db.PetSkills.ContainsKey(skillId))
+            { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"skill\"}"); return; }
+            player.EnsurePetSkills();
+            if (player.PetSkillIds.Contains(skillId))
+            {
+                Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"already\":true}");
+                return;
+            }
+            int cost = _db.PetSkillUnlockCost();
+            bool payGold = cost > 0 && player.Gold >= cost;
+            bool payGp = cost > 0 && !payGold && player.Gp >= cost;
+            if (cost > 0 && !payGold && !payGp)
+            { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"cost\"}"); return; }
+            if (tmpl.SkillBookId > 0 && !player.Consume(tmpl.SkillBookId, 1))
+            { Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":false,\"err\":\"book\"}"); return; }
+            if (payGold) player.Gold -= cost;
+            else if (payGp) player.Gp -= cost;
+            if (tmpl.DeleteSkillIds != null)
+            {
+                for (int i = 0; i < tmpl.DeleteSkillIds.Length; i++)
+                    player.PetSkillIds.Remove(tmpl.DeleteSkillIds[i]);
+            }
+            player.PetSkillIds.Add(skillId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.PetSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"cost\":" + cost +
+                ",\"paid\":\"" + (payGold ? "gold" : payGp ? "gp" : "free") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleStockTrade(ServerPlayer player, NetworkStream ns, string json)
@@ -8342,6 +8490,10 @@ namespace GunMobile.Net
             public int OneYuanDay = -1;
             public List<int> OneYuanBought = new List<int>();
             public int GodCardEquipId, EngraveSetId;
+            public List<int> EngraveDebrisIds = new List<int>();
+            public List<int> EngraveDebrisPropTypes = new List<int>();
+            public List<int> EngraveDebrisPropValues = new List<int>();
+            public List<int> PetSkillIds = new List<int>();
             public int GodCardPoints;
             public List<int> GodCardPointClaimed = new List<int>();
             public int NextEmblemId = 1, NextSoulStampId = 1;
@@ -8468,6 +8620,10 @@ namespace GunMobile.Net
                 OneYuanDay = p.OneYuanDay,
                 OneYuanBought = p.OneYuanBought ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
+                EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
+                EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
+                EngraveDebrisPropValues = p.EngraveDebrisPropValues ?? new List<int>(),
+                PetSkillIds = p.PetSkillIds ?? new List<int>(),
                 GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
@@ -8598,6 +8754,10 @@ namespace GunMobile.Net
                 OneYuanDay = s.OneYuanDay,
                 OneYuanBought = s.OneYuanBought ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
+                EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
+                EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),
+                EngraveDebrisPropValues = s.EngraveDebrisPropValues ?? new List<int>(),
+                PetSkillIds = s.PetSkillIds ?? new List<int>(),
                 GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,
                 NextSoulStampId = s.NextSoulStampId > 0 ? s.NextSoulStampId : 1,
