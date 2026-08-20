@@ -277,6 +277,27 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.HomeTempleUpgrade, "{}");
         }
 
+        public static void WardrobeEquip(int clothId)
+        {
+            Road?.Send(PhoneMsg.WardrobeEquip, "{\"clothId\":" + clothId + "}");
+        }
+
+        public static void WardrobeUpgrade(int propertyId)
+        {
+            Road?.Send(PhoneMsg.WardrobeUpgrade, "{\"propertyId\":" + propertyId + "}");
+        }
+
+        public static void HonorSystemAction(string action, int honorId = 1)
+        {
+            Road?.Send(PhoneMsg.HonorSystemAction,
+                "{\"action\":\"" + (action ?? "donate").Replace("\"", "") + "\",\"honorId\":" + honorId + "}");
+        }
+
+        public static void HonorSystemClaim(int level)
+        {
+            Road?.Send(PhoneMsg.HonorSystemClaim, "{\"level\":" + level + "}");
+        }
+
         public static void SendMail(string to, int gold, string subject = null, string body = null)
         {
             Road?.Send(PhoneMsg.MailSend,
@@ -286,11 +307,54 @@ namespace GunMobile.Client
                 "\",\"body\":\"" + (body ?? "").Replace("\"", "") + "\"}");
         }
 
-        public static void SweepLabyrinth() { Road?.Send(PhoneMsg.SweepLabyrinth, "{}"); }
-        public static void CraftEmblem(int types, int profile) { Road?.Send(PhoneMsg.EmblemCraft, "{\"types\":" + types + ",\"profile\":" + profile + "}"); }
-        public static void EquipEmblem(int emblemId, int equipped = 1) { Road?.Send(PhoneMsg.EmblemEquip, "{\"emblemId\":" + emblemId + ",\"equipped\":" + equipped + "}"); }
-        public static void ComposeSoulStamp(int quality) { Road?.Send(PhoneMsg.SoulStampCompose, "{\"quality\":" + quality + "}"); }
-        public static void RefineSoulStamp(int soulStampId) { Road?.Send(PhoneMsg.SoulStampRefine, "{\"soulStampId\":" + soulStampId + "}"); }
+        public static void SweepLabyrinth()
+        {
+            Road?.Send(PhoneMsg.SweepLabyrinth, "{}");
+        }
+
+        public static void CraftEmblem(int types, int profile)
+        {
+            Road?.Send(PhoneMsg.EmblemCraft, "{\"types\":" + types + ",\"profile\":" + profile + "}");
+        }
+
+        public static void EquipEmblem(int emblemId, int equipped = 1)
+        {
+            Road?.Send(PhoneMsg.EmblemEquip, "{\"emblemId\":" + emblemId + ",\"equipped\":" + equipped + "}");
+        }
+
+        public static void ComposeSoulStamp(int quality)
+        {
+            Road?.Send(PhoneMsg.SoulStampCompose, "{\"quality\":" + quality + "}");
+        }
+
+        public static void RefineSoulStamp(int soulStampId)
+        {
+            Road?.Send(PhoneMsg.SoulStampRefine, "{\"soulStampId\":" + soulStampId + "}");
+        }
+
+        public static void DreamlandStart(int chapter, int section)
+        {
+            Road?.Send(PhoneMsg.DreamlandStart,
+                "{\"chapter\":" + chapter + ",\"section\":" + section + "}");
+        }
+
+        public static void DreamlandClaim(int chapter, int section)
+        {
+            Road?.Send(PhoneMsg.DreamlandClaim,
+                "{\"chapter\":" + chapter + ",\"section\":" + section + "}");
+        }
+
+        public static void WarriorFamStart(int hardType, int level)
+        {
+            Road?.Send(PhoneMsg.WarriorFamStart,
+                "{\"hardType\":" + hardType + ",\"level\":" + level + "}");
+        }
+
+        public static void WarriorFamClaim(int hardType, int level)
+        {
+            Road?.Send(PhoneMsg.WarriorFamClaim,
+                "{\"hardType\":" + hardType + ",\"level\":" + level + "}");
+        }
 
         public static void CookFarm(int foodId)
         {

@@ -300,6 +300,18 @@ namespace GunMobile.Client
                 case "soulmark":
                     ExtraModulesScreens.SoulMarkScreen(_safe, this);
                     return;
+                case "magicwardrobe":
+                    ExtraModulesScreens.MagicWardrobeScreen(_safe, this);
+                    return;
+                case "honorhall":
+                    ExtraModulesScreens.HonorHallScreen(_safe, this);
+                    return;
+                case "dreamland":
+                    ExtraModulesScreens.DreamlandScreen(_safe, this);
+                    return;
+                case "darkboundary":
+                    ExtraModulesScreens.DarkBoundaryScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -395,6 +407,9 @@ namespace GunMobile.Client
                     case PhoneMsg.StockResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
+                    case PhoneMsg.WardrobeUpgrade:
+                    case PhoneMsg.HonorSystemAction:
+                    case PhoneMsg.HonorSystemClaim:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -435,7 +450,18 @@ namespace GunMobile.Client
                         break;
                     case PhoneMsg.PveResult:
                         Profile.PendingReward = JsonInt(msg.Json, "reward", Profile.PendingReward);
+                        PhoneNet.PendingPveNpcId = JsonInt(msg.Json, "npcId", PhoneNet.PendingPveNpcId);
+                        PhoneNet.PendingPveMapId = JsonInt(msg.Json, "map", PhoneNet.PendingPveMapId);
+                        ApplyProfileFromServer(msg.Json);
                         break;
+                    case PhoneMsg.DreamlandClaim:
+                    case PhoneMsg.WarriorFamClaim:
+                    case PhoneMsg.SweepLabyrinth:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
                     case PhoneMsg.Error:
                     {
                         string err = JsonStr(msg.Json, "err", "error");
@@ -536,9 +562,20 @@ namespace GunMobile.Client
             Profile.WorldBossHits = JsonInt(json, "worldBossHits", Profile.WorldBossHits);
             Profile.NecklaceLevel = JsonInt(json, "necklaceLevel", Profile.NecklaceLevel);
             Profile.HomeTempleLevel = JsonInt(json, "homeTempleLevel", Profile.HomeTempleLevel);
+            Profile.WardrobeClothId = JsonInt(json, "wardrobeClothId", Profile.WardrobeClothId);
+            Profile.HonorSystemExp = JsonInt(json, "honorSystemExp", Profile.HonorSystemExp);
+            Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
+            Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);
+            Profile.DreamlandSection = JsonInt(json, "dreamlandSection", Profile.DreamlandSection);
+            Profile.DreamlandClearedSection = JsonInt(json, "dreamlandClearedSection", Profile.DreamlandClearedSection);
+            Profile.DreamlandAttempts = JsonInt(json, "dreamlandAttempts", Profile.DreamlandAttempts);
+            Profile.WarriorFamHardType = JsonInt(json, "warriorFamHardType", Profile.WarriorFamHardType);
+            Profile.WarriorFamLevel = JsonInt(json, "warriorFamLevel", Profile.WarriorFamLevel);
+            Profile.WarriorFamClearedLevel = JsonInt(json, "warriorFamClearedLevel", Profile.WarriorFamClearedLevel);
+            Profile.WarriorFamAttempts = JsonInt(json, "warriorFamAttempts", Profile.WarriorFamAttempts);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);
@@ -551,6 +588,8 @@ namespace GunMobile.Client
             ParseMagicStonesFromServer(json);
             ParseEmblemsFromServer(json);
             ParseSoulStampsFromServer(json);
+            ParseWardrobeFromServer(json);
+            ParseHonorSystemFromServer(json);
             Profile.Save();
         }
 
@@ -762,6 +801,45 @@ namespace GunMobile.Client
             }
             if (list.Count > 0) { Profile.SoulStamps = list; Profile.EnsureSoulStamps(); }
         }
+
+        void ParseWardrobeFromServer(string json)
+        {
+            int idx = json.IndexOf("\"wardrobeProperties\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 21; int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            var list = new System.Collections.Generic.List<int>();
+            string body = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                while (pos < body.Length && (body[pos] == ' ' || body[pos] == ',')) pos++;
+                int ns = pos;
+                while (pos < body.Length && body[pos] >= '0' && body[pos] <= '9') pos++;
+                if (pos > ns && int.TryParse(body.Substring(ns, pos - ns), out int id) && id > 0) list.Add(id);
+            }
+            Profile.WardrobeProperties = list; Profile.EnsureWardrobeProperties();
+        }
+
+        void ParseHonorSystemFromServer(string json)
+        {
+            int idx = json.IndexOf("\"honorSystemClaimed\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 21; int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            var list = new System.Collections.Generic.List<int>();
+            string body = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                while (pos < body.Length && (body[pos] == ' ' || body[pos] == ',')) pos++;
+                int ns = pos;
+                while (pos < body.Length && body[pos] >= '0' && body[pos] <= '9') pos++;
+                if (pos > ns && int.TryParse(body.Substring(ns, pos - ns), out int lv) && lv > 0) list.Add(lv);
+            }
+            Profile.HonorSystemClaimed = list;
+        }
+
         void ParseGodCardsFromServer(string json)
         {
             int idx = json.IndexOf("\"godCards\":[", System.StringComparison.Ordinal);

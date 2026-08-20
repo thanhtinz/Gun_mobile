@@ -61,9 +61,22 @@ namespace GunMobile.Client
         public int WorldBossHits;
         public int NecklaceLevel;
         public int HomeTempleLevel;
+        public int WardrobeClothId;
+        public List<int> WardrobeProperties = new List<int>();
+        public int HonorSystemExp;
+        public int HonorSystemLevel;
+        public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
         public int SweepCount;
+        public int DreamlandChapter = 1;
+        public int DreamlandSection = 1;
+        public int DreamlandClearedSection;
+        public int DreamlandAttempts;
+        public int WarriorFamHardType;
+        public int WarriorFamLevel = 1;
+        public int WarriorFamClearedLevel;
+        public int WarriorFamAttempts;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;
@@ -105,6 +118,9 @@ namespace GunMobile.Client
                         p.EnsureEmblems();
                         p.SoulStamps = p.SoulStamps ?? new List<SoulStampSlot>();
                         p.EnsureSoulStamps();
+                        p.WardrobeProperties = p.WardrobeProperties ?? new List<int>();
+                        p.EnsureWardrobeProperties();
+                        p.HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>();
                         p.ChatLog = p.ChatLog ?? new List<string>();
                         p.GodCards = p.GodCards ?? new List<GodCardSlot>();
                         p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
@@ -124,6 +140,7 @@ namespace GunMobile.Client
             fresh.EnsureMagicStones();
             fresh.EnsureEmblems();
             fresh.EnsureSoulStamps();
+            fresh.EnsureWardrobeProperties();
             return fresh;
         }
 
@@ -190,6 +207,17 @@ namespace GunMobile.Client
 
         public void EnsureEmblems() { if (Emblems == null) Emblems = new List<EmblemSlot>(); }
         public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
+
+        public void EnsureWardrobeProperties()
+        {
+            if (WardrobeProperties == null) WardrobeProperties = new List<int>();
+        }
+
+        public bool HasWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            return WardrobeProperties.Contains(propertyId);
+        }
 
         public void Save()
         {
@@ -430,6 +458,13 @@ namespace GunMobile.Client
                 EnsureSoulStamps();
                 db.ApplySoulStampStats(SoulStamps, ref atk, ref def, ref agi, ref luk, ref hp);
 
+                EnsureWardrobeProperties();
+                int wDmg = 0; int wGuard = 0;
+                db.ApplyWardrobeBonus(WardrobeProperties, ref atk, ref def, ref agi, ref luk, ref hp, ref wDmg, ref wGuard);
+                atk += wDmg / 4; def += wGuard / 4;
+                HonorSystemLevel = db.HonorSystemLevelFromExp(HonorSystemExp);
+                db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luk, ref hp);
+
                 if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
                 {
                     atk += elf.AttackHint / 3;
@@ -446,6 +481,7 @@ namespace GunMobile.Client
                 db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
                 atk += engrDmg;
                 def += engrGuard;
+
             }
 
             BagItem weapon = Find(EquipWeapon);
@@ -632,15 +668,15 @@ namespace GunMobile.Client
             new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
-            new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),
+            new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
             new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
-            new ModuleDef("dreamland", "梦境", null, false, "dreamlandChallenge.ui"),
-            new ModuleDef("darkboundary", "暗界", null, false, "darkboundary.ui"),
+            new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
+            new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
             new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
             new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"),
-            new ModuleDef("magicwardrobe", "魔衣橱", null, false, "magicwardrobe.ui"),
+            new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化", null, false, "culture.ui"),
             new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"),

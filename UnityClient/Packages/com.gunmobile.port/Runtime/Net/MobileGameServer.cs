@@ -65,12 +65,29 @@ namespace GunMobile.Net
         public int WorldBossHits;
         public int NecklaceLevel;
         public int HomeTempleLevel;
+        public int WardrobeClothId;
+        public List<int> WardrobeProperties = new List<int>();
+        public int HonorSystemExp;
+        public int HonorSystemLevel;
+        public List<int> HonorSystemClaimed = new List<int>();
+        public int HonorSystemDay = -1;
+        public int HonorSystemOps;
         public int RedPacketDay = -1;
         public int RedPacketClaims;
         public int DevilTurnDay = -1;
         public int DevilTurnSpins;
         public int SweepDay = -1;
         public int SweepCount;
+        public int DreamlandChapter = 1;
+        public int DreamlandSection = 1;
+        public int DreamlandClearedSection;
+        public int DreamlandDay = -1;
+        public int DreamlandAttempts;
+        public int WarriorFamHardType;
+        public int WarriorFamLevel = 1;
+        public int WarriorFamClearedLevel;
+        public int WarriorFamDay = -1;
+        public int WarriorFamAttempts;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -182,6 +199,45 @@ namespace GunMobile.Net
         public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
         public SoulStampSlot FindSoulStamp(int id) { EnsureSoulStamps(); for (int i = 0; i < SoulStamps.Count; i++) if (SoulStamps[i].Id == id) return SoulStamps[i]; return null; }
 
+        public void EnsureWardrobeProperties()
+        {
+            if (WardrobeProperties == null) WardrobeProperties = new List<int>();
+        }
+
+        public bool HasWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            return WardrobeProperties.Contains(propertyId);
+        }
+
+        public void AddWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            if (propertyId > 0 && !WardrobeProperties.Contains(propertyId)) WardrobeProperties.Add(propertyId);
+        }
+
+        public void SyncHonorSystemLevel(GameDatabase db)
+        {
+            HonorSystemLevel = db != null ? db.HonorSystemLevelFromExp(HonorSystemExp) : 0;
+        }
+
+        public void EnsureHonorSystemClaimed()
+        {
+            if (HonorSystemClaimed == null) HonorSystemClaimed = new List<int>();
+        }
+
+        public bool HasHonorClaim(int level)
+        {
+            EnsureHonorSystemClaimed();
+            return HonorSystemClaimed.Contains(level);
+        }
+
+        public void TouchHonorSystemDay()
+        {
+            int day = DateTime.UtcNow.DayOfYear;
+            if (HonorSystemDay != day) { HonorSystemDay = day; HonorSystemOps = 0; }
+        }
+
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
         public TcpClient FightTcp;
@@ -195,6 +251,12 @@ namespace GunMobile.Net
         public int PveNpcId;
         public int PveRewardGold;
         public bool PveLabyrinth;
+        public bool PveDreamland;
+        public int PveDreamlandChapter;
+        public int PveDreamlandSection;
+        public bool PveWarriorFam;
+        public int PveWarriorFamHardType;
+        public int PveWarriorFamLevel;
 
         public void RecalcStats(GameDatabase db)
         {
@@ -269,6 +331,10 @@ namespace GunMobile.Net
             db.ApplySoulStampStats(SoulStamps, ref atk, ref def, ref agi, ref luck, ref hp);
             MagicAttack = magicAtk;
             MagicDefence = magicDef;
+            EnsureWardrobeProperties();
+            db.ApplyWardrobeBonus(WardrobeProperties, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            SyncHonorSystemLevel(db);
+            db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luck, ref hp);
 
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
@@ -357,9 +423,20 @@ namespace GunMobile.Net
             J(sb, "worldBossHits", WorldBossHits); sb.Append(",");
             J(sb, "necklaceLevel", NecklaceLevel); sb.Append(",");
             J(sb, "homeTempleLevel", HomeTempleLevel); sb.Append(",");
+            J(sb, "wardrobeClothId", WardrobeClothId); sb.Append(",");
+            J(sb, "honorSystemExp", HonorSystemExp); sb.Append(",");
+            J(sb, "honorSystemLevel", HonorSystemLevel); sb.Append(",");
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
+            J(sb, "dreamlandChapter", DreamlandChapter); sb.Append(",");
+            J(sb, "dreamlandSection", DreamlandSection); sb.Append(",");
+            J(sb, "dreamlandClearedSection", DreamlandClearedSection); sb.Append(",");
+            J(sb, "dreamlandAttempts", DreamlandAttempts); sb.Append(",");
+            J(sb, "warriorFamHardType", WarriorFamHardType); sb.Append(",");
+            J(sb, "warriorFamLevel", WarriorFamLevel); sb.Append(",");
+            J(sb, "warriorFamClearedLevel", WarriorFamClearedLevel); sb.Append(",");
+            J(sb, "warriorFamAttempts", WarriorFamAttempts); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -408,6 +485,14 @@ namespace GunMobile.Net
             sb.Append("],");
             EnsureSoulStamps(); sb.Append("\"soulStamps\":[");
             for (int i = 0; i < SoulStamps.Count; i++) { if (i > 0) sb.Append(","); SoulStampSlot s = SoulStamps[i]; sb.Append("{\"id\":").Append(s.Id).Append(",\"tempId\":").Append(s.TempId).Append(",\"type\":").Append(s.Type).Append(",\"quality\":").Append(s.Quality).Append(",\"grade\":").Append(s.Grade).Append(",\"proType\":").Append(s.ProType).Append(",\"proValue\":").Append(s.ProValue).Append(",\"skillId\":").Append(s.SkillId).Append(",\"equipped\":").Append(s.Equipped).Append("}"); }
+            sb.Append("],");
+            EnsureWardrobeProperties();
+            sb.Append("\"wardrobeProperties\":[");
+            for (int i = 0; i < WardrobeProperties.Count; i++) { if (i > 0) sb.Append(","); sb.Append(WardrobeProperties[i]); }
+            sb.Append("],");
+            EnsureHonorSystemClaimed();
+            sb.Append("\"honorSystemClaimed\":[");
+            for (int i = 0; i < HonorSystemClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(HonorSystemClaimed[i]); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -1386,6 +1471,10 @@ namespace GunMobile.Net
                 case PhoneMsg.EmblemEquip: HandleEmblemEquip(player, ns, json); break;
                 case PhoneMsg.SoulStampCompose: HandleSoulStampCompose(player, ns, json); break;
                 case PhoneMsg.SoulStampRefine: HandleSoulStampRefine(player, ns, json); break;
+                case PhoneMsg.WardrobeEquip: HandleWardrobeEquip(player, ns, json); break;
+                case PhoneMsg.WardrobeUpgrade: HandleWardrobeUpgrade(player, ns, json); break;
+                case PhoneMsg.HonorSystemAction: HandleHonorSystemAction(player, ns, json); break;
+                case PhoneMsg.HonorSystemClaim: HandleHonorSystemClaim(player, ns, json); break;
 
                 case PhoneMsg.PveStart:
                 {
@@ -2525,6 +2614,76 @@ namespace GunMobile.Net
             if (row != null) slot.SkillId = _db.SoulStampSkillId(row, slot.Grade);
             player.RecalcStats(_db); SavePlayer(player);
             Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":true,\"soulStampId\":" + slot.Id + ",\"grade\":" + slot.Grade + ",\"skillId\":" + slot.SkillId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWardrobeEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int clothId = JI(json, "clothId", 0);
+            if (_db == null || clothId <= 0) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"cloth\"}"); return; }
+            MagicClothInfo cloth = _db.GetMagicCloth(clothId);
+            if (cloth == null || !_db.MagicClothMatchesSex(player.Sex, cloth.Sex))
+            { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"cloth\"}"); return; }
+            player.WardrobeClothId = clothId;
+            _db.ApplyMagicClothOutfit(cloth, ref player.EquipHead, ref player.EquipHair, ref player.EquipFace,
+                ref player.EquipCloth, ref player.EquipGlass, ref player.EquipWeapon);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":true,\"clothId\":" + clothId + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWardrobeUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int propertyId = JI(json, "propertyId", 0);
+            if (_db == null || propertyId <= 0) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false}"); return; }
+            ClothPropertyInfo row = _db.GetClothProperty(propertyId);
+            if (row == null || player.HasWardrobeProperty(propertyId))
+            { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"property\"}"); return; }
+            int cost = row.Cost > 0 ? row.Cost : 800;
+            if (player.Gold < cost) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost; player.AddWardrobeProperty(propertyId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":true,\"propertyId\":" + propertyId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHonorSystemAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false}"); return; }
+            string action = JS(json, "action", "donate");
+            player.TouchHonorSystemDay();
+            if (player.HonorSystemOps >= _db.HonorSystemOpLimit())
+            { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            int gain = 0;
+            if (string.Equals(action, "donate", StringComparison.OrdinalIgnoreCase))
+            {
+                TotemHonorEntry entry = _db.GetTotemHonorEntry(JI(json, "honorId", 1));
+                if (entry == null || player.Gold < entry.NeedMoney)
+                { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= entry.NeedMoney; gain = entry.AddHonor;
+            }
+            else if (string.Equals(action, "like", StringComparison.OrdinalIgnoreCase)) gain = _db.HonorSystemLikeHonorGain();
+            else if (string.Equals(action, "fight", StringComparison.OrdinalIgnoreCase)) gain = _db.HonorSystemFightHonorGain();
+            else { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"action\"}"); return; }
+            player.HonorSystemOps++; player.HonorSystemExp += gain; player.SyncHonorSystemLevel(_db);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":true,\"gain\":" + gain + ",\"honorSystemExp\":" + player.HonorSystemExp + ",\"honorSystemLevel\":" + player.HonorSystemLevel + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHonorSystemClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int level = JI(json, "level", player.HonorSystemLevel);
+            if (_db == null || level <= 0) { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false}"); return; }
+            player.SyncHonorSystemLevel(_db);
+            if (player.HonorSystemLevel < level || player.HasHonorClaim(level))
+            { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            HonorSystemLevelInfo row = _db.GetHonorSystemLevel(level);
+            if (row == null || row.LevelGift <= 0)
+            { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+            player.EnsureHonorSystemClaimed(); player.HonorSystemClaimed.Add(level);
+            player.AddItem(row.LevelGift, 1); SavePlayer(player);
+            Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":true,\"level\":" + level + ",\"itemId\":" + row.LevelGift + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -5068,6 +5227,9 @@ namespace GunMobile.Net
         [Serializable]
         class ServerPlayerSave
 
+
+        [Serializable]
+        class ServerPlayerSave
         {
             public string Nick = "Player";
             public int Sex = 1;
@@ -5085,6 +5247,10 @@ namespace GunMobile.Net
             public int FusionKeys, BankGold, MineDay = -1, MineDigs;
             public int WorldBossDay = -1, WorldBossHits;
             public int NecklaceLevel, HomeTempleLevel;
+            public int WardrobeClothId, HonorSystemExp, HonorSystemLevel;
+            public int HonorSystemDay = -1, HonorSystemOps;
+            public List<int> WardrobeProperties = new List<int>();
+            public List<int> HonorSystemClaimed = new List<int>();
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
@@ -5141,6 +5307,11 @@ namespace GunMobile.Net
                 FusionKeys = p.FusionKeys, BankGold = p.BankGold, MineDay = p.MineDay, MineDigs = p.MineDigs,
                 WorldBossDay = p.WorldBossDay, WorldBossHits = p.WorldBossHits,
                 NecklaceLevel = p.NecklaceLevel, HomeTempleLevel = p.HomeTempleLevel,
+                WardrobeClothId = p.WardrobeClothId, HonorSystemExp = p.HonorSystemExp,
+                HonorSystemLevel = p.HonorSystemLevel, HonorSystemDay = p.HonorSystemDay,
+                HonorSystemOps = p.HonorSystemOps,
+                WardrobeProperties = p.WardrobeProperties ?? new List<int>(),
+                HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
@@ -5161,8 +5332,7 @@ namespace GunMobile.Net
             }
             p.EnsureEmblems(); foreach (EmblemSlot e in p.Emblems) s.Emblems.Add(new EmblemSlotSave { id = e.Id, templateId = e.TemplateId, types = e.Types, profile = e.Profile, mainType = e.MainType, mainValue = e.MainValue, subValue = e.SubValue, skillId = e.SkillId, equipped = e.Equipped });
             p.EnsureSoulStamps(); foreach (SoulStampSlot ss in p.SoulStamps) s.SoulStamps.Add(new SoulStampSlotSave { id = ss.Id, tempId = ss.TempId, type = ss.Type, quality = ss.Quality, grade = ss.Grade, proType = ss.ProType, proValue = ss.ProValue, skillId = ss.SkillId, equipped = ss.Equipped });
-            foreach (var b in p.Bag)
- s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
+            foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
             foreach (ServerMail m in p.Mails)
@@ -5192,6 +5362,11 @@ namespace GunMobile.Net
                 FusionKeys = s.FusionKeys, BankGold = s.BankGold, MineDay = s.MineDay, MineDigs = s.MineDigs,
                 WorldBossDay = s.WorldBossDay, WorldBossHits = s.WorldBossHits,
                 NecklaceLevel = s.NecklaceLevel, HomeTempleLevel = s.HomeTempleLevel,
+                WardrobeClothId = s.WardrobeClothId, HonorSystemExp = s.HonorSystemExp,
+                HonorSystemLevel = s.HonorSystemLevel, HonorSystemDay = s.HonorSystemDay,
+                HonorSystemOps = s.HonorSystemOps,
+                WardrobeProperties = s.WardrobeProperties ?? new List<int>(),
+                HonorSystemClaimed = s.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
@@ -5225,8 +5400,9 @@ namespace GunMobile.Net
             if (s.Emblems != null) foreach (EmblemSlotSave e in s.Emblems) p.Emblems.Add(new EmblemSlot { Id = e.id, TemplateId = e.templateId, Types = e.types, Profile = e.profile, MainType = e.mainType, MainValue = e.mainValue, SubValue = e.subValue, SkillId = e.skillId, Equipped = e.equipped });
             if (s.SoulStamps != null) foreach (SoulStampSlotSave ss in s.SoulStamps) p.SoulStamps.Add(new SoulStampSlot { Id = ss.id, TempId = ss.tempId, Type = ss.type, Quality = ss.quality, Grade = ss.grade, ProType = ss.proType, ProValue = ss.proValue, SkillId = ss.skillId, Equipped = ss.equipped });
             p.EnsureEmblems(); p.EnsureSoulStamps();
+            p.EnsureWardrobeProperties();
+            p.EnsureHonorSystemClaimed();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
-
             if (s.GodCards != null)
             {
                 foreach (GodCardSlotSave g in s.GodCards) p.GodCards.Add(new GodCardSlot { Id = g.id, Count = g.count });
