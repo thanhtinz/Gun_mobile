@@ -27,6 +27,10 @@ namespace GunMobile.Client
         public static string LastGuildJson;
         public static string LastSpaRoomJson;
         public static string LastTreasureRoomJson;
+        public static string LastChristmasJson;
+        public static string LastNewYearJson;
+        public static string LastWorshipMoonJson;
+        public static string LastSuperLuckerJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -317,6 +321,31 @@ namespace GunMobile.Client
         public static void TreasureRoomDraw(int count = 1)
         {
             Road?.Send(PhoneMsg.TreasureRoomDraw, "{\"count\":" + count + "}");
+        }
+
+        public static void ClaimChristmas()
+        {
+            Road?.Send(PhoneMsg.ChristmasClaim, "{}");
+        }
+
+        public static void NewYearPlay()
+        {
+            Road?.Send(PhoneMsg.NewYearClaim, "{}");
+        }
+
+        public static void NewYearClaimReward(int rewardId)
+        {
+            Road?.Send(PhoneMsg.NewYearClaim, "{\"rewardId\":" + rewardId + "}");
+        }
+
+        public static void WorshipMoonClaim(int batches = 1)
+        {
+            Road?.Send(PhoneMsg.WorshipMoonClaim, "{\"count\":" + batches + "}");
+        }
+
+        public static void SuperLuckerDraw(int count = 1)
+        {
+            Road?.Send(PhoneMsg.SuperLuckerDraw, "{\"count\":" + count + "}");
         }
 
         public static void ClaimRedPacket()

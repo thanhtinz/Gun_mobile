@@ -209,6 +209,11 @@ namespace GunMobile.Net
         public const ushort SpaRoomBomb = 160;
         public const ushort TreasureRoomDraw = 163;
         public const ushort TreasureRoomResult = 164;
+        public const ushort ChristmasClaim = 165;
+        public const ushort NewYearClaim = 166;
+        public const ushort BoguAdventureAction = 167;
+        public const ushort WorshipMoonClaim = 168;
+        public const ushort SuperLuckerDraw = 169;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

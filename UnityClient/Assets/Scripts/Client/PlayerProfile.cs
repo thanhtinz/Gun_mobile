@@ -70,6 +70,12 @@ namespace GunMobile.Client
         public int DevilTurnSpins;
         public int SpaRoomDayScore;
         public int TreasureRoomDraws;
+        public int ChristmasClaims;
+        public int NewYearPoints;
+        public int NewYearFreeUsed;
+        public List<int> NewYearPointClaimed = new List<int>();
+        public int WorshipMoonDraws;
+        public int SuperLuckerDraws;
         public int SweepCount;
         public bool FirstRechargeClaimed;
         public int DreamlandChapter = 1;
@@ -109,6 +115,7 @@ namespace GunMobile.Client
         public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
+        public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
 
@@ -703,8 +710,8 @@ namespace GunMobile.Client
             new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml", false, "treasureHunting.ui"),
             new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml", false, "peakBattle.ui"),
             new ModuleDef("necklace", "项链", "Request/TS_NecklaceCasting.xml", false, "necklace.ui"),
-            new ModuleDef("christmas", "圣诞", null, false, "christmas.ui"),
-            new ModuleDef("newyear", "新年", null, false, "newyear.ui"),
+            new ModuleDef("christmas", "圣诞", "Request/activityhalloweenitems.xml", false, "christmas.ui"),
+            new ModuleDef("newyear", "新年", "Request/TS_NewYearPointReward.xml", false, "newyear.ui"),
             new ModuleDef("redpacket", "红包", null, false, "redpacket.ui"),
             new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
@@ -714,7 +721,7 @@ namespace GunMobile.Client
             new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
-            new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
+            new ModuleDef("worshipthemoon", "拜月", "Request/ServerConfig.xml", false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", "Request/cityoccupationsystems.xml", false, "forcesbattle.ui"),
             new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"),
             new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
@@ -725,7 +732,7 @@ namespace GunMobile.Client
             new ModuleDef("labyrinthgame", "温泉炸弹房", "Request/sparoomfixedbomb.xml", false, "labyrinthgame.ui"),
             new ModuleDef("godcardraise", "神卡养成", "Request/godcardlist.xml", false, "godcardraise.ui"),
             new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
-            new ModuleDef("carnivalSuperLucker", "超级幸运", null, false, "carnivalSuperLucker.ui"),
+            new ModuleDef("carnivalSuperLucker", "超级幸运", "Request/CarnivalActivityItems.xml", false, "carnivalSuperLucker.ui"),
         };
     }
 }

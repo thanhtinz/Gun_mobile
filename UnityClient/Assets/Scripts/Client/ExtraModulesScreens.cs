@@ -845,6 +845,131 @@ namespace GunMobile.Client
             }
         }
 
+        public static void ChristmasScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("christmas", "圣诞", "Request/activityhalloweenitems.xml", false, "christmas.ui"),
+                "christmas.ui");
+            int maxClaims = app.Database != null ? app.Database.ConfigInt("ChristmasPreDayCount", 10) : 10;
+            SysUi.Note(body, "ChristmasGifts / activityhalloweenitems.xml  ·  今日 " +
+                app.Profile.ChristmasClaims + " / " + maxClaims);
+            SysUi.Row(body, "claim", "领取圣诞礼物", PhoneNet.ClaimChristmas);
+            if (!string.IsNullOrEmpty(PhoneNet.LastChristmasJson))
+            {
+                SysUi.Note(body, PhoneNet.LastChristmasJson);
+            }
+
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (ChristmasGiftTier tier in app.Database.ChristmasGifts)
+                {
+                    SysUi.Note(body, SysUi.ItemName(app, tier.ItemId) + "  雪花" + tier.SnowCost);
+                    shown++;
+                    if (shown >= 6)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static void NewYearScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("newyear", "新年", "Request/TS_NewYearPointReward.xml", false, "newyear.ui"),
+                "newyear.ui");
+            int freeMax = app.Database != null ? app.Database.ConfigInt("NewYearFreeCount", 3) : 3;
+            int buyCost = app.Database != null ? app.Database.ConfigInt("NewYearBuyCost", 1000000) : 1000000;
+            int gain = app.Database != null ? app.Database.ConfigInt("NewYearNeedPointLocal", 2000) : 2000;
+            SysUi.Note(body, "积分 " + app.Profile.NewYearPoints + "  ·  免费 " +
+                app.Profile.NewYearFreeUsed + " / " + freeMax + "  ·  付费 " + buyCost + " 金 +" + gain);
+            SysUi.Row(body, "play", "新年活动 (+积分)", PhoneNet.NewYearPlay);
+            if (!string.IsNullOrEmpty(PhoneNet.LastNewYearJson))
+            {
+                SysUi.Note(body, PhoneNet.LastNewYearJson);
+            }
+
+            if (app.Database == null)
+            {
+                return;
+            }
+
+            app.Profile.EnsureNewYearClaimed();
+            foreach (NewYearPointReward row in app.Database.NewYearPointRewards)
+            {
+                bool claimed = app.Profile.NewYearPointClaimed.Contains(row.Id);
+                string label = "里程碑 " + row.Points + " 分";
+                if (claimed)
+                {
+                    label = "[已领] " + label;
+                }
+                else if (app.Profile.NewYearPoints < row.Points)
+                {
+                    label += "  (不足)";
+                }
+
+                int rewardId = row.Id;
+                SysUi.Row(body, "ny" + row.Id, label,
+                    claimed || app.Profile.NewYearPoints < row.Points
+                        ? null
+                        : (System.Action)(() => PhoneNet.NewYearClaimReward(rewardId)));
+            }
+        }
+
+        public static void WorshipMoonScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("worshipthemoon", "拜月", "Request/ServerConfig.xml", false, "worshipthemoon.ui"),
+                "worshipthemoon.ui");
+            (int batch, int cost) = app.Database != null ? app.Database.WorshipMoonPrice() : (3, 100);
+            int maxDraws = app.Database != null ? app.Database.ConfigInt("SearchGoodsFreeLimit", 10) : 10;
+            SysUi.Note(body, "WorshipMoonProb/Reward  ·  今日 " + app.Profile.WorshipMoonDraws +
+                " / " + maxDraws + "  ·  " + cost + " 金 / " + batch + " 次");
+            SysUi.Row(body, "w1", "拜月 " + batch + " 次  " + cost + " 金", () => PhoneNet.WorshipMoonClaim(1));
+            SysUi.Row(body, "w3", "拜月 " + (batch * 3) + " 次  " + (cost * 3) + " 金", () => PhoneNet.WorshipMoonClaim(3));
+            if (!string.IsNullOrEmpty(PhoneNet.LastWorshipMoonJson))
+            {
+                SysUi.Note(body, PhoneNet.LastWorshipMoonJson);
+            }
+        }
+
+        public static void CarnivalSuperLuckerScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("carnivalSuperLucker", "超级幸运", "Request/CarnivalActivityItems.xml", false, "carnivalSuperLucker.ui"),
+                "carnivalSuperLucker.ui");
+            int unitCost = app.Database != null ? app.Database.SuperLuckerDrawCost() : 500;
+            SysUi.Note(body, "CarnivalActivityItems.xml  ·  今日 " + app.Profile.SuperLuckerDraws +
+                " 次  ·  " + unitCost + " 金/次");
+            SysUi.Row(body, "draw1", "超级幸运 1 次", () => PhoneNet.SuperLuckerDraw(1));
+            SysUi.Row(body, "draw10", "超级幸运 10 次  " + (unitCost * 10) + " 金", () => PhoneNet.SuperLuckerDraw(10));
+            if (!string.IsNullOrEmpty(PhoneNet.LastSuperLuckerJson))
+            {
+                SysUi.Note(body, PhoneNet.LastSuperLuckerJson);
+            }
+
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (CarnivalActivityItem item in app.Database.SuperLuckerPool())
+                {
+                    if (item.TemplateId <= 100)
+                    {
+                        continue;
+                    }
+
+                    SysUi.Note(body, "Q" + item.Quality + "  " + SysUi.ItemName(app, item.TemplateId) +
+                        " x" + item.Count);
+                    shown++;
+                    if (shown >= 8)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Net;
 using GunMobile.Res;
@@ -330,6 +331,18 @@ namespace GunMobile.Client
                 case "treasureroom":
                     ExtraModulesScreens.TreasureRoomScreen(_safe, this);
                     return;
+                case "christmas":
+                    ExtraModulesScreens.ChristmasScreen(_safe, this);
+                    return;
+                case "newyear":
+                    ExtraModulesScreens.NewYearScreen(_safe, this);
+                    return;
+                case "worshipthemoon":
+                    ExtraModulesScreens.WorshipMoonScreen(_safe, this);
+                    return;
+                case "carnivalSuperLucker":
+                    ExtraModulesScreens.CarnivalSuperLuckerScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -505,6 +518,38 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.ChristmasClaim:
+                        PhoneNet.LastChristmasJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "christmas")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.NewYearClaim:
+                        PhoneNet.LastNewYearJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "newyear")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.WorshipMoonClaim:
+                        PhoneNet.LastWorshipMoonJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "worshipthemoon")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.SuperLuckerDraw:
+                        PhoneNet.LastSuperLuckerJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "carnivalSuperLucker")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.Error:
                     {
                         string err = JsonStr(msg.Json, "err", "error");
@@ -612,6 +657,11 @@ namespace GunMobile.Client
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
+            Profile.ChristmasClaims = JsonInt(json, "christmasClaims", Profile.ChristmasClaims);
+            Profile.NewYearPoints = JsonInt(json, "newYearPoints", Profile.NewYearPoints);
+            Profile.NewYearFreeUsed = JsonInt(json, "newYearFreeUsed", Profile.NewYearFreeUsed);
+            Profile.WorshipMoonDraws = JsonInt(json, "worshipMoonDraws", Profile.WorshipMoonDraws);
+            Profile.SuperLuckerDraws = JsonInt(json, "superLuckerDraws", Profile.SuperLuckerDraws);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
             Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);
@@ -646,7 +696,41 @@ namespace GunMobile.Client
             ParseRelicsFromServer(json);
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
+            ParseNewYearClaimedFromServer(json);
             Profile.Save();
+        }
+
+        void ParseNewYearClaimedFromServer(string json)
+        {
+            int idx = json.IndexOf("\"newYearPointClaimed\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 22;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            Profile.NewYearPointClaimed = Profile.NewYearPointClaimed ?? new List<int>();
+            Profile.NewYearPointClaimed.Clear();
+            string chunk = json.Substring(start, end - start);
+            if (string.IsNullOrWhiteSpace(chunk))
+            {
+                return;
+            }
+
+            string[] parts = chunk.Split(',');
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (int.TryParse(parts[i].Trim(), out int id) && id > 0)
+                {
+                    Profile.NewYearPointClaimed.Add(id);
+                }
+            }
         }
 
         void ParseRelicsFromServer(string json)

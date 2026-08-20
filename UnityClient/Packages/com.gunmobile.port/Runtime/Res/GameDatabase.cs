@@ -289,6 +289,26 @@ namespace GunMobile.Res
         public int Count;
     }
 
+    public sealed class NewYearPointReward
+    {
+        public int Id;
+        public int Points;
+        public string ViewIds = "";
+    }
+
+    public sealed class HalloweenRewardItem
+    {
+        public int RewardLevel;
+        public int TemplateId;
+        public int Count;
+    }
+
+    public sealed class ChristmasGiftTier
+    {
+        public int ItemId;
+        public int SnowCost;
+    }
+
     public sealed class SearchGoodsPayEntry
     {
         public int Number;
@@ -777,6 +797,9 @@ namespace GunMobile.Res
         public List<SpaRoomFixedLevel> SpaRoomFixed { get; } = new List<SpaRoomFixedLevel>();
         public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
         public List<CarnivalActivityItem> CarnivalActivityItems { get; } = new List<CarnivalActivityItem>();
+        public List<NewYearPointReward> NewYearPointRewards { get; } = new List<NewYearPointReward>();
+        public List<HalloweenRewardItem> HalloweenActivityItems { get; } = new List<HalloweenRewardItem>();
+        public List<ChristmasGiftTier> ChristmasGifts { get; } = new List<ChristmasGiftTier>();
         public List<SearchGoodsPayEntry> SearchGoodsPay { get; } = new List<SearchGoodsPayEntry>();
         public Dictionary<int, ActivityConfigEntry> ActivityConfigs { get; } = new Dictionary<int, ActivityConfigEntry>();
         public List<FirstPayShopItem> FirstPayShop { get; } = new List<FirstPayShopItem>();
@@ -872,6 +895,8 @@ namespace GunMobile.Res
             db.LoadDevilTreas(loader);
             db.LoadSpaRoom(loader);
             db.LoadCarnivalActivityItems(loader);
+            db.LoadNewYearPointRewards(loader);
+            db.LoadHalloweenActivityItems(loader);
             db.LoadSearchGoodsPay(loader);
             db.LoadActivityConfig(loader);
             db.LoadFirstPayShop(loader);
@@ -887,6 +912,7 @@ namespace GunMobile.Res
             db.LoadEngrave(loader);
             db.LoadStocks(loader);
             db.LoadServerConfig(loader);
+            db.BuildSeasonalConfig();
             db.LoadFightLabDrops(loader);
             db.LoadLevels(loader);
             db.LoadCelebLists(loader);
@@ -1430,6 +1456,212 @@ namespace GunMobile.Res
             }
 
             return pool[0];
+        }
+
+        public List<CarnivalActivityItem> SuperLuckerPool()
+        {
+            var pool = new List<CarnivalActivityItem>();
+            for (int i = 0; i < CarnivalActivityItems.Count; i++)
+            {
+                CarnivalActivityItem item = CarnivalActivityItems[i];
+                if (item.TemplateId > 100)
+                {
+                    pool.Add(item);
+                }
+            }
+
+            if (pool.Count == 0)
+            {
+                pool.AddRange(CarnivalActivityItems);
+            }
+
+            return pool;
+        }
+
+        public CarnivalActivityItem RollSuperLuckerItem(System.Random rng)
+        {
+            List<CarnivalActivityItem> pool = SuperLuckerPool();
+            if (pool.Count == 0)
+            {
+                return null;
+            }
+
+            int total = 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                total += Mathf.Max(1, pool[i].Quality);
+            }
+
+            int roll = rng.Next(0, total);
+            for (int i = 0; i < pool.Count; i++)
+            {
+                roll -= Mathf.Max(1, pool[i].Quality);
+                if (roll < 0)
+                {
+                    return pool[i];
+                }
+            }
+
+            return pool[0];
+        }
+
+        public int SuperLuckerDrawCost()
+        {
+            return ConfigInt("CarnivalDrawMoney", 500);
+        }
+
+        public NewYearPointReward GetNewYearPointReward(int rewardId)
+        {
+            for (int i = 0; i < NewYearPointRewards.Count; i++)
+            {
+                if (NewYearPointRewards[i].Id == rewardId)
+                {
+                    return NewYearPointRewards[i];
+                }
+            }
+
+            return null;
+        }
+
+        public List<(int templateId, int count)> ParseColonRewardPairs(string raw)
+        {
+            var list = new List<(int templateId, int count)>();
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return list;
+            }
+
+            foreach (string seg in raw.Split(','))
+            {
+                string[] p = seg.Split(':');
+                if (p.Length >= 2 &&
+                    int.TryParse(p[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int t) &&
+                    int.TryParse(p[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int c))
+                {
+                    list.Add((t, c));
+                }
+            }
+
+            return list;
+        }
+
+        public void GrantColonRewardPairs(ServerPlayer player, string raw)
+        {
+            if (player == null || string.IsNullOrWhiteSpace(raw))
+            {
+                return;
+            }
+
+            foreach (var pair in ParseColonRewardPairs(raw))
+            {
+                player.GrantTemplateReward(this, pair.templateId, pair.count);
+            }
+        }
+
+        public HalloweenRewardItem RollHalloweenItem(System.Random rng, int rewardLevel)
+        {
+            var pool = new List<HalloweenRewardItem>();
+            for (int i = 0; i < HalloweenActivityItems.Count; i++)
+            {
+                HalloweenRewardItem item = HalloweenActivityItems[i];
+                if (item.RewardLevel == rewardLevel)
+                {
+                    pool.Add(item);
+                }
+            }
+
+            if (pool.Count == 0)
+            {
+                for (int i = 0; i < HalloweenActivityItems.Count; i++)
+                {
+                    pool.Add(HalloweenActivityItems[i]);
+                }
+            }
+
+            if (pool.Count == 0)
+            {
+                return null;
+            }
+
+            return pool[rng.Next(0, pool.Count)];
+        }
+
+        public int RollWorshipMoonRewardIndex(System.Random rng)
+        {
+            int[] probs = ParsePipeInts(ConfigString("WorshipMoonProb", "25|25|25|20|5|0"));
+            if (probs.Length == 0)
+            {
+                return 0;
+            }
+
+            int total = 0;
+            for (int i = 0; i < probs.Length; i++)
+            {
+                total += Mathf.Max(0, probs[i]);
+            }
+
+            if (total <= 0)
+            {
+                return 0;
+            }
+
+            int roll = rng.Next(0, total);
+            for (int i = 0; i < probs.Length; i++)
+            {
+                roll -= Mathf.Max(0, probs[i]);
+                if (roll < 0)
+                {
+                    return i;
+                }
+            }
+
+            return probs.Length - 1;
+        }
+
+        public int WorshipMoonRewardId(int index)
+        {
+            return ConfigPipeInt("WorshipMoonReward", index, 1120233);
+        }
+
+        public (int batchCount, int goldCost) WorshipMoonPrice()
+        {
+            int batch = ConfigPipeInt("WorshipMoonPriceInfo", 0, 1);
+            int cost = ConfigPipeInt("WorshipMoonPriceInfo", 1, 100);
+            return (Mathf.Max(1, batch), Mathf.Max(0, cost));
+        }
+
+        public void BuildSeasonalConfig()
+        {
+            ChristmasGifts.Clear();
+            foreach (var pair in ParseRewardPairs(ConfigString("ChristmasGifts", "")))
+            {
+                ChristmasGifts.Add(new ChristmasGiftTier { ItemId = pair.templateId, SnowCost = pair.count });
+            }
+        }
+
+        static int[] ParsePipeInts(string raw)
+        {
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return Array.Empty<int>();
+            }
+
+            string[] parts = raw.Split('|');
+            var values = new List<int>(parts.Length);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n))
+                {
+                    values.Add(n);
+                }
+            }
+
+            return values.ToArray();
+        }
+
+        public string ConfigString(string name, string fallback = "")
+        {
+            return ServerConfig.TryGetValue(name, out string raw) && !string.IsNullOrEmpty(raw) ? raw : fallback;
         }
 
 
@@ -3682,6 +3914,91 @@ namespace GunMobile.Res
                     TemplateId = Int(row, "TemplateID"),
                     Count = Mathf.Max(1, Int(row, "Count"))
                 });
+            }
+        }
+
+        void LoadNewYearPointRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_NewYearPointReward.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0)
+                {
+                    continue;
+                }
+
+                NewYearPointRewards.Add(new NewYearPointReward
+                {
+                    Id = id,
+                    Points = Int(row, "Points"),
+                    ViewIds = Str(row, "ViewIDs")
+                });
+            }
+        }
+
+        void LoadHalloweenActivityItems(ResLoader loader)
+        {
+            if (!loader.TryReadBytes("Request/activityhalloweenitems.xml", out byte[] data))
+            {
+                return;
+            }
+
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null)
+            {
+                return;
+            }
+
+            foreach (XElement group in root.Elements())
+            {
+                if (!string.Equals(group.Name.LocalName, "items", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                int rewardLevel = 1;
+                XAttribute levelAttr = group.Attribute("rewardLevel");
+                if (levelAttr != null &&
+                    int.TryParse(levelAttr.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int parsed))
+                {
+                    rewardLevel = parsed;
+                }
+
+                foreach (XElement item in group.Elements())
+                {
+                    if (!string.Equals(item.Name.LocalName, "item", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    XAttribute templateAttr = item.Attribute("templateId");
+                    XAttribute countAttr = item.Attribute("count");
+                    if (templateAttr == null ||
+                        !int.TryParse(templateAttr.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int templateId) ||
+                        templateId <= 0)
+                    {
+                        continue;
+                    }
+
+                    int count = 1;
+                    if (countAttr != null)
+                    {
+                        int.TryParse(countAttr.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out count);
+                    }
+
+                    HalloweenActivityItems.Add(new HalloweenRewardItem
+                    {
+                        RewardLevel = rewardLevel,
+                        TemplateId = templateId,
+                        Count = Mathf.Max(1, count)
+                    });
+                }
             }
         }
 

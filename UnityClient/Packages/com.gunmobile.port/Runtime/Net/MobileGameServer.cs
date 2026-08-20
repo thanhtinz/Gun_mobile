@@ -86,6 +86,16 @@ namespace GunMobile.Net
         public int SpaRoomScore;
         public int TreasureRoomDay = -1;
         public int TreasureRoomDraws;
+        public int ChristmasDay = -1;
+        public int ChristmasClaims;
+        public int NewYearDay = -1;
+        public int NewYearFreeUsed;
+        public int NewYearPoints;
+        public List<int> NewYearPointClaimed = new List<int>();
+        public int WorshipMoonDay = -1;
+        public int WorshipMoonDraws;
+        public int SuperLuckerDay = -1;
+        public int SuperLuckerDraws;
         public int SweepDay = -1;
         public int SweepCount;
         public bool FirstRechargeClaimed;
@@ -463,6 +473,14 @@ namespace GunMobile.Net
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "spaRoomDayScore", SpaRoomDayScore); sb.Append(",");
             J(sb, "treasureRoomDraws", TreasureRoomDraws); sb.Append(",");
+            J(sb, "christmasClaims", ChristmasClaims); sb.Append(",");
+            J(sb, "newYearPoints", NewYearPoints); sb.Append(",");
+            J(sb, "newYearFreeUsed", NewYearFreeUsed); sb.Append(",");
+            sb.Append("\"newYearPointClaimed\":[");
+            for (int i = 0; i < NewYearPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(NewYearPointClaimed[i]); }
+            sb.Append("],");
+            J(sb, "worshipMoonDraws", WorshipMoonDraws); sb.Append(",");
+            J(sb, "superLuckerDraws", SuperLuckerDraws); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
             J(sb, "firstRechargeClaimed", FirstRechargeClaimed ? 1 : 0); sb.Append(",");
             sb.Append("\"firstRechargeShopBuys\":[");
@@ -1549,6 +1567,22 @@ namespace GunMobile.Net
 
                 case PhoneMsg.TreasureRoomDraw:
                     HandleTreasureRoomDraw(player, ns, json);
+                    break;
+
+                case PhoneMsg.ChristmasClaim:
+                    HandleChristmasClaim(player, ns);
+                    break;
+
+                case PhoneMsg.NewYearClaim:
+                    HandleNewYearClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.WorshipMoonClaim:
+                    HandleWorshipMoonClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.SuperLuckerDraw:
+                    HandleSuperLuckerDraw(player, ns, json);
                     break;
 
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
@@ -3347,6 +3381,269 @@ namespace GunMobile.Net
             rewards.Append("]");
             Send(ns, PhoneMsg.TreasureRoomResult,
                 "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.TreasureRoomDraws +
+                ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleChristmasClaim(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.ChristmasDay != today)
+            {
+                player.ChristmasDay = today;
+                player.ChristmasClaims = 0;
+            }
+
+            int maxClaims = _db != null ? _db.ConfigInt("ChristmasPreDayCount", 10) : 10;
+            if (player.ChristmasClaims >= maxClaims)
+            {
+                Send(ns, PhoneMsg.ChristmasClaim, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int itemId = 11271;
+            int count = 1;
+            if (_db != null && _db.ChristmasGifts.Count > 0)
+            {
+                ChristmasGiftTier tier = _db.ChristmasGifts[player.ChristmasClaims % _db.ChristmasGifts.Count];
+                itemId = tier.ItemId;
+                count = 1;
+            }
+
+            HalloweenRewardItem bonus = null;
+            if (_db != null)
+            {
+                lock (_lock)
+                {
+                    int level = Mathf.Clamp(player.ChristmasClaims + 1, 1, 7);
+                    bonus = _db.RollHalloweenItem(_rng, level);
+                }
+            }
+
+            player.ChristmasClaims++;
+            player.AddItem(itemId, count);
+            if (bonus != null)
+            {
+                player.AddItem(bonus.TemplateId, bonus.Count);
+            }
+
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ChristmasClaim,
+                "{\"ok\":true,\"item\":" + itemId + ",\"count\":" + count +
+                ",\"bonus\":" + (bonus != null ? bonus.TemplateId : 0) +
+                ",\"claims\":" + player.ChristmasClaims + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleNewYearClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.NewYearDay != today)
+            {
+                player.NewYearDay = today;
+                player.NewYearFreeUsed = 0;
+            }
+
+            int rewardId = JI(json, "rewardId", 0);
+            if (rewardId > 0)
+            {
+                if (_db == null)
+                {
+                    Send(ns, PhoneMsg.NewYearClaim, "{\"ok\":false,\"err\":\"config\"}");
+                    return;
+                }
+
+                NewYearPointReward row = _db.GetNewYearPointReward(rewardId);
+                if (row == null)
+                {
+                    Send(ns, PhoneMsg.NewYearClaim, "{\"ok\":false,\"err\":\"reward\"}");
+                    return;
+                }
+
+                if (player.NewYearPointClaimed.Contains(rewardId))
+                {
+                    Send(ns, PhoneMsg.NewYearClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                    return;
+                }
+
+                if (player.NewYearPoints < row.Points)
+                {
+                    Send(ns, PhoneMsg.NewYearClaim, "{\"ok\":false,\"err\":\"points\"}");
+                    return;
+                }
+
+                player.NewYearPointClaimed.Add(rewardId);
+                _db.GrantColonRewardPairs(player, row.ViewIds);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.NewYearClaim,
+                    "{\"ok\":true,\"rewardId\":" + rewardId + ",\"points\":" + player.NewYearPoints + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int freeMax = _db != null ? _db.ConfigInt("NewYearFreeCount", 3) : 3;
+            int buyCost = _db != null ? _db.ConfigInt("NewYearBuyCost", 1000000) : 1000000;
+            int pointGain = _db != null ? _db.ConfigInt("NewYearNeedPointLocal", 2000) : 2000;
+            bool free = player.NewYearFreeUsed < freeMax;
+            if (!free && player.Gold < buyCost)
+            {
+                Send(ns, PhoneMsg.NewYearClaim, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (!free)
+            {
+                player.Gold -= buyCost;
+            }
+            else
+            {
+                player.NewYearFreeUsed++;
+            }
+
+            player.NewYearPoints += pointGain;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.NewYearClaim,
+                "{\"ok\":true,\"action\":\"play\",\"points\":" + player.NewYearPoints +
+                ",\"freeUsed\":" + player.NewYearFreeUsed + ",\"gain\":" + pointGain + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWorshipMoonClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.WorshipMoonDay != today)
+            {
+                player.WorshipMoonDay = today;
+                player.WorshipMoonDraws = 0;
+            }
+
+            int maxDraws = _db != null ? _db.ConfigInt("SearchGoodsFreeLimit", 10) : 10;
+            if (player.WorshipMoonDraws >= maxDraws)
+            {
+                Send(ns, PhoneMsg.WorshipMoonClaim, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            (int batchCount, int goldCost) = _db != null ? _db.WorshipMoonPrice() : (1, 100);
+            int batches = JI(json, "count", 1);
+            batches = Mathf.Clamp(batches, 1, 3);
+            int draws = batchCount * batches;
+            int cost = goldCost * batches;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.WorshipMoonClaim, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.WorshipMoonClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            var rewards = new StringBuilder("[");
+            for (int i = 0; i < draws; i++)
+            {
+                int rewardIndex;
+                lock (_lock)
+                {
+                    rewardIndex = _db.RollWorshipMoonRewardIndex(_rng);
+                }
+
+                int templateId = _db.WorshipMoonRewardId(rewardIndex);
+                player.AddItem(templateId, 1);
+                if (i > 0)
+                {
+                    rewards.Append(",");
+                }
+
+                rewards.Append("{\"item\":").Append(templateId).Append(",\"count\":1}");
+            }
+
+            int tenReward = _db.ConfigInt("WorshipTenReward", 0);
+            if (tenReward > 0 && player.WorshipMoonDraws + draws >= 10 &&
+                player.WorshipMoonDraws < 10)
+            {
+                player.AddItem(tenReward, 1);
+                rewards.Append(",{\"item\":").Append(tenReward).Append(",\"count\":1,\"bonus\":1}");
+            }
+
+            player.WorshipMoonDraws += draws;
+            SavePlayer(player);
+            rewards.Append("]");
+            Send(ns, PhoneMsg.WorshipMoonClaim,
+                "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.WorshipMoonDraws +
+                ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSuperLuckerDraw(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int count = JI(json, "count", 1);
+            count = Mathf.Clamp(count, 1, 10);
+            int today = DateTime.Now.DayOfYear;
+            if (player.SuperLuckerDay != today)
+            {
+                player.SuperLuckerDay = today;
+                player.SuperLuckerDraws = 0;
+            }
+
+            int unitCost = _db != null ? _db.SuperLuckerDrawCost() : 500;
+            int cost = unitCost * count;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.SuperLuckerDraw, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (_db == null || _db.SuperLuckerPool().Count == 0)
+            {
+                Send(ns, PhoneMsg.SuperLuckerDraw, "{\"ok\":false,\"err\":\"pool\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            var rewards = new StringBuilder("[");
+            for (int i = 0; i < count; i++)
+            {
+                CarnivalActivityItem drop;
+                lock (_lock)
+                {
+                    drop = _db.RollSuperLuckerItem(_rng);
+                }
+
+                if (drop == null)
+                {
+                    continue;
+                }
+
+                int templateId = drop.TemplateId;
+                int amount = Mathf.Max(1, drop.Count);
+                if (templateId > 100)
+                {
+                    player.AddItem(templateId, amount);
+                }
+                else
+                {
+                    player.Gold += amount * 50;
+                }
+
+                if (i > 0)
+                {
+                    rewards.Append(",");
+                }
+
+                rewards.Append("{\"item\":").Append(templateId)
+                    .Append(",\"count\":").Append(amount)
+                    .Append(",\"quality\":").Append(drop.Quality).Append("}");
+            }
+
+            player.SuperLuckerDraws += count;
+            SavePlayer(player);
+            rewards.Append("]");
+            Send(ns, PhoneMsg.SuperLuckerDraw,
+                "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.SuperLuckerDraws +
                 ",\"rewards\":" + rewards + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
@@ -6048,6 +6345,11 @@ namespace GunMobile.Net
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SpaRoomDay = -1, SpaRoomDayScore;
             public int TreasureRoomDay = -1, TreasureRoomDraws;
+            public int ChristmasDay = -1, ChristmasClaims;
+            public int NewYearDay = -1, NewYearFreeUsed, NewYearPoints;
+            public List<int> NewYearPointClaimed = new List<int>();
+            public int WorshipMoonDay = -1, WorshipMoonDraws;
+            public int SuperLuckerDay = -1, SuperLuckerDraws;
             public int SweepDay = -1, SweepCount;
             public bool FirstRechargeClaimed;
             public List<FirstRechargeBuySave> FirstRechargeShopBuys = new List<FirstRechargeBuySave>();
@@ -6129,6 +6431,11 @@ namespace GunMobile.Net
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SpaRoomDay = p.SpaRoomDay, SpaRoomDayScore = p.SpaRoomDayScore,
                 TreasureRoomDay = p.TreasureRoomDay, TreasureRoomDraws = p.TreasureRoomDraws,
+                ChristmasDay = p.ChristmasDay, ChristmasClaims = p.ChristmasClaims,
+                NewYearDay = p.NewYearDay, NewYearFreeUsed = p.NewYearFreeUsed, NewYearPoints = p.NewYearPoints,
+                NewYearPointClaimed = p.NewYearPointClaimed ?? new List<int>(),
+                WorshipMoonDay = p.WorshipMoonDay, WorshipMoonDraws = p.WorshipMoonDraws,
+                SuperLuckerDay = p.SuperLuckerDay, SuperLuckerDraws = p.SuperLuckerDraws,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
                 FirstRechargeClaimed = p.FirstRechargeClaimed,
                 DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
@@ -6203,6 +6510,11 @@ namespace GunMobile.Net
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SpaRoomDay = s.SpaRoomDay, SpaRoomDayScore = s.SpaRoomDayScore,
                 TreasureRoomDay = s.TreasureRoomDay, TreasureRoomDraws = s.TreasureRoomDraws,
+                ChristmasDay = s.ChristmasDay, ChristmasClaims = s.ChristmasClaims,
+                NewYearDay = s.NewYearDay, NewYearFreeUsed = s.NewYearFreeUsed, NewYearPoints = s.NewYearPoints,
+                NewYearPointClaimed = s.NewYearPointClaimed ?? new List<int>(),
+                WorshipMoonDay = s.WorshipMoonDay, WorshipMoonDraws = s.WorshipMoonDraws,
+                SuperLuckerDay = s.SuperLuckerDay, SuperLuckerDraws = s.SuperLuckerDraws,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
                 FirstRechargeClaimed = s.FirstRechargeClaimed,
                 DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
