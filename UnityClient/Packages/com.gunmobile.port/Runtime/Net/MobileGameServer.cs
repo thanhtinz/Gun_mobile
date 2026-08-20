@@ -71,6 +71,16 @@ namespace GunMobile.Net
         public int DevilTurnSpins;
         public int SweepDay = -1;
         public int SweepCount;
+        public int DreamlandChapter = 1;
+        public int DreamlandSection = 1;
+        public int DreamlandClearedSection;
+        public int DreamlandDay = -1;
+        public int DreamlandAttempts;
+        public int WarriorFamHardType;
+        public int WarriorFamLevel = 1;
+        public int WarriorFamClearedLevel;
+        public int WarriorFamDay = -1;
+        public int WarriorFamAttempts;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -187,6 +197,12 @@ namespace GunMobile.Net
         public int PveNpcId;
         public int PveRewardGold;
         public bool PveLabyrinth;
+        public bool PveDreamland;
+        public int PveDreamlandChapter;
+        public int PveDreamlandSection;
+        public bool PveWarriorFam;
+        public int PveWarriorFamHardType;
+        public int PveWarriorFamLevel;
 
         public void RecalcStats(GameDatabase db)
         {
@@ -349,6 +365,14 @@ namespace GunMobile.Net
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
+            J(sb, "dreamlandChapter", DreamlandChapter); sb.Append(",");
+            J(sb, "dreamlandSection", DreamlandSection); sb.Append(",");
+            J(sb, "dreamlandClearedSection", DreamlandClearedSection); sb.Append(",");
+            J(sb, "dreamlandAttempts", DreamlandAttempts); sb.Append(",");
+            J(sb, "warriorFamHardType", WarriorFamHardType); sb.Append(",");
+            J(sb, "warriorFamLevel", WarriorFamLevel); sb.Append(",");
+            J(sb, "warriorFamClearedLevel", WarriorFamClearedLevel); sb.Append(",");
+            J(sb, "warriorFamAttempts", WarriorFamAttempts); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -1364,6 +1388,22 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SweepLabyrinth:
                     HandleSweepLabyrinth(player, ns);
+                    break;
+
+                case PhoneMsg.DreamlandStart:
+                    HandleDreamlandStart(player, ns, json);
+                    break;
+
+                case PhoneMsg.DreamlandClaim:
+                    HandleDreamlandClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.WarriorFamStart:
+                    HandleWarriorFamStart(player, ns, json);
+                    break;
+
+                case PhoneMsg.WarriorFamClaim:
+                    HandleWarriorFamClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.PveStart:
@@ -2675,6 +2715,191 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.SweepLabyrinth,
                 "{\"ok\":true,\"gold\":" + gold + ",\"floor\":" + player.LabyrinthFloor + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleDreamlandStart(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"no db\"}");
+                return;
+            }
+
+            int chapter = JI(json, "chapter", player.DreamlandChapter > 0 ? player.DreamlandChapter : 1);
+            int section = JI(json, "section", player.DreamlandSection > 0 ? player.DreamlandSection : 1);
+            StoryCopySection row = _db.GetStoryCopySection(chapter, section);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"section\"}");
+                return;
+            }
+
+            int today = DateTime.Now.DayOfYear;
+            if (player.DreamlandDay != today)
+            {
+                player.DreamlandDay = today;
+                player.DreamlandAttempts = 0;
+            }
+
+            if (player.DreamlandAttempts >= row.PlayLimit)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int entryFee = _db.DreamlandEntryFee(row);
+            if (player.Gold < entryFee)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= entryFee;
+            player.DreamlandChapter = chapter;
+            player.DreamlandSection = section;
+            player.DreamlandAttempts++;
+            player.PveNpcId = _db.DreamlandNpcId(row, player.Level);
+            player.PveLabyrinth = false;
+            player.PveDreamland = true;
+            player.PveDreamlandChapter = chapter;
+            player.PveDreamlandSection = section;
+            player.PveWarriorFam = false;
+            player.PveRewardGold = _db.DreamlandRewardGold(row, player.PveNpcId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult,
+                "{\"ok\":true,\"reward\":" + player.PveRewardGold +
+                ",\"npcId\":" + player.PveNpcId +
+                ",\"map\":" + _db.DreamlandMapId(row) +
+                ",\"chapter\":" + chapter + ",\"section\":" + section + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleDreamlandClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false}");
+                return;
+            }
+
+            int chapter = JI(json, "chapter", player.DreamlandChapter > 0 ? player.DreamlandChapter : 1);
+            int section = JI(json, "section", player.DreamlandClearedSection > 0 ? player.DreamlandClearedSection : 1);
+            if (section <= 0 || section > player.DreamlandClearedSection)
+            {
+                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false,\"err\":\"locked\"}");
+                return;
+            }
+
+            StoryCopySection row = _db.GetStoryCopySection(chapter, section);
+            if (row == null || string.IsNullOrEmpty(row.SweepReward))
+            {
+                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false,\"err\":\"section\"}");
+                return;
+            }
+
+            _db.GrantRewardPairs(player, row.SweepReward);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DreamlandClaim,
+                "{\"ok\":true,\"chapter\":" + chapter + ",\"section\":" + section + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWarriorFamStart(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"no db\"}");
+                return;
+            }
+
+            int needLevel = _db.ConfigInt("WarriorFamGradeLimit", 30);
+            if (player.Level < needLevel)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            int hardType = JI(json, "hardType", player.WarriorFamHardType);
+            hardType = Mathf.Clamp(hardType, 0, 2);
+            int level = JI(json, "level", player.WarriorFamLevel > 0 ? player.WarriorFamLevel : 1);
+            int maxLevel = _db.ConfigInt("WarriorFamMaxLevel", 100);
+            level = Mathf.Clamp(level, 1, maxLevel);
+            WarriorFamFightConfig row = _db.GetWarriorFamFight(hardType, level);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            int today = DateTime.Now.DayOfYear;
+            if (player.WarriorFamDay != today)
+            {
+                player.WarriorFamDay = today;
+                player.WarriorFamAttempts = 0;
+            }
+
+            int maxAttempts = _db.ConfigInt("WarriorFamEveryDayContinueCount", 1);
+            if (player.WarriorFamAttempts >= maxAttempts)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int entryFee = _db.WarriorFamEntryFee();
+            if (player.Gold < entryFee)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= entryFee;
+            player.WarriorFamHardType = hardType;
+            player.WarriorFamLevel = level;
+            player.WarriorFamAttempts++;
+            player.PveNpcId = _db.WarriorFamNpcId(row);
+            player.PveLabyrinth = false;
+            player.PveDreamland = false;
+            player.PveWarriorFam = true;
+            player.PveWarriorFamHardType = hardType;
+            player.PveWarriorFamLevel = level;
+            player.PveRewardGold = _db.WarriorFamRewardGold(row);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult,
+                "{\"ok\":true,\"reward\":" + player.PveRewardGold +
+                ",\"npcId\":" + player.PveNpcId +
+                ",\"hardType\":" + hardType + ",\"level\":" + level + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWarriorFamClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false}");
+                return;
+            }
+
+            int hardType = JI(json, "hardType", player.WarriorFamHardType);
+            hardType = Mathf.Clamp(hardType, 0, 2);
+            int level = JI(json, "level", player.WarriorFamClearedLevel > 0 ? player.WarriorFamClearedLevel : 1);
+            if (level <= 0 || level > player.WarriorFamClearedLevel)
+            {
+                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false,\"err\":\"locked\"}");
+                return;
+            }
+
+            WarriorFamFightConfig row = _db.GetWarriorFamFight(hardType, level);
+            if (row == null || string.IsNullOrEmpty(row.Rewards))
+            {
+                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            _db.GrantRewardPairs(player, row.Rewards);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.WarriorFamClaim,
+                "{\"ok\":true,\"hardType\":" + hardType + ",\"level\":" + level + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -4433,9 +4658,56 @@ namespace GunMobile.Net
                         p.LabyrinthFloor++;
                     }
 
+                    if (win && p.PveDreamland && _db != null)
+                    {
+                        StoryCopySection dreamSec = _db.GetStoryCopySection(p.PveDreamlandChapter, p.PveDreamlandSection);
+                        if (dreamSec != null)
+                        {
+                            if (!string.IsNullOrEmpty(dreamSec.ThreeStarAward) &&
+                                int.TryParse(dreamSec.ThreeStarAward, NumberStyles.Integer, CultureInfo.InvariantCulture, out int awardId))
+                            {
+                                p.GrantTemplateReward(_db, awardId, 1);
+                            }
+
+                            if (p.PveDreamlandSection > p.DreamlandClearedSection)
+                            {
+                                p.DreamlandClearedSection = p.PveDreamlandSection;
+                            }
+
+                            StoryCopySection next = _db.GetStoryCopySection(p.PveDreamlandChapter, p.PveDreamlandSection + 1);
+                            if (next != null)
+                            {
+                                p.DreamlandSection = next.Section;
+                            }
+                        }
+                    }
+
+                    if (win && p.PveWarriorFam && _db != null)
+                    {
+                        WarriorFamFightConfig famRow = _db.GetWarriorFamFight(p.PveWarriorFamHardType, p.PveWarriorFamLevel);
+                        if (famRow != null)
+                        {
+                            if (p.PveWarriorFamLevel > p.WarriorFamClearedLevel)
+                            {
+                                _db.GrantRewardPairs(p, famRow.FirstRewards);
+                                p.WarriorFamClearedLevel = p.PveWarriorFamLevel;
+                            }
+
+                            _db.GrantRewardPairs(p, famRow.Rewards);
+                            int maxLevel = _db.ConfigInt("WarriorFamMaxLevel", 100);
+                            if (p.PveWarriorFamLevel < maxLevel &&
+                                _db.GetWarriorFamFight(p.PveWarriorFamHardType, p.PveWarriorFamLevel + 1) != null)
+                            {
+                                p.WarriorFamLevel = p.PveWarriorFamLevel + 1;
+                            }
+                        }
+                    }
+
                     p.PveNpcId = 0;
                     p.PveRewardGold = 0;
                     p.PveLabyrinth = false;
+                    p.PveDreamland = false;
+                    p.PveWarriorFam = false;
 
                     if (win)
                     {
@@ -4992,6 +5264,10 @@ namespace GunMobile.Net
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
+            public int DreamlandChapter = 1, DreamlandSection = 1, DreamlandClearedSection;
+            public int DreamlandDay = -1, DreamlandAttempts;
+            public int WarriorFamHardType, WarriorFamLevel = 1, WarriorFamClearedLevel;
+            public int WarriorFamDay = -1, WarriorFamAttempts;
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -5045,6 +5321,12 @@ namespace GunMobile.Net
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
+                DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
+                DreamlandClearedSection = p.DreamlandClearedSection, DreamlandDay = p.DreamlandDay,
+                DreamlandAttempts = p.DreamlandAttempts,
+                WarriorFamHardType = p.WarriorFamHardType, WarriorFamLevel = p.WarriorFamLevel,
+                WarriorFamClearedLevel = p.WarriorFamClearedLevel, WarriorFamDay = p.WarriorFamDay,
+                WarriorFamAttempts = p.WarriorFamAttempts,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -5092,6 +5374,14 @@ namespace GunMobile.Net
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
+                DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
+                DreamlandSection = s.DreamlandSection > 0 ? s.DreamlandSection : 1,
+                DreamlandClearedSection = s.DreamlandClearedSection,
+                DreamlandDay = s.DreamlandDay, DreamlandAttempts = s.DreamlandAttempts,
+                WarriorFamHardType = s.WarriorFamHardType,
+                WarriorFamLevel = s.WarriorFamLevel > 0 ? s.WarriorFamLevel : 1,
+                WarriorFamClearedLevel = s.WarriorFamClearedLevel,
+                WarriorFamDay = s.WarriorFamDay, WarriorFamAttempts = s.WarriorFamAttempts,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
