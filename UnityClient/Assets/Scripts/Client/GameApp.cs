@@ -502,6 +502,10 @@ namespace GunMobile.Client
                     case PhoneMsg.JadeEquip:
                     case PhoneMsg.RuneEquip:
                     case PhoneMsg.HorseAmuletUpgrade:
+                    case PhoneMsg.CardBookletClaim:
+                    case PhoneMsg.StrengthenGoodsMap:
+                    case PhoneMsg.BoxOpen:
+                    case PhoneMsg.ItemFusion:
                         if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
                         if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
                         if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
@@ -849,6 +853,9 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "jampsPagesCollected", Profile.JampsPagesCollected ?? (Profile.JampsPagesCollected = new List<int>()));
             ParseIntListFromServer(json, "jampsPagesActivated", Profile.JampsPagesActivated ?? (Profile.JampsPagesActivated = new List<int>()));
             ParseIntListFromServer(json, "ownedCardTemplateIds", Profile.OwnedCardTemplateIds ?? (Profile.OwnedCardTemplateIds = new List<int>()));
+            ParseIntListFromServer(json, "cardBookletProfiles", Profile.CardBookletProfiles ?? (Profile.CardBookletProfiles = new List<int>()));
+            ParseIntListFromServer(json, "cardBookletClaimed", Profile.CardBookletClaimed ?? (Profile.CardBookletClaimed = new List<int>()));
+            Profile.CardSoul = JsonInt(json, "cardSoul", Profile.CardSoul);
             Profile.Save();
         }
 

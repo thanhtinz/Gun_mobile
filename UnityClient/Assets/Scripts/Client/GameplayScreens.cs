@@ -126,8 +126,17 @@ namespace GunMobile.Client
                     cap = cap.Substring(0, 80) + "…";
                 }
 
-                var btn = UiKit.Button(scroll.content, "b" + slot.TemplateId, cap, () =>
+                bool canOpenBox = item != null && app.Database != null &&
+                    app.Database.GetBoxDrops(slot.TemplateId).Count > 0;
+                string openCap = canOpenBox ? (cap + "  [开箱]") : cap;
+                BagItem openLocal = slot;
+                var btn = UiKit.Button(scroll.content, "b" + slot.TemplateId, openCap, () =>
                 {
+                    if (canOpenBox)
+                    {
+                        PhoneNet.OpenBox(openLocal.TemplateId);
+                        return;
+                    }
                     if (item != null && item.CanEquip)
                     {
                         PhoneNet.EquipItem(item.TemplateId);

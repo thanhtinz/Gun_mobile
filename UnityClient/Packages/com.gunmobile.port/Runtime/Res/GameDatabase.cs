@@ -1189,6 +1189,61 @@ namespace GunMobile.Res
         public int NeedItem1Count;
     }
 
+    public sealed class CardBookletInfo
+    {
+        public int TemplateId;
+        public string TemplateName = "";
+        public int Profile;
+        public int Weight;
+        public int Hp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int MagicAttack;
+        public int MagicDefence;
+        public int Damage;
+        public int Armor;
+        public int RecyclCount;
+        public string Desc = "";
+    }
+
+    public sealed class StrengthenGoodsInfo
+    {
+        public int Id;
+        public int CurrentEquip;
+        public int Level;
+        public int GainEquip;
+        public int OriginalEquip;
+    }
+
+    public sealed class BoxTempDrop
+    {
+        public int Id;
+        public int TemplateId;
+        public int StrengthenLevel;
+        public int ItemCount;
+        public int IsTips;
+    }
+
+    public sealed class ItemFusionRecipe
+    {
+        public int FusionId;
+        public int Item1;
+        public int Item2;
+        public int Item3;
+        public int Item4;
+        public int Count1;
+        public int Count2;
+        public int Count3;
+        public int Count4;
+        public int Formula;
+        public int FusionRate;
+        public int FusionType;
+        public int Reward;
+        public int NeedPower;
+    }
+
     public sealed class CardSuitInfo
     {
         public int SuitTemplateId;
@@ -1321,6 +1376,13 @@ namespace GunMobile.Res
         public List<JampsUpgradeCondition> JampsUpgradeConditions { get; } = new List<JampsUpgradeCondition>();
         public Dictionary<int, CardMainLevelInfo> CardMainLevels { get; } = new Dictionary<int, CardMainLevelInfo>();
         public List<CardSuitInfo> CardSuits { get; } = new List<CardSuitInfo>();
+        public List<CardBookletInfo> CardBooklets { get; } = new List<CardBookletInfo>();
+        readonly Dictionary<int, List<CardBookletInfo>> _cardBookletByTemplate = new Dictionary<int, List<CardBookletInfo>>();
+        public List<StrengthenGoodsInfo> StrengthenGoods { get; } = new List<StrengthenGoodsInfo>();
+        readonly Dictionary<long, StrengthenGoodsInfo> _strengthenGoodsByEquipLevel = new Dictionary<long, StrengthenGoodsInfo>();
+        public Dictionary<int, List<BoxTempDrop>> BoxTempById { get; } = new Dictionary<int, List<BoxTempDrop>>();
+        public List<ItemFusionRecipe> ItemFusions { get; } = new List<ItemFusionRecipe>();
+        public Dictionary<int, ItemFusionRecipe> ItemFusionById { get; } = new Dictionary<int, ItemFusionRecipe>();
         public Dictionary<int, ElfIntimacyInfo> ElfIntimacyLevels { get; } = new Dictionary<int, ElfIntimacyInfo>();
         public int RelicAdvanceTemplateCount;
         public List<WarriorFamRankEntry> WarriorHighFamRanks { get; } = new List<WarriorFamRankEntry>();
@@ -1444,6 +1506,10 @@ namespace GunMobile.Res
             db.LoadJamps(loader);
             db.LoadCardMain(loader);
             db.LoadCardSuits(loader);
+            db.LoadCardBooklet(loader);
+            db.LoadStrengthenGoods(loader);
+            db.LoadBoxTemp(loader);
+            db.LoadItemFusions(loader);
             db.LoadElfIntimacy(loader);
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
@@ -3456,6 +3522,103 @@ namespace GunMobile.Res
             }
 
             return Mathf.Clamp(90 - currentLevel * 5, 20, 90);
+        }
+
+        public StrengthenGoodsInfo GetStrengthenGoodsMap(int currentEquip, int level)
+        {
+            if (currentEquip <= 0) return null;
+            _strengthenGoodsByEquipLevel.TryGetValue(((long)currentEquip << 16) ^ (level & 0xffff), out StrengthenGoodsInfo row);
+            return row;
+        }
+
+        public StrengthenGoodsInfo FindStrengthenGoodsRemap(int currentEquip, int level)
+        {
+            StrengthenGoodsInfo exact = GetStrengthenGoodsMap(currentEquip, level);
+            if (exact != null && exact.GainEquip > 0 && exact.GainEquip != currentEquip) return exact;
+            StrengthenGoodsInfo best = null;
+            for (int i = 0; i < StrengthenGoods.Count; i++)
+            {
+                StrengthenGoodsInfo row = StrengthenGoods[i];
+                if (row.CurrentEquip != currentEquip || row.Level > level || row.GainEquip <= 0 || row.GainEquip == currentEquip) continue;
+                if (best == null || row.Level > best.Level) best = row;
+            }
+            return best;
+        }
+
+        public IReadOnlyList<CardBookletInfo> GetCardBookletRows(int templateId)
+        {
+            if (_cardBookletByTemplate.TryGetValue(templateId, out List<CardBookletInfo> list)) return list;
+            return System.Array.Empty<CardBookletInfo>();
+        }
+
+        public CardBookletInfo GetCardBooklet(int templateId, int profile)
+        {
+            IReadOnlyList<CardBookletInfo> rows = GetCardBookletRows(templateId);
+            for (int i = 0; i < rows.Count; i++)
+                if (rows[i].Profile == profile) return rows[i];
+            return rows.Count > 0 ? rows[0] : null;
+        }
+
+        public CardBookletInfo RollCardBooklet(int templateId, System.Random rng)
+        {
+            IReadOnlyList<CardBookletInfo> rows = GetCardBookletRows(templateId);
+            if (rows.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < rows.Count; i++) total += Mathf.Max(0, rows[i].Weight);
+            if (total <= 0) return rows[rng.Next(0, rows.Count)];
+            int roll = rng.Next(0, total);
+            for (int i = 0; i < rows.Count; i++)
+            {
+                roll -= Mathf.Max(0, rows[i].Weight);
+                if (roll < 0) return rows[i];
+            }
+            return rows[rows.Count - 1];
+        }
+
+        public void ApplyCardBookletBonus(IReadOnlyList<int> ownedCardTemplateIds, IReadOnlyList<int> profiles,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int dmg, ref int armor)
+        {
+            if (ownedCardTemplateIds == null) return;
+            for (int i = 0; i < ownedCardTemplateIds.Count; i++)
+            {
+                int profile = profiles != null && i < profiles.Count ? profiles[i] : 0;
+                CardBookletInfo row = GetCardBooklet(ownedCardTemplateIds[i], profile);
+                if (row == null) continue;
+                atk += row.Attack; def += row.Defence; agi += row.Agility; luck += row.Lucky;
+                hp += row.Hp; dmg += row.Damage; armor += row.Armor;
+            }
+        }
+
+        public IReadOnlyList<BoxTempDrop> GetBoxDrops(int boxTemplateId)
+        {
+            if (BoxTempById.TryGetValue(boxTemplateId, out List<BoxTempDrop> list) && list.Count > 0) return list;
+            return System.Array.Empty<BoxTempDrop>();
+        }
+
+        public BoxTempDrop RollBoxDrop(int boxTemplateId, System.Random rng)
+        {
+            IReadOnlyList<BoxTempDrop> drops = GetBoxDrops(boxTemplateId);
+            if (drops.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < drops.Count; i++)
+            {
+                int w = drops[i].IsTips <= 0 ? 100 : (drops[i].IsTips == 1 ? 25 : 5);
+                total += w;
+            }
+            int roll = rng.Next(0, Mathf.Max(1, total));
+            for (int i = 0; i < drops.Count; i++)
+            {
+                int w = drops[i].IsTips <= 0 ? 100 : (drops[i].IsTips == 1 ? 25 : 5);
+                roll -= w;
+                if (roll < 0) return drops[i];
+            }
+            return drops[drops.Count - 1];
+        }
+
+        public ItemFusionRecipe GetItemFusion(int fusionId)
+        {
+            ItemFusionById.TryGetValue(fusionId, out ItemFusionRecipe row);
+            return row;
         }
 
         int[] ConfigPipeInts(string name)
@@ -6266,6 +6429,128 @@ namespace GunMobile.Res
             foreach (var row in table.Rows)
             {
                 StrengthenRock[Int(row, "StrengthenLevel")] = Int(row, "Rock");
+            }
+        }
+
+        void LoadCardBooklet(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_CardBooklet.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateId");
+                if (templateId <= 0) continue;
+                var info = new CardBookletInfo
+                {
+                    TemplateId = templateId,
+                    TemplateName = Str(row, "TemplateName"),
+                    Profile = Int(row, "Profile"),
+                    Weight = Mathf.Max(0, Int(row, "Weight")),
+                    Hp = Int(row, "Hp"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefence"),
+                    Damage = Int(row, "Damage"),
+                    Armor = Int(row, "Armor"),
+                    RecyclCount = Int(row, "RecyclCount"),
+                    Desc = Str(row, "Desc")
+                };
+                CardBooklets.Add(info);
+                if (!_cardBookletByTemplate.TryGetValue(templateId, out List<CardBookletInfo> list))
+                {
+                    list = new List<CardBookletInfo>();
+                    _cardBookletByTemplate[templateId] = list;
+                }
+                list.Add(info);
+            }
+        }
+
+        void LoadStrengthenGoods(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/itemstrengthengoodsinfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int current = Int(row, "CurrentEquip");
+                int gain = Int(row, "GainEquip");
+                if (current <= 0 || gain <= 0) continue;
+                var info = new StrengthenGoodsInfo
+                {
+                    Id = Int(row, "ID"),
+                    CurrentEquip = current,
+                    Level = Int(row, "Level"),
+                    GainEquip = gain,
+                    OriginalEquip = Int(row, "OriginalEquip")
+                };
+                StrengthenGoods.Add(info);
+                _strengthenGoodsByEquipLevel[((long)current << 16) ^ (info.Level & 0xffff)] = info;
+            }
+        }
+
+        void LoadBoxTemp(ResLoader loader)
+        {
+            LoadBoxTempFile(loader, "Request/LoadBoxTemp1.xml");
+            LoadBoxTempFile(loader, "Request/LoadBoxTemp2.xml");
+            LoadBoxTempFile(loader, "Request/loadboxtemp_out.xml");
+        }
+
+        void LoadBoxTempFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id == 0) continue;
+                var drop = new BoxTempDrop
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateId"),
+                    StrengthenLevel = Int(row, "StrengthenLevel"),
+                    ItemCount = Mathf.Max(1, Int(row, "ItemCount")),
+                    IsTips = Int(row, "IsTips")
+                };
+                if (!BoxTempById.TryGetValue(id, out List<BoxTempDrop> list))
+                {
+                    list = new List<BoxTempDrop>();
+                    BoxTempById[id] = list;
+                }
+                list.Add(drop);
+            }
+        }
+
+        void LoadItemFusions(ResLoader loader)
+        {
+            LoadItemFusionFile(loader, "Request/fusioninfoload.xml");
+            LoadItemFusionFile(loader, "Request/fusioninfoload1.xml");
+        }
+
+        void LoadItemFusionFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int fusionId = Int(row, "FusionID");
+                if (fusionId <= 0) continue;
+                var recipe = new ItemFusionRecipe
+                {
+                    FusionId = fusionId,
+                    Item1 = Int(row, "Item1"),
+                    Item2 = Int(row, "Item2"),
+                    Item3 = Int(row, "Item3"),
+                    Item4 = Int(row, "Item4"),
+                    Count1 = Int(row, "Count1"),
+                    Count2 = Int(row, "Count2"),
+                    Count3 = Int(row, "Count3"),
+                    Count4 = Int(row, "Count4"),
+                    Formula = Int(row, "Formula"),
+                    FusionRate = Int(row, "FusionRate"),
+                    FusionType = Int(row, "FusionType"),
+                    Reward = Int(row, "Reward"),
+                    NeedPower = Int(row, "NeedPower")
+                };
+                ItemFusions.Add(recipe);
+                ItemFusionById[fusionId] = recipe;
             }
         }
 

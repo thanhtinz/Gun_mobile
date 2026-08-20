@@ -296,6 +296,29 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.Strengthen, "{\"templateId\":" + templateId + "}");
         }
 
+        public static void ClaimCardBooklet(int templateId, string action = "claim", int profile = -999)
+        {
+            string body = "{\"templateId\":" + templateId + ",\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\"";
+            if (profile != -999) body += ",\"profile\":" + profile;
+            body += "}";
+            Road?.Send(PhoneMsg.CardBookletClaim, body);
+        }
+
+        public static void QueryStrengthenGoodsMap(int templateId, int level = -1, bool apply = false)
+        {
+            Road?.Send(PhoneMsg.StrengthenGoodsMap, "{\"templateId\":" + templateId + ",\"level\":" + level + ",\"apply\":" + (apply ? 1 : 0) + "}");
+        }
+
+        public static void OpenBox(int templateId)
+        {
+            Road?.Send(PhoneMsg.BoxOpen, "{\"templateId\":" + templateId + "}");
+        }
+
+        public static void FuseItem(int fusionId)
+        {
+            Road?.Send(PhoneMsg.ItemFusion, "{\"fusionId\":" + fusionId + "}");
+        }
+
         public static void SelectBall(int ballId)
         {
             Road?.Send(PhoneMsg.BallSelect, "{\"ballId\":" + ballId + "}");

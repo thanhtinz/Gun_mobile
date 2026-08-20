@@ -159,6 +159,30 @@ namespace GunMobile.Client
             {
                 SysUi.Note(body, "No card bonuses in cardtemplateinfo.xml");
             }
+
+            SysUi.Note(body, "--- 卡牌册 TS_CardBooklet.xml  卡魂 " + app.Profile.CardSoul + " ---");
+            app.Profile.EnsureOwnedCards();
+            int bookletN = 0;
+            if (app.Database != null)
+            {
+                foreach (CardBookletInfo row in app.Database.CardBooklets)
+                {
+                    if (row.Profile != 0) continue;
+                    int tid = row.TemplateId;
+                    bool owned = app.Profile.OwnedCardTemplateIds.Contains(tid);
+                    bool claimed = app.Profile.CardBookletClaimed.Contains(tid);
+                    string state = claimed ? "[已领]" : owned ? "[可领]" : "[未拥有]";
+                    SysUi.Row(body, "book" + tid,
+                        state + " " + row.TemplateName + "  ATK+" + row.Attack + "  回收" + row.RecyclCount,
+                        () =>
+                        {
+                            if (!owned) PhoneNet.ClaimCardBooklet(tid, "draw");
+                            else if (!claimed) PhoneNet.ClaimCardBooklet(tid, "claim");
+                            else PhoneNet.ClaimCardBooklet(tid, "recycle");
+                        });
+                    if (++bookletN >= 24) break;
+                }
+            }
         }
     }
 
@@ -945,6 +969,37 @@ namespace GunMobile.Client
                 {
                     GoldEquipTemplate current = app.Database.GetGoldEquipForWeapon(app.Profile.EquipWeapon);
                     SysUi.Note(body, current != null ? "当前已是金装 #" + current.NewTemplateId : "当前武器无可升阶金装");
+                }
+            }
+
+            SysUi.Note(body, "--- 强化映射 itemstrengthengoodsinfo.xml ---");
+            foreach (BagItem slot in app.Profile.Bag)
+            {
+                ItemTemplate item = app.Database.GetItem(slot.TemplateId);
+                if (item == null || !item.CanEquip) continue;
+                StrengthenGoodsInfo map = app.Database.FindStrengthenGoodsRemap(slot.TemplateId, slot.Strengthen);
+                if (map == null) continue;
+                BagItem local = slot;
+                ItemTemplate gain = app.Database.GetItem(map.GainEquip);
+                string gainName = gain != null ? gain.Name : ("#" + map.GainEquip);
+                SysUi.Row(body, "sg" + slot.TemplateId,
+                    item.Name + " +" + slot.Strengthen + " → " + gainName + " (需+" + map.Level + ")",
+                    () => PhoneNet.QueryStrengthenGoodsMap(local.TemplateId, local.Strengthen, true));
+            }
+
+            SysUi.Note(body, "--- 熔炼 fusioninfoload.xml ---");
+            int fuseN = 0;
+            if (app.Database != null)
+            {
+                foreach (ItemFusionRecipe recipe in app.Database.ItemFusions)
+                {
+                    ItemTemplate reward = app.Database.GetItem(recipe.Reward);
+                    string rewardName = reward != null ? reward.Name : ("#" + recipe.Reward);
+                    int fid = recipe.FusionId;
+                    SysUi.Row(body, "fuse" + recipe.FusionId,
+                        "#" + recipe.FusionId + " → " + rewardName + "  率" + recipe.FusionRate + "/10000",
+                        () => PhoneNet.FuseItem(fid));
+                    if (++fuseN >= 20) break;
                 }
             }
         }
