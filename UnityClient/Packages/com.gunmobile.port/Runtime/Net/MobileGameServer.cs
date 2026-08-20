@@ -139,6 +139,16 @@ namespace GunMobile.Net
         public int CultureDef;
         public int CultureAgi;
         public int CultureLuck;
+        public int JampsManualLevel = 1;
+        public List<int> JampsDebrisOwned = new List<int>();
+        public List<int> JampsPagesCollected = new List<int>();
+        public List<int> JampsPagesActivated = new List<int>();
+        public int CardMainLevel;
+        public List<int> OwnedCardTemplateIds = new List<int>();
+        public int ElfIntimacyExp;
+        public int ElfIntimacyLevel;
+        public int ElfIntimacyDay = -1;
+        public int ElfIntimacyActions;
         public int NextEmblemId = 1;
         public int NextSoulStampId = 1;
 
@@ -282,6 +292,19 @@ namespace GunMobile.Net
             if (HonorSystemDay != day) { HonorSystemDay = day; HonorSystemOps = 0; }
         }
 
+        public void EnsureJampsLists()
+        {
+            if (JampsDebrisOwned == null) JampsDebrisOwned = new List<int>();
+            if (JampsPagesCollected == null) JampsPagesCollected = new List<int>();
+            if (JampsPagesActivated == null) JampsPagesActivated = new List<int>();
+        }
+        public bool HasJampsDebris(int debrisId) { EnsureJampsLists(); return JampsDebrisOwned.Contains(debrisId); }
+        public bool HasJampsPageCollected(int pageId) { EnsureJampsLists(); return JampsPagesCollected.Contains(pageId); }
+        public bool HasJampsPageActivated(int pageId) { EnsureJampsLists(); return JampsPagesActivated.Contains(pageId); }
+        public void EnsureOwnedCards() { if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>(); }
+        public void SyncElfIntimacyLevel(GameDatabase db) { ElfIntimacyLevel = db != null ? db.ElfIntimacyLevelFromExp(ElfIntimacyExp) : 0; }
+        public void TouchElfIntimacyDay() { int day = DateTime.UtcNow.DayOfYear; if (ElfIntimacyDay != day) { ElfIntimacyDay = day; ElfIntimacyActions = 0; } }
+
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
         public TcpClient FightTcp;
@@ -387,6 +410,13 @@ namespace GunMobile.Net
             EnsureRelics();
             db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref magicAtk, ref magicDef);
             db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luck, ref hp, ref magicAtk, ref magicDef);
+            EnsureJampsLists();
+            db.ApplyJampsBonus(JampsManualLevel, JampsPagesCollected, JampsPagesActivated, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            db.ApplyCardMainBonus(CardMainLevel, ref atk, ref def, ref agi, ref luck);
+            EnsureOwnedCards();
+            db.ApplyCardSuitBonus(OwnedCardTemplateIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            SyncElfIntimacyLevel(db);
+            db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);
 
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
@@ -532,6 +562,25 @@ namespace GunMobile.Net
             J(sb, "cultureDef", CultureDef); sb.Append(",");
             J(sb, "cultureAgi", CultureAgi); sb.Append(",");
             J(sb, "cultureLuck", CultureLuck); sb.Append(",");
+            J(sb, "jampsManualLevel", JampsManualLevel); sb.Append(",");
+            sb.Append("\"jampsDebrisOwned\":[");
+            EnsureJampsLists();
+            for (int i = 0; i < JampsDebrisOwned.Count; i++) { if (i > 0) sb.Append(","); sb.Append(JampsDebrisOwned[i]); }
+            sb.Append("],");
+            sb.Append("\"jampsPagesCollected\":[");
+            for (int i = 0; i < JampsPagesCollected.Count; i++) { if (i > 0) sb.Append(","); sb.Append(JampsPagesCollected[i]); }
+            sb.Append("],");
+            sb.Append("\"jampsPagesActivated\":[");
+            for (int i = 0; i < JampsPagesActivated.Count; i++) { if (i > 0) sb.Append(","); sb.Append(JampsPagesActivated[i]); }
+            sb.Append("],");
+            J(sb, "cardMainLevel", CardMainLevel); sb.Append(",");
+            sb.Append("\"ownedCardTemplateIds\":[");
+            EnsureOwnedCards();
+            for (int i = 0; i < OwnedCardTemplateIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(OwnedCardTemplateIds[i]); }
+            sb.Append("],");
+            J(sb, "elfIntimacyExp", ElfIntimacyExp); sb.Append(",");
+            J(sb, "elfIntimacyLevel", ElfIntimacyLevel); sb.Append(",");
+            J(sb, "elfIntimacyActions", ElfIntimacyActions); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "godCardPoints", GodCardPoints); sb.Append(",");
             sb.Append("\"godCardPointClaimed\":[");
@@ -1342,11 +1391,23 @@ namespace GunMobile.Net
                     break;
 
                 case PhoneMsg.CardSelect:
+                {
                     player.CardId = JI(json, "cardId", player.CardId);
+                    if (_db != null)
+                    {
+                        CardInfo card = _db.GetCard(player.CardId);
+                        if (card != null)
+                        {
+                            player.EnsureOwnedCards();
+                            if (!player.OwnedCardTemplateIds.Contains(card.CardId))
+                                player.OwnedCardTemplateIds.Add(card.CardId);
+                        }
+                    }
                     player.RecalcStats(_db);
                     SavePlayer(player);
                     Send(ns, PhoneMsg.StatResult, player.ToJson());
                     break;
+                }
 
                 case PhoneMsg.TotemBuy:
                     HandleTotemBuy(player, ns, json);
@@ -1624,6 +1685,22 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SweepMission:
                     HandleSweepMission(player, ns, json);
+                    break;
+
+                case PhoneMsg.JampsUpgrade:
+                    HandleJampsUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.JampsClaimPage:
+                    HandleJampsClaimPage(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardMainUpgrade:
+                    HandleCardMainUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.ElfIntimacyAction:
+                    HandleElfIntimacyAction(player, ns, json);
                     break;
 
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
@@ -2744,6 +2821,125 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.CultureResult, "{\"ok\":true,\"statType\":" + statType + ",\"level\":" + (current + 1) + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleJampsUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.JampsUpgrade, "{\"ok\":false}"); return; }
+            int targetLevel = player.JampsManualLevel + 1;
+            if (_db.GetJampsManual(targetLevel) == null) { Send(ns, PhoneMsg.JampsUpgrade, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            List<JampsUpgradeCondition> conditions = _db.GetJampsUpgradeConditions(targetLevel);
+            for (int i = 0; i < conditions.Count; i++)
+                if (!CheckJampsUpgradeCondition(player, conditions[i])) { Send(ns, PhoneMsg.JampsUpgrade, "{\"ok\":false,\"err\":\"cond\"}"); return; }
+            for (int i = 0; i < conditions.Count; i++)
+                if (conditions[i].ConditionType == 1 && !player.Consume(conditions[i].Parameter1, conditions[i].Parameter2))
+                { Send(ns, PhoneMsg.JampsUpgrade, "{\"ok\":false,\"err\":\"item\"}"); return; }
+            player.JampsManualLevel = targetLevel;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.JampsUpgrade, "{\"ok\":true,\"level\":" + targetLevel + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        bool CheckJampsUpgradeCondition(ServerPlayer player, JampsUpgradeCondition cond)
+        {
+            if (_db == null || cond == null) return false;
+            player.EnsureJampsLists();
+            switch (cond.ConditionType)
+            {
+                case 1:
+                    for (int i = 0; i < player.Bag.Count; i++)
+                        if (player.Bag[i].TemplateId == cond.Parameter1 && player.Bag[i].Count >= cond.Parameter2) return true;
+                    return false;
+                case 2: return player.JampsPagesCollected.Count >= cond.Parameter1;
+                case 3:
+                    int c3 = 0;
+                    foreach (int pageId in player.JampsPagesCollected) { JampsPageInfo p = _db.GetJampsPage(pageId); if (p != null && p.ChapterId == cond.Parameter1) c3++; }
+                    return c3 >= cond.Parameter2;
+                case 4: return HasJampsPages(player, cond.Parameter1, cond.Parameter2, cond.Parameter3, false);
+                case 5:
+                    int c5 = 0;
+                    foreach (int pageId in player.JampsPagesActivated) { JampsPageInfo p = _db.GetJampsPage(pageId); if (p != null && p.ChapterId == cond.Parameter1) c5++; }
+                    return c5 >= cond.Parameter2;
+                case 6: return HasJampsPages(player, cond.Parameter1, cond.Parameter2, cond.Parameter3, true);
+                case 7: return player.JampsPagesActivated.Count >= cond.Parameter1;
+                default: return true;
+            }
+        }
+
+        bool HasJampsPages(ServerPlayer player, int chapterId, int pageA, int pageB, bool activated)
+        {
+            IReadOnlyList<int> pages = activated ? player.JampsPagesActivated : player.JampsPagesCollected;
+            bool hasA = false, hasB = false;
+            for (int i = 0; i < pages.Count; i++)
+            {
+                JampsPageInfo page = _db.GetJampsPage(pages[i]);
+                if (page == null || page.ChapterId != chapterId) continue;
+                if (pages[i] == pageA) hasA = true;
+                if (pageB > 0 && pages[i] == pageB) hasB = true;
+            }
+            return hasA && (pageB <= 0 || hasB);
+        }
+
+        void HandleJampsClaimPage(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false}"); return; }
+            string action = JS(json, "action", "");
+            int pageId = JI(json, "pageId", 0), debrisId = JI(json, "debrisId", 0);
+            player.EnsureJampsLists();
+            if (action == "debris")
+            {
+                JampsDebrisInfo debris = _db.GetJampsDebris(debrisId);
+                if (debris == null || player.HasJampsDebris(debrisId)) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"debris\"}"); return; }
+                if (player.Gold < debris.JampsCurrency) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= debris.JampsCurrency; player.JampsDebrisOwned.Add(debrisId);
+            }
+            else if (action == "collect")
+            {
+                JampsPageInfo page = _db.GetJampsPage(pageId);
+                if (page == null || player.HasJampsPageCollected(pageId)) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"page\"}"); return; }
+                if (_db.CountJampsDebrisForPage(player.JampsDebrisOwned, pageId) < page.DebrisCount) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"needDebris\"}"); return; }
+                player.JampsPagesCollected.Add(pageId);
+            }
+            else if (action == "activate")
+            {
+                JampsPageInfo page = _db.GetJampsPage(pageId);
+                if (page == null || !player.HasJampsPageCollected(pageId) || player.HasJampsPageActivated(pageId)) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"page\"}"); return; }
+                if (player.Gold < page.ActivateCurrency) { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= page.ActivateCurrency; player.JampsPagesActivated.Add(pageId);
+            }
+            else { Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":false,\"err\":\"action\"}"); return; }
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.JampsClaimPage, "{\"ok\":true,\"action\":\"" + action + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCardMainUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.CardMainUpgrade, "{\"ok\":false}"); return; }
+            int nextLevel = player.CardMainLevel + 1;
+            CardMainLevelInfo row = _db.GetCardMainLevel(nextLevel);
+            if (row == null) { Send(ns, PhoneMsg.CardMainUpgrade, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            int cost = row.NeedItem1Count;
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.CardMainUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost; player.CardMainLevel = nextLevel;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.CardMainUpgrade, "{\"ok\":true,\"level\":" + nextLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleElfIntimacyAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.ElfIntimacyAction, "{\"ok\":false}"); return; }
+            if (player.ElfId <= 0) { Send(ns, PhoneMsg.ElfIntimacyAction, "{\"ok\":false,\"err\":\"elf\"}"); return; }
+            player.TouchElfIntimacyDay();
+            int maxActions = _db.ConfigInt("ElfIntimacyDayLimit", 10);
+            if (player.ElfIntimacyActions >= maxActions) { Send(ns, PhoneMsg.ElfIntimacyAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            string action = JS(json, "action", "gift");
+            int gain = action == "interact" ? 10 : 15;
+            player.ElfIntimacyExp += gain; player.ElfIntimacyActions++;
+            player.SyncElfIntimacyLevel(_db); player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.ElfIntimacyAction, "{\"ok\":true,\"exp\":" + player.ElfIntimacyExp + ",\"level\":" + player.ElfIntimacyLevel + ",\"gain\":" + gain + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -6544,6 +6740,16 @@ namespace GunMobile.Net
             public int WarriorFamDay = -1, WarriorFamAttempts;
             public int ForcesBattleScore, ForcesBattleDay = -1, ForcesBattleAttempts;
             public int CultureGrade = 1, CultureAtk, CultureDef, CultureAgi, CultureLuck;
+            public int JampsManualLevel = 1;
+            public List<int> JampsDebrisOwned = new List<int>();
+            public List<int> JampsPagesCollected = new List<int>();
+            public List<int> JampsPagesActivated = new List<int>();
+            public int CardMainLevel;
+            public List<int> OwnedCardTemplateIds = new List<int>();
+            public int ElfIntimacyExp;
+            public int ElfIntimacyLevel;
+            public int ElfIntimacyDay = -1;
+            public int ElfIntimacyActions;
             public int GodCardEquipId, EngraveSetId;
             public int GodCardPoints;
             public List<int> GodCardPointClaimed = new List<int>();
@@ -6636,6 +6842,16 @@ namespace GunMobile.Net
                 ForcesBattleAttempts = p.ForcesBattleAttempts,
                 CultureGrade = p.CultureGrade, CultureAtk = p.CultureAtk, CultureDef = p.CultureDef,
                 CultureAgi = p.CultureAgi, CultureLuck = p.CultureLuck,
+                JampsManualLevel = p.JampsManualLevel,
+                JampsDebrisOwned = p.JampsDebrisOwned ?? new List<int>(),
+                JampsPagesCollected = p.JampsPagesCollected ?? new List<int>(),
+                JampsPagesActivated = p.JampsPagesActivated ?? new List<int>(),
+                CardMainLevel = p.CardMainLevel,
+                OwnedCardTemplateIds = p.OwnedCardTemplateIds ?? new List<int>(),
+                ElfIntimacyExp = p.ElfIntimacyExp,
+                ElfIntimacyLevel = p.ElfIntimacyLevel,
+                ElfIntimacyDay = p.ElfIntimacyDay,
+                ElfIntimacyActions = p.ElfIntimacyActions,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
@@ -6723,6 +6939,16 @@ namespace GunMobile.Net
                 CultureGrade = s.CultureGrade > 0 ? s.CultureGrade : 1,
                 CultureAtk = s.CultureAtk, CultureDef = s.CultureDef,
                 CultureAgi = s.CultureAgi, CultureLuck = s.CultureLuck,
+                JampsManualLevel = s.JampsManualLevel > 0 ? s.JampsManualLevel : 1,
+                JampsDebrisOwned = s.JampsDebrisOwned ?? new List<int>(),
+                JampsPagesCollected = s.JampsPagesCollected ?? new List<int>(),
+                JampsPagesActivated = s.JampsPagesActivated ?? new List<int>(),
+                CardMainLevel = s.CardMainLevel,
+                OwnedCardTemplateIds = s.OwnedCardTemplateIds ?? new List<int>(),
+                ElfIntimacyExp = s.ElfIntimacyExp,
+                ElfIntimacyLevel = s.ElfIntimacyLevel,
+                ElfIntimacyDay = s.ElfIntimacyDay,
+                ElfIntimacyActions = s.ElfIntimacyActions,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,

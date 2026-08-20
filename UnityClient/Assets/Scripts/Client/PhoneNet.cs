@@ -308,6 +308,16 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.DevilTurnSpin, "{\"count\":" + count + "}");
         }
 
+        public static void ClaimDevilTreasPoint(int rewardId)
+        {
+            Road?.Send(PhoneMsg.DevilTreasPointClaim, "{\"rewardId\":" + rewardId + "}");
+        }
+
+        public static void SendRedPacket(string friendNick, int gold)
+        {
+            Road?.Send(PhoneMsg.RedPacketSend, "{\"friendNick\":\"" + (friendNick ?? "").Replace("\"", "") + "\",\"gold\":" + gold + "}");
+        }
+
         public static void SpaRoomStart()
         {
             Road?.Send(PhoneMsg.SpaRoomStart, "{}");
@@ -713,6 +723,18 @@ namespace GunMobile.Client
             string link = Fight != null && Fight.Connected ? " 已连" : "";
             string err = GameServer != null && !string.IsNullOrEmpty(GameServer.LastError) ? "  " + GameServer.LastError : "";
             return srv + link + err + "  IP " + LanIPv4() + "  id " + PlayerId;
+        }
+
+        public static void UpgradeJamps() { Road?.Send(PhoneMsg.JampsUpgrade, "{}"); }
+        public static void JampsClaimPage(string action, int pageId, int debrisId)
+        {
+            Road?.Send(PhoneMsg.JampsClaimPage,
+                "{\"action\":\"" + (action ?? "").Replace("\"", "") + "\",\"pageId\":" + pageId + ",\"debrisId\":" + debrisId + "}");
+        }
+        public static void UpgradeCardMain() { Road?.Send(PhoneMsg.CardMainUpgrade, "{}"); }
+        public static void ElfIntimacyAction(string action)
+        {
+            Road?.Send(PhoneMsg.ElfIntimacyAction, "{\"action\":\"" + (action ?? "gift").Replace("\"", "") + "\"}");
         }
     }
 }

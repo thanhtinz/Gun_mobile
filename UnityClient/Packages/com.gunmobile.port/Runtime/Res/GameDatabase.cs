@@ -785,6 +785,87 @@ namespace GunMobile.Res
         public int ExerciseMd;
     }
 
+    public sealed class JampsManualInfo
+    {
+        public int Level;
+        public string Name = "";
+        public int Boost;
+        public int MagicAttack;
+        public int MagicResistance;
+    }
+
+    public sealed class JampsChapterInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int Sort;
+    }
+
+    public sealed class JampsPageInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int ChapterId;
+        public int DebrisCount;
+        public int ActivateCurrency;
+        public int CollectAttack;
+        public int CollectDefense;
+        public int CollectAgile;
+        public int CollectLucky;
+        public int CollectDamage;
+        public int CollectArmor;
+        public int ActivateAttack;
+        public int ActivateDefence;
+        public int ActivateAgile;
+        public int ActivateLucky;
+        public int ActivateDamage;
+    }
+
+    public sealed class JampsDebrisInfo
+    {
+        public int Id;
+        public int PageId;
+        public int JampsCurrency;
+    }
+
+    public sealed class JampsUpgradeCondition
+    {
+        public int ManualLevel;
+        public int ConditionType;
+        public int Parameter1;
+        public int Parameter2;
+        public int Parameter3;
+    }
+
+    public sealed class CardMainLevelInfo
+    {
+        public int Level;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int NeedItem1Count;
+    }
+
+    public sealed class CardSuitInfo
+    {
+        public int SuitTemplateId;
+        public string SuitName = "";
+        public int[] NeedCardTempIds = System.Array.Empty<int>();
+        public int Hp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int Damage;
+        public int Armor;
+    }
+
+    public sealed class ElfIntimacyInfo
+    {
+        public int Grades;
+        public int Gp;
+    }
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -856,6 +937,14 @@ namespace GunMobile.Res
         public List<CityOccupationExchange> CityOccupationExchanges { get; } = new List<CityOccupationExchange>();
         public Dictionary<long, CultureUpgradeRow> CultureUpgrades { get; } = new Dictionary<long, CultureUpgradeRow>();
         public Dictionary<int, ExerciseInfoRow> ExerciseInfoByGrade { get; } = new Dictionary<int, ExerciseInfoRow>();
+        public Dictionary<int, JampsManualInfo> JampsManuals { get; } = new Dictionary<int, JampsManualInfo>();
+        public Dictionary<int, JampsChapterInfo> JampsChapters { get; } = new Dictionary<int, JampsChapterInfo>();
+        public Dictionary<int, JampsPageInfo> JampsPages { get; } = new Dictionary<int, JampsPageInfo>();
+        public Dictionary<int, JampsDebrisInfo> JampsDebris { get; } = new Dictionary<int, JampsDebrisInfo>();
+        public List<JampsUpgradeCondition> JampsUpgradeConditions { get; } = new List<JampsUpgradeCondition>();
+        public Dictionary<int, CardMainLevelInfo> CardMainLevels { get; } = new Dictionary<int, CardMainLevelInfo>();
+        public List<CardSuitInfo> CardSuits { get; } = new List<CardSuitInfo>();
+        public Dictionary<int, ElfIntimacyInfo> ElfIntimacyLevels { get; } = new Dictionary<int, ElfIntimacyInfo>();
         public int RelicAdvanceTemplateCount;
         public List<WarriorFamRankEntry> WarriorHighFamRanks { get; } = new List<WarriorFamRankEntry>();
         public Dictionary<int, MagicClothInfo> MagicCloths { get; } = new Dictionary<int, MagicClothInfo>();
@@ -957,6 +1046,10 @@ namespace GunMobile.Res
             db.LoadRelics(loader);
             db.LoadCityOccupation(loader);
             db.LoadCulture(loader);
+            db.LoadJamps(loader);
+            db.LoadCardMain(loader);
+            db.LoadCardSuits(loader);
+            db.LoadElfIntimacy(loader);
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
@@ -5075,6 +5168,388 @@ namespace GunMobile.Res
                     };
                 }
             }
+        }
+
+        void LoadJamps(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/jampsmanualitemlist.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0)
+                    {
+                        continue;
+                    }
+
+                    JampsManuals[level] = new JampsManualInfo
+                    {
+                        Level = level,
+                        Name = Str(row, "Name"),
+                        Boost = Int(row, "Boost"),
+                        MagicAttack = Int(row, "MagicAttack"),
+                        MagicResistance = Int(row, "MagicResistance")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/jampschapteritemlist.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int id = Int(row, "ID");
+                    JampsChapters[id] = new JampsChapterInfo
+                    {
+                        Id = id,
+                        Name = Str(row, "Name"),
+                        Sort = Int(row, "Sort")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/jampspageitemlist.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int id = Int(row, "ID");
+                    JampsPages[id] = new JampsPageInfo
+                    {
+                        Id = id,
+                        Name = Str(row, "Name"),
+                        ChapterId = Int(row, "ChapterID"),
+                        DebrisCount = Int(row, "DebrisCount"),
+                        ActivateCurrency = Int(row, "ActivateCurrency"),
+                        CollectAttack = Int(row, "Collect_Attack"),
+                        CollectDefense = Int(row, "Collect_Defense"),
+                        CollectAgile = Int(row, "Collect_Agile"),
+                        CollectLucky = Int(row, "Collect_Lucky"),
+                        CollectDamage = Int(row, "Collect_Damage"),
+                        CollectArmor = Int(row, "Collect_Armor"),
+                        ActivateAttack = Int(row, "Activate_Attack"),
+                        ActivateDefence = Int(row, "Activate_Defence"),
+                        ActivateAgile = Int(row, "Activate_Agile"),
+                        ActivateLucky = Int(row, "Activate_Lucky"),
+                        ActivateDamage = Int(row, "Activate_Damage")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/jampsdebrisitemlist.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int id = Int(row, "ID");
+                    JampsDebris[id] = new JampsDebrisInfo
+                    {
+                        Id = id,
+                        PageId = Int(row, "PageID"),
+                        JampsCurrency = Int(row, "JampsCurrency")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/jampsupgradeitemlist.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    JampsUpgradeConditions.Add(new JampsUpgradeCondition
+                    {
+                        ManualLevel = Int(row, "ManualLevel"),
+                        ConditionType = Int(row, "ConditionType"),
+                        Parameter1 = Int(row, "Parameter1"),
+                        Parameter2 = Int(row, "Parameter2"),
+                        Parameter3 = Int(row, "Parameter3")
+                    });
+                }
+            }
+        }
+
+        void LoadCardMain(ResLoader loader)
+        {
+            LoadCardMainFile(loader, "Request/TS_CardMain.xml");
+            LoadCardMainFile(loader, "Request/TS_CardMain1.xml");
+        }
+
+        void LoadCardMainFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (level <= 0)
+                {
+                    continue;
+                }
+
+                CardMainLevels[level] = new CardMainLevelInfo
+                {
+                    Level = level,
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    NeedItem1Count = Int(row, "NeedItem1Count")
+                };
+            }
+        }
+
+        void LoadCardSuits(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_CardSuit.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                CardSuits.Add(new CardSuitInfo
+                {
+                    SuitTemplateId = Int(row, "SuitTemplateId"),
+                    SuitName = Str(row, "SuitName"),
+                    NeedCardTempIds = ParseIntCsv(Str(row, "NeedCardTempIds")),
+                    Hp = Int(row, "Hp"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    Damage = Int(row, "Damage"),
+                    Armor = Int(row, "Armor")
+                });
+            }
+        }
+
+        void LoadElfIntimacy(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_ElfIntimacy.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int grades = Int(row, "Grades");
+                if (grades <= 0)
+                {
+                    continue;
+                }
+
+                ElfIntimacyLevels[grades] = new ElfIntimacyInfo
+                {
+                    Grades = grades,
+                    Gp = Int(row, "Gp")
+                };
+            }
+        }
+
+        public JampsManualInfo GetJampsManual(int level)
+        {
+            JampsManuals.TryGetValue(level, out JampsManualInfo row);
+            return row;
+        }
+
+        public JampsPageInfo GetJampsPage(int pageId)
+        {
+            JampsPages.TryGetValue(pageId, out JampsPageInfo row);
+            return row;
+        }
+
+        public JampsDebrisInfo GetJampsDebris(int debrisId)
+        {
+            JampsDebris.TryGetValue(debrisId, out JampsDebrisInfo row);
+            return row;
+        }
+
+        public List<JampsUpgradeCondition> GetJampsUpgradeConditions(int manualLevel)
+        {
+            var list = new List<JampsUpgradeCondition>();
+            foreach (JampsUpgradeCondition cond in JampsUpgradeConditions)
+            {
+                if (cond.ManualLevel == manualLevel)
+                {
+                    list.Add(cond);
+                }
+            }
+
+            return list;
+        }
+
+        public int CountJampsDebrisForPage(IReadOnlyList<int> ownedDebris, int pageId)
+        {
+            int count = 0;
+            if (ownedDebris == null)
+            {
+                return 0;
+            }
+
+            for (int i = 0; i < ownedDebris.Count; i++)
+            {
+                if (JampsDebris.TryGetValue(ownedDebris[i], out JampsDebrisInfo debris) && debris.PageId == pageId)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
+        public CardMainLevelInfo GetCardMainLevel(int level)
+        {
+            CardMainLevels.TryGetValue(level, out CardMainLevelInfo row);
+            return row;
+        }
+
+        public int ElfIntimacyLevelFromExp(int exp)
+        {
+            int best = 0;
+            foreach (ElfIntimacyInfo row in ElfIntimacyLevels.Values)
+            {
+                if (row.Gp <= exp && row.Grades > best)
+                {
+                    best = row.Grades;
+                }
+            }
+
+            return best;
+        }
+
+        public static bool ListHasInt(IReadOnlyList<int> list, int value)
+        {
+            if (list == null)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i] == value)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public void ApplyJampsBonus(int manualLevel, IReadOnlyList<int> collected, IReadOnlyList<int> activated,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard,
+            ref int magicAtk, ref int magicDef)
+        {
+            if (JampsManuals.TryGetValue(manualLevel, out JampsManualInfo manual))
+            {
+                magicAtk += manual.MagicAttack;
+                magicDef += manual.MagicResistance;
+                baseDmg += manual.Boost;
+            }
+
+            if (collected != null)
+            {
+                for (int i = 0; i < collected.Count; i++)
+                {
+                    if (!JampsPages.TryGetValue(collected[i], out JampsPageInfo page))
+                    {
+                        continue;
+                    }
+
+                    atk += page.CollectAttack;
+                    def += page.CollectDefense;
+                    agi += page.CollectAgile;
+                    luck += page.CollectLucky;
+                    baseDmg += page.CollectDamage;
+                    baseGuard += page.CollectArmor;
+                }
+            }
+
+            if (activated != null)
+            {
+                for (int i = 0; i < activated.Count; i++)
+                {
+                    if (!JampsPages.TryGetValue(activated[i], out JampsPageInfo page))
+                    {
+                        continue;
+                    }
+
+                    atk += page.ActivateAttack;
+                    def += page.ActivateDefence;
+                    agi += page.ActivateAgile;
+                    luck += page.ActivateLucky;
+                    baseDmg += page.ActivateDamage;
+                }
+            }
+        }
+
+        public void ApplyCardMainBonus(int cardMainLevel, ref int atk, ref int def, ref int agi, ref int luck)
+        {
+            if (cardMainLevel <= 0)
+            {
+                return;
+            }
+
+            CardMainLevelInfo row = GetCardMainLevel(cardMainLevel);
+            if (row == null)
+            {
+                return;
+            }
+
+            atk += row.Attack;
+            def += row.Defence;
+            agi += row.Agility;
+            luck += row.Lucky;
+        }
+
+        public void ApplyCardSuitBonus(IReadOnlyList<int> ownedCardTemplateIds, ref int atk, ref int def, ref int agi,
+            ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (ownedCardTemplateIds == null || ownedCardTemplateIds.Count == 0)
+            {
+                return;
+            }
+
+            foreach (CardSuitInfo suit in CardSuits)
+            {
+                if (suit.NeedCardTempIds == null || suit.NeedCardTempIds.Length == 0)
+                {
+                    continue;
+                }
+
+                bool complete = true;
+                for (int i = 0; i < suit.NeedCardTempIds.Length; i++)
+                {
+                    if (!ListHasInt(ownedCardTemplateIds, suit.NeedCardTempIds[i]))
+                    {
+                        complete = false;
+                        break;
+                    }
+                }
+
+                if (!complete)
+                {
+                    continue;
+                }
+
+                atk += suit.Attack;
+                def += suit.Defence;
+                agi += suit.Agility;
+                luck += suit.Lucky;
+                hp += suit.Hp;
+                baseDmg += suit.Damage;
+                baseGuard += suit.Armor;
+            }
+        }
+
+        public void ApplyElfIntimacyBonus(int intimacyLevel, ref int atk, ref int def, ref int hp)
+        {
+            if (intimacyLevel <= 0)
+            {
+                return;
+            }
+
+            atk += intimacyLevel * 2;
+            def += intimacyLevel * 2;
+            hp += intimacyLevel * 10;
         }
 
         public static bool Bool(IReadOnlyDictionary<string, string> row, string key)

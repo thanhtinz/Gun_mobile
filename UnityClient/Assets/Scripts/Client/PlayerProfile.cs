@@ -72,6 +72,8 @@ namespace GunMobile.Client
         public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
+        public int DevilTurnPoints;
+        public List<int> DevilTreasPointClaimed = new List<int>();
         public int SpaRoomDayScore;
         public int TreasureRoomDraws;
         public int ChristmasClaims;
@@ -97,6 +99,15 @@ namespace GunMobile.Client
         public int CultureDef;
         public int CultureAgi;
         public int CultureLuck;
+        public int JampsManualLevel = 1;
+        public List<int> JampsDebrisOwned = new List<int>();
+        public List<int> JampsPagesCollected = new List<int>();
+        public List<int> JampsPagesActivated = new List<int>();
+        public int CardMainLevel;
+        public List<int> OwnedCardTemplateIds = new List<int>();
+        public int ElfIntimacyExp;
+        public int ElfIntimacyLevel;
+        public int ElfIntimacyActions;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -105,6 +116,7 @@ namespace GunMobile.Client
         public List<BagItem> Bag = new List<BagItem>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
+        public Dictionary<int, List<int>> QuestProgress = new Dictionary<int, List<int>>();
         public List<string> Friends = new List<string>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
         public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
@@ -122,6 +134,12 @@ namespace GunMobile.Client
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
+        public void EnsureJampsLists() { if (JampsDebrisOwned == null) JampsDebrisOwned = new List<int>(); if (JampsPagesCollected == null) JampsPagesCollected = new List<int>(); if (JampsPagesActivated == null) JampsPagesActivated = new List<int>(); }
+        public bool HasJampsDebris(int id) { EnsureJampsLists(); return JampsDebrisOwned.Contains(id); }
+        public bool HasJampsPageCollected(int id) { EnsureJampsLists(); return JampsPagesCollected.Contains(id); }
+        public bool HasJampsPageActivated(int id) { EnsureJampsLists(); return JampsPagesActivated.Contains(id); }
+        public void EnsureOwnedCards() { if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>(); }
+        public void SyncElfIntimacyLevel(GameDatabase db) { ElfIntimacyLevel = db != null ? db.ElfIntimacyLevelFromExp(ElfIntimacyExp) : 0; }
 
         public static string PathOnDisk => Path.Combine(Application.persistentDataPath, "player.json");
 
@@ -514,6 +532,17 @@ namespace GunMobile.Client
                 db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref magicAtk, ref magicDef);
                 atk += rDmg / 4;
                 db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luk, ref hp, ref magicAtk, ref magicDef);
+                EnsureJampsLists();
+                int jDmg = 0; int jGuard = 0;
+                db.ApplyJampsBonus(JampsManualLevel, JampsPagesCollected, JampsPagesActivated, ref atk, ref def, ref agi, ref luk, ref hp, ref jDmg, ref jGuard, ref magicAtk, ref magicDef);
+                atk += jDmg / 4; def += jGuard / 4;
+                db.ApplyCardMainBonus(CardMainLevel, ref atk, ref def, ref agi, ref luk);
+                EnsureOwnedCards();
+                int cDmg = 0; int cGuard = 0;
+                db.ApplyCardSuitBonus(OwnedCardTemplateIds, ref atk, ref def, ref agi, ref luk, ref hp, ref cDmg, ref cGuard);
+                atk += cDmg / 4; def += cGuard / 4;
+                SyncElfIntimacyLevel(db);
+                db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);
                 atk += magicAtk / 4;
                 def += magicDef / 4;
 
@@ -523,19 +552,17 @@ namespace GunMobile.Client
                     hp += elf.HpHint / 2;
                 }
 
+                int engrDmg = 0;
+                int engrGuard = 0;
                 if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
                 {
                     db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luk, ref hp);
                     GodCardSlot grooveSlot = FindGodCardSlot(GodCardEquipId);
                     if (grooveSlot != null)
-                    {
                         db.ApplyGodCardGrooveBonus(db.GodCardGrooveType(gc), grooveSlot.GrooveLevel,
                             ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
-                    }
                 }
 
-                int engrDmg = 0;
-                int engrGuard = 0;
                 db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
                 atk += engrDmg;
                 def += engrGuard;
@@ -684,6 +711,7 @@ namespace GunMobile.Client
             new ModuleDef("bomb", "炸弹配置", "Request/bombconfig.xml"),
             new ModuleDef("pet", "宠物", "Request/petskillinfo.xml"),
             new ModuleDef("card", "卡片", "Request/cardtemplateinfo.xml"),
+            new ModuleDef("jamps", "探险手册", "Request/jampsmanualitemlist.xml"),
             new ModuleDef("title", "称号", "Request/newtitleinfo.xml"),
             new ModuleDef("totem", "图腾", "Request/toteminfo.xml"),
             new ModuleDef("horse", "坐骑", "Request/mounttemplateOUT.xml"),

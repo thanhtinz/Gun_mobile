@@ -218,6 +218,10 @@ namespace GunMobile.Net
         public const ushort HomeTempleAdvance = 171;
         public const ushort BankDeposit = 172;
         public const ushort SweepMission = 173;
+        public const ushort JampsUpgrade = 174;
+        public const ushort JampsClaimPage = 175;
+        public const ushort CardMainUpgrade = 176;
+        public const ushort ElfIntimacyAction = 177;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

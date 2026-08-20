@@ -187,6 +187,9 @@ namespace GunMobile.Client
                 case "card":
                     CardScreen.Show(_safe, this);
                     return;
+                case "jamps":
+                    JampsScreen.Show(_safe, this);
+                    return;
                 case "title":
                     TitleScreen.Show(_safe, this);
                     return;
@@ -445,6 +448,10 @@ namespace GunMobile.Client
                     case PhoneMsg.HonorSystemClaim:
                     case PhoneMsg.ForcesRelicUpgrade:
                     case PhoneMsg.CultureResult:
+                    case PhoneMsg.JampsUpgrade:
+                    case PhoneMsg.JampsClaimPage:
+                    case PhoneMsg.CardMainUpgrade:
+                    case PhoneMsg.ElfIntimacyAction:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -661,6 +668,9 @@ namespace GunMobile.Client
             Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
+            Profile.DevilTurnPoints = JsonInt(json, "devilTurnPoints", Profile.DevilTurnPoints);
+            ParseDevilTreasPointClaimedFromServer(json);
+            ParseQuestsFromServer(json);
             Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.ChristmasClaims = JsonInt(json, "christmasClaims", Profile.ChristmasClaims);
@@ -685,6 +695,11 @@ namespace GunMobile.Client
             Profile.CultureDef = JsonInt(json, "cultureDef", Profile.CultureDef);
             Profile.CultureAgi = JsonInt(json, "cultureAgi", Profile.CultureAgi);
             Profile.CultureLuck = JsonInt(json, "cultureLuck", Profile.CultureLuck);
+            Profile.JampsManualLevel = JsonInt(json, "jampsManualLevel", Profile.JampsManualLevel);
+            Profile.CardMainLevel = JsonInt(json, "cardMainLevel", Profile.CardMainLevel);
+            Profile.ElfIntimacyExp = JsonInt(json, "elfIntimacyExp", Profile.ElfIntimacyExp);
+            Profile.ElfIntimacyLevel = JsonInt(json, "elfIntimacyLevel", Profile.ElfIntimacyLevel);
+            Profile.ElfIntimacyActions = JsonInt(json, "elfIntimacyActions", Profile.ElfIntimacyActions);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.GodCardPoints = JsonInt(json, "godCardPoints", Profile.GodCardPoints);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
@@ -703,9 +718,12 @@ namespace GunMobile.Client
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
             ParseNewYearClaimedFromServer(json);
-
             ParseBankDepositsFromServer(json);
             ParseSweepMissionClearsFromServer(json);
+            ParseIntListFromServer(json, "jampsDebrisOwned", Profile.JampsDebrisOwned ?? (Profile.JampsDebrisOwned = new List<int>()));
+            ParseIntListFromServer(json, "jampsPagesCollected", Profile.JampsPagesCollected ?? (Profile.JampsPagesCollected = new List<int>()));
+            ParseIntListFromServer(json, "jampsPagesActivated", Profile.JampsPagesActivated ?? (Profile.JampsPagesActivated = new List<int>()));
+            ParseIntListFromServer(json, "ownedCardTemplateIds", Profile.OwnedCardTemplateIds ?? (Profile.OwnedCardTemplateIds = new List<int>()));
             Profile.Save();
         }
 
@@ -752,6 +770,21 @@ namespace GunMobile.Client
                 if (int.TryParse(part.Trim(), out int id) && id > 0) Profile.SweepMissionClears.Add(id);
         }
 
+        void ParseIntListFromServer(string json, string key, List<int> target)
+        {
+            string needle = "\"" + key + "\":[";
+            int idx = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + needle.Length;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            target.Clear();
+            string chunk = json.Substring(start, end - start);
+            if (string.IsNullOrWhiteSpace(chunk)) return;
+            foreach (string part in chunk.Split(','))
+                if (int.TryParse(part.Trim(), out int id)) target.Add(id);
+        }
+
         void ParseNewYearClaimedFromServer(string json)
 
         {
@@ -783,6 +816,82 @@ namespace GunMobile.Client
                 {
                     Profile.NewYearPointClaimed.Add(id);
                 }
+            }
+        }
+
+        void ParseDevilTreasPointClaimedFromServer(string json)
+        {
+            int idx = json.IndexOf("\"devilTreasPointClaimed\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 26;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            Profile.DevilTreasPointClaimed = Profile.DevilTreasPointClaimed ?? new List<int>();
+            Profile.DevilTreasPointClaimed.Clear();
+            string chunk = json.Substring(start, end - start);
+            if (string.IsNullOrWhiteSpace(chunk)) return;
+            foreach (string part in chunk.Split(','))
+            {
+                if (int.TryParse(part.Trim(), out int id) && id > 0)
+                    Profile.DevilTreasPointClaimed.Add(id);
+            }
+        }
+
+        void ParseQuestsFromServer(string json)
+        {
+            ParseIntListFromServer(json, "acceptedQuests", Profile.AcceptedQuests ?? (Profile.AcceptedQuests = new List<int>()));
+            ParseIntListFromServer(json, "completedQuests", Profile.CompletedQuests ?? (Profile.CompletedQuests = new List<int>()));
+            Profile.QuestProgress = Profile.QuestProgress ?? new Dictionary<int, List<int>>();
+            int idx = json.IndexOf("\"questProgress\":{", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 17;
+            int end = json.IndexOf('}', start);
+            if (end <= start) return;
+            Profile.QuestProgress.Clear();
+            string body = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int qk = body.IndexOf('"', pos);
+                if (qk < 0) break;
+                int qk2 = body.IndexOf('"', qk + 1);
+                if (qk2 < 0) break;
+                if (!int.TryParse(body.Substring(qk + 1, qk2 - qk - 1), out int questId) || questId <= 0)
+                {
+                    pos = qk2 + 1;
+                    continue;
+                }
+                int arrStart = body.IndexOf('[', qk2);
+                int arrEnd = arrStart >= 0 ? body.IndexOf(']', arrStart) : -1;
+                if (arrStart < 0 || arrEnd <= arrStart) break;
+                var prog = new List<int>();
+                string arr = body.Substring(arrStart + 1, arrEnd - arrStart - 1);
+                if (!string.IsNullOrWhiteSpace(arr))
+                {
+                    foreach (string part in arr.Split(','))
+                    {
+                        if (int.TryParse(part.Trim(), out int v)) prog.Add(v);
+                    }
+                }
+                Profile.QuestProgress[questId] = prog;
+                pos = arrEnd + 1;
+            }
+        }
+
+        void ParseIntListFromServer(string json, string key, List<int> target)
+        {
+            string needle = "\"" + key + "\":[";
+            int idx = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + needle.Length;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            target.Clear();
+            string chunk = json.Substring(start, end - start);
+            if (string.IsNullOrWhiteSpace(chunk)) return;
+            foreach (string part in chunk.Split(','))
+            {
+                if (int.TryParse(part.Trim(), out int id)) target.Add(id);
             }
         }
 
