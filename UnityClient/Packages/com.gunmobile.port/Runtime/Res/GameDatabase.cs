@@ -375,6 +375,14 @@ namespace GunMobile.Res
         public string RankAreaAward = "";
     }
 
+    public sealed class PcActivityBinding
+    {
+        public string ModuleId = "";
+        public string Source = "";
+        public int ActivityConfigNum;
+        public string Note = "";
+    }
+
     public sealed class FirstPayShopItem
     {
         public int Id;
@@ -2255,6 +2263,92 @@ namespace GunMobile.Res
                 ExtraItemId2 = FirstInt(entry.Params5),
                 RankAwardId = FirstInt(entry.RankAreaAward)
             };
+        }
+
+        public PcActivityBinding ResolvePcActivity(string moduleId)
+        {
+            string id = (moduleId ?? "").Trim().ToLowerInvariant();
+            var binding = new PcActivityBinding { ModuleId = id };
+            int seedNum = id == "bible" ? 7 : 6;
+            if (id == "jigsaw")
+            {
+                binding.Note = "Flash/ui/cn_trad/xml/xml/jigsaw.xml (UI only; puzzle items in TemplateAlllist)";
+            }
+            else if (id == "bible")
+            {
+                binding.Note = "bible.ui (UI only; no Request activity table)";
+            }
+
+            ActivityConfigEntry cfg = FindNearestActivityConfigWithRewards(seedNum);
+            if (cfg != null)
+            {
+                binding.Source = "TS_ActivityConfig";
+                binding.ActivityConfigNum = cfg.Num;
+                binding.Note = (string.IsNullOrEmpty(binding.Note) ? "" : binding.Note + " · ") +
+                    "fallback Num=" + cfg.Num + " " + cfg.Name;
+            }
+
+            return binding;
+        }
+
+        public List<(int templateId, int count)> GetPcActivityRewardRows(PcActivityBinding binding)
+        {
+            var list = new List<(int templateId, int count)>();
+            if (binding == null || binding.ActivityConfigNum <= 0 ||
+                !ActivityConfigs.TryGetValue(binding.ActivityConfigNum, out ActivityConfigEntry entry) ||
+                entry == null)
+            {
+                return list;
+            }
+
+            list.AddRange(ParseRewardPairs(entry.Params3));
+            if (list.Count == 0)
+            {
+                list.AddRange(ParseRewardPairs(entry.Params4));
+            }
+
+            return list;
+        }
+
+        public int GetPcActivityDailyMax(PcActivityBinding binding)
+        {
+            if (binding == null || binding.ActivityConfigNum <= 0 ||
+                !ActivityConfigs.TryGetValue(binding.ActivityConfigNum, out ActivityConfigEntry entry) ||
+                entry == null)
+            {
+                return 1;
+            }
+
+            int n = FirstInt(entry.Params5);
+            return n > 0 ? n : 1;
+        }
+
+        ActivityConfigEntry FindNearestActivityConfigWithRewards(int seedNum)
+        {
+            ActivityConfigEntry best = null;
+            int bestDist = int.MaxValue;
+            foreach (KeyValuePair<int, ActivityConfigEntry> kv in ActivityConfigs)
+            {
+                ActivityConfigEntry entry = kv.Value;
+                if (entry == null)
+                {
+                    continue;
+                }
+
+                if (ParseRewardPairs(entry.Params3).Count == 0 && ParseRewardPairs(entry.Params4).Count == 0)
+                {
+                    continue;
+                }
+
+                int dist = Math.Abs(kv.Key - seedNum);
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    best = entry;
+                }
+            }
+
+            return best;
         }
 
         public FirstPayShopItem GetFirstPayShopItem(int templateId)

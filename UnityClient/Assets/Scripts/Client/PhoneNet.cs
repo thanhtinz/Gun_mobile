@@ -31,6 +31,8 @@ namespace GunMobile.Client
         public static string LastNewYearJson;
         public static string LastWorshipMoonJson;
         public static string LastSuperLuckerJson;
+        public static string LastJigsawJson;
+        public static string LastBibleJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -351,6 +353,16 @@ namespace GunMobile.Client
         public static void SuperLuckerDraw(int count = 1)
         {
             Road?.Send(PhoneMsg.SuperLuckerDraw, "{\"count\":" + count + "}");
+        }
+
+        public static void JigsawAction(string action = "claim")
+        {
+            Road?.Send(PhoneMsg.JigsawAction, "{\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\"}");
+        }
+
+        public static void BibleAction(string action = "claim")
+        {
+            Road?.Send(PhoneMsg.BibleAction, "{\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\"}");
         }
 
         public static void ClaimRedPacket()

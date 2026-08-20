@@ -343,6 +343,12 @@ namespace GunMobile.Client
                 case "worshipthemoon":
                     ExtraModulesScreens.WorshipMoonScreen(_safe, this);
                     return;
+                case "jigsaw":
+                    ExtraModulesScreens.JigsawScreen(_safe, this);
+                    return;
+                case "bible":
+                    ExtraModulesScreens.BibleScreen(_safe, this);
+                    return;
                 case "carnivalSuperLucker":
                     ExtraModulesScreens.CarnivalSuperLuckerScreen(_safe, this);
                     return;
@@ -561,6 +567,22 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.JigsawAction:
+                        PhoneNet.LastJigsawJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "jigsaw")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.BibleAction:
+                        PhoneNet.LastBibleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "bible")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.Error:
                     {
                         string err = JsonStr(msg.Json, "err", "error");
@@ -678,6 +700,8 @@ namespace GunMobile.Client
             Profile.NewYearFreeUsed = JsonInt(json, "newYearFreeUsed", Profile.NewYearFreeUsed);
             Profile.WorshipMoonDraws = JsonInt(json, "worshipMoonDraws", Profile.WorshipMoonDraws);
             Profile.SuperLuckerDraws = JsonInt(json, "superLuckerDraws", Profile.SuperLuckerDraws);
+            Profile.JigsawClaims = JsonInt(json, "jigsawClaims", Profile.JigsawClaims);
+            Profile.BibleClaims = JsonInt(json, "bibleClaims", Profile.BibleClaims);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
             Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);

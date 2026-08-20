@@ -103,6 +103,10 @@ namespace GunMobile.Net
         public int WorshipMoonDraws;
         public int SuperLuckerDay = -1;
         public int SuperLuckerDraws;
+        public int JigsawDay = -1;
+        public int JigsawClaims;
+        public int BibleDay = -1;
+        public int BibleClaims;
         public int SweepDay = -1;
         public int SweepCount;
         public bool FirstRechargeClaimed;
@@ -564,6 +568,8 @@ namespace GunMobile.Net
             sb.Append("],");
             J(sb, "worshipMoonDraws", WorshipMoonDraws); sb.Append(",");
             J(sb, "superLuckerDraws", SuperLuckerDraws); sb.Append(",");
+            J(sb, "jigsawClaims", JigsawClaims); sb.Append(",");
+            J(sb, "bibleClaims", BibleClaims); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
             J(sb, "firstRechargeClaimed", FirstRechargeClaimed ? 1 : 0); sb.Append(",");
             sb.Append("\"firstRechargeShopBuys\":[");
@@ -1780,6 +1786,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ElfIntimacyAction:
                     HandleElfIntimacyAction(player, ns, json);
+                    break;
+
+                case PhoneMsg.JigsawAction:
+                    HandlePcActivityAction(player, ns, json, "jigsaw", PhoneMsg.JigsawAction);
+                    break;
+
+                case PhoneMsg.BibleAction:
+                    HandlePcActivityAction(player, ns, json, "bible", PhoneMsg.BibleAction);
                     break;
 
                 case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
@@ -3752,6 +3766,78 @@ namespace GunMobile.Net
                 ",\"claims\":" + player.ChristmasClaims + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+
+        void HandlePcActivityAction(ServerPlayer player, NetworkStream ns, string json, string moduleId, ushort msgId)
+        {
+            string action = JS(json, "action", "claim");
+            if (action != "claim")
+            {
+                Send(ns, msgId, "{\"ok\":false,\"err\":\"action\"}");
+                return;
+            }
+
+            if (_db == null)
+            {
+                Send(ns, msgId, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            PcActivityBinding binding = _db.ResolvePcActivity(moduleId);
+            List<(int templateId, int count)> rewards = _db.GetPcActivityRewardRows(binding);
+            if (rewards.Count == 0)
+            {
+                Send(ns, msgId, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            int today = DateTime.Now.DayOfYear;
+            ref int day = ref GetPcActivityDay(player, moduleId);
+            ref int claims = ref GetPcActivityClaims(player, moduleId);
+            if (day != today)
+            {
+                day = today;
+                claims = 0;
+            }
+
+            int maxClaims = _db.GetPcActivityDailyMax(binding);
+            if (claims >= maxClaims)
+            {
+                Send(ns, msgId, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            (int templateId, int count) reward = rewards[claims % rewards.Count];
+            player.AddItem(reward.templateId, reward.count);
+            claims++;
+            SavePlayer(player);
+            Send(ns, msgId,
+                "{\"ok\":true,\"module\":\"" + moduleId + "\",\"item\":" + reward.templateId +
+                ",\"count\":" + reward.count + ",\"claims\":" + claims +
+                ",\"activityNum\":" + binding.ActivityConfigNum +
+                ",\"source\":\"" + (binding.Source ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        ref int GetPcActivityDay(ServerPlayer player, string moduleId)
+        {
+            if (moduleId == "bible")
+            {
+                return ref player.BibleDay;
+            }
+
+            return ref player.JigsawDay;
+        }
+
+        ref int GetPcActivityClaims(ServerPlayer player, string moduleId)
+        {
+            if (moduleId == "bible")
+            {
+                return ref player.BibleClaims;
+            }
+
+            return ref player.JigsawClaims;
+        }
+
 
         void HandleNewYearClaim(ServerPlayer player, NetworkStream ns, string json)
         {
@@ -6920,6 +7006,8 @@ namespace GunMobile.Net
             public List<int> NewYearPointClaimed = new List<int>();
             public int WorshipMoonDay = -1, WorshipMoonDraws;
             public int SuperLuckerDay = -1, SuperLuckerDraws;
+            public int JigsawDay = -1, JigsawClaims;
+            public int BibleDay = -1, BibleClaims;
             public int SweepDay = -1, SweepCount;
             public bool FirstRechargeClaimed;
             public List<FirstRechargeBuySave> FirstRechargeShopBuys = new List<FirstRechargeBuySave>();
@@ -7021,6 +7109,8 @@ namespace GunMobile.Net
                 NewYearPointClaimed = p.NewYearPointClaimed ?? new List<int>(),
                 WorshipMoonDay = p.WorshipMoonDay, WorshipMoonDraws = p.WorshipMoonDraws,
                 SuperLuckerDay = p.SuperLuckerDay, SuperLuckerDraws = p.SuperLuckerDraws,
+                JigsawDay = p.JigsawDay, JigsawClaims = p.JigsawClaims,
+                BibleDay = p.BibleDay, BibleClaims = p.BibleClaims,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
                 FirstRechargeClaimed = p.FirstRechargeClaimed,
                 DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
@@ -7123,6 +7213,8 @@ namespace GunMobile.Net
                 NewYearPointClaimed = s.NewYearPointClaimed ?? new List<int>(),
                 WorshipMoonDay = s.WorshipMoonDay, WorshipMoonDraws = s.WorshipMoonDraws,
                 SuperLuckerDay = s.SuperLuckerDay, SuperLuckerDraws = s.SuperLuckerDraws,
+                JigsawDay = s.JigsawDay, JigsawClaims = s.JigsawClaims,
+                BibleDay = s.BibleDay, BibleClaims = s.BibleClaims,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
                 FirstRechargeClaimed = s.FirstRechargeClaimed,
                 DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
