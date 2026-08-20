@@ -70,6 +70,14 @@ Project: `Server/GunMobile.Standalone/` — chạy trực tiếp trên VPS với
 - [.NET 8 SDK](https://dotnet.microsoft.com/download)
 - PC data tại `UnityClient/Assets/StreamingAssets/PcData` (hoặc path tùy chỉnh)
 
+### Smoke test (TCP login)
+```bash
+python3 tools/smoke_standalone_server.py
+# Kết nối server đang chạy:
+python3 tools/smoke_standalone_server.py --external --host 127.0.0.1
+```
+Script gửi `Login` (PhoneMsg 2) tới port **4396**, kỳ vọng `LoginOk` + `ProfileData`.
+
 ### Chạy nhanh
 ```bash
 bash tools/run_standalone_server.sh
