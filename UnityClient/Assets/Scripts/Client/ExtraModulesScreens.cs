@@ -386,18 +386,71 @@ public static void BankScreen(RectTransform safe, GameApp app)
                         state + "  " + reward.Points + "分 → " + SysUi.ItemName(app, reward.TemplateId),
                         claimed ? (System.Action)(() => { }) : () => PhoneNet.ClaimDevilTreasPoint(rid));
                 }
+
+                SysUi.Note(body, "--- 排行奖励 DevilTreasRankRewardList.xml ---");
+                app.Profile.EnsureDevilTreasRankClaimed();
+                foreach (DevilTreasRankReward row in app.Database.DevilTreasRankRewards)
+                {
+                    bool claimed = app.Profile.DevilTreasRankClaimed.Contains(row.Id);
+                    int rid = row.Id;
+                    SysUi.Row(body, "rank" + row.Id,
+                        (claimed ? "已领" : "领取") + "  #" + row.RankMin + "-" + row.RankMax + "  " + row.Desc,
+                        claimed ? (System.Action)(() => { }) : () => PhoneNet.ClaimDevilTreasRank(rid));
+                }
+                if (app.Database.DevilTreasSarahToBoxes.Count > 0)
+                    SysUi.Note(body, "SarahToBox 兑换 " + app.Database.DevilTreasSarahToBoxes.Count + " 项");
+
                 int shown = 0;
                 foreach (DevilTreasItem item in app.Database.DevilTreasItems)
                 {
                     SysUi.Note(body, "T" + item.Type + "  " + SysUi.ItemName(app, item.TemplateId) +
                         " x" + item.Value + "  权重" + item.Weight);
                     shown++;
-                    if (shown >= 8)
-                    {
-                        break;
-                    }
+                    if (shown >= 8) break;
                 }
             }
+        }
+
+        public static void RecycleActivityScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("recycle", "变废为宝", "Request/RecycleActivityInfo.xml", false, "wasteRecycle.ui"),
+                "wasteRecycle.ui");
+            SysUi.Note(body, "RecycleActivityInfo.xml  ·  积分 " + app.Profile.RecyclePoints);
+            if (app.Database == null || app.Database.RecycleActivityItems.Count == 0)
+            {
+                SysUi.Note(body, "未加载回收表");
+                return;
+            }
+            int shown = 0;
+            foreach (RecycleActivityItem row in app.Database.RecycleActivityItems.Values)
+            {
+                int tid = row.TemplateId;
+                string name = tid > 0 ? SysUi.ItemName(app, tid) : ("货币 " + tid);
+                SysUi.Row(body, "rec" + tid,
+                    "回收 " + name + " x" + row.Count + " → +" + row.Integral + "分",
+                    () => PhoneNet.RecycleActivityClaim(tid, 1));
+                shown++;
+                if (shown >= 12) break;
+            }
+        }
+
+        public static void MagicItemScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("magicitem", "魔法道具", "Request/MagicItemTemp.xml", false, "magicStone.ui"),
+                "magicStone.ui");
+            int level = app.Profile.MagicItemLevel;
+            MagicItemLevel cur = app.Database != null ? app.Database.GetMagicItemLevel(level) : null;
+            MagicItemLevel next = app.Database != null ? app.Database.GetMagicItemLevel(level + 1) : null;
+            int cost = app.Database != null ? app.Database.MagicItemUpgradeCost(level) : 0;
+            string stats = cur != null ? "MA+" + cur.MagicAttack + "  MD+" + cur.MagicDefence : "Lv0";
+            SysUi.Note(body, "MagicItemTemp.xml  ·  当前 Lv" + level + "  " + stats);
+            if (next != null && cost > 0)
+                SysUi.Row(body, "up", "升级 → Lv" + (level + 1) + "  MA+" + next.MagicAttack + "  " + cost + " 金",
+                    PhoneNet.UpgradeMagicItem);
+            else
+                SysUi.Note(body, "已达最高等级");
         }
 
         public static void RedPacketScreen(RectTransform safe, GameApp app)

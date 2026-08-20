@@ -307,6 +307,12 @@ namespace GunMobile.Client
                 case "devilturn":
                     ExtraModulesScreens.DevilTurnScreen(_safe, this);
                     return;
+                case "recycle":
+                    ExtraModulesScreens.RecycleActivityScreen(_safe, this);
+                    return;
+                case "magicitem":
+                    ExtraModulesScreens.MagicItemScreen(_safe, this);
+                    return;
                 case "redpacket":
                     ExtraModulesScreens.RedPacketScreen(_safe, this);
                     return;
@@ -517,6 +523,9 @@ namespace GunMobile.Client
                     case PhoneMsg.ElfTemplateSelect:
                     case PhoneMsg.ButterflyAction:
                     case PhoneMsg.NewYearRankClaim:
+                    case PhoneMsg.DevilTreasRankClaim:
+                    case PhoneMsg.RecycleActivityClaim:
+                    case PhoneMsg.MagicItemUpgrade:
                         if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
                         if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
                         if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
@@ -820,8 +829,12 @@ namespace GunMobile.Client
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.DevilTurnPoints = JsonInt(json, "devilTurnPoints", Profile.DevilTurnPoints);
+            Profile.RecyclePoints = JsonInt(json, "recyclePoints", Profile.RecyclePoints);
+            Profile.MagicItemLevel = JsonInt(json, "magicItemLevel", Profile.MagicItemLevel);
             Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             ParseDevilTreasPointClaimedFromServer(json);
+            Profile.EnsureDevilTreasRankClaimed();
+            ParseIntListFromServer(json, "devilTreasRankClaimed", Profile.DevilTreasRankClaimed);
             ParseQuestsFromServer(json);
             Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.ChristmasClaims = JsonInt(json, "christmasClaims", Profile.ChristmasClaims);

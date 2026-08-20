@@ -260,6 +260,9 @@ namespace GunMobile.Net
         public const ushort DailyAwardClaim = 213;
         public const ushort ElfTemplateSelect = 214;
         public const ushort ButterflyAction = 215;
+        public const ushort DevilTreasRankClaim = 216;
+        public const ushort RecycleActivityClaim = 217;
+        public const ushort MagicItemUpgrade = 218;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

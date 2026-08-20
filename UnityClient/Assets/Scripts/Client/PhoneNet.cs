@@ -487,6 +487,22 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.DevilTreasPointClaim, "{\"rewardId\":" + rewardId + "}");
         }
 
+        public static void ClaimDevilTreasRank(int rewardId = 0)
+        {
+            Road?.Send(PhoneMsg.DevilTreasRankClaim, "{\"rewardId\":" + rewardId + "}");
+        }
+
+        public static void RecycleActivityClaim(int templateId, int count = 1)
+        {
+            Road?.Send(PhoneMsg.RecycleActivityClaim,
+                "{\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
+        public static void UpgradeMagicItem()
+        {
+            Road?.Send(PhoneMsg.MagicItemUpgrade, "{}");
+        }
+
         public static void SpaRoomStart()
         {
             Road?.Send(PhoneMsg.SpaRoomStart, "{}");
