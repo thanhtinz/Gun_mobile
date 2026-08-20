@@ -211,16 +211,38 @@ namespace GunMobile.Client
             }
         }
 
-        public static void BankScreen(RectTransform safe, GameApp app)
+public static void BankScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
-                new ModuleDef("bank", "银行", null, false, "bank.ui"),
+                new ModuleDef("bank", "银行", "Request/banktemplateinfo.xml", false, "bank.ui"),
                 "bank.ui");
-            SysUi.Note(body, "现金: " + app.Profile.Gold + "  ·  存款: " + app.Profile.BankGold);
+            app.Profile.EnsureBankDeposits();
+            SysUi.Note(body, "现金: " + app.Profile.Gold + "  ·  活期存款: " + app.Profile.BankGold);
             SysUi.Row(body, "dep", "存入 1000 金", () => PhoneNet.BankTrade("deposit", 1000));
             SysUi.Row(body, "dep5", "存入 5000 金", () => PhoneNet.BankTrade("deposit", 5000));
             SysUi.Row(body, "wd", "取出 1000 金", () => PhoneNet.BankTrade("withdraw", 1000));
             SysUi.Row(body, "wd5", "取出 5000 金", () => PhoneNet.BankTrade("withdraw", 5000));
+            if (app.Database != null && app.Database.BankTemplates.Count > 0)
+            {
+                SysUi.Note(body, "banktemplateinfo.xml  ·  定期存款");
+                foreach (KeyValuePair<int, BankTemplate> kv in app.Database.BankTemplates)
+                {
+                    BankTemplate tpl = kv.Value;
+                    if (tpl.DeadLine <= 0) continue;
+                    int tplId = tpl.Id, depAmount = tpl.MinAmount;
+                    SysUi.Row(body, "term" + tplId, tpl.Name + "  " + depAmount + "金  利率" + (tpl.InterestRate / 10f) + "%",
+                        () => PhoneNet.BankDeposit("deposit", tplId, depAmount));
+                }
+                for (int i = 0; i < app.Profile.BankDeposits.Count; i++)
+                {
+                    BankTermDeposit dep = app.Profile.BankDeposits[i];
+                    BankTemplate tpl = app.Database.GetBankTemplate(dep.TemplateId);
+                    string tplName = tpl != null ? tpl.Name : ("#" + dep.TemplateId);
+                    int slot = i;
+                    SysUi.Row(body, "wdterm" + slot, "取出 " + tplName + "  " + dep.Amount + "金",
+                        () => PhoneNet.BankDeposit("withdraw", dep.TemplateId, 0, slot));
+                }
+            }
         }
 
         public static void MinesScreen(RectTransform safe, GameApp app)
@@ -372,30 +394,34 @@ namespace GunMobile.Client
             SysUi.Row(body, "claim", "开红包", PhoneNet.ClaimRedPacket);
         }
 
-        public static void HomeTempleScreen(RectTransform safe, GameApp app)
+public static void HomeTempleScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
-                new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
-                "homeTemple.ui");
+                new ModuleDef("homeTemple", "家园神殿", "Request/HomeTempPracticeList.xml", false, "homeTemple.ui"), "homeTemple.ui");
             int level = app.Profile.HomeTempleLevel;
             int maxLevel = app.Database != null ? app.Database.ConfigInt("HomeTempleMaxLevel", 20) : 20;
             int cost = app.Database != null ? app.Database.HomeTempleUpgradeCost(level) : 800;
-            SysUi.Note(body, "当前 Lv" + level + " / " + maxLevel + "  ·  ATK+" + (level * 15) + " HP+" + (level * 120));
-            if (level < maxLevel)
-            {
-                SysUi.Row(body, "up", "升级 → Lv" + (level + 1) + "  " + cost + " 金", PhoneNet.UpgradeHomeTemple);
-            }
-            else
-            {
-                SysUi.Note(body, "已达最高等级");
-            }
+            SysUi.Note(body, "建筑 Lv" + level + " / " + maxLevel);
+            if (level < maxLevel) SysUi.Row(body, "up", "升级 → Lv" + (level + 1) + "  " + cost + " 金", PhoneNet.UpgradeHomeTemple);
+            int practice = app.Profile.HomeTemplePracticeLevel;
+            int practiceMax = app.Database != null ? app.Database.HomeTemplePracticeMaxLevel() : 0;
+            int practiceCost = app.Database != null ? app.Database.HomeTemplePracticeCost(practice) : 0;
+            SysUi.Note(body, "HomeTempPracticeList.xml  ·  修炼 Lv" + practice + " / " + practiceMax);
+            if (practiceMax > 0 && practice < practiceMax && practiceCost > 0)
+                SysUi.Row(body, "practice", "修炼 → Lv" + (practice + 1) + "  " + practiceCost + " 金", PhoneNet.HomeTemplePractice);
+            int advance = app.Profile.HomeTempleAdvanceLevel;
+            int advanceMax = app.Database != null ? app.Database.HomeTempleAdvanceMaxLevel() : 0;
+            int advanceCost = app.Database != null ? app.Database.HomeTempleAdvanceCost(advance) : 0;
+            SysUi.Note(body, "TS_HomeTempAdvance_Template.xml  ·  升华 Lv" + advance + " / " + advanceMax);
+            if (advanceMax > 0 && advance < advanceMax && advanceCost > 0)
+                SysUi.Row(body, "advance", "升华 → Lv" + (advance + 1) + "  " + advanceCost + " 金", PhoneNet.HomeTempleAdvance);
         }
 
         public static void SweepScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
-                new ModuleDef("sweep", "扫荡", "Request/fightlabdropitemlist.xml", false, "sweep.ui"),
-                "sweep.ui");
+                new ModuleDef("sweep", "扫荡", "Request/ts_sweepmisson.xml", false, "sweep.ui"), "sweep.ui");
+            app.Profile.EnsureSweepMissionClears();
             int maxSweeps = app.Database != null ? app.Database.ConfigInt("LabyrinthSweepDayLimit", 3) : 3;
             int floor = Mathf.Max(1, app.Profile.LabyrinthFloor);
             int estGold = app.Database != null ? app.Database.ComputePveWinGold(0, floor, true) : floor * 50;
@@ -403,6 +429,23 @@ namespace GunMobile.Client
                 app.Profile.SweepCount + " / " + maxSweeps);
             SysUi.Row(body, "sweep", "扫荡本层 (跳过战斗)", PhoneNet.SweepLabyrinth);
             SysUi.Row(body, "fight", "手动挑战", () => LabyrinthScreen.Show(safe, app));
+            if (app.Database != null && app.Database.SweepMissions.Count > 0)
+            {
+                SysUi.Note(body, "ts_sweepmisson.xml  ·  任务扫荡");
+                int shown = 0;
+                foreach (SweepMissionInfo mission in app.Database.SweepMissions)
+                {
+                    bool unlocked = app.Database.CanSweepMission(app.Profile.Level, floor, app.Profile.SweepMissionClears, mission);
+                    int reward = app.Database.SweepMissionGoldReward(mission);
+                    string mark = app.Profile.SweepMissionClears.Contains(mission.MissionId) ? "✓" : (unlocked ? "→" : "🔒");
+                    int missionId = mission.MissionId;
+                    if (unlocked)
+                        SysUi.Row(body, "miss" + missionId, mark + " " + mission.Name + "  +" + reward + "金", () => PhoneNet.SweepMission(missionId));
+                    else
+                        SysUi.Note(body, mark + " " + mission.Name + "  (未解锁)");
+                    if (++shown >= 10) break;
+                }
+            }
         }
         static readonly string[] EmblemTypeNames = { "", "武器", "副手", "衣服", "帽子" };
 

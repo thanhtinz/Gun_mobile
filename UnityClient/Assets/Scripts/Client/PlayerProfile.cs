@@ -61,6 +61,10 @@ namespace GunMobile.Client
         public int WorldBossHits;
         public int NecklaceLevel;
         public int HomeTempleLevel;
+        public int HomeTemplePracticeLevel;
+        public int HomeTempleAdvanceLevel;
+        public List<BankTermDeposit> BankDeposits = new List<BankTermDeposit>();
+        public List<int> SweepMissionClears = new List<int>();
         public int WardrobeClothId;
         public List<int> WardrobeProperties = new List<int>();
         public int HonorSystemExp;
@@ -231,6 +235,8 @@ namespace GunMobile.Client
         }
 
         public void EnsureEmblems() { if (Emblems == null) Emblems = new List<EmblemSlot>(); }
+        public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
+        public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
         public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
 
         public void EnsureWardrobeProperties()
@@ -485,6 +491,10 @@ namespace GunMobile.Client
                 def += magicDef / 4;
                 db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
                 db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
+                int htMagicDef = magicDef;
+                db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luk, ref hp, ref htMagicDef);
+                db.ApplyHomeTempleAdvanceBonus(HomeTempleAdvanceLevel, ref hp, ref htMagicDef, ref def);
+                magicDef = htMagicDef;
                 EnsureEmblems();
                 int eMa = magicAtk, eMd = magicDef;
                 db.ApplyEmblemStats(Emblems, ref atk, ref def, ref agi, ref luk, ref hp, ref eMa, ref eMd);

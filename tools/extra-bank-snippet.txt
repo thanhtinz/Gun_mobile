@@ -1,0 +1,33 @@
+        public static void BankScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("bank", "银行", "Request/banktemplateinfo.xml", false, "bank.ui"),
+                "bank.ui");
+            app.Profile.EnsureBankDeposits();
+            SysUi.Note(body, "现金: " + app.Profile.Gold + "  ·  活期存款: " + app.Profile.BankGold);
+            SysUi.Row(body, "dep", "存入 1000 金", () => PhoneNet.BankTrade("deposit", 1000));
+            SysUi.Row(body, "dep5", "存入 5000 金", () => PhoneNet.BankTrade("deposit", 5000));
+            SysUi.Row(body, "wd", "取出 1000 金", () => PhoneNet.BankTrade("withdraw", 1000));
+            SysUi.Row(body, "wd5", "取出 5000 金", () => PhoneNet.BankTrade("withdraw", 5000));
+            if (app.Database != null && app.Database.BankTemplates.Count > 0)
+            {
+                SysUi.Note(body, "banktemplateinfo.xml  ·  定期存款");
+                foreach (KeyValuePair<int, BankTemplate> kv in app.Database.BankTemplates)
+                {
+                    BankTemplate tpl = kv.Value;
+                    if (tpl.DeadLine <= 0) continue;
+                    int tplId = tpl.Id, depAmount = tpl.MinAmount;
+                    SysUi.Row(body, "term" + tplId, tpl.Name + "  " + depAmount + "金  利率" + (tpl.InterestRate / 10f) + "%",
+                        () => PhoneNet.BankDeposit("deposit", tplId, depAmount));
+                }
+                for (int i = 0; i < app.Profile.BankDeposits.Count; i++)
+                {
+                    BankTermDeposit dep = app.Profile.BankDeposits[i];
+                    BankTemplate tpl = app.Database.GetBankTemplate(dep.TemplateId);
+                    string tplName = tpl != null ? tpl.Name : ("#" + dep.TemplateId);
+                    int slot = i;
+                    SysUi.Row(body, "wdterm" + slot, "取出 " + tplName + "  " + dep.Amount + "金",
+                        () => PhoneNet.BankDeposit("withdraw", dep.TemplateId, 0, slot));
+                }
+            }
+        }

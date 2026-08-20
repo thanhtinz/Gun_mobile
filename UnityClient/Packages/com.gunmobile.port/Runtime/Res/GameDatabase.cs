@@ -251,6 +251,35 @@ namespace GunMobile.Res
         public int Guardian;
     }
 
+    public sealed class HomeTemplePracticeLevel
+    {
+        public int Level, Exp, Attack, Defence, Guard, Luck, Blood, MagicDefence;
+    }
+
+    public sealed class HomeTempleAdvanceLevel
+    {
+        public int Level, Count1, Count2, Blood, MagicDefend, Toughness, AvoidInjury, TricRevolt, Guardian;
+        public string Name = "";
+    }
+
+    public sealed class BankTemplate
+    {
+        public int Id, InterestRate, MinAmount, Multiple, Consume, DeadLine;
+        public string Name = "";
+    }
+
+    public sealed class SweepMissionInfo
+    {
+        public int MissionId, CostCount, CostEnergy, LvMin, LvMax, MapId, DropId;
+        public string Name = "";
+        public int[] ConditionIds = System.Array.Empty<int>();
+    }
+
+    public sealed class SweepConditionInfo
+    {
+        public int Id, Type, Condition1, Condition2;
+    }
+
     public sealed class DevilTreasItem
     {
         public int Id;
@@ -793,6 +822,11 @@ namespace GunMobile.Res
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
+        public Dictionary<int, HomeTemplePracticeLevel> HomeTemplePracticeLevels { get; } = new Dictionary<int, HomeTemplePracticeLevel>();
+        public Dictionary<int, HomeTempleAdvanceLevel> HomeTempleAdvanceLevels { get; } = new Dictionary<int, HomeTempleAdvanceLevel>();
+        public Dictionary<int, BankTemplate> BankTemplates { get; } = new Dictionary<int, BankTemplate>();
+        public List<SweepMissionInfo> SweepMissions { get; } = new List<SweepMissionInfo>();
+        public Dictionary<int, SweepConditionInfo> SweepConditions { get; } = new Dictionary<int, SweepConditionInfo>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
         public List<SpaRoomFixedLevel> SpaRoomFixed { get; } = new List<SpaRoomFixedLevel>();
         public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
@@ -883,6 +917,9 @@ namespace GunMobile.Res
             db.LoadTeamDungeonShop(loader);
             db.LoadCampWar(loader);
             db.LoadNecklace(loader);
+            db.LoadHomeTemple(loader);
+            db.LoadBankTemplates(loader);
+            db.LoadSweepMissions(loader);
             db.LoadEmblems(loader);
             db.LoadSoulStamps(loader);
             db.LoadStoryCopy(loader);
@@ -1775,6 +1812,66 @@ namespace GunMobile.Res
         {
             hp += level * 120;
             atk += level * 15;
+        }
+
+        public HomeTemplePracticeLevel GetHomeTemplePracticeLevel(int level) { HomeTemplePracticeLevels.TryGetValue(level, out HomeTemplePracticeLevel row); return row; }
+        public int HomeTemplePracticeMaxLevel() { int max = 0; foreach (var kv in HomeTemplePracticeLevels) if (kv.Key > max) max = kv.Key; return max; }
+        public int HomeTemplePracticeCost(int currentLevel) { var next = GetHomeTemplePracticeLevel(currentLevel + 1); return next != null ? next.Exp : 0; }
+        public void ApplyHomeTemplePracticeBonus(int level, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int magicDef)
+        {
+            var row = GetHomeTemplePracticeLevel(level); if (row == null) return;
+            atk += row.Attack; def += row.Defence; agi += row.Guard; luck += row.Luck; hp += row.Blood; magicDef += row.MagicDefence;
+        }
+        public HomeTempleAdvanceLevel GetHomeTempleAdvanceLevel(int level) { HomeTempleAdvanceLevels.TryGetValue(level, out HomeTempleAdvanceLevel row); return row; }
+        public int HomeTempleAdvanceMaxLevel() { int max = 0; foreach (var kv in HomeTempleAdvanceLevels) if (kv.Key > max) max = kv.Key; return max; }
+        public int HomeTempleAdvanceCost(int currentLevel) { var next = GetHomeTempleAdvanceLevel(currentLevel + 1); return next == null ? 0 : next.Count1 * 100 + next.Count2 * 150; }
+        public void ApplyHomeTempleAdvanceBonus(int level, ref int hp, ref int magicDef, ref int def)
+        {
+            var row = GetHomeTempleAdvanceLevel(level); if (row == null) return;
+            hp += row.Blood; magicDef += row.MagicDefend; def += row.Toughness / 10 + row.Guardian / 10 + row.AvoidInjury / 10;
+        }
+        public BankTemplate GetBankTemplate(int id) { BankTemplates.TryGetValue(id, out BankTemplate row); return row; }
+        public bool BankDepositMature(int daysHeld, BankTemplate tpl) => tpl != null && (tpl.DeadLine <= 0 || daysHeld >= tpl.DeadLine * 30);
+        public int BankDepositInterest(int amount, BankTemplate tpl, int daysHeld)
+        {
+            if (tpl == null || amount <= 0 || tpl.InterestRate <= 0) return 0;
+            if (tpl.DeadLine <= 0) return amount * tpl.InterestRate * daysHeld / (1000 * 365);
+            return BankDepositMature(daysHeld, tpl) ? amount * tpl.InterestRate / 1000 : 0;
+        }
+        public SweepMissionInfo GetSweepMission(int missionId) { for (int i = 0; i < SweepMissions.Count; i++) if (SweepMissions[i].MissionId == missionId) return SweepMissions[i]; return null; }
+        static bool ListContainsInt(System.Collections.Generic.IReadOnlyList<int> list, int value) { if (list == null) return false; for (int i = 0; i < list.Count; i++) if (list[i] == value) return true; return false; }
+        public bool CanSweepMission(int playerLevel, int labyrinthFloor, System.Collections.Generic.IReadOnlyList<int> clears, SweepMissionInfo mission)
+        {
+            if (mission == null || playerLevel < mission.LvMin || (mission.LvMax > 0 && playerLevel > mission.LvMax)) return false;
+            int idx = -1; for (int i = 0; i < SweepMissions.Count; i++) if (SweepMissions[i].MissionId == mission.MissionId) { idx = i; break; }
+            if (idx > 0 && !ListContainsInt(clears, SweepMissions[idx - 1].MissionId)) return false;
+            if (SweepConditions.TryGetValue(mission.MissionId, out SweepConditionInfo cond))
+            {
+                if (cond.Condition1 > 0 && labyrinthFloor < cond.Condition1) return false;
+                if (cond.Condition2 > 0 && (clears == null || clears.Count < cond.Condition2)) return false;
+            }
+            return true;
+        }
+        public int SweepMissionGoldReward(SweepMissionInfo mission)
+        {
+            if (mission == null) return 0;
+            int gold = ComputePveWinGold(mission.MapId, 0, false);
+            if (gold <= 0) gold = ComputePveWinGold(0, System.Math.Max(1, mission.LvMin / 10), true);
+            return gold > 0 ? gold : 50 + mission.CostEnergy * 10;
+        }
+        static int[] ParseIdList(string raw)
+        {
+            if (string.IsNullOrEmpty(raw)) return System.Array.Empty<int>();
+            string[] parts = raw.Split(','); var list = new System.Collections.Generic.List<int>();
+            for (int i = 0; i < parts.Length; i++) if (int.TryParse(parts[i].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int n)) list.Add(n);
+            return list.ToArray();
+        }
+        static void ParseLvLimit(string raw, out int min, out int max)
+        {
+            min = 0; max = 999; if (string.IsNullOrEmpty(raw)) return;
+            string[] parts = raw.Split(',');
+            if (parts.Length > 0) int.TryParse(parts[0].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out min);
+            if (parts.Length > 1) int.TryParse(parts[1].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out max);
         }
 
         static long SoulStampProKey(int tempId, int proType) => ((long)tempId << 16) | (uint)proType;
@@ -3670,6 +3767,69 @@ namespace GunMobile.Res
                 };
             }
         }
+
+        void LoadHomeTemple(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/HomeTempPracticeList.xml", out XmlResultTable practice))
+                foreach (var row in practice.Rows)
+                {
+                    int level = Int(row, "Level");
+                    HomeTemplePracticeLevels[level] = new HomeTemplePracticeLevel
+                    {
+                        Level = level, Exp = Int(row, "Exp"), Attack = Int(row, "Attack"), Defence = Int(row, "Defence"),
+                        Guard = Int(row, "Guard"), Luck = Int(row, "Luck"), Blood = Int(row, "Blood"), MagicDefence = Int(row, "MagicDefence")
+                    };
+                }
+            if (TryTable(loader, "Request/TS_HomeTempAdvance_Template.xml", out XmlResultTable advance))
+                foreach (var row in advance.Rows)
+                {
+                    int level = Int(row, "Level");
+                    HomeTempleAdvanceLevels[level] = new HomeTempleAdvanceLevel
+                    {
+                        Level = level, Count1 = Int(row, "Count1"), Count2 = Int(row, "Count2"), Blood = Int(row, "Blood"),
+                        MagicDefend = Int(row, "MagicDefend"), Toughness = Int(row, "Toughness"), AvoidInjury = Int(row, "AvoidInjury"),
+                        TricRevolt = Int(row, "TricRevolt"), Guardian = Int(row, "Guardian"), Name = Str(row, "Name")
+                    };
+                }
+        }
+
+        void LoadBankTemplates(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/banktemplateinfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                BankTemplates[id] = new BankTemplate
+                {
+                    Id = id, Name = Str(row, "Name"), InterestRate = Int(row, "InterestRate"), MinAmount = Int(row, "MinAmount"),
+                    Multiple = Int(row, "Multiple"), Consume = Int(row, "Consume"), DeadLine = Int(row, "DeadLine")
+                };
+            }
+        }
+
+        void LoadSweepMissions(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/ts_sweepcondition.xml", out XmlResultTable conditions))
+                foreach (var row in conditions.Rows)
+                {
+                    int id = Int(row, "ID");
+                    SweepConditions[id] = new SweepConditionInfo { Id = id, Type = Int(row, "Type"), Condition1 = Int(row, "Condition1"), Condition2 = Int(row, "Condition2") };
+                }
+            if (!TryTable(loader, "Request/ts_sweepmisson.xml", out XmlResultTable missions)) return;
+            foreach (var row in missions.Rows)
+            {
+                ParseLvLimit(Str(row, "LvLimit"), out int lvMin, out int lvMax);
+                var mission = new SweepMissionInfo
+                {
+                    MissionId = Int(row, "MissionId"), Name = Str(row, "Name"), CostCount = Int(row, "CostCount"), CostEnergy = Int(row, "CostEnergy"),
+                    ConditionIds = ParseIdList(Str(row, "ConditionIDs")), LvMin = lvMin, LvMax = lvMax, MapId = Int(row, "MapId"), DropId = Int(row, "DropId")
+                };
+                if (mission.MissionId <= 0) mission.MissionId = Int(row, "ID");
+                SweepMissions.Add(mission);
+            }
+            SweepMissions.Sort((a, b) => a.MissionId.CompareTo(b.MissionId));
+        }
+
 
         void LoadEmblems(ResLoader loader)
         {

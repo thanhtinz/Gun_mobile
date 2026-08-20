@@ -492,6 +492,10 @@ namespace GunMobile.Client
                     case PhoneMsg.DreamlandClaim:
                     case PhoneMsg.WarriorFamClaim:
                     case PhoneMsg.SweepLabyrinth:
+                    case PhoneMsg.SweepMission:
+                    case PhoneMsg.HomeTemplePractice:
+                    case PhoneMsg.HomeTempleAdvance:
+                    case PhoneMsg.BankDeposit:
                     case PhoneMsg.FirstRechargeClaim:
                     case PhoneMsg.FirstRechargeShop:
                     case PhoneMsg.MailSend:
@@ -650,6 +654,8 @@ namespace GunMobile.Client
             Profile.WorldBossHits = JsonInt(json, "worldBossHits", Profile.WorldBossHits);
             Profile.NecklaceLevel = JsonInt(json, "necklaceLevel", Profile.NecklaceLevel);
             Profile.HomeTempleLevel = JsonInt(json, "homeTempleLevel", Profile.HomeTempleLevel);
+            Profile.HomeTemplePracticeLevel = JsonInt(json, "homeTemplePracticeLevel", Profile.HomeTemplePracticeLevel);
+            Profile.HomeTempleAdvanceLevel = JsonInt(json, "homeTempleAdvanceLevel", Profile.HomeTempleAdvanceLevel);
             Profile.WardrobeClothId = JsonInt(json, "wardrobeClothId", Profile.WardrobeClothId);
             Profile.HonorSystemExp = JsonInt(json, "honorSystemExp", Profile.HonorSystemExp);
             Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
@@ -697,10 +703,57 @@ namespace GunMobile.Client
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
             ParseNewYearClaimedFromServer(json);
+
+            ParseBankDepositsFromServer(json);
+            ParseSweepMissionClearsFromServer(json);
             Profile.Save();
         }
 
+        void ParseBankDepositsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"bankDeposits\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 15;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            Profile.EnsureBankDeposits();
+            Profile.BankDeposits.Clear();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = body.Substring(ob, cb - ob + 1);
+                Profile.BankDeposits.Add(new BankTermDeposit
+                {
+                    TemplateId = JsonInt(entry, "templateId", 0),
+                    Amount = JsonInt(entry, "amount", 0),
+                    DepositDay = JsonInt(entry, "depositDay", 0)
+                });
+                pos = cb + 1;
+            }
+        }
+
+        void ParseSweepMissionClearsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"sweepMissionClears\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 21;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            Profile.EnsureSweepMissionClears();
+            Profile.SweepMissionClears.Clear();
+            string chunk = json.Substring(start, end - start);
+            if (string.IsNullOrWhiteSpace(chunk)) return;
+            foreach (string part in chunk.Split(','))
+                if (int.TryParse(part.Trim(), out int id) && id > 0) Profile.SweepMissionClears.Add(id);
+        }
+
         void ParseNewYearClaimedFromServer(string json)
+
         {
             int idx = json.IndexOf("\"newYearPointClaimed\":[", System.StringComparison.Ordinal);
             if (idx < 0)
