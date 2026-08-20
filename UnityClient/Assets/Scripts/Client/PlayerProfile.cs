@@ -172,6 +172,15 @@ namespace GunMobile.Client
         public int BattleTeamLevel = 1;
         public int DailyLeagueLevel = 1;
         public List<int> DailyLeagueClaimed = new List<int>();
+        public int ScrollBuffTypes;
+        public int ScrollBuffProfile;
+        public int ScrollBuffValue;
+        public List<int> SigilSkillIds = new List<int>();
+        public int ConsortiaBufferId;
+        public int ConsortiaBadgeId;
+        public List<int> ElfSkillIds = new List<int>();
+        public List<int> ButterflyTaskClaimed = new List<int>();
+        public int ButterflyTaskActive;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -214,6 +223,9 @@ namespace GunMobile.Client
             if (WarPassCompleted == null) WarPassCompleted = new List<int>();
         }
         public void EnsureDailyLeagueClaimed() { if (DailyLeagueClaimed == null) DailyLeagueClaimed = new List<int>(); }
+        public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
+        public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
+        public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -647,6 +659,10 @@ namespace GunMobile.Client
                 db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
                 int sDmg = 0, sGuard = 0;
                 db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                EnsureSigilSkills();
+                db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                db.ApplyScrollBuff(ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard);
+                db.ApplyConsortiaBufferBonus(ConsortiaBufferId, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg);
                 atk += sDmg;
                 def += sGuard;
                 atk += magicAtk / 4;
@@ -909,6 +925,11 @@ namespace GunMobile.Client
             new ModuleDef("battleteam", "战队", "Request/battleteamlevellist.xml"),
             new ModuleDef("battleteamshop", "战队商店", "Request/battleteamshopitemlist1.xml"),
             new ModuleDef("dailyleague", "每日联赛", "Request/dailyleagueaward.xml"),
+            new ModuleDef("scroll", "纹章卷轴", "Request/TS_Scroll.xml"),
+            new ModuleDef("sigilskill", "符印技能", "Request/TS_SigilSkillTemplate.xml"),
+            new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
+            new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
+            new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

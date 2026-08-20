@@ -208,6 +208,21 @@ namespace GunMobile.Client
                 case "dailyleague":
                     ExtraModulesScreens.DailyLeagueScreen(_safe, this);
                     return;
+                case "scroll":
+                    ExtraModulesScreens.ScrollScreen(_safe, this);
+                    return;
+                case "sigilskill":
+                    ExtraModulesScreens.SigilSkillScreen(_safe, this);
+                    return;
+                case "consortiabuffer":
+                    ExtraModulesScreens.ConsortiaBufferScreen(_safe, this);
+                    return;
+                case "elfskillbook":
+                    ExtraModulesScreens.ElfSkillBookScreen(_safe, this);
+                    return;
+                case "butterflytask":
+                    ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -759,6 +774,36 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.ScrollUse:
+                        PhoneNet.LastScrollJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "scroll" || _currentModuleId == "sigil"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SigilSkillUnlock:
+                        PhoneNet.LastSigilSkillJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "sigilskill" || _currentModuleId == "sigil"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ConsortiaBufferBuy:
+                        PhoneNet.LastConsortiaBufferJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "consortiabuffer" || _currentModuleId == "consortia"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ElfSkillBook:
+                        PhoneNet.LastElfSkillBookJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "elfskillbook" || _currentModuleId == "elf"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ButterflyTaskClaim:
+                        PhoneNet.LastButterflyTaskJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1024,6 +1069,18 @@ namespace GunMobile.Client
             Profile.DailyLeagueLevel = JsonInt(json, "dailyLeagueLevel", Profile.DailyLeagueLevel > 0 ? Profile.DailyLeagueLevel : 1);
             Profile.EnsureDailyLeagueClaimed();
             ParseIntListFromServer(json, "dailyLeagueClaimed", Profile.DailyLeagueClaimed);
+            Profile.ScrollBuffTypes = JsonInt(json, "scrollBuffTypes", Profile.ScrollBuffTypes);
+            Profile.ScrollBuffProfile = JsonInt(json, "scrollBuffProfile", Profile.ScrollBuffProfile);
+            Profile.ScrollBuffValue = JsonInt(json, "scrollBuffValue", Profile.ScrollBuffValue);
+            Profile.EnsureSigilSkills();
+            ParseIntListFromServer(json, "sigilSkillIds", Profile.SigilSkillIds);
+            Profile.ConsortiaBufferId = JsonInt(json, "consortiaBufferId", Profile.ConsortiaBufferId);
+            Profile.ConsortiaBadgeId = JsonInt(json, "consortiaBadgeId", Profile.ConsortiaBadgeId);
+            Profile.EnsureElfSkills();
+            ParseIntListFromServer(json, "elfSkillIds", Profile.ElfSkillIds);
+            Profile.EnsureButterflyTasks();
+            ParseIntListFromServer(json, "butterflyTaskClaimed", Profile.ButterflyTaskClaimed);
+            Profile.ButterflyTaskActive = JsonInt(json, "butterflyTaskActive", Profile.ButterflyTaskActive);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

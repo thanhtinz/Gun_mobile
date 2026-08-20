@@ -1537,7 +1537,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, PhoneNet.LastJewelJson);
             }
         }
-
         public static void WarPassScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "战令任务 · WarPass");
@@ -1578,7 +1577,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, PhoneNet.LastWarPassJson);
             }
         }
-
         public static void TimeLimitShopScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "限时商店 · TimeLimitShop");
@@ -1616,7 +1614,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, PhoneNet.LastTimeLimitShopJson);
             }
         }
-
         public static void BattleTeamScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "战队升级 · battleteamlevellist");
@@ -1659,7 +1656,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, PhoneNet.LastBattleTeamJson);
             }
         }
-
         public static void BattleTeamShopScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "战队商店 · battleteamshopitemlist1");
@@ -1695,7 +1691,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Note(body, PhoneNet.LastBattleTeamShopJson);
             }
         }
-
         public static void DailyLeagueScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "每日联赛 · dailyleagueaward");
@@ -1733,6 +1728,126 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+        public static void ScrollScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");
+            SysUi.Note(body, "当前 buff Types " + app.Profile.ScrollBuffTypes +
+                " P" + app.Profile.ScrollBuffProfile + " +" + app.Profile.ScrollBuffValue);
+            if (app.Database == null || app.Database.ScrollList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_Scroll.xml");
+                return;
+            }
+            int shown = 0;
+            foreach (ScrollTemplate row in app.Database.ScrollList)
+            {
+                ScrollTemplate local = row;
+                int buff = app.Database.ScrollBuffValue(row);
+                int gold = app.Database.ScrollUseGoldReward(row);
+                SysUi.Row(body, "sc" + row.TemplateId,
+                    row.TemplateName + " T" + row.Types + "P" + row.Profile + "  buff+" + buff + " 奖" + gold,
+                    () => PhoneNet.UseScroll(local.TemplateId, local.Types, local.Profile));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastScrollJson)) SysUi.Note(body, PhoneNet.LastScrollJson);
+        }
+        public static void SigilSkillScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "符印技能 · SigilSkill");
+            app.Profile.EnsureSigilSkills();
+            SysUi.Note(body, "TS_SigilSkillTemplate.xml  ·  扩展 SigilRoll(194)  ·  ProType " + app.Profile.SigilProType);
+            if (app.Database == null || app.Database.SigilSkillList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_SigilSkillTemplate.xml");
+                return;
+            }
+            int shown = 0;
+            foreach (SigilSkillTemplate row in app.Database.SigilSkillList)
+            {
+                bool owned = app.Profile.SigilSkillIds.Contains(row.SkillId);
+                int cost = app.Database.SigilSkillUnlockGoldCost(row);
+                SigilSkillTemplate local = row;
+                SysUi.Row(body, "ssk" + row.SkillId,
+                    (owned ? "[已学] " : "") + row.SkillName + " T" + row.SkillType + " Lv" + row.SkillLv + "  " + cost + "金",
+                    owned ? null : (System.Action)(() => PhoneNet.UnlockSigilSkill(local.SkillId)));
+                if (++shown >= 36) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastSigilSkillJson)) SysUi.Note(body, PhoneNet.LastSigilSkillJson);
+        }
+        public static void ConsortiaBufferScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "公会增益 · ConsortiaBuffer");
+            SysUi.Note(body, "当前 buffer #" + app.Profile.ConsortiaBufferId + "  badge #" + app.Profile.ConsortiaBadgeId +
+                "  公会Lv" + app.Profile.GuildLevel);
+            SysUi.Row(body, "cweek", "领取周奖励 consortiaweekreward", () => PhoneNet.ConsortiaBuffer("week", 0, 0, 0));
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (ConsortiaBufferTemp row in app.Database.ConsortiaBufferList)
+            {
+                ConsortiaBufferTemp local = row;
+                bool on = app.Profile.ConsortiaBufferId == row.Id;
+                SysUi.Row(body, "cb" + row.Id,
+                    (on ? "[生效] " : "") + row.Name + " Lv" + row.Level + " G" + row.Group + " +" + row.Value +
+                    "  荣" + row.Riches + " 礼" + row.Metal,
+                    () => PhoneNet.ConsortiaBuffer("buy", local.Id));
+                if (++shown >= 20) break;
+            }
+            shown = 0;
+            foreach (ConsortiaBadgeConfig badge in app.Database.ConsortiaBadgeList)
+            {
+                ConsortiaBadgeConfig local = badge;
+                SysUi.Row(body, "badge" + badge.BadgeId,
+                    "徽章 " + badge.BadgeName + " Lv" + badge.LimitLevel + "  " + badge.Cost + "金",
+                    () => PhoneNet.ConsortiaBuffer("badge", 0, local.BadgeId));
+                if (++shown >= 10) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastConsortiaBufferJson)) SysUi.Note(body, PhoneNet.LastConsortiaBufferJson);
+        }
+        public static void ElfSkillBookScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "精灵技能书 · ElfSkillBook");
+            app.Profile.EnsureElfSkills();
+            SysUi.Note(body, "已学技能 " + app.Profile.ElfSkillIds.Count + "  ·  TS_ElfSkillBook.xml");
+            SysUi.Row(body, "elfroll", "随机开启技能书", () => PhoneNet.UseElfSkillBook(0, -1));
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (ElfSkillBookTemp row in app.Database.ElfSkillBookList)
+            {
+                if (row.Randoms < 50 && row.ElfType == 0) continue;
+                ElfSkillBookTemp local = row;
+                SysUi.Row(body, "esb" + row.TemplateId,
+                    row.TemplateName + " → skill " + row.SkillTempId + "  x" + row.NeedBookCount,
+                    () => PhoneNet.UseElfSkillBook(local.TemplateId, local.ElfType));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastElfSkillBookJson)) SysUi.Note(body, PhoneNet.LastElfSkillBookJson);
+        }
+        public static void ButterflyTaskScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "蝶妖任务 · ButterflyTask");
+            app.Profile.EnsureButterflyTasks();
+            SysUi.Note(body, "Grade " + app.Profile.ButterflyGrade + " Feeling " + app.Profile.ButterflyFeeling +
+                "  进行中 #" + app.Profile.ButterflyTaskActive);
+            if (app.Database == null || app.Database.ButterflyTaskList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_ButterflyTask.xml");
+                return;
+            }
+            foreach (ButterflyTaskInfo row in app.Database.ButterflyTaskList)
+            {
+                bool claimed = app.Profile.ButterflyTaskClaimed.Contains(row.TaskId);
+                ButterflyTaskInfo local = row;
+                string label = (claimed ? "[已领] " : "") + row.TaskName + " G" + row.GradeMin + "-" + row.GradeMax +
+                    " Feel" + row.NeedFeeling + "  +" + row.RewardGp + "GP";
+                if (!claimed)
+                {
+                    SysUi.Row(body, "btstart" + row.TaskId, "开始 " + label, () => PhoneNet.ButterflyTask("start", local.TaskId));
+                    SysUi.Row(body, "btclaim" + row.TaskId, "领取 " + label, () => PhoneNet.ButterflyTask("claim", local.TaskId));
+                }
+                else SysUi.Note(body, label);
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastButterflyTaskJson)) SysUi.Note(body, PhoneNet.LastButterflyTaskJson);
+        }
 
         static int JsonFieldInt(string json, string key, int fallback)
         {

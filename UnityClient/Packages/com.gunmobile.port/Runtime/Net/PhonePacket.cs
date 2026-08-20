@@ -272,6 +272,11 @@ namespace GunMobile.Net
         public const ushort BattleTeamUpgrade = 225;
         public const ushort BattleTeamShopBuy = 226;
         public const ushort DailyLeagueClaim = 227;
+        public const ushort ScrollUse = 228;
+        public const ushort SigilSkillUnlock = 229;
+        public const ushort ConsortiaBufferBuy = 230;
+        public const ushort ElfSkillBook = 231;
+        public const ushort ButterflyTaskClaim = 232;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

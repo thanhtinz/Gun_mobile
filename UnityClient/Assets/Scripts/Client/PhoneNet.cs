@@ -57,6 +57,11 @@ namespace GunMobile.Client
         public static string LastBattleTeamJson;
         public static string LastBattleTeamShopJson;
         public static string LastDailyLeagueJson;
+        public static string LastScrollJson;
+        public static string LastSigilSkillJson;
+        public static string LastConsortiaBufferJson;
+        public static string LastElfSkillBookJson;
+        public static string LastButterflyTaskJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -335,31 +340,55 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.JewelEquip,
                 "{\"action\":\"" + act + "\",\"level\":" + level + ",\"skillType\":" + skillType + "}");
         }
-
         public static void WarPassClaim(int qid, string action = "claim")
         {
             string act = (action ?? "claim").Replace("\"", "");
             Road?.Send(PhoneMsg.WarPassClaim, "{\"action\":\"" + act + "\",\"qid\":" + qid + "}");
         }
-
         public static void TimeLimitShopBuy(int shopId)
         {
             Road?.Send(PhoneMsg.TimeLimitShopBuy, "{\"shopId\":" + shopId + "}");
         }
-
         public static void BattleTeamUpgrade()
         {
             Road?.Send(PhoneMsg.BattleTeamUpgrade, "{}");
         }
-
         public static void BattleTeamShopBuy(int id)
         {
             Road?.Send(PhoneMsg.BattleTeamShopBuy, "{\"id\":" + id + "}");
         }
-
         public static void DailyLeagueClaim(int level = 0)
         {
             Road?.Send(PhoneMsg.DailyLeagueClaim, "{\"level\":" + level + "}");
+        }
+
+        public static void UseScroll(int templateId = 0, int types = 0, int profile = 0)
+        {
+            Road?.Send(PhoneMsg.ScrollUse,
+                "{\"templateId\":" + templateId + ",\"types\":" + types + ",\"profile\":" + profile + "}");
+        }
+
+        public static void UnlockSigilSkill(int skillId)
+        {
+            Road?.Send(PhoneMsg.SigilSkillUnlock, "{\"skillId\":" + skillId + "}");
+        }
+
+        public static void ConsortiaBuffer(string action = "buy", int bufferId = 0, int badgeId = 0, int rank = 0)
+        {
+            string act = (action ?? "buy").Replace("\"", "");
+            Road?.Send(PhoneMsg.ConsortiaBufferBuy,
+                "{\"action\":\"" + act + "\",\"bufferId\":" + bufferId + ",\"badgeId\":" + badgeId + ",\"rank\":" + rank + "}");
+        }
+
+        public static void UseElfSkillBook(int templateId = 0, int elfType = -1)
+        {
+            Road?.Send(PhoneMsg.ElfSkillBook, "{\"templateId\":" + templateId + ",\"elfType\":" + elfType + "}");
+        }
+
+        public static void ButterflyTask(string action = "claim", int taskId = 0)
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
         }
 
         public static void DrawLottery(int count)

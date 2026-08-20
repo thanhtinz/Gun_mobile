@@ -441,6 +441,7 @@ namespace GunMobile.Client
             SysUi.Row(body, "bfUnequip", "卸下蝶妖", () => PhoneNet.ButterflyAction("unequip"));
             SysUi.Row(body, "bfFeed", "喂养 / 亲昵", () => PhoneNet.ButterflyAction("feed"));
             SysUi.Row(body, "bfUp", "升级蝶妖", () => PhoneNet.ButterflyAction("upgrade"));
+            SysUi.Row(body, "bfTask", "蝶妖任务 TS_ButterflyTask", () => ExtraModulesScreens.ButterflyTaskScreen(safe, app));
             int shown = 0;
             if (app.Database != null)
             {
@@ -602,6 +603,7 @@ namespace GunMobile.Client
                     app.ShowRoom();
                 });
                 SysUi.Row(body, "donate", "捐献 " + donateGold + " 金币", PhoneNet.DonateGuild);
+                SysUi.Row(body, "cbuf", "公会增益 / 周奖励 / 徽章", () => ExtraModulesScreens.ConsortiaBufferScreen(safe, app));
                 SysUi.Row(body, "leave", "退出公会", PhoneNet.LeaveGuild);
                 ShowMembers(body, PhoneNet.LastGuildJson);
             }
