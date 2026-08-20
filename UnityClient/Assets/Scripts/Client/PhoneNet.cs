@@ -62,6 +62,10 @@ namespace GunMobile.Client
         public static string LastConsortiaBufferJson;
         public static string LastElfSkillBookJson;
         public static string LastButterflyTaskJson;
+        public static string LastChargeSpendJson;
+        public static string LastBuffActivateJson;
+        public static string LastTotemInfoSyncJson;
+        public static string LastActiveListJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -390,6 +394,31 @@ namespace GunMobile.Client
             string act = (action ?? "claim").Replace("\"", "");
             Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
         }
+
+        public static void ChargeSpend(string action = "claim", int rewardId = 0, int amount = 0)
+        {
+            string act = (action ?? "claim").Replace(""", "");
+            Road?.Send(PhoneMsg.ChargeSpendClaim,
+                "{"action":"" + act + "","rewardId":" + rewardId + ","amount":" + amount + "}");
+        }
+
+        public static void ActivateBuff(int buffId, string action = "activate")
+        {
+            string act = (action ?? "activate").Replace(""", "");
+            Road?.Send(PhoneMsg.BuffActivate, "{"action":"" + act + "","buffId":" + buffId + "}");
+        }
+
+        public static void TotemInfoSync(string action = "sync", int totemId = 0)
+        {
+            string act = (action ?? "sync").Replace(""", "");
+            Road?.Send(PhoneMsg.TotemInfoSync, "{"action":"" + act + "","totemId":" + totemId + "}");
+        }
+
+        public static void ActiveListClaim(int activeId = 0)
+        {
+            Road?.Send(PhoneMsg.ActiveListClaim, "{"activeId":" + activeId + "}");
+        }
+
 
         public static void DrawLottery(int count)
         {

@@ -1848,6 +1848,99 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
             if (!string.IsNullOrEmpty(PhoneNet.LastButterflyTaskJson)) SysUi.Note(body, PhoneNet.LastButterflyTaskJson);
         }
+        public static void ChargeSpendScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "充消奖励 · ChargeSpend");
+            app.Profile.EnsureChargeSpendClaimed();
+            SysUi.Note(body, "充值 " + app.Profile.ChargeMoney + "  ·  消费 " + app.Profile.SpendMoney);
+            SysUi.Row(body, "cscharge", "记录充值 +1000", () => PhoneNet.ChargeSpend("charge", 0, 1000));
+            SysUi.Row(body, "csspend", "记录消费 +1000", () => PhoneNet.ChargeSpend("spend", 0, 1000));
+            if (app.Database == null || app.Database.ChargeSpendRewardList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/chargespendrewardtemplateinfolist.xml");
+                return;
+            }
+            foreach (var kv in app.Database.ChargeSpendRewards)
+            {
+                int rid = kv.Key;
+                bool claimed = app.Profile.ChargeSpendClaimed.Contains(rid);
+                int n = kv.Value != null ? kv.Value.Count : 0;
+                SysUi.Row(body, "cs" + rid,
+                    (claimed ? "[已领] " : "[领取] ") + "Reward " + rid + "  x" + n,
+                    claimed ? null : (System.Action)(() => PhoneNet.ChargeSpend("claim", rid)));
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastChargeSpendJson)) SysUi.Note(body, PhoneNet.LastChargeSpendJson);
+        }
+
+        public static void BuffActivateScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "增益激活 · BuffActivate");
+            app.Profile.EnsureActiveBuffs();
+            SysUi.Note(body, "已激活 " + app.Profile.ActiveBuffIds.Count + "  ·  bufftemplateinfo.xml");
+            SysUi.Row(body, "buffclear", "清除全部增益", () => PhoneNet.ActivateBuff(0, "clear"));
+            if (app.Database == null || app.Database.BuffTemplateList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/bufftemplateinfo.xml");
+                return;
+            }
+            foreach (BuffTemplateInfo row in app.Database.BuffTemplateList)
+            {
+                bool on = app.Profile.ActiveBuffIds.Contains(row.Id);
+                int cost = app.Database.BuffActivateGoldCost(row);
+                BuffTemplateInfo local = row;
+                SysUi.Row(body, "buff" + row.Id,
+                    (on ? "[生效] " : "") + row.Name + " T" + row.Type + "  " + cost + "金",
+                    () => PhoneNet.ActivateBuff(local.Id, on ? "clear" : "activate"));
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastBuffActivateJson)) SysUi.Note(body, PhoneNet.LastBuffActivateJson);
+        }
+
+        public static void TotemInfoSyncScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "图腾同步 · Totem_Info");
+            SysUi.Note(body, "当前图腾 #" + app.Profile.TotemId + "  ·  synced=" + (app.Profile.TotemInfoSynced ? 1 : 0));
+            SysUi.Row(body, "tisync", "合并 Totem_Info.xml", () => PhoneNet.TotemInfoSync("sync"));
+            if (app.Database == null || app.Database.TotemInfoPcList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/Totem_Info.xml");
+                return;
+            }
+            int shown = 0;
+            foreach (TotemInfo row in app.Database.TotemInfoPcList)
+            {
+                TotemInfo local = row;
+                bool on = app.Profile.TotemId == row.Id;
+                SysUi.Row(body, "tipc" + row.Id,
+                    (on ? "[装备] " : "") + "#" + row.Id + " Atk+" + row.AddAttack +
+                    "  荣" + row.ConsumeHonor + " 金" + row.DiscountMoney + " Exp" + row.ConsumeExp,
+                    () => PhoneNet.TotemInfoSync("buy", local.Id));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastTotemInfoSyncJson)) SysUi.Note(body, PhoneNet.LastTotemInfoSyncJson);
+        }
+
+        public static void ActiveListScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "活动列表 · ActiveList");
+            app.Profile.EnsureActiveListClaimed();
+            if (app.Database == null || app.Database.ActiveList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/ActiveList.xml");
+                return;
+            }
+            foreach (ActiveListEntry row in app.Database.ActiveList)
+            {
+                bool claimed = app.Profile.ActiveListClaimed.Contains(row.ActiveId);
+                bool open = app.Database.IsActiveListOpen(row, System.DateTime.Now);
+                ActiveListEntry local = row;
+                string title = string.IsNullOrEmpty(row.Title) ? ("活动" + row.ActiveId) : row.Title;
+                SysUi.Row(body, "al" + row.ActiveId,
+                    (claimed ? "[已领] " : open ? "[可领] " : "[关闭] ") + title,
+                    (!claimed && open) ? (System.Action)(() => PhoneNet.ActiveListClaim(local.ActiveId)) : null);
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastActiveListJson)) SysUi.Note(body, PhoneNet.LastActiveListJson);
+        }
+
 
         static int JsonFieldInt(string json, string key, int fallback)
         {

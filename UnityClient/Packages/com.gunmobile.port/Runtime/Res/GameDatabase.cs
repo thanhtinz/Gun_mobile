@@ -267,6 +267,75 @@ namespace GunMobile.Res
         public int AddDamage;
         public int AddGuard;
         public int ConsumeHonor;
+        public int ConsumeExp;
+        public int DiscountMoney;
+        public int Page;
+        public int Layers;
+        public int Location;
+        public int Point;
+        public int Random;
+        public bool FromTotemInfoPc;
+    }
+
+    public sealed class ChargeSpendRewardItem
+    {
+        public int Id;
+        public int RewardId;
+        public int RewardItemId;
+        public int RewardItemCount;
+        public int RewardItemValid;
+        public int StrengthenLevel;
+        public int AttackCompose;
+        public int DefendCompose;
+        public int AgilityCompose;
+        public int LuckCompose;
+        public bool IsBind;
+        public bool IsSelect;
+    }
+
+    public sealed class BuffTemplateInfo
+    {
+        public int Id;
+        public int Type;
+        public int ShowType;
+        public string Name = "";
+        public string Description = "";
+        public int Pic;
+        public int Gold;
+        public int Money;
+        public int Cost;
+        public int ItemId;
+        public int ItemCount;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int Blood;
+        public int Damage;
+        public int Guard;
+        public int Value;
+    }
+
+    public sealed class ActiveListEntry
+    {
+        public int ActiveId;
+        public int Type;
+        public int ActiveType;
+        public int HasKey;
+        public int IsOnly;
+        public int IconId;
+        public string Title = "";
+        public string Description = "";
+        public string Content = "";
+        public string AwardContent = "";
+        public string StartDate = "";
+        public string EndDate = "";
+        public int GoodsExchangeTypes;
+        public int GoodsExchangeNum;
+        public int LimitType;
+        public int LimitValue;
+        public bool IsAdvance;
+        public bool IsShow;
     }
 
     public sealed class MountGrade
@@ -1841,6 +1910,14 @@ namespace GunMobile.Res
         public List<ElfSkillBookTemp> ElfSkillBookList { get; } = new List<ElfSkillBookTemp>();
         public Dictionary<int, ButterflyTaskInfo> ButterflyTasks { get; } = new Dictionary<int, ButterflyTaskInfo>();
         public List<ButterflyTaskInfo> ButterflyTaskList { get; } = new List<ButterflyTaskInfo>();
+        public Dictionary<int, List<ChargeSpendRewardItem>> ChargeSpendRewards { get; } = new Dictionary<int, List<ChargeSpendRewardItem>>();
+        public List<ChargeSpendRewardItem> ChargeSpendRewardList { get; } = new List<ChargeSpendRewardItem>();
+        public Dictionary<int, BuffTemplateInfo> BuffTemplates { get; } = new Dictionary<int, BuffTemplateInfo>();
+        public List<BuffTemplateInfo> BuffTemplateList { get; } = new List<BuffTemplateInfo>();
+        public Dictionary<int, TotemInfo> TotemInfoPc { get; } = new Dictionary<int, TotemInfo>();
+        public List<TotemInfo> TotemInfoPcList { get; } = new List<TotemInfo>();
+        public Dictionary<int, ActiveListEntry> ActiveListEntries { get; } = new Dictionary<int, ActiveListEntry>();
+        public List<ActiveListEntry> ActiveList { get; } = new List<ActiveListEntry>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1874,6 +1951,10 @@ namespace GunMobile.Res
             db.LoadCards(loader);
             db.LoadTitles(loader);
             db.LoadTotems(loader);
+            db.LoadTotemInfoPc(loader);
+            db.LoadChargeSpendRewards(loader);
+            db.LoadBuffTemplates(loader);
+            db.LoadActiveList(loader);
             db.LoadMounts(loader);
             db.LoadPetStarExp(loader);
             db.LoadGoldEquip(loader);
@@ -1983,7 +2064,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} chargeSpend={db.ChargeSpendRewardList.Count} buffs={db.BuffTemplates.Count} totemPc={db.TotemInfoPc.Count} activeList={db.ActiveList.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -2347,7 +2428,125 @@ namespace GunMobile.Res
             return null;
         }
 
+        public List<ChargeSpendRewardItem> GetChargeSpendRewards(int rewardId)
+        {
+            if (rewardId > 0 && ChargeSpendRewards.TryGetValue(rewardId, out List<ChargeSpendRewardItem> list))
+                return list;
+            return null;
+        }
+
+        public BuffTemplateInfo GetBuffTemplate(int id)
+        {
+            if (id > 0 && BuffTemplates.TryGetValue(id, out BuffTemplateInfo row)) return row;
+            return null;
+        }
+
+        public int BuffActivateGoldCost(BuffTemplateInfo row)
+        {
+            if (row == null) return ConfigInt("BuffActivateGold", 100);
+            int cost = row.Gold;
+            if (cost <= 0) cost = row.Money;
+            if (cost <= 0) cost = row.Cost;
+            if (cost <= 0) cost = ConfigInt("BuffActivateGold", 100);
+            return Mathf.Max(0, cost);
+        }
+
+        public void ApplyBuffTemplateBonuses(IList<int> buffIds, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (buffIds == null || buffIds.Count == 0) return;
+            for (int i = 0; i < buffIds.Count; i++)
+            {
+                BuffTemplateInfo row = GetBuffTemplate(buffIds[i]);
+                if (row == null) continue;
+                int hasStat = row.Attack + row.Defence + row.Agility + row.Luck + row.Blood + row.Damage + row.Guard + row.Value;
+                if (hasStat <= 0) continue;
+                atk += row.Attack;
+                def += row.Defence;
+                agi += row.Agility;
+                luck += row.Luck;
+                hp += row.Blood;
+                baseDmg += row.Damage;
+                baseGuard += row.Guard;
+                if (row.Value > 0)
+                {
+                    switch (row.Type)
+                    {
+                        case 1: atk += row.Value; break;
+                        case 2: def += row.Value; break;
+                        case 3: agi += row.Value; break;
+                        case 4: luck += row.Value; break;
+                        case 5: hp += row.Value; break;
+                        default: atk += Mathf.Max(1, row.Value / 2); def += Mathf.Max(1, row.Value / 2); break;
+                    }
+                }
+            }
+        }
+
+        public TotemInfo GetTotemInfoPc(int id)
+        {
+            if (id > 0 && TotemInfoPc.TryGetValue(id, out TotemInfo row)) return row;
+            return null;
+        }
+
+        public TotemInfo ResolveTotem(int id)
+        {
+            TotemInfo pc = GetTotemInfoPc(id);
+            if (pc != null) return pc;
+            if (id > 0 && Totems.TryGetValue(id, out TotemInfo row)) return row;
+            return null;
+        }
+
+        public int MergeTotemInfoPcIntoTotems()
+        {
+            int n = 0;
+            foreach (KeyValuePair<int, TotemInfo> kv in TotemInfoPc)
+            {
+                TotemInfo src = kv.Value;
+                Totems[kv.Key] = new TotemInfo
+                {
+                    Id = src.Id,
+                    AddAttack = src.AddAttack,
+                    AddDefence = src.AddDefence,
+                    AddAgility = src.AddAgility,
+                    AddLuck = src.AddLuck,
+                    AddBlood = src.AddBlood,
+                    AddDamage = src.AddDamage,
+                    AddGuard = src.AddGuard,
+                    ConsumeHonor = src.ConsumeHonor,
+                    ConsumeExp = src.ConsumeExp,
+                    DiscountMoney = src.DiscountMoney,
+                    Page = src.Page,
+                    Layers = src.Layers,
+                    Location = src.Location,
+                    Point = src.Point,
+                    Random = src.Random,
+                    FromTotemInfoPc = true
+                };
+                n++;
+            }
+            return n;
+        }
+
+        public ActiveListEntry GetActiveListEntry(int activeId)
+        {
+            if (activeId > 0 && ActiveListEntries.TryGetValue(activeId, out ActiveListEntry row)) return row;
+            return null;
+        }
+
+        public bool IsActiveListOpen(ActiveListEntry row, DateTime now)
+        {
+            if (row == null) return false;
+            if (!string.IsNullOrEmpty(row.StartDate) &&
+                DateTime.TryParse(row.StartDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime start) &&
+                now < start) return false;
+            if (!string.IsNullOrEmpty(row.EndDate) &&
+                DateTime.TryParse(row.EndDate, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out DateTime end) &&
+                now > end) return false;
+            return true;
+        }
+
         public JadeTemp GetJade(int id)
+
         {
             if (id > 0 && Jades.TryGetValue(id, out JadeTemp row)) return row;
             return null;
@@ -5740,12 +5939,155 @@ namespace GunMobile.Res
                     AddBlood = Int(row, "AddBlood"),
                     AddDamage = Int(row, "AddDamage"),
                     AddGuard = Int(row, "AddGuard"),
-                    ConsumeHonor = Int(row, "ConsumeHonor")
+                    ConsumeHonor = Int(row, "ConsumeHonor"),
+                    ConsumeExp = Int(row, "ConsumeExp"),
+                    DiscountMoney = Int(row, "DiscountMoney"),
+                    Page = Int(row, "Page"),
+                    Layers = Int(row, "Layers"),
+                    Location = Int(row, "Location"),
+                    Point = Int(row, "Point"),
+                    Random = Int(row, "Random")
                 };
             }
         }
 
+        void LoadTotemInfoPc(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/Totem_Info.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) continue;
+                var info = new TotemInfo
+                {
+                    Id = id,
+                    AddAttack = Int(row, "AddAttack"),
+                    AddDefence = Int(row, "AddDefence"),
+                    AddAgility = Int(row, "AddAgility"),
+                    AddLuck = Int(row, "AddLuck"),
+                    AddBlood = Int(row, "AddBlood"),
+                    AddDamage = Int(row, "AddDamage"),
+                    AddGuard = Int(row, "AddGuard"),
+                    ConsumeHonor = Int(row, "ConsumeHonor"),
+                    ConsumeExp = Int(row, "ConsumeExp"),
+                    DiscountMoney = Int(row, "DiscountMoney"),
+                    Page = Int(row, "Page"),
+                    Layers = Int(row, "Layers"),
+                    Location = Int(row, "Location"),
+                    Point = Int(row, "Point"),
+                    Random = Int(row, "Random"),
+                    FromTotemInfoPc = true
+                };
+                TotemInfoPc[id] = info;
+                TotemInfoPcList.Add(info);
+            }
+        }
+
+        void LoadChargeSpendRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/chargespendrewardtemplateinfolist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                int rewardId = Int(row, "RewardID");
+                int itemId = Int(row, "RewardItemID");
+                if (rewardId <= 0 || itemId == 0) continue;
+                var item = new ChargeSpendRewardItem
+                {
+                    Id = id,
+                    RewardId = rewardId,
+                    RewardItemId = itemId,
+                    RewardItemCount = Int(row, "RewardItemCount"),
+                    RewardItemValid = Int(row, "RewardItemValid"),
+                    StrengthenLevel = Int(row, "StrengthenLevel"),
+                    AttackCompose = Int(row, "AttackCompose"),
+                    DefendCompose = Int(row, "DefendCompose"),
+                    AgilityCompose = Int(row, "AgilityCompose"),
+                    LuckCompose = Int(row, "LuckCompose"),
+                    IsBind = Bool(row, "IsBind"),
+                    IsSelect = Bool(row, "IsSelect")
+                };
+                ChargeSpendRewardList.Add(item);
+                if (!ChargeSpendRewards.TryGetValue(rewardId, out List<ChargeSpendRewardItem> list))
+                {
+                    list = new List<ChargeSpendRewardItem>();
+                    ChargeSpendRewards[rewardId] = list;
+                }
+                list.Add(item);
+            }
+        }
+
+        void LoadBuffTemplates(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/bufftemplateinfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || BuffTemplates.ContainsKey(id)) continue;
+                var info = new BuffTemplateInfo
+                {
+                    Id = id,
+                    Type = Int(row, "Type"),
+                    ShowType = Int(row, "ShowType"),
+                    Name = Str(row, "Name"),
+                    Description = Str(row, "Description"),
+                    Pic = Int(row, "Pic"),
+                    Gold = Int(row, "Gold"),
+                    Money = Int(row, "Money"),
+                    Cost = Int(row, "Cost"),
+                    ItemId = Int(row, "ItemID"),
+                    ItemCount = Int(row, "ItemCount"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Luck = Int(row, "Luck"),
+                    Blood = Int(row, "Blood"),
+                    Damage = Int(row, "Damage"),
+                    Guard = Int(row, "Guard"),
+                    Value = Int(row, "Value")
+                };
+                if (info.ItemId <= 0) info.ItemId = Int(row, "TemplateID");
+                if (info.ItemCount <= 0) info.ItemCount = Int(row, "Count");
+                BuffTemplates[id] = info;
+                BuffTemplateList.Add(info);
+            }
+        }
+
+        void LoadActiveList(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ActiveList.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = Int(row, "ActiveID");
+                if (activeId <= 0 || ActiveListEntries.ContainsKey(activeId)) continue;
+                var info = new ActiveListEntry
+                {
+                    ActiveId = activeId,
+                    Type = Int(row, "Type"),
+                    ActiveType = Int(row, "ActiveType"),
+                    HasKey = Int(row, "HasKey"),
+                    IsOnly = Int(row, "IsOnly"),
+                    IconId = Int(row, "IconID"),
+                    Title = Str(row, "Title"),
+                    Description = Str(row, "Description"),
+                    Content = Str(row, "Content"),
+                    AwardContent = Str(row, "AwardContent"),
+                    StartDate = Str(row, "StartDate"),
+                    EndDate = Str(row, "EndDate"),
+                    GoodsExchangeTypes = Int(row, "GoodsExchangeTypes"),
+                    GoodsExchangeNum = Int(row, "GoodsExchangeNum"),
+                    LimitType = Int(row, "limitType"),
+                    LimitValue = Int(row, "limitValue"),
+                    IsAdvance = Bool(row, "IsAdvance"),
+                    IsShow = Bool(row, "IsShow")
+                };
+                ActiveListEntries[activeId] = info;
+                ActiveList.Add(info);
+            }
+        }
+
         void LoadMounts(ResLoader loader)
+
         {
             if (!TryTable(loader, "Request/mounttemplateOUT.xml", out XmlResultTable table) &&
                 !TryTable(loader, "Request/mounttemplate.xml", out table))

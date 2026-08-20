@@ -181,6 +181,12 @@ namespace GunMobile.Client
         public List<int> ElfSkillIds = new List<int>();
         public List<int> ButterflyTaskClaimed = new List<int>();
         public int ButterflyTaskActive;
+        public List<int> ChargeSpendClaimed = new List<int>();
+        public int ChargeMoney;
+        public int SpendMoney;
+        public List<int> ActiveBuffIds = new List<int>();
+        public List<int> ActiveListClaimed = new List<int>();
+        public bool TotemInfoSynced;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -226,6 +232,9 @@ namespace GunMobile.Client
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureChargeSpendClaimed() { if (ChargeSpendClaimed == null) ChargeSpendClaimed = new List<int>(); }
+        public void EnsureActiveBuffs() { if (ActiveBuffIds == null) ActiveBuffIds = new List<int>(); }
+        public void EnsureActiveListClaimed() { if (ActiveListClaimed == null) ActiveListClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -601,7 +610,8 @@ namespace GunMobile.Client
                     luk += title.Luck;
                 }
 
-                if (db.Totems.TryGetValue(TotemId, out TotemInfo totem))
+                TotemInfo totem = db.ResolveTotem(TotemId);
+                if (totem != null)
                 {
                     atk += totem.AddAttack;
                     def += totem.AddDefence;
@@ -609,6 +619,12 @@ namespace GunMobile.Client
                     luk += totem.AddLuck;
                     hp += totem.AddBlood;
                 }
+
+                EnsureActiveBuffs();
+                int bDmg = 0, bGuard = 0;
+                db.ApplyBuffTemplateBonuses(ActiveBuffIds, ref atk, ref def, ref agi, ref luk, ref hp, ref bDmg, ref bGuard);
+                atk += bDmg;
+                def += bGuard;
 
                 if (db.Mounts.TryGetValue(MountGrade, out MountGrade mount))
                 {
@@ -930,6 +946,10 @@ namespace GunMobile.Client
             new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
             new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
             new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
+            new ModuleDef("chargespend", "充消奖励", "Request/chargespendrewardtemplateinfolist.xml"),
+            new ModuleDef("buff", "增益激活", "Request/bufftemplateinfo.xml"),
+            new ModuleDef("toteminfo", "图腾同步", "Request/Totem_Info.xml"),
+            new ModuleDef("activelist", "活动列表", "Request/ActiveList.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

@@ -248,6 +248,12 @@ namespace GunMobile.Net
         public int ButterflyTaskDay = -1;
         public int ButterflyTaskActive;
         public int ButterflyTaskStartDay = -1;
+        public List<int> ChargeSpendClaimed = new List<int>();
+        public int ChargeMoney;
+        public int SpendMoney;
+        public List<int> ActiveBuffIds = new List<int>();
+        public List<int> ActiveListClaimed = new List<int>();
+        public bool TotemInfoSynced;
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -305,7 +311,10 @@ namespace GunMobile.Net
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
-        public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
+
+        public void EnsureChargeSpendClaimed() { if (ChargeSpendClaimed == null) ChargeSpendClaimed = new List<int>(); }
+        public void EnsureActiveBuffs() { if (ActiveBuffIds == null) ActiveBuffIds = new List<int>(); }
+        public void EnsureActiveListClaimed() { if (ActiveListClaimed == null) ActiveListClaimed = new List<int>(); }        public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
             if (EngraveDebrisIds == null) EngraveDebrisIds = new List<int>();
@@ -598,11 +607,15 @@ namespace GunMobile.Net
                 atk += ti.Att; def += ti.Def; agi += ti.Agi; luck += ti.Luck;
             }
 
-            if (db.Totems.TryGetValue(TotemId, out TotemInfo to))
+            TotemInfo to = db.ResolveTotem(TotemId);
+            if (to != null)
             {
                 atk += to.AddAttack; def += to.AddDefence; agi += to.AddAgility; luck += to.AddLuck; hp += to.AddBlood;
                 baseDmg += to.AddDamage; baseGuard += to.AddGuard;
             }
+
+            EnsureActiveBuffs();
+            db.ApplyBuffTemplateBonuses(ActiveBuffIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
 
             if (db.Mounts.TryGetValue(MountGrade, out MountGrade mt))
             {
@@ -785,6 +798,21 @@ namespace GunMobile.Net
             for (int i = 0; i < ButterflyTaskClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ButterflyTaskClaimed[i]); }
             sb.Append("],");
             J(sb, "butterflyTaskActive", ButterflyTaskActive); sb.Append(",");
+            EnsureChargeSpendClaimed();
+            sb.Append(""chargeSpendClaimed":[");
+            for (int i = 0; i < ChargeSpendClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ChargeSpendClaimed[i]); }
+            sb.Append("],");
+            J(sb, "chargeMoney", ChargeMoney); sb.Append(",");
+            J(sb, "spendMoney", SpendMoney); sb.Append(",");
+            EnsureActiveBuffs();
+            sb.Append(""activeBuffIds":[");
+            for (int i = 0; i < ActiveBuffIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActiveBuffIds[i]); }
+            sb.Append("],");
+            EnsureActiveListClaimed();
+            sb.Append(""activeListClaimed":[");
+            for (int i = 0; i < ActiveListClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActiveListClaimed[i]); }
+            sb.Append("],");
+            J(sb, "totemInfoSynced", TotemInfoSynced ? 1 : 0); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2394,6 +2422,22 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ButterflyTaskClaim:
                     HandleButterflyTaskClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.ChargeSpendClaim:
+                    HandleChargeSpendClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.BuffActivate:
+                    HandleBuffActivate(player, ns, json);
+                    break;
+
+                case PhoneMsg.TotemInfoSync:
+                    HandleTotemInfoSync(player, ns, json);
+                    break;
+
+                case PhoneMsg.ActiveListClaim:
+                    HandleActiveListClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -7225,6 +7269,222 @@ namespace GunMobile.Net
                 ",\"rewardGp\":" + row.RewardGp + ",\"rewardItem\":" + row.RewardItemId + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+
+        void HandleChargeSpendClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ChargeSpendRewardList.Count == 0)
+            { Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureChargeSpendClaimed();
+            string action = JS(json, "action", "claim");
+            if (string.Equals(action, "charge", StringComparison.OrdinalIgnoreCase))
+            {
+                int amount = Mathf.Max(0, JI(json, "amount", JI(json, "money", 0)));
+                player.ChargeMoney += amount;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":true,\"action\":\"charge\",\"chargeMoney\":" + player.ChargeMoney + ",\"amount\":" + amount + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            if (string.Equals(action, "spend", StringComparison.OrdinalIgnoreCase))
+            {
+                int amount = Mathf.Max(0, JI(json, "amount", JI(json, "money", 0)));
+                player.SpendMoney += amount;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":true,\"action\":\"spend\",\"spendMoney\":" + player.SpendMoney + ",\"amount\":" + amount + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int rewardId = JI(json, "rewardId", JI(json, "id", 0));
+            List<ChargeSpendRewardItem> rewards = _db.GetChargeSpendRewards(rewardId);
+            if (rewards == null || rewards.Count == 0)
+            { Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":false,\"err\":\"reward\"}"); return; }
+            if (player.ChargeSpendClaimed.Contains(rewardId))
+            { Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            int granted = 0;
+            int firstItem = 0;
+            for (int i = 0; i < rewards.Count; i++)
+            {
+                ChargeSpendRewardItem r = rewards[i];
+                int count = Mathf.Max(1, r.RewardItemCount);
+                player.GrantTemplateReward(_db, r.RewardItemId, count);
+                if (firstItem <= 0) firstItem = r.RewardItemId;
+                granted += count;
+            }
+            player.ChargeSpendClaimed.Add(rewardId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ChargeSpendClaim, "{\"ok\":true,\"rewardId\":" + rewardId + ",\"items\":" + rewards.Count +
+                ",\"count\":" + granted + ",\"templateId\":" + firstItem +
+                ",\"chargeMoney\":" + player.ChargeMoney + ",\"spendMoney\":" + player.SpendMoney + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleBuffActivate(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.BuffTemplateList.Count == 0)
+            { Send(ns, PhoneMsg.BuffActivate, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureActiveBuffs();
+            string action = JS(json, "action", "activate");
+            int buffId = JI(json, "buffId", JI(json, "id", 0));
+            if (string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "deactivate", StringComparison.OrdinalIgnoreCase))
+            {
+                if (buffId > 0) player.ActiveBuffIds.Remove(buffId);
+                else player.ActiveBuffIds.Clear();
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.BuffActivate, "{\"ok\":true,\"action\":\"clear\",\"buffId\":" + buffId + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            BuffTemplateInfo row = _db.GetBuffTemplate(buffId);
+            if (row == null) { Send(ns, PhoneMsg.BuffActivate, "{\"ok\":false,\"err\":\"buff\"}"); return; }
+            if (player.ActiveBuffIds.Contains(buffId))
+            {
+                Send(ns, PhoneMsg.BuffActivate, "{\"ok\":true,\"buffId\":" + buffId + ",\"already\":true}");
+                return;
+            }
+
+            int itemId = row.ItemId;
+            int itemCount = Mathf.Max(1, row.ItemCount > 0 ? row.ItemCount : 1);
+            bool paidItem = false;
+            if (itemId > 0)
+            {
+                if (!player.Consume(itemId, itemCount))
+                { Send(ns, PhoneMsg.BuffActivate, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                paidItem = true;
+            }
+
+            int goldCost = paidItem ? 0 : _db.BuffActivateGoldCost(row);
+            if (goldCost > 0 && player.Gold < goldCost)
+            { Send(ns, PhoneMsg.BuffActivate, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            if (goldCost > 0) player.Gold -= goldCost;
+
+            player.ActiveBuffIds.Add(buffId);
+            while (player.ActiveBuffIds.Count > 8) player.ActiveBuffIds.RemoveAt(0);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.BuffActivate, "{\"ok\":true,\"buffId\":" + buffId + ",\"type\":" + row.Type +
+                ",\"gold\":" + goldCost + ",\"itemId\":" + (paidItem ? itemId : 0) +
+                ",\"name\":\"" + (row.Name ?? "").Replace("\"", "") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleTotemInfoSync(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.TotemInfoPc.Count == 0)
+            { Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "sync");
+            if (string.Equals(action, "buy", StringComparison.OrdinalIgnoreCase))
+            {
+                int totemId = JI(json, "totemId", JI(json, "id", 0));
+                TotemInfo t = _db.GetTotemInfoPc(totemId) ?? _db.ResolveTotem(totemId);
+                if (t == null) { Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":false,\"err\":\"totem\"}"); return; }
+                if (player.TotemId == totemId)
+                {
+                    Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":true,\"action\":\"buy\",\"totemId\":" + totemId + ",\"already\":true}");
+                    return;
+                }
+                string pay = "none";
+                if (t.DiscountMoney > 0 && player.Gold >= t.DiscountMoney)
+                { player.Gold -= t.DiscountMoney; pay = "gold"; }
+                else if (t.ConsumeHonor > 0 && player.Honor >= t.ConsumeHonor)
+                { player.Honor -= t.ConsumeHonor; pay = "honor"; }
+                else if (t.ConsumeExp > 0 && player.Gp >= t.ConsumeExp)
+                { player.Gp -= t.ConsumeExp; pay = "exp"; }
+                else if (t.ConsumeHonor > 0 || t.DiscountMoney > 0 || t.ConsumeExp > 0)
+                { Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":false,\"err\":\"cost\"}"); return; }
+
+                player.TotemId = totemId;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":true,\"action\":\"buy\",\"totemId\":" + totemId +
+                    ",\"pay\":\"" + pay + "\",\"honor\":" + t.ConsumeHonor +
+                    ",\"discountMoney\":" + t.DiscountMoney + ",\"consumeExp\":" + t.ConsumeExp + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int merged = _db.MergeTotemInfoPcIntoTotems();
+            player.TotemInfoSynced = true;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.TotemInfoSync, "{\"ok\":true,\"action\":\"sync\",\"merged\":" + merged +
+                ",\"count\":" + _db.TotemInfoPc.Count + ",\"totemId\":" + player.TotemId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleActiveListClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ActiveList.Count == 0)
+            { Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureActiveListClaimed();
+            int activeId = JI(json, "activeId", JI(json, "id", 0));
+            ActiveListEntry row = activeId > 0 ? _db.GetActiveListEntry(activeId) : null;
+            if (row == null)
+            {
+                DateTime now = DateTime.Now;
+                for (int i = 0; i < _db.ActiveList.Count; i++)
+                {
+                    ActiveListEntry e = _db.ActiveList[i];
+                    if (player.ActiveListClaimed.Contains(e.ActiveId)) continue;
+                    if (!_db.IsActiveListOpen(e, now)) continue;
+                    row = e; break;
+                }
+            }
+            if (row == null) { Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            if (player.ActiveListClaimed.Contains(row.ActiveId))
+            { Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (!_db.IsActiveListOpen(row, DateTime.Now))
+            { Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":false,\"err\":\"closed\"}"); return; }
+
+            if (row.HasKey > 0)
+            {
+                int keyItem = _db.ConfigInt("ActiveListKeyItem", 0);
+                if (keyItem > 0 && !player.Consume(keyItem, 1))
+                { Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":false,\"err\":\"key\"}"); return; }
+            }
+
+            int grantCount = 0;
+            int templateId = 0;
+            if (row.GoodsExchangeTypes > 0)
+            {
+                templateId = row.GoodsExchangeTypes;
+                grantCount = Mathf.Max(1, row.GoodsExchangeNum > 0 ? row.GoodsExchangeNum : 1);
+                player.GrantTemplateReward(_db, templateId, grantCount);
+            }
+            else if (row.LimitValue > 0)
+            {
+                if (row.LimitType == 1 || row.LimitType == 0)
+                {
+                    player.Gold += row.LimitValue;
+                    grantCount = row.LimitValue;
+                }
+                else
+                {
+                    templateId = row.LimitValue;
+                    grantCount = 1;
+                    player.GrantTemplateReward(_db, templateId, grantCount);
+                }
+            }
+            else
+            {
+                int gold = _db.ConfigInt("ActiveListClaimGold", 50);
+                player.Gold += gold;
+                grantCount = gold;
+            }
+
+            player.ActiveListClaimed.Add(row.ActiveId);
+            if (row.IsOnly > 0 && player.ActiveListClaimed.Count > row.IsOnly)
+            {
+                while (player.ActiveListClaimed.Count > Mathf.Max(1, row.IsOnly))
+                    player.ActiveListClaimed.RemoveAt(0);
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActiveListClaim, "{\"ok\":true,\"activeId\":" + row.ActiveId +
+                ",\"title\":\"" + (row.Title ?? "").Replace("\"", "") + "\",\"templateId\":" + templateId +
+                ",\"count\":" + grantCount + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -7360,12 +7620,32 @@ namespace GunMobile.Net
         void HandleTotemBuy(ServerPlayer player, NetworkStream ns, string json)
         {
             int totemId = JI(json, "totemId", 0);
-            if (_db != null && _db.Totems.TryGetValue(totemId, out TotemInfo t))
+            TotemInfo t = _db != null ? _db.ResolveTotem(totemId) : null;
+            if (t != null && player.TotemId != totemId)
             {
-                if (player.Honor >= t.ConsumeHonor)
+                bool paid = false;
+                if (t.DiscountMoney > 0 && player.Gold >= t.DiscountMoney)
                 {
-                    if (player.TotemId != totemId && t.ConsumeHonor > 0)
-                        player.Honor -= t.ConsumeHonor;
+                    player.Gold -= t.DiscountMoney;
+                    paid = true;
+                }
+                else if (t.ConsumeHonor > 0 && player.Honor >= t.ConsumeHonor)
+                {
+                    player.Honor -= t.ConsumeHonor;
+                    paid = true;
+                }
+                else if (t.ConsumeExp > 0 && player.Gp >= t.ConsumeExp)
+                {
+                    player.Gp -= t.ConsumeExp;
+                    paid = true;
+                }
+                else if (t.ConsumeHonor <= 0 && t.DiscountMoney <= 0 && t.ConsumeExp <= 0)
+                {
+                    paid = true;
+                }
+
+                if (paid)
+                {
                     player.TotemId = totemId;
                     player.RecalcStats(_db);
                     SavePlayer(player);
@@ -10321,6 +10601,11 @@ namespace GunMobile.Net
             public List<int> ElfSkillIds = new List<int>();
             public List<int> ButterflyTaskClaimed = new List<int>();
             public int ButterflyTaskDay = -1, ButterflyTaskActive, ButterflyTaskStartDay = -1;
+            public List<int> ChargeSpendClaimed = new List<int>();
+            public int ChargeMoney, SpendMoney;
+            public List<int> ActiveBuffIds = new List<int>();
+            public List<int> ActiveListClaimed = new List<int>();
+            public bool TotemInfoSynced;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -10490,6 +10775,11 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = p.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = p.ButterflyTaskDay, ButterflyTaskActive = p.ButterflyTaskActive,
                 ButterflyTaskStartDay = p.ButterflyTaskStartDay,
+                ChargeSpendClaimed = p.ChargeSpendClaimed ?? new List<int>(),
+                ChargeMoney = p.ChargeMoney, SpendMoney = p.SpendMoney,
+                ActiveBuffIds = p.ActiveBuffIds ?? new List<int>(),
+                ActiveListClaimed = p.ActiveListClaimed ?? new List<int>(),
+                TotemInfoSynced = p.TotemInfoSynced,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -10663,6 +10953,11 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = s.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = s.ButterflyTaskDay, ButterflyTaskActive = s.ButterflyTaskActive,
                 ButterflyTaskStartDay = s.ButterflyTaskStartDay,
+                ChargeSpendClaimed = s.ChargeSpendClaimed ?? new List<int>(),
+                ChargeMoney = s.ChargeMoney, SpendMoney = s.SpendMoney,
+                ActiveBuffIds = s.ActiveBuffIds ?? new List<int>(),
+                ActiveListClaimed = s.ActiveListClaimed ?? new List<int>(),
+                TotemInfoSynced = s.TotemInfoSynced,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

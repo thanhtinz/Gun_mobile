@@ -223,6 +223,18 @@ namespace GunMobile.Client
                 case "butterflytask":
                     ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
                     return;
+                case "chargespend":
+                    ExtraModulesScreens.ChargeSpendScreen(_safe, this);
+                    return;
+                case "buff":
+                    ExtraModulesScreens.BuffActivateScreen(_safe, this);
+                    return;
+                case "toteminfo":
+                    ExtraModulesScreens.TotemInfoSyncScreen(_safe, this);
+                    return;
+                case "activelist":
+                    ExtraModulesScreens.ActiveListScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -804,6 +816,30 @@ namespace GunMobile.Client
                         if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.ChargeSpendClaim:
+                        PhoneNet.LastChargeSpendJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "chargespend" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.BuffActivate:
+                        PhoneNet.LastBuffActivateJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "buff" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.TotemInfoSync:
+                        PhoneNet.LastTotemInfoSyncJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "toteminfo" || _currentModuleId == "totem"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActiveListClaim:
+                        PhoneNet.LastActiveListJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "activelist" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1081,6 +1117,15 @@ namespace GunMobile.Client
             Profile.EnsureButterflyTasks();
             ParseIntListFromServer(json, "butterflyTaskClaimed", Profile.ButterflyTaskClaimed);
             Profile.ButterflyTaskActive = JsonInt(json, "butterflyTaskActive", Profile.ButterflyTaskActive);
+            Profile.EnsureChargeSpendClaimed();
+            ParseIntListFromServer(json, "chargeSpendClaimed", Profile.ChargeSpendClaimed);
+            Profile.ChargeMoney = JsonInt(json, "chargeMoney", Profile.ChargeMoney);
+            Profile.SpendMoney = JsonInt(json, "spendMoney", Profile.SpendMoney);
+            Profile.EnsureActiveBuffs();
+            ParseIntListFromServer(json, "activeBuffIds", Profile.ActiveBuffIds);
+            Profile.EnsureActiveListClaimed();
+            ParseIntListFromServer(json, "activeListClaimed", Profile.ActiveListClaimed);
+            Profile.TotemInfoSynced = JsonInt(json, "totemInfoSynced", Profile.TotemInfoSynced ? 1 : 0) != 0;
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;
