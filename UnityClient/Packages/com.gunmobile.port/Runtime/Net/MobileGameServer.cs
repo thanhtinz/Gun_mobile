@@ -71,6 +71,8 @@ namespace GunMobile.Net
         public int DevilTurnSpins;
         public int SweepDay = -1;
         public int SweepCount;
+        public bool FirstRechargeClaimed;
+        public Dictionary<int, int> FirstRechargeShopBuys = new Dictionary<int, int>();
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -349,6 +351,16 @@ namespace GunMobile.Net
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
+            J(sb, "firstRechargeClaimed", FirstRechargeClaimed ? 1 : 0); sb.Append(",");
+            sb.Append("\"firstRechargeShopBuys\":[");
+            bool firstBuy = true;
+            foreach (KeyValuePair<int, int> kv in FirstRechargeShopBuys)
+            {
+                if (!firstBuy) sb.Append(",");
+                firstBuy = false;
+                sb.Append("{\"templateId\":").Append(kv.Key).Append(",\"count\":").Append(kv.Value).Append("}");
+            }
+            sb.Append("],");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -1364,6 +1376,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SweepLabyrinth:
                     HandleSweepLabyrinth(player, ns);
+                    break;
+
+                case PhoneMsg.FirstRechargeClaim:
+                    HandleFirstRechargeClaim(player, ns);
+                    break;
+
+                case PhoneMsg.FirstRechargeShop:
+                    HandleFirstRechargeShop(player, ns, json);
                     break;
 
                 case PhoneMsg.PveStart:
@@ -2643,6 +2663,118 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.MailSend, "{\"ok\":true,\"to\":\"" + to.Replace("\"", "") + "\"}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
             SendTo(target, PhoneMsg.MailListData, BuildMailListJson(target));
+        }
+
+        void HandleFirstRechargeClaim(ServerPlayer player, NetworkStream ns)
+        {
+            if (player.FirstRechargeClaimed)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false}");
+                return;
+            }
+
+            FirstRechargeConfig cfg = _db.GetFirstRechargeConfig();
+            if (cfg == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            var granted = new StringBuilder("[");
+            bool first = true;
+            for (int i = 0; i < cfg.RewardItemIds.Length; i++)
+            {
+                int itemId = cfg.RewardItemIds[i];
+                if (itemId <= 0)
+                {
+                    continue;
+                }
+
+                int count = i < cfg.RewardCounts.Length ? cfg.RewardCounts[i] : 1;
+                count = Mathf.Max(1, count);
+                player.AddItem(itemId, count);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(itemId).Append(",\"count\":").Append(count).Append("}");
+            }
+
+            if (cfg.ExtraItemId1 > 0)
+            {
+                player.AddItem(cfg.ExtraItemId1, 1);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(cfg.ExtraItemId1).Append(",\"count\":1}");
+            }
+
+            if (cfg.ExtraItemId2 > 0)
+            {
+                player.AddItem(cfg.ExtraItemId2, 1);
+                if (!first) granted.Append(",");
+                first = false;
+                granted.Append("{\"itemId\":").Append(cfg.ExtraItemId2).Append(",\"count\":1}");
+            }
+
+            if (cfg.RankAwardId > 0)
+            {
+                player.AddItem(cfg.RankAwardId, 1);
+                if (!first) granted.Append(",");
+                granted.Append("{\"itemId\":").Append(cfg.RankAwardId).Append(",\"count\":1}");
+            }
+
+            granted.Append("]");
+            player.FirstRechargeClaimed = true;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FirstRechargeClaim, "{\"ok\":true,\"items\":" + granted + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleFirstRechargeShop(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int templateId = JI(json, "templateId", 0);
+            int count = Mathf.Clamp(JI(json, "count", 1), 1, 99);
+            if (templateId <= 0 || _db == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false}");
+                return;
+            }
+
+            FirstPayShopItem offer = _db.GetFirstPayShopItem(templateId);
+            if (offer == null)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"item\"}");
+                return;
+            }
+
+            player.FirstRechargeShopBuys.TryGetValue(templateId, out int bought);
+            if (bought + count > offer.LimitBuyCount)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int cost = offer.NeedGoldBeans * count;
+            if (player.Gift < cost)
+            {
+                Send(ns, PhoneMsg.FirstRechargeShop, "{\"ok\":false,\"err\":\"beans\"}");
+                return;
+            }
+
+            player.Gift -= cost;
+            int giveCount = offer.ItemTempCount * count;
+            player.AddItem(offer.ItemTempId, giveCount);
+            player.FirstRechargeShopBuys[templateId] = bought + count;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FirstRechargeShop,
+                "{\"ok\":true,\"templateId\":" + templateId + ",\"count\":" + count +
+                ",\"itemId\":" + offer.ItemTempId + ",\"itemCount\":" + giveCount +
+                ",\"cost\":" + cost + ",\"bought\":" + (bought + count) + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleSweepLabyrinth(ServerPlayer player, NetworkStream ns)
@@ -4992,6 +5124,8 @@ namespace GunMobile.Net
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
+            public bool FirstRechargeClaimed;
+            public List<FirstRechargeBuySave> FirstRechargeShopBuys = new List<FirstRechargeBuySave>();
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -5003,6 +5137,13 @@ namespace GunMobile.Net
             public List<FightSpiritSlotSave> FightSpirits = new List<FightSpiritSlotSave>();
             public List<MagicStoneSlotSave> MagicStones = new List<MagicStoneSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
+        }
+
+        [Serializable]
+        class FirstRechargeBuySave
+        {
+            public int templateId;
+            public int count;
         }
 
         [Serializable]
@@ -5045,6 +5186,7 @@ namespace GunMobile.Net
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
+                FirstRechargeClaimed = p.FirstRechargeClaimed,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -5062,6 +5204,10 @@ namespace GunMobile.Net
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
+            foreach (KeyValuePair<int, int> kv in p.FirstRechargeShopBuys)
+            {
+                s.FirstRechargeShopBuys.Add(new FirstRechargeBuySave { templateId = kv.Key, count = kv.Value });
+            }
             foreach (ServerMail m in p.Mails)
             {
                 s.Mails.Add(new ServerMailSave
@@ -5092,6 +5238,7 @@ namespace GunMobile.Net
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
+                FirstRechargeClaimed = s.FirstRechargeClaimed,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
@@ -5117,6 +5264,17 @@ namespace GunMobile.Net
 
             p.EnsureFightSpirits();
             p.EnsureMagicStones();
+            if (s.FirstRechargeShopBuys != null)
+            {
+                foreach (FirstRechargeBuySave buy in s.FirstRechargeShopBuys)
+                {
+                    if (buy.templateId > 0 && buy.count > 0)
+                    {
+                        p.FirstRechargeShopBuys[buy.templateId] = buy.count;
+                    }
+                }
+            }
+
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {

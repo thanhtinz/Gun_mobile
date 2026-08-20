@@ -291,6 +291,17 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.SweepLabyrinth, "{}");
         }
 
+        public static void ClaimFirstRecharge()
+        {
+            Road?.Send(PhoneMsg.FirstRechargeClaim, "{}");
+        }
+
+        public static void BuyFirstRechargeShop(int templateId, int count = 1)
+        {
+            Road?.Send(PhoneMsg.FirstRechargeShop,
+                "{\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

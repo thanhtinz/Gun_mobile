@@ -801,8 +801,18 @@ namespace GunMobile.Client
                 {
                     string local = f;
                     SysUi.Row(body, "f" + f, "好友  " + f, () => PhoneNet.RemoveFriend(local));
+                    AddMailRows(body, local);
                 }
             }
+        }
+
+        static void AddMailRows(Transform body, string nick)
+        {
+            string local = nick;
+            SysUi.Row(body, "mail100_" + nick, nick + "  寄信 100 金",
+                () => PhoneNet.SendMail(local, 100, "好友邮件", "来自好友的小礼物"));
+            SysUi.Row(body, "mail500_" + nick, nick + "  寄信 500 金",
+                () => PhoneNet.SendMail(local, 500, "好友邮件", "来自好友的小礼物"));
         }
 
         static void RenderFriends(Transform body, GameApp app, string json)
@@ -838,16 +848,64 @@ namespace GunMobile.Client
                 bool online = entry.IndexOf("\"online\":true", StringComparison.Ordinal) >= 0;
                 string local = nick;
                 SysUi.Row(body, "fr" + nick, nick + (online ? "  在线" : "  离线"), () => PhoneNet.RemoveFriend(local));
+                AddMailRows(body, nick);
             }
         }
     }
 
     public static class MailInboxScreen
     {
+        static string FirstFriendNick(GameApp app)
+        {
+            string json = PhoneNet.LastFriendListJson;
+            if (!string.IsNullOrEmpty(json))
+            {
+                int idx = json.IndexOf("[", StringComparison.Ordinal);
+                int end = json.LastIndexOf("]", StringComparison.Ordinal);
+                if (idx >= 0 && end > idx)
+                {
+                    string arr = json.Substring(idx + 1, end - idx - 1);
+                    int pos = 0;
+                    while (pos < arr.Length)
+                    {
+                        int ob = arr.IndexOf('{', pos);
+                        if (ob < 0) break;
+                        int cb = arr.IndexOf('}', ob);
+                        if (cb < 0) break;
+                        string entry = arr.Substring(ob, cb - ob + 1);
+                        pos = cb + 1;
+                        string nick = GameApp.JsonStr(entry, "nick", null);
+                        if (!string.IsNullOrEmpty(nick))
+                        {
+                            return nick;
+                        }
+                    }
+                }
+            }
+
+            app.Profile.EnsureStarterBag();
+            if (app.Profile.Friends != null && app.Profile.Friends.Count > 0)
+            {
+                return app.Profile.Friends[0];
+            }
+
+            return "训练教官";
+        }
+
         public static void Show(RectTransform safe, GameApp app)
         {
             PhoneNet.RequestMailList();
             Transform body = SysUi.Begin(safe, app, "邮件");
+            app.Profile.EnsureStarterBag();
+            if (app.Profile.Friends != null && app.Profile.Friends.Count > 0)
+            {
+                string target = FirstFriendNick(app);
+                SysUi.Row(body, "send100", "发送邮件给 " + target + " (100 金)",
+                    () => PhoneNet.SendMail(target, 100, "玩家邮件", "一点心意"));
+                SysUi.Row(body, "send500", "发送邮件给 " + target + " (500 金)",
+                    () => PhoneNet.SendMail(target, 500, "玩家邮件", "一点心意"));
+            }
+
             string json = PhoneNet.LastMailListJson;
             if (string.IsNullOrEmpty(json))
             {

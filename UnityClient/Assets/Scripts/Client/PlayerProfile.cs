@@ -64,6 +64,7 @@ namespace GunMobile.Client
         public int RedPacketClaims;
         public int DevilTurnSpins;
         public int SweepCount;
+        public bool FirstRechargeClaimed;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;
@@ -613,7 +614,7 @@ namespace GunMobile.Client
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),
-            new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
+            new ModuleDef("firstrecharge", "首充", "Request/ts_firstpayshoptemp.xml", false, "firstrecharge.ui"),
             new ModuleDef("dreamland", "梦境", null, false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", null, false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),

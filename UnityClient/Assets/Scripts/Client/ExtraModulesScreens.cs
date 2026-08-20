@@ -404,5 +404,55 @@ namespace GunMobile.Client
             SysUi.Row(body, "sweep", "扫荡本层 (跳过战斗)", PhoneNet.SweepLabyrinth);
             SysUi.Row(body, "fight", "手动挑战", () => LabyrinthScreen.Show(safe, app));
         }
+
+        public static void FirstRechargeScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("firstrecharge", "首充",
+                    "Request/ts_firstpayshoptemp.xml", false, "firstrecharge.ui"),
+                "firstrecharge.ui");
+            FirstRechargeConfig cfg = app.Database != null ? app.Database.GetFirstRechargeConfig() : null;
+            ActivityConfigEntry activity = null;
+            if (app.Database != null)
+            {
+                app.Database.ActivityConfigs.TryGetValue(8, out activity);
+            }
+
+            string activityName = activity != null ? activity.Name : "首充";
+            SysUi.Note(body, "TS_ActivityConfig Num=8  ·  " + activityName +
+                "  ·  已领取: " + (app.Profile.FirstRechargeClaimed ? "是" : "否"));
+            if (cfg != null && cfg.RewardItemIds.Length > 0)
+            {
+                for (int i = 0; i < cfg.RewardItemIds.Length; i++)
+                {
+                    int itemId = cfg.RewardItemIds[i];
+                    int count = i < cfg.RewardCounts.Length ? cfg.RewardCounts[i] : 1;
+                    SysUi.Note(body, "奖励  " + SysUi.ItemName(app, itemId) + " x" + count);
+                }
+            }
+
+            if (!app.Profile.FirstRechargeClaimed)
+            {
+                SysUi.Row(body, "claim", "领取首充奖励", PhoneNet.ClaimFirstRecharge);
+            }
+
+            SysUi.Note(body, "首充商城 (ts_firstpayshoptemp.xml)  ·  金豆 " + app.Profile.Gift);
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (FirstPayShopItem item in app.Database.FirstPayShop)
+                {
+                    string label = SysUi.ItemName(app, item.ItemTempId) + " x" + item.ItemTempCount +
+                        "  ·  " + item.NeedGoldBeans + " 豆  ·  限购 " + item.LimitBuyCount;
+                    int templateId = item.TemplateId;
+                    SysUi.Row(body, "shop" + templateId, label, () => PhoneNet.BuyFirstRechargeShop(templateId));
+                    shown++;
+                    if (shown >= 12)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
     }
 }

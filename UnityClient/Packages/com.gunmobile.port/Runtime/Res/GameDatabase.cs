@@ -260,6 +260,38 @@ namespace GunMobile.Res
         public int Weight;
     }
 
+    public sealed class ActivityConfigEntry
+    {
+        public int Num;
+        public string Name = "";
+        public string Params1 = "";
+        public string Params2 = "";
+        public string Params3 = "";
+        public string Params4 = "";
+        public string Params5 = "";
+        public string RankAreaAward = "";
+    }
+
+    public sealed class FirstPayShopItem
+    {
+        public int Id;
+        public int TemplateId;
+        public int ItemTempId;
+        public int ItemTempCount = 1;
+        public int LimitBuyCount = 1;
+        public int NeedGoldBeans;
+        public int ShopType;
+    }
+
+    public sealed class FirstRechargeConfig
+    {
+        public int[] RewardItemIds = Array.Empty<int>();
+        public int[] RewardCounts = Array.Empty<int>();
+        public int ExtraItemId1;
+        public int ExtraItemId2;
+        public int RankAwardId;
+    }
+
     public sealed class PveMission
     {
         public int Id;
@@ -424,6 +456,8 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
+        public Dictionary<int, ActivityConfigEntry> ActivityConfigs { get; } = new Dictionary<int, ActivityConfigEntry>();
+        public List<FirstPayShopItem> FirstPayShop { get; } = new List<FirstPayShopItem>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -475,6 +509,9 @@ namespace GunMobile.Res
             db.LoadCampWar(loader);
             db.LoadNecklace(loader);
             db.LoadDevilTreas(loader);
+            db.LoadActivityConfig(loader);
+            db.LoadFirstPayShop(loader);
+            db.LoadFirstCopy(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -879,6 +916,36 @@ namespace GunMobile.Res
             }
 
             return DevilTreasItems[0];
+        }
+
+        public FirstRechargeConfig GetFirstRechargeConfig()
+        {
+            if (!ActivityConfigs.TryGetValue(8, out ActivityConfigEntry entry) || entry == null)
+            {
+                return null;
+            }
+
+            return new FirstRechargeConfig
+            {
+                RewardItemIds = ParseCsvInts(entry.Params2),
+                RewardCounts = ParseCsvInts(entry.Params3),
+                ExtraItemId1 = FirstInt(entry.Params4),
+                ExtraItemId2 = FirstInt(entry.Params5),
+                RankAwardId = FirstInt(entry.RankAreaAward)
+            };
+        }
+
+        public FirstPayShopItem GetFirstPayShopItem(int templateId)
+        {
+            for (int i = 0; i < FirstPayShop.Count; i++)
+            {
+                if (FirstPayShop[i].TemplateId == templateId)
+                {
+                    return FirstPayShop[i];
+                }
+            }
+
+            return null;
         }
 
         public int LevelFromGp(int gp)
@@ -2451,6 +2518,79 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadActivityConfig(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_ActivityConfig.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int num = Int(row, "Num");
+                ActivityConfigs[num] = new ActivityConfigEntry
+                {
+                    Num = num,
+                    Name = Str(row, "Name"),
+                    Params1 = Str(row, "Params1"),
+                    Params2 = Str(row, "Params2"),
+                    Params3 = Str(row, "Params3"),
+                    Params4 = Str(row, "Params4"),
+                    Params5 = Str(row, "Params5"),
+                    RankAreaAward = Str(row, "RankAreaAward")
+                };
+            }
+        }
+
+        void LoadFirstPayShop(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ts_firstpayshoptemp.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                FirstPayShop.Add(new FirstPayShopItem
+                {
+                    Id = Int(row, "ID"),
+                    TemplateId = Int(row, "TemplateId"),
+                    ItemTempId = Int(row, "ItemTempId"),
+                    ItemTempCount = Mathf.Max(1, Int(row, "ItemTempCount")),
+                    LimitBuyCount = Mathf.Max(1, Int(row, "LimitBuyCount")),
+                    NeedGoldBeans = Int(row, "NeedGoldBeans"),
+                    ShopType = Int(row, "shopType")
+                });
+            }
+        }
+
+        void LoadFirstCopy(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_FirstCopy.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int copyId = Int(row, "CopyID");
+                if (copyId <= 0)
+                {
+                    copyId = Int(row, "ID");
+                }
+
+                if (copyId <= 0)
+                {
+                    continue;
+                }
+
+                if (!ActivityConfigs.ContainsKey(8))
+                {
+                    ActivityConfigs[8] = new ActivityConfigEntry { Num = 8, Name = "首充" };
+                }
+            }
+        }
+
         void LoadElves(ResLoader loader)
         {
             if (!TryTable(loader, "Request/TS_ElfTemplate.xml", out XmlResultTable table))
@@ -2807,6 +2947,26 @@ namespace GunMobile.Res
             string head = comma < 0 ? csv : csv.Substring(0, comma);
             int.TryParse(head.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n);
             return n;
+        }
+
+        static int[] ParseCsvInts(string csv)
+        {
+            if (string.IsNullOrEmpty(csv))
+            {
+                return Array.Empty<int>();
+            }
+
+            string[] parts = csv.Split(',');
+            var ids = new List<int>(parts.Length);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                if (int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n))
+                {
+                    ids.Add(n);
+                }
+            }
+
+            return ids.ToArray();
         }
 
         static bool TryTable(ResLoader loader, string path, out XmlResultTable table)

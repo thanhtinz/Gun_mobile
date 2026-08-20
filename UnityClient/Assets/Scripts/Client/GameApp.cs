@@ -294,6 +294,9 @@ namespace GunMobile.Client
                 case "sweep":
                     ExtraModulesScreens.SweepScreen(_safe, this);
                     return;
+                case "firstrecharge":
+                    ExtraModulesScreens.FirstRechargeScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -462,6 +465,15 @@ namespace GunMobile.Client
                     case PhoneMsg.RoomState:
                         PhoneNet.LastRoomStateJson = msg.Json;
                         break;
+                    case PhoneMsg.FirstRechargeClaim:
+                    case PhoneMsg.FirstRechargeShop:
+                    case PhoneMsg.MailSend:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                 }
             }
         }
@@ -533,6 +545,7 @@ namespace GunMobile.Client
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
+            Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);
