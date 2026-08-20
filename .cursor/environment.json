@@ -1,0 +1,10 @@
+{
+  "name": "Gun Mobile Unity",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "user": "ubuntu",
+  "install": "bash tools/cloud-agent-install.sh",
+  "start": "bash tools/cloud-agent-start.sh"
+}
