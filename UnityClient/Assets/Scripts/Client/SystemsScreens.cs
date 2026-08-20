@@ -347,8 +347,25 @@ namespace GunMobile.Client
             int createCost = app.Database != null ? app.Database.ConsortiaCreateCost() : 4000;
             SysUi.Note(body, "创建 " + createCost + " 金 · 加入已有公会 · 捐献 " + donateGold + " 金 → 荣誉");
 
+            int guildLv = app.Profile.GuildLevel;
+            int maxLv = app.Database != null ? app.Database.ConsortiaMaxLevel() : 10;
+            if (maxLv > 10) maxLv = 10;
+            int nextCost = app.Database != null ? app.Database.ConsortiaNeedGold(guildLv + 1) : 0;
+            int bossLimit = app.Database != null ? app.Database.ConfigInt("ConsortiaBossDayLimit", 3) : 3;
+            int bossNpc = app.Database != null ? app.Database.ConsortiaBossNpcId(guildLv, app.Profile.Level) : 0;
+            SysUi.Note(body, "consortialevellist.xml  等级 Lv" + guildLv + "/" + maxLv +
+                       (nextCost > 0 ? ("  升级 " + nextCost + " 金") : "  已满级") +
+                       "  ·  consortiabossconfigload.xml  今日 " + app.Profile.ConsortiaBossHits + "/" + bossLimit);
+
             if (!string.IsNullOrEmpty(app.Profile.ConsortiaName))
             {
+                if (nextCost > 0)
+                    SysUi.Row(body, "gup", "公会升级  Lv" + (guildLv + 1) + "  " + nextCost + " 金", PhoneNet.GuildUpgrade);
+                SysUi.Row(body, "gboss", "公会BOSS" + (bossNpc > 0 ? ("  NPC " + bossNpc) : ""), () =>
+                {
+                    PhoneNet.ConsortiaBossStart();
+                    app.ShowRoom();
+                });
                 SysUi.Row(body, "donate", "捐献 " + donateGold + " 金币", PhoneNet.DonateGuild);
                 SysUi.Row(body, "leave", "退出公会", PhoneNet.LeaveGuild);
                 ShowMembers(body, PhoneNet.LastGuildJson);

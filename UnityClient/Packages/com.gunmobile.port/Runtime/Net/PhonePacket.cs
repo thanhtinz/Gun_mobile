@@ -228,6 +228,8 @@ namespace GunMobile.Net
         public const ushort AuditoriumAction = 181;
         public const ushort JigsawAction = 182;
         public const ushort BibleAction = 183;
+        public const ushort GuildUpgrade = 185;
+        public const ushort ConsortiaBossStart = 186;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

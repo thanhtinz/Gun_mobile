@@ -45,6 +45,8 @@ namespace GunMobile.Net
         public int TitleId;
         public int TotemId;
         public int MountGrade;
+        public int MountTalismanId;
+        public int ManorGrade = 1;
         public int VipLevel;
         public int Honor;
         public int Texp;
@@ -393,6 +395,8 @@ namespace GunMobile.Net
                 hp += mt.AddBlood; atk += mt.AddDamage; baseDmg += mt.AddDamage; baseGuard += mt.AddGuard;
             }
 
+            db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
                 db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luck, ref hp);
@@ -504,6 +508,8 @@ namespace GunMobile.Net
             J(sb, "titleId", TitleId); sb.Append(",");
             J(sb, "totemId", TotemId); sb.Append(",");
             J(sb, "mountGrade", MountGrade); sb.Append(",");
+            J(sb, "mountTalismanId", MountTalismanId); sb.Append(",");
+            J(sb, "manorGrade", ManorGrade); sb.Append(",");
             J(sb, "vipLevel", VipLevel); sb.Append(",");
             J(sb, "honor", Honor); sb.Append(",");
             J(sb, "texp", Texp); sb.Append(",");
@@ -1804,6 +1810,18 @@ namespace GunMobile.Net
                     HandleElfIntimacyAction(player, ns, json);
                     break;
 
+                case PhoneMsg.PetStarUpgrade:
+                    HandlePetStarUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.MountTalismanEquip:
+                    HandleMountTalismanEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.ManorUpgrade:
+                    HandleManorUpgrade(player, ns);
+                    break;
+
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
                 case PhoneMsg.AuditoriumAction: HandleAuditoriumAction(player, ns, json); break;
                 case PhoneMsg.BoguAdventureAction: HandleBoguAdventureAction(player, ns, json); break;
@@ -2142,6 +2160,11 @@ namespace GunMobile.Net
 
             player.AddItem(recipe.FoodId, 1);
             player.FarmHarvests++;
+            int harvestGold = _db != null ? _db.ManorHarvestGold(player.ManorGrade) : 0;
+            if (harvestGold > 0)
+            {
+                player.Gold += harvestGold;
+            }
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
@@ -5103,6 +5126,121 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.StatResult, player.ToJson());
         }
 
+        void HandlePetStarUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false}");
+                return;
+            }
+
+            PetStarUpgrade row = _db.GetPetStarUpgrade(player.PetId);
+            if (row == null || row.NewId <= 0)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+
+            int cost = Mathf.Max(0, row.Exp);
+            bool payGold = cost > 0 && player.Gold >= cost;
+            bool payGp = cost > 0 && !payGold && player.Gp >= cost;
+            if (cost > 0 && !payGold && !payGp)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false,\"err\":\"cost\"}");
+                return;
+            }
+
+            if (payGold)
+            {
+                player.Gold -= cost;
+            }
+            else if (payGp)
+            {
+                player.Gp -= cost;
+            }
+
+            player.PetId = row.NewId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":true,\"petId\":" + player.PetId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMountTalismanEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false}");
+                return;
+            }
+
+            int talismanId = JI(json, "talismanId", 0);
+            MountTalismanInfo row = _db.GetMountTalisman(talismanId);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+
+            if (player.MountTalismanId != talismanId && row.Consume > 0 && player.Gold < row.Consume)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (player.MountTalismanId != talismanId && row.Consume > 0)
+            {
+                player.Gold -= row.Consume;
+            }
+
+            player.MountTalismanId = talismanId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":true,\"talismanId\":" + talismanId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleManorUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false}");
+                return;
+            }
+
+            int current = player.ManorGrade > 0 ? player.ManorGrade : 1;
+            ManorPlantInfo next = _db.GetManorPlant(1, current + 1);
+            if (next == null)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+
+            if (next.NeedGrade1 > 0 && player.Level < next.NeedGrade1)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            int cost = _db.ManorUpgradeCost(current);
+            if (cost > 0 && player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (cost > 0)
+            {
+                player.Gold -= cost;
+            }
+
+            player.ManorGrade = current + 1;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":true,\"grade\":" + player.ManorGrade + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSignIn(ServerPlayer player, NetworkStream ns)
         {
             int today = DateTime.Now.DayOfYear;
@@ -7069,7 +7207,7 @@ namespace GunMobile.Net
             public int Win, Lose;
             public int WeaponId = 7001;
             public int EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon = 7001;
-            public int PetId, CardId, TitleId, TotemId, MountGrade, VipLevel, Honor, Texp;
+            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, VipLevel, Honor, Texp;
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
@@ -7174,7 +7312,8 @@ namespace GunMobile.Net
                 EquipHead = p.EquipHead, EquipHair = p.EquipHair, EquipFace = p.EquipFace,
                 EquipCloth = p.EquipCloth, EquipGlass = p.EquipGlass, EquipWeapon = p.EquipWeapon,
                 PetId = p.PetId, CardId = p.CardId, TitleId = p.TitleId, TotemId = p.TotemId,
-                MountGrade = p.MountGrade, VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
+                MountGrade = p.MountGrade, MountTalismanId = p.MountTalismanId, ManorGrade = p.ManorGrade,
+                VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
@@ -7284,7 +7423,9 @@ namespace GunMobile.Net
                 EquipHead = s.EquipHead, EquipHair = s.EquipHair, EquipFace = s.EquipFace,
                 EquipCloth = s.EquipCloth, EquipGlass = s.EquipGlass, EquipWeapon = s.EquipWeapon,
                 PetId = s.PetId, CardId = s.CardId, TitleId = s.TitleId, TotemId = s.TotemId,
-                MountGrade = s.MountGrade, VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
+                MountGrade = s.MountGrade, MountTalismanId = s.MountTalismanId,
+                ManorGrade = s.ManorGrade > 0 ? s.ManorGrade : 1,
+                VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName,
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
