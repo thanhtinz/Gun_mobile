@@ -549,5 +549,63 @@ namespace GunMobile.Client
                 SysUi.Note(body, "warriorfamranklist.xml 暂无排行数据");
             }
         }
+        public static void MagicWardrobeScreen(RectTransform safe, GameApp app)
+        {
+            app.Profile.EnsureWardrobeProperties();
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
+                "magicwardrobe.ui");
+            SysUi.Note(body, "magicclothlist.xml + clothpropertytemplateinfo.xml  ·  已激活 " + app.Profile.WardrobeProperties.Count);
+            if (app.Database == null) return;
+            int shown = 0;
+            foreach (MagicClothInfo cloth in app.Database.MagicClothList)
+            {
+                if (cloth.HasShow == 0 && cloth.Id != app.Profile.WardrobeClothId) continue;
+                bool on = app.Profile.WardrobeClothId == cloth.Id;
+                int id = cloth.Id;
+                SysUi.Row(body, "mw" + cloth.Id, (on ? "[穿戴] " : "") + cloth.Name, () => PhoneNet.WardrobeEquip(id));
+                if (++shown >= 20) break;
+            }
+            SysUi.Note(body, "--- 衣橱属性 ---");
+            shown = 0;
+            foreach (ClothPropertyInfo prop in app.Database.ClothProperties.Values)
+            {
+                if (prop.Type != 1 && prop.Type != 2) continue;
+                bool owned = app.Profile.HasWardrobeProperty(prop.Id);
+                int pid = prop.Id;
+                if (!owned && prop.Cost > 0)
+                    SysUi.Row(body, "wp" + prop.Id, "激活 " + prop.Name + "  " + prop.Cost + "金", () => PhoneNet.WardrobeUpgrade(pid));
+                else
+                    SysUi.Note(body, (owned ? "[已激活] " : "") + prop.Name + " ATK+" + prop.Attack + " HP+" + prop.Blood);
+                if (++shown >= 16) break;
+            }
+        }
+
+        public static void HonorHallScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
+                "honor.ui");
+            SysUi.Note(body, "荣誉经验 " + app.Profile.HonorSystemExp + "  Lv" + app.Profile.HonorSystemLevel);
+            if (app.Database == null) return;
+            foreach (TotemHonorEntry entry in app.Database.TotemHonorEntries.Values)
+            {
+                int id = entry.Id;
+                SysUi.Row(body, "hd" + id, "#" + id + "  " + entry.NeedMoney + "金 → +" + entry.AddHonor,
+                    () => PhoneNet.HonorSystemAction("donate", id));
+            }
+            SysUi.Row(body, "like", "点赞", () => PhoneNet.HonorSystemAction("like"));
+            SysUi.Row(body, "fight", "战斗", () => PhoneNet.HonorSystemAction("fight"));
+            for (int lv = 1; lv <= app.Profile.HonorSystemLevel && lv <= 20; lv++)
+            {
+                HonorSystemLevelInfo row = app.Database.GetHonorSystemLevel(lv);
+                if (row == null || row.LevelGift <= 0) continue;
+                bool claimed = app.Profile.HonorSystemClaimed != null && app.Profile.HonorSystemClaimed.Contains(lv);
+                int claimLv = lv;
+                if (!claimed)
+                    SysUi.Row(body, "hc" + lv, "领取 Lv" + lv + "  #" + row.LevelGift, () => PhoneNet.HonorSystemClaim(claimLv));
+            }
+        }
+
     }
 }

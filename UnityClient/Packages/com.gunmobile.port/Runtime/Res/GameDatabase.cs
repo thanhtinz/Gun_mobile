@@ -260,6 +260,72 @@ namespace GunMobile.Res
         public int Weight;
     }
 
+    public sealed class MagicClothInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int HasShow;
+        public int Type;
+        public int HeadId;
+        public int HairId;
+        public int EffId;
+        public int ClothId;
+        public int GlassId;
+        public int FaceId;
+        public int WingId;
+        public int SuitsId;
+        public int Sex;
+    }
+
+    public sealed class ClothGroupPart
+    {
+        public int GroupId;
+        public int TemplateId;
+        public int Sex;
+        public int Description;
+        public int Cost;
+        public int Type;
+        public int OtherTemplateId;
+    }
+
+    public sealed class ClothPropertyInfo
+    {
+        public int Id;
+        public int Sex;
+        public string Name = "";
+        public int Attack;
+        public int Defend;
+        public int Agility;
+        public int Luck;
+        public int Blood;
+        public int Damage;
+        public int Guard;
+        public int Cost;
+        public int Type;
+    }
+
+    public sealed class HonorSystemLevelInfo
+    {
+        public int Level;
+        public string Name = "";
+        public int Exp;
+        public int Blood;
+        public int StrengthRate;
+        public int AdvanceRate;
+        public int GoldRate;
+        public int SpiritRate;
+        public int FusionRate;
+        public int LevelGift;
+    }
+
+    public sealed class TotemHonorEntry
+    {
+        public int Id;
+        public int Type;
+        public int NeedMoney;
+        public int AddHonor;
+    }
+
     public sealed class PveMission
     {
         public int Id;
@@ -386,7 +452,6 @@ namespace GunMobile.Res
         public int Value;
     }
 
-
     public sealed class StoryCopyChapter
     {
         public int Chapter;
@@ -497,6 +562,12 @@ namespace GunMobile.Res
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
+        public Dictionary<int, MagicClothInfo> MagicCloths { get; } = new Dictionary<int, MagicClothInfo>();
+        public List<MagicClothInfo> MagicClothList { get; } = new List<MagicClothInfo>();
+        readonly Dictionary<int, List<ClothGroupPart>> _clothGroupParts = new Dictionary<int, List<ClothGroupPart>>();
+        public Dictionary<int, ClothPropertyInfo> ClothProperties { get; } = new Dictionary<int, ClothPropertyInfo>();
+        public Dictionary<int, HonorSystemLevelInfo> HonorSystemLevels { get; } = new Dictionary<int, HonorSystemLevelInfo>();
+        public Dictionary<int, TotemHonorEntry> TotemHonorEntries { get; } = new Dictionary<int, TotemHonorEntry>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
@@ -550,6 +621,11 @@ namespace GunMobile.Res
             db.LoadWarriorFam(loader);
             db.LoadCampWar(loader);
             db.LoadNecklace(loader);
+            db.LoadMagicCloths(loader);
+            db.LoadClothGroups(loader);
+            db.LoadClothProperties(loader);
+            db.LoadHonorSystem(loader);
+            db.LoadTotemHonor(loader);
             db.LoadDevilTreas(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
@@ -794,18 +870,13 @@ namespace GunMobile.Res
             }
         }
 
-
         public StoryCopySection GetStoryCopySection(int chapter, int section)
         {
             for (int i = 0; i < StoryCopySections.Count; i++)
             {
                 StoryCopySection row = StoryCopySections[i];
-                if (row.Chapter == chapter && row.Section == section)
-                {
-                    return row;
-                }
+                if (row.Chapter == chapter && row.Section == section) return row;
             }
-
             return null;
         }
 
@@ -813,12 +884,8 @@ namespace GunMobile.Res
         {
             for (int i = 0; i < StoryCopyChapters.Count; i++)
             {
-                if (StoryCopyChapters[i].Chapter == chapter)
-                {
-                    return StoryCopyChapters[i];
-                }
+                if (StoryCopyChapters[i].Chapter == chapter) return StoryCopyChapters[i];
             }
-
             return null;
         }
 
@@ -827,119 +894,65 @@ namespace GunMobile.Res
             for (int i = 0; i < WarriorFamFights.Count; i++)
             {
                 WarriorFamFightConfig row = WarriorFamFights[i];
-                if (row.HardType == hardType && row.Level == level)
-                {
-                    return row;
-                }
+                if (row.HardType == hardType && row.Level == level) return row;
             }
-
             return null;
         }
 
         public List<(int templateId, int count)> ParseRewardPairs(string raw)
         {
             var list = new List<(int templateId, int count)>();
-            if (string.IsNullOrWhiteSpace(raw))
-            {
-                return list;
-            }
-
+            if (string.IsNullOrWhiteSpace(raw)) return list;
             if (!raw.Contains(",") && raw.Contains("|"))
             {
-                string[] pipeParts = raw.Split('|');
-                if (pipeParts.Length >= 2 &&
-                    int.TryParse(pipeParts[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int templateId) &&
-                    int.TryParse(pipeParts[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int count))
-                {
-                    list.Add((templateId, count));
-                }
-
+                string[] p = raw.Split('|');
+                if (p.Length >= 2 && int.TryParse(p[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int t) &&
+                    int.TryParse(p[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int c))
+                    list.Add((t, c));
                 return list;
             }
-
-            string[] segments = raw.Split('|');
-            for (int i = 0; i < segments.Length; i++)
+            foreach (string seg in raw.Split('|'))
             {
-                string[] parts = segments[i].Split(',');
-                if (parts.Length < 2)
-                {
-                    continue;
-                }
-
-                if (int.TryParse(parts[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int t) &&
-                    int.TryParse(parts[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int c))
-                {
+                string[] p = seg.Split(',');
+                if (p.Length >= 2 && int.TryParse(p[0].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int t) &&
+                    int.TryParse(p[1].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int c))
                     list.Add((t, c));
-                }
             }
-
             return list;
         }
 
         public void GrantRewardPairs(ServerPlayer player, string raw)
         {
-            if (player == null || string.IsNullOrWhiteSpace(raw))
-            {
-                return;
-            }
-
-            List<(int templateId, int count)> pairs = ParseRewardPairs(raw);
-            for (int i = 0; i < pairs.Count; i++)
-            {
-                (int templateId, int count) pair = pairs[i];
+            if (player == null || string.IsNullOrWhiteSpace(raw)) return;
+            foreach (var pair in ParseRewardPairs(raw))
                 player.GrantTemplateReward(this, pair.templateId, pair.count);
-            }
         }
 
         public int DreamlandNpcId(StoryCopySection section, int playerLevel)
         {
-            if (section == null)
-            {
-                return 44401;
-            }
-
-            if (Npcs.ContainsKey(section.MissionId))
-            {
-                return section.MissionId;
-            }
-
+            if (section == null) return 44401;
+            if (Npcs.ContainsKey(section.MissionId)) return section.MissionId;
             NpcInfo npc = PickNpc(section.MissionId, playerLevel, 500000);
             return npc != null ? npc.Id : 44401;
         }
 
-        public int DreamlandMapId(StoryCopySection section)
-        {
-            return section != null && section.MapId > 0 ? section.MapId : 71003;
-        }
+        public int DreamlandMapId(StoryCopySection section) =>
+            section != null && section.MapId > 0 ? section.MapId : 71003;
 
-        public int DreamlandEntryFee(StoryCopySection section)
-        {
-            return section != null ? section.PlayLimit * 100 : 200;
-        }
+        public int DreamlandEntryFee(StoryCopySection section) =>
+            section != null ? section.PlayLimit * 100 : 200;
 
         public int DreamlandRewardGold(StoryCopySection section, int npcId)
         {
-            if (section == null)
-            {
-                return 0;
-            }
-
+            if (section == null) return 0;
             int gold = ComputePveWinGold(npcId, 0, false);
             return gold > 0 ? gold : section.PlayLimit * 50;
         }
 
         public int WarriorFamNpcId(WarriorFamFightConfig cfg)
         {
-            if (cfg == null)
-            {
-                return 40001;
-            }
-
-            if (Npcs.ContainsKey(cfg.MissionId))
-            {
-                return cfg.MissionId;
-            }
-
+            if (cfg == null) return 40001;
+            if (Npcs.ContainsKey(cfg.MissionId)) return cfg.MissionId;
             NpcInfo npc = PickNpc(cfg.MissionId, 40 + cfg.Level, 999999999);
             return npc != null ? npc.Id : 40001;
         }
@@ -947,36 +960,18 @@ namespace GunMobile.Res
         public int WarriorFamEntryFee()
         {
             int perFloor = ConfigInt("WarriorFamRaidPricePerFloor", 0);
-            if (perFloor > 0)
-            {
-                return perFloor;
-            }
-
-            return ConfigInt("WarriorFamRaidPriceSmall", 30000) / 100;
+            return perFloor > 0 ? perFloor : ConfigInt("WarriorFamRaidPriceSmall", 30000) / 100;
         }
 
         public int WarriorFamRewardGold(WarriorFamFightConfig cfg)
         {
-            if (cfg == null)
-            {
-                return 0;
-            }
-
-            List<(int templateId, int count)> pairs = ParseRewardPairs(cfg.Rewards);
-            for (int i = 0; i < pairs.Count; i++)
-            {
-                (int templateId, int count) pair = pairs[i];
-                if (pair.templateId == 11107 || IsGoldTemplate(pair.templateId))
-                {
-                    return pair.count;
-                }
-            }
-
+            if (cfg == null) return 0;
+            foreach (var pair in ParseRewardPairs(cfg.Rewards))
+                if (pair.templateId == 11107 || IsGoldTemplate(pair.templateId)) return pair.count;
             return 0;
         }
 
         public int ConsortiaCreateCost()
-
         {
             return ConfigInt("MustFusionGold", 400) * 10;
         }
@@ -1111,6 +1106,103 @@ namespace GunMobile.Res
         {
             hp += level * 120;
             atk += level * 15;
+        }
+
+        public MagicClothInfo GetMagicCloth(int clothId)
+        {
+            MagicCloths.TryGetValue(clothId, out MagicClothInfo row);
+            return row;
+        }
+
+        public ClothPropertyInfo GetClothProperty(int propertyId)
+        {
+            ClothProperties.TryGetValue(propertyId, out ClothPropertyInfo row);
+            return row;
+        }
+
+        public bool MagicClothMatchesSex(int playerSex, int clothSex)
+        {
+            int normalized = playerSex == 1 ? 1 : 0;
+            return clothSex == normalized || clothSex == 3 || clothSex == 4;
+        }
+
+        public void ApplyMagicClothOutfit(MagicClothInfo cloth, ref int equipHead, ref int equipHair, ref int equipFace,
+            ref int equipCloth, ref int equipGlass, ref int equipWeapon)
+        {
+            if (cloth == null) return;
+            if (cloth.HeadId > 0) equipHead = cloth.HeadId;
+            if (cloth.HairId > 0) equipHair = cloth.HairId;
+            if (cloth.FaceId > 0) equipFace = cloth.FaceId;
+            if (cloth.ClothId > 0) equipCloth = cloth.ClothId;
+            if (cloth.GlassId > 0) equipGlass = cloth.GlassId;
+        }
+
+        public void ApplyWardrobeBonus(IReadOnlyList<int> ownedPropertyIds, ref int atk, ref int def, ref int agi,
+            ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (ownedPropertyIds == null) return;
+            for (int i = 0; i < ownedPropertyIds.Count; i++)
+            {
+                if (!ClothProperties.TryGetValue(ownedPropertyIds[i], out ClothPropertyInfo row) || row == null) continue;
+                atk += row.Attack; def += row.Defend; agi += row.Agility; luck += row.Luck;
+                hp += row.Blood; baseDmg += row.Damage; baseGuard += row.Guard;
+            }
+        }
+
+        public HonorSystemLevelInfo GetHonorSystemLevel(int level)
+        {
+            HonorSystemLevels.TryGetValue(level, out HonorSystemLevelInfo row);
+            return row;
+        }
+
+        public int HonorSystemLevelFromExp(int exp)
+        {
+            int best = 0;
+            foreach (HonorSystemLevelInfo row in HonorSystemLevels.Values)
+                if (row.Exp <= exp && row.Level > best) best = row.Level;
+            return best;
+        }
+
+        public TotemHonorEntry GetTotemHonorEntry(int id)
+        {
+            TotemHonorEntries.TryGetValue(id, out TotemHonorEntry row);
+            return row;
+        }
+
+        public int HonorSystemLikeHonorGain()
+        {
+            if (!ServerConfig.TryGetValue("HonorSystemLikeAddHonor", out string raw) || string.IsNullOrEmpty(raw)) return 5;
+            string[] parts = raw.Split(',');
+            if (parts.Length >= 2 && int.TryParse(parts[1].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int gain)) return gain;
+            return 5;
+        }
+
+        public int HonorSystemFightHonorGain()
+        {
+            if (!ServerConfig.TryGetValue("HonorSystemFightConfig", out string raw) || string.IsNullOrEmpty(raw)) return 3;
+            int pipe = raw.IndexOf('|'); string head = pipe < 0 ? raw : raw.Substring(0, pipe);
+            int comma = head.IndexOf(',');
+            if (comma >= 0 && int.TryParse(head.Substring(comma + 1).Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int gain)) return gain;
+            return 3;
+        }
+
+        public int HonorSystemOpLimit()
+        {
+            if (!ServerConfig.TryGetValue("HonorSystemOpLimit", out string raw) || string.IsNullOrEmpty(raw)) return 50;
+            string[] parts = raw.Split(',');
+            if (parts.Length > 0 && int.TryParse(parts[0].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int limit)) return limit;
+            return 50;
+        }
+
+        public void ApplyHonorSystemBonus(int level, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            HonorSystemLevelInfo row = GetHonorSystemLevel(level);
+            if (row == null) return;
+            hp += row.Blood;
+            int statBonus = row.StrengthRate / 100;
+            atk += statBonus; def += statBonus; agi += statBonus; luck += statBonus;
+            atk += row.AdvanceRate / 100; def += row.GoldRate / 100;
+            agi += row.SpiritRate / 100; luck += row.FusionRate / 100;
         }
 
         public DevilTreasItem RollDevilTreas(System.Random rng)
@@ -2626,144 +2718,80 @@ namespace GunMobile.Res
 
         void LoadTeamDungeonShop(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/battleteamshopitemlist.xml", out XmlResultTable table))
-            {
-                return;
-            }
-
+            if (!TryTable(loader, "Request/battleteamshopitemlist.xml", out XmlResultTable table)) return;
             foreach (var row in table.Rows)
             {
                 TeamDungeonShop.Add(new TeamDungeonShopEntry
                 {
-                    Id = Int(row, "ID"),
-                    ShopType = Int(row, "ShopType"),
-                    NeedLevel = Int(row, "NeedLevel"),
-                    Price = Int(row, "Price"),
-                    Condition = Int(row, "Condition"),
-                    Value = Int(row, "Value")
+                    Id = Int(row, "ID"), ShopType = Int(row, "ShopType"), NeedLevel = Int(row, "NeedLevel"),
+                    Price = Int(row, "Price"), Condition = Int(row, "Condition"), Value = Int(row, "Value")
                 });
             }
         }
 
-
         void LoadStoryCopy(ResLoader loader)
         {
             if (TryTable(loader, "Request/TS_StoryCopyChapterTemplate.xml", out XmlResultTable chapters))
-            {
                 foreach (var row in chapters.Rows)
-                {
                     StoryCopyChapters.Add(new StoryCopyChapter
                     {
-                        Chapter = Int(row, "Chapter"),
-                        Name = Str(row, "Name"),
-                        SectionCount = Int(row, "SectionCount"),
-                        AllStarAward = Str(row, "AllStarAward"),
-                        QuestBoxAward = Str(row, "QuestBoxAward"),
-                        QuestMaxScore = Int(row, "QuestMaxScore"),
-                        Detail = Str(row, "Detail")
+                        Chapter = Int(row, "Chapter"), Name = Str(row, "Name"), SectionCount = Int(row, "SectionCount"),
+                        AllStarAward = Str(row, "AllStarAward"), QuestBoxAward = Str(row, "QuestBoxAward"),
+                        QuestMaxScore = Int(row, "QuestMaxScore"), Detail = Str(row, "Detail")
                     });
-                }
-            }
-
             if (TryTable(loader, "Request/TS_StoryCopySectionTemplate.xml", out XmlResultTable sections))
-            {
                 foreach (var row in sections.Rows)
-                {
                     StoryCopySections.Add(new StoryCopySection
                     {
-                        Chapter = Int(row, "Chapter"),
-                        Section = Int(row, "Section"),
-                        Name = Str(row, "Name"),
-                        Detail = Str(row, "Detail"),
-                        MissionId = Int(row, "MissionID"),
-                        MapId = Int(row, "MapID"),
-                        PlayLimit = Int(row, "PlayLimit"),
-                        ThreeStarAward = Str(row, "ThreeStarAward"),
+                        Chapter = Int(row, "Chapter"), Section = Int(row, "Section"), Name = Str(row, "Name"),
+                        Detail = Str(row, "Detail"), MissionId = Int(row, "MissionID"), MapId = Int(row, "MapID"),
+                        PlayLimit = Int(row, "PlayLimit"), ThreeStarAward = Str(row, "ThreeStarAward"),
                         SweepReward = Str(row, "SweepReward")
                     });
-                }
-            }
-
             if (TryTable(loader, "Request/TS_StoryCopyQuest.xml", out XmlResultTable quests))
-            {
                 foreach (var row in quests.Rows)
-                {
                     StoryCopyQuests.Add(new StoryCopyQuest
                     {
-                        QuestId = Int(row, "QuestID"),
-                        ChapterId = Int(row, "ChapterID"),
-                        ConditionType = Int(row, "ConditionType"),
-                        Name = Str(row, "Name"),
-                        FinishCount = Int(row, "FinishCount"),
-                        QuestAward = Str(row, "QuestAward"),
-                        QuestScore = Int(row, "QuestScore"),
-                        Detail = Str(row, "Detail")
+                        QuestId = Int(row, "QuestID"), ChapterId = Int(row, "ChapterID"),
+                        ConditionType = Int(row, "ConditionType"), Name = Str(row, "Name"),
+                        FinishCount = Int(row, "FinishCount"), QuestAward = Str(row, "QuestAward"),
+                        QuestScore = Int(row, "QuestScore"), Detail = Str(row, "Detail")
                     });
-                }
-            }
-
             if (TryTable(loader, "Request/TS_StoryCopyLevelUp.xml", out XmlResultTable levelUps))
-            {
                 foreach (var row in levelUps.Rows)
-                {
                     StoryCopyLevelUps.Add(new StoryCopyLevelUp
                     {
-                        Chapter = Int(row, "Chapter"),
-                        PicId = Int(row, "PicID"),
-                        PicLevel = Int(row, "PicLevel"),
-                        Name = Str(row, "Name"),
-                        PicSoulCount = Int(row, "PicSoulCount"),
-                        TemplateId = Int(row, "TemplateID"),
-                        TemplateCount = Int(row, "TemplateCount")
+                        Chapter = Int(row, "Chapter"), PicId = Int(row, "PicID"), PicLevel = Int(row, "PicLevel"),
+                        Name = Str(row, "Name"), PicSoulCount = Int(row, "PicSoulCount"),
+                        TemplateId = Int(row, "TemplateID"), TemplateCount = Int(row, "TemplateCount")
                     });
-                }
-            }
         }
 
         void LoadWarriorFam(ResLoader loader)
         {
             if (TryTable(loader, "Request/ts_warriorfamfightconfig.xml", out XmlResultTable fights))
-            {
                 foreach (var row in fights.Rows)
-                {
                     WarriorFamFights.Add(new WarriorFamFightConfig
                     {
-                        HardType = Int(row, "HardType"),
-                        Level = Int(row, "Level"),
-                        MissionId = Int(row, "MissionID"),
-                        FirstRewards = Str(row, "FirstRewards"),
-                        Rewards = Str(row, "Rewards"),
-                        Rank = Int(row, "Rank")
+                        HardType = Int(row, "HardType"), Level = Int(row, "Level"), MissionId = Int(row, "MissionID"),
+                        FirstRewards = Str(row, "FirstRewards"), Rewards = Str(row, "Rewards"), Rank = Int(row, "Rank")
                     });
-                }
-            }
-
             LoadWarriorFamRankFile(loader, "Request/warriorfamranklist.xml", WarriorFamRanks);
             LoadWarriorFamRankFile(loader, "Request/warriorhighfamranklist.xml", WarriorHighFamRanks);
         }
 
         void LoadWarriorFamRankFile(ResLoader loader, string path, List<WarriorFamRankEntry> target)
         {
-            if (!TryTable(loader, path, out XmlResultTable table))
-            {
-                return;
-            }
-
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
             foreach (var row in table.Rows)
-            {
                 target.Add(new WarriorFamRankEntry
                 {
-                    Rank = Int(row, "Rank"),
-                    Nick = Str(row, "NickName"),
-                    Level = Int(row, "Level"),
-                    HardType = Int(row, "HardType"),
-                    FightPower = Int(row, "FightPower")
+                    Rank = Int(row, "Rank"), Nick = Str(row, "NickName"), Level = Int(row, "Level"),
+                    HardType = Int(row, "HardType"), FightPower = Int(row, "FightPower")
                 });
-            }
         }
 
         void LoadCampWar(ResLoader loader)
-
         {
             if (!TryTable(loader, "Request/campwaritems.xml", out XmlResultTable table))
             {
@@ -2803,6 +2831,90 @@ namespace GunMobile.Res
                     AvoidInjury = Int(row, "AvoidInjury"),
                     TricRevolt = Int(row, "TricRevolt"),
                     Guardian = Int(row, "Guardian")
+                };
+            }
+        }
+
+        void LoadMagicCloths(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/magicclothlist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID"); if (id <= 0) continue;
+                var info = new MagicClothInfo
+                {
+                    Id = id, Name = Str(row, "Name"), HasShow = Int(row, "HasShow"), Type = Int(row, "Type"),
+                    HeadId = Int(row, "HeadID"), HairId = Int(row, "HairID"), EffId = Int(row, "EffID"),
+                    ClothId = Int(row, "ClothID"), GlassId = Int(row, "GlassID"), FaceId = Int(row, "FaceID"),
+                    WingId = Int(row, "WingID"), SuitsId = Int(row, "SuitsID"), Sex = Int(row, "Sex")
+                };
+                MagicCloths[id] = info; MagicClothList.Add(info);
+            }
+        }
+
+        void LoadClothGroups(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/clothgrouptemplateinfo.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/clothgrouptemplateinfo1.xml", out table) &&
+                !TryTable(loader, "Request/clothgrouptemplateinfo2.xml", out table)) return;
+            foreach (var row in table.Rows)
+            {
+                int groupId = Int(row, "ID"); if (groupId <= 0) continue;
+                var part = new ClothGroupPart
+                {
+                    GroupId = groupId, TemplateId = Int(row, "TemplateID"), Sex = Int(row, "Sex"),
+                    Description = Int(row, "Description"), Cost = Int(row, "Cost"), Type = Int(row, "Type"),
+                    OtherTemplateId = Int(row, "OtherTemplateID")
+                };
+                if (!_clothGroupParts.TryGetValue(groupId, out List<ClothGroupPart> list))
+                { list = new List<ClothGroupPart>(); _clothGroupParts[groupId] = list; }
+                list.Add(part);
+            }
+        }
+
+        void LoadClothProperties(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/clothpropertytemplateinfo.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/clothpropertytemplateinfo1.xml", out table) &&
+                !TryTable(loader, "Request/clothpropertytemplateinfo2.xml", out table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID"); if (id <= 0) continue;
+                ClothProperties[id] = new ClothPropertyInfo
+                {
+                    Id = id, Sex = Int(row, "Sex"), Name = Str(row, "Name"), Attack = Int(row, "Attack"),
+                    Defend = Int(row, "Defend"), Agility = Int(row, "Agility"), Luck = Int(row, "Luck"),
+                    Blood = Int(row, "Blood"), Damage = Int(row, "Damage"), Guard = Int(row, "Guard"),
+                    Cost = Int(row, "Cost"), Type = Int(row, "Type")
+                };
+            }
+        }
+
+        void LoadHonorSystem(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ts_honorsystem_template.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level"); if (level <= 0) continue;
+                HonorSystemLevels[level] = new HonorSystemLevelInfo
+                {
+                    Level = level, Name = Str(row, "Name"), Exp = Int(row, "Exp"), Blood = Int(row, "Blood"),
+                    StrengthRate = Int(row, "StrengthRate"), AdvanceRate = Int(row, "AdvanceRate"),
+                    GoldRate = Int(row, "GoldRate"), SpiritRate = Int(row, "SpiritRate"),
+                    FusionRate = Int(row, "FusionRate"), LevelGift = Int(row, "LevelGift")
+                };
+            }
+        }
+
+        void LoadTotemHonor(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/totemhonortemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID"); if (id <= 0) continue;
+                TotemHonorEntries[id] = new TotemHonorEntry
+                {
+                    Id = id, Type = Int(row, "Type"), NeedMoney = Int(row, "NeedMoney"), AddHonor = Int(row, "AddHonor")
                 };
             }
         }

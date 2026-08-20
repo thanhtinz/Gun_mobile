@@ -65,6 +65,13 @@ namespace GunMobile.Net
         public int WorldBossHits;
         public int NecklaceLevel;
         public int HomeTempleLevel;
+        public int WardrobeClothId;
+        public List<int> WardrobeProperties = new List<int>();
+        public int HonorSystemExp;
+        public int HonorSystemLevel;
+        public List<int> HonorSystemClaimed = new List<int>();
+        public int HonorSystemDay = -1;
+        public int HonorSystemOps;
         public int RedPacketDay = -1;
         public int RedPacketClaims;
         public int DevilTurnDay = -1;
@@ -184,6 +191,45 @@ namespace GunMobile.Net
             MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
         }
 
+        public void EnsureWardrobeProperties()
+        {
+            if (WardrobeProperties == null) WardrobeProperties = new List<int>();
+        }
+
+        public bool HasWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            return WardrobeProperties.Contains(propertyId);
+        }
+
+        public void AddWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            if (propertyId > 0 && !WardrobeProperties.Contains(propertyId)) WardrobeProperties.Add(propertyId);
+        }
+
+        public void SyncHonorSystemLevel(GameDatabase db)
+        {
+            HonorSystemLevel = db != null ? db.HonorSystemLevelFromExp(HonorSystemExp) : 0;
+        }
+
+        public void EnsureHonorSystemClaimed()
+        {
+            if (HonorSystemClaimed == null) HonorSystemClaimed = new List<int>();
+        }
+
+        public bool HasHonorClaim(int level)
+        {
+            EnsureHonorSystemClaimed();
+            return HonorSystemClaimed.Contains(level);
+        }
+
+        public void TouchHonorSystemDay()
+        {
+            int day = DateTime.UtcNow.DayOfYear;
+            if (HonorSystemDay != day) { HonorSystemDay = day; HonorSystemOps = 0; }
+        }
+
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
         public TcpClient FightTcp;
@@ -275,6 +321,11 @@ namespace GunMobile.Net
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
 
+            EnsureWardrobeProperties();
+            db.ApplyWardrobeBonus(WardrobeProperties, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            SyncHonorSystemLevel(db);
+            db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luck, ref hp);
+
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
                 atk += weaponSpirit.AttackAdd;
@@ -362,6 +413,9 @@ namespace GunMobile.Net
             J(sb, "worldBossHits", WorldBossHits); sb.Append(",");
             J(sb, "necklaceLevel", NecklaceLevel); sb.Append(",");
             J(sb, "homeTempleLevel", HomeTempleLevel); sb.Append(",");
+            J(sb, "wardrobeClothId", WardrobeClothId); sb.Append(",");
+            J(sb, "honorSystemExp", HonorSystemExp); sb.Append(",");
+            J(sb, "honorSystemLevel", HonorSystemLevel); sb.Append(",");
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
             J(sb, "sweepCount", SweepCount); sb.Append(",");
@@ -415,6 +469,14 @@ namespace GunMobile.Net
                 sb.Append("{\"templateId\":").Append(MagicStones[i].TemplateId)
                     .Append(",\"level\":").Append(MagicStones[i].Level).Append("}");
             }
+            sb.Append("],");
+            EnsureWardrobeProperties();
+            sb.Append("\"wardrobeProperties\":[");
+            for (int i = 0; i < WardrobeProperties.Count; i++) { if (i > 0) sb.Append(","); sb.Append(WardrobeProperties[i]); }
+            sb.Append("],");
+            EnsureHonorSystemClaimed();
+            sb.Append("\"honorSystemClaimed\":[");
+            for (int i = 0; i < HonorSystemClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(HonorSystemClaimed[i]); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -1388,22 +1450,6 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SweepLabyrinth:
                     HandleSweepLabyrinth(player, ns);
-                    break;
-
-                case PhoneMsg.DreamlandStart:
-                    HandleDreamlandStart(player, ns, json);
-                    break;
-
-                case PhoneMsg.DreamlandClaim:
-                    HandleDreamlandClaim(player, ns, json);
-                    break;
-
-                case PhoneMsg.WarriorFamStart:
-                    HandleWarriorFamStart(player, ns, json);
-                    break;
-
-                case PhoneMsg.WarriorFamClaim:
-                    HandleWarriorFamClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.PveStart:
@@ -2475,6 +2521,76 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        void HandleWardrobeEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int clothId = JI(json, "clothId", 0);
+            if (_db == null || clothId <= 0) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"cloth\"}"); return; }
+            MagicClothInfo cloth = _db.GetMagicCloth(clothId);
+            if (cloth == null || !_db.MagicClothMatchesSex(player.Sex, cloth.Sex))
+            { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"cloth\"}"); return; }
+            player.WardrobeClothId = clothId;
+            _db.ApplyMagicClothOutfit(cloth, ref player.EquipHead, ref player.EquipHair, ref player.EquipFace,
+                ref player.EquipCloth, ref player.EquipGlass, ref player.EquipWeapon);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":true,\"clothId\":" + clothId + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWardrobeUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int propertyId = JI(json, "propertyId", 0);
+            if (_db == null || propertyId <= 0) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false}"); return; }
+            ClothPropertyInfo row = _db.GetClothProperty(propertyId);
+            if (row == null || player.HasWardrobeProperty(propertyId))
+            { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"property\"}"); return; }
+            int cost = row.Cost > 0 ? row.Cost : 800;
+            if (player.Gold < cost) { Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost; player.AddWardrobeProperty(propertyId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.WardrobeUpgrade, "{\"ok\":true,\"propertyId\":" + propertyId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHonorSystemAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false}"); return; }
+            string action = JS(json, "action", "donate");
+            player.TouchHonorSystemDay();
+            if (player.HonorSystemOps >= _db.HonorSystemOpLimit())
+            { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            int gain = 0;
+            if (string.Equals(action, "donate", StringComparison.OrdinalIgnoreCase))
+            {
+                TotemHonorEntry entry = _db.GetTotemHonorEntry(JI(json, "honorId", 1));
+                if (entry == null || player.Gold < entry.NeedMoney)
+                { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= entry.NeedMoney; gain = entry.AddHonor;
+            }
+            else if (string.Equals(action, "like", StringComparison.OrdinalIgnoreCase)) gain = _db.HonorSystemLikeHonorGain();
+            else if (string.Equals(action, "fight", StringComparison.OrdinalIgnoreCase)) gain = _db.HonorSystemFightHonorGain();
+            else { Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":false,\"err\":\"action\"}"); return; }
+            player.HonorSystemOps++; player.HonorSystemExp += gain; player.SyncHonorSystemLevel(_db);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.HonorSystemAction, "{\"ok\":true,\"gain\":" + gain + ",\"honorSystemExp\":" + player.HonorSystemExp + ",\"honorSystemLevel\":" + player.HonorSystemLevel + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson()); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHonorSystemClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int level = JI(json, "level", player.HonorSystemLevel);
+            if (_db == null || level <= 0) { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false}"); return; }
+            player.SyncHonorSystemLevel(_db);
+            if (player.HonorSystemLevel < level || player.HasHonorClaim(level))
+            { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            HonorSystemLevelInfo row = _db.GetHonorSystemLevel(level);
+            if (row == null || row.LevelGift <= 0)
+            { Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+            player.EnsureHonorSystemClaimed(); player.HonorSystemClaimed.Add(level);
+            player.AddItem(row.LevelGift, 1); SavePlayer(player);
+            Send(ns, PhoneMsg.HonorSystemClaim, "{\"ok\":true,\"level\":" + level + ",\"itemId\":" + row.LevelGift + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleDevilTurnSpin(ServerPlayer player, NetworkStream ns, string json)
         {
             int count = JI(json, "count", 1);
@@ -2715,191 +2831,6 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.SweepLabyrinth,
                 "{\"ok\":true,\"gold\":" + gold + ",\"floor\":" + player.LabyrinthFloor + "}");
-            Send(ns, PhoneMsg.ProfileData, player.ToJson());
-        }
-
-        void HandleDreamlandStart(ServerPlayer player, NetworkStream ns, string json)
-        {
-            if (_db == null)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"no db\"}");
-                return;
-            }
-
-            int chapter = JI(json, "chapter", player.DreamlandChapter > 0 ? player.DreamlandChapter : 1);
-            int section = JI(json, "section", player.DreamlandSection > 0 ? player.DreamlandSection : 1);
-            StoryCopySection row = _db.GetStoryCopySection(chapter, section);
-            if (row == null)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"section\"}");
-                return;
-            }
-
-            int today = DateTime.Now.DayOfYear;
-            if (player.DreamlandDay != today)
-            {
-                player.DreamlandDay = today;
-                player.DreamlandAttempts = 0;
-            }
-
-            if (player.DreamlandAttempts >= row.PlayLimit)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}");
-                return;
-            }
-
-            int entryFee = _db.DreamlandEntryFee(row);
-            if (player.Gold < entryFee)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
-                return;
-            }
-
-            player.Gold -= entryFee;
-            player.DreamlandChapter = chapter;
-            player.DreamlandSection = section;
-            player.DreamlandAttempts++;
-            player.PveNpcId = _db.DreamlandNpcId(row, player.Level);
-            player.PveLabyrinth = false;
-            player.PveDreamland = true;
-            player.PveDreamlandChapter = chapter;
-            player.PveDreamlandSection = section;
-            player.PveWarriorFam = false;
-            player.PveRewardGold = _db.DreamlandRewardGold(row, player.PveNpcId);
-            SavePlayer(player);
-            Send(ns, PhoneMsg.PveResult,
-                "{\"ok\":true,\"reward\":" + player.PveRewardGold +
-                ",\"npcId\":" + player.PveNpcId +
-                ",\"map\":" + _db.DreamlandMapId(row) +
-                ",\"chapter\":" + chapter + ",\"section\":" + section + "}");
-            Send(ns, PhoneMsg.ProfileData, player.ToJson());
-        }
-
-        void HandleDreamlandClaim(ServerPlayer player, NetworkStream ns, string json)
-        {
-            if (_db == null)
-            {
-                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false}");
-                return;
-            }
-
-            int chapter = JI(json, "chapter", player.DreamlandChapter > 0 ? player.DreamlandChapter : 1);
-            int section = JI(json, "section", player.DreamlandClearedSection > 0 ? player.DreamlandClearedSection : 1);
-            if (section <= 0 || section > player.DreamlandClearedSection)
-            {
-                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false,\"err\":\"locked\"}");
-                return;
-            }
-
-            StoryCopySection row = _db.GetStoryCopySection(chapter, section);
-            if (row == null || string.IsNullOrEmpty(row.SweepReward))
-            {
-                Send(ns, PhoneMsg.DreamlandClaim, "{\"ok\":false,\"err\":\"section\"}");
-                return;
-            }
-
-            _db.GrantRewardPairs(player, row.SweepReward);
-            SavePlayer(player);
-            Send(ns, PhoneMsg.DreamlandClaim,
-                "{\"ok\":true,\"chapter\":" + chapter + ",\"section\":" + section + "}");
-            Send(ns, PhoneMsg.ProfileData, player.ToJson());
-        }
-
-        void HandleWarriorFamStart(ServerPlayer player, NetworkStream ns, string json)
-        {
-            if (_db == null)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"no db\"}");
-                return;
-            }
-
-            int needLevel = _db.ConfigInt("WarriorFamGradeLimit", 30);
-            if (player.Level < needLevel)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"level\"}");
-                return;
-            }
-
-            int hardType = JI(json, "hardType", player.WarriorFamHardType);
-            hardType = Mathf.Clamp(hardType, 0, 2);
-            int level = JI(json, "level", player.WarriorFamLevel > 0 ? player.WarriorFamLevel : 1);
-            int maxLevel = _db.ConfigInt("WarriorFamMaxLevel", 100);
-            level = Mathf.Clamp(level, 1, maxLevel);
-            WarriorFamFightConfig row = _db.GetWarriorFamFight(hardType, level);
-            if (row == null)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"level\"}");
-                return;
-            }
-
-            int today = DateTime.Now.DayOfYear;
-            if (player.WarriorFamDay != today)
-            {
-                player.WarriorFamDay = today;
-                player.WarriorFamAttempts = 0;
-            }
-
-            int maxAttempts = _db.ConfigInt("WarriorFamEveryDayContinueCount", 1);
-            if (player.WarriorFamAttempts >= maxAttempts)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}");
-                return;
-            }
-
-            int entryFee = _db.WarriorFamEntryFee();
-            if (player.Gold < entryFee)
-            {
-                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
-                return;
-            }
-
-            player.Gold -= entryFee;
-            player.WarriorFamHardType = hardType;
-            player.WarriorFamLevel = level;
-            player.WarriorFamAttempts++;
-            player.PveNpcId = _db.WarriorFamNpcId(row);
-            player.PveLabyrinth = false;
-            player.PveDreamland = false;
-            player.PveWarriorFam = true;
-            player.PveWarriorFamHardType = hardType;
-            player.PveWarriorFamLevel = level;
-            player.PveRewardGold = _db.WarriorFamRewardGold(row);
-            SavePlayer(player);
-            Send(ns, PhoneMsg.PveResult,
-                "{\"ok\":true,\"reward\":" + player.PveRewardGold +
-                ",\"npcId\":" + player.PveNpcId +
-                ",\"hardType\":" + hardType + ",\"level\":" + level + "}");
-            Send(ns, PhoneMsg.ProfileData, player.ToJson());
-        }
-
-        void HandleWarriorFamClaim(ServerPlayer player, NetworkStream ns, string json)
-        {
-            if (_db == null)
-            {
-                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false}");
-                return;
-            }
-
-            int hardType = JI(json, "hardType", player.WarriorFamHardType);
-            hardType = Mathf.Clamp(hardType, 0, 2);
-            int level = JI(json, "level", player.WarriorFamClearedLevel > 0 ? player.WarriorFamClearedLevel : 1);
-            if (level <= 0 || level > player.WarriorFamClearedLevel)
-            {
-                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false,\"err\":\"locked\"}");
-                return;
-            }
-
-            WarriorFamFightConfig row = _db.GetWarriorFamFight(hardType, level);
-            if (row == null || string.IsNullOrEmpty(row.Rewards))
-            {
-                Send(ns, PhoneMsg.WarriorFamClaim, "{\"ok\":false,\"err\":\"level\"}");
-                return;
-            }
-
-            _db.GrantRewardPairs(player, row.Rewards);
-            SavePlayer(player);
-            Send(ns, PhoneMsg.WarriorFamClaim,
-                "{\"ok\":true,\"hardType\":" + hardType + ",\"level\":" + level + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -4658,56 +4589,9 @@ namespace GunMobile.Net
                         p.LabyrinthFloor++;
                     }
 
-                    if (win && p.PveDreamland && _db != null)
-                    {
-                        StoryCopySection dreamSec = _db.GetStoryCopySection(p.PveDreamlandChapter, p.PveDreamlandSection);
-                        if (dreamSec != null)
-                        {
-                            if (!string.IsNullOrEmpty(dreamSec.ThreeStarAward) &&
-                                int.TryParse(dreamSec.ThreeStarAward, NumberStyles.Integer, CultureInfo.InvariantCulture, out int awardId))
-                            {
-                                p.GrantTemplateReward(_db, awardId, 1);
-                            }
-
-                            if (p.PveDreamlandSection > p.DreamlandClearedSection)
-                            {
-                                p.DreamlandClearedSection = p.PveDreamlandSection;
-                            }
-
-                            StoryCopySection next = _db.GetStoryCopySection(p.PveDreamlandChapter, p.PveDreamlandSection + 1);
-                            if (next != null)
-                            {
-                                p.DreamlandSection = next.Section;
-                            }
-                        }
-                    }
-
-                    if (win && p.PveWarriorFam && _db != null)
-                    {
-                        WarriorFamFightConfig famRow = _db.GetWarriorFamFight(p.PveWarriorFamHardType, p.PveWarriorFamLevel);
-                        if (famRow != null)
-                        {
-                            if (p.PveWarriorFamLevel > p.WarriorFamClearedLevel)
-                            {
-                                _db.GrantRewardPairs(p, famRow.FirstRewards);
-                                p.WarriorFamClearedLevel = p.PveWarriorFamLevel;
-                            }
-
-                            _db.GrantRewardPairs(p, famRow.Rewards);
-                            int maxLevel = _db.ConfigInt("WarriorFamMaxLevel", 100);
-                            if (p.PveWarriorFamLevel < maxLevel &&
-                                _db.GetWarriorFamFight(p.PveWarriorFamHardType, p.PveWarriorFamLevel + 1) != null)
-                            {
-                                p.WarriorFamLevel = p.PveWarriorFamLevel + 1;
-                            }
-                        }
-                    }
-
                     p.PveNpcId = 0;
                     p.PveRewardGold = 0;
                     p.PveLabyrinth = false;
-                    p.PveDreamland = false;
-                    p.PveWarriorFam = false;
 
                     if (win)
                     {
@@ -5261,13 +5145,13 @@ namespace GunMobile.Net
             public int FusionKeys, BankGold, MineDay = -1, MineDigs;
             public int WorldBossDay = -1, WorldBossHits;
             public int NecklaceLevel, HomeTempleLevel;
+            public int WardrobeClothId, HonorSystemExp, HonorSystemLevel;
+            public int HonorSystemDay = -1, HonorSystemOps;
+            public List<int> WardrobeProperties = new List<int>();
+            public List<int> HonorSystemClaimed = new List<int>();
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
-            public int DreamlandChapter = 1, DreamlandSection = 1, DreamlandClearedSection;
-            public int DreamlandDay = -1, DreamlandAttempts;
-            public int WarriorFamHardType, WarriorFamLevel = 1, WarriorFamClearedLevel;
-            public int WarriorFamDay = -1, WarriorFamAttempts;
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -5318,15 +5202,14 @@ namespace GunMobile.Net
                 FusionKeys = p.FusionKeys, BankGold = p.BankGold, MineDay = p.MineDay, MineDigs = p.MineDigs,
                 WorldBossDay = p.WorldBossDay, WorldBossHits = p.WorldBossHits,
                 NecklaceLevel = p.NecklaceLevel, HomeTempleLevel = p.HomeTempleLevel,
+                WardrobeClothId = p.WardrobeClothId, HonorSystemExp = p.HonorSystemExp,
+                HonorSystemLevel = p.HonorSystemLevel, HonorSystemDay = p.HonorSystemDay,
+                HonorSystemOps = p.HonorSystemOps,
+                WardrobeProperties = p.WardrobeProperties ?? new List<int>(),
+                HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
-                DreamlandChapter = p.DreamlandChapter, DreamlandSection = p.DreamlandSection,
-                DreamlandClearedSection = p.DreamlandClearedSection, DreamlandDay = p.DreamlandDay,
-                DreamlandAttempts = p.DreamlandAttempts,
-                WarriorFamHardType = p.WarriorFamHardType, WarriorFamLevel = p.WarriorFamLevel,
-                WarriorFamClearedLevel = p.WarriorFamClearedLevel, WarriorFamDay = p.WarriorFamDay,
-                WarriorFamAttempts = p.WarriorFamAttempts,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -5371,17 +5254,14 @@ namespace GunMobile.Net
                 FusionKeys = s.FusionKeys, BankGold = s.BankGold, MineDay = s.MineDay, MineDigs = s.MineDigs,
                 WorldBossDay = s.WorldBossDay, WorldBossHits = s.WorldBossHits,
                 NecklaceLevel = s.NecklaceLevel, HomeTempleLevel = s.HomeTempleLevel,
+                WardrobeClothId = s.WardrobeClothId, HonorSystemExp = s.HonorSystemExp,
+                HonorSystemLevel = s.HonorSystemLevel, HonorSystemDay = s.HonorSystemDay,
+                HonorSystemOps = s.HonorSystemOps,
+                WardrobeProperties = s.WardrobeProperties ?? new List<int>(),
+                HonorSystemClaimed = s.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
-                DreamlandChapter = s.DreamlandChapter > 0 ? s.DreamlandChapter : 1,
-                DreamlandSection = s.DreamlandSection > 0 ? s.DreamlandSection : 1,
-                DreamlandClearedSection = s.DreamlandClearedSection,
-                DreamlandDay = s.DreamlandDay, DreamlandAttempts = s.DreamlandAttempts,
-                WarriorFamHardType = s.WarriorFamHardType,
-                WarriorFamLevel = s.WarriorFamLevel > 0 ? s.WarriorFamLevel : 1,
-                WarriorFamClearedLevel = s.WarriorFamClearedLevel,
-                WarriorFamDay = s.WarriorFamDay, WarriorFamAttempts = s.WarriorFamAttempts,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
@@ -5407,6 +5287,8 @@ namespace GunMobile.Net
 
             p.EnsureFightSpirits();
             p.EnsureMagicStones();
+            p.EnsureWardrobeProperties();
+            p.EnsureHonorSystemClaimed();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {

@@ -277,6 +277,27 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.HomeTempleUpgrade, "{}");
         }
 
+        public static void WardrobeEquip(int clothId)
+        {
+            Road?.Send(PhoneMsg.WardrobeEquip, "{\"clothId\":" + clothId + "}");
+        }
+
+        public static void WardrobeUpgrade(int propertyId)
+        {
+            Road?.Send(PhoneMsg.WardrobeUpgrade, "{\"propertyId\":" + propertyId + "}");
+        }
+
+        public static void HonorSystemAction(string action, int honorId = 1)
+        {
+            Road?.Send(PhoneMsg.HonorSystemAction,
+                "{\"action\":\"" + (action ?? "donate").Replace("\"", "") + "\",\"honorId\":" + honorId + "}");
+        }
+
+        public static void HonorSystemClaim(int level)
+        {
+            Road?.Send(PhoneMsg.HonorSystemClaim, "{\"level\":" + level + "}");
+        }
+
         public static void SendMail(string to, int gold, string subject = null, string body = null)
         {
             Road?.Send(PhoneMsg.MailSend,

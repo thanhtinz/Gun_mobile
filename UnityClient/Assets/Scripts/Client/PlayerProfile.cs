@@ -61,6 +61,11 @@ namespace GunMobile.Client
         public int WorldBossHits;
         public int NecklaceLevel;
         public int HomeTempleLevel;
+        public int WardrobeClothId;
+        public List<int> WardrobeProperties = new List<int>();
+        public int HonorSystemExp;
+        public int HonorSystemLevel;
+        public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
         public int SweepCount;
@@ -186,6 +191,17 @@ namespace GunMobile.Client
             }
 
             MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
+        }
+
+        public void EnsureWardrobeProperties()
+        {
+            if (WardrobeProperties == null) WardrobeProperties = new List<int>();
+        }
+
+        public bool HasWardrobeProperty(int propertyId)
+        {
+            EnsureWardrobeProperties();
+            return WardrobeProperties.Contains(propertyId);
         }
 
         public void Save()
@@ -434,6 +450,13 @@ namespace GunMobile.Client
                 db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
                 atk += engrDmg;
                 def += engrGuard;
+
+                EnsureWardrobeProperties();
+                int wDmg = 0; int wGuard = 0;
+                db.ApplyWardrobeBonus(WardrobeProperties, ref atk, ref def, ref agi, ref luk, ref hp, ref wDmg, ref wGuard);
+                atk += wDmg / 4; def += wGuard / 4;
+                HonorSystemLevel = db.HonorSystemLevelFromExp(HonorSystemExp);
+                db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luk, ref hp);
             }
 
             BagItem weapon = Find(EquipWeapon);
@@ -620,7 +643,7 @@ namespace GunMobile.Client
             new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
-            new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),
+            new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
             new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
             new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
@@ -628,7 +651,7 @@ namespace GunMobile.Client
             new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
             new ModuleDef("soulmark", "魂印", null, false, "soulMark.ui"),
-            new ModuleDef("magicwardrobe", "魔衣橱", null, false, "magicwardrobe.ui"),
+            new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化", null, false, "culture.ui"),
             new ModuleDef("emblem", "徽章", null, false, "emblem.ui"),
