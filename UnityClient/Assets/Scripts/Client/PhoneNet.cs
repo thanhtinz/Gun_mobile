@@ -417,7 +417,7 @@ namespace GunMobile.Client
 
         public static void NewYearRankClaim(int rewardId = 0)
         {
-            Road?.Send(PhoneMsg.NewYearRankClaim, "{"rewardId":" + rewardId + "}");
+            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}");
         }
 
         public static void CarnivalDraw()
