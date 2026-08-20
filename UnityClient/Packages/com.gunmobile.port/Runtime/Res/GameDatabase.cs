@@ -386,6 +386,14 @@ namespace GunMobile.Res
         public int Value;
     }
 
+
+    public sealed class StoryCopyChapter { public int Chapter; public string Name = ""; public int SectionCount; public string AllStarAward = ""; public string QuestBoxAward = ""; public int QuestMaxScore; public string Detail = ""; }
+    public sealed class StoryCopySection { public int Chapter; public int Section; public string Name = ""; public string Detail = ""; public int MissionId; public int MapId; public int PlayLimit; public string ThreeStarAward = ""; public string SweepReward = ""; }
+    public sealed class StoryCopyQuest { public int QuestId; public int ChapterId; public int ConditionType; public string Name = ""; public int FinishCount; public string QuestAward = ""; public int QuestScore; public string Detail = ""; }
+    public sealed class StoryCopyLevelUp { public int Chapter; public int PicId; public int PicLevel; public string Name = ""; public int PicSoulCount; public int TemplateId; public int TemplateCount; }
+    public sealed class WarriorFamFightConfig { public int HardType; public int Level; public int MissionId; public string FirstRewards = ""; public string Rewards = ""; public int Rank; }
+    public sealed class WarriorFamRankEntry { public int Rank; public string Nick = ""; public int Level; public int HardType; public int FightPower; }
+
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -420,6 +428,13 @@ namespace GunMobile.Res
         public static readonly int[] DefaultMagicStoneTemplateIds = { 100101, 100201, 100301, 100401 };
         public List<MagicFusionRecipe> MagicFusions { get; } = new List<MagicFusionRecipe>();
         public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
+        public List<StoryCopyChapter> StoryCopyChapters { get; } = new List<StoryCopyChapter>();
+        public List<StoryCopySection> StoryCopySections { get; } = new List<StoryCopySection>();
+        public List<StoryCopyQuest> StoryCopyQuests { get; } = new List<StoryCopyQuest>();
+        public List<StoryCopyLevelUp> StoryCopyLevelUps { get; } = new List<StoryCopyLevelUp>();
+        public List<WarriorFamFightConfig> WarriorFamFights { get; } = new List<WarriorFamFightConfig>();
+        public List<WarriorFamRankEntry> WarriorFamRanks { get; } = new List<WarriorFamRankEntry>();
+        public List<WarriorFamRankEntry> WarriorHighFamRanks { get; } = new List<WarriorFamRankEntry>();
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
@@ -472,6 +487,8 @@ namespace GunMobile.Res
             db.LoadMagicStones(loader);
             db.LoadMagicFusions(loader);
             db.LoadTeamDungeonShop(loader);
+            db.LoadStoryCopy(loader);
+            db.LoadWarriorFam(loader);
             db.LoadCampWar(loader);
             db.LoadNecklace(loader);
             db.LoadDevilTreas(loader);
@@ -718,7 +735,21 @@ namespace GunMobile.Res
             }
         }
 
+
+        public StoryCopySection GetStoryCopySection(int chapter, int section) { for (int i = 0; i < StoryCopySections.Count; i++) { var r = StoryCopySections[i]; if (r.Chapter == chapter && r.Section == section) return r; } return null; }
+        public StoryCopyChapter GetStoryCopyChapter(int chapter) { for (int i = 0; i < StoryCopyChapters.Count; i++) if (StoryCopyChapters[i].Chapter == chapter) return StoryCopyChapters[i]; return null; }
+        public WarriorFamFightConfig GetWarriorFamFight(int hardType, int level) { for (int i = 0; i < WarriorFamFights.Count; i++) { var r = WarriorFamFights[i]; if (r.HardType == hardType && r.Level == level) return r; } return null; }
+        public List<(int templateId, int count)> ParseRewardPairs(string raw) { var list = new List<(int,int)>(); if (string.IsNullOrWhiteSpace(raw)) return list; if (!raw.Contains(",") && raw.Contains("|")) { var p = raw.Split('|'); if (p.Length>=2 && int.TryParse(p[0].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int t) && int.TryParse(p[1].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int c)) list.Add((t,c)); return list; } foreach (var seg in raw.Split('|')) { var p = seg.Split(','); if (p.Length>=2 && int.TryParse(p[0].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int t) && int.TryParse(p[1].Trim(), System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int c)) list.Add((t,c)); } return list; }
+        public void GrantRewardPairs(ServerPlayer player, string raw) { if (player==null||string.IsNullOrWhiteSpace(raw)) return; foreach (var pair in ParseRewardPairs(raw)) player.GrantTemplateReward(this, pair.templateId, pair.count); }
+        public int DreamlandNpcId(StoryCopySection section, int playerLevel) { if (section==null) return 44401; if (Npcs.ContainsKey(section.MissionId)) return section.MissionId; var npc = PickNpc(section.MissionId, playerLevel, 500000); return npc!=null?npc.Id:44401; }
+        public int DreamlandMapId(StoryCopySection section) => section!=null && section.MapId>0 ? section.MapId : 71003;
+        public int DreamlandEntryFee(StoryCopySection section) => section!=null ? section.PlayLimit*100 : 200;
+        public int DreamlandRewardGold(StoryCopySection section, int npcId) { if (section==null) return 0; int gold = ComputePveWinGold(npcId,0,false); return gold>0?gold:section.PlayLimit*50; }
+        public int WarriorFamNpcId(WarriorFamFightConfig cfg) { if (cfg==null) return 40001; if (Npcs.ContainsKey(cfg.MissionId)) return cfg.MissionId; var npc = PickNpc(cfg.MissionId, 40+cfg.Level, 999999999); return npc!=null?npc.Id:40001; }
+        public int WarriorFamEntryFee() { int pf = ConfigInt("WarriorFamRaidPricePerFloor",0); return pf>0?pf:ConfigInt("WarriorFamRaidPriceSmall",30000)/100; }
+        public int WarriorFamRewardGold(WarriorFamFightConfig cfg) { if (cfg==null) return 0; foreach (var pair in ParseRewardPairs(cfg.Rewards)) if (pair.templateId==11107||IsGoldTemplate(pair.templateId)) return pair.count; return 0; }
         public int ConsortiaCreateCost()
+
         {
             return ConfigInt("MustFusionGold", 400) * 10;
         }
@@ -2387,7 +2418,21 @@ namespace GunMobile.Res
             }
         }
 
+
+        void LoadStoryCopy(ResLoader loader) {
+            if (TryTable(loader, "Request/TS_StoryCopyChapterTemplate.xml", out XmlResultTable chapters)) foreach (var row in chapters.Rows) StoryCopyChapters.Add(new StoryCopyChapter { Chapter=Int(row,"Chapter"), Name=Str(row,"Name"), SectionCount=Int(row,"SectionCount"), AllStarAward=Str(row,"AllStarAward"), QuestBoxAward=Str(row,"QuestBoxAward"), QuestMaxScore=Int(row,"QuestMaxScore"), Detail=Str(row,"Detail") });
+            if (TryTable(loader, "Request/TS_StoryCopySectionTemplate.xml", out XmlResultTable sections)) foreach (var row in sections.Rows) StoryCopySections.Add(new StoryCopySection { Chapter=Int(row,"Chapter"), Section=Int(row,"Section"), Name=Str(row,"Name"), Detail=Str(row,"Detail"), MissionId=Int(row,"MissionID"), MapId=Int(row,"MapID"), PlayLimit=Int(row,"PlayLimit"), ThreeStarAward=Str(row,"ThreeStarAward"), SweepReward=Str(row,"SweepReward") });
+            if (TryTable(loader, "Request/TS_StoryCopyQuest.xml", out XmlResultTable quests)) foreach (var row in quests.Rows) StoryCopyQuests.Add(new StoryCopyQuest { QuestId=Int(row,"QuestID"), ChapterId=Int(row,"ChapterID"), ConditionType=Int(row,"ConditionType"), Name=Str(row,"Name"), FinishCount=Int(row,"FinishCount"), QuestAward=Str(row,"QuestAward"), QuestScore=Int(row,"QuestScore"), Detail=Str(row,"Detail") });
+            if (TryTable(loader, "Request/TS_StoryCopyLevelUp.xml", out XmlResultTable levelUps)) foreach (var row in levelUps.Rows) StoryCopyLevelUps.Add(new StoryCopyLevelUp { Chapter=Int(row,"Chapter"), PicId=Int(row,"PicID"), PicLevel=Int(row,"PicLevel"), Name=Str(row,"Name"), PicSoulCount=Int(row,"PicSoulCount"), TemplateId=Int(row,"TemplateID"), TemplateCount=Int(row,"TemplateCount") });
+        }
+        void LoadWarriorFam(ResLoader loader) {
+            if (TryTable(loader, "Request/ts_warriorfamfightconfig.xml", out XmlResultTable fights)) foreach (var row in fights.Rows) WarriorFamFights.Add(new WarriorFamFightConfig { HardType=Int(row,"HardType"), Level=Int(row,"Level"), MissionId=Int(row,"MissionID"), FirstRewards=Str(row,"FirstRewards"), Rewards=Str(row,"Rewards"), Rank=Int(row,"Rank") });
+            LoadWarriorFamRankFile(loader, "Request/warriorfamranklist.xml", WarriorFamRanks);
+            LoadWarriorFamRankFile(loader, "Request/warriorhighfamranklist.xml", WarriorHighFamRanks);
+        }
+        void LoadWarriorFamRankFile(ResLoader loader, string path, List<WarriorFamRankEntry> target) { if (!TryTable(loader, path, out XmlResultTable table)) return; foreach (var row in table.Rows) target.Add(new WarriorFamRankEntry { Rank=Int(row,"Rank"), Nick=Str(row,"NickName"), Level=Int(row,"Level"), HardType=Int(row,"HardType"), FightPower=Int(row,"FightPower") }); }
         void LoadCampWar(ResLoader loader)
+
         {
             if (!TryTable(loader, "Request/campwaritems.xml", out XmlResultTable table))
             {
