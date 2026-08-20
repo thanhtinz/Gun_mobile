@@ -62,6 +62,9 @@ namespace GunMobile.Client
         public static string LastConsortiaBufferJson;
         public static string LastElfSkillBookJson;
         public static string LastButterflyTaskJson;
+        public static string LastCommunalActiveJson;
+        public static string LastCardAchievementJson;
+        public static string LastCardInfoSyncJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -389,6 +392,28 @@ namespace GunMobile.Client
         {
             string act = (action ?? "claim").Replace("\"", "");
             Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
+        }
+
+        public static void CommunalActive(string action = "claim", int activeId = 0, int score = 0, int randId = 0, int grade = 0, int isArea = 0)
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.CommunalActiveClaim,
+                "{\"action\":\"" + act + "\",\"activeId\":" + activeId +
+                ",\"score\":" + score + ",\"randId\":" + randId +
+                ",\"grade\":" + grade + ",\"isArea\":" + isArea + "}");
+        }
+
+        public static void CardAchievementClaim(int achievementId = 0)
+        {
+            Road?.Send(PhoneMsg.CardAchievementClaim, "{\"achievementId\":" + achievementId + "}");
+        }
+
+        public static void CardInfoSync(string action = "sync", int templateId = 0, int cardType = 0, int suiteId = 0)
+        {
+            string act = (action ?? "sync").Replace("\"", "");
+            Road?.Send(PhoneMsg.CardInfoSync,
+                "{\"action\":\"" + act + "\",\"templateId\":" + templateId +
+                ",\"cardType\":" + cardType + ",\"suiteId\":" + suiteId + "}");
         }
 
         public static void DrawLottery(int count)

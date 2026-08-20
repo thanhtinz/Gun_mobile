@@ -1849,6 +1849,94 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastButterflyTaskJson)) SysUi.Note(body, PhoneNet.LastButterflyTaskJson);
         }
 
+        public static void CommunalActiveScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "公会活跃 · CommunalActive");
+            app.Profile.EnsureCommunalActiveClaimed();
+            SysUi.Note(body, "Active #" + app.Profile.CommunalActiveId +
+                "  Score " + app.Profile.CommunalActiveScore +
+                "  Grade " + app.Profile.CommunalActiveGrade +
+                "  ·  communalactive.xml");
+            if (app.Database == null || app.Database.CommunalActiveList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/communalactive.xml");
+            }
+            else
+            {
+                foreach (CommunalActiveInfo row in app.Database.CommunalActiveList)
+                {
+                    CommunalActiveInfo local = row;
+                    SysUi.Row(body, "cascore" + row.ActiveId, "积分 +" + row.ActiveId + " Min" + row.MinScore,
+                        () => PhoneNet.CommunalActive("score", local.ActiveId, 5000));
+                    SysUi.Row(body, "caexp" + row.ActiveId, "领取经验档 " + row.ActiveId,
+                        () => PhoneNet.CommunalActive("exp", local.ActiveId));
+                    SysUi.Row(body, "caclaim" + row.ActiveId, "领取奖励 " + row.ActiveId,
+                        () => PhoneNet.CommunalActive("claim", local.ActiveId));
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCommunalActiveJson)) SysUi.Note(body, PhoneNet.LastCommunalActiveJson);
+        }
+
+        public static void CardAchievementScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "卡牌成就 · CardAchievement");
+            app.Profile.EnsureOwnedCards();
+            app.Profile.EnsureCardAchievementClaimed();
+            SysUi.Note(body, "已拥有卡 " + app.Profile.OwnedCardTemplateIds.Count +
+                "  已领成就 " + app.Profile.CardAchievementClaimed.Count +
+                "  ·  cardachievement.xml / cardbufflist.xml");
+            SysUi.Row(body, "cachauto", "领取下一可完成成就", () => PhoneNet.CardAchievementClaim(0));
+            if (app.Database == null || app.Database.CardAchievementList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/cardachievement.xml");
+            }
+            else
+            {
+                int shown = 0;
+                foreach (CardAchievementInfo row in app.Database.CardAchievementList)
+                {
+                    bool claimed = app.Profile.CardAchievementClaimed.Contains(row.AchievementId);
+                    bool ready = app.Database.MeetsCardAchievement(row, app.Profile.OwnedCardTemplateIds, app.Profile.CardBookletProfiles);
+                    string label = (claimed ? "[已领] " : ready ? "[可领] " : "") + row.Name +
+                        "  ATK+" + row.AddAttack + " DEF+" + row.AddDefend + " HP+" + row.AddBlood;
+                    CardAchievementInfo local = row;
+                    if (!claimed)
+                        SysUi.Row(body, "cach" + row.AchievementId, label, () => PhoneNet.CardAchievementClaim(local.AchievementId));
+                    else
+                        SysUi.Note(body, label);
+                    if (++shown >= 24) break;
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCardAchievementJson)) SysUi.Note(body, PhoneNet.LastCardAchievementJson);
+        }
+
+        public static void CardInfoSyncScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "卡牌图鉴 · CardInfoSync");
+            app.Profile.EnsureOwnedCards();
+            SysUi.Note(body, "已拥有 " + app.Profile.OwnedCardTemplateIds.Count +
+                "  ·  cardinfolist.xml / cardtemplateinfo3.xml");
+            SysUi.Row(body, "cisync", "同步图鉴信息", () => PhoneNet.CardInfoSync("sync"));
+            if (app.Database == null || app.Database.CardSuiteList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/cardinfolist.xml");
+            }
+            else
+            {
+                int shown = 0;
+                foreach (CardSuiteInfo suite in app.Database.CardSuiteList)
+                {
+                    CardSuiteInfo local = suite;
+                    SysUi.Row(body, "ciown" + suite.Id, "领取套卡 " + suite.Name,
+                        () => PhoneNet.CardInfoSync("own", 0, 3, local.Id));
+                    SysUi.Row(body, "cisync" + suite.Id, "查看 " + suite.Name,
+                        () => PhoneNet.CardInfoSync("sync", 0, 0, local.Id));
+                    if (++shown >= 12) break;
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCardInfoSyncJson)) SysUi.Note(body, PhoneNet.LastCardInfoSyncJson);
+        }
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))

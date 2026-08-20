@@ -248,6 +248,13 @@ namespace GunMobile.Net
         public int ButterflyTaskDay = -1;
         public int ButterflyTaskActive;
         public int ButterflyTaskStartDay = -1;
+        public int CommunalActiveId;
+        public int CommunalActiveScore;
+        public int CommunalActiveGrade;
+        public int CommunalActiveDay = -1;
+        public List<int> CommunalActiveClaimed = new List<int>();
+        public List<int> CommunalActiveExpClaimed = new List<int>();
+        public List<int> CardAchievementClaimed = new List<int>();
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -305,6 +312,18 @@ namespace GunMobile.Net
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureCommunalActiveClaimed()
+        {
+            if (CommunalActiveClaimed == null) CommunalActiveClaimed = new List<int>();
+            if (CommunalActiveExpClaimed == null) CommunalActiveExpClaimed = new List<int>();
+        }
+        public void TouchCommunalActiveDay()
+        {
+            EnsureCommunalActiveClaimed();
+            int day = DateTime.Now.DayOfYear;
+            if (CommunalActiveDay != day) { CommunalActiveDay = day; CommunalActiveScore = 0; }
+        }
+        public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
@@ -679,6 +698,9 @@ namespace GunMobile.Net
             EnsureOwnedCards();
             db.ApplyCardSuitBonus(OwnedCardTemplateIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             db.ApplyCardBookletBonus(OwnedCardTemplateIds, CardBookletProfiles, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            EnsureCardAchievementClaimed();
+            db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            db.ApplyCardBuffBonus(OwnedCardTemplateIds, CardBookletProfiles, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             SyncElfIntimacyLevel(db);
             db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);
             db.ApplyElfTemplateBonus(ElfId, ref atk, ref def, ref hp);
@@ -785,6 +807,20 @@ namespace GunMobile.Net
             for (int i = 0; i < ButterflyTaskClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ButterflyTaskClaimed[i]); }
             sb.Append("],");
             J(sb, "butterflyTaskActive", ButterflyTaskActive); sb.Append(",");
+            EnsureCommunalActiveClaimed();
+            J(sb, "communalActiveId", CommunalActiveId); sb.Append(",");
+            J(sb, "communalActiveScore", CommunalActiveScore); sb.Append(",");
+            J(sb, "communalActiveGrade", CommunalActiveGrade); sb.Append(",");
+            sb.Append(""communalActiveClaimed":[");
+            for (int i = 0; i < CommunalActiveClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CommunalActiveClaimed[i]); }
+            sb.Append("],");
+            sb.Append(""communalActiveExpClaimed":[");
+            for (int i = 0; i < CommunalActiveExpClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CommunalActiveExpClaimed[i]); }
+            sb.Append("],");
+            EnsureCardAchievementClaimed();
+            sb.Append(""cardAchievementClaimed":[");
+            for (int i = 0; i < CardAchievementClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardAchievementClaimed[i]); }
+            sb.Append("],");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2394,6 +2430,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ButterflyTaskClaim:
                     HandleButterflyTaskClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.CommunalActiveClaim:
+                    HandleCommunalActiveClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardAchievementClaim:
+                    HandleCardAchievementClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardInfoSync:
+                    HandleCardInfoSync(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -7225,6 +7273,238 @@ namespace GunMobile.Net
                 ",\"rewardGp\":" + row.RewardGp + ",\"rewardItem\":" + row.RewardItemId + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+
+        void HandleCommunalActiveClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.CommunalActives.Count == 0)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchCommunalActiveDay();
+            string action = JS(json, "action", "claim");
+            int activeId = JI(json, "activeId", player.CommunalActiveId);
+            if (activeId <= 0 && _db.CommunalActiveList.Count > 0) activeId = _db.CommunalActiveList[0].ActiveId;
+            CommunalActiveInfo active = _db.GetCommunalActive(activeId);
+            if (active == null)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"active\"}"); return; }
+            if (active.LimitGrade > 0 && player.Level < active.LimitGrade)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+            player.CommunalActiveId = activeId;
+
+            if (string.Equals(action, "score", StringComparison.OrdinalIgnoreCase))
+            {
+                int add = JI(json, "score", JI(json, "add", 100));
+                if (add <= 0) add = 100;
+                int max = active.DayMaxScore > 0 ? active.DayMaxScore : 50000;
+                player.CommunalActiveScore = Mathf.Min(max, player.CommunalActiveScore + add);
+                player.CommunalActiveGrade = _db.ResolveCommunalActiveGrade(activeId, player.CommunalActiveScore);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":true,\"action\":\"score\",\"activeId\":" + activeId +
+                    ",\"score\":" + player.CommunalActiveScore + ",\"grade\":" + player.CommunalActiveGrade + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "exp", StringComparison.OrdinalIgnoreCase))
+            {
+                int grade = JI(json, "grade", player.CommunalActiveGrade);
+                if (grade <= 0) grade = _db.ResolveCommunalActiveGrade(activeId, player.CommunalActiveScore);
+                CommunalActiveExp exp = _db.GetCommunalActiveExp(activeId, grade);
+                if (exp == null)
+                { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"exp\"}"); return; }
+                if (player.CommunalActiveScore < exp.Exp && player.CommunalActiveScore < active.MinScore)
+                { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"score\"}"); return; }
+                int expKey = activeId * 1000 + grade;
+                if (player.CommunalActiveExpClaimed.Contains(expKey))
+                { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+                player.CommunalActiveExpClaimed.Add(expKey);
+                player.CommunalActiveGrade = Mathf.Max(player.CommunalActiveGrade, grade);
+                int gp = Mathf.Max(0, exp.AddExpPlus) * 100 + Mathf.Max(50, grade * 50);
+                player.AddGp(_db, gp);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":true,\"action\":\"exp\",\"activeId\":" + activeId +
+                    ",\"grade\":" + grade + ",\"gp\":" + gp + ",\"addExpPlus\":" + exp.AddExpPlus + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int randId = JI(json, "randId", JI(json, "randID", 0));
+            int isArea = JI(json, "isArea", 0);
+            if (randId <= 0)
+            {
+                List<CommunalActiveAward> awards = _db.GetCommunalActiveAwards(activeId);
+                if (awards != null)
+                {
+                    for (int i = 0; i < awards.Count; i++)
+                    {
+                        int k = activeId * 1000 + awards[i].RandId * 10 + awards[i].IsArea;
+                        if (!player.CommunalActiveClaimed.Contains(k))
+                        { randId = awards[i].RandId; isArea = awards[i].IsArea; break; }
+                    }
+                }
+            }
+            if (randId <= 0)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            if (player.CommunalActiveScore < active.MinScore && player.CommunalActiveGrade <= 0)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"score\"}"); return; }
+            CommunalActiveAward award = _db.GetCommunalActiveAward(activeId, randId, isArea);
+            if (award == null)
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"award\"}"); return; }
+            int claimKey = activeId * 1000 + award.RandId * 10 + award.IsArea;
+            if (player.CommunalActiveClaimed.Contains(claimKey))
+            { Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            player.CommunalActiveClaimed.Add(claimKey);
+            player.GrantTemplateReward(_db, award.TemplateId, award.Count > 0 ? award.Count : 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CommunalActiveClaim, "{\"ok\":true,\"action\":\"claim\",\"activeId\":" + activeId +
+                ",\"randId\":" + award.RandId + ",\"templateId\":" + award.TemplateId +
+                ",\"count\":" + award.Count + ",\"isArea\":" + award.IsArea + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCardAchievementClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.CardAchievementList.Count == 0)
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureOwnedCards();
+            player.EnsureCardAchievementClaimed();
+            int achievementId = JI(json, "achievementId", JI(json, "id", 0));
+            if (achievementId <= 0)
+            {
+                for (int i = 0; i < _db.CardAchievementList.Count; i++)
+                {
+                    CardAchievementInfo cand = _db.CardAchievementList[i];
+                    if (player.CardAchievementClaimed.Contains(cand.AchievementId)) continue;
+                    if (_db.MeetsCardAchievement(cand, player.OwnedCardTemplateIds, player.CardBookletProfiles))
+                    { achievementId = cand.AchievementId; break; }
+                }
+            }
+            if (achievementId <= 0)
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            CardAchievementInfo ach = _db.GetCardAchievement(achievementId);
+            if (ach == null)
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"ach\"}"); return; }
+            if (player.CardAchievementClaimed.Contains(achievementId))
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (!_db.MeetsCardAchievement(ach, player.OwnedCardTemplateIds, player.CardBookletProfiles))
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"req\"}"); return; }
+            player.CardAchievementClaimed.Add(achievementId);
+            if (ach.HonorId > 0) player.Honor += Mathf.Max(1, ach.HonorId % 100 + 10);
+            if (!player.CompletedAchievements.Contains(achievementId))
+                player.CompletedAchievements.Add(achievementId);
+            player.AchievementPoints += Mathf.Max(1, ach.IsPrompt + 1);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":true,\"achievementId\":" + achievementId +
+                ",\"addAttack\":" + ach.AddAttack + ",\"addDefend\":" + ach.AddDefend +
+                ",\"addBlood\":" + ach.AddBlood + ",\"addDamage\":" + ach.AddDamage + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCardInfoSync(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            { Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.EnsureOwnedCards();
+            string action = JS(json, "action", "sync");
+            int templateId = JI(json, "templateId", JI(json, "cardId", 0));
+            int cardType = JI(json, "cardType", JI(json, "type", 0));
+            int suiteId = JI(json, "suiteId", JI(json, "suitId", 0));
+
+            if (string.Equals(action, "own", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "add", StringComparison.OrdinalIgnoreCase))
+            {
+                if (templateId <= 0 && suiteId > 0)
+                {
+                    CardSuiteInfo suite = _db.GetCardSuite(suiteId);
+                    if (suite == null || suite.CardIds == null || suite.CardIds.Length == 0)
+                    { Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":false,\"err\":\"suite\"}"); return; }
+                    int added = 0;
+                    for (int i = 0; i < suite.CardIds.Length; i++)
+                    {
+                        int cid = suite.CardIds[i];
+                        if (cid <= 0) continue;
+                        if (!player.OwnedCardTemplateIds.Contains(cid))
+                        {
+                            player.SetCardBookletProfile(cid, cardType > 0 ? cardType : 3);
+                            added++;
+                        }
+                    }
+                    player.RecalcStats(_db); SavePlayer(player);
+                    Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":true,\"action\":\"own\",\"suiteId\":" + suiteId +
+                        ",\"added\":" + added + ",\"owned\":" + player.OwnedCardTemplateIds.Count + "}");
+                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                    return;
+                }
+                if (templateId <= 0)
+                { Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":false,\"err\":\"template\"}"); return; }
+                CardInfo tmpl = _db.GetCardTemplate(templateId, cardType);
+                if (tmpl == null && _db.GetCard(templateId) == null &&
+                    !_db.CardTemplatesByCardId.ContainsKey(templateId))
+                {
+                    bool inSuite = false;
+                    for (int i = 0; i < _db.CardSuiteList.Count; i++)
+                    {
+                        int[] ids = _db.CardSuiteList[i].CardIds;
+                        if (ids == null) continue;
+                        for (int j = 0; j < ids.Length; j++)
+                            if (ids[j] == templateId) { inSuite = true; break; }
+                        if (inSuite) break;
+                    }
+                    if (!inSuite)
+                    { Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":false,\"err\":\"unknown\"}"); return; }
+                }
+                int profile = cardType;
+                if (profile <= 0 && tmpl != null) profile = tmpl.CardType;
+                if (profile <= 0) profile = 3;
+                player.SetCardBookletProfile(templateId, profile);
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":true,\"action\":\"own\",\"templateId\":" + templateId +
+                    ",\"cardType\":" + profile + ",\"owned\":" + player.OwnedCardTemplateIds.Count + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "quality", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "type", StringComparison.OrdinalIgnoreCase))
+            {
+                if (templateId <= 0 || !player.OwnedCardTemplateIds.Contains(templateId))
+                { Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":false,\"err\":\"owned\"}"); return; }
+                if (cardType <= 0) cardType = 1;
+                player.SetCardBookletProfile(templateId, cardType);
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.CardInfoSync, "{\"ok\":true,\"action\":\"quality\",\"templateId\":" + templateId +
+                    ",\"cardType\":" + cardType + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            var sb = new StringBuilder(256);
+            sb.Append("{\"ok\":true,\"action\":\"sync\",\"owned\":").Append(player.OwnedCardTemplateIds.Count);
+            sb.Append(",\"suites\":").Append(_db.CardSuiteList.Count);
+            sb.Append(",\"achievements\":").Append(_db.CardAchievementList.Count);
+            sb.Append(",\"buffs\":").Append(_db.CardBuffList.Count);
+            sb.Append(",\"templates\":").Append(_db.Cards.Count);
+            if (suiteId > 0)
+            {
+                CardSuiteInfo suite = _db.GetCardSuite(suiteId);
+                if (suite != null)
+                {
+                    sb.Append(",\"suiteId\":").Append(suite.Id);
+                    sb.Append(",\"suiteName\":\"").Append((suite.Name ?? "").Replace("\"", "")).Append("\"");
+                    sb.Append(",\"cards\":[");
+                    for (int i = 0; i < suite.CardIds.Length; i++)
+                    {
+                        if (i > 0) sb.Append(",");
+                        sb.Append(suite.CardIds[i]);
+                    }
+                    sb.Append("]");
+                }
+            }
+            sb.Append("}");
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CardInfoSync, sb.ToString());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -10321,6 +10601,10 @@ namespace GunMobile.Net
             public List<int> ElfSkillIds = new List<int>();
             public List<int> ButterflyTaskClaimed = new List<int>();
             public int ButterflyTaskDay = -1, ButterflyTaskActive, ButterflyTaskStartDay = -1;
+            public int CommunalActiveId, CommunalActiveScore, CommunalActiveGrade, CommunalActiveDay = -1;
+            public List<int> CommunalActiveClaimed = new List<int>();
+            public List<int> CommunalActiveExpClaimed = new List<int>();
+            public List<int> CardAchievementClaimed = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -10490,6 +10774,11 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = p.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = p.ButterflyTaskDay, ButterflyTaskActive = p.ButterflyTaskActive,
                 ButterflyTaskStartDay = p.ButterflyTaskStartDay,
+                CommunalActiveId = p.CommunalActiveId, CommunalActiveScore = p.CommunalActiveScore,
+                CommunalActiveGrade = p.CommunalActiveGrade, CommunalActiveDay = p.CommunalActiveDay,
+                CommunalActiveClaimed = p.CommunalActiveClaimed ?? new List<int>(),
+                CommunalActiveExpClaimed = p.CommunalActiveExpClaimed ?? new List<int>(),
+                CardAchievementClaimed = p.CardAchievementClaimed ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -10663,6 +10952,11 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = s.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = s.ButterflyTaskDay, ButterflyTaskActive = s.ButterflyTaskActive,
                 ButterflyTaskStartDay = s.ButterflyTaskStartDay,
+                CommunalActiveId = s.CommunalActiveId, CommunalActiveScore = s.CommunalActiveScore,
+                CommunalActiveGrade = s.CommunalActiveGrade, CommunalActiveDay = s.CommunalActiveDay,
+                CommunalActiveClaimed = s.CommunalActiveClaimed ?? new List<int>(),
+                CommunalActiveExpClaimed = s.CommunalActiveExpClaimed ?? new List<int>(),
+                CardAchievementClaimed = s.CardAchievementClaimed ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

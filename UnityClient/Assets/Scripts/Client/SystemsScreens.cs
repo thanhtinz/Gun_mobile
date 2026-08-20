@@ -442,6 +442,9 @@ namespace GunMobile.Client
             SysUi.Row(body, "bfFeed", "喂养 / 亲昵", () => PhoneNet.ButterflyAction("feed"));
             SysUi.Row(body, "bfUp", "升级蝶妖", () => PhoneNet.ButterflyAction("upgrade"));
             SysUi.Row(body, "bfTask", "蝶妖任务 TS_ButterflyTask", () => ExtraModulesScreens.ButterflyTaskScreen(safe, app));
+            SysUi.Row(body, "communal", "公会活跃 communalactive", () => ExtraModulesScreens.CommunalActiveScreen(safe, app));
+            SysUi.Row(body, "cardAch", "卡牌成就 cardachievement", () => ExtraModulesScreens.CardAchievementScreen(safe, app));
+            SysUi.Row(body, "cardInfo", "卡牌图鉴 cardinfolist", () => ExtraModulesScreens.CardInfoSyncScreen(safe, app));
             int shown = 0;
             if (app.Database != null)
             {

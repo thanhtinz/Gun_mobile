@@ -237,6 +237,8 @@ namespace GunMobile.Res
     {
         public int Id;
         public int CardId;
+        public int CardType;
+        public int Probability;
         public int AddAttack;
         public int AddDefend;
         public int AddAgility;
@@ -1290,6 +1292,88 @@ namespace GunMobile.Res
         public string TaskDescr = "";
     }
 
+    public sealed class CommunalActiveInfo
+    {
+        public int ActiveId;
+        public string BeginTime = "";
+        public string EndTime = "";
+        public int LimitGrade;
+        public int DayMaxScore;
+        public int MinScore;
+        public string AddPropertyByMoney = "";
+        public string AddPropertyByProp = "";
+    }
+
+    public sealed class CommunalActiveExp
+    {
+        public int ActiveId;
+        public int Grade;
+        public int Exp;
+        public int AddExpPlus;
+    }
+
+    public sealed class CommunalActiveAward
+    {
+        public int ActiveId;
+        public int IsArea;
+        public int RandId;
+        public int TemplateId;
+        public int StrengthenLevel;
+        public int AttackCompose;
+        public int DefendCompose;
+        public int AgilityCompose;
+        public int LuckCompose;
+        public int Count = 1;
+        public bool IsBind;
+        public bool IsTime;
+        public int ValidDate;
+    }
+
+    public sealed class CardAchievementInfo
+    {
+        public int AchievementId;
+        public string Name = "";
+        public string Desc = "";
+        public int AddAttack;
+        public int AddBlood;
+        public int AddDamage;
+        public int AddDefend;
+        public int AddGuard;
+        public int AddLucky;
+        public int AddMagicAttack;
+        public int AddMagicDefend;
+        public int HonorId;
+        public int IsPrompt;
+        public int RequireGroupId;
+        public int RequireGroupNum;
+        public int RequireNum;
+        public int RequireType;
+        public int Type;
+    }
+
+    public sealed class CardBuffEntry
+    {
+        public int Condition;
+        public int PropertiesDscripId;
+        public int[] Values = System.Array.Empty<int>();
+        public string Description = "";
+    }
+
+    public sealed class CardBuffInfo
+    {
+        public int CardId;
+        public List<CardBuffEntry> Entries = new List<CardBuffEntry>();
+    }
+
+    public sealed class CardSuiteInfo
+    {
+        public int Id;
+        public int SuitId;
+        public string Name = "";
+        public string Description = "";
+        public int[] CardIds = System.Array.Empty<int>();
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1841,6 +1925,19 @@ namespace GunMobile.Res
         public List<ElfSkillBookTemp> ElfSkillBookList { get; } = new List<ElfSkillBookTemp>();
         public Dictionary<int, ButterflyTaskInfo> ButterflyTasks { get; } = new Dictionary<int, ButterflyTaskInfo>();
         public List<ButterflyTaskInfo> ButterflyTaskList { get; } = new List<ButterflyTaskInfo>();
+        public Dictionary<int, CommunalActiveInfo> CommunalActives { get; } = new Dictionary<int, CommunalActiveInfo>();
+        public List<CommunalActiveInfo> CommunalActiveList { get; } = new List<CommunalActiveInfo>();
+        public List<CommunalActiveExp> CommunalActiveExps { get; } = new List<CommunalActiveExp>();
+        public Dictionary<int, List<CommunalActiveExp>> CommunalActiveExpsByActive { get; } = new Dictionary<int, List<CommunalActiveExp>>();
+        public List<CommunalActiveAward> CommunalActiveAwards { get; } = new List<CommunalActiveAward>();
+        public Dictionary<int, List<CommunalActiveAward>> CommunalActiveAwardsByActive { get; } = new Dictionary<int, List<CommunalActiveAward>>();
+        public Dictionary<int, CardAchievementInfo> CardAchievements { get; } = new Dictionary<int, CardAchievementInfo>();
+        public List<CardAchievementInfo> CardAchievementList { get; } = new List<CardAchievementInfo>();
+        public Dictionary<int, CardBuffInfo> CardBuffs { get; } = new Dictionary<int, CardBuffInfo>();
+        public List<CardBuffInfo> CardBuffList { get; } = new List<CardBuffInfo>();
+        public Dictionary<int, CardSuiteInfo> CardSuites { get; } = new Dictionary<int, CardSuiteInfo>();
+        public List<CardSuiteInfo> CardSuiteList { get; } = new List<CardSuiteInfo>();
+        public Dictionary<int, List<CardInfo>> CardTemplatesByCardId { get; } = new Dictionary<int, List<CardInfo>>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1962,6 +2059,10 @@ namespace GunMobile.Res
             db.LoadConsortiaBuffers(loader);
             db.LoadElfSkillBooks(loader);
             db.LoadButterflyTasks(loader);
+            db.LoadCommunalActive(loader);
+            db.LoadCardAchievements(loader);
+            db.LoadCardBuffs(loader);
+            db.LoadCardInfoList(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1983,7 +2084,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} communal={db.CommunalActives.Count} cardAch={db.CardAchievements.Count} cardBuff={db.CardBuffs.Count} cardSuite={db.CardSuites.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -5676,24 +5777,40 @@ namespace GunMobile.Res
 
         void LoadCards(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/cardtemplateinfo.xml", out XmlResultTable table))
-            {
-                return;
-            }
+            LoadCardTemplateFile(loader, "Request/cardtemplateinfo.xml");
+            LoadCardTemplateFile(loader, "Request/cardtemplateinfo3.xml");
+            LoadCardTemplateFile(loader, "Request/cardtemplateinfo_out.xml");
+        }
 
+        void LoadCardTemplateFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
             foreach (var row in table.Rows)
             {
-                Cards.Add(new CardInfo
+                int cardId = Int(row, "CardID");
+                if (cardId <= 0) cardId = Int(row, "CardId");
+                if (cardId <= 0) continue;
+                var info = new CardInfo
                 {
                     Id = Int(row, "ID"),
-                    CardId = Int(row, "CardID"),
+                    CardId = cardId,
+                    CardType = Int(row, "CardType"),
+                    Probability = Int(row, "probability"),
                     AddAttack = Int(row, "AddAttack"),
                     AddDefend = Int(row, "AddDefend"),
                     AddAgility = Int(row, "AddAgility"),
                     AddLucky = Int(row, "AddLucky"),
                     AddDamage = Int(row, "AddDamage"),
                     AddGuard = Int(row, "AddGuard")
-                });
+                };
+                if (info.Id <= 0) info.Id = cardId * 10 + info.CardType;
+                Cards.Add(info);
+                if (!CardTemplatesByCardId.TryGetValue(cardId, out List<CardInfo> list))
+                {
+                    list = new List<CardInfo>();
+                    CardTemplatesByCardId[cardId] = list;
+                }
+                list.Add(info);
             }
         }
 
@@ -9084,6 +9201,468 @@ namespace GunMobile.Res
                 ButterflyTaskList.Add(info);
             }
             ButterflyTaskList.Sort((a, b) => a.TaskId.CompareTo(b.TaskId));
+        }
+
+        void LoadCommunalActive(ResLoader loader)
+        {
+            LoadCommunalActiveFile(loader, "Request/communalactive.xml");
+            LoadCommunalActiveFile(loader, "Request/communalactive_out.xml");
+            if (CommunalActiveExps.Count == 0)
+                LoadCommunalActiveExpFile(loader, "Request/communalactiveexp.xml");
+            if (CommunalActiveAwards.Count == 0)
+            {
+                LoadCommunalActiveAwardFile(loader, "Request/communalactiveawarditems.xml");
+                LoadCommunalActiveAwardFile(loader, "Request/communalactiveawarditems_out.xml");
+            }
+            CommunalActiveList.Sort((a, b) => a.ActiveId.CompareTo(b.ActiveId));
+        }
+
+        void LoadCommunalActiveFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = FirstInt(row, "ActiveID", "ActiveId", "ID");
+                if (activeId <= 0) continue;
+                if (row.ContainsKey("BeginTime") || row.ContainsKey("DayMaxScore") || row.ContainsKey("MinScore"))
+                {
+                    if (CommunalActives.ContainsKey(activeId)) continue;
+                    var info = new CommunalActiveInfo
+                    {
+                        ActiveId = activeId,
+                        BeginTime = Str(row, "BeginTime"),
+                        EndTime = Str(row, "EndTime"),
+                        LimitGrade = Int(row, "LimitGrade"),
+                        DayMaxScore = Int(row, "DayMaxScore"),
+                        MinScore = Int(row, "MinScore"),
+                        AddPropertyByMoney = Str(row, "AddPropertyByMoney"),
+                        AddPropertyByProp = Str(row, "AddPropertyByProp")
+                    };
+                    CommunalActives[activeId] = info;
+                    CommunalActiveList.Add(info);
+                    continue;
+                }
+                if (row.ContainsKey("Grade") && (row.ContainsKey("Exp") || row.ContainsKey("AddExpPlus")) &&
+                    !row.ContainsKey("TemplateID") && !row.ContainsKey("TemplateId"))
+                {
+                    int grade = Int(row, "Grade");
+                    if (grade <= 0) continue;
+                    var exp = new CommunalActiveExp
+                    {
+                        ActiveId = activeId,
+                        Grade = grade,
+                        Exp = Int(row, "Exp"),
+                        AddExpPlus = Int(row, "AddExpPlus")
+                    };
+                    CommunalActiveExps.Add(exp);
+                    if (!CommunalActiveExpsByActive.TryGetValue(activeId, out List<CommunalActiveExp> elist))
+                    {
+                        elist = new List<CommunalActiveExp>();
+                        CommunalActiveExpsByActive[activeId] = elist;
+                    }
+                    elist.Add(exp);
+                    continue;
+                }
+                int templateId = FirstInt(row, "TemplateID", "TemplateId");
+                if (templateId <= 0) continue;
+                int randId = FirstInt(row, "RandID", "RandId");
+                var award = new CommunalActiveAward
+                {
+                    ActiveId = activeId,
+                    IsArea = Int(row, "IsArea"),
+                    RandId = randId,
+                    TemplateId = templateId,
+                    StrengthenLevel = Int(row, "StrengthenLevel"),
+                    AttackCompose = Int(row, "AttackCompose"),
+                    DefendCompose = Int(row, "DefendCompose"),
+                    AgilityCompose = Int(row, "AgilityCompose"),
+                    LuckCompose = Int(row, "LuckCompose"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    IsBind = !row.ContainsKey("IsBind") || Bool(row, "IsBind"),
+                    IsTime = Bool(row, "IsTime"),
+                    ValidDate = Int(row, "ValidDate")
+                };
+                CommunalActiveAwards.Add(award);
+                if (!CommunalActiveAwardsByActive.TryGetValue(activeId, out List<CommunalActiveAward> alist))
+                {
+                    alist = new List<CommunalActiveAward>();
+                    CommunalActiveAwardsByActive[activeId] = alist;
+                }
+                alist.Add(award);
+            }
+        }
+
+        void LoadCommunalActiveExpFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = FirstInt(row, "ActiveID", "ActiveId");
+                int grade = Int(row, "Grade");
+                if (activeId <= 0 || grade <= 0) continue;
+                var exp = new CommunalActiveExp
+                {
+                    ActiveId = activeId,
+                    Grade = grade,
+                    Exp = Int(row, "Exp"),
+                    AddExpPlus = Int(row, "AddExpPlus")
+                };
+                CommunalActiveExps.Add(exp);
+                if (!CommunalActiveExpsByActive.TryGetValue(activeId, out List<CommunalActiveExp> elist))
+                {
+                    elist = new List<CommunalActiveExp>();
+                    CommunalActiveExpsByActive[activeId] = elist;
+                }
+                elist.Add(exp);
+            }
+        }
+
+        void LoadCommunalActiveAwardFile(ResLoader loader, string path)
+        {
+            if (!TryTable(loader, path, out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = FirstInt(row, "ActiveID", "ActiveId");
+                int templateId = FirstInt(row, "TemplateID", "TemplateId");
+                if (activeId <= 0 || templateId <= 0) continue;
+                var award = new CommunalActiveAward
+                {
+                    ActiveId = activeId,
+                    IsArea = Int(row, "IsArea"),
+                    RandId = FirstInt(row, "RandID", "RandId"),
+                    TemplateId = templateId,
+                    StrengthenLevel = Int(row, "StrengthenLevel"),
+                    AttackCompose = Int(row, "AttackCompose"),
+                    DefendCompose = Int(row, "DefendCompose"),
+                    AgilityCompose = Int(row, "AgilityCompose"),
+                    LuckCompose = Int(row, "LuckCompose"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    IsBind = !row.ContainsKey("IsBind") || Bool(row, "IsBind"),
+                    IsTime = Bool(row, "IsTime"),
+                    ValidDate = Int(row, "ValidDate")
+                };
+                CommunalActiveAwards.Add(award);
+                if (!CommunalActiveAwardsByActive.TryGetValue(activeId, out List<CommunalActiveAward> alist))
+                {
+                    alist = new List<CommunalActiveAward>();
+                    CommunalActiveAwardsByActive[activeId] = alist;
+                }
+                alist.Add(award);
+            }
+        }
+
+        void LoadCardAchievements(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/cardachievement.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = FirstInt(row, "AchievementID", "AchievementId", "ID");
+                if (id <= 0 || CardAchievements.ContainsKey(id)) continue;
+                var info = new CardAchievementInfo
+                {
+                    AchievementId = id,
+                    Name = Str(row, "Name"),
+                    Desc = Str(row, "Desc"),
+                    AddAttack = Int(row, "AddAttack"),
+                    AddBlood = Int(row, "AddBlood"),
+                    AddDamage = Int(row, "AddDamage"),
+                    AddDefend = Int(row, "AddDefend"),
+                    AddGuard = Int(row, "AddGuard"),
+                    AddLucky = Int(row, "AddLucky"),
+                    AddMagicAttack = Int(row, "AddMagicAttack"),
+                    AddMagicDefend = Int(row, "AddMagicDefend"),
+                    HonorId = FirstInt(row, "Honor_id", "HonorId"),
+                    IsPrompt = Int(row, "IsPrompt"),
+                    RequireGroupId = FirstInt(row, "RequireGroupid", "RequireGroupId"),
+                    RequireGroupNum = Int(row, "RequireGroupNum"),
+                    RequireNum = Int(row, "RequireNum"),
+                    RequireType = Int(row, "RequireType"),
+                    Type = Int(row, "Type")
+                };
+                CardAchievements[id] = info;
+                CardAchievementList.Add(info);
+            }
+            CardAchievementList.Sort((a, b) => a.AchievementId.CompareTo(b.AchievementId));
+        }
+
+        void LoadCardBuffs(ResLoader loader)
+        {
+            if (!loader.TryReadBytes("Request/cardbufflist.xml", out byte[] data)) return;
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null) return;
+            foreach (XElement card in root.Elements())
+            {
+                if (!string.Equals(card.Name.LocalName, "Card", StringComparison.OrdinalIgnoreCase)) continue;
+                int cardId = QuestAttrInt(card, "CardID");
+                if (cardId <= 0) cardId = QuestAttrInt(card, "CardId");
+                if (cardId <= 0 || CardBuffs.ContainsKey(cardId)) continue;
+                var info = new CardBuffInfo { CardId = cardId };
+                foreach (XElement item in card.Elements())
+                {
+                    if (!string.Equals(item.Name.LocalName, "Item", StringComparison.OrdinalIgnoreCase)) continue;
+                    int propId = QuestAttrInt(item, "PropertiesDscripID");
+                    if (propId <= 0) continue;
+                    string valueRaw = QuestAttrStr(item, "value");
+                    string[] parts = string.IsNullOrEmpty(valueRaw) ? System.Array.Empty<string>() : valueRaw.Split('|');
+                    var values = new int[parts.Length];
+                    for (int i = 0; i < parts.Length; i++)
+                        int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out values[i]);
+                    info.Entries.Add(new CardBuffEntry
+                    {
+                        Condition = QuestAttrInt(item, "condition"),
+                        PropertiesDscripId = propId,
+                        Values = values,
+                        Description = QuestAttrStr(item, "Description")
+                    });
+                }
+                if (info.Entries.Count == 0) continue;
+                CardBuffs[cardId] = info;
+                CardBuffList.Add(info);
+            }
+        }
+
+        void LoadCardInfoList(ResLoader loader)
+        {
+            if (!loader.TryReadBytes("Request/cardinfolist.xml", out byte[] data)) return;
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null) return;
+            foreach (XElement item in root.Elements())
+            {
+                if (!string.Equals(item.Name.LocalName, "Item", StringComparison.OrdinalIgnoreCase)) continue;
+                int id = QuestAttrInt(item, "ID");
+                if (id <= 0 || CardSuites.ContainsKey(id)) continue;
+                var ids = new List<int>();
+                foreach (XElement child in item.Elements())
+                {
+                    if (!string.Equals(child.Name.LocalName, "Card", StringComparison.OrdinalIgnoreCase)) continue;
+                    int cid = QuestAttrInt(child, "ID");
+                    if (cid > 0) ids.Add(cid);
+                }
+                var suite = new CardSuiteInfo
+                {
+                    Id = id,
+                    SuitId = QuestAttrInt(item, "SuitID"),
+                    Name = QuestAttrStr(item, "Name"),
+                    Description = QuestAttrStr(item, "Description"),
+                    CardIds = ids.ToArray()
+                };
+                CardSuites[id] = suite;
+                CardSuiteList.Add(suite);
+            }
+            CardSuiteList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        public CommunalActiveInfo GetCommunalActive(int activeId)
+        {
+            if (activeId > 0 && CommunalActives.TryGetValue(activeId, out CommunalActiveInfo row)) return row;
+            return null;
+        }
+
+        public List<CommunalActiveExp> GetCommunalActiveExps(int activeId)
+        {
+            if (activeId > 0 && CommunalActiveExpsByActive.TryGetValue(activeId, out List<CommunalActiveExp> list)) return list;
+            return null;
+        }
+
+        public List<CommunalActiveAward> GetCommunalActiveAwards(int activeId)
+        {
+            if (activeId > 0 && CommunalActiveAwardsByActive.TryGetValue(activeId, out List<CommunalActiveAward> list)) return list;
+            return null;
+        }
+
+        public int ResolveCommunalActiveGrade(int activeId, int score)
+        {
+            List<CommunalActiveExp> exps = GetCommunalActiveExps(activeId);
+            if (exps == null || exps.Count == 0) return 0;
+            int grade = 0;
+            for (int i = 0; i < exps.Count; i++)
+            {
+                CommunalActiveExp e = exps[i];
+                if (score >= e.Exp && e.Grade > grade) grade = e.Grade;
+            }
+            return grade;
+        }
+
+        public CommunalActiveExp GetCommunalActiveExp(int activeId, int grade)
+        {
+            List<CommunalActiveExp> exps = GetCommunalActiveExps(activeId);
+            if (exps == null) return null;
+            for (int i = 0; i < exps.Count; i++)
+                if (exps[i].Grade == grade) return exps[i];
+            return null;
+        }
+
+        public CommunalActiveAward GetCommunalActiveAward(int activeId, int randId, int isArea = 0)
+        {
+            List<CommunalActiveAward> awards = GetCommunalActiveAwards(activeId);
+            if (awards == null) return null;
+            CommunalActiveAward fallback = null;
+            for (int i = 0; i < awards.Count; i++)
+            {
+                CommunalActiveAward a = awards[i];
+                if (a.RandId != randId) continue;
+                if (isArea > 0 && a.IsArea == isArea) return a;
+                if (fallback == null) fallback = a;
+            }
+            return fallback;
+        }
+
+        public CardAchievementInfo GetCardAchievement(int achievementId)
+        {
+            if (achievementId > 0 && CardAchievements.TryGetValue(achievementId, out CardAchievementInfo row)) return row;
+            return null;
+        }
+
+        public CardBuffInfo GetCardBuff(int cardId)
+        {
+            if (cardId > 0 && CardBuffs.TryGetValue(cardId, out CardBuffInfo row)) return row;
+            return null;
+        }
+
+        public CardSuiteInfo GetCardSuite(int id)
+        {
+            if (id > 0 && CardSuites.TryGetValue(id, out CardSuiteInfo row)) return row;
+            return null;
+        }
+
+        public CardInfo GetCardTemplate(int cardId, int cardType)
+        {
+            if (!CardTemplatesByCardId.TryGetValue(cardId, out List<CardInfo> list) || list == null) return null;
+            for (int i = 0; i < list.Count; i++)
+                if (list[i].CardType == cardType) return list[i];
+            return list.Count > 0 ? list[0] : null;
+        }
+
+        public static int CardTypeToBuffIndex(int cardType)
+        {
+            // CardType 1=gold, 2=silver, 3=copper; value pipe low→high
+            if (cardType == 1) return 3;
+            if (cardType == 2) return 2;
+            if (cardType == 3) return 1;
+            return 0;
+        }
+
+        public int CountOwnedCardsByRequireType(IReadOnlyList<int> ownedIds, IReadOnlyList<int> profiles, int requireType)
+        {
+            if (ownedIds == null) return 0;
+            int count = 0;
+            for (int i = 0; i < ownedIds.Count; i++)
+            {
+                int type = i < (profiles?.Count ?? 0) ? profiles[i] : 0;
+                if (requireType <= 0 || requireType == 3) { count++; continue; }
+                if (requireType == 1 && type == 1) count++;
+                else if (requireType == 2 && (type == 1 || type == 2)) count++;
+            }
+            return count;
+        }
+
+        public bool CardSuiteMeetsRequirement(CardSuiteInfo suite, IReadOnlyList<int> ownedIds, IReadOnlyList<int> profiles, int requireType)
+        {
+            if (suite == null || suite.CardIds == null || suite.CardIds.Length == 0) return false;
+            for (int i = 0; i < suite.CardIds.Length; i++)
+            {
+                int need = suite.CardIds[i];
+                int idx = -1;
+                for (int j = 0; j < ownedIds.Count; j++)
+                    if (ownedIds[j] == need) { idx = j; break; }
+                if (idx < 0) return false;
+                int type = idx < (profiles?.Count ?? 0) ? profiles[idx] : 0;
+                if (requireType == 1 && type != 1) return false;
+                if (requireType == 2 && type != 1 && type != 2) return false;
+            }
+            return true;
+        }
+
+        public bool MeetsCardAchievement(CardAchievementInfo ach, IReadOnlyList<int> ownedIds, IReadOnlyList<int> profiles)
+        {
+            if (ach == null) return false;
+            if (ach.RequireGroupId > 0)
+            {
+                CardSuiteInfo suite = GetCardSuite(ach.RequireGroupId);
+                return CardSuiteMeetsRequirement(suite, ownedIds, profiles, ach.RequireType);
+            }
+            int need = Mathf.Max(1, ach.RequireNum);
+            return CountOwnedCardsByRequireType(ownedIds, profiles, ach.RequireType) >= need;
+        }
+
+        public void ApplyCardAchievementBonus(IReadOnlyList<int> claimedIds, ref int atk, ref int def, ref int agi,
+            ref int luck, ref int hp, ref int baseDmg, ref int baseGuard, ref int magicAtk, ref int magicDef)
+        {
+            if (claimedIds == null) return;
+            for (int i = 0; i < claimedIds.Count; i++)
+            {
+                CardAchievementInfo ach = GetCardAchievement(claimedIds[i]);
+                if (ach == null) continue;
+                atk += ach.AddAttack;
+                def += ach.AddDefend;
+                luck += ach.AddLucky;
+                hp += ach.AddBlood;
+                baseDmg += ach.AddDamage;
+                baseGuard += ach.AddGuard;
+                magicAtk += ach.AddMagicAttack;
+                magicDef += ach.AddMagicDefend;
+            }
+        }
+
+        public void ApplyCardBuffBonus(IReadOnlyList<int> ownedIds, IReadOnlyList<int> profiles,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            if (ownedIds == null || ownedIds.Count == 0 || CardBuffList.Count == 0) return;
+            for (int b = 0; b < CardBuffList.Count; b++)
+            {
+                CardBuffInfo buff = CardBuffList[b];
+                CardSuiteInfo suite = GetCardSuite(buff.CardId);
+                int bestType = -1;
+                if (suite != null && suite.CardIds != null)
+                {
+                    int ownedInSuite = 0;
+                    for (int i = 0; i < suite.CardIds.Length; i++)
+                    {
+                        for (int j = 0; j < ownedIds.Count; j++)
+                        {
+                            if (ownedIds[j] != suite.CardIds[i]) continue;
+                            ownedInSuite++;
+                            int t = j < (profiles?.Count ?? 0) ? profiles[j] : 0;
+                            if (t == 1) bestType = 1;
+                            else if (t == 2 && bestType != 1) bestType = 2;
+                            else if (bestType < 0) bestType = t;
+                        }
+                    }
+                    if (ownedInSuite == 0) continue;
+                }
+                else
+                {
+                    // Buff CardID without suite: apply if any owned card exists
+                    if (ownedIds.Count == 0) continue;
+                    bestType = profiles != null && profiles.Count > 0 ? profiles[0] : 0;
+                }
+                int idx = CardTypeToBuffIndex(bestType < 0 ? 0 : bestType);
+                for (int e = 0; e < buff.Entries.Count; e++)
+                {
+                    CardBuffEntry entry = buff.Entries[e];
+                    if (entry.Values == null || entry.Values.Length == 0) continue;
+                    int v = entry.Values[Mathf.Clamp(idx, 0, entry.Values.Length - 1)];
+                    if (v <= 0) continue;
+                    switch (entry.PropertiesDscripId)
+                    {
+                        case 2: baseDmg += v; break;
+                        case 5:
+                        case 13:
+                        case 17:
+                            atk += v; def += v; agi += v; luck += v; break;
+                        case 7:
+                            atk += v; def += v; agi += v; luck += v; break;
+                        case 8:
+                        case 18:
+                            hp += v; break;
+                        case 9: baseGuard += v; break;
+                        case 19:
+                            baseDmg += v; baseGuard += v; break;
+                    }
+                }
+            }
         }
 
         void LoadServerConfig(ResLoader loader)

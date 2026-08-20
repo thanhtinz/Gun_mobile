@@ -277,6 +277,9 @@ namespace GunMobile.Net
         public const ushort ConsortiaBufferBuy = 230;
         public const ushort ElfSkillBook = 231;
         public const ushort ButterflyTaskClaim = 232;
+        public const ushort CommunalActiveClaim = 233;
+        public const ushort CardAchievementClaim = 234;
+        public const ushort CardInfoSync = 235;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

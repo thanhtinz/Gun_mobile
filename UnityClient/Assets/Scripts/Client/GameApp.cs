@@ -223,6 +223,15 @@ namespace GunMobile.Client
                 case "butterflytask":
                     ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
                     return;
+                case "communalactive":
+                    ExtraModulesScreens.CommunalActiveScreen(_safe, this);
+                    return;
+                case "cardachievement":
+                    ExtraModulesScreens.CardAchievementScreen(_safe, this);
+                    return;
+                case "cardinfosync":
+                    ExtraModulesScreens.CardInfoSyncScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -804,6 +813,24 @@ namespace GunMobile.Client
                         if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.CommunalActiveClaim:
+                        PhoneNet.LastCommunalActiveJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "communalactive")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardAchievementClaim:
+                        PhoneNet.LastCardAchievementJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "cardachievement" || _currentModuleId == "card"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardInfoSync:
+                        PhoneNet.LastCardInfoSyncJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "cardinfosync" || _currentModuleId == "card"))
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1081,6 +1108,14 @@ namespace GunMobile.Client
             Profile.EnsureButterflyTasks();
             ParseIntListFromServer(json, "butterflyTaskClaimed", Profile.ButterflyTaskClaimed);
             Profile.ButterflyTaskActive = JsonInt(json, "butterflyTaskActive", Profile.ButterflyTaskActive);
+            Profile.CommunalActiveId = JsonInt(json, "communalActiveId", Profile.CommunalActiveId);
+            Profile.CommunalActiveScore = JsonInt(json, "communalActiveScore", Profile.CommunalActiveScore);
+            Profile.CommunalActiveGrade = JsonInt(json, "communalActiveGrade", Profile.CommunalActiveGrade);
+            Profile.EnsureCommunalActiveClaimed();
+            ParseIntListFromServer(json, "communalActiveClaimed", Profile.CommunalActiveClaimed);
+            ParseIntListFromServer(json, "communalActiveExpClaimed", Profile.CommunalActiveExpClaimed);
+            Profile.EnsureCardAchievementClaimed();
+            ParseIntListFromServer(json, "cardAchievementClaimed", Profile.CardAchievementClaimed);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

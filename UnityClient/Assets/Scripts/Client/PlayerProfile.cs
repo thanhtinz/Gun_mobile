@@ -181,6 +181,12 @@ namespace GunMobile.Client
         public List<int> ElfSkillIds = new List<int>();
         public List<int> ButterflyTaskClaimed = new List<int>();
         public int ButterflyTaskActive;
+        public int CommunalActiveId;
+        public int CommunalActiveScore;
+        public int CommunalActiveGrade;
+        public List<int> CommunalActiveClaimed = new List<int>();
+        public List<int> CommunalActiveExpClaimed = new List<int>();
+        public List<int> CardAchievementClaimed = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -226,6 +232,12 @@ namespace GunMobile.Client
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureCommunalActiveClaimed()
+        {
+            if (CommunalActiveClaimed == null) CommunalActiveClaimed = new List<int>();
+            if (CommunalActiveExpClaimed == null) CommunalActiveExpClaimed = new List<int>();
+        }
+        public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -930,6 +942,9 @@ namespace GunMobile.Client
             new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
             new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
             new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
+            new ModuleDef("communalactive", "公会活跃", "Request/communalactive.xml"),
+            new ModuleDef("cardachievement", "卡牌成就", "Request/cardachievement.xml"),
+            new ModuleDef("cardinfosync", "卡牌图鉴", "Request/cardinfolist.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
