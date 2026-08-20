@@ -62,6 +62,10 @@ namespace GunMobile.Client
         public static string LastConsortiaBufferJson;
         public static string LastElfSkillBookJson;
         public static string LastButterflyTaskJson;
+        public static string LastWasteRecycleJson;
+        public static string LastNaiKuaiJson;
+        public static string LastActiveConvertJson;
+        public static string LastActivitySystemJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -389,6 +393,30 @@ namespace GunMobile.Client
         {
             string act = (action ?? "claim").Replace("\"", "");
             Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
+        }
+
+        public static void WasteRecycleClaim(int count = 1)
+        {
+            Road?.Send(PhoneMsg.WasteRecycleClaim, "{\"count\":" + count + "}");
+        }
+
+        public static void NaiKuaiEquip(int id = 0, string action = "equip")
+        {
+            string act = (action ?? "equip").Replace("\"", "");
+            Road?.Send(PhoneMsg.NaiKuaiEquip, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void ActiveConvert(int activeId, int itemType, int count = 1)
+        {
+            Road?.Send(PhoneMsg.ActiveConvert,
+                "{\"activeId\":" + activeId + ",\"itemType\":" + itemType + ",\"count\":" + count + "}");
+        }
+
+        public static void ActivitySystemItem(string action = "claim", int id = 0, int activityType = 0, int quality = 0)
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.ActivitySystemItem,
+                "{\"action\":\"" + act + "\",\"id\":" + id + ",\"activityType\":" + activityType + ",\"quality\":" + quality + "}");
         }
 
         public static void DrawLottery(int count)

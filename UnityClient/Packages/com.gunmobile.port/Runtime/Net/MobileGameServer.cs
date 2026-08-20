@@ -248,6 +248,17 @@ namespace GunMobile.Net
         public int ButterflyTaskDay = -1;
         public int ButterflyTaskActive;
         public int ButterflyTaskStartDay = -1;
+        public int NaiKuaiEquipId;
+        public int WasteRecycleDay = -1;
+        public int WasteRecycleDraws;
+        public List<int> ActivitySystemClaimed = new List<int>();
+
+        public void EnsureActivitySystemClaimed() { if (ActivitySystemClaimed == null) ActivitySystemClaimed = new List<int>(); }
+        public void TouchWasteRecycleDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (WasteRecycleDay != day) { WasteRecycleDay = day; WasteRecycleDraws = 0; }
+        }
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -651,6 +662,7 @@ namespace GunMobile.Net
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
             magicAtk += jadeMa + debrisMa; magicDef += jadeMd + debrisMd;
             db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
+            db.ApplyNaiKuaiBonus(NaiKuaiEquipId, ref atk, ref def, ref magicAtk, ref magicDef);
             db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             EnsureSigilSkills();
             db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
@@ -850,6 +862,13 @@ namespace GunMobile.Net
             for (int i = 0; i < DevilTreasRankClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DevilTreasRankClaimed[i]); }
             sb.Append("],");
             J(sb, "recyclePoints", RecyclePoints); sb.Append(",");
+            J(sb, "naiKuaiEquipId", NaiKuaiEquipId); sb.Append(",");
+            TouchWasteRecycleDay();
+            J(sb, "wasteRecycleDraws", WasteRecycleDraws); sb.Append(",");
+            EnsureActivitySystemClaimed();
+            sb.Append("\"activitySystemClaimed\":[");
+            for (int i = 0; i < ActivitySystemClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActivitySystemClaimed[i]); }
+            sb.Append("],");
             J(sb, "magicItemLevel", MagicItemLevel); sb.Append(",");
             sb.Append("\"acceptedQuests\":[");
             for (int i = 0; i < AcceptedQuests.Count; i++) { if (i > 0) sb.Append(","); sb.Append(AcceptedQuests[i]); }
@@ -2394,6 +2413,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ButterflyTaskClaim:
                     HandleButterflyTaskClaim(player, ns, json);
+                    break;
+                case PhoneMsg.WasteRecycleClaim:
+                    HandleWasteRecycleClaim(player, ns, json);
+                    break;
+                case PhoneMsg.NaiKuaiEquip:
+                    HandleNaiKuaiEquip(player, ns, json);
+                    break;
+                case PhoneMsg.ActiveConvert:
+                    HandleActiveConvert(player, ns, json);
+                    break;
+                case PhoneMsg.ActivitySystemItem:
+                    HandleActivitySystemItem(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -7225,6 +7256,192 @@ namespace GunMobile.Net
                 ",\"rewardGp\":" + row.RewardGp + ",\"rewardItem\":" + row.RewardItemId + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+        void HandleWasteRecycleClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.WasteRecycleAwardList.Count == 0)
+            { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchWasteRecycleDay();
+            int count = Mathf.Clamp(JI(json, "count", 1), 1, 20);
+            int costEach = _db.WasteRecycleDrawCost();
+            int need = costEach * count;
+            if (player.RecyclePoints < need)
+            { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"points\",\"need\":" + need + "}"); return; }
+            int limit = _db.ConfigInt("WasteRecycleDailyLimit", 50);
+            if (limit > 0 && player.WasteRecycleDraws + count > limit)
+            { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+
+            player.RecyclePoints -= need;
+            player.WasteRecycleDraws += count;
+            var sb = new StringBuilder("{\"ok\":true,\"count\":" + count + ",\"cost\":" + need +
+                ",\"recyclePoints\":" + player.RecyclePoints + ",\"draws\":" + player.WasteRecycleDraws + ",\"awards\":[");
+            for (int n = 0; n < count; n++)
+            {
+                WasteRecycleAward award;
+                lock (_lock) { award = _db.RollWasteRecycleAward(_rng); }
+                if (award == null) continue;
+                if (n > 0) sb.Append(",");
+                player.GrantTemplateReward(_db, award.TemplateId, award.Count);
+                sb.Append("{\"id\":").Append(award.Id)
+                  .Append(",\"templateId\":").Append(award.TemplateId)
+                  .Append(",\"count\":").Append(award.Count).Append("}");
+            }
+            sb.Append("]}");
+            SavePlayer(player);
+            Send(ns, PhoneMsg.WasteRecycleClaim, sb.ToString());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleNaiKuaiEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.NaiKuaiEquipList.Count == 0)
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "equip");
+            if (string.Equals(action, "upgrade", StringComparison.OrdinalIgnoreCase))
+            {
+                NaiKuaiEquipTemp cur = _db.GetNaiKuaiEquip(player.NaiKuaiEquipId);
+                if (cur == null)
+                { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"none\"}"); return; }
+                NaiKuaiEquipTemp next = _db.GetNaiKuaiUpgrade(cur);
+                if (next == null)
+                { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                int cost = _db.NaiKuaiUpgradeGoldCost(cur);
+                if (cost > 0 && player.Gold < cost)
+                { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (cost > 0) player.Gold -= cost;
+                player.NaiKuaiEquipId = next.Id;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.NaiKuaiEquip,
+                    "{\"ok\":true,\"action\":\"upgrade\",\"id\":" + next.Id + ",\"templateId\":" + next.TemplateId +
+                    ",\"level\":" + next.EquipLevel + ",\"cost\":" + cost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            if (string.Equals(action, "unequip", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase))
+            {
+                player.NaiKuaiEquipId = 0;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":true,\"action\":\"unequip\",\"id\":0}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            int id = JI(json, "id", JI(json, "equipId", JI(json, "templateId", 0)));
+            if (id <= 0)
+            {
+                player.NaiKuaiEquipId = 0;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":true,\"action\":\"equip\",\"id\":0}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            NaiKuaiEquipTemp row = _db.GetNaiKuaiEquip(id);
+            if (row == null)
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"item\"}"); return; }
+            player.NaiKuaiEquipId = row.Id;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.NaiKuaiEquip,
+                "{\"ok\":true,\"action\":\"equip\",\"id\":" + row.Id + ",\"templateId\":" + row.TemplateId +
+                ",\"level\":" + row.EquipLevel + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleActiveConvert(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ActiveConvertItems.Count == 0)
+            { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int activeId = JI(json, "activeId", JI(json, "ActiveID", 0));
+            int itemType = JI(json, "itemType", JI(json, "ItemType", 0));
+            int times = Mathf.Clamp(JI(json, "count", 1), 1, 99);
+            if (itemType % 2 != 0) itemType -= 1;
+            if (!_db.TryGetActiveConvertPair(activeId, itemType, out ActiveConvertItem cost, out ActiveConvertItem reward))
+            { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"pair\"}"); return; }
+
+            int need = cost.ItemCount * times;
+            int give = reward.ItemCount * times;
+            if (cost.TemplateId > 0)
+            {
+                if (BagCount(player, cost.TemplateId) < need || !player.Consume(cost.TemplateId, need))
+                { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"bag\"}"); return; }
+            }
+            else if (_db.IsGoldTemplate(cost.TemplateId))
+            {
+                if (player.Gold < need)
+                { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= need;
+            }
+            else
+            {
+                if (player.Gift < need)
+                { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+                player.Gift -= need;
+            }
+
+            player.GrantTemplateReward(_db, reward.TemplateId, give);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActiveConvert,
+                "{\"ok\":true,\"activeId\":" + activeId + ",\"itemType\":" + itemType +
+                ",\"costId\":" + cost.TemplateId + ",\"costCount\":" + need +
+                ",\"rewardId\":" + reward.TemplateId + ",\"rewardCount\":" + give + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleActivitySystemItem(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ActivitySystemItemList.Count == 0)
+            { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "claim");
+            player.EnsureActivitySystemClaimed();
+            if (string.Equals(action, "buy", StringComparison.OrdinalIgnoreCase))
+            {
+                int buyId = JI(json, "id", JI(json, "itemId", 0));
+                ActivitySystemItem row = _db.GetActivitySystemItem(buyId);
+                if (row == null || row.TemplateId == 0)
+                { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                int costGold = _db.ActivitySystemBuyGoldCost(row);
+                if (player.Gold < costGold)
+                { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= costGold;
+                player.GrantTemplateReward(_db, row.TemplateId, row.Count);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ActivitySystemItem,
+                    "{\"ok\":true,\"action\":\"buy\",\"id\":" + row.Id + ",\"templateId\":" + row.TemplateId +
+                    ",\"count\":" + row.Count + ",\"cost\":" + costGold + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int activityType = JI(json, "activityType", JI(json, "type", 0));
+            int quality = JI(json, "quality", 0);
+            int idClaim = JI(json, "id", 0);
+            ActivitySystemItem award = null;
+            if (idClaim > 0)
+            {
+                award = _db.GetActivitySystemItem(idClaim);
+                if (award == null)
+                { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                if (player.ActivitySystemClaimed.Contains(idClaim))
+                { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+                player.ActivitySystemClaimed.Add(idClaim);
+            }
+            else
+            {
+                lock (_lock) { award = _db.RollActivitySystemItem(activityType, quality, _rng); }
+                if (award == null)
+                { Send(ns, PhoneMsg.ActivitySystemItem, "{\"ok\":false,\"err\":\"empty\"}"); return; }
+            }
+            player.GrantTemplateReward(_db, award.TemplateId, award.Count);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActivitySystemItem,
+                "{\"ok\":true,\"action\":\"claim\",\"id\":" + award.Id + ",\"activityType\":" + award.ActivityType +
+                ",\"quality\":" + award.Quality + ",\"templateId\":" + award.TemplateId +
+                ",\"count\":" + award.Count + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -10321,6 +10538,9 @@ namespace GunMobile.Net
             public List<int> ElfSkillIds = new List<int>();
             public List<int> ButterflyTaskClaimed = new List<int>();
             public int ButterflyTaskDay = -1, ButterflyTaskActive, ButterflyTaskStartDay = -1;
+            public int NaiKuaiEquipId;
+            public int WasteRecycleDay = -1, WasteRecycleDraws;
+            public List<int> ActivitySystemClaimed = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -10490,6 +10710,9 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = p.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = p.ButterflyTaskDay, ButterflyTaskActive = p.ButterflyTaskActive,
                 ButterflyTaskStartDay = p.ButterflyTaskStartDay,
+                NaiKuaiEquipId = p.NaiKuaiEquipId,
+                WasteRecycleDay = p.WasteRecycleDay, WasteRecycleDraws = p.WasteRecycleDraws,
+                ActivitySystemClaimed = p.ActivitySystemClaimed ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -10663,6 +10886,9 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = s.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = s.ButterflyTaskDay, ButterflyTaskActive = s.ButterflyTaskActive,
                 ButterflyTaskStartDay = s.ButterflyTaskStartDay,
+                NaiKuaiEquipId = s.NaiKuaiEquipId,
+                WasteRecycleDay = s.WasteRecycleDay, WasteRecycleDraws = s.WasteRecycleDraws,
+                ActivitySystemClaimed = s.ActivitySystemClaimed ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

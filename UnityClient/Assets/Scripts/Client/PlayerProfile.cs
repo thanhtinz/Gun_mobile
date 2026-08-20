@@ -181,6 +181,9 @@ namespace GunMobile.Client
         public List<int> ElfSkillIds = new List<int>();
         public List<int> ButterflyTaskClaimed = new List<int>();
         public int ButterflyTaskActive;
+        public int NaiKuaiEquipId;
+        public int WasteRecycleDraws;
+        public List<int> ActivitySystemClaimed = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -226,6 +229,7 @@ namespace GunMobile.Client
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureActivitySystemClaimed() { if (ActivitySystemClaimed == null) ActivitySystemClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -657,6 +661,7 @@ namespace GunMobile.Client
                 db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
                 magicAtk += jadeMa; magicDef += jadeMd;
                 db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
+                db.ApplyNaiKuaiBonus(NaiKuaiEquipId, ref atk, ref def, ref magicAtk, ref magicDef);
                 int sDmg = 0, sGuard = 0;
                 db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 EnsureSigilSkills();
@@ -930,6 +935,10 @@ namespace GunMobile.Client
             new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
             new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
             new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
+            new ModuleDef("wasterecycle", "变废抽奖", "Request/WasteRecycle_Award.xml", false, "wasteRecycle.ui"),
+            new ModuleDef("naikuai", "耐块装备", "Request/TS_NaiKuaiEquip.xml"),
+            new ModuleDef("activeconvert", "活动兑换", "Request/activeconvertiteminfo.xml"),
+            new ModuleDef("activitysystem", "活动系统", "Request/activitysystemitems.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

@@ -1290,6 +1290,69 @@ namespace GunMobile.Res
         public string TaskDescr = "";
     }
 
+    public sealed class WasteRecycleAward
+    {
+        public int Id;
+        public int TemplateId;
+        public int Count = 1;
+        public int Valid;
+        public bool IsBinds;
+        public int StrengthLevel;
+        public int AttackCompose;
+        public int DefenceCompose;
+        public int AgilityCompose;
+        public int LuckCompose;
+        public int ShowIndex;
+        public int Rate;
+    }
+
+    public sealed class NaiKuaiEquipTemp
+    {
+        public int Id;
+        public int TemplateId;
+        public int PhyAttack;
+        public int PhyDefence;
+        public int MagAttack;
+        public int MagDefence;
+        public int EquipLevel = 1;
+    }
+
+    public sealed class ActiveConvertItem
+    {
+        public int ActiveId;
+        public int TemplateId;
+        public int ItemType;
+        public int ItemCount = 1;
+        public int LimitValue;
+        public bool IsBind;
+        public int ValidDate;
+    }
+
+    public sealed class ActivitySystemItem
+    {
+        public int Id;
+        public int ActivityType;
+        public int Quality;
+        public int Probability;
+        public int TemplateId;
+        public int ValidDate;
+        public int Count = 1;
+        public bool IsBind;
+        public int StrengthLevel;
+        public int AttackCompose;
+        public int DefendCompose;
+        public int AgilityCompose;
+        public int LuckCompose;
+    }
+
+    public sealed class ActivitySystemItemRate
+    {
+        public int ActivityType;
+        public int Quality;
+        public int TemplateId;
+        public int Rate;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1841,6 +1904,16 @@ namespace GunMobile.Res
         public List<ElfSkillBookTemp> ElfSkillBookList { get; } = new List<ElfSkillBookTemp>();
         public Dictionary<int, ButterflyTaskInfo> ButterflyTasks { get; } = new Dictionary<int, ButterflyTaskInfo>();
         public List<ButterflyTaskInfo> ButterflyTaskList { get; } = new List<ButterflyTaskInfo>();
+        public Dictionary<int, WasteRecycleAward> WasteRecycleAwards { get; } = new Dictionary<int, WasteRecycleAward>();
+        public List<WasteRecycleAward> WasteRecycleAwardList { get; } = new List<WasteRecycleAward>();
+        public Dictionary<int, NaiKuaiEquipTemp> NaiKuaiEquips { get; } = new Dictionary<int, NaiKuaiEquipTemp>();
+        public Dictionary<int, NaiKuaiEquipTemp> NaiKuaiByTemplate { get; } = new Dictionary<int, NaiKuaiEquipTemp>();
+        public List<NaiKuaiEquipTemp> NaiKuaiEquipList { get; } = new List<NaiKuaiEquipTemp>();
+        public List<ActiveConvertItem> ActiveConvertItems { get; } = new List<ActiveConvertItem>();
+        public Dictionary<int, List<ActiveConvertItem>> ActiveConvertByActive { get; } = new Dictionary<int, List<ActiveConvertItem>>();
+        public Dictionary<int, ActivitySystemItem> ActivitySystemItems { get; } = new Dictionary<int, ActivitySystemItem>();
+        public List<ActivitySystemItem> ActivitySystemItemList { get; } = new List<ActivitySystemItem>();
+        public List<ActivitySystemItemRate> ActivitySystemItemRates { get; } = new List<ActivitySystemItemRate>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1962,6 +2035,10 @@ namespace GunMobile.Res
             db.LoadConsortiaBuffers(loader);
             db.LoadElfSkillBooks(loader);
             db.LoadButterflyTasks(loader);
+            db.LoadWasteRecycleAwards(loader);
+            db.LoadNaiKuaiEquip(loader);
+            db.LoadActiveConvertItems(loader);
+            db.LoadActivitySystemItems(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1983,7 +2060,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} wasteRecycle={db.WasteRecycleAwards.Count} naiKuai={db.NaiKuaiEquips.Count} activeConvert={db.ActiveConvertItems.Count} actSys={db.ActivitySystemItems.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -2345,6 +2422,187 @@ namespace GunMobile.Res
         {
             if (taskId > 0 && ButterflyTasks.TryGetValue(taskId, out ButterflyTaskInfo row)) return row;
             return null;
+        }
+
+        public WasteRecycleAward GetWasteRecycleAward(int id)
+        {
+            if (id > 0 && WasteRecycleAwards.TryGetValue(id, out WasteRecycleAward row)) return row;
+            return null;
+        }
+
+        public int WasteRecycleDrawCost()
+        {
+            int cost = ConfigInt("RecycleGoodGetRewardIntegal", 0);
+            if (cost <= 0) cost = ConfigInt("WasteRecycleDrawCost", 100);
+            return Mathf.Max(1, cost);
+        }
+
+        public WasteRecycleAward RollWasteRecycleAward(System.Random rng)
+        {
+            if (WasteRecycleAwardList.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < WasteRecycleAwardList.Count; i++)
+                total += Mathf.Max(0, WasteRecycleAwardList[i].Rate);
+            if (total <= 0)
+            {
+                if (rng == null) return WasteRecycleAwardList[0];
+                return WasteRecycleAwardList[rng.Next(0, WasteRecycleAwardList.Count)];
+            }
+            int roll = rng != null ? rng.Next(0, total) : 0;
+            for (int i = 0; i < WasteRecycleAwardList.Count; i++)
+            {
+                WasteRecycleAward row = WasteRecycleAwardList[i];
+                roll -= Mathf.Max(0, row.Rate);
+                if (roll < 0) return row;
+            }
+            return WasteRecycleAwardList[WasteRecycleAwardList.Count - 1];
+        }
+
+        public NaiKuaiEquipTemp GetNaiKuaiEquip(int idOrTemplate)
+        {
+            if (idOrTemplate <= 0) return null;
+            if (NaiKuaiEquips.TryGetValue(idOrTemplate, out NaiKuaiEquipTemp byId)) return byId;
+            if (NaiKuaiByTemplate.TryGetValue(idOrTemplate, out NaiKuaiEquipTemp byT)) return byT;
+            return null;
+        }
+
+        static int NaiKuaiSlotKey(NaiKuaiEquipTemp row)
+        {
+            if (row == null) return 0;
+            int k = 0;
+            if (row.PhyAttack > 0) k |= 1;
+            if (row.PhyDefence > 0) k |= 2;
+            if (row.MagAttack > 0) k |= 4;
+            if (row.MagDefence > 0) k |= 8;
+            return k;
+        }
+
+        public NaiKuaiEquipTemp GetNaiKuaiUpgrade(NaiKuaiEquipTemp current)
+        {
+            if (current == null) return null;
+            int key = NaiKuaiSlotKey(current);
+            int nextLv = current.EquipLevel + 1;
+            NaiKuaiEquipTemp best = null;
+            int bestDist = int.MaxValue;
+            for (int i = 0; i < NaiKuaiEquipList.Count; i++)
+            {
+                NaiKuaiEquipTemp row = NaiKuaiEquipList[i];
+                if (row.EquipLevel != nextLv) continue;
+                if (NaiKuaiSlotKey(row) != key) continue;
+                int dist = Mathf.Abs(row.TemplateId - current.TemplateId);
+                if (row.TemplateId >= current.TemplateId && dist < bestDist)
+                {
+                    best = row;
+                    bestDist = dist;
+                }
+            }
+            if (best != null) return best;
+            for (int i = 0; i < NaiKuaiEquipList.Count; i++)
+            {
+                NaiKuaiEquipTemp row = NaiKuaiEquipList[i];
+                if (row.EquipLevel != nextLv) continue;
+                if (NaiKuaiSlotKey(row) != key) continue;
+                return row;
+            }
+            return null;
+        }
+
+        public int NaiKuaiUpgradeGoldCost(NaiKuaiEquipTemp current)
+        {
+            if (current == null) return 0;
+            return ConfigInt("NaiKuaiUpgradeGold", 500) * Mathf.Max(1, current.EquipLevel);
+        }
+
+        public void ApplyNaiKuaiBonus(int equipIdOrTemplate, ref int atk, ref int def, ref int magicAtk, ref int magicDef)
+        {
+            NaiKuaiEquipTemp row = GetNaiKuaiEquip(equipIdOrTemplate);
+            if (row == null) return;
+            atk += row.PhyAttack;
+            def += row.PhyDefence;
+            magicAtk += row.MagAttack;
+            magicDef += row.MagDefence;
+        }
+
+        public ActiveConvertItem GetActiveConvertItem(int activeId, int itemType)
+        {
+            if (!ActiveConvertByActive.TryGetValue(activeId, out List<ActiveConvertItem> list) || list == null)
+                return null;
+            for (int i = 0; i < list.Count; i++)
+                if (list[i].ItemType == itemType) return list[i];
+            return null;
+        }
+
+        public bool TryGetActiveConvertPair(int activeId, int costItemType, out ActiveConvertItem cost, out ActiveConvertItem reward)
+        {
+            cost = null;
+            reward = null;
+            if (costItemType < 0 || (costItemType % 2) != 0) return false;
+            cost = GetActiveConvertItem(activeId, costItemType);
+            reward = GetActiveConvertItem(activeId, costItemType + 1);
+            return cost != null && reward != null && cost.ItemCount > 0 && reward.ItemCount > 0;
+        }
+
+        public ActivitySystemItem GetActivitySystemItem(int id)
+        {
+            if (id > 0 && ActivitySystemItems.TryGetValue(id, out ActivitySystemItem row)) return row;
+            return null;
+        }
+
+        int ActivitySystemWeight(ActivitySystemItem row)
+        {
+            if (row == null) return 0;
+            int w = Mathf.Max(0, row.Probability);
+            for (int i = 0; i < ActivitySystemItemRates.Count; i++)
+            {
+                ActivitySystemItemRate r = ActivitySystemItemRates[i];
+                if (r.ActivityType == row.ActivityType && r.Quality == row.Quality && r.TemplateId == row.TemplateId)
+                {
+                    if (r.Rate > 0) w = r.Rate;
+                    break;
+                }
+            }
+            return w;
+        }
+
+        public ActivitySystemItem RollActivitySystemItem(int activityType, int quality, System.Random rng)
+        {
+            var pool = new List<ActivitySystemItem>();
+            int total = 0;
+            for (int i = 0; i < ActivitySystemItemList.Count; i++)
+            {
+                ActivitySystemItem row = ActivitySystemItemList[i];
+                if (activityType > 0 && row.ActivityType != activityType) continue;
+                if (quality > 0 && row.Quality != quality) continue;
+                int w = ActivitySystemWeight(row);
+                if (w <= 0 && row.Probability <= 0) w = 1;
+                if (w <= 0) continue;
+                pool.Add(row);
+                total += w;
+            }
+            if (pool.Count == 0) return null;
+            if (total <= 0)
+            {
+                if (rng == null) return pool[0];
+                return pool[rng.Next(0, pool.Count)];
+            }
+            int roll = rng != null ? rng.Next(0, total) : 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                int w = ActivitySystemWeight(pool[i]);
+                if (w <= 0 && pool[i].Probability <= 0) w = 1;
+                roll -= Mathf.Max(0, w);
+                if (roll < 0) return pool[i];
+            }
+            return pool[pool.Count - 1];
+        }
+
+        public int ActivitySystemBuyGoldCost(ActivitySystemItem row)
+        {
+            if (row == null) return 0;
+            int baseCost = ConfigInt("ActivitySystemBuyGold", 200);
+            int q = row.Quality;
+            if (q <= 0 || q >= 100) q = 1;
+            return Mathf.Max(1, baseCost * q);
         }
 
         public JadeTemp GetJade(int id)
@@ -9084,6 +9342,128 @@ namespace GunMobile.Res
                 ButterflyTaskList.Add(info);
             }
             ButterflyTaskList.Sort((a, b) => a.TaskId.CompareTo(b.TaskId));
+        }
+
+        void LoadWasteRecycleAwards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/WasteRecycle_Award.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || WasteRecycleAwards.ContainsKey(id)) continue;
+                var info = new WasteRecycleAward
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateID"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    Valid = Int(row, "Valid"),
+                    IsBinds = Bool(row, "IsBinds"),
+                    StrengthLevel = Int(row, "StrengthLevel"),
+                    AttackCompose = Int(row, "AttackCompose"),
+                    DefenceCompose = Int(row, "DefenceCompose"),
+                    AgilityCompose = Int(row, "AgilityCompose"),
+                    LuckCompose = Int(row, "LuckCompose"),
+                    ShowIndex = Int(row, "ShowIndex"),
+                    Rate = Int(row, "Rate")
+                };
+                WasteRecycleAwards[id] = info;
+                WasteRecycleAwardList.Add(info);
+            }
+        }
+
+        void LoadNaiKuaiEquip(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_NaiKuaiEquip.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                int templateId = Int(row, "TemplateID");
+                if (id <= 0 || templateId == 0 || NaiKuaiEquips.ContainsKey(id)) continue;
+                var info = new NaiKuaiEquipTemp
+                {
+                    Id = id,
+                    TemplateId = templateId,
+                    PhyAttack = Int(row, "PhyAttack"),
+                    PhyDefence = Int(row, "PhyDefence"),
+                    MagAttack = Int(row, "MagAttack"),
+                    MagDefence = Int(row, "MagDefence"),
+                    EquipLevel = Mathf.Max(1, Int(row, "EquipLevel"))
+                };
+                NaiKuaiEquips[id] = info;
+                if (!NaiKuaiByTemplate.ContainsKey(templateId)) NaiKuaiByTemplate[templateId] = info;
+                NaiKuaiEquipList.Add(info);
+            }
+            NaiKuaiEquipList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadActiveConvertItems(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/activeconvertiteminfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = Int(row, "ActiveID");
+                if (activeId <= 0) continue;
+                var info = new ActiveConvertItem
+                {
+                    ActiveId = activeId,
+                    TemplateId = Int(row, "TemplateID"),
+                    ItemType = Int(row, "ItemType"),
+                    ItemCount = Mathf.Max(1, Int(row, "ItemCount")),
+                    LimitValue = Int(row, "LimitValue"),
+                    IsBind = Bool(row, "IsBind"),
+                    ValidDate = Int(row, "ValidDate")
+                };
+                ActiveConvertItems.Add(info);
+                if (!ActiveConvertByActive.TryGetValue(activeId, out List<ActiveConvertItem> list))
+                {
+                    list = new List<ActiveConvertItem>();
+                    ActiveConvertByActive[activeId] = list;
+                }
+                list.Add(info);
+            }
+        }
+
+        void LoadActivitySystemItems(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/activitysystemitems.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || ActivitySystemItems.ContainsKey(id)) continue;
+                    var info = new ActivitySystemItem
+                    {
+                        Id = id,
+                        ActivityType = Int(row, "ActivityType"),
+                        Quality = Int(row, "Quality"),
+                        Probability = Int(row, "Probability"),
+                        TemplateId = Int(row, "TemplateID"),
+                        ValidDate = Int(row, "ValidDate"),
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        IsBind = Bool(row, "IsBind"),
+                        StrengthLevel = Int(row, "StrengthLevel"),
+                        AttackCompose = Int(row, "AttackCompose"),
+                        DefendCompose = Int(row, "DefendCompose"),
+                        AgilityCompose = Int(row, "AgilityCompose"),
+                        LuckCompose = Int(row, "LuckCompose")
+                    };
+                    ActivitySystemItems[id] = info;
+                    ActivitySystemItemList.Add(info);
+                }
+            }
+            if (TryTable(loader, "Request/activitysystemitemsrate.xml", out XmlResultTable rates))
+            {
+                foreach (var row in rates.Rows)
+                {
+                    ActivitySystemItemRates.Add(new ActivitySystemItemRate
+                    {
+                        ActivityType = Int(row, "ActivityType"),
+                        Quality = Int(row, "Quality"),
+                        TemplateId = Int(row, "TemplateID"),
+                        Rate = Int(row, "Rate")
+                    });
+                }
+            }
         }
 
         void LoadServerConfig(ResLoader loader)

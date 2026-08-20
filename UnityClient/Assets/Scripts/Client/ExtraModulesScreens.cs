@@ -1849,6 +1849,138 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastButterflyTaskJson)) SysUi.Note(body, PhoneNet.LastButterflyTaskJson);
         }
 
+        public static void WasteRecycleAwardScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("wasterecycle", "变废抽奖", "Request/WasteRecycle_Award.xml", false, "wasteRecycle.ui"),
+                "wasteRecycle.ui");
+            int cost = app.Database != null ? app.Database.WasteRecycleDrawCost() : 100;
+            SysUi.Note(body, "WasteRecycle_Award.xml  ·  PhoneMsg 236  ·  积分 " + app.Profile.RecyclePoints +
+                "  ·  今日 " + app.Profile.WasteRecycleDraws + "  ·  每次 " + cost);
+            if (app.Database == null || app.Database.WasteRecycleAwardList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/WasteRecycle_Award.xml");
+                return;
+            }
+            SysUi.Row(body, "wr1", "抽奖 x1  (" + cost + "分)", () => PhoneNet.WasteRecycleClaim(1));
+            SysUi.Row(body, "wr5", "抽奖 x5  (" + (cost * 5) + "分)", () => PhoneNet.WasteRecycleClaim(5));
+            int shown = 0;
+            foreach (WasteRecycleAward row in app.Database.WasteRecycleAwardList)
+            {
+                if (row.Rate <= 0 && shown > 8) continue;
+                SysUi.Note(body, "#" + row.Id + "  " + SysUi.ItemName(app, row.TemplateId) +
+                    " x" + row.Count + "  权重" + row.Rate);
+                if (++shown >= 16) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastWasteRecycleJson))
+                SysUi.Note(body, PhoneNet.LastWasteRecycleJson);
+        }
+
+        public static void NaiKuaiEquipScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "耐块装备 · NaiKuai");
+            SysUi.Note(body, "TS_NaiKuaiEquip.xml  ·  PhoneMsg 237");
+            NaiKuaiEquipTemp cur = app.Database != null ? app.Database.GetNaiKuaiEquip(app.Profile.NaiKuaiEquipId) : null;
+            if (cur != null)
+            {
+                SysUi.Note(body, "已装备 #" + cur.Id + " T" + cur.TemplateId + " Lv" + cur.EquipLevel +
+                    "  PA" + cur.PhyAttack + " PD" + cur.PhyDefence + " MA" + cur.MagAttack + " MD" + cur.MagDefence);
+                int upCost = app.Database.NaiKuaiUpgradeGoldCost(cur);
+                if (app.Database.GetNaiKuaiUpgrade(cur) != null)
+                    SysUi.Row(body, "nkup", "升级  " + upCost + "金", () => PhoneNet.NaiKuaiEquip(cur.Id, "upgrade"));
+                SysUi.Row(body, "nkoff", "卸下", () => PhoneNet.NaiKuaiEquip(0, "unequip"));
+            }
+            else SysUi.Note(body, "未装备");
+            if (app.Database == null || app.Database.NaiKuaiEquipList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_NaiKuaiEquip.xml");
+                return;
+            }
+            int shown = 0;
+            foreach (NaiKuaiEquipTemp row in app.Database.NaiKuaiEquipList)
+            {
+                if (row.EquipLevel > 3 && row.Id != app.Profile.NaiKuaiEquipId) continue;
+                NaiKuaiEquipTemp local = row;
+                bool on = app.Profile.NaiKuaiEquipId == row.Id;
+                SysUi.Row(body, "nk" + row.Id,
+                    (on ? "[装备] " : "") + "#" + row.Id + " Lv" + row.EquipLevel +
+                    " PA" + row.PhyAttack + " PD" + row.PhyDefence + " MA" + row.MagAttack,
+                    () => PhoneNet.NaiKuaiEquip(local.Id, "equip"));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastNaiKuaiJson))
+                SysUi.Note(body, PhoneNet.LastNaiKuaiJson);
+        }
+
+        public static void ActiveConvertScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "活动兑换 · ActiveConvert");
+            SysUi.Note(body, "activeconvertiteminfo.xml  ·  PhoneMsg 238");
+            if (app.Database == null || app.Database.ActiveConvertItems.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/activeconvertiteminfo.xml");
+                return;
+            }
+            int shown = 0;
+            foreach (var kv in app.Database.ActiveConvertByActive)
+            {
+                int activeId = kv.Key;
+                for (int i = 0; i < kv.Value.Count; i++)
+                {
+                    ActiveConvertItem cost = kv.Value[i];
+                    if ((cost.ItemType % 2) != 0) continue;
+                    ActiveConvertItem reward = app.Database.GetActiveConvertItem(activeId, cost.ItemType + 1);
+                    if (reward == null) continue;
+                    string costName = cost.TemplateId > 0 ? SysUi.ItemName(app, cost.TemplateId) : ("货币" + cost.TemplateId);
+                    string rewardName = reward.TemplateId > 0 ? SysUi.ItemName(app, reward.TemplateId) : ("货币" + reward.TemplateId);
+                    int aid = activeId;
+                    int itype = cost.ItemType;
+                    SysUi.Row(body, "ac" + activeId + "_" + cost.ItemType,
+                        "A" + activeId + "  " + costName + "x" + cost.ItemCount + " → " + rewardName + "x" + reward.ItemCount,
+                        () => PhoneNet.ActiveConvert(aid, itype, 1));
+                    if (++shown >= 30) break;
+                }
+                if (shown >= 30) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastActiveConvertJson))
+                SysUi.Note(body, PhoneNet.LastActiveConvertJson);
+        }
+
+        public static void ActivitySystemItemScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "活动系统 · ActivitySystem");
+            app.Profile.EnsureActivitySystemClaimed();
+            SysUi.Note(body, "activitysystemitems + rate  ·  PhoneMsg 239  ·  金 " + app.Profile.Gold);
+            if (app.Database == null || app.Database.ActivitySystemItemList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/activitysystemitems.xml");
+                return;
+            }
+            SysUi.Row(body, "asroll", "加权抽取 (全池)", () => PhoneNet.ActivitySystemItem("claim", 0, 0, 0));
+            int shown = 0;
+            foreach (ActivitySystemItem row in app.Database.ActivitySystemItemList)
+            {
+                if (row.TemplateId == 0) continue;
+                if (row.Probability <= 0 && shown > 12) continue;
+                bool claimed = app.Profile.ActivitySystemClaimed.Contains(row.Id);
+                int id = row.Id;
+                int at = row.ActivityType;
+                string name = SysUi.ItemName(app, row.TemplateId);
+                string cap = "T" + row.ActivityType + " Q" + row.Quality + "  " + name + " x" + row.Count +
+                    "  P" + row.Probability + (claimed ? " [已领]" : "");
+                if (claimed) SysUi.Note(body, cap);
+                else
+                {
+                    SysUi.Row(body, "asc" + row.Id, "领取 " + cap, () => PhoneNet.ActivitySystemItem("claim", id, at, 0));
+                    SysUi.Row(body, "asb" + row.Id, "购买 " + cap,
+                        () => PhoneNet.ActivitySystemItem("buy", id, at, row.Quality));
+                }
+                if (++shown >= 20) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastActivitySystemJson))
+                SysUi.Note(body, PhoneNet.LastActivitySystemJson);
+        }
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))

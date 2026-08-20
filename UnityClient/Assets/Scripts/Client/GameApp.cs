@@ -223,6 +223,18 @@ namespace GunMobile.Client
                 case "butterflytask":
                     ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
                     return;
+                case "wasterecycle":
+                    ExtraModulesScreens.WasteRecycleAwardScreen(_safe, this);
+                    return;
+                case "naikuai":
+                    ExtraModulesScreens.NaiKuaiEquipScreen(_safe, this);
+                    return;
+                case "activeconvert":
+                    ExtraModulesScreens.ActiveConvertScreen(_safe, this);
+                    return;
+                case "activitysystem":
+                    ExtraModulesScreens.ActivitySystemItemScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -804,6 +816,30 @@ namespace GunMobile.Client
                         if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.WasteRecycleClaim:
+                        PhoneNet.LastWasteRecycleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "wasterecycle" || _currentModuleId == "recycle"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.NaiKuaiEquip:
+                        PhoneNet.LastNaiKuaiJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "naikuai" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActiveConvert:
+                        PhoneNet.LastActiveConvertJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "activeconvert" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActivitySystemItem:
+                        PhoneNet.LastActivitySystemJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "activitysystem" || !string.IsNullOrEmpty(_currentModuleId)))
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -971,6 +1007,10 @@ namespace GunMobile.Client
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.DevilTurnPoints = JsonInt(json, "devilTurnPoints", Profile.DevilTurnPoints);
             Profile.RecyclePoints = JsonInt(json, "recyclePoints", Profile.RecyclePoints);
+            Profile.NaiKuaiEquipId = JsonInt(json, "naiKuaiEquipId", Profile.NaiKuaiEquipId);
+            Profile.WasteRecycleDraws = JsonInt(json, "wasteRecycleDraws", Profile.WasteRecycleDraws);
+            Profile.EnsureActivitySystemClaimed();
+            ParseIntListFromServer(json, "activitySystemClaimed", Profile.ActivitySystemClaimed);
             Profile.MagicItemLevel = JsonInt(json, "magicItemLevel", Profile.MagicItemLevel);
             Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             ParseDevilTreasPointClaimedFromServer(json);
