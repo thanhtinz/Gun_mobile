@@ -591,6 +591,16 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.GuildDonate, "{}");
         }
 
+        public static void GuildUpgrade()
+        {
+            Road?.Send(PhoneMsg.GuildUpgrade, "{}");
+        }
+
+        public static void ConsortiaBossStart()
+        {
+            Road?.Send(PhoneMsg.ConsortiaBossStart, "{}");
+        }
+
         public static void AddFriend(string name)
         {
             Road?.Send(PhoneMsg.FriendAdd, "{\"name\":\"" + (name ?? "").Replace("\"", "") + "\"}");

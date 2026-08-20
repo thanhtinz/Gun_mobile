@@ -461,6 +461,8 @@ namespace GunMobile.Client
                     case PhoneMsg.JampsClaimPage:
                     case PhoneMsg.CardMainUpgrade:
                     case PhoneMsg.ElfIntimacyAction:
+                    case PhoneMsg.GuildUpgrade:
+                    case PhoneMsg.ConsortiaBossStart:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -701,6 +703,8 @@ namespace GunMobile.Client
             Profile.BankGold = JsonInt(json, "bankGold", Profile.BankGold);
             Profile.MineDigs = JsonInt(json, "mineDigs", Profile.MineDigs);
             Profile.WorldBossHits = JsonInt(json, "worldBossHits", Profile.WorldBossHits);
+            Profile.GuildLevel = JsonInt(json, "guildLevel", Profile.GuildLevel);
+            Profile.ConsortiaBossHits = JsonInt(json, "consortiaBossHits", Profile.ConsortiaBossHits);
             Profile.NecklaceLevel = JsonInt(json, "necklaceLevel", Profile.NecklaceLevel);
             Profile.HomeTempleLevel = JsonInt(json, "homeTempleLevel", Profile.HomeTempleLevel);
             Profile.HomeTemplePracticeLevel = JsonInt(json, "homeTemplePracticeLevel", Profile.HomeTemplePracticeLevel);

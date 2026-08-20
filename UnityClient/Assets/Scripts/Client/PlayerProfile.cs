@@ -51,6 +51,8 @@ namespace GunMobile.Client
         public int LabyrinthFloor = 1;
         public int Honor;
         public string ConsortiaName = "";
+        public int GuildLevel;
+        public int ConsortiaBossHits;
         public int ElfId;
         public int GemLevel;
         public int KingBlessDay = -1;

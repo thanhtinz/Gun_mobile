@@ -251,6 +251,31 @@ namespace GunMobile.Res
         public int Count = 1;
     }
 
+    public sealed class ConsortiaLevelInfo
+    {
+        public int Level;
+        public int Count;
+        public int Deduct;
+        public int NeedGold;
+        public int NeedItem;
+        public int Reward;
+        public int ShopRiches;
+        public int SmithRiches;
+        public int StoreRiches;
+        public int Riches;
+        public int BufferRiches;
+    }
+
+    public sealed class ConsortiaBossConfig
+    {
+        public int Level;
+        public int NpcId;
+        public int MissionId;
+        public int AwardId;
+        public int CostRich;
+        public int ProlongRich;
+    }
+
     public sealed class NecklaceCastingLevel
     {
         public int Level;
@@ -943,6 +968,8 @@ namespace GunMobile.Res
         public List<MagicFusionRecipe> MagicFusions { get; } = new List<MagicFusionRecipe>();
         public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
+        public Dictionary<int, ConsortiaLevelInfo> ConsortiaLevels { get; } = new Dictionary<int, ConsortiaLevelInfo>();
+        public List<ConsortiaBossConfig> ConsortiaBossConfigs { get; } = new List<ConsortiaBossConfig>();
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
         public Dictionary<int, HomeTemplePracticeLevel> HomeTemplePracticeLevels { get; } = new Dictionary<int, HomeTemplePracticeLevel>();
@@ -1050,6 +1077,7 @@ namespace GunMobile.Res
             db.LoadMagicFusions(loader);
             db.LoadTeamDungeonShop(loader);
             db.LoadCampWar(loader);
+            db.LoadConsortia(loader);
             db.LoadNecklace(loader);
             db.LoadHomeTemple(loader);
             db.LoadBankTemplates(loader);
@@ -1434,6 +1462,47 @@ namespace GunMobile.Res
         public int ConsortiaCreateCost()
         {
             return ConfigInt("MustFusionGold", 400) * 10;
+        }
+
+        public int ConsortiaNeedGold(int targetLevel)
+        {
+            if (targetLevel <= 0) return 0;
+            if (ConsortiaLevels.TryGetValue(targetLevel, out ConsortiaLevelInfo row) && row != null)
+                return Mathf.Max(0, row.NeedGold);
+            return 0;
+        }
+
+        public int ConsortiaMaxLevel()
+        {
+            int max = 0;
+            foreach (var kv in ConsortiaLevels)
+                if (kv.Key > max) max = kv.Key;
+            return max > 0 ? max : 10;
+        }
+
+        public int ConsortiaBossNpcId(int guildLevel, int playerLevel)
+        {
+            if (ConsortiaBossConfigs.Count == 0) return 0;
+            int exactGuild = 0, exactPlayer = 0;
+            ConsortiaBossConfig nearest = ConsortiaBossConfigs[0];
+            int nearestDelta = int.MaxValue;
+            int prefer = guildLevel > 0 ? guildLevel : playerLevel;
+            for (int i = 0; i < ConsortiaBossConfigs.Count; i++)
+            {
+                ConsortiaBossConfig row = ConsortiaBossConfigs[i];
+                if (row.Level == guildLevel && guildLevel > 0) exactGuild = row.NpcId;
+                if (row.Level == playerLevel && playerLevel > 0) exactPlayer = row.NpcId;
+                int delta = Mathf.Abs(row.Level - prefer);
+                if (delta < nearestDelta) { nearestDelta = delta; nearest = row; }
+            }
+            if (exactGuild > 0) return exactGuild;
+            if (exactPlayer > 0) return exactPlayer;
+            return nearest != null ? nearest.NpcId : 0;
+        }
+
+        public void ApplyGuildLevelBonus(int guildLevel, ref int atk)
+        {
+            if (guildLevel > 0) atk += guildLevel * 8;
         }
 
         public int LotteryDrawCost(int count)
@@ -4035,6 +4104,50 @@ namespace GunMobile.Res
                     ItemId = Int(row, "ItemID"),
                     Count = Mathf.Max(1, Int(row, "Count"))
                 });
+            }
+        }
+
+        void LoadConsortia(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/consortialevellist.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0) continue;
+                    ConsortiaLevels[level] = new ConsortiaLevelInfo
+                    {
+                        Level = level,
+                        Count = Int(row, "Count"),
+                        Deduct = Int(row, "Deduct"),
+                        NeedGold = Int(row, "NeedGold"),
+                        NeedItem = Int(row, "NeedItem"),
+                        Reward = Int(row, "Reward"),
+                        ShopRiches = Int(row, "ShopRiches"),
+                        SmithRiches = Int(row, "SmithRiches"),
+                        StoreRiches = Int(row, "StoreRiches"),
+                        Riches = Int(row, "Riches"),
+                        BufferRiches = Int(row, "BufferRiches")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/consortiabossconfigload.xml", out XmlResultTable bosses))
+            {
+                foreach (var row in bosses.Rows)
+                {
+                    int npcId = Int(row, "NpcID");
+                    if (npcId <= 0) npcId = Int(row, "NpcId");
+                    ConsortiaBossConfigs.Add(new ConsortiaBossConfig
+                    {
+                        Level = Int(row, "Level"),
+                        NpcId = npcId,
+                        MissionId = Int(row, "MissionID"),
+                        AwardId = Int(row, "AwardID"),
+                        CostRich = Int(row, "CostRich"),
+                        ProlongRich = Int(row, "ProlongRich")
+                    });
+                }
             }
         }
 
