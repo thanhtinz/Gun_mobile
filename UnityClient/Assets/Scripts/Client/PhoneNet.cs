@@ -313,11 +313,6 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.DevilTreasPointClaim, "{\"rewardId\":" + rewardId + "}");
         }
 
-        public static void SendRedPacket(string friendNick, int gold)
-        {
-            Road?.Send(PhoneMsg.RedPacketSend, "{\"friendNick\":\"" + (friendNick ?? "").Replace("\"", "") + "\",\"gold\":" + gold + "}");
-        }
-
         public static void SpaRoomStart()
         {
             Road?.Send(PhoneMsg.SpaRoomStart, "{}");
@@ -363,11 +358,20 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.RedPacketClaim, "{}");
         }
 
-        public static void UpgradeHomeTemple() { Road?.Send(PhoneMsg.HomeTempleUpgrade, "{}"); }
         public static void HomeTemplePractice() { Road?.Send(PhoneMsg.HomeTemplePractice, "{}"); }
         public static void HomeTempleAdvance() { Road?.Send(PhoneMsg.HomeTempleAdvance, "{}"); }
         public static void BankDeposit(string action, int templateId, int amount, int slot = 0) { Road?.Send(PhoneMsg.BankDeposit, "{\"action\":\"" + (action ?? "deposit") + "\",\"templateId\":" + templateId + ",\"amount\":" + amount + ",\"slot\":" + slot + "}"); }
         public static void SweepMission(int missionId) { Road?.Send(PhoneMsg.SweepMission, "{\"missionId\":" + missionId + "}"); }
+        public static void SendRedPacket(string friend, int gold)
+        {
+            string fn = (friend ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"");
+            Road?.Send(PhoneMsg.RedPacketSend, "{\"friend\":\"" + fn + "\",\"gold\":" + gold + "}");
+        }
+
+        public static void UpgradeHomeTemple()
+        {
+            Road?.Send(PhoneMsg.HomeTempleUpgrade, "{}");
+        }
 
         public static void WardrobeEquip(int clothId)
         {

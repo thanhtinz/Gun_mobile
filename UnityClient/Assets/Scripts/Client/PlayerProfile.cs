@@ -601,6 +601,17 @@ namespace GunMobile.Client
 
         public bool QuestAccepted(int id) => AcceptedQuests.Contains(id);
 
+        public List<int> GetQuestProgress(int questId)
+        {
+            if (QuestProgress != null && QuestProgress.TryGetValue(questId, out List<int> prog) && prog != null)
+            {
+                return prog;
+            }
+
+            return null;
+        }
+
+
         public void GrantTemplate(int templateId, int count)
         {
             if (templateId == 0)

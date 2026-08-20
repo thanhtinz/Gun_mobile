@@ -669,9 +669,9 @@ namespace GunMobile.Client
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.DevilTurnPoints = JsonInt(json, "devilTurnPoints", Profile.DevilTurnPoints);
+            Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             ParseDevilTreasPointClaimedFromServer(json);
             ParseQuestsFromServer(json);
-            Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
             Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.ChristmasClaims = JsonInt(json, "christmasClaims", Profile.ChristmasClaims);
             Profile.NewYearPoints = JsonInt(json, "newYearPoints", Profile.NewYearPoints);
@@ -875,23 +875,6 @@ namespace GunMobile.Client
                 }
                 Profile.QuestProgress[questId] = prog;
                 pos = arrEnd + 1;
-            }
-        }
-
-        void ParseIntListFromServer(string json, string key, List<int> target)
-        {
-            string needle = "\"" + key + "\":[";
-            int idx = json.IndexOf(needle, System.StringComparison.Ordinal);
-            if (idx < 0) return;
-            int start = idx + needle.Length;
-            int end = json.IndexOf(']', start);
-            if (end <= start) return;
-            target.Clear();
-            string chunk = json.Substring(start, end - start);
-            if (string.IsNullOrWhiteSpace(chunk)) return;
-            foreach (string part in chunk.Split(','))
-            {
-                if (int.TryParse(part.Trim(), out int id)) target.Add(id);
             }
         }
 
