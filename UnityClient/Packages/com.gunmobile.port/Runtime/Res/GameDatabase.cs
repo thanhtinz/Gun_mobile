@@ -1214,6 +1214,8 @@ namespace GunMobile.Res
         public int NeedPhysiTotal;
         public int NeedMagicTotal;
         public int NeedOtherTotal;
+    }
+
     public sealed class ScrollTemplate
     {
         public int TemplateId;
