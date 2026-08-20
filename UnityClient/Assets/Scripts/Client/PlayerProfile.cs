@@ -58,6 +58,7 @@ namespace GunMobile.Client
         public int FusionKeys;
         public int BankGold;
         public int MineDigs;
+        public int WorldBossHits;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;

@@ -512,6 +512,7 @@ namespace GunMobile.Client
             Profile.FusionKeys = JsonInt(json, "fusionKeys", Profile.FusionKeys);
             Profile.BankGold = JsonInt(json, "bankGold", Profile.BankGold);
             Profile.MineDigs = JsonInt(json, "mineDigs", Profile.MineDigs);
+            Profile.WorldBossHits = JsonInt(json, "worldBossHits", Profile.WorldBossHits);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);

@@ -190,9 +190,25 @@ namespace GunMobile.Client
 
         public static void CarnivalScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("carnival", "嘉年华", "Request/newlotteryitem.xml"),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("carnival", "嘉年华", "Request/newlotteryitem.xml", false, "carnival.ui"),
                 "carnival.ui");
+            int cost = app.Database != null ? app.Database.CarnivalDrawCost() : 500;
+            SysUi.Note(body, "高级奖池 type≥10  ·  " + cost + " 金/次");
+            SysUi.Row(body, "draw", "嘉年华抽奖  " + cost + " 金", PhoneNet.CarnivalDraw);
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (LotteryDrop d in app.Database.LotteryPool(10, 99))
+                {
+                    SysUi.Note(body, "T" + d.Type + "  " + SysUi.ItemName(app, d.TemplateId) + " x" + d.Count);
+                    shown++;
+                    if (shown >= 8)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         public static void BankScreen(RectTransform safe, GameApp app)
@@ -219,23 +235,81 @@ namespace GunMobile.Client
 
         public static void AuditoriumScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml"),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml", false, "auditorium.ui"),
                 "auditorium.ui");
+            if (app.Database == null)
+            {
+                return;
+            }
+
+            int shown = 0;
+            foreach (CelebEntry e in app.Database.CelebGpDay)
+            {
+                SysUi.Note(body, "#" + e.Rank + "  " + e.Nick + "  Lv" + e.Grade + "  GP+" + e.Gp + "  " + e.ConsortiaName);
+                shown++;
+                if (shown >= 15)
+                {
+                    break;
+                }
+            }
         }
 
         public static void TreasureScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml"),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml", false, "treasureHunting.ui"),
                 "treasureHunting.ui");
+            int cost = app.Database != null ? app.Database.TreasureDrawCost() : 200;
+            SysUi.Note(body, "寻宝奖池 type1-8  ·  " + cost + " 金/次");
+            SysUi.Row(body, "draw", "寻宝  " + cost + " 金", PhoneNet.TreasureDraw);
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (LotteryDrop d in app.Database.LotteryPool(1, 8))
+                {
+                    SysUi.Note(body, "T" + d.Type + "  " + SysUi.ItemName(app, d.TemplateId) + " x" + d.Count);
+                    shown++;
+                    if (shown >= 8)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
         public static void PeakBattleScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml"),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml", false, "peakBattle.ui"),
                 "peakBattle.ui");
+            if (app.Database == null)
+            {
+                return;
+            }
+
+            var list = app.Database.CelebAreaFightPower.Count > 0
+                ? app.Database.CelebAreaFightPower
+                : app.Database.CelebFightPowerDay;
+            int shown = 0;
+            for (int i = 0; i < list.Count; i++)
+            {
+                CelebEntry e = list[i];
+                int fee = 300 + i * 100;
+                int rank = i;
+                SysUi.Row(body, "pk" + i,
+                    "#" + (i + 1) + "  " + e.Nick + "  Lv" + e.Grade + "  战力" + e.FightPower + "  " + fee + "金",
+                    () =>
+                    {
+                        PhoneNet.PeakBattleStart(rank);
+                        app.ShowRoom();
+                    });
+                shown++;
+                if (shown >= 10)
+                {
+                    break;
+                }
+            }
         }
     }
 }

@@ -175,6 +175,10 @@ namespace GunMobile.Net
         public const ushort BankTrade = 128;
         public const ushort MineDig = 129;
         public const ushort TeamDungeonStart = 130;
+        public const ushort TreasureDraw = 131;
+        public const ushort CarnivalDraw = 132;
+        public const ushort PeakBattleStart = 133;
+        public const ushort WorldBossStart = 134;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

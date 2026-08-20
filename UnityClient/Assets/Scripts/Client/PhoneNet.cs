@@ -237,6 +237,26 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.TeamDungeonStart, "{\"shopType\":" + shopType + "}");
         }
 
+        public static void TreasureDraw()
+        {
+            Road?.Send(PhoneMsg.TreasureDraw, "{}");
+        }
+
+        public static void CarnivalDraw()
+        {
+            Road?.Send(PhoneMsg.CarnivalDraw, "{}");
+        }
+
+        public static void PeakBattleStart(int rank)
+        {
+            Road?.Send(PhoneMsg.PeakBattleStart, "{\"rank\":" + rank + "}");
+        }
+
+        public static void WorldBossStart()
+        {
+            Road?.Send(PhoneMsg.WorldBossStart, "{}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

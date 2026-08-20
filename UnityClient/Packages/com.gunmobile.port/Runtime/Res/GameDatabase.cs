@@ -227,6 +227,16 @@ namespace GunMobile.Res
         public int Id;
         public int TemplateId;
         public int Count;
+        public int Type = 1;
+    }
+
+    public sealed class CampWarReward
+    {
+        public int Id;
+        public int MinRank;
+        public int MaxRank;
+        public int ItemId;
+        public int Count = 1;
     }
 
     public sealed class PveMission
@@ -389,6 +399,8 @@ namespace GunMobile.Res
         public static readonly int[] DefaultMagicStoneTemplateIds = { 100101, 100201, 100301, 100401 };
         public List<MagicFusionRecipe> MagicFusions { get; } = new List<MagicFusionRecipe>();
         public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
+        public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
+        public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -437,6 +449,7 @@ namespace GunMobile.Res
             db.LoadMagicStones(loader);
             db.LoadMagicFusions(loader);
             db.LoadTeamDungeonShop(loader);
+            db.LoadCampWar(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -693,6 +706,88 @@ namespace GunMobile.Res
             }
 
             return ConfigInt("LotteryMoney", 100);
+        }
+
+        public int TreasureDrawCost()
+        {
+            return ConfigInt("TreasureHuntMoney", 200);
+        }
+
+        public int CarnivalDrawCost()
+        {
+            return ConfigInt("CarnivalDrawMoney", 500);
+        }
+
+        public List<LotteryDrop> LotteryPool(int minType, int maxType)
+        {
+            var pool = new List<LotteryDrop>();
+            for (int i = 0; i < Lottery.Count; i++)
+            {
+                LotteryDrop d = Lottery[i];
+                if (d.Type >= minType && d.Type <= maxType)
+                {
+                    pool.Add(d);
+                }
+            }
+
+            return pool;
+        }
+
+        public CampWarReward CampWarRewardForRank(int rank)
+        {
+            CampWarReward best = null;
+            for (int i = 0; i < CampWarRewards.Count; i++)
+            {
+                CampWarReward r = CampWarRewards[i];
+                if (rank >= r.MinRank && rank <= r.MaxRank)
+                {
+                    if (best == null || r.MaxRank - r.MinRank < best.MaxRank - best.MinRank)
+                    {
+                        best = r;
+                    }
+                }
+            }
+
+            return best;
+        }
+
+        public CelebEntry GetPeakBattleTarget(int rankIndex)
+        {
+            List<CelebEntry> list = CelebAreaFightPower.Count > 0 ? CelebAreaFightPower : CelebFightPowerDay;
+            if (rankIndex < 0 || rankIndex >= list.Count)
+            {
+                return null;
+            }
+
+            return list[rankIndex];
+        }
+
+        public int PeakBattleNpcId(CelebEntry celeb)
+        {
+            if (celeb == null)
+            {
+                return 44401;
+            }
+
+            int grade = Mathf.Max(10, celeb.Grade);
+            NpcInfo npc = PickNpc(grade * 97, grade, 500000);
+            return npc != null ? npc.Id : 44401;
+        }
+
+        public int WorldBossNpcId()
+        {
+            int bestId = 0;
+            int bestBlood = 0;
+            foreach (NpcInfo n in Npcs.Values)
+            {
+                if (n.Blood > bestBlood)
+                {
+                    bestBlood = n.Blood;
+                    bestId = n.Id;
+                }
+            }
+
+            return bestId > 0 ? bestId : 44410;
         }
 
         public int LevelFromGp(int gp)
@@ -2024,7 +2119,8 @@ namespace GunMobile.Res
                 {
                     Id = Int(row, "ID"),
                     TemplateId = Int(row, "template"),
-                    Count = Mathf.Max(1, Int(row, "count"))
+                    Count = Mathf.Max(1, Int(row, "count")),
+                    Type = Int(row, "type")
                 });
             }
         }
@@ -2196,6 +2292,26 @@ namespace GunMobile.Res
                     Price = Int(row, "Price"),
                     Condition = Int(row, "Condition"),
                     Value = Int(row, "Value")
+                });
+            }
+        }
+
+        void LoadCampWar(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/campwaritems.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                CampWarRewards.Add(new CampWarReward
+                {
+                    Id = Int(row, "ID"),
+                    MinRank = Int(row, "MinRank"),
+                    MaxRank = Int(row, "MaxRank"),
+                    ItemId = Int(row, "ItemID"),
+                    Count = Mathf.Max(1, Int(row, "Count"))
                 });
             }
         }
@@ -2455,6 +2571,7 @@ namespace GunMobile.Res
             LoadCelebFile(loader, "Request/CelebByDayGPList.xml", CelebGpDay, "AddDayGP");
             LoadCelebFile(loader, "Request/CelebByDayFightPowerList.xml", CelebFightPowerDay, "FightPower");
             LoadCelebFile(loader, "Request/CelebByDayOfferList.xml", CelebOfferDay, "AddDayOffer");
+            LoadCelebFile(loader, "Request/areacelebbydayfightpowerlist.xml", CelebAreaFightPower, "FightPower");
         }
 
         void LoadCelebFile(ResLoader loader, string path, List<CelebEntry> target, string sortKey)

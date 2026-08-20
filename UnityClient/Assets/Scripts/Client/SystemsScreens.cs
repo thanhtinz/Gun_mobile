@@ -575,7 +575,15 @@ namespace GunMobile.Client
     {
         public static void Show(RectTransform safe, GameApp app)
         {
+            int maxHits = app.Database != null ? app.Database.ConfigInt("WorldBossDayLimit", 3) : 3;
             Transform body = SysUi.Begin(safe, app, "世界BOSS");
+            SysUi.Note(body, "campwaritems.xml  ·  今日 " + app.Profile.WorldBossHits + " / " + maxHits);
+            SysUi.Row(body, "wbstart", "挑战世界BOSS", () =>
+            {
+                PhoneNet.WorldBossStart();
+                app.ShowRoom();
+            });
+
             var bosses = new List<NpcInfo>();
             foreach (NpcInfo n in app.Database.Npcs.Values)
             {

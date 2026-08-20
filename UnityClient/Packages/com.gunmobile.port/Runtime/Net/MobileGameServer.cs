@@ -61,6 +61,8 @@ namespace GunMobile.Net
         public int BankGold;
         public int MineDay = -1;
         public int MineDigs;
+        public int WorldBossDay = -1;
+        public int WorldBossHits;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -330,6 +332,7 @@ namespace GunMobile.Net
             J(sb, "fusionKeys", FusionKeys); sb.Append(",");
             J(sb, "bankGold", BankGold); sb.Append(",");
             J(sb, "mineDigs", MineDigs); sb.Append(",");
+            J(sb, "worldBossHits", WorldBossHits); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -1307,6 +1310,22 @@ namespace GunMobile.Net
                     HandleTeamDungeonStart(player, ns, json);
                     break;
 
+                case PhoneMsg.TreasureDraw:
+                    HandlePoolDraw(player, ns, PhoneMsg.TreasureDraw, 1, 8, _db != null ? _db.TreasureDrawCost() : 200);
+                    break;
+
+                case PhoneMsg.CarnivalDraw:
+                    HandlePoolDraw(player, ns, PhoneMsg.CarnivalDraw, 10, 99, _db != null ? _db.CarnivalDrawCost() : 500);
+                    break;
+
+                case PhoneMsg.PeakBattleStart:
+                    HandlePeakBattleStart(player, ns, json);
+                    break;
+
+                case PhoneMsg.WorldBossStart:
+                    HandleWorldBossStart(player, ns);
+                    break;
+
                 case PhoneMsg.PveStart:
                 {
                     player.PveNpcId = JI(json, "npcId", 0);
@@ -2244,6 +2263,101 @@ namespace GunMobile.Net
             player.PveRewardGold = entry != null && entry.Value > 0
                 ? entry.Value
                 : (_db != null ? _db.ComputePveWinGold(player.PveNpcId, player.LabyrinthFloor, false) : 800);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult,
+                "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandlePoolDraw(ServerPlayer player, NetworkStream ns, ushort resultMsg, int minType, int maxType, int cost)
+        {
+            if (_db == null || player.Gold < cost)
+            {
+                Send(ns, resultMsg, "{\"ok\":false}");
+                return;
+            }
+
+            List<LotteryDrop> pool = _db.LotteryPool(minType, maxType);
+            if (pool.Count == 0)
+            {
+                pool = _db.Lottery;
+            }
+
+            if (pool.Count == 0)
+            {
+                Send(ns, resultMsg, "{\"ok\":false}");
+                return;
+            }
+
+            player.Gold -= cost;
+            int idx;
+            lock (_lock)
+            {
+                idx = _rng.Next(0, pool.Count);
+            }
+
+            LotteryDrop drop = pool[idx];
+            player.AddItem(drop.TemplateId, drop.Count);
+            SavePlayer(player);
+            Send(ns, resultMsg, "{\"ok\":true,\"item\":" + drop.TemplateId + ",\"count\":" + drop.Count + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandlePeakBattleStart(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int rankIndex = JI(json, "rank", 0);
+            CelebEntry target = _db != null ? _db.GetPeakBattleTarget(rankIndex) : null;
+            if (target == null)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"no target\"}");
+                return;
+            }
+
+            int entryFee = 300 + rankIndex * 100;
+            if (player.Gold < entryFee)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= entryFee;
+            player.PveNpcId = _db.PeakBattleNpcId(target);
+            player.PveLabyrinth = false;
+            player.PveRewardGold = Mathf.Clamp(target.FightPower / 50000, 500, 5000);
+            player.Honor += Mathf.Max(10, 50 - rankIndex * 3);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult,
+                "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId +
+                ",\"target\":\"" + (target.Nick ?? "").Replace("\"", "") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWorldBossStart(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.WorldBossDay != today)
+            {
+                player.WorldBossDay = today;
+                player.WorldBossHits = 0;
+            }
+
+            int maxHits = _db != null ? _db.ConfigInt("WorldBossDayLimit", 3) : 3;
+            if (player.WorldBossHits >= maxHits)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            player.WorldBossHits++;
+            player.PveNpcId = _db != null ? _db.WorldBossNpcId() : 44410;
+            player.PveLabyrinth = false;
+            CampWarReward reward = _db != null ? _db.CampWarRewardForRank(1) : null;
+            player.PveRewardGold = _db != null ? _db.ComputePveWinGold(player.PveNpcId, player.LabyrinthFloor, false) : 1200;
+            if (reward != null)
+            {
+                player.GrantTemplateReward(_db, reward.ItemId, reward.Count);
+            }
+
             SavePlayer(player);
             Send(ns, PhoneMsg.PveResult,
                 "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId + "}");
@@ -4559,6 +4673,7 @@ namespace GunMobile.Net
             public string ConsortiaName = "";
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
             public int FusionKeys, BankGold, MineDay = -1, MineDigs;
+            public int WorldBossDay = -1, WorldBossHits;
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -4607,6 +4722,7 @@ namespace GunMobile.Net
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
                 FusionKeys = p.FusionKeys, BankGold = p.BankGold, MineDay = p.MineDay, MineDigs = p.MineDigs,
+                WorldBossDay = p.WorldBossDay, WorldBossHits = p.WorldBossHits,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -4649,6 +4765,7 @@ namespace GunMobile.Net
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName,
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
                 FusionKeys = s.FusionKeys, BankGold = s.BankGold, MineDay = s.MineDay, MineDigs = s.MineDigs,
+                WorldBossDay = s.WorldBossDay, WorldBossHits = s.WorldBossHits,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
