@@ -76,6 +76,13 @@ namespace GunMobile.Client
         {
             Transform body = SysUi.Begin(safe, app, "宠物 · 出战加成");
             SysUi.Note(body, app.Profile.PetId == 0 ? "点选一只宠物出战。" : "出战 #" + app.Profile.PetId);
+            PetStarUpgrade star = app.Database != null ? app.Database.GetPetStarUpgrade(app.Profile.PetId) : null;
+            if (star != null)
+            {
+                SysUi.Row(body, "petStar",
+                    $"升星 #{star.OldId} → #{star.NewId}  {star.Exp} 金币/GP",
+                    PhoneNet.UpgradePetStar);
+            }
             int n = 0;
             foreach (PetInfo pet in app.Database.Pets.Values)
             {
@@ -218,6 +225,32 @@ namespace GunMobile.Client
                 SysUi.Row(body, "up", $"升级坐骑  {cost} 金币", () => PhoneNet.UpgradeMount());
             }
 
+            MountTalismanInfo equipped = app.Database != null ? app.Database.GetMountTalisman(app.Profile.MountTalismanId) : null;
+            SysUi.Note(body, equipped != null
+                ? "符文 " + equipped.AmuletName + "  HP+" + (equipped.BaseType1 == 37 ? equipped.BaseType1Value : 0)
+                : "未装备坐骑符文");
+            int talN = 0;
+            if (app.Database != null)
+            {
+                foreach (MountTalismanInfo tal in app.Database.MountTalismans.Values)
+                {
+                    if (tal.BaseType1 != 37)
+                    {
+                        continue;
+                    }
+
+                    MountTalismanInfo local = tal;
+                    bool on = app.Profile.MountTalismanId == tal.Id;
+                    SysUi.Row(body, "mt" + tal.Id,
+                        $"{(on ? "[装备] " : "")}{tal.AmuletName} Q{tal.Quality}  HP+{tal.BaseType1Value}  {tal.Consume}金",
+                        () => PhoneNet.EquipMountTalisman(local.Id));
+                    if (++talN >= 24)
+                    {
+                        break;
+                    }
+                }
+            }
+
             foreach (MountGrade m in app.Database.Mounts.Values)
             {
                 MountGrade local = m;
@@ -313,6 +346,14 @@ namespace GunMobile.Client
         public static void Show(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "农场  收获 " + app.Profile.FarmHarvests);
+            int manorGrade = app.Profile.ManorGrade > 0 ? app.Profile.ManorGrade : 1;
+            int manorCost = app.Database != null ? app.Database.ManorUpgradeCost(manorGrade) : 0;
+            int harvestGold = app.Database != null ? app.Database.ManorHarvestGold(manorGrade) : 0;
+            SysUi.Note(body, "庄园 Grade " + manorGrade + "  每次收获 +" + harvestGold + " 金");
+            if (manorCost > 0)
+            {
+                SysUi.Row(body, "manorUp", $"升级庄园  {manorCost} 金币", PhoneNet.UpgradeManor);
+            }
             int farmCost = app.Database != null ? app.Database.FarmBuyVegetableCost() : 200;
             SysUi.Note(body, "合成食物：消耗蔬菜，获得成品。没有蔬菜时用 " + farmCost + " 金币补货。");
             foreach (FarmRecipe r in app.Database.Farm)

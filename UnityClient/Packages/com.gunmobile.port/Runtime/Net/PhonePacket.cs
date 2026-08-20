@@ -231,6 +231,9 @@ namespace GunMobile.Net
         public const ushort ChatWhisper = 184;
         public const ushort GuildUpgrade = 185;
         public const ushort ConsortiaBossStart = 186;
+        public const ushort PetStarUpgrade = 187;
+        public const ushort MountTalismanEquip = 188;
+        public const ushort ManorUpgrade = 189;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

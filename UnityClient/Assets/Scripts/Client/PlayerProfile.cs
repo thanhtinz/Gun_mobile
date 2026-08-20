@@ -46,6 +46,8 @@ namespace GunMobile.Client
         public int TotemId;
         public int TitleId;
         public int MountGrade;
+        public int MountTalismanId;
+        public int ManorGrade = 1;
         public int VipLevel;
         public int Texp;
         public int LabyrinthFloor = 1;
@@ -498,6 +500,8 @@ namespace GunMobile.Client
                     atk += mount.AddDamage;
                     atk += mount.MagicAttack / 4;
                 }
+
+                db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
 
                 if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo spirit))
                 {
