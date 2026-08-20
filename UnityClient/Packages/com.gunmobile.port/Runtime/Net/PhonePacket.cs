@@ -185,6 +185,10 @@ namespace GunMobile.Net
         public const ushort HomeTempleUpgrade = 138;
         public const ushort MailSend = 139;
         public const ushort SweepLabyrinth = 140;
+        public const ushort DreamlandStart = 149;
+        public const ushort DreamlandClaim = 150;
+        public const ushort WarriorFamStart = 155;
+        public const ushort WarriorFamClaim = 156;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

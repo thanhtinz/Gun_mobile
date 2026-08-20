@@ -291,6 +291,30 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.SweepLabyrinth, "{}");
         }
 
+        public static void DreamlandStart(int chapter, int section)
+        {
+            Road?.Send(PhoneMsg.DreamlandStart,
+                "{\"chapter\":" + chapter + ",\"section\":" + section + "}");
+        }
+
+        public static void DreamlandClaim(int chapter, int section)
+        {
+            Road?.Send(PhoneMsg.DreamlandClaim,
+                "{\"chapter\":" + chapter + ",\"section\":" + section + "}");
+        }
+
+        public static void WarriorFamStart(int hardType, int level)
+        {
+            Road?.Send(PhoneMsg.WarriorFamStart,
+                "{\"hardType\":" + hardType + ",\"level\":" + level + "}");
+        }
+
+        public static void WarriorFamClaim(int hardType, int level)
+        {
+            Road?.Send(PhoneMsg.WarriorFamClaim,
+                "{\"hardType\":" + hardType + ",\"level\":" + level + "}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

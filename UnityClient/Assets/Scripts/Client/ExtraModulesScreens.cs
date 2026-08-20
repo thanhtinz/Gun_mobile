@@ -404,5 +404,150 @@ namespace GunMobile.Client
             SysUi.Row(body, "sweep", "扫荡本层 (跳过战斗)", PhoneNet.SweepLabyrinth);
             SysUi.Row(body, "fight", "手动挑战", () => LabyrinthScreen.Show(safe, app));
         }
+
+        public static void DreamlandScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
+                "dreamlandChallenge.ui");
+            if (app.Database == null)
+            {
+                SysUi.Row(body, "fight", "开始梦境战", app.ShowRoom);
+                return;
+            }
+
+            int chapter = Mathf.Max(1, app.Profile.DreamlandChapter);
+            int section = Mathf.Max(1, app.Profile.DreamlandSection);
+            StoryCopyChapter ch = app.Database.GetStoryCopyChapter(chapter);
+            StoryCopySection row = app.Database.GetStoryCopySection(chapter, section);
+            if (row == null && app.Database.StoryCopySections.Count > 0)
+            {
+                row = app.Database.StoryCopySections[0];
+                chapter = row.Chapter;
+                section = row.Section;
+            }
+
+            if (ch != null)
+            {
+                SysUi.Note(body, ch.Name + "  ·  " + ch.SectionCount + " 关");
+            }
+
+            if (row != null)
+            {
+                int fee = app.Database.DreamlandEntryFee(row);
+                int reward = app.Database.DreamlandRewardGold(row, app.Database.DreamlandNpcId(row, app.Profile.Level));
+                int npcId = app.Database.DreamlandNpcId(row, app.Profile.Level);
+                int mapId = app.Database.DreamlandMapId(row);
+                int localChapter = chapter;
+                int localSection = section;
+                SysUi.Note(body, "第" + section + "关 " + row.Name + "  ·  今日 " +
+                    app.Profile.DreamlandAttempts + " / " + row.PlayLimit + "  ·  已通 " + app.Profile.DreamlandClearedSection);
+                SysUi.Row(body, "fight",
+                    row.Name + "  费用" + fee + "  奖励~" + reward + "  NPC" + npcId,
+                    () =>
+                    {
+                        PhoneNet.DreamlandStart(localChapter, localSection);
+                        PhoneNet.PendingPveMapId = mapId;
+                        PhoneNet.PendingPveNpcId = npcId;
+                        app.ShowRoom();
+                    });
+            }
+
+            if (app.Profile.DreamlandClearedSection > 0)
+            {
+                StoryCopySection cleared = app.Database.GetStoryCopySection(chapter, app.Profile.DreamlandClearedSection);
+                if (cleared != null && !string.IsNullOrEmpty(cleared.SweepReward))
+                {
+                    int clearChapter = chapter;
+                    int clearSection = app.Profile.DreamlandClearedSection;
+                    SysUi.Row(body, "claim",
+                        "领取扫荡 " + cleared.Name + "  " + cleared.SweepReward,
+                        () => PhoneNet.DreamlandClaim(clearChapter, clearSection));
+                }
+            }
+
+            int questShown = 0;
+            foreach (StoryCopyQuest quest in app.Database.StoryCopyQuests)
+            {
+                if (quest.ChapterId != chapter)
+                {
+                    continue;
+                }
+
+                SysUi.Note(body, quest.Name + "  " + quest.QuestAward + "  +" + quest.QuestScore + "分");
+                questShown++;
+                if (questShown >= 5)
+                {
+                    break;
+                }
+            }
+        }
+
+        public static void DarkBoundaryScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
+                "darkboundary.ui");
+            if (app.Database == null)
+            {
+                SysUi.Row(body, "fight", "开始勇士秘境", app.ShowRoom);
+                return;
+            }
+
+            int needLevel = app.Database.ConfigInt("WarriorFamGradeLimit", 30);
+            int hardType = Mathf.Clamp(app.Profile.WarriorFamHardType, 0, 2);
+            int level = Mathf.Max(1, app.Profile.WarriorFamLevel);
+            int fee = app.Database.WarriorFamEntryFee();
+            int maxAttempts = app.Database.ConfigInt("WarriorFamEveryDayContinueCount", 1);
+            string[] hardNames = { "普通", "困难", "噩梦" };
+            SysUi.Note(body, "勇士秘境  Lv" + needLevel + "+  ·  " + hardNames[hardType] +
+                "  第" + level + "层  ·  今日 " + app.Profile.WarriorFamAttempts + " / " + maxAttempts);
+
+            WarriorFamFightConfig row = app.Database.GetWarriorFamFight(hardType, level);
+            if (row != null)
+            {
+                int reward = app.Database.WarriorFamRewardGold(row);
+                int npcId = app.Database.WarriorFamNpcId(row);
+                int localHard = hardType;
+                int localLevel = level;
+                SysUi.Row(body, "fight" + level,
+                    "挑战 L" + level + "  NPC" + npcId + "  费用" + fee + "  奖励~" + reward,
+                    () =>
+                    {
+                        PhoneNet.WarriorFamStart(localHard, localLevel);
+                        PhoneNet.PendingPveNpcId = npcId;
+                        app.ShowRoom();
+                    });
+            }
+
+            if (app.Profile.WarriorFamClearedLevel > 0)
+            {
+                WarriorFamFightConfig cleared = app.Database.GetWarriorFamFight(hardType, app.Profile.WarriorFamClearedLevel);
+                if (cleared != null)
+                {
+                    int localHard = hardType;
+                    int clearLevel = app.Profile.WarriorFamClearedLevel;
+                    SysUi.Row(body, "claim",
+                        "领取 L" + clearLevel + " 奖励  " + cleared.Rewards,
+                        () => PhoneNet.WarriorFamClaim(localHard, clearLevel));
+                }
+            }
+
+            int rankShown = 0;
+            foreach (WarriorFamRankEntry entry in app.Database.WarriorFamRanks)
+            {
+                SysUi.Note(body, "#" + entry.Rank + "  " + entry.Nick + "  L" + entry.Level + "  战力" + entry.FightPower);
+                rankShown++;
+                if (rankShown >= 8)
+                {
+                    break;
+                }
+            }
+
+            if (rankShown == 0)
+            {
+                SysUi.Note(body, "warriorfamranklist.xml 暂无排行数据");
+            }
+        }
     }
 }
