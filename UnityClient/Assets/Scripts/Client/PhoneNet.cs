@@ -43,6 +43,9 @@ namespace GunMobile.Client
         public static string LastBibleJson;
         public static string LastQuizJson;
         public static string LastOneYuanJson;
+        public static string LastActivityQuestJson;
+        public static string LastSwornJson;
+        public static string LastVipStoreJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -317,6 +320,23 @@ namespace GunMobile.Client
         public static void FuseItem(int fusionId)
         {
             Road?.Send(PhoneMsg.ItemFusion, "{\"fusionId\":" + fusionId + "}");
+        }
+
+        public static void ClaimActivityQuest(int questId, string action = "claim", int condictionId = 0)
+        {
+            Road?.Send(PhoneMsg.ActivityQuestClaim, "{\"questId\":" + questId +
+                ",\"action\":\"" + (action ?? "claim").Replace("\"", "") + "\",\"condictionId\":" + condictionId + "}");
+        }
+
+        public static void SwornAction(string action, string nick = "", int templateId = 0)
+        {
+            Road?.Send(PhoneMsg.SwornAction, "{\"action\":\"" + (action ?? "bond").Replace("\"", "") +
+                "\",\"nick\":\"" + (nick ?? "").Replace("\"", "") + "\",\"templateId\":" + templateId + "}");
+        }
+
+        public static void VipStoreBuy(int id, int goodsId = 0)
+        {
+            Road?.Send(PhoneMsg.VipStoreBuy, "{\"id\":" + id + ",\"goodsId\":" + goodsId + "}");
         }
 
         public static void SelectBall(int ballId)

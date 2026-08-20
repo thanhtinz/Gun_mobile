@@ -138,6 +138,13 @@ namespace GunMobile.Client
         public int BoguAdventureActions;
         public int QuizAttempts;
         public List<int> OneYuanBought = new List<int>();
+        public int ActivityQuestPeriod = 1;
+        public List<int> ActivityQuestClaimed = new List<int>();
+        public List<int> ActivityQuestCompleted = new List<int>();
+        public string SwornNick = "";
+        public int SwornLevel;
+        public int SwornGp;
+        public List<int> VipStoreBought = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -162,6 +169,12 @@ namespace GunMobile.Client
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
+        public void EnsureActivityQuestClaimed()
+        {
+            if (ActivityQuestClaimed == null) ActivityQuestClaimed = new List<int>();
+            if (ActivityQuestCompleted == null) ActivityQuestCompleted = new List<int>();
+        }
+        public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
@@ -555,6 +568,7 @@ namespace GunMobile.Client
                 int aDmg = 0, aGuard = 0;
                 db.ApplyHorseAmuletBonus(HorseAmuletLevel, HorseAmuletGrade, HorseAmuletPhase, ref atk, ref def, ref agi, ref luk, ref hp, ref aDmg, ref aGuard);
                 atk += aDmg; def += aGuard;
+                db.ApplySwornBonus(SwornLevel, ref atk, ref def, ref agi, ref luk);
 
                 if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo spirit))
                 {

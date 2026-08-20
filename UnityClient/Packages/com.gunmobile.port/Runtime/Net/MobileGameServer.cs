@@ -191,6 +191,15 @@ namespace GunMobile.Net
         public int QuizAttempts;
         public int OneYuanDay = -1;
         public List<int> OneYuanBought = new List<int>();
+        public int ActivityQuestStartDay = -1;
+        public int ActivityQuestPeriod = 1;
+        public List<int> ActivityQuestClaimed = new List<int>();
+        public List<int> ActivityQuestCompleted = new List<int>();
+        public string SwornNick = "";
+        public int SwornLevel;
+        public int SwornGp;
+        public int VipStoreDay = -1;
+        public List<int> VipStoreBought = new List<int>();
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -201,6 +210,25 @@ namespace GunMobile.Net
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void TouchQuizDay() { int t = DateTime.Now.DayOfYear; if (QuizDay != t) { QuizDay = t; QuizAttempts = 0; } }
         public void TouchOneYuanDay() { EnsureOneYuanBought(); int t = DateTime.Now.DayOfYear; if (OneYuanDay != t) { OneYuanDay = t; OneYuanBought.Clear(); } }
+        public void EnsureActivityQuestClaimed()
+        {
+            if (ActivityQuestClaimed == null) ActivityQuestClaimed = new List<int>();
+            if (ActivityQuestCompleted == null) ActivityQuestCompleted = new List<int>();
+        }
+        public void TouchActivityQuestDay(GameDatabase db)
+        {
+            EnsureActivityQuestClaimed();
+            int today = DateTime.Now.DayOfYear;
+            if (ActivityQuestStartDay <= 0) ActivityQuestStartDay = today;
+            ActivityQuestPeriod = db != null ? db.ActivityQuestDayIndex(ActivityQuestStartDay) : 1;
+        }
+        public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
+        public void TouchVipStoreDay()
+        {
+            EnsureVipStoreBought();
+            int t = DateTime.Now.DayOfYear;
+            if (VipStoreDay != t) { VipStoreDay = t; VipStoreBought.Clear(); }
+        }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureAchievements()
         {
@@ -469,6 +497,7 @@ namespace GunMobile.Net
             db.ApplyJadeBonus(JadeEquipId, ref atk, ref def, ref agi, ref luck, ref hp, ref jadeMa, ref jadeMd);
             db.ApplyRuneBonus(RuneTemplateId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             db.ApplyHorseAmuletBonus(HorseAmuletLevel, HorseAmuletGrade, HorseAmuletPhase, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            db.ApplySwornBonus(SwornLevel, ref atk, ref def, ref agi, ref luck);
 
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
@@ -815,6 +844,21 @@ namespace GunMobile.Net
             EnsureHonorSystemClaimed();
             sb.Append("\"honorSystemClaimed\":[");
             for (int i = 0; i < HonorSystemClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(HonorSystemClaimed[i]); }
+            sb.Append("],");
+            EnsureActivityQuestClaimed();
+            sb.Append("\"activityQuestClaimed\":[");
+            for (int i = 0; i < ActivityQuestClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActivityQuestClaimed[i]); }
+            sb.Append("],");
+            sb.Append("\"activityQuestCompleted\":[");
+            for (int i = 0; i < ActivityQuestCompleted.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActivityQuestCompleted[i]); }
+            sb.Append("],");
+            J(sb, "activityQuestPeriod", ActivityQuestPeriod); sb.Append(",");
+            J(sb, "swornNick", SwornNick ?? ""); sb.Append(",");
+            J(sb, "swornLevel", SwornLevel); sb.Append(",");
+            J(sb, "swornGp", SwornGp); sb.Append(",");
+            EnsureVipStoreBought();
+            sb.Append("\"vipStoreBought\":[");
+            for (int i = 0; i < VipStoreBought.Count; i++) { if (i > 0) sb.Append(","); sb.Append(VipStoreBought[i]); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -2010,6 +2054,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ItemFusion:
                     HandleItemFusion(player, ns, json);
+                    break;
+
+                case PhoneMsg.ActivityQuestClaim:
+                    HandleActivityQuestClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.SwornAction:
+                    HandleSwornAction(player, ns, json);
+                    break;
+
+                case PhoneMsg.VipStoreBuy:
+                    HandleVipStoreBuy(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -6298,6 +6354,209 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        static int BagCount(ServerPlayer player, int templateId)
+        {
+            int n = 0;
+            foreach (var s in player.Bag) if (s.TemplateId == templateId) n += s.Count;
+            return n;
+        }
+
+        static int MaxStrengthen(ServerPlayer player, GameDatabase db, int categoryId)
+        {
+            int best = 0;
+            foreach (var s in player.Bag)
+            {
+                if (categoryId > 0 && db != null)
+                {
+                    ItemTemplate it = db.GetItem(s.TemplateId);
+                    if (it == null || it.CategoryId != categoryId) continue;
+                }
+                if (s.Strengthen > best) best = s.Strengthen;
+            }
+            return best;
+        }
+
+        bool ActivityQuestReady(ServerPlayer player, ActivityQuestInfo q, int condictionId)
+        {
+            if (q == null) return false;
+            if (q.Conditions == null || q.Conditions.Count == 0) return true;
+            if (condictionId > 0)
+            {
+                foreach (QuestCondition cond in q.Conditions)
+                {
+                    if (cond.Id == condictionId) return ActivityQuestConditionMet(player, cond);
+                }
+                return false;
+            }
+            foreach (QuestCondition cond in q.Conditions)
+            {
+                if (cond.Optional) continue;
+                if (!ActivityQuestConditionMet(player, cond)) return false;
+            }
+            return true;
+        }
+
+        bool ActivityQuestConditionMet(ServerPlayer player, QuestCondition cond)
+        {
+            if (cond == null) return true;
+            int need = cond.Para2;
+            switch (cond.Type)
+            {
+                case 61: return player.Level >= need;
+                case -1: return player.Gold >= need;
+                case 18: return !string.IsNullOrEmpty(player.ConsortiaName);
+                case 6:
+                case 34:
+                case 23: return player.Win >= Mathf.Max(1, need);
+                case 14: return BagCount(player, cond.Para1) >= Mathf.Max(1, need);
+                case 9: return MaxStrengthen(player, _db, cond.Para1) >= need;
+                case 30: return player.Honor >= need;
+                case 13:
+                case 21: return player.Win >= Mathf.Max(1, need) || player.LabyrinthFloor >= 2;
+                case 38: return player.VipLevel > 0 || player.FirstRechargeClaimed;
+                case 17: return player.AuditoriumActions > 0;
+                case 35: return player.Friends != null && player.Friends.Count >= Mathf.Max(1, need);
+                case 19: return player.FusionKeys >= need;
+                case -2: return player.GemLevel >= cond.Para1;
+                case -3: return player.Texp >= need;
+                case -4: return player.ManorGrade >= Mathf.Max(1, need);
+                default: return true;
+            }
+        }
+
+        void HandleActivityQuestClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int questId = JI(json, "questId", 0);
+            int condictionId = JI(json, "condictionId", 0);
+            string action = JS(json, "action", "claim");
+            ActivityQuestInfo q = _db.GetActivityQuest(questId);
+            if (q == null) { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"quest\"}"); return; }
+            player.TouchActivityQuestDay(_db);
+            if (q.NeedMinLevel > 0 && player.Level < q.NeedMinLevel)
+            { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            if (q.NeedMaxLevel > 0 && player.Level > q.NeedMaxLevel)
+            { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            if (q.QuestType == 1 && q.Period > player.ActivityQuestPeriod)
+            { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"period\"}"); return; }
+
+            player.EnsureActivityQuestClaimed();
+            int claimKey = questId * 100 + condictionId;
+            if (player.ActivityQuestClaimed.Contains(claimKey) || (condictionId == 0 && player.ActivityQuestClaimed.Contains(questId)))
+            { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (!ActivityQuestReady(player, q, condictionId))
+            { Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":false,\"err\":\"ready\"}"); return; }
+
+            if (string.Equals(action, "complete", StringComparison.OrdinalIgnoreCase))
+            {
+                if (!player.ActivityQuestCompleted.Contains(questId)) player.ActivityQuestCompleted.Add(questId);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":true,\"action\":\"complete\",\"questId\":" + questId + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            player.ActivityQuestClaimed.Add(claimKey);
+            if (!player.ActivityQuestCompleted.Contains(questId)) player.ActivityQuestCompleted.Add(questId);
+            player.Gold += q.RewardGold;
+            player.Gift += q.RewardMoney;
+            player.Honor += q.RewardOffer;
+            player.AddGp(_db, q.RewardGp);
+            for (int i = 0; i < q.RewardTemplateIds.Count; i++)
+            {
+                int tid = q.RewardTemplateIds[i];
+                int c = i < q.RewardCounts.Count ? q.RewardCounts[i] : 1;
+                player.GrantTemplateReward(_db, tid, Mathf.Max(1, c));
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActivityQuestClaim, "{\"ok\":true,\"action\":\"claim\",\"questId\":" + questId +
+                ",\"condictionId\":" + condictionId + ",\"gold\":" + q.RewardGold + ",\"gp\":" + q.RewardGp + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSwornAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            string action = JS(json, "action", "bond");
+            int minLv = _db.ConfigInt("SwornLoyalty", 4);
+            if (string.Equals(action, "bond", StringComparison.OrdinalIgnoreCase))
+            {
+                string nick = JS(json, "nick", JS(json, "name", ""));
+                nick = (nick ?? "").Trim();
+                if (string.IsNullOrEmpty(nick)) { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"nick\"}"); return; }
+                if (player.Level < minLv) { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"level\"}"); return; }
+                if (player.Friends == null || !player.Friends.Contains(nick))
+                { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"friend\"}"); return; }
+                player.SwornNick = nick;
+                if (player.SwornLevel < 1) player.SwornLevel = 1;
+                SwornItemInfo row = _db.GetSwornItem(player.SwornLevel);
+                if (row != null) player.SwornGp = row.TotalGp;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.SwornAction, "{\"ok\":true,\"action\":\"bond\",\"nick\":\"" + nick.Replace("\"", "") +
+                    "\",\"level\":" + player.SwornLevel + ",\"gp\":" + player.SwornGp + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (!string.Equals(action, "use", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(action, "upgrade", StringComparison.OrdinalIgnoreCase))
+            { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"action\"}"); return; }
+
+            if (string.IsNullOrEmpty(player.SwornNick) && player.SwornLevel <= 0)
+            { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"bond\"}"); return; }
+
+            int templateId = JI(json, "templateId", 0);
+            if (templateId > 0 && !player.Consume(templateId, 1))
+            { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"bag\"}"); return; }
+
+            if (player.SwornLevel < 1) player.SwornLevel = 1;
+            SwornItemInfo next = _db.GetSwornNext(player.SwornLevel);
+            if (next == null) { Send(ns, PhoneMsg.SwornAction, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            player.SwornLevel = next.Level;
+            player.SwornGp = next.TotalGp;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.SwornAction, "{\"ok\":true,\"action\":\"" + action.Replace("\"", "") +
+                "\",\"level\":" + player.SwornLevel + ",\"gp\":" + player.SwornGp + ",\"templateId\":" + templateId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleVipStoreBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int id = JI(json, "id", JI(json, "offerId", 0));
+            int goodsId = JI(json, "goodsId", 0);
+            VipStoreItem item = _db.GetVipStore(id) ?? _db.GetVipStoreByGoods(goodsId);
+            if (item == null) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"goods\"}"); return; }
+            player.TouchVipStoreDay();
+            int limit = GameDatabase.VipStoreLimit(item, player.VipLevel);
+            if (limit <= 0) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"vip\"}"); return; }
+            int bought = 0;
+            for (int i = 0; i < player.VipStoreBought.Count; i++)
+            {
+                if (player.VipStoreBought[i] == item.Id) bought++;
+            }
+            if (bought >= limit) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            int cost = GameDatabase.VipStoreCost(item);
+            bool gift = GameDatabase.VipStoreIsGift(item);
+            if (gift)
+            {
+                if (player.Gift < cost) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+                player.Gift -= cost;
+            }
+            else
+            {
+                if (player.Gold < cost) { Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= cost;
+            }
+            player.AddItem(item.GoodsId, 1);
+            player.VipStoreBought.Add(item.Id);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.VipStoreBuy, "{\"ok\":true,\"id\":" + item.Id + ",\"goodsId\":" + item.GoodsId +
+                ",\"cost\":" + cost + ",\"gift\":" + (gift ? "true" : "false") +
+                ",\"bought\":" + (bought + 1) + ",\"limit\":" + limit + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         static bool HasEnoughBag(ServerPlayer player, int templateId, int count)
         {
             foreach (var s in player.Bag)
@@ -8341,6 +8600,13 @@ namespace GunMobile.Net
             public int QuizDay = -1, QuizAttempts;
             public int OneYuanDay = -1;
             public List<int> OneYuanBought = new List<int>();
+            public int ActivityQuestStartDay = -1, ActivityQuestPeriod = 1;
+            public List<int> ActivityQuestClaimed = new List<int>();
+            public List<int> ActivityQuestCompleted = new List<int>();
+            public string SwornNick = "";
+            public int SwornLevel, SwornGp;
+            public int VipStoreDay = -1;
+            public List<int> VipStoreBought = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public int GodCardPoints;
             public List<int> GodCardPointClaimed = new List<int>();
@@ -8467,6 +8733,11 @@ namespace GunMobile.Net
                 QuizDay = p.QuizDay, QuizAttempts = p.QuizAttempts,
                 OneYuanDay = p.OneYuanDay,
                 OneYuanBought = p.OneYuanBought ?? new List<int>(),
+                ActivityQuestStartDay = p.ActivityQuestStartDay, ActivityQuestPeriod = p.ActivityQuestPeriod,
+                ActivityQuestClaimed = p.ActivityQuestClaimed ?? new List<int>(),
+                ActivityQuestCompleted = p.ActivityQuestCompleted ?? new List<int>(),
+                SwornNick = p.SwornNick ?? "", SwornLevel = p.SwornLevel, SwornGp = p.SwornGp,
+                VipStoreDay = p.VipStoreDay, VipStoreBought = p.VipStoreBought ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
@@ -8597,6 +8868,11 @@ namespace GunMobile.Net
                 QuizDay = s.QuizDay, QuizAttempts = s.QuizAttempts,
                 OneYuanDay = s.OneYuanDay,
                 OneYuanBought = s.OneYuanBought ?? new List<int>(),
+                ActivityQuestStartDay = s.ActivityQuestStartDay, ActivityQuestPeriod = s.ActivityQuestPeriod > 0 ? s.ActivityQuestPeriod : 1,
+                ActivityQuestClaimed = s.ActivityQuestClaimed ?? new List<int>(),
+                ActivityQuestCompleted = s.ActivityQuestCompleted ?? new List<int>(),
+                SwornNick = s.SwornNick ?? "", SwornLevel = s.SwornLevel, SwornGp = s.SwornGp,
+                VipStoreDay = s.VipStoreDay, VipStoreBought = s.VipStoreBought ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,

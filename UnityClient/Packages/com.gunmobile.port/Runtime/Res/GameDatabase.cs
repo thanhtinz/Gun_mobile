@@ -77,7 +77,52 @@ namespace GunMobile.Res
         public int Para1;
         public int Para2;
         public bool Optional;
+        public int IndexType;
         public string Title = "";
+    }
+
+    public sealed class ActivityQuestInfo
+    {
+        public int Id;
+        public int QuestType;
+        public string Title = "";
+        public string Detail = "";
+        public string Objective = "";
+        public int NeedMinLevel;
+        public int NeedMaxLevel;
+        public int Period;
+        public int RewardGold;
+        public int RewardMoney;
+        public int RewardGp;
+        public int RewardOffer;
+        public List<int> RewardTemplateIds = new List<int>();
+        public List<int> RewardCounts = new List<int>();
+        public List<QuestCondition> Conditions = new List<QuestCondition>();
+    }
+
+    public sealed class SwornItemInfo
+    {
+        public string Names = "";
+        public int Level;
+        public int TotalGp;
+        public int StepLevel;
+        public int SkillId;
+        public int Animation;
+        public int Attack;
+        public int Defen;
+        public int Agility;
+        public int Lucky;
+    }
+
+    public sealed class VipStoreItem
+    {
+        public int Id;
+        public int Type;
+        public int Discount = 1;
+        public int GoodsId;
+        public int Price;
+        public int ValidDate;
+        public int[] VipQuantity = new int[16];
     }
 
     public sealed class QuestInfo
@@ -1319,6 +1364,12 @@ namespace GunMobile.Res
         public List<LinkPalTemplate> LinkPalList { get; } = new List<LinkPalTemplate>();
         public List<LotteryDrop> Lottery { get; } = new List<LotteryDrop>();
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
+        public Dictionary<int, ActivityQuestInfo> ActivityQuests { get; } = new Dictionary<int, ActivityQuestInfo>();
+        public List<ActivityQuestInfo> ActivityQuestList { get; } = new List<ActivityQuestInfo>();
+        public Dictionary<int, SwornItemInfo> SwornItems { get; } = new Dictionary<int, SwornItemInfo>();
+        public List<SwornItemInfo> SwornItemList { get; } = new List<SwornItemInfo>();
+        public Dictionary<int, VipStoreItem> VipStore { get; } = new Dictionary<int, VipStoreItem>();
+        public List<VipStoreItem> VipStoreList { get; } = new List<VipStoreItem>();
         public List<PveMission> Pve { get; } = new List<PveMission>();
         public Dictionary<int, SpiritInfo> Spirits { get; } = new Dictionary<int, SpiritInfo>();
         public Dictionary<long, FightSpiritTemplate> FightSpirits { get; } = new Dictionary<long, FightSpiritTemplate>();
@@ -1451,6 +1502,8 @@ namespace GunMobile.Res
             db.LoadLinkPals(loader);
             db.LoadLottery(loader);
             db.LoadVip(loader);
+            db.LoadActivityQuests(loader);
+            db.LoadSwornItems(loader);
             db.LoadPve(loader);
             db.LoadSpirits(loader);
             db.LoadFightSpirits(loader);
@@ -1514,7 +1567,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -4537,6 +4590,87 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadActivityQuests(ResLoader loader)
+        {
+            LoadActivityQuestFile(loader, "Request/activityquestlist_out.xml");
+            LoadActivityQuestFile(loader, "Request/activityquestlist.xml");
+        }
+
+        void LoadActivityQuestFile(ResLoader loader, string path)
+        {
+            if (!loader.TryReadBytes(path, out byte[] data))
+            {
+                return;
+            }
+
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null)
+            {
+                return;
+            }
+
+            foreach (XElement item in root.Elements())
+            {
+                if (!string.Equals(item.Name.LocalName, "Item", StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                int id = QuestAttrInt(item, "ID");
+                if (id == 0) id = QuestAttrInt(item, "QuestID");
+                if (id == 0) continue;
+                if (ActivityQuests.ContainsKey(id)) continue;
+
+                var q = new ActivityQuestInfo
+                {
+                    Id = id,
+                    QuestType = QuestAttrInt(item, "QuestType"),
+                    Title = QuestAttrStr(item, "Title"),
+                    Detail = QuestAttrStr(item, "Detail"),
+                    Objective = QuestAttrStr(item, "Objective"),
+                    NeedMinLevel = QuestAttrInt(item, "NeedMinLevel"),
+                    NeedMaxLevel = QuestAttrInt(item, "NeedMaxLevel"),
+                    Period = QuestAttrInt(item, "Period"),
+                    RewardGold = QuestAttrInt(item, "RewardGold"),
+                    RewardMoney = QuestAttrInt(item, "RewardMoney"),
+                    RewardGp = QuestAttrInt(item, "RewardGP"),
+                    RewardOffer = QuestAttrInt(item, "RewardOffer")
+                };
+
+                foreach (XElement child in item.Elements())
+                {
+                    string n = child.Name.LocalName;
+                    if (string.Equals(n, "Item_Condiction", StringComparison.OrdinalIgnoreCase))
+                    {
+                        q.Conditions.Add(new QuestCondition
+                        {
+                            Id = QuestAttrInt(child, "CondictionID"),
+                            Type = QuestAttrInt(child, "CondictionType"),
+                            Para1 = QuestAttrInt(child, "Para1"),
+                            Para2 = QuestAttrInt(child, "Para2"),
+                            Optional = QuestAttrBool(child, "isOpitional"),
+                            IndexType = QuestAttrInt(child, "IndexType"),
+                            Title = QuestAttrStr(child, "CondictionTitle")
+                        });
+                        continue;
+                    }
+
+                    int tid = QuestAttrInt(child, "TemplateID");
+                    if (tid == 0) tid = QuestAttrInt(child, "ItemID");
+                    if (tid == 0) tid = QuestAttrInt(child, "RewardItem");
+                    if (tid <= 0) continue;
+                    int count = QuestAttrInt(child, "Count");
+                    if (count <= 0) count = QuestAttrInt(child, "ItemCount");
+                    q.RewardTemplateIds.Add(tid);
+                    q.RewardCounts.Add(Mathf.Max(1, count));
+                }
+
+                ActivityQuests[id] = q;
+                ActivityQuestList.Add(q);
+            }
+        }
+
         static int QuestAttrInt(XElement el, string name)
         {
             XAttribute a = el.Attribute(name);
@@ -5462,14 +5596,60 @@ namespace GunMobile.Res
 
             foreach (var row in table.Rows)
             {
+                int id = Int(row, "ID");
+                if (id == 0) continue;
+                var item = new VipStoreItem
+                {
+                    Id = id,
+                    Type = Int(row, "Type"),
+                    Discount = Int(row, "Discount"),
+                    GoodsId = Int(row, "GoodsID"),
+                    Price = Int(row, "Price"),
+                    ValidDate = Int(row, "ValidDate")
+                };
+                for (int v = 1; v <= 15; v++)
+                {
+                    item.VipQuantity[v] = Int(row, "Vip" + v + "Quantity");
+                }
+                VipStore[id] = item;
+                VipStoreList.Add(item);
                 VipShop.Add(new ShopOffer
                 {
-                    Id = Int(row, "ID"),
-                    TemplateId = Int(row, "GoodsID"),
-                    AValue1 = Int(row, "Price"),
-                    APrice1 = -2,
+                    Id = id,
+                    TemplateId = item.GoodsId,
+                    AValue1 = VipStoreCost(item),
+                    APrice1 = VipStoreIsGift(item) ? -2 : -1,
                     CanBuy = true
                 });
+            }
+        }
+
+        void LoadSwornItems(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ts_swornitem.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (level <= 0) continue;
+                var info = new SwornItemInfo
+                {
+                    Names = Str(row, "Names"),
+                    Level = level,
+                    TotalGp = Int(row, "TotalGp"),
+                    StepLevel = Int(row, "StepLevel"),
+                    SkillId = Int(row, "SkillId"),
+                    Animation = Int(row, "Animation"),
+                    Attack = Int(row, "Attack"),
+                    Defen = FirstInt(row, "Defen", "Defence", "Defend"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = FirstInt(row, "Lucky", "Luck")
+                };
+                SwornItems[level] = info;
+                SwornItemList.Add(info);
             }
         }
 
@@ -6680,6 +6860,88 @@ namespace GunMobile.Res
             }
 
             return null;
+        }
+
+        public ActivityQuestInfo GetActivityQuest(int questId)
+        {
+            if (questId > 0 && ActivityQuests.TryGetValue(questId, out ActivityQuestInfo q)) return q;
+            return null;
+        }
+
+        public int ActivityQuestDayIndex(int startDayOfYear)
+        {
+            if (startDayOfYear <= 0) return 1;
+            int today = DateTime.Now.DayOfYear;
+            int d = today - startDayOfYear + 1;
+            if (d < 1) d += 365;
+            return Mathf.Clamp(d, 1, 7);
+        }
+
+        public SwornItemInfo GetSwornItem(int level)
+        {
+            if (level > 0 && SwornItems.TryGetValue(level, out SwornItemInfo row)) return row;
+            return null;
+        }
+
+        public SwornItemInfo GetSwornNext(int level)
+        {
+            SwornItemInfo best = null;
+            foreach (SwornItemInfo row in SwornItemList)
+            {
+                if (row.Level <= level) continue;
+                if (best == null || row.Level < best.Level) best = row;
+            }
+            return best;
+        }
+
+        public void ApplySwornBonus(int level, ref int atk, ref int def, ref int agi, ref int luck)
+        {
+            SwornItemInfo row = GetSwornItem(level);
+            if (row == null) return;
+            atk += row.Attack;
+            def += row.Defen;
+            agi += row.Agility;
+            luck += row.Lucky;
+        }
+
+        public VipStoreItem GetVipStore(int id)
+        {
+            if (id > 0 && VipStore.TryGetValue(id, out VipStoreItem row)) return row;
+            return null;
+        }
+
+        public VipStoreItem GetVipStoreByGoods(int goodsId)
+        {
+            if (goodsId <= 0) return null;
+            for (int i = 0; i < VipStoreList.Count; i++)
+            {
+                if (VipStoreList[i].GoodsId == goodsId) return VipStoreList[i];
+            }
+            return null;
+        }
+
+        public static bool VipStoreIsGift(VipStoreItem item)
+        {
+            if (item == null) return true;
+            int t = item.Type;
+            if (t == -1 || t == 1 || t == 111) return false;
+            return t == 112 || t == 2 || t == -2 || t == 0;
+        }
+
+        public static int VipStoreCost(VipStoreItem item)
+        {
+            if (item == null) return 0;
+            int price = Mathf.Max(0, item.Price);
+            if (item.Discount > 1) return Mathf.Max(0, price * item.Discount / 100);
+            return price;
+        }
+
+        public static int VipStoreLimit(VipStoreItem item, int vipLevel)
+        {
+            if (item == null || item.VipQuantity == null) return 0;
+            int lv = Mathf.Clamp(vipLevel <= 0 ? 1 : vipLevel, 1, 15);
+            if (lv >= item.VipQuantity.Length) return 0;
+            return Mathf.Max(0, item.VipQuantity[lv]);
         }
 
         public DevilTreasPointReward GetDevilTreasPointReward(int rewardId)
