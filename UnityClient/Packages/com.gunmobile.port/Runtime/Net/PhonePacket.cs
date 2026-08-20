@@ -266,6 +266,9 @@ namespace GunMobile.Net
         public const ushort PairUpClaim = 219;
         public const ushort ShopShowBuy = 220;
         public const ushort StockNotice = 221;
+        public const ushort JewelEquip = 222;
+        public const ushort WarPassClaim = 223;
+        public const ushort TimeLimitShopBuy = 224;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

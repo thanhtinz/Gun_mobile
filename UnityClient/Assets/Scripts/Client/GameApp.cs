@@ -190,6 +190,15 @@ namespace GunMobile.Client
                 case "shopshow":
                     ExtraModulesScreens.ShopShowScreen(_safe, this);
                     return;
+                case "jewel":
+                    ExtraModulesScreens.JewelScreen(_safe, this);
+                    return;
+                case "warpass":
+                    ExtraModulesScreens.WarPassScreen(_safe, this);
+                    return;
+                case "timelimitshop":
+                    ExtraModulesScreens.TimeLimitShopScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -693,6 +702,30 @@ namespace GunMobile.Client
                             RefreshCurrentModule();
                         }
                         break;
+                    case PhoneMsg.JewelEquip:
+                        PhoneNet.LastJewelJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "jewel" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.WarPassClaim:
+                        PhoneNet.LastWarPassJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "warpass" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.TimeLimitShopBuy:
+                        PhoneNet.LastTimeLimitShopJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "timelimitshop" || !string.IsNullOrEmpty(_currentModuleId)))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -947,6 +980,13 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "pairUpClaimed", Profile.PairUpClaimed);
             Profile.EnsureStockNoticeClaimed();
             ParseIntListFromServer(json, "stockNoticeClaimed", Profile.StockNoticeClaimed);
+            Profile.JewelLevel = JsonInt(json, "jewelLevel", Profile.JewelLevel);
+            Profile.JewelExp = JsonInt(json, "jewelExp", Profile.JewelExp);
+            Profile.JewelSkillType = JsonInt(json, "jewelSkillType", Profile.JewelSkillType);
+            Profile.EnsureWarPassClaimed();
+            ParseIntListFromServer(json, "warPassClaimed", Profile.WarPassClaimed);
+            ParseIntListFromServer(json, "warPassCompleted", Profile.WarPassCompleted);
+            Profile.WarPassGp = JsonInt(json, "warPassGp", Profile.WarPassGp);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

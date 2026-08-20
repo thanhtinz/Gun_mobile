@@ -163,6 +163,12 @@ namespace GunMobile.Client
         public int PairUpPlays;
         public List<int> PairUpClaimed = new List<int>();
         public List<int> StockNoticeClaimed = new List<int>();
+        public int JewelLevel;
+        public int JewelExp;
+        public int JewelSkillType;
+        public List<int> WarPassClaimed = new List<int>();
+        public List<int> WarPassCompleted = new List<int>();
+        public int WarPassGp;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -199,6 +205,11 @@ namespace GunMobile.Client
         public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
         public void EnsurePairUpClaimed() { if (PairUpClaimed == null) PairUpClaimed = new List<int>(); }
         public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
+        public void EnsureWarPassClaimed()
+        {
+            if (WarPassClaimed == null) WarPassClaimed = new List<int>();
+            if (WarPassCompleted == null) WarPassCompleted = new List<int>();
+        }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -602,6 +613,9 @@ namespace GunMobile.Client
                 db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luk, ref hp);
                 int jadeMa = 0, jadeMd = 0;
                 db.ApplyJadeBonus(JadeEquipId, ref atk, ref def, ref agi, ref luk, ref hp, ref jadeMa, ref jadeMd);
+                int jewelDmg = 0;
+                db.ApplyJewelBonus(JewelLevel, JewelSkillType, ref atk, ref def, ref agi, ref luk, ref hp, ref jewelDmg, ref jadeMa, ref jadeMd);
+                atk += jewelDmg;
                 int rDmg = 0, rGuard = 0;
                 db.ApplyRuneBonus(RuneTemplateId, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref rGuard);
                 atk += rDmg; def += rGuard;
@@ -885,6 +899,9 @@ namespace GunMobile.Client
             new ModuleDef("stock", "股票", "Request/StockTemplateInfo.xml"),
             new ModuleDef("pairup", "配对", "Request/PairUpPointAward.xml"),
             new ModuleDef("shopshow", "精选商城", "Request/ShopGoodsShowList.xml"),
+            new ModuleDef("jewel", "首饰加工", "Request/TS_Jewel_Addition.xml"),
+            new ModuleDef("warpass", "战令", "Request/TS_WarPass_QuestTemplate.xml"),
+            new ModuleDef("timelimitshop", "限时商店", "Request/TS_TimeLimitShopTemp.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

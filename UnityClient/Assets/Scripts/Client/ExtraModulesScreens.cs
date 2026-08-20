@@ -1481,6 +1481,142 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+        public static void JewelScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "首饰加工 · Jewel");
+            SysUi.Note(body, "TS_Jewel_Addition / TS_Jewel_SkillName  ·  PhoneMsg 222");
+            JewelAddition cur = app.Database != null ? app.Database.GetJewelAddition(app.Profile.JewelLevel) : null;
+            JewelSkillName skill = app.Database != null ? app.Database.GetJewelSkill(app.Profile.JewelSkillType) : null;
+            SysUi.Note(body, "等级 " + app.Profile.JewelLevel +
+                (cur != null ? ("  ATK+" + cur.Attack + " DEF+" + cur.Defend + " AGI+" + cur.Agility + " LUK+" + cur.Luck) : "") +
+                "  Exp " + app.Profile.JewelExp +
+                (skill != null ? ("  技能 " + skill.Name) : "  未选技能"));
+            if (app.Database == null || app.Database.JewelAdditionList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_Jewel_Addition.xml");
+                return;
+            }
+
+            int upCost = app.Database.JewelUpgradeGoldCost(app.Profile.JewelLevel);
+            if (app.Database.GetJewelAddition(app.Profile.JewelLevel + 1) != null)
+            {
+                SysUi.Row(body, "jewelup", "升级加工  " + upCost + "金", () => PhoneNet.JewelEquip(0, "upgrade"));
+            }
+            if (app.Profile.JewelLevel > 0)
+            {
+                SysUi.Row(body, "jeweloff", "卸下加工", () => PhoneNet.JewelEquip(0, "equip"));
+            }
+
+            int shown = 0;
+            foreach (JewelAddition row in app.Database.JewelAdditionList)
+            {
+                if (row.Level == 0) continue;
+                if (row.Level % 5 != 0 && row.Level != 1 && row.Level != app.Profile.JewelLevel) continue;
+                JewelAddition local = row;
+                bool on = app.Profile.JewelLevel == row.Level;
+                SysUi.Row(body, "jl" + row.Level,
+                    (on ? "[装备] " : "") + row.Name + "  ATK" + row.Attack + " DEF" + row.Defend,
+                    () => PhoneNet.JewelEquip(local.Level, "equip", app.Profile.JewelSkillType));
+                if (++shown >= 16) break;
+            }
+
+            shown = 0;
+            foreach (JewelSkillName sk in app.Database.JewelSkillList)
+            {
+                if (sk.Type == 3 || sk.Type == 30) continue;
+                JewelSkillName local = sk;
+                bool on = app.Profile.JewelSkillType == sk.Type;
+                SysUi.Row(body, "js" + sk.Type,
+                    (on ? "[技能] " : "") + sk.Name + "  T" + sk.Type,
+                    () => PhoneNet.JewelEquip(app.Profile.JewelLevel, "skill", local.Type));
+                if (++shown >= 12) break;
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastJewelJson))
+            {
+                SysUi.Note(body, PhoneNet.LastJewelJson);
+            }
+        }
+
+        public static void WarPassScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "战令任务 · WarPass");
+            app.Profile.EnsureWarPassClaimed();
+            SysUi.Note(body, "TS_WarPass_QuestTemplate.xml  ·  PhoneMsg 223  ·  GP " + app.Profile.WarPassGp);
+            if (app.Database == null || app.Database.WarPassQuestList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_WarPass_QuestTemplate.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (WarPassQuest q in app.Database.WarPassQuestList)
+            {
+                bool claimed = app.Profile.WarPassClaimed.Contains(q.Qid);
+                bool done = app.Profile.WarPassCompleted.Contains(q.Qid);
+                string cap = "Q" + q.Qid + " S" + q.SType + "  +" + q.AddGp + "GP  " +
+                    (claimed ? "[已领] " : done ? "[可领] " : ("完成" + q.FinishPrice + "点券 ")) +
+                    (q.Desc ?? "");
+                int qid = q.Qid;
+                if (claimed)
+                {
+                    SysUi.Note(body, cap);
+                }
+                else if (done || q.FinishPrice <= 0)
+                {
+                    SysUi.Row(body, "wpc" + q.Qid, cap, () => PhoneNet.WarPassClaim(qid, "claim"));
+                }
+                else
+                {
+                    SysUi.Row(body, "wpf" + q.Qid, cap, () => PhoneNet.WarPassClaim(qid, "complete"));
+                }
+                if (++shown >= 28) break;
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastWarPassJson))
+            {
+                SysUi.Note(body, PhoneNet.LastWarPassJson);
+            }
+        }
+
+        public static void TimeLimitShopScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "限时商店 · TimeLimitShop");
+            SysUi.Note(body, "金 " + app.Profile.Gold + "  ·  礼券 " + app.Profile.Gift +
+                "  ·  荣誉 " + app.Profile.Honor + "  ·  PhoneMsg 224");
+            if (app.Database == null || app.Database.TimeLimitShopList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_TimeLimitShopTemp.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (TimeLimitShopGoods g in app.Database.TimeLimitShopList)
+            {
+                if (g.ItemTempId <= 0) continue;
+                string name = SysUi.ItemName(app, g.ItemTempId);
+                bool gift = GameDatabase.TimeLimitShopIsGift(g);
+                string cur = gift ? "点券" : "金币";
+                string need = "";
+                if (g.NeedGrade > 0) need += " Lv" + g.NeedGrade;
+                if (g.NeedMedal > 0) need += " 勋章" + g.NeedMedal;
+                string cap = "#" + g.ShopId + "  " + name + " x" + g.ItemCount + "  " + g.PayCounts + cur + need;
+                int sid = g.ShopId;
+                var btn = SysUi.Row(body, "tls" + g.ShopId, cap, () => PhoneNet.TimeLimitShopBuy(sid));
+                ShopScreen.DecorateIcon(app, btn, g.ItemTempId);
+                if (++shown >= 40)
+                {
+                    SysUi.Note(body, "… " + (app.Database.TimeLimitShopList.Count - shown) + " more");
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastTimeLimitShopJson))
+            {
+                SysUi.Note(body, PhoneNet.LastTimeLimitShopJson);
+            }
+        }
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))

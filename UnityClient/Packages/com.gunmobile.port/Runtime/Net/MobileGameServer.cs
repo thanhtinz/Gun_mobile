@@ -225,6 +225,12 @@ namespace GunMobile.Net
         public int PairUpPlays;
         public List<int> PairUpClaimed = new List<int>();
         public List<int> StockNoticeClaimed = new List<int>();
+        public int JewelLevel;
+        public int JewelExp;
+        public int JewelSkillType;
+        public List<int> WarPassClaimed = new List<int>();
+        public List<int> WarPassCompleted = new List<int>();
+        public int WarPassGp;
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -261,6 +267,17 @@ namespace GunMobile.Net
             if (PairUpDay != t) { PairUpDay = t; PairUpPlays = 0; }
         }
         public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
+        public void EnsureWarPassClaimed()
+        {
+            if (WarPassClaimed == null) WarPassClaimed = new List<int>();
+            if (WarPassCompleted == null) WarPassCompleted = new List<int>();
+        }
+        public void SyncJewelLevel(GameDatabase db)
+        {
+            if (db == null) return;
+            int fromExp = db.JewelLevelFromExp(JewelExp);
+            if (fromExp > JewelLevel) JewelLevel = fromExp;
+        }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
@@ -577,6 +594,9 @@ namespace GunMobile.Net
             db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luck, ref hp);
             int jadeMa = 0, jadeMd = 0;
             db.ApplyJadeBonus(JadeEquipId, ref atk, ref def, ref agi, ref luck, ref hp, ref jadeMa, ref jadeMd);
+            int jewelDmg = 0;
+            db.ApplyJewelBonus(JewelLevel, JewelSkillType, ref atk, ref def, ref agi, ref luck, ref hp, ref jewelDmg, ref jadeMa, ref jadeMd);
+            baseDmg += jewelDmg;
             db.ApplyRuneBonus(RuneTemplateId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             db.ApplyHorseAmuletBonus(HorseAmuletLevel, HorseAmuletGrade, HorseAmuletPhase, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             db.ApplySwornBonus(SwornLevel, ref atk, ref def, ref agi, ref luck);
@@ -1000,6 +1020,17 @@ namespace GunMobile.Net
             sb.Append("\"stockNoticeClaimed\":[");
             for (int i = 0; i < StockNoticeClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(StockNoticeClaimed[i]); }
             sb.Append("],");
+            J(sb, "jewelLevel", JewelLevel); sb.Append(",");
+            J(sb, "jewelExp", JewelExp); sb.Append(",");
+            J(sb, "jewelSkillType", JewelSkillType); sb.Append(",");
+            EnsureWarPassClaimed();
+            sb.Append("\"warPassClaimed\":[");
+            for (int i = 0; i < WarPassClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(WarPassClaimed[i]); }
+            sb.Append("],");
+            sb.Append("\"warPassCompleted\":[");
+            for (int i = 0; i < WarPassCompleted.Count; i++) { if (i > 0) sb.Append(","); sb.Append(WarPassCompleted[i]); }
+            sb.Append("],");
+            J(sb, "warPassGp", WarPassGp); sb.Append(",");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
             {
@@ -2264,6 +2295,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.StockNotice:
                     HandleStockNotice(player, ns, json);
+                    break;
+
+                case PhoneMsg.JewelEquip:
+                    HandleJewelEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.WarPassClaim:
+                    HandleWarPassClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.TimeLimitShopBuy:
+                    HandleTimeLimitShopBuy(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -6473,6 +6516,254 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.StockNotice, sb.ToString());
         }
 
+        void HandleJewelEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.JewelAdditionList.Count == 0)
+            {
+                Send(ns, PhoneMsg.JewelEquip, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            string action = JS(json, "action", "equip");
+            if (string.Equals(action, "upgrade", StringComparison.OrdinalIgnoreCase))
+            {
+                JewelAddition next = _db.GetJewelAddition(player.JewelLevel + 1);
+                if (next == null)
+                {
+                    Send(ns, PhoneMsg.JewelEquip, "{\"ok\":false,\"err\":\"max\"}");
+                    return;
+                }
+
+                int cost = _db.JewelUpgradeGoldCost(player.JewelLevel);
+                if (cost > 0 && player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.JewelEquip, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+
+                if (cost > 0) player.Gold -= cost;
+                player.JewelExp = Mathf.Max(player.JewelExp, next.Exp);
+                player.JewelLevel = next.Level;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.JewelEquip,
+                    "{\"ok\":true,\"action\":\"upgrade\",\"level\":" + player.JewelLevel +
+                    ",\"exp\":" + player.JewelExp + ",\"cost\":" + cost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "skill", StringComparison.OrdinalIgnoreCase))
+            {
+                int skillType = JI(json, "skillType", JI(json, "type", 0));
+                if (skillType < 0) skillType = 0;
+                if (skillType > 0 && _db.GetJewelSkill(skillType) == null)
+                {
+                    Send(ns, PhoneMsg.JewelEquip, "{\"ok\":false,\"err\":\"skill\"}");
+                    return;
+                }
+
+                player.JewelSkillType = skillType;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.JewelEquip,
+                    "{\"ok\":true,\"action\":\"skill\",\"skillType\":" + skillType +
+                    ",\"level\":" + player.JewelLevel + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int level = JI(json, "level", JI(json, "jewelLevel", -1));
+            if (level < 0) level = 0;
+            if (level > 0 && _db.GetJewelAddition(level) == null)
+            {
+                Send(ns, PhoneMsg.JewelEquip, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            player.JewelLevel = level;
+            JewelAddition row = _db.GetJewelAddition(level);
+            if (row != null && player.JewelExp < row.Exp) player.JewelExp = row.Exp;
+            int skill = JI(json, "skillType", JI(json, "type", player.JewelSkillType));
+            if (skill < 0) skill = 0;
+            if (skill > 0 && _db.GetJewelSkill(skill) == null) skill = player.JewelSkillType;
+            player.JewelSkillType = skill;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.JewelEquip,
+                "{\"ok\":true,\"action\":\"equip\",\"level\":" + player.JewelLevel +
+                ",\"exp\":" + player.JewelExp + ",\"skillType\":" + player.JewelSkillType + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleWarPassClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.WarPassQuestList.Count == 0)
+            {
+                Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            int qid = JI(json, "qid", JI(json, "questId", JI(json, "id", 0)));
+            WarPassQuest q = _db.GetWarPassQuest(qid);
+            if (q == null)
+            {
+                Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"quest\"}");
+                return;
+            }
+
+            player.EnsureWarPassClaimed();
+            string action = JS(json, "action", "claim");
+            if (string.Equals(action, "complete", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(action, "finish", StringComparison.OrdinalIgnoreCase))
+            {
+                if (player.WarPassCompleted.Contains(qid))
+                {
+                    Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"done\"}");
+                    return;
+                }
+
+                int price = Mathf.Max(0, q.FinishPrice);
+                if (price > 0)
+                {
+                    if (player.Gift < price)
+                    {
+                        Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"gift\"}");
+                        return;
+                    }
+                    player.Gift -= price;
+                }
+
+                player.WarPassCompleted.Add(qid);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.WarPassClaim,
+                    "{\"ok\":true,\"action\":\"complete\",\"qid\":" + qid +
+                    ",\"price\":" + price + ",\"addGp\":" + q.AddGp + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.WarPassClaimed.Contains(qid))
+            {
+                Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+
+            if (!player.WarPassCompleted.Contains(qid))
+            {
+                if (q.FinishPrice > 0)
+                {
+                    Send(ns, PhoneMsg.WarPassClaim, "{\"ok\":false,\"err\":\"ready\"}");
+                    return;
+                }
+                player.WarPassCompleted.Add(qid);
+            }
+
+            player.WarPassClaimed.Add(qid);
+            int gp = Mathf.Max(0, q.AddGp);
+            if (gp > 0)
+            {
+                player.AddGp(_db, gp);
+                player.WarPassGp += gp;
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.WarPassClaim,
+                "{\"ok\":true,\"action\":\"claim\",\"qid\":" + qid +
+                ",\"addGp\":" + gp + ",\"warPassGp\":" + player.WarPassGp + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleTimeLimitShopBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.TimeLimitShopList.Count == 0)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            int shopId = JI(json, "shopId", JI(json, "id", 0));
+            TimeLimitShopGoods goods = _db.GetTimeLimitShop(shopId);
+            if (goods == null || goods.ItemTempId <= 0)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"goods\"}");
+                return;
+            }
+
+            if (goods.NeedGrade > 0 && player.Level < goods.NeedGrade)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            if (goods.NeedMedal > 0 && player.Honor < goods.NeedMedal)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"medal\"}");
+                return;
+            }
+
+            if (goods.NeedGolds > 0 && player.Gold < goods.NeedGolds)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"needGold\"}");
+                return;
+            }
+
+            int physi = player.Attack + player.Defence + player.Agility + player.Luck;
+            if (goods.NeedPhysiTotal > 0 && physi < goods.NeedPhysiTotal)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"physi\"}");
+                return;
+            }
+
+            int magic = player.MagicAttack + player.MagicDefence;
+            if (goods.NeedMagicTotal > 0 && magic < goods.NeedMagicTotal)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"magic\"}");
+                return;
+            }
+
+            if (goods.NeedBaseDemage > 0 && player.BaseDamage < goods.NeedBaseDemage)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"damage\"}");
+                return;
+            }
+
+            if (goods.NeedOtherTotal > 0 && (physi + magic) < goods.NeedOtherTotal)
+            {
+                Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"other\"}");
+                return;
+            }
+
+            int cost = Mathf.Max(0, goods.PayCounts);
+            bool gift = GameDatabase.TimeLimitShopIsGift(goods);
+            if (gift)
+            {
+                if (player.Gift < cost)
+                {
+                    Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"gift\"}");
+                    return;
+                }
+                player.Gift -= cost;
+            }
+            else
+            {
+                if (player.Gold < cost)
+                {
+                    Send(ns, PhoneMsg.TimeLimitShopBuy, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                player.Gold -= cost;
+            }
+
+            player.AddItem(goods.ItemTempId, goods.ItemCount > 0 ? goods.ItemCount : 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.TimeLimitShopBuy,
+                "{\"ok\":true,\"shopId\":" + shopId + ",\"templateId\":" + goods.ItemTempId +
+                ",\"count\":" + goods.ItemCount + ",\"cost\":" + cost +
+                ",\"gift\":" + (gift ? "true" : "false") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -9553,6 +9844,12 @@ namespace GunMobile.Net
             public int PairUpPlays;
             public List<int> PairUpClaimed = new List<int>();
             public List<int> StockNoticeClaimed = new List<int>();
+            public int JewelLevel;
+            public int JewelExp;
+            public int JewelSkillType;
+            public List<int> WarPassClaimed = new List<int>();
+            public List<int> WarPassCompleted = new List<int>();
+            public int WarPassGp;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -9706,6 +10003,10 @@ namespace GunMobile.Net
                 PairUpPoints = p.PairUpPoints, PairUpDay = p.PairUpDay, PairUpPlays = p.PairUpPlays,
                 PairUpClaimed = p.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = p.StockNoticeClaimed ?? new List<int>(),
+                JewelLevel = p.JewelLevel, JewelExp = p.JewelExp, JewelSkillType = p.JewelSkillType,
+                WarPassClaimed = p.WarPassClaimed ?? new List<int>(),
+                WarPassCompleted = p.WarPassCompleted ?? new List<int>(),
+                WarPassGp = p.WarPassGp,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -9863,6 +10164,10 @@ namespace GunMobile.Net
                 PairUpPoints = s.PairUpPoints, PairUpDay = s.PairUpDay, PairUpPlays = s.PairUpPlays,
                 PairUpClaimed = s.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = s.StockNoticeClaimed ?? new List<int>(),
+                JewelLevel = s.JewelLevel, JewelExp = s.JewelExp, JewelSkillType = s.JewelSkillType,
+                WarPassClaimed = s.WarPassClaimed ?? new List<int>(),
+                WarPassCompleted = s.WarPassCompleted ?? new List<int>(),
+                WarPassGp = s.WarPassGp,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

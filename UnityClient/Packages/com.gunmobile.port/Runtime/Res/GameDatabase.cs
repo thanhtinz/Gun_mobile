@@ -1167,6 +1167,55 @@ namespace GunMobile.Res
         public string NewsContent = "";
     }
 
+    public sealed class JewelAddition
+    {
+        public int Level;
+        public int Exp;
+        public string Name = "";
+        public string Desc = "";
+        public int Attack;
+        public int Defend;
+        public int Agility;
+        public int Luck;
+    }
+
+    public sealed class JewelSkillName
+    {
+        public int Type;
+        public string Name = "";
+        public string Desc = "";
+        public string Range = "";
+    }
+
+    public sealed class WarPassQuest
+    {
+        public int Qid;
+        public int SType;
+        public int QType;
+        public int Condition1;
+        public int Condition2;
+        public string Desc = "";
+        public int AddGp;
+        public int FinishPrice;
+        public int HardLevel;
+    }
+
+    public sealed class TimeLimitShopGoods
+    {
+        public int ShopId;
+        public int ItemTempId;
+        public int ItemCount = 1;
+        public int PayType;
+        public int PayCounts;
+        public int NeedGrade;
+        public int NeedGolds;
+        public int NeedMedal;
+        public int NeedBaseDemage;
+        public int NeedPhysiTotal;
+        public int NeedMagicTotal;
+        public int NeedOtherTotal;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1618,6 +1667,14 @@ namespace GunMobile.Res
         public Dictionary<int, StockNoticeInfo> StockNotices { get; } = new Dictionary<int, StockNoticeInfo>();
         public List<StockNoticeInfo> StockNoticeList { get; } = new List<StockNoticeInfo>();
         public Dictionary<int, int> StockNoticePriceBoost { get; } = new Dictionary<int, int>();
+        public Dictionary<int, JewelAddition> JewelAdditions { get; } = new Dictionary<int, JewelAddition>();
+        public List<JewelAddition> JewelAdditionList { get; } = new List<JewelAddition>();
+        public Dictionary<int, JewelSkillName> JewelSkills { get; } = new Dictionary<int, JewelSkillName>();
+        public List<JewelSkillName> JewelSkillList { get; } = new List<JewelSkillName>();
+        public Dictionary<int, WarPassQuest> WarPassQuests { get; } = new Dictionary<int, WarPassQuest>();
+        public List<WarPassQuest> WarPassQuestList { get; } = new List<WarPassQuest>();
+        public Dictionary<int, TimeLimitShopGoods> TimeLimitShop { get; } = new Dictionary<int, TimeLimitShopGoods>();
+        public List<TimeLimitShopGoods> TimeLimitShopList { get; } = new List<TimeLimitShopGoods>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1728,6 +1785,9 @@ namespace GunMobile.Res
             db.LoadPairUpPointAwards(loader);
             db.LoadShopGoodsShow(loader);
             db.LoadStockNotices(loader);
+            db.LoadJewel(loader);
+            db.LoadWarPassQuests(loader);
+            db.LoadTimeLimitShop(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1749,7 +1809,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -1985,6 +2045,108 @@ namespace GunMobile.Res
             magicDef += row.MagicDefence;
             int elem = row.FireAttack + row.WaterAttack + row.WindAttack + row.LandAttack;
             if (elem > 0) magicAtk += elem;
+        }
+
+        public JewelAddition GetJewelAddition(int level)
+        {
+            if (JewelAdditions.TryGetValue(level, out JewelAddition row)) return row;
+            return null;
+        }
+
+        public JewelSkillName GetJewelSkill(int type)
+        {
+            if (type > 0 && JewelSkills.TryGetValue(type, out JewelSkillName row)) return row;
+            return null;
+        }
+
+        public int JewelLevelFromExp(int exp)
+        {
+            int best = 0;
+            for (int i = 0; i < JewelAdditionList.Count; i++)
+            {
+                JewelAddition row = JewelAdditionList[i];
+                if (row.Exp <= exp && row.Level >= best) best = row.Level;
+            }
+            return best;
+        }
+
+        public int JewelUpgradeGoldCost(int currentLevel)
+        {
+            JewelAddition next = GetJewelAddition(currentLevel + 1);
+            if (next == null) return 0;
+            JewelAddition cur = GetJewelAddition(currentLevel);
+            int need = next.Exp - (cur != null ? cur.Exp : 0);
+            return Mathf.Max(100, need / 10);
+        }
+
+        static int JewelRangeMid(string range, int bandIndex)
+        {
+            if (string.IsNullOrEmpty(range) || range.IndexOf('<') >= 0) return 0;
+            string[] bands = range.Split('|');
+            if (bands.Length == 0) return 0;
+            int idx = bandIndex;
+            if (idx < 0) idx = 0;
+            if (idx >= bands.Length) idx = bands.Length - 1;
+            string band = bands[idx].Trim();
+            int us = band.IndexOf('_');
+            if (us <= 0) return int.TryParse(band, NumberStyles.Integer, CultureInfo.InvariantCulture, out int single) ? single : 0;
+            if (!int.TryParse(band.Substring(0, us), NumberStyles.Integer, CultureInfo.InvariantCulture, out int lo)) lo = 0;
+            if (!int.TryParse(band.Substring(us + 1), NumberStyles.Integer, CultureInfo.InvariantCulture, out int hi)) hi = lo;
+            return (lo + hi) / 2;
+        }
+
+        public void ApplyJewelBonus(int jewelLevel, int jewelSkillType, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int magicAtk, ref int magicDef)
+        {
+            JewelAddition add = GetJewelAddition(jewelLevel);
+            if (add != null)
+            {
+                atk += add.Attack;
+                def += add.Defend;
+                agi += add.Agility;
+                luck += add.Luck;
+            }
+
+            JewelSkillName skill = GetJewelSkill(jewelSkillType);
+            if (skill == null) return;
+            int band = Mathf.Clamp(jewelLevel / 8, 0, 4);
+            int val = JewelRangeMid(skill.Range, band);
+            if (val <= 0) return;
+            switch (skill.Type)
+            {
+                case 1: atk += val; def += val; agi += val; luck += val; break;
+                case 2: baseDmg += val; break;
+                case 4: atk += val; break;
+                case 5: def += val; break;
+                case 6: agi += val; break;
+                case 7: luck += val; break;
+                case 8: hp += val; break;
+                case 9: magicDef += val; break;
+                case 10: atk += val / 2; break;
+                case 25: baseDmg += val; break;
+                case 26: def += val; break;
+                case 27: magicAtk += val; break;
+                default:
+                    if (skill.Type >= 17 && skill.Type <= 24) magicAtk += val / 2;
+                    else if (skill.Type >= 31 && skill.Type <= 34) magicAtk += val / 2;
+                    break;
+            }
+        }
+
+        public WarPassQuest GetWarPassQuest(int qid)
+        {
+            if (qid > 0 && WarPassQuests.TryGetValue(qid, out WarPassQuest q)) return q;
+            return null;
+        }
+
+        public TimeLimitShopGoods GetTimeLimitShop(int shopId)
+        {
+            if (shopId > 0 && TimeLimitShop.TryGetValue(shopId, out TimeLimitShopGoods g)) return g;
+            return null;
+        }
+
+        public static bool TimeLimitShopIsGift(TimeLimitShopGoods g)
+        {
+            return g != null && g.PayType != -3 && g.PayType <= -1;
         }
 
         public RuneTemplate GetRune(int templateId)
@@ -7962,6 +8124,101 @@ namespace GunMobile.Res
                 };
                 StockNotices[id] = notice;
                 StockNoticeList.Add(notice);
+            }
+        }
+
+        void LoadJewel(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/TS_Jewel_Addition.xml", out XmlResultTable addTable))
+            {
+                foreach (var row in addTable.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (JewelAdditions.ContainsKey(level)) continue;
+                    var info = new JewelAddition
+                    {
+                        Level = level,
+                        Exp = Int(row, "Exp"),
+                        Name = Str(row, "Name"),
+                        Desc = Str(row, "Desc"),
+                        Attack = Int(row, "Attack"),
+                        Defend = Int(row, "Defend"),
+                        Agility = Int(row, "Agility"),
+                        Luck = Int(row, "Luck")
+                    };
+                    JewelAdditions[level] = info;
+                    JewelAdditionList.Add(info);
+                }
+                JewelAdditionList.Sort((a, b) => a.Level.CompareTo(b.Level));
+            }
+
+            if (TryTable(loader, "Request/TS_Jewel_SkillName.xml", out XmlResultTable skillTable))
+            {
+                foreach (var row in skillTable.Rows)
+                {
+                    int type = Int(row, "Type");
+                    if (type <= 0 || JewelSkills.ContainsKey(type)) continue;
+                    var skill = new JewelSkillName
+                    {
+                        Type = type,
+                        Name = Str(row, "Name"),
+                        Desc = Str(row, "Desc"),
+                        Range = Str(row, "Range")
+                    };
+                    JewelSkills[type] = skill;
+                    JewelSkillList.Add(skill);
+                }
+            }
+        }
+
+        void LoadWarPassQuests(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_WarPass_QuestTemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int qid = Int(row, "QID");
+                if (qid <= 0 || WarPassQuests.ContainsKey(qid)) continue;
+                var q = new WarPassQuest
+                {
+                    Qid = qid,
+                    SType = Int(row, "SType"),
+                    QType = Int(row, "QType"),
+                    Condition1 = Int(row, "Condition1"),
+                    Condition2 = Int(row, "Condition2"),
+                    Desc = Str(row, "Desc"),
+                    AddGp = Int(row, "AddGp"),
+                    FinishPrice = Int(row, "FinishPrice"),
+                    HardLevel = Int(row, "HardLevel")
+                };
+                WarPassQuests[qid] = q;
+                WarPassQuestList.Add(q);
+            }
+        }
+
+        void LoadTimeLimitShop(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_TimeLimitShopTemp.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int shopId = Int(row, "ShopId");
+                if (shopId <= 0 || TimeLimitShop.ContainsKey(shopId)) continue;
+                var goods = new TimeLimitShopGoods
+                {
+                    ShopId = shopId,
+                    ItemTempId = Int(row, "ItemTempId"),
+                    ItemCount = Mathf.Max(1, Int(row, "ItemCount")),
+                    PayType = Int(row, "PayType"),
+                    PayCounts = Int(row, "PayCounts"),
+                    NeedGrade = Int(row, "NeedGrade"),
+                    NeedGolds = Int(row, "NeedGolds"),
+                    NeedMedal = Int(row, "NeedMedal"),
+                    NeedBaseDemage = Int(row, "NeedBaseDemage"),
+                    NeedPhysiTotal = Int(row, "NeedPhysiTotal"),
+                    NeedMagicTotal = Int(row, "NeedMagicTotal"),
+                    NeedOtherTotal = Int(row, "NeedOtherTotal")
+                };
+                TimeLimitShop[shopId] = goods;
+                TimeLimitShopList.Add(goods);
             }
         }
 

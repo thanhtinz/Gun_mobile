@@ -51,6 +51,9 @@ namespace GunMobile.Client
         public static string LastPairUpJson;
         public static string LastShopShowJson;
         public static string LastStockNoticeJson;
+        public static string LastJewelJson;
+        public static string LastWarPassJson;
+        public static string LastTimeLimitShopJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -321,6 +324,24 @@ namespace GunMobile.Client
             string act = (action ?? "list").Replace("\"", "");
             Road?.Send(PhoneMsg.StockNotice,
                 "{\"action\":\"" + act + "\",\"newsId\":" + newsId + ",\"stockId\":" + stockId + "}");
+        }
+
+        public static void JewelEquip(int level = 0, string action = "equip", int skillType = 0)
+        {
+            string act = (action ?? "equip").Replace("\"", "");
+            Road?.Send(PhoneMsg.JewelEquip,
+                "{\"action\":\"" + act + "\",\"level\":" + level + ",\"skillType\":" + skillType + "}");
+        }
+
+        public static void WarPassClaim(int qid, string action = "claim")
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.WarPassClaim, "{\"action\":\"" + act + "\",\"qid\":" + qid + "}");
+        }
+
+        public static void TimeLimitShopBuy(int shopId)
+        {
+            Road?.Send(PhoneMsg.TimeLimitShopBuy, "{\"shopId\":" + shopId + "}");
         }
 
         public static void DrawLottery(int count)
