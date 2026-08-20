@@ -103,6 +103,9 @@ namespace GunMobile.Net
         public int DevilTurnSpins;
         public int DevilTurnPoints;
         public List<int> DevilTreasPointClaimed = new List<int>();
+        public List<int> DevilTreasRankClaimed = new List<int>();
+        public int RecyclePoints;
+        public int MagicItemLevel;
         public Dictionary<int, List<int>> QuestProgress = new Dictionary<int, List<int>>();
         public int SpaRoomDay = -1;
         public int SpaRoomDayScore;
@@ -536,6 +539,7 @@ namespace GunMobile.Net
             int magicDef = 0;
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
             magicAtk += jadeMa + debrisMa; magicDef += jadeMd + debrisMd;
+            db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
             db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
@@ -705,6 +709,12 @@ namespace GunMobile.Net
             sb.Append("\"devilTreasPointClaimed\":[");
             for (int i = 0; i < DevilTreasPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DevilTreasPointClaimed[i]); }
             sb.Append("],");
+            EnsureDevilTreasRankClaimed();
+            sb.Append("\"devilTreasRankClaimed\":[");
+            for (int i = 0; i < DevilTreasRankClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DevilTreasRankClaimed[i]); }
+            sb.Append("],");
+            J(sb, "recyclePoints", RecyclePoints); sb.Append(",");
+            J(sb, "magicItemLevel", MagicItemLevel); sb.Append(",");
             sb.Append("\"acceptedQuests\":[");
             for (int i = 0; i < AcceptedQuests.Count; i++) { if (i > 0) sb.Append(","); sb.Append(AcceptedQuests[i]); }
             sb.Append("],");
@@ -942,6 +952,7 @@ namespace GunMobile.Net
 
         public void EnsureGodCardPointClaimed() { if (GodCardPointClaimed == null) GodCardPointClaimed = new List<int>(); }
         public void EnsureDevilTreasPointClaimed() { if (DevilTreasPointClaimed == null) DevilTreasPointClaimed = new List<int>(); }
+        public void EnsureDevilTreasRankClaimed() { if (DevilTreasRankClaimed == null) DevilTreasRankClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public GodCardSlot FindGodCardSlot(int id) { foreach (GodCardSlot slot in GodCards) if (slot.Id == id) return slot; return null; }
 
@@ -2125,6 +2136,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.NewYearRankClaim:
                     HandleNewYearRankClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.DevilTreasRankClaim:
+                    HandleDevilTreasRankClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.RecycleActivityClaim:
+                    HandleRecycleActivityClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.MagicItemUpgrade:
+                    HandleMagicItemUpgrade(player, ns);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -4962,6 +4985,148 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.DevilTreasPointClaim,
                 "{\"ok\":true,\"rewardId\":" + rewardId + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+
+        void HandleDevilTreasRankClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.DevilTreasRankRewards.Count == 0)
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+            if (player.DevilTurnPoints <= 0)
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"points\"}");
+                return;
+            }
+            int rank = ComputeDevilTreasRank(player);
+            int rewardId = JI(json, "rewardId", 0);
+            DevilTreasRankReward row = rewardId > 0
+                ? _db.GetDevilTreasRankReward(rewardId)
+                : _db.FindDevilTreasRankRewardForRank(rank);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"rank\"}");
+                return;
+            }
+            if (rank < row.RankMin || rank > row.RankMax)
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"rank\"}");
+                return;
+            }
+            player.EnsureDevilTreasRankClaimed();
+            if (player.DevilTreasRankClaimed.Contains(row.Id))
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+            var itemRewards = new List<KeyValuePair<int, int>>();
+            _db.ParseDevilTreasRankDesc(row.Desc, itemRewards, out int goldReward);
+            if (itemRewards.Count == 0 && goldReward <= 0)
+            {
+                Send(ns, PhoneMsg.DevilTreasRankClaim, "{\"ok\":false,\"err\":\"reward\"}");
+                return;
+            }
+            player.DevilTreasRankClaimed.Add(row.Id);
+            if (goldReward > 0) player.Gold += goldReward;
+            for (int i = 0; i < itemRewards.Count; i++)
+                player.GrantTemplateReward(_db, itemRewards[i].Key, itemRewards[i].Value);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DevilTreasRankClaim,
+                "{\"ok\":true,\"rewardId\":" + row.Id + ",\"rank\":" + rank +
+                ",\"gold\":" + goldReward + ",\"points\":" + player.DevilTurnPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        int ComputeDevilTreasRank(ServerPlayer player)
+        {
+            int better = 0;
+            lock (_lock)
+            {
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (p == null || p.Id == player.Id) continue;
+                    if (p.DevilTurnPoints > player.DevilTurnPoints ||
+                        (p.DevilTurnPoints == player.DevilTurnPoints && p.Id < player.Id))
+                        better++;
+                }
+            }
+            int maxRank = _db != null ? _db.ConfigInt("DevilTreasureRankCount", 2000) : 2000;
+            return Mathf.Clamp(better + 1, 1, Mathf.Max(1, maxRank));
+        }
+
+        void HandleRecycleActivityClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.RecycleActivityItems.Count == 0)
+            {
+                Send(ns, PhoneMsg.RecycleActivityClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+            int templateId = JI(json, "templateId", 0);
+            int batches = Mathf.Max(1, JI(json, "count", 1));
+            RecycleActivityItem row = _db.GetRecycleActivityItem(templateId);
+            if (row == null || row.Integral <= 0)
+            {
+                Send(ns, PhoneMsg.RecycleActivityClaim, "{\"ok\":false,\"err\":\"item\"}");
+                return;
+            }
+            int need = row.Count * batches;
+            if (templateId > 0)
+            {
+                if (BagCount(player, templateId) < need || !player.Consume(templateId, need))
+                {
+                    Send(ns, PhoneMsg.RecycleActivityClaim, "{\"ok\":false,\"err\":\"bag\"}");
+                    return;
+                }
+            }
+            else
+            {
+                int goldCost = Mathf.Max(1, need);
+                if (player.Gold < goldCost)
+                {
+                    Send(ns, PhoneMsg.RecycleActivityClaim, "{\"ok\":false,\"err\":\"gold\"}");
+                    return;
+                }
+                player.Gold -= goldCost;
+            }
+            int gained = row.Integral * batches;
+            player.RecyclePoints += gained;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.RecycleActivityClaim,
+                "{\"ok\":true,\"templateId\":" + templateId + ",\"count\":" + batches +
+                ",\"integral\":" + gained + ",\"recyclePoints\":" + player.RecyclePoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMagicItemUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.MagicItemUpgrade, "{\"ok\":false}");
+                return;
+            }
+            int maxLevel = _db.MagicItemMaxLevel();
+            if (maxLevel <= 0 || player.MagicItemLevel >= maxLevel ||
+                _db.GetMagicItemLevel(player.MagicItemLevel + 1) == null)
+            {
+                Send(ns, PhoneMsg.MagicItemUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+            int cost = _db.MagicItemUpgradeCost(player.MagicItemLevel);
+            if (cost <= 0 || player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.MagicItemUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+            player.Gold -= cost;
+            player.MagicItemLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MagicItemUpgrade,
+                "{\"ok\":true,\"level\":" + player.MagicItemLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -8881,6 +9046,9 @@ namespace GunMobile.Net
             public int RedPacketDay = -1, RedPacketClaims;
             public int DevilTurnDay = -1, DevilTurnSpins, DevilTurnPoints;
             public List<int> DevilTreasPointClaimed = new List<int>();
+            public List<int> DevilTreasRankClaimed = new List<int>();
+            public int RecyclePoints;
+            public int MagicItemLevel;
             public List<QuestProgressSave> QuestProgress = new List<QuestProgressSave>();
             public int SpaRoomDay = -1, SpaRoomDayScore;
             public int TreasureRoomDay = -1, TreasureRoomDraws;
@@ -9016,6 +9184,9 @@ namespace GunMobile.Net
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins, DevilTurnPoints = p.DevilTurnPoints,
                 DevilTreasPointClaimed = p.DevilTreasPointClaimed ?? new List<int>(),
+                DevilTreasRankClaimed = p.DevilTreasRankClaimed ?? new List<int>(),
+                RecyclePoints = p.RecyclePoints,
+                MagicItemLevel = p.MagicItemLevel,
                 QuestProgress = new List<QuestProgressSave>(),
                 SpaRoomDay = p.SpaRoomDay, SpaRoomDayScore = p.SpaRoomDayScore,
                 TreasureRoomDay = p.TreasureRoomDay, TreasureRoomDraws = p.TreasureRoomDraws,
@@ -9154,6 +9325,9 @@ namespace GunMobile.Net
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins, DevilTurnPoints = s.DevilTurnPoints,
                 DevilTreasPointClaimed = s.DevilTreasPointClaimed ?? new List<int>(),
+                DevilTreasRankClaimed = s.DevilTreasRankClaimed ?? new List<int>(),
+                RecyclePoints = s.RecyclePoints,
+                MagicItemLevel = s.MagicItemLevel,
                 SpaRoomDay = s.SpaRoomDay, SpaRoomDayScore = s.SpaRoomDayScore,
                 TreasureRoomDay = s.TreasureRoomDay, TreasureRoomDraws = s.TreasureRoomDraws,
                 ChristmasDay = s.ChristmasDay, ChristmasClaims = s.ChristmasClaims,

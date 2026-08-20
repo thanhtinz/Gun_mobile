@@ -653,6 +653,35 @@ namespace GunMobile.Res
         public int TemplateId;
     }
 
+    public sealed class DevilTreasRankReward
+    {
+        public int Id;
+        public int RankMin;
+        public int RankMax;
+        public string Desc = "";
+    }
+
+    public sealed class DevilTreasSarahToBox
+    {
+        public int Id;
+        public int[] Exchange = System.Array.Empty<int>();
+    }
+
+    public sealed class RecycleActivityItem
+    {
+        public int TemplateId;
+        public int Integral;
+        public int Count = 1;
+    }
+
+    public sealed class MagicItemLevel
+    {
+        public int Lv;
+        public int Exp;
+        public int MagicAttack;
+        public int MagicDefence;
+    }
+
     public sealed class SpaRoomFixedLevel
     {
         public int Level;
@@ -1451,6 +1480,10 @@ namespace GunMobile.Res
         public Dictionary<int, SweepConditionInfo> SweepConditions { get; } = new Dictionary<int, SweepConditionInfo>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
         public Dictionary<int, DevilTreasPointReward> DevilTreasPointRewards { get; } = new Dictionary<int, DevilTreasPointReward>();
+        public List<DevilTreasRankReward> DevilTreasRankRewards { get; } = new List<DevilTreasRankReward>();
+        public Dictionary<int, DevilTreasSarahToBox> DevilTreasSarahToBoxes { get; } = new Dictionary<int, DevilTreasSarahToBox>();
+        public Dictionary<int, RecycleActivityItem> RecycleActivityItems { get; } = new Dictionary<int, RecycleActivityItem>();
+        public Dictionary<int, MagicItemLevel> MagicItemLevels { get; } = new Dictionary<int, MagicItemLevel>();
         public List<SpaRoomFixedLevel> SpaRoomFixed { get; } = new List<SpaRoomFixedLevel>();
         public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
         public List<CarnivalActivityItem> CarnivalActivityItems { get; } = new List<CarnivalActivityItem>();
@@ -1598,6 +1631,10 @@ namespace GunMobile.Res
             db.LoadTotemHonor(loader);
             db.LoadDevilTreas(loader);
             db.LoadDevilTreasPoints(loader);
+            db.LoadDevilTreasRankRewards(loader);
+            db.LoadDevilTreasSarahToBox(loader);
+            db.LoadRecycleActivity(loader);
+            db.LoadMagicItemTemp(loader);
             db.LoadSpaRoom(loader);
             db.LoadCarnivalActivityItems(loader);
             db.LoadNewYearPointRewards(loader);
@@ -6391,6 +6428,72 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadDevilTreasRankRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/DevilTreasRankRewardList.xml", out XmlResultTable table)) return;
+            int seq = 0;
+            foreach (var row in table.Rows)
+            {
+                int rankMin = Int(row, "RankMin");
+                int rankMax = Int(row, "RankMax");
+                if (rankMin <= 0 && rankMax <= 0) continue;
+                seq++;
+                int id = Int(row, "ID");
+                if (id <= 0) id = seq;
+                DevilTreasRankRewards.Add(new DevilTreasRankReward
+                {
+                    Id = id,
+                    RankMin = rankMin > 0 ? rankMin : 1,
+                    RankMax = rankMax > 0 ? rankMax : rankMin,
+                    Desc = Str(row, "Desc")
+                });
+            }
+        }
+
+        void LoadDevilTreasSarahToBox(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/DevilTreasSarahToBoxList.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || DevilTreasSarahToBoxes.ContainsKey(id)) continue;
+                DevilTreasSarahToBoxes[id] = new DevilTreasSarahToBox { Id = id, Exchange = ParseIntCsv(Str(row, "Exchange")) };
+            }
+        }
+
+        void LoadRecycleActivity(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/RecycleActivityInfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateID");
+                if (templateId == 0 || RecycleActivityItems.ContainsKey(templateId)) continue;
+                RecycleActivityItems[templateId] = new RecycleActivityItem
+                {
+                    TemplateId = templateId,
+                    Integral = Int(row, "Integral"),
+                    Count = Mathf.Max(1, Int(row, "Count"))
+                };
+            }
+        }
+
+        void LoadMagicItemTemp(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/MagicItemTemp.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int lv = Int(row, "Lv");
+                if (lv <= 0 || MagicItemLevels.ContainsKey(lv)) continue;
+                MagicItemLevels[lv] = new MagicItemLevel
+                {
+                    Lv = lv,
+                    Exp = Int(row, "Exp"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefence")
+                };
+            }
+        }
+
 
         void LoadSpaRoom(ResLoader loader)
         {
@@ -7221,6 +7324,105 @@ namespace GunMobile.Res
         {
             DevilTreasPointRewards.TryGetValue(rewardId, out DevilTreasPointReward row);
             return row;
+        }
+
+        public DevilTreasRankReward GetDevilTreasRankReward(int rewardId)
+        {
+            for (int i = 0; i < DevilTreasRankRewards.Count; i++)
+                if (DevilTreasRankRewards[i].Id == rewardId) return DevilTreasRankRewards[i];
+            return null;
+        }
+
+        public DevilTreasRankReward FindDevilTreasRankRewardForRank(int rank)
+        {
+            if (rank <= 0) return null;
+            for (int i = 0; i < DevilTreasRankRewards.Count; i++)
+            {
+                DevilTreasRankReward row = DevilTreasRankRewards[i];
+                if (rank >= row.RankMin && rank <= row.RankMax) return row;
+            }
+            return null;
+        }
+
+        public DevilTreasSarahToBox GetDevilTreasSarahToBox(int boxId)
+        {
+            DevilTreasSarahToBoxes.TryGetValue(boxId, out DevilTreasSarahToBox row);
+            return row;
+        }
+
+        public RecycleActivityItem GetRecycleActivityItem(int templateId)
+        {
+            RecycleActivityItems.TryGetValue(templateId, out RecycleActivityItem row);
+            return row;
+        }
+
+        public MagicItemLevel GetMagicItemLevel(int level)
+        {
+            MagicItemLevels.TryGetValue(level, out MagicItemLevel row);
+            return row;
+        }
+
+        public int MagicItemMaxLevel()
+        {
+            int max = 0;
+            foreach (var kv in MagicItemLevels) if (kv.Key > max) max = kv.Key;
+            return max;
+        }
+
+        public int MagicItemUpgradeCost(int currentLevel)
+        {
+            MagicItemLevel next = GetMagicItemLevel(currentLevel + 1);
+            return next != null ? Mathf.Max(0, next.Exp) : 0;
+        }
+
+        public void ApplyMagicItemBonus(int magicItemLevel, ref int magicAtk, ref int magicDef)
+        {
+            MagicItemLevel row = GetMagicItemLevel(magicItemLevel);
+            if (row == null) return;
+            magicAtk += row.MagicAttack;
+            magicDef += row.MagicDefence;
+        }
+
+        public ItemTemplate FindItemByName(string name)
+        {
+            if (string.IsNullOrEmpty(name)) return null;
+            foreach (var kv in Items)
+                if (string.Equals(kv.Value.Name, name, StringComparison.Ordinal)) return kv.Value;
+            return null;
+        }
+
+        public void ParseDevilTreasRankDesc(string desc, List<KeyValuePair<int, int>> itemRewards, out int goldReward)
+        {
+            goldReward = 0;
+            if (itemRewards == null || string.IsNullOrEmpty(desc)) return;
+            string[] parts = desc.Split(new[] { ',', '，' }, StringSplitOptions.RemoveEmptyEntries);
+            int prizePool = ConfigInt("DevilTreasurePrizePool", 5000);
+            for (int i = 0; i < parts.Length; i++)
+            {
+                string part = parts[i].Trim();
+                if (part.Length == 0) continue;
+                if (part.StartsWith("奖池", StringComparison.Ordinal) || part.StartsWith("獎池", StringComparison.Ordinal))
+                {
+                    int x = part.IndexOf('x');
+                    if (x < 0) x = part.IndexOf('X');
+                    int pct = part.IndexOf('%');
+                    if (x >= 0 && pct > x)
+                    {
+                        string num = part.Substring(x + 1, pct - x - 1).Trim();
+                        if (float.TryParse(num, NumberStyles.Float, CultureInfo.InvariantCulture, out float percent))
+                            goldReward += Mathf.Max(0, Mathf.RoundToInt(prizePool * percent / 100f));
+                    }
+                    continue;
+                }
+                int star = part.LastIndexOf('*');
+                if (star <= 0 || star >= part.Length - 1) continue;
+                string itemName = part.Substring(0, star).Trim();
+                string countRaw = part.Substring(star + 1).Trim();
+                if (!int.TryParse(countRaw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int count) || count <= 0) continue;
+                ItemTemplate item = FindItemByName(itemName);
+                if (item != null && item.TemplateId > 0)
+                    itemRewards.Add(new KeyValuePair<int, int>(item.TemplateId, count));
+            }
         }
 
         public int GodCardRaiseExpGain(GodCardInfo card)

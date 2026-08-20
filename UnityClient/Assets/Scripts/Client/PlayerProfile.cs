@@ -94,6 +94,9 @@ namespace GunMobile.Client
         public int DevilTurnSpins;
         public int DevilTurnPoints;
         public List<int> DevilTreasPointClaimed = new List<int>();
+        public List<int> DevilTreasRankClaimed = new List<int>();
+        public int RecyclePoints;
+        public int MagicItemLevel;
         public int SpaRoomDayScore;
         public int TreasureRoomDraws;
         public int ChristmasClaims;
@@ -183,6 +186,7 @@ namespace GunMobile.Client
         public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
+        public void EnsureDevilTreasRankClaimed() { if (DevilTreasRankClaimed == null) DevilTreasRankClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
@@ -602,6 +606,7 @@ namespace GunMobile.Client
                 int magicDef = 0;
                 db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
                 magicAtk += jadeMa; magicDef += jadeMd;
+                db.ApplyMagicItemBonus(MagicItemLevel, ref magicAtk, ref magicDef);
                 int sDmg = 0, sGuard = 0;
                 db.ApplySigilBonus(SigilProType, SigilProValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 atk += sDmg;
@@ -874,6 +879,8 @@ namespace GunMobile.Client
             new ModuleDef("newyear", "新年", "Request/TS_NewYearPointReward.xml", false, "newyear.ui"),
             new ModuleDef("redpacket", "红包", null, false, "redpacket.ui"),
             new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
+            new ModuleDef("recycle", "变废为宝", "Request/RecycleActivityInfo.xml", false, "wasteRecycle.ui"),
+            new ModuleDef("magicitem", "魔法道具", "Request/MagicItemTemp.xml", false, "magicStone.ui"),
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", "Request/ts_honorsystem_template.xml", false, "honor.ui"),
