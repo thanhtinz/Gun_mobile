@@ -294,6 +294,12 @@ namespace GunMobile.Client
                 case "sweep":
                     ExtraModulesScreens.SweepScreen(_safe, this);
                     return;
+                case "dreamland":
+                    ExtraModulesScreens.DreamlandScreen(_safe, this);
+                    return;
+                case "darkboundary":
+                    ExtraModulesScreens.DarkBoundaryScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -429,6 +435,18 @@ namespace GunMobile.Client
                         break;
                     case PhoneMsg.PveResult:
                         Profile.PendingReward = JsonInt(msg.Json, "reward", Profile.PendingReward);
+                        PhoneNet.PendingPveNpcId = JsonInt(msg.Json, "npcId", PhoneNet.PendingPveNpcId);
+                        PhoneNet.PendingPveMapId = JsonInt(msg.Json, "map", PhoneNet.PendingPveMapId);
+                        ApplyProfileFromServer(msg.Json);
+                        break;
+                    case PhoneMsg.DreamlandClaim:
+                    case PhoneMsg.WarriorFamClaim:
+                    case PhoneMsg.SweepLabyrinth:
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
                         break;
                     case PhoneMsg.Error:
                     {
@@ -533,6 +551,14 @@ namespace GunMobile.Client
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
+            Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);
+            Profile.DreamlandSection = JsonInt(json, "dreamlandSection", Profile.DreamlandSection);
+            Profile.DreamlandClearedSection = JsonInt(json, "dreamlandClearedSection", Profile.DreamlandClearedSection);
+            Profile.DreamlandAttempts = JsonInt(json, "dreamlandAttempts", Profile.DreamlandAttempts);
+            Profile.WarriorFamHardType = JsonInt(json, "warriorFamHardType", Profile.WarriorFamHardType);
+            Profile.WarriorFamLevel = JsonInt(json, "warriorFamLevel", Profile.WarriorFamLevel);
+            Profile.WarriorFamClearedLevel = JsonInt(json, "warriorFamClearedLevel", Profile.WarriorFamClearedLevel);
+            Profile.WarriorFamAttempts = JsonInt(json, "warriorFamAttempts", Profile.WarriorFamAttempts);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);

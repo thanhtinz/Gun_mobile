@@ -64,6 +64,14 @@ namespace GunMobile.Client
         public int RedPacketClaims;
         public int DevilTurnSpins;
         public int SweepCount;
+        public int DreamlandChapter = 1;
+        public int DreamlandSection = 1;
+        public int DreamlandClearedSection;
+        public int DreamlandAttempts;
+        public int WarriorFamHardType;
+        public int WarriorFamLevel = 1;
+        public int WarriorFamClearedLevel;
+        public int WarriorFamAttempts;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;
@@ -614,8 +622,8 @@ namespace GunMobile.Client
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),
             new ModuleDef("firstrecharge", "首充", null, false, "firstrecharge.ui"),
-            new ModuleDef("dreamland", "梦境", null, false, "dreamlandChallenge.ui"),
-            new ModuleDef("darkboundary", "暗界", null, false, "darkboundary.ui"),
+            new ModuleDef("dreamland", "梦境", "Request/TS_StoryCopySectionTemplate.xml", false, "dreamlandChallenge.ui"),
+            new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
             new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
