@@ -198,6 +198,12 @@ namespace GunMobile.Client
         bool _specialNextShot;
         int _netShotsPending;
         float _netShotTimeout;
+        readonly List<Vector2> _netPathPoints = new List<Vector2>();
+        int _netPathIndex;
+        bool _netPathReplay;
+        bool _netShotDonePending;
+        int _netShotHitX;
+        int _netShotHitY;
         int[] _petMp;
         float[] _petSkillCd;
         const int PetMpMax = 100;
@@ -1043,6 +1049,10 @@ namespace GunMobile.Client
             float unityY = _map.Height - p.y - 18f;
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
             _flying = true;
+            _netPathPoints.Clear();
+            _netPathIndex = 0;
+            _netPathReplay = false;
+            _netShotDonePending = false;
             if (PhoneNet.NetBattle)
             {
                 _netShotsPending = Mathf.Max(1, _ball != null ? _ball.Amount : 1);
@@ -1188,6 +1198,7 @@ namespace GunMobile.Client
                     int blast = JsonInt(msg.Json, "blast", 0);
                     int total = JsonInt(msg.Json, "total", 0);
                     bool done = msg.Json.IndexOf("\"done\":true", System.StringComparison.Ordinal) >= 0;
+                    ParseShotPath(msg.Json, hx, hy);
                     if (_flying && who == _lastShooter && hx >= 0 && hy >= 0)
                     {
                         if (total > 0 && shot == 0)
@@ -1195,8 +1206,28 @@ namespace GunMobile.Client
                             _netShotsPending = total;
                         }
 
-                        int mapY = _map != null ? _map.Height - hy - 1 : hy;
-                        _shot = new ProjectileState { X = hx, Y = mapY, Vx = 0f, Vy = 0f, Alive = false };
+                        if (_netPathPoints.Count >= 2)
+                        {
+                            _netPathIndex = 0;
+                            _netPathReplay = true;
+                            _netShotDonePending = done;
+                            _netShotHitX = hx;
+                            _netShotHitY = hy;
+                        }
+                        else
+                        {
+                            int mapY = _map != null ? _map.Height - hy - 1 : hy;
+                            _shot = new ProjectileState { X = hx, Y = mapY, Vx = 0f, Vy = 0f, Alive = false };
+                            if (done || _netShotsPending <= 1)
+                            {
+                                EndShot(true, hx, hy);
+                            }
+                            else
+                            {
+                                _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
+                                _netShotTimeout = 12f;
+                            }
+                        }
 
                         if (_blastImg != null)
                         {
@@ -1206,16 +1237,6 @@ namespace GunMobile.Client
                             float blastSize = blast > 0 ? blast * 1.6f : 72f;
                             rt.sizeDelta = new Vector2(blastSize, blastSize);
                             _blastImg.gameObject.SetActive(true);
-                        }
-
-                        if (done || _netShotsPending <= 1)
-                        {
-                            EndShot(true, hx, hy);
-                        }
-                        else
-                        {
-                            _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
-                            _netShotTimeout = 12f;
                         }
                     }
 
@@ -1339,6 +1360,89 @@ namespace GunMobile.Client
             }
         }
 
+        void ParseShotPath(string json, int hitX, int hitY)
+        {
+            _netPathPoints.Clear();
+            int idx = json.IndexOf("\"path\":[", System.StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                return;
+            }
+
+            int start = idx + 7;
+            int end = json.IndexOf(']', start);
+            if (end <= start)
+            {
+                return;
+            }
+
+            string body = json.Substring(start + 1, end - start - 1);
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return;
+            }
+
+            string[] parts = body.Split(',');
+            for (int i = 0; i + 1 < parts.Length; i += 2)
+            {
+                if (!int.TryParse(parts[i].Trim(), out int mx))
+                {
+                    continue;
+                }
+
+                if (!int.TryParse(parts[i + 1].Trim(), out int my))
+                {
+                    continue;
+                }
+
+                float unityY = _map != null ? _map.Height - my - 1f : my;
+                _netPathPoints.Add(new Vector2(mx, unityY));
+            }
+
+            if (_netPathPoints.Count == 0 && hitX >= 0 && hitY >= 0)
+            {
+                float unityY = _map != null ? _map.Height - hitY - 1f : hitY;
+                _netPathPoints.Add(new Vector2(hitX, unityY));
+            }
+        }
+
+        void AdvanceNetPathReplay()
+        {
+            if (_netPathPoints.Count < 2)
+            {
+                _netPathReplay = false;
+                return;
+            }
+
+            int step = Mathf.Max(1, _netPathPoints.Count / 24);
+            _netPathIndex = Mathf.Min(_netPathPoints.Count - 1, _netPathIndex + step);
+            Vector2 pt = _netPathPoints[_netPathIndex];
+            _shot = new ProjectileState
+            {
+                X = pt.x,
+                Y = pt.y,
+                Vx = 0f,
+                Vy = 0f,
+                Alive = _netPathIndex < _netPathPoints.Count - 1
+            };
+
+            if (_netPathIndex >= _netPathPoints.Count - 1 && _netShotDonePending)
+            {
+                _netPathReplay = false;
+                _netShotDonePending = false;
+                if (_netShotsPending <= 1)
+                {
+                    EndShot(true, _netShotHitX, _netShotHitY);
+                }
+                else
+                {
+                    _netShotsPending = Mathf.Max(0, _netShotsPending - 1);
+                    _netShotTimeout = 12f;
+                    _netPathPoints.Clear();
+                }
+            }
+        }
+
         static int JsonInt(string json, string key, int fallback)
         {
             return Mathf.RoundToInt(JsonFloat(json, key, fallback));
@@ -1390,9 +1494,16 @@ namespace GunMobile.Client
             if (PhoneNet.NetBattle)
             {
                 _netShotTimeout -= Time.deltaTime;
-                for (int i = 0; i < 2; i++)
+                if (_netPathReplay && _netPathPoints.Count >= 2)
                 {
-                    _shot = _sim.StepFrame(_shot, _loop.Wind);
+                    AdvanceNetPathReplay();
+                }
+                else
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        _shot = _sim.StepFrame(_shot, _loop.Wind);
+                    }
                 }
 
                 if (_netShotTimeout <= 0f)
@@ -1517,6 +1628,9 @@ namespace GunMobile.Client
 
             _flying = false;
             _netShotsPending = 0;
+            _netPathReplay = false;
+            _netShotDonePending = false;
+            _netPathPoints.Clear();
             _loop.EndShot();
             if (PhoneNet.NetBattle)
             {

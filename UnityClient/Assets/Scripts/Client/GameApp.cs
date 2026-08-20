@@ -509,6 +509,9 @@ namespace GunMobile.Client
             Profile.GemLevel = JsonInt(json, "gemLevel", Profile.GemLevel);
             Profile.KingBlessDay = JsonInt(json, "kingBlessDay", Profile.KingBlessDay);
             Profile.FarmHarvests = JsonInt(json, "farmHarvests", Profile.FarmHarvests);
+            Profile.FusionKeys = JsonInt(json, "fusionKeys", Profile.FusionKeys);
+            Profile.BankGold = JsonInt(json, "bankGold", Profile.BankGold);
+            Profile.MineDigs = JsonInt(json, "mineDigs", Profile.MineDigs);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);

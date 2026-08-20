@@ -43,4 +43,10 @@ fi
 
 python3 tools/bootstrap_pc_assets.py --skip-fetch --skip-unpack --skip-pack 2>/dev/null || true
 
+if ! command -v dotnet >/dev/null 2>&1; then
+  echo "Installing .NET 8 SDK for standalone server…"
+  curl -fsSL https://dot.net/v1/dotnet-install.sh | bash -s -- --channel 8.0
+  export PATH="$HOME/.dotnet:$PATH"
+fi
+
 echo "Cloud install done."

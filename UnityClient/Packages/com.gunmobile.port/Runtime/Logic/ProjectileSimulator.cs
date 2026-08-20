@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GunMobile.Logic
@@ -104,6 +105,47 @@ namespace GunMobile.Logic
             while (state.Alive && state.Time < maxTime)
             {
                 ProjectileState next = StepFrame(state, wind);
+                if (outOfBounds(next.X, next.Y))
+                {
+                    next.Alive = false;
+                    return next;
+                }
+
+                if (isSolid(next.X, next.Y))
+                {
+                    next.Alive = false;
+                    return next;
+                }
+
+                state = next;
+            }
+
+            state.Alive = false;
+            return state;
+        }
+
+        /// <summary>Fly until hit; sample map-space points every N frames for net replay.</summary>
+        public ProjectileState FlyUntilSampled(
+            ProjectileState state,
+            float wind,
+            Func<float, float, bool> isSolid,
+            Func<float, float, bool> outOfBounds,
+            int mapHeight,
+            List<int> mapSamples,
+            int sampleEvery = 4,
+            float maxTime = 12f)
+        {
+            int frame = 0;
+            while (state.Alive && state.Time < maxTime)
+            {
+                ProjectileState next = StepFrame(state, wind);
+                frame++;
+                if (mapSamples != null && frame % sampleEvery == 0)
+                {
+                    mapSamples.Add(Mathf.RoundToInt(next.X));
+                    mapSamples.Add(mapHeight - 1 - Mathf.RoundToInt(next.Y));
+                }
+
                 if (outOfBounds(next.X, next.Y))
                 {
                     next.Alive = false;

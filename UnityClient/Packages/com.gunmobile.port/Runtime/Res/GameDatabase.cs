@@ -335,6 +335,26 @@ namespace GunMobile.Res
         public int FlowCoeffcient;
     }
 
+    public sealed class MagicFusionRecipe
+    {
+        public int Id;
+        public int ItemId;
+        public int Type;
+        public int NeedGold;
+        public int NeedKey;
+        public int GetKeys;
+    }
+
+    public sealed class TeamDungeonShopEntry
+    {
+        public int Id;
+        public int ShopType;
+        public int NeedLevel;
+        public int Price;
+        public int Condition;
+        public int Value;
+    }
+
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -367,6 +387,8 @@ namespace GunMobile.Res
         public static readonly int[] DefaultFightSpiritIds = { 100001, 100002, 100003, 100004, 100005 };
         public Dictionary<long, MagicStoneTemplate> MagicStones { get; } = new Dictionary<long, MagicStoneTemplate>();
         public static readonly int[] DefaultMagicStoneTemplateIds = { 100101, 100201, 100301, 100401 };
+        public List<MagicFusionRecipe> MagicFusions { get; } = new List<MagicFusionRecipe>();
+        public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -413,6 +435,8 @@ namespace GunMobile.Res
             db.LoadSpirits(loader);
             db.LoadFightSpirits(loader);
             db.LoadMagicStones(loader);
+            db.LoadMagicFusions(loader);
+            db.LoadTeamDungeonShop(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -628,6 +652,31 @@ namespace GunMobile.Res
                 luck += row.Luck;
                 magicAtk += row.MagicAttack;
                 magicDef += row.MagicDefence;
+            }
+        }
+
+        public MagicFusionRecipe GetMagicFusion(int id)
+        {
+            for (int i = 0; i < MagicFusions.Count; i++)
+            {
+                if (MagicFusions[i].Id == id)
+                {
+                    return MagicFusions[i];
+                }
+            }
+
+            return null;
+        }
+
+        public int TeamDungeonNpcId(int shopType)
+        {
+            switch (shopType)
+            {
+                case 113: return 44401;
+                case 114: return 44403;
+                case 115: return 44405;
+                case 116: return 44407;
+                default: return 44401;
             }
         }
 
@@ -2106,6 +2155,48 @@ namespace GunMobile.Res
                     MagicAttack = Int(row, "MagicAttack"),
                     MagicDefence = Int(row, "MagicDefence")
                 };
+            }
+        }
+
+        void LoadMagicFusions(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/magicfusiondata.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                MagicFusions.Add(new MagicFusionRecipe
+                {
+                    Id = Int(row, "ID"),
+                    ItemId = Int(row, "ItemID"),
+                    Type = Int(row, "Type"),
+                    NeedGold = Int(row, "NeedGold"),
+                    NeedKey = Int(row, "NeedKey"),
+                    GetKeys = Int(row, "GetKeys")
+                });
+            }
+        }
+
+        void LoadTeamDungeonShop(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/battleteamshopitemlist.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                TeamDungeonShop.Add(new TeamDungeonShopEntry
+                {
+                    Id = Int(row, "ID"),
+                    ShopType = Int(row, "ShopType"),
+                    NeedLevel = Int(row, "NeedLevel"),
+                    Price = Int(row, "Price"),
+                    Condition = Int(row, "Condition"),
+                    Value = Int(row, "Value")
+                });
             }
         }
 

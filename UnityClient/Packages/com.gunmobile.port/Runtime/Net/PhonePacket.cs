@@ -171,6 +171,10 @@ namespace GunMobile.Net
         public const ushort AuctionBuy = 124;
         public const ushort GemSpiritUpgrade = 125;
         public const ushort MagicStoneUpgrade = 126;
+        public const ushort MagicFusion = 127;
+        public const ushort BankTrade = 128;
+        public const ushort MineDig = 129;
+        public const ushort TeamDungeonStart = 130;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

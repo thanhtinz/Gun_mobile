@@ -99,17 +99,93 @@ namespace GunMobile.Client
 
         public static void EnchantScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml"),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
                 "enchant.ui");
+            SysUi.Note(body, "附魔钥匙: " + app.Profile.FusionKeys + "  ·  magicfusiondata.xml");
+
+            if (app.Database == null)
+            {
+                return;
+            }
+
+            int shown = 0;
+            foreach (MagicFusionRecipe recipe in app.Database.MagicFusions)
+            {
+                if (shown >= 12)
+                {
+                    break;
+                }
+
+                ItemTemplate item = app.Database.GetItem(recipe.ItemId);
+                string itemName = item != null ? item.Name : ("#" + recipe.ItemId);
+                int fusionId = recipe.Id;
+                if (recipe.Type == 1)
+                {
+                    int keyCost = recipe.NeedKey > 0 ? recipe.NeedKey : 10000;
+                    SysUi.Row(body, "f" + fusionId,
+                        "合成 " + itemName + "  " + recipe.NeedGold + "金 +" + keyCost + "钥匙",
+                        () => PhoneNet.MagicFusion(fusionId));
+                }
+                else if (recipe.GetKeys > 0)
+                {
+                    SysUi.Row(body, "k" + fusionId,
+                        "兑换 +" + recipe.GetKeys + " 钥匙  (消耗 " + itemName + ")",
+                        () => PhoneNet.MagicFusion(fusionId));
+                }
+
+                shown++;
+            }
         }
 
         public static void TeamDungeonScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
-                new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml"),
+                new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
                 "teamdungeon.ui");
-            SysUi.Row(body, "fight", "开始团队战", app.ShowRoom);
+            SysUi.Note(body, "battleteamshopitemlist.xml · 魔穴团队战");
+
+            if (app.Database == null)
+            {
+                SysUi.Row(body, "fight", "开始团队战", app.ShowRoom);
+                return;
+            }
+
+            var types = new System.Collections.Generic.HashSet<int>();
+            foreach (TeamDungeonShopEntry entry in app.Database.TeamDungeonShop)
+            {
+                types.Add(entry.ShopType);
+            }
+
+            foreach (int shopType in types)
+            {
+                TeamDungeonShopEntry pick = null;
+                foreach (TeamDungeonShopEntry entry in app.Database.TeamDungeonShop)
+                {
+                    if (entry.ShopType == shopType)
+                    {
+                        pick = entry;
+                        break;
+                    }
+                }
+
+                if (pick == null)
+                {
+                    continue;
+                }
+
+                int fee = pick.Condition > 0 ? pick.Condition * 10 : 500;
+                int reward = pick.Value > 0 ? pick.Value : 800;
+                int npcId = app.Database.TeamDungeonNpcId(shopType);
+                int localType = shopType;
+                SysUi.Row(body, "td" + shopType,
+                    "难度" + shopType + "  Lv" + pick.NeedLevel + "+  费用" + fee + "  奖励~" + reward + "  NPC" + npcId,
+                    () =>
+                    {
+                        PhoneNet.TeamDungeonStart(localType);
+                        app.ShowRoom();
+                    });
+            }
         }
 
         public static void CarnivalScreen(RectTransform safe, GameApp app)
@@ -122,16 +198,23 @@ namespace GunMobile.Client
         public static void BankScreen(RectTransform safe, GameApp app)
         {
             Transform body = ShowMornModule(safe, app,
-                new ModuleDef("bank", "银行", null),
+                new ModuleDef("bank", "银行", null, false, "bank.ui"),
                 "bank.ui");
-            SysUi.Note(body, "存款: " + app.Profile.Gold + " 金");
+            SysUi.Note(body, "现金: " + app.Profile.Gold + "  ·  存款: " + app.Profile.BankGold);
+            SysUi.Row(body, "dep", "存入 1000 金", () => PhoneNet.BankTrade("deposit", 1000));
+            SysUi.Row(body, "dep5", "存入 5000 金", () => PhoneNet.BankTrade("deposit", 5000));
+            SysUi.Row(body, "wd", "取出 1000 金", () => PhoneNet.BankTrade("withdraw", 1000));
+            SysUi.Row(body, "wd5", "取出 5000 金", () => PhoneNet.BankTrade("withdraw", 5000));
         }
 
         public static void MinesScreen(RectTransform safe, GameApp app)
         {
-            ShowMornModule(safe, app,
-                new ModuleDef("mines", "矿山", null),
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("mines", "矿山", null, false, "mines.ui"),
                 "mines.ui");
+            int maxDigs = app.Database != null ? app.Database.ConfigInt("MineDayLimit", 5) : 5;
+            SysUi.Note(body, "今日已挖: " + app.Profile.MineDigs + " / " + maxDigs);
+            SysUi.Row(body, "dig", "挖矿 (+金)", PhoneNet.MineDig);
         }
 
         public static void AuditoriumScreen(RectTransform safe, GameApp app)

@@ -55,6 +55,9 @@ namespace GunMobile.Client
         public int GemLevel;
         public int KingBlessDay = -1;
         public int FarmHarvests;
+        public int FusionKeys;
+        public int BankGold;
+        public int MineDigs;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;

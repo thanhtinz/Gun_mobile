@@ -217,6 +217,26 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.MagicStoneUpgrade, "{\"templateId\":" + templateId + "}");
         }
 
+        public static void MagicFusion(int fusionId)
+        {
+            Road?.Send(PhoneMsg.MagicFusion, "{\"fusionId\":" + fusionId + "}");
+        }
+
+        public static void BankTrade(string action, int amount)
+        {
+            Road?.Send(PhoneMsg.BankTrade, "{\"action\":\"" + action + "\",\"amount\":" + amount + "}");
+        }
+
+        public static void MineDig()
+        {
+            Road?.Send(PhoneMsg.MineDig, "{}");
+        }
+
+        public static void TeamDungeonStart(int shopType)
+        {
+            Road?.Send(PhoneMsg.TeamDungeonStart, "{\"shopType\":" + shopType + "}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

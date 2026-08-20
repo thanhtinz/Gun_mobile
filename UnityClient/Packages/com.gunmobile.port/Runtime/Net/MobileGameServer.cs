@@ -57,6 +57,10 @@ namespace GunMobile.Net
         public int GemLevel;
         public int KingBlessDay = -1;
         public int FarmHarvests;
+        public int FusionKeys;
+        public int BankGold;
+        public int MineDay = -1;
+        public int MineDigs;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -323,6 +327,9 @@ namespace GunMobile.Net
             J(sb, "gemLevel", GemLevel); sb.Append(",");
             J(sb, "kingBlessDay", KingBlessDay); sb.Append(",");
             J(sb, "farmHarvests", FarmHarvests); sb.Append(",");
+            J(sb, "fusionKeys", FusionKeys); sb.Append(",");
+            J(sb, "bankGold", BankGold); sb.Append(",");
+            J(sb, "mineDigs", MineDigs); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -1284,6 +1291,22 @@ namespace GunMobile.Net
                     HandleMagicStoneUpgrade(player, ns, json);
                     break;
 
+                case PhoneMsg.MagicFusion:
+                    HandleMagicFusion(player, ns, json);
+                    break;
+
+                case PhoneMsg.BankTrade:
+                    HandleBankTrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.MineDig:
+                    HandleMineDig(player, ns);
+                    break;
+
+                case PhoneMsg.TeamDungeonStart:
+                    HandleTeamDungeonStart(player, ns, json);
+                    break;
+
                 case PhoneMsg.PveStart:
                 {
                     player.PveNpcId = JI(json, "npcId", 0);
@@ -2076,6 +2099,154 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMagicFusion(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int fusionId = JI(json, "fusionId", 0);
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            MagicFusionRecipe recipe = _db.GetMagicFusion(fusionId);
+            if (recipe == null)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            if (recipe.Type == 1)
+            {
+                int keyCost = recipe.NeedKey > 0 ? recipe.NeedKey : 10000;
+                if (player.Gold < recipe.NeedGold || player.FusionKeys < keyCost)
+                {
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    return;
+                }
+
+                player.Gold -= recipe.NeedGold;
+                player.FusionKeys -= keyCost;
+                if (recipe.ItemId > 0)
+                {
+                    player.AddItem(recipe.ItemId, 1);
+                }
+            }
+            else
+            {
+                if (recipe.ItemId > 0 && !player.Consume(recipe.ItemId, 1))
+                {
+                    Send(ns, PhoneMsg.StatResult, player.ToJson());
+                    return;
+                }
+
+                player.FusionKeys += Mathf.Max(1, recipe.GetKeys);
+            }
+
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleBankTrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string action = JS(json, "action", "deposit");
+            int amount = JI(json, "amount", 0);
+            if (amount <= 0)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            if (action == "withdraw")
+            {
+                amount = Mathf.Min(amount, player.BankGold);
+                player.BankGold -= amount;
+                player.Gold += amount;
+            }
+            else
+            {
+                amount = Mathf.Min(amount, player.Gold);
+                player.Gold -= amount;
+                player.BankGold += amount;
+            }
+
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMineDig(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.MineDay != today)
+            {
+                player.MineDay = today;
+                player.MineDigs = 0;
+            }
+
+            int maxDigs = _db != null ? _db.ConfigInt("MineDayLimit", 5) : 5;
+            if (player.MineDigs >= maxDigs)
+            {
+                Send(ns, PhoneMsg.StatResult, player.ToJson());
+                return;
+            }
+
+            player.MineDigs++;
+            int goldGain = _db != null ? _db.ConfigInt("MineGoldReward", 500) : 500;
+            lock (_lock)
+            {
+                goldGain += _rng.Next(0, 400);
+            }
+
+            player.Gold += goldGain;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleTeamDungeonStart(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int shopType = JI(json, "shopType", 113);
+            TeamDungeonShopEntry entry = null;
+            if (_db != null)
+            {
+                for (int i = 0; i < _db.TeamDungeonShop.Count; i++)
+                {
+                    if (_db.TeamDungeonShop[i].ShopType == shopType)
+                    {
+                        entry = _db.TeamDungeonShop[i];
+                        break;
+                    }
+                }
+            }
+
+            int needLevel = entry != null ? entry.NeedLevel : 1;
+            if (player.Level < needLevel)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            int entryFee = entry != null && entry.Condition > 0 ? entry.Condition * 10 : 500;
+            if (player.Gold < entryFee)
+            {
+                Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= entryFee;
+            player.PveNpcId = _db != null ? _db.TeamDungeonNpcId(shopType) : 44401;
+            player.PveLabyrinth = false;
+            player.PveRewardGold = entry != null && entry.Value > 0
+                ? entry.Value
+                : (_db != null ? _db.ComputePveWinGold(player.PveNpcId, player.LabyrinthFloor, false) : 800);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult,
+                "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -3390,8 +3561,9 @@ namespace GunMobile.Net
                 float spreadX = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 16.0 - 8.0) : 0f);
                 float spreadA = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 10.0 - 5.0) : 0f);
                 float spreadP = s == 0 ? 0f : (room.Rng != null ? (float)(room.Rng.NextDouble() * 12.0 - 6.0) : 0f);
+                var pathSamples = new List<int>();
 
-                var state = sim.FlyUntil(
+                var state = sim.FlyUntilSampled(
                     sim.Launch(startX + spreadX, unityY, angle + spreadA, Mathf.Clamp(power + spreadP, 1f, 100f), facing >= 0 ? 1 : -1),
                     wind,
                     (fx, fy) =>
@@ -3406,6 +3578,9 @@ namespace GunMobile.Net
                         int my = mapH - 1 - Mathf.RoundToInt(fy);
                         return mx < -200 || mx > mapW + 200 || my > mapH + 200;
                     },
+                    mapH,
+                    pathSamples,
+                    4,
                     12f);
 
                 int hitMapX = Mathf.RoundToInt(state.X);
@@ -3413,10 +3588,19 @@ namespace GunMobile.Net
 
                 int cutRadius = Mathf.Max(24, Mathf.RoundToInt((ball.Radii > 0 ? ball.Radii / 2f : 38f) * propRadius));
                 bool lastShot = s >= shotCount - 1;
+                var pathSb = new StringBuilder(128);
+                pathSb.Append("[");
+                for (int pi = 0; pi < pathSamples.Count; pi++)
+                {
+                    if (pi > 0) pathSb.Append(",");
+                    pathSb.Append(pathSamples[pi]);
+                }
+                pathSb.Append("]");
                 string shotJson = "{\"who\":" + who + ",\"shot\":" + s + ",\"x\":" + hitMapX +
                                   ",\"y\":" + hitMapY + ",\"r\":" + cutRadius +
                                   ",\"blast\":" + blastRadius + ",\"total\":" + shotCount +
-                                  ",\"done\":" + (lastShot ? "true" : "false") + "}";
+                                  ",\"done\":" + (lastShot ? "true" : "false") +
+                                  ",\"path\":" + pathSb + "}";
                 BroadcastToRoom(room, PhoneMsg.FightShotResult, shotJson, -1);
 
                 map.CutCircle(hitMapX, hitMapY, cutRadius);
@@ -4374,6 +4558,7 @@ namespace GunMobile.Net
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
+            public int FusionKeys, BankGold, MineDay = -1, MineDigs;
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -4421,6 +4606,7 @@ namespace GunMobile.Net
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName,
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
+                FusionKeys = p.FusionKeys, BankGold = p.BankGold, MineDay = p.MineDay, MineDigs = p.MineDigs,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -4462,6 +4648,7 @@ namespace GunMobile.Net
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName,
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
+                FusionKeys = s.FusionKeys, BankGold = s.BankGold, MineDay = s.MineDay, MineDigs = s.MineDigs,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
