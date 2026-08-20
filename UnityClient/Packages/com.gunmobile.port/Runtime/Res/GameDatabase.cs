@@ -70,6 +70,16 @@ namespace GunMobile.Res
         public int LimitGrade;
     }
 
+    public sealed class QuestCondition
+    {
+        public int Id;
+        public int Type;
+        public int Para1;
+        public int Para2;
+        public bool Optional;
+        public string Title = "";
+    }
+
     public sealed class QuestInfo
     {
         public int Id;
@@ -83,6 +93,8 @@ namespace GunMobile.Res
         public int RewardOffer;
         public string PreQuestId = "";
         public bool CanRepeat;
+        public int MapId;
+        public List<QuestCondition> Conditions = new List<QuestCondition>();
     }
 
     public sealed class MapInfo
@@ -258,6 +270,13 @@ namespace GunMobile.Res
         public int TemplateId;
         public int Value;
         public int Weight;
+    }
+
+    public sealed class DevilTreasPointReward
+    {
+        public int Id;
+        public int Points;
+        public int TemplateId;
     }
 
     public sealed class SpaRoomFixedLevel
@@ -794,6 +813,7 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
+        public Dictionary<int, DevilTreasPointReward> DevilTreasPointRewards { get; } = new Dictionary<int, DevilTreasPointReward>();
         public List<SpaRoomFixedLevel> SpaRoomFixed { get; } = new List<SpaRoomFixedLevel>();
         public List<SpaRoomRandomConfig> SpaRoomRandom { get; } = new List<SpaRoomRandomConfig>();
         public List<CarnivalActivityItem> CarnivalActivityItems { get; } = new List<CarnivalActivityItem>();
@@ -893,6 +913,7 @@ namespace GunMobile.Res
             db.LoadHonorSystem(loader);
             db.LoadTotemHonor(loader);
             db.LoadDevilTreas(loader);
+            db.LoadDevilTreasPoints(loader);
             db.LoadSpaRoom(loader);
             db.LoadCarnivalActivityItems(loader);
             db.LoadNewYearPointRewards(loader);
@@ -3044,34 +3065,101 @@ namespace GunMobile.Res
 
         void LoadQuests(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/QuestList.xml", out XmlResultTable table))
+            if (!loader.TryReadBytes("Request/QuestList.xml", out byte[] data))
             {
                 return;
             }
 
-            foreach (var row in table.Rows)
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null)
             {
-                int id = Int(row, "ID");
-                if (id == 0)
+                return;
+            }
+
+            foreach (XElement item in root.Elements())
+            {
+                if (!string.Equals(item.Name.LocalName, "Item", StringComparison.OrdinalIgnoreCase))
                 {
-                    id = Int(row, "QuestID");
+                    continue;
                 }
 
-                Quests.Add(new QuestInfo
+                int id = QuestAttrInt(item, "ID");
+                if (id == 0)
+                {
+                    id = QuestAttrInt(item, "QuestID");
+                }
+
+                if (id == 0)
+                {
+                    continue;
+                }
+
+                var q = new QuestInfo
                 {
                     Id = id,
-                    Title = Str(row, "Title"),
-                    Detail = Str(row, "Detail"),
-                    NeedMinLevel = Int(row, "NeedMinLevel"),
-                    NeedMaxLevel = Int(row, "NeedMaxLevel"),
-                    RewardGold = Int(row, "RewardGold"),
-                    RewardMoney = Int(row, "RewardMoney"),
-                    RewardGp = Int(row, "RewardGP"),
-                    RewardOffer = Int(row, "RewardOffer"),
-                    PreQuestId = Str(row, "PreQuestID"),
-                    CanRepeat = Bool(row, "CanRepeat")
-                });
+                    Title = QuestAttrStr(item, "Title"),
+                    Detail = QuestAttrStr(item, "Detail"),
+                    NeedMinLevel = QuestAttrInt(item, "NeedMinLevel"),
+                    NeedMaxLevel = QuestAttrInt(item, "NeedMaxLevel"),
+                    RewardGold = QuestAttrInt(item, "RewardGold"),
+                    RewardMoney = QuestAttrInt(item, "RewardMoney"),
+                    RewardGp = QuestAttrInt(item, "RewardGP"),
+                    RewardOffer = QuestAttrInt(item, "RewardOffer"),
+                    PreQuestId = QuestAttrStr(item, "PreQuestID"),
+                    CanRepeat = QuestAttrBool(item, "CanRepeat"),
+                    MapId = QuestAttrInt(item, "MapID")
+                };
+
+                foreach (XElement cond in item.Elements())
+                {
+                    if (!string.Equals(cond.Name.LocalName, "Item_Condiction", StringComparison.OrdinalIgnoreCase))
+                    {
+                        continue;
+                    }
+
+                    q.Conditions.Add(new QuestCondition
+                    {
+                        Id = QuestAttrInt(cond, "CondictionID"),
+                        Type = QuestAttrInt(cond, "CondictionType"),
+                        Para1 = QuestAttrInt(cond, "Para1"),
+                        Para2 = QuestAttrInt(cond, "Para2"),
+                        Optional = QuestAttrBool(cond, "isOpitional"),
+                        Title = QuestAttrStr(cond, "CondictionTitle")
+                    });
+                }
+
+                Quests.Add(q);
             }
+        }
+
+        static int QuestAttrInt(XElement el, string name)
+        {
+            XAttribute a = el.Attribute(name);
+            if (a == null)
+            {
+                return 0;
+            }
+
+            int.TryParse(a.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out int v);
+            return v;
+        }
+
+        static string QuestAttrStr(XElement el, string name)
+        {
+            XAttribute a = el.Attribute(name);
+            return a?.Value ?? "";
+        }
+
+        static bool QuestAttrBool(XElement el, string name)
+        {
+            XAttribute a = el.Attribute(name);
+            if (a == null)
+            {
+                return false;
+            }
+
+            return string.Equals(a.Value, "true", StringComparison.OrdinalIgnoreCase) || a.Value == "1";
         }
 
         void LoadMaps(ResLoader loader)
@@ -3852,6 +3940,25 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadDevilTreasPoints(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/DevilTreasPointsList.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                DevilTreasPointRewards[id] = new DevilTreasPointReward
+                {
+                    Id = id,
+                    Points = Int(row, "Points"),
+                    TemplateId = Int(row, "TemplateID")
+                };
+            }
+        }
+
 
         void LoadSpaRoom(ResLoader loader)
         {
@@ -4278,6 +4385,25 @@ namespace GunMobile.Res
         public GodCardPointRewardInfo GetGodCardPointReward(int rewardId)
         {
             GodCardPointRewards.TryGetValue(rewardId, out GodCardPointRewardInfo row);
+            return row;
+        }
+
+        public QuestInfo GetQuest(int questId)
+        {
+            for (int i = 0; i < Quests.Count; i++)
+            {
+                if (Quests[i].Id == questId)
+                {
+                    return Quests[i];
+                }
+            }
+
+            return null;
+        }
+
+        public DevilTreasPointReward GetDevilTreasPointReward(int rewardId)
+        {
+            DevilTreasPointRewards.TryGetValue(rewardId, out DevilTreasPointReward row);
             return row;
         }
 

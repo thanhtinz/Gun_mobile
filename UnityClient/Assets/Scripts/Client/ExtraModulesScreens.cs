@@ -343,11 +343,22 @@ namespace GunMobile.Client
                 "devilturn.ui");
             int unitCost = app.Database != null ? app.Database.ConfigInt("DevilTreasureOneCost", 10000) : 10000;
             int tenCost = app.Database != null ? app.Database.ConfigInt("DevilTreasureTenCost", unitCost * 10) : unitCost * 10;
-            SysUi.Note(body, "DevilTreasItemList.xml  ·  今日已转 " + app.Profile.DevilTurnSpins + " 次");
+            SysUi.Note(body, "DevilTreasPointsList.xml  ·  积分 " + app.Profile.DevilTurnPoints + "  ·  今日已转 " + app.Profile.DevilTurnSpins + " 次");
             SysUi.Row(body, "spin1", "转1次  " + unitCost + " 金", () => PhoneNet.DevilTurnSpin(1));
             SysUi.Row(body, "spin10", "转10次  " + tenCost + " 金", () => PhoneNet.DevilTurnSpin(10));
             if (app.Database != null)
             {
+                var milestones = new System.Collections.Generic.List<DevilTreasPointReward>(app.Database.DevilTreasPointRewards.Values);
+                milestones.Sort((a, b) => a.Points.CompareTo(b.Points));
+                foreach (DevilTreasPointReward reward in milestones)
+                {
+                    bool claimed = app.Profile.DevilTreasPointClaimed != null && app.Profile.DevilTreasPointClaimed.Contains(reward.Id);
+                    string state = claimed ? "已领" : app.Profile.DevilTurnPoints >= reward.Points ? "可领" : "未达";
+                    int rid = reward.Id;
+                    SysUi.Row(body, "mile" + reward.Id,
+                        state + "  " + reward.Points + "分 → " + SysUi.ItemName(app, reward.TemplateId),
+                        claimed ? (System.Action)(() => { }) : () => PhoneNet.ClaimDevilTreasPoint(rid));
+                }
                 int shown = 0;
                 foreach (DevilTreasItem item in app.Database.DevilTreasItems)
                 {
@@ -370,6 +381,11 @@ namespace GunMobile.Client
             int maxClaims = app.Database != null ? app.Database.ConfigInt("RedPacketDayLimit", 5) : 5;
             SysUi.Note(body, "每日红包  ·  已领 " + app.Profile.RedPacketClaims + " / " + maxClaims);
             SysUi.Row(body, "claim", "开红包", PhoneNet.ClaimRedPacket);
+            if (app.Profile.Friends != null && app.Profile.Friends.Count > 0)
+            {
+                string friend = app.Profile.Friends[0];
+                SysUi.Row(body, "send", "发红包给 " + friend + "  1000金", () => PhoneNet.SendRedPacket(friend, 1000));
+            }
         }
 
         public static void HomeTempleScreen(RectTransform safe, GameApp app)

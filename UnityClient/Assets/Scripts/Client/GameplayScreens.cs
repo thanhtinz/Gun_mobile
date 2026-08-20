@@ -168,7 +168,10 @@ namespace GunMobile.Client
                 bool done = app.Profile.QuestDone(q.Id);
                 bool acc = app.Profile.QuestAccepted(q.Id);
                 string state = done ? "已完成" : acc ? "领取奖励" : "接取";
-                string cap = $"{q.Title}  [{state}]  Gold+{q.RewardGold} GP+{q.RewardGp}";
+                string progress = FormatQuestProgress(app, q);
+                string cap = progress.Length > 0
+                    ? $"{q.Title}  [{state}]  {progress}  Gold+{q.RewardGold} GP+{q.RewardGp}"
+                    : $"{q.Title}  [{state}]  Gold+{q.RewardGold} GP+{q.RewardGp}";
                 QuestInfo local = q;
                 var btn = UiKit.Button(scroll.content, "q" + q.Id, cap, () => Toggle(app, local), new Vector2(0f, 72f));
                 btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
@@ -179,6 +182,25 @@ namespace GunMobile.Client
                     break;
                 }
             }
+        }
+
+        static string FormatQuestProgress(GameApp app, QuestInfo q)
+        {
+            if (!app.Profile.QuestAccepted(q.Id) || q.Conditions == null || q.Conditions.Count == 0)
+            {
+                return "";
+            }
+
+            System.Collections.Generic.List<int> prog = app.Profile.GetQuestProgress(q.Id);
+            var parts = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < q.Conditions.Count; i++)
+            {
+                int cur = prog != null && i < prog.Count ? prog[i] : 0;
+                int need = UnityEngine.Mathf.Max(1, q.Conditions[i].Para2);
+                parts.Add(cur + "/" + need);
+            }
+
+            return "[" + string.Join(",", parts) + "]";
         }
 
         static void Toggle(GameApp app, QuestInfo q)

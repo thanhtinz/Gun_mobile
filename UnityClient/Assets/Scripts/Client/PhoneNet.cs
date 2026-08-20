@@ -308,6 +308,11 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.DevilTurnSpin, "{\"count\":" + count + "}");
         }
 
+        public static void ClaimDevilTreasPoint(int rewardId)
+        {
+            Road?.Send(PhoneMsg.DevilTreasPointClaim, "{\"rewardId\":" + rewardId + "}");
+        }
+
         public static void SpaRoomStart()
         {
             Road?.Send(PhoneMsg.SpaRoomStart, "{}");
@@ -351,6 +356,12 @@ namespace GunMobile.Client
         public static void ClaimRedPacket()
         {
             Road?.Send(PhoneMsg.RedPacketClaim, "{}");
+        }
+
+        public static void SendRedPacket(string friend, int gold)
+        {
+            string fn = (friend ?? "").Replace("\\", "\\\\").Replace("\"", "\\\"");
+            Road?.Send(PhoneMsg.RedPacketSend, "{\"friend\":\"" + fn + "\",\"gold\":" + gold + "}");
         }
 
         public static void UpgradeHomeTemple()

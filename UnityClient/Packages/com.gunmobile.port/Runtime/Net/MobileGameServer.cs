@@ -76,6 +76,9 @@ namespace GunMobile.Net
         public int RedPacketClaims;
         public int DevilTurnDay = -1;
         public int DevilTurnSpins;
+        public int DevilTurnPoints;
+        public List<int> DevilTreasPointClaimed = new List<int>();
+        public Dictionary<int, List<int>> QuestProgress = new Dictionary<int, List<int>>();
         public int SpaRoomDay = -1;
         public int SpaRoomDayScore;
         public bool SpaRoomActive;
@@ -471,6 +474,31 @@ namespace GunMobile.Net
             J(sb, "honorSystemLevel", HonorSystemLevel); sb.Append(",");
             J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
             J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
+            J(sb, "devilTurnPoints", DevilTurnPoints); sb.Append(",");
+            EnsureDevilTreasPointClaimed();
+            sb.Append("\"devilTreasPointClaimed\":[");
+            for (int i = 0; i < DevilTreasPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DevilTreasPointClaimed[i]); }
+            sb.Append("],");
+            sb.Append("\"acceptedQuests\":[");
+            for (int i = 0; i < AcceptedQuests.Count; i++) { if (i > 0) sb.Append(","); sb.Append(AcceptedQuests[i]); }
+            sb.Append("],");
+            sb.Append("\"completedQuests\":[");
+            for (int i = 0; i < CompletedQuests.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CompletedQuests[i]); }
+            sb.Append("],");
+            if (QuestProgress != null && QuestProgress.Count > 0)
+            {
+                sb.Append("\"questProgress\":{");
+                bool qpFirst = true;
+                foreach (KeyValuePair<int, List<int>> kv in QuestProgress)
+                {
+                    if (!qpFirst) sb.Append(",");
+                    qpFirst = false;
+                    sb.Append("\"").Append(kv.Key).Append("\":[");
+                    for (int i = 0; i < kv.Value.Count; i++) { if (i > 0) sb.Append(","); sb.Append(kv.Value[i]); }
+                    sb.Append("]");
+                }
+                sb.Append("},");
+            }
             J(sb, "spaRoomDayScore", SpaRoomDayScore); sb.Append(",");
             J(sb, "treasureRoomDraws", TreasureRoomDraws); sb.Append(",");
             J(sb, "christmasClaims", ChristmasClaims); sb.Append(",");
@@ -615,38 +643,81 @@ namespace GunMobile.Net
         }
 
         public void EnsureGodCardPointClaimed() { if (GodCardPointClaimed == null) GodCardPointClaimed = new List<int>(); }
+        public void EnsureDevilTreasPointClaimed() { if (DevilTreasPointClaimed == null) DevilTreasPointClaimed = new List<int>(); }
         public GodCardSlot FindGodCardSlot(int id) { foreach (GodCardSlot slot in GodCards) if (slot.Id == id) return slot; return null; }
+
+        public void EnsureQuestProgress(int questId, int conditionCount)
+        {
+            if (QuestProgress == null) QuestProgress = new Dictionary<int, List<int>>();
+            if (!QuestProgress.TryGetValue(questId, out List<int> prog) || prog == null) { prog = new List<int>(); QuestProgress[questId] = prog; }
+            while (prog.Count < conditionCount) prog.Add(0);
+        }
+
+        public void UpdateQuestBattleProgress(GameDatabase db, bool win, int pvpKills, int pveNpcId, int mapId, bool pve)
+        {
+            if (db == null || AcceptedQuests.Count == 0) return;
+            foreach (int questId in AcceptedQuests)
+            {
+                QuestInfo quest = db.GetQuest(questId);
+                if (quest == null || quest.Conditions.Count == 0) continue;
+                EnsureQuestProgress(questId, quest.Conditions.Count);
+                List<int> prog = QuestProgress[questId];
+                for (int ci = 0; ci < quest.Conditions.Count; ci++)
+                {
+                    QuestCondition cond = quest.Conditions[ci];
+                    int need = Mathf.Max(1, cond.Para2);
+                    int add = 0;
+                    switch (cond.Type)
+                    {
+                        case 4: if (pvpKills > 0 && !pve) add = pvpKills; break;
+                        case 5: add = 1; break;
+                        case 6: if (win) add = 1; break;
+                        case 8: if (win && pve && (pveNpcId == cond.Para1 || mapId == quest.MapId)) add = 1; break;
+                        case 13: if (win && pve && pveNpcId == cond.Para1) add = 1; break;
+                        case 21: if (win && (mapId == quest.MapId || cond.Para1 == mapId || cond.Para1 == pveNpcId)) add = 1; break;
+                    }
+                    if (add > 0) prog[ci] = Mathf.Min(need, prog[ci] + add);
+                }
+            }
+        }
+
+        public bool IsQuestReady(GameDatabase db, int questId)
+        {
+            if (db == null) return true;
+            QuestInfo quest = db.GetQuest(questId);
+            if (quest == null || quest.Conditions.Count == 0) return true;
+            if (!QuestProgress.TryGetValue(questId, out List<int> prog) || prog == null) return false;
+            for (int ci = 0; ci < quest.Conditions.Count; ci++)
+            {
+                if (quest.Conditions[ci].Optional) continue;
+                if (ci >= prog.Count || prog[ci] < Mathf.Max(1, quest.Conditions[ci].Para2)) return false;
+            }
+            return true;
+        }
 
         public int CompleteAcceptedQuests(GameDatabase db)
         {
             int extra = 0;
             if (db == null || AcceptedQuests.Count == 0) return 0;
 
-            var copy = new List<int>(AcceptedQuests);
-            AcceptedQuests.Clear();
-            foreach (int id in copy)
+            var ready = new List<int>();
+            foreach (int id in AcceptedQuests)
             {
+                if (IsQuestReady(db, id)) ready.Add(id);
+            }
+            foreach (int id in ready)
+            {
+                AcceptedQuests.Remove(id);
                 if (CompletedQuests.Contains(id)) continue;
-
                 CompletedQuests.Add(id);
-                QuestInfo q = null;
-                for (int i = 0; i < db.Quests.Count; i++)
-                {
-                    if (db.Quests[i].Id == id)
-                    {
-                        q = db.Quests[i];
-                        break;
-                    }
-                }
-
+                QuestProgress.Remove(id);
+                QuestInfo q = db.GetQuest(id);
                 if (q == null) continue;
-
                 extra += q.RewardGold;
                 Gold += q.RewardGold;
                 Honor += q.RewardOffer;
                 AddGp(db, q.RewardGp);
             }
-
             return extra;
         }
 
@@ -1535,6 +1606,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.RedPacketClaim:
                     HandleRedPacketClaim(player, ns);
+                    break;
+
+                case PhoneMsg.DevilTreasPointClaim:
+                    HandleDevilTreasPointClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.RedPacketSend:
+                    HandleRedPacketSend(player, ns, json);
                     break;
 
                 case PhoneMsg.HomeTempleUpgrade:
@@ -3150,6 +3229,8 @@ namespace GunMobile.Net
             }
 
             player.DevilTurnSpins += count;
+            int pointsPerSpin = _db != null ? _db.ConfigInt("DevilTreasurePointPerSpin", 100) : 100;
+            player.DevilTurnPoints += count * pointsPerSpin;
             SavePlayer(player);
             rewards.Append("]");
             Send(ns, PhoneMsg.DevilTurnSpin,
@@ -3678,6 +3759,76 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.RedPacketClaim,
                 "{\"ok\":true,\"gold\":" + gold + ",\"claims\":" + player.RedPacketClaims + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleDevilTreasPointClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int rewardId = JI(json, "rewardId", 0);
+            DevilTreasPointReward reward = _db != null ? _db.GetDevilTreasPointReward(rewardId) : null;
+            if (reward == null || reward.TemplateId <= 0)
+            {
+                Send(ns, PhoneMsg.DevilTreasPointClaim, "{\"ok\":false,\"err\":\"reward\"}");
+                return;
+            }
+
+            player.EnsureDevilTreasPointClaimed();
+            if (player.DevilTreasPointClaimed.Contains(rewardId) || player.DevilTurnPoints < reward.Points)
+            {
+                Send(ns, PhoneMsg.DevilTreasPointClaim, "{\"ok\":false,\"err\":\"points\"}");
+                return;
+            }
+
+            player.DevilTreasPointClaimed.Add(rewardId);
+            player.GrantTemplateReward(_db, reward.TemplateId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DevilTreasPointClaim,
+                "{\"ok\":true,\"rewardId\":" + rewardId + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleRedPacketSend(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string friend = JS(json, "friend", "");
+            int gold = Mathf.Clamp(JI(json, "gold", 0), 1, 50000);
+            if (string.IsNullOrEmpty(friend) || !player.Friends.Contains(friend))
+            {
+                Send(ns, PhoneMsg.RedPacketSend, "{\"ok\":false,\"err\":\"friend\"}");
+                return;
+            }
+
+            if (player.Gold < gold)
+            {
+                Send(ns, PhoneMsg.RedPacketSend, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            ServerPlayer target = null;
+            lock (_lock)
+            {
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (string.Equals(p.Nick, friend, StringComparison.OrdinalIgnoreCase))
+                    {
+                        target = p;
+                        break;
+                    }
+                }
+            }
+
+            if (target == null || target.RoadStream == null)
+            {
+                Send(ns, PhoneMsg.RedPacketSend, "{\"ok\":false,\"err\":\"offline\"}");
+                return;
+            }
+
+            player.Gold -= gold;
+            target.Gold += gold;
+            SavePlayer(player);
+            SavePlayer(target);
+            Send(ns, PhoneMsg.RedPacketSend,
+                "{\"ok\":true,\"gold\":" + gold + ",\"friend\":\"" + friend.Replace("\"", "\\\"") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+            SendTo(target, PhoneMsg.ProfileData, target.ToJson());
         }
 
         void HandleHomeTempleUpgrade(ServerPlayer player, NetworkStream ns)
@@ -4328,24 +4479,41 @@ namespace GunMobile.Net
             if (id == PhoneMsg.QuestAccept)
             {
                 if (!player.AcceptedQuests.Contains(questId))
+                {
                     player.AcceptedQuests.Add(questId);
+                    if (_db != null)
+                    {
+                        QuestInfo q = _db.GetQuest(questId);
+                        if (q != null && q.Conditions.Count > 0)
+                        {
+                            player.EnsureQuestProgress(questId, q.Conditions.Count);
+                        }
+                    }
+                }
             }
             else
             {
+                if (_db != null && !player.IsQuestReady(_db, questId))
+                {
+                    Send(ns, PhoneMsg.QuestResult, "{\"ok\":false,\"err\":\"not ready\"}");
+                    return;
+                }
+
                 player.AcceptedQuests.Remove(questId);
                 if (!player.CompletedQuests.Contains(questId))
+                {
                     player.CompletedQuests.Add(questId);
+                }
+
+                player.QuestProgress.Remove(questId);
                 if (_db != null)
                 {
-                    foreach (var q in _db.Quests)
+                    QuestInfo q = _db.GetQuest(questId);
+                    if (q != null)
                     {
-                        if (q.Id == questId)
-                        {
-                            player.Gold += q.RewardGold;
-                            player.Honor += q.RewardOffer;
-                            player.AddGp(_db, q.RewardGp);
-                            break;
-                        }
+                        player.Gold += q.RewardGold;
+                        player.Honor += q.RewardOffer;
+                        player.AddGp(_db, q.RewardGp);
                     }
                 }
             }
@@ -5782,6 +5950,24 @@ namespace GunMobile.Net
                     p.PveDreamland = false;
                     p.PveWarriorFam = false;
 
+                    int mapId = room.MapId;
+                    int pvpKills = 0;
+                    if (room.Hp != null && room.Livings != null)
+                    {
+                        for (int si = 0; si < room.Hp.Length; si++)
+                        {
+                            if (room.Hp[si] <= 0 && si < room.Livings.Length && room.Livings[si].Team != myTeam)
+                            {
+                                pvpKills++;
+                            }
+                        }
+                    }
+
+                    if (_db != null)
+                    {
+                        p.UpdateQuestBattleProgress(_db, win, pvpKills, pveNpcId, mapId, pve);
+                    }
+
                     if (win)
                     {
                         p.Win++;
@@ -6317,6 +6503,7 @@ namespace GunMobile.Net
         class EmblemSlotSave { public int id, templateId, types, profile, mainType, mainValue, subValue, skillId, equipped; }
         class SoulStampSlotSave { public int id, tempId, type, quality, grade, proType, proValue, skillId, equipped; }
         class RelicSlotSave { public int relicId; public int upgradeLevel; }
+        class QuestProgressSave { public int questId; public List<int> progress = new List<int>(); }
 
         [Serializable]
         class ServerPlayerSave
@@ -6342,7 +6529,9 @@ namespace GunMobile.Net
             public List<int> WardrobeProperties = new List<int>();
             public List<int> HonorSystemClaimed = new List<int>();
             public int RedPacketDay = -1, RedPacketClaims;
-            public int DevilTurnDay = -1, DevilTurnSpins;
+            public int DevilTurnDay = -1, DevilTurnSpins, DevilTurnPoints;
+            public List<int> DevilTreasPointClaimed = new List<int>();
+            public List<QuestProgressSave> QuestProgress = new List<QuestProgressSave>();
             public int SpaRoomDay = -1, SpaRoomDayScore;
             public int TreasureRoomDay = -1, TreasureRoomDraws;
             public int ChristmasDay = -1, ChristmasClaims;
@@ -6428,7 +6617,9 @@ namespace GunMobile.Net
                 WardrobeProperties = p.WardrobeProperties ?? new List<int>(),
                 HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
-                DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
+                DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins, DevilTurnPoints = p.DevilTurnPoints,
+                DevilTreasPointClaimed = p.DevilTreasPointClaimed ?? new List<int>(),
+                QuestProgress = new List<QuestProgressSave>(),
                 SpaRoomDay = p.SpaRoomDay, SpaRoomDayScore = p.SpaRoomDayScore,
                 TreasureRoomDay = p.TreasureRoomDay, TreasureRoomDraws = p.TreasureRoomDraws,
                 ChristmasDay = p.ChristmasDay, ChristmasClaims = p.ChristmasClaims,
@@ -6474,6 +6665,13 @@ namespace GunMobile.Net
             {
                 s.FirstRechargeShopBuys.Add(new FirstRechargeBuySave { templateId = kv.Key, count = kv.Value });
             }
+            if (p.QuestProgress != null)
+            {
+                foreach (KeyValuePair<int, List<int>> kv in p.QuestProgress)
+                {
+                    s.QuestProgress.Add(new QuestProgressSave { questId = kv.Key, progress = kv.Value ?? new List<int>() });
+                }
+            }
             foreach (ServerMail m in p.Mails)
             {
                 s.Mails.Add(new ServerMailSave
@@ -6507,7 +6705,8 @@ namespace GunMobile.Net
                 WardrobeProperties = s.WardrobeProperties ?? new List<int>(),
                 HonorSystemClaimed = s.HonorSystemClaimed ?? new List<int>(),
                 RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
-                DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
+                DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins, DevilTurnPoints = s.DevilTurnPoints,
+                DevilTreasPointClaimed = s.DevilTreasPointClaimed ?? new List<int>(),
                 SpaRoomDay = s.SpaRoomDay, SpaRoomDayScore = s.SpaRoomDayScore,
                 TreasureRoomDay = s.TreasureRoomDay, TreasureRoomDraws = s.TreasureRoomDraws,
                 ChristmasDay = s.ChristmasDay, ChristmasClaims = s.ChristmasClaims,
@@ -6574,6 +6773,16 @@ namespace GunMobile.Net
             p.EnsureEmblems(); p.EnsureSoulStamps(); p.EnsureRelics();
             p.EnsureWardrobeProperties();
             p.EnsureHonorSystemClaimed();
+            if (s.QuestProgress != null)
+            {
+                foreach (QuestProgressSave qp in s.QuestProgress)
+                {
+                    if (qp.questId > 0 && qp.progress != null)
+                    {
+                        p.QuestProgress[qp.questId] = new List<int>(qp.progress);
+                    }
+                }
+            }
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {

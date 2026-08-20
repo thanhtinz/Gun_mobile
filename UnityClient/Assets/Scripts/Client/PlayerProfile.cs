@@ -68,6 +68,9 @@ namespace GunMobile.Client
         public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
+        public int DevilTurnPoints;
+        public List<int> DevilTreasPointClaimed = new List<int>();
+        public Dictionary<int, List<int>> QuestProgress = new Dictionary<int, List<int>>();
         public int SpaRoomDayScore;
         public int TreasureRoomDraws;
         public int ChristmasClaims;
@@ -563,6 +566,17 @@ namespace GunMobile.Client
         public bool QuestDone(int id) => CompletedQuests.Contains(id);
 
         public bool QuestAccepted(int id) => AcceptedQuests.Contains(id);
+
+        public List<int> GetQuestProgress(int questId)
+        {
+            if (QuestProgress != null && QuestProgress.TryGetValue(questId, out List<int> prog) && prog != null)
+            {
+                return prog;
+            }
+
+            return null;
+        }
+
 
         public void GrantTemplate(int templateId, int count)
         {

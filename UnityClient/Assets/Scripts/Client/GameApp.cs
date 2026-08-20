@@ -655,7 +655,10 @@ namespace GunMobile.Client
             Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
+            Profile.DevilTurnPoints = JsonInt(json, "devilTurnPoints", Profile.DevilTurnPoints);
             Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
+            ParseDevilTreasPointClaimedFromServer(json);
+            ParseQuestsFromServer(json);
             Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.ChristmasClaims = JsonInt(json, "christmasClaims", Profile.ChristmasClaims);
             Profile.NewYearPoints = JsonInt(json, "newYearPoints", Profile.NewYearPoints);
@@ -1055,6 +1058,89 @@ namespace GunMobile.Client
             if (list.Count > 0)
             {
                 Profile.GodCards = list;
+            }
+        }
+
+        void ParseDevilTreasPointClaimedFromServer(string json)
+        {
+            int idx = json.IndexOf("\"devilTreasPointClaimed\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 25;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            Profile.DevilTreasPointClaimed = Profile.DevilTreasPointClaimed ?? new System.Collections.Generic.List<int>();
+            Profile.DevilTreasPointClaimed.Clear();
+            string chunk = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < chunk.Length)
+            {
+                while (pos < chunk.Length && (chunk[pos] == ' ' || chunk[pos] == ',')) pos++;
+                int ns = pos;
+                while (pos < chunk.Length && chunk[pos] >= '0' && chunk[pos] <= '9') pos++;
+                if (pos > ns && int.TryParse(chunk.Substring(ns, pos - ns), out int rid) && rid > 0) Profile.DevilTreasPointClaimed.Add(rid);
+            }
+        }
+
+        void ParseQuestsFromServer(string json)
+        {
+            ParseIntListField(json, "acceptedQuests", Profile.AcceptedQuests);
+            ParseIntListField(json, "completedQuests", Profile.CompletedQuests);
+            int qpIdx = json.IndexOf("\"questProgress\":{", System.StringComparison.Ordinal);
+            if (qpIdx < 0) return;
+            Profile.QuestProgress = Profile.QuestProgress ?? new System.Collections.Generic.Dictionary<int, System.Collections.Generic.List<int>>();
+            Profile.QuestProgress.Clear();
+            int start = qpIdx + 16;
+            int end = json.IndexOf('}', start);
+            if (end <= start) return;
+            string body = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int qStart = body.IndexOf('"', pos);
+                if (qStart < 0) break;
+                int qEnd = body.IndexOf('"', qStart + 1);
+                if (qEnd < 0) break;
+                if (!int.TryParse(body.Substring(qStart + 1, qEnd - qStart - 1), out int questId) || questId <= 0)
+                {
+                    pos = qEnd + 1;
+                    continue;
+                }
+                int arrStart = body.IndexOf('[', qEnd);
+                int arrEnd = body.IndexOf(']', arrStart);
+                if (arrStart < 0 || arrEnd <= arrStart) break;
+                var prog = new System.Collections.Generic.List<int>();
+                string arr = body.Substring(arrStart + 1, arrEnd - arrStart - 1);
+                int ap = 0;
+                while (ap < arr.Length)
+                {
+                    while (ap < arr.Length && (arr[ap] == ' ' || arr[ap] == ',')) ap++;
+                    int ns = ap;
+                    while (ap < arr.Length && arr[ap] >= '0' && arr[ap] <= '9') ap++;
+                    if (ap > ns && int.TryParse(arr.Substring(ns, ap - ns), out int val)) prog.Add(val);
+                }
+                Profile.QuestProgress[questId] = prog;
+                pos = arrEnd + 1;
+            }
+        }
+
+        void ParseIntListField(string json, string field, System.Collections.Generic.List<int> target)
+        {
+            if (target == null) return;
+            string needle = "\"" + field + "\":[";
+            int idx = json.IndexOf(needle, System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + needle.Length;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            target.Clear();
+            string chunk = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < chunk.Length)
+            {
+                while (pos < chunk.Length && (chunk[pos] == ' ' || chunk[pos] == ',')) pos++;
+                int ns = pos;
+                while (pos < chunk.Length && chunk[pos] >= '0' && chunk[pos] <= '9') pos++;
+                if (pos > ns && int.TryParse(chunk.Substring(ns, pos - ns), out int val)) target.Add(val);
             }
         }
 
