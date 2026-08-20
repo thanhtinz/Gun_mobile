@@ -1591,6 +1591,7 @@ namespace GunMobile.Net
                     Send(ns, PhoneMsg.MailListData, BuildMailListJson(player));
                     break;
 
+                case PhoneMsg.Chat:
                 case PhoneMsg.ChatSend:
                 {
                     string msg = JS(json, "msg", "");
@@ -2053,9 +2054,11 @@ namespace GunMobile.Net
                     break;
                 case PhoneMsg.FightSkip:
                 {
-                    bool allowSkip; lock (_lock) { allowSkip = room.InBattle && player.Seat == room.CurrentPlayer; }
+                    int who = JI(json, "who", player.Seat);
+                    bool allowSkip;
+                    lock (_lock) { allowSkip = room.InBattle && player.Seat == who; }
                     if (!allowSkip) return;
-                    BroadcastToRoom(room, PhoneMsg.FightSkip, EnsureJsonField(json, "who", player.Seat), player.Id);
+                    BroadcastToRoom(room, PhoneMsg.FightSkip, EnsureJsonField(json, "who", who), player.Id);
                     break;
                 }
 

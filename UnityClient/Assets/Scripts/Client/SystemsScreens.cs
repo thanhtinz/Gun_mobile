@@ -1041,10 +1041,18 @@ namespace GunMobile.Client
             var bg = UiKit.PcPanel(safe, "Chat");
             ShopScreen.Header(bg.transform, app, "聊天");
             var scroll = ShopScreen.BodyScroll(bg.transform);
-            foreach (string line in app.Profile.ChatLog)
+            var log = app.Profile.ChatLog;
+            int start = log != null && log.Count > 50 ? log.Count - 50 : 0;
+            if (log != null)
             {
-                SysUi.Note(scroll.content, line);
+                for (int i = start; i < log.Count; i++)
+                {
+                    SysUi.Note(scroll.content, log[i]);
+                }
             }
+
+            Canvas.ForceUpdateCanvases();
+            scroll.verticalNormalizedPosition = 0f;
 
             InputField field = UiKit.Field(bg.transform, "Msg", "说点什么", new Vector2(520f, 56f));
             field.characterLimit = 48;
@@ -1059,7 +1067,6 @@ namespace GunMobile.Client
 
                 PhoneNet.SendChat(t);
                 field.text = "";
-                Show(safe, app);
             }, new Vector2(140f, 56f));
             send.GetComponent<RectTransform>().anchorMin = send.GetComponent<RectTransform>().anchorMax = new Vector2(0.82f, 0.08f);
         }
