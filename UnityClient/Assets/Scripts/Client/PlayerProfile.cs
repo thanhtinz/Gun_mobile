@@ -59,6 +59,11 @@ namespace GunMobile.Client
         public int BankGold;
         public int MineDigs;
         public int WorldBossHits;
+        public int NecklaceLevel;
+        public int HomeTempleLevel;
+        public int RedPacketClaims;
+        public int DevilTurnSpins;
+        public int SweepCount;
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;
@@ -600,10 +605,11 @@ namespace GunMobile.Client
             new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml", false, "auditorium.ui"),
             new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml", false, "treasureHunting.ui"),
             new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml", false, "peakBattle.ui"),
+            new ModuleDef("necklace", "项链", "Request/TS_NecklaceCasting.xml", false, "necklace.ui"),
             new ModuleDef("christmas", "圣诞", null, false, "christmas.ui"),
             new ModuleDef("newyear", "新年", null, false, "newyear.ui"),
             new ModuleDef("redpacket", "红包", null, false, "redpacket.ui"),
-            new ModuleDef("devilturn", "恶魔转盘", null, false, "devilturn.ui"),
+            new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
             new ModuleDef("jigsaw", "拼图", null, false, "jigsaw.ui"),
             new ModuleDef("bible", "圣经", null, false, "bible.ui"),
             new ModuleDef("honorhall", "荣誉", null, false, "honor.ui"),

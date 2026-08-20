@@ -239,6 +239,27 @@ namespace GunMobile.Res
         public int Count = 1;
     }
 
+    public sealed class NecklaceCastingLevel
+    {
+        public int Level;
+        public int NeedItemCount1;
+        public int NeedItemCount2;
+        public int Hp;
+        public int Toughness;
+        public int AvoidInjury;
+        public int TricRevolt;
+        public int Guardian;
+    }
+
+    public sealed class DevilTreasItem
+    {
+        public int Id;
+        public int Type;
+        public int TemplateId;
+        public int Value;
+        public int Weight;
+    }
+
     public sealed class PveMission
     {
         public int Id;
@@ -401,6 +422,8 @@ namespace GunMobile.Res
         public List<TeamDungeonShopEntry> TeamDungeonShop { get; } = new List<TeamDungeonShopEntry>();
         public List<CampWarReward> CampWarRewards { get; } = new List<CampWarReward>();
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
+        public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
+        public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -450,6 +473,8 @@ namespace GunMobile.Res
             db.LoadMagicFusions(loader);
             db.LoadTeamDungeonShop(loader);
             db.LoadCampWar(loader);
+            db.LoadNecklace(loader);
+            db.LoadDevilTreas(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -788,6 +813,72 @@ namespace GunMobile.Res
             }
 
             return bestId > 0 ? bestId : 44410;
+        }
+
+        public NecklaceCastingLevel GetNecklaceLevel(int level)
+        {
+            NecklaceLevels.TryGetValue(level, out NecklaceCastingLevel row);
+            return row;
+        }
+
+        public int NecklaceUpgradeCost(int currentLevel)
+        {
+            NecklaceCastingLevel next = GetNecklaceLevel(currentLevel + 1);
+            if (next == null)
+            {
+                return 0;
+            }
+
+            return Mathf.Max(500, next.NeedItemCount1 * 20 + next.NeedItemCount2 * 30);
+        }
+
+        public void ApplyNecklaceBonus(int level, ref int hp, ref int def)
+        {
+            NecklaceCastingLevel row = GetNecklaceLevel(level);
+            if (row == null)
+            {
+                return;
+            }
+
+            hp += row.Hp;
+            def += row.Toughness / 10 + row.Guardian / 10;
+        }
+
+        public int HomeTempleUpgradeCost(int currentLevel)
+        {
+            return ConfigInt("HomeTempleUpgradeGold", 800) + currentLevel * 400;
+        }
+
+        public void ApplyHomeTempleBonus(int level, ref int atk, ref int hp)
+        {
+            hp += level * 120;
+            atk += level * 15;
+        }
+
+        public DevilTreasItem RollDevilTreas(System.Random rng)
+        {
+            if (DevilTreasItems.Count == 0)
+            {
+                return null;
+            }
+
+            int total = 0;
+            for (int i = 0; i < DevilTreasItems.Count; i++)
+            {
+                total += Mathf.Max(1, DevilTreasItems[i].Weight);
+            }
+
+            int roll = rng != null ? rng.Next(0, total) : 0;
+            for (int i = 0; i < DevilTreasItems.Count; i++)
+            {
+                roll -= Mathf.Max(1, DevilTreasItems[i].Weight);
+                if (roll < 0)
+                {
+                    return DevilTreasItems[i];
+                }
+            }
+
+            return DevilTreasItems[0];
         }
 
         public int LevelFromGp(int gp)
@@ -2312,6 +2403,50 @@ namespace GunMobile.Res
                     MaxRank = Int(row, "MaxRank"),
                     ItemId = Int(row, "ItemID"),
                     Count = Mathf.Max(1, Int(row, "Count"))
+                });
+            }
+        }
+
+        void LoadNecklace(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_NecklaceCasting.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                NecklaceLevels[level] = new NecklaceCastingLevel
+                {
+                    Level = level,
+                    NeedItemCount1 = Int(row, "NeedItemCount1"),
+                    NeedItemCount2 = Int(row, "NeedItemCount2"),
+                    Hp = Int(row, "HP"),
+                    Toughness = Int(row, "Toughness"),
+                    AvoidInjury = Int(row, "AvoidInjury"),
+                    TricRevolt = Int(row, "TricRevolt"),
+                    Guardian = Int(row, "Guardian")
+                };
+            }
+        }
+
+        void LoadDevilTreas(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/DevilTreasItemList.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                DevilTreasItems.Add(new DevilTreasItem
+                {
+                    Id = Int(row, "ID"),
+                    Type = Int(row, "Type"),
+                    TemplateId = Int(row, "TemplateID"),
+                    Value = Int(row, "Value"),
+                    Weight = Int(row, "Random")
                 });
             }
         }

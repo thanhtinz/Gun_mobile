@@ -257,6 +257,40 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.WorldBossStart, "{}");
         }
 
+        public static void UpgradeNecklace()
+        {
+            Road?.Send(PhoneMsg.NecklaceUpgrade, "{}");
+        }
+
+        public static void DevilTurnSpin(int count = 1)
+        {
+            Road?.Send(PhoneMsg.DevilTurnSpin, "{\"count\":" + count + "}");
+        }
+
+        public static void ClaimRedPacket()
+        {
+            Road?.Send(PhoneMsg.RedPacketClaim, "{}");
+        }
+
+        public static void UpgradeHomeTemple()
+        {
+            Road?.Send(PhoneMsg.HomeTempleUpgrade, "{}");
+        }
+
+        public static void SendMail(string to, int gold, string subject = null, string body = null)
+        {
+            Road?.Send(PhoneMsg.MailSend,
+                "{\"to\":\"" + (to ?? "").Replace("\"", "") +
+                "\",\"gold\":" + gold +
+                ",\"subject\":\"" + (subject ?? "玩家邮件").Replace("\"", "") +
+                "\",\"body\":\"" + (body ?? "").Replace("\"", "") + "\"}");
+        }
+
+        public static void SweepLabyrinth()
+        {
+            Road?.Send(PhoneMsg.SweepLabyrinth, "{}");
+        }
+
         public static void CookFarm(int foodId)
         {
             Road?.Send(PhoneMsg.FarmCook, "{\"foodId\":" + foodId + "}");

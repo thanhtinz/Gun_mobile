@@ -311,5 +311,98 @@ namespace GunMobile.Client
                 }
             }
         }
+
+        public static void NecklaceScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("necklace", "项链", "Request/TS_NecklaceCasting.xml", false, "necklace.ui"),
+                "necklace.ui");
+            int level = app.Profile.NecklaceLevel;
+            NecklaceCastingLevel row = app.Database != null ? app.Database.GetNecklaceLevel(level) : null;
+            NecklaceCastingLevel next = app.Database != null ? app.Database.GetNecklaceLevel(level + 1) : null;
+            int cost = app.Database != null ? app.Database.NecklaceUpgradeCost(level) : 0;
+            string stats = row != null
+                ? "HP+" + row.Hp + "  DEF+" + (row.Toughness / 10 + row.Guardian / 10)
+                : "Lv0";
+            SysUi.Note(body, "TS_NecklaceCasting.xml  ·  当前 Lv" + level + "  " + stats);
+            if (next != null && cost > 0)
+            {
+                SysUi.Row(body, "up", "升级 → Lv" + (level + 1) + "  HP+" + next.Hp + "  " + cost + " 金",
+                    PhoneNet.UpgradeNecklace);
+            }
+            else
+            {
+                SysUi.Note(body, "已达最高等级");
+            }
+        }
+
+        public static void DevilTurnScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("devilturn", "恶魔转盘", "Request/DevilTreasItemList.xml", false, "devilturn.ui"),
+                "devilturn.ui");
+            int unitCost = app.Database != null ? app.Database.ConfigInt("DevilTreasureOneCost", 10000) : 10000;
+            int tenCost = app.Database != null ? app.Database.ConfigInt("DevilTreasureTenCost", unitCost * 10) : unitCost * 10;
+            SysUi.Note(body, "DevilTreasItemList.xml  ·  今日已转 " + app.Profile.DevilTurnSpins + " 次");
+            SysUi.Row(body, "spin1", "转1次  " + unitCost + " 金", () => PhoneNet.DevilTurnSpin(1));
+            SysUi.Row(body, "spin10", "转10次  " + tenCost + " 金", () => PhoneNet.DevilTurnSpin(10));
+            if (app.Database != null)
+            {
+                int shown = 0;
+                foreach (DevilTreasItem item in app.Database.DevilTreasItems)
+                {
+                    SysUi.Note(body, "T" + item.Type + "  " + SysUi.ItemName(app, item.TemplateId) +
+                        " x" + item.Value + "  权重" + item.Weight);
+                    shown++;
+                    if (shown >= 8)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        public static void RedPacketScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("redpacket", "红包", null, false, "redpacket.ui"),
+                "redpacket.ui");
+            int maxClaims = app.Database != null ? app.Database.ConfigInt("RedPacketDayLimit", 5) : 5;
+            SysUi.Note(body, "每日红包  ·  已领 " + app.Profile.RedPacketClaims + " / " + maxClaims);
+            SysUi.Row(body, "claim", "开红包", PhoneNet.ClaimRedPacket);
+        }
+
+        public static void HomeTempleScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
+                "homeTemple.ui");
+            int level = app.Profile.HomeTempleLevel;
+            int maxLevel = app.Database != null ? app.Database.ConfigInt("HomeTempleMaxLevel", 20) : 20;
+            int cost = app.Database != null ? app.Database.HomeTempleUpgradeCost(level) : 800;
+            SysUi.Note(body, "当前 Lv" + level + " / " + maxLevel + "  ·  ATK+" + (level * 15) + " HP+" + (level * 120));
+            if (level < maxLevel)
+            {
+                SysUi.Row(body, "up", "升级 → Lv" + (level + 1) + "  " + cost + " 金", PhoneNet.UpgradeHomeTemple);
+            }
+            else
+            {
+                SysUi.Note(body, "已达最高等级");
+            }
+        }
+
+        public static void SweepScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("sweep", "扫荡", "Request/fightlabdropitemlist.xml", false, "sweep.ui"),
+                "sweep.ui");
+            int maxSweeps = app.Database != null ? app.Database.ConfigInt("LabyrinthSweepDayLimit", 3) : 3;
+            int floor = Mathf.Max(1, app.Profile.LabyrinthFloor);
+            int estGold = app.Database != null ? app.Database.ComputePveWinGold(0, floor, true) : floor * 50;
+            SysUi.Note(body, "迷宫层 " + floor + "  ·  预计 +" + estGold + " 金  ·  今日 " +
+                app.Profile.SweepCount + " / " + maxSweeps);
+            SysUi.Row(body, "sweep", "扫荡本层 (跳过战斗)", PhoneNet.SweepLabyrinth);
+            SysUi.Row(body, "fight", "手动挑战", () => LabyrinthScreen.Show(safe, app));
+        }
     }
 }

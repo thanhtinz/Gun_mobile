@@ -179,6 +179,12 @@ namespace GunMobile.Net
         public const ushort CarnivalDraw = 132;
         public const ushort PeakBattleStart = 133;
         public const ushort WorldBossStart = 134;
+        public const ushort NecklaceUpgrade = 135;
+        public const ushort DevilTurnSpin = 136;
+        public const ushort RedPacketClaim = 137;
+        public const ushort HomeTempleUpgrade = 138;
+        public const ushort MailSend = 139;
+        public const ushort SweepLabyrinth = 140;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

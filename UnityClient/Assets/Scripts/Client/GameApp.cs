@@ -279,6 +279,21 @@ namespace GunMobile.Client
                 case "peakbattle":
                     ExtraModulesScreens.PeakBattleScreen(_safe, this);
                     return;
+                case "necklace":
+                    ExtraModulesScreens.NecklaceScreen(_safe, this);
+                    return;
+                case "devilturn":
+                    ExtraModulesScreens.DevilTurnScreen(_safe, this);
+                    return;
+                case "redpacket":
+                    ExtraModulesScreens.RedPacketScreen(_safe, this);
+                    return;
+                case "homeTemple":
+                    ExtraModulesScreens.HomeTempleScreen(_safe, this);
+                    return;
+                case "sweep":
+                    ExtraModulesScreens.SweepScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -513,6 +528,11 @@ namespace GunMobile.Client
             Profile.BankGold = JsonInt(json, "bankGold", Profile.BankGold);
             Profile.MineDigs = JsonInt(json, "mineDigs", Profile.MineDigs);
             Profile.WorldBossHits = JsonInt(json, "worldBossHits", Profile.WorldBossHits);
+            Profile.NecklaceLevel = JsonInt(json, "necklaceLevel", Profile.NecklaceLevel);
+            Profile.HomeTempleLevel = JsonInt(json, "homeTempleLevel", Profile.HomeTempleLevel);
+            Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
+            Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
+            Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);

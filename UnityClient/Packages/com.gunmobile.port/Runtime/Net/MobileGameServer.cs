@@ -63,6 +63,14 @@ namespace GunMobile.Net
         public int MineDigs;
         public int WorldBossDay = -1;
         public int WorldBossHits;
+        public int NecklaceLevel;
+        public int HomeTempleLevel;
+        public int RedPacketDay = -1;
+        public int RedPacketClaims;
+        public int DevilTurnDay = -1;
+        public int DevilTurnSpins;
+        public int SweepDay = -1;
+        public int SweepCount;
         public List<BagSlot> Bag = new List<BagSlot>();
         public List<int> AcceptedQuests = new List<int>();
         public List<int> CompletedQuests = new List<int>();
@@ -248,6 +256,9 @@ namespace GunMobile.Net
             MagicAttack = magicAtk;
             MagicDefence = magicDef;
 
+            db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
+            db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
+
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
                 atk += weaponSpirit.AttackAdd;
@@ -333,6 +344,11 @@ namespace GunMobile.Net
             J(sb, "bankGold", BankGold); sb.Append(",");
             J(sb, "mineDigs", MineDigs); sb.Append(",");
             J(sb, "worldBossHits", WorldBossHits); sb.Append(",");
+            J(sb, "necklaceLevel", NecklaceLevel); sb.Append(",");
+            J(sb, "homeTempleLevel", HomeTempleLevel); sb.Append(",");
+            J(sb, "redPacketClaims", RedPacketClaims); sb.Append(",");
+            J(sb, "devilTurnSpins", DevilTurnSpins); sb.Append(",");
+            J(sb, "sweepCount", SweepCount); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -1324,6 +1340,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.WorldBossStart:
                     HandleWorldBossStart(player, ns);
+                    break;
+
+                case PhoneMsg.NecklaceUpgrade:
+                    HandleNecklaceUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.DevilTurnSpin:
+                    HandleDevilTurnSpin(player, ns, json);
+                    break;
+
+                case PhoneMsg.RedPacketClaim:
+                    HandleRedPacketClaim(player, ns);
+                    break;
+
+                case PhoneMsg.HomeTempleUpgrade:
+                    HandleHomeTempleUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.MailSend:
+                    HandleMailSend(player, ns, json);
+                    break;
+
+                case PhoneMsg.SweepLabyrinth:
+                    HandleSweepLabyrinth(player, ns);
                     break;
 
                 case PhoneMsg.PveStart:
@@ -2361,6 +2401,280 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.PveResult,
                 "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleNecklaceUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.NecklaceUpgrade, "{\"ok\":false}");
+                return;
+            }
+
+            NecklaceCastingLevel next = _db.GetNecklaceLevel(player.NecklaceLevel + 1);
+            if (next == null)
+            {
+                Send(ns, PhoneMsg.NecklaceUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+
+            int cost = _db.NecklaceUpgradeCost(player.NecklaceLevel);
+            if (cost <= 0 || player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.NecklaceUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            player.NecklaceLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.NecklaceUpgrade,
+                "{\"ok\":true,\"level\":" + player.NecklaceLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleDevilTurnSpin(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int count = JI(json, "count", 1);
+            count = Mathf.Clamp(count, 1, 10);
+            int unitCost = _db != null ? _db.ConfigInt("DevilTreasureOneCost", 10000) : 10000;
+            int cost = count == 10 && _db != null
+                ? _db.ConfigInt("DevilTreasureTenCost", unitCost * 10)
+                : unitCost * count;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.DevilTurnSpin, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            int today = DateTime.Now.DayOfYear;
+            if (player.DevilTurnDay != today)
+            {
+                player.DevilTurnDay = today;
+                player.DevilTurnSpins = 0;
+            }
+
+            player.Gold -= cost;
+            var rewards = new StringBuilder("[");
+            for (int i = 0; i < count; i++)
+            {
+                DevilTreasItem drop;
+                lock (_lock)
+                {
+                    drop = _db != null ? _db.RollDevilTreas(_rng) : null;
+                }
+
+                if (drop == null)
+                {
+                    continue;
+                }
+
+                int amount = Mathf.Max(1, drop.Value);
+                if (_db != null)
+                {
+                    player.GrantTemplateReward(_db, drop.TemplateId, amount);
+                }
+
+                if (i > 0)
+                {
+                    rewards.Append(",");
+                }
+
+                rewards.Append("{\"item\":").Append(drop.TemplateId)
+                    .Append(",\"count\":").Append(amount)
+                    .Append(",\"type\":").Append(drop.Type).Append("}");
+            }
+
+            player.DevilTurnSpins += count;
+            SavePlayer(player);
+            rewards.Append("]");
+            Send(ns, PhoneMsg.DevilTurnSpin,
+                "{\"ok\":true,\"cost\":" + cost + ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleRedPacketClaim(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.RedPacketDay != today)
+            {
+                player.RedPacketDay = today;
+                player.RedPacketClaims = 0;
+            }
+
+            int maxClaims = _db != null ? _db.ConfigInt("RedPacketDayLimit", 5) : 5;
+            if (player.RedPacketClaims >= maxClaims)
+            {
+                Send(ns, PhoneMsg.RedPacketClaim, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int minGold = _db != null ? _db.ConfigInt("RedPacketMinGold", 100) : 100;
+            int maxGold = _db != null ? _db.ConfigInt("RedPacketMaxGold", 500) : 500;
+            int gold;
+            lock (_lock)
+            {
+                gold = _rng.Next(minGold, maxGold + 1);
+            }
+
+            player.RedPacketClaims++;
+            player.Gold += gold;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.RedPacketClaim,
+                "{\"ok\":true,\"gold\":" + gold + ",\"claims\":" + player.RedPacketClaims + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleHomeTempleUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            int maxLevel = _db != null ? _db.ConfigInt("HomeTempleMaxLevel", 20) : 20;
+            if (player.HomeTempleLevel >= maxLevel)
+            {
+                Send(ns, PhoneMsg.HomeTempleUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+
+            int cost = _db != null ? _db.HomeTempleUpgradeCost(player.HomeTempleLevel) : 800;
+            if (player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.HomeTempleUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            player.HomeTempleLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.HomeTempleUpgrade,
+                "{\"ok\":true,\"level\":" + player.HomeTempleLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMailSend(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string to = JS(json, "to", "");
+            string subject = JS(json, "subject", "玩家邮件");
+            string body = JS(json, "body", "");
+            int gold = JI(json, "gold", 0);
+            int itemId = JI(json, "itemId", 0);
+            int itemCount = JI(json, "itemCount", 0);
+
+            if (string.IsNullOrWhiteSpace(to))
+            {
+                Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"to\"}");
+                return;
+            }
+
+            to = to.Trim();
+            if (gold > 0 && player.Gold < gold)
+            {
+                Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (itemId > 0 && itemCount > 0)
+            {
+                int have = 0;
+                foreach (BagSlot b in player.Bag)
+                {
+                    if (b.TemplateId == itemId)
+                    {
+                        have += b.Count;
+                    }
+                }
+
+                if (have < itemCount)
+                {
+                    Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"item\"}");
+                    return;
+                }
+            }
+
+            ServerPlayer target = null;
+            lock (_lock)
+            {
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (p != player && string.Equals(p.Nick, to, StringComparison.OrdinalIgnoreCase))
+                    {
+                        target = p;
+                        break;
+                    }
+                }
+            }
+
+            if (target == null)
+            {
+                Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"offline\"}");
+                return;
+            }
+
+            if (gold > 0)
+            {
+                player.Gold -= gold;
+            }
+
+            if (itemId > 0 && itemCount > 0)
+            {
+                player.Consume(itemId, itemCount);
+            }
+
+            if (target.Mails == null)
+            {
+                target.Mails = new List<ServerMail>();
+            }
+
+            target.Mails.Add(new ServerMail
+            {
+                Id = target.NextMailId++,
+                Subject = subject,
+                Body = string.IsNullOrEmpty(body)
+                    ? "来自 " + (player.Nick ?? "Player") + " 的邮件。"
+                    : body,
+                Gold = gold,
+                ItemId = itemId,
+                ItemCount = itemCount
+            });
+
+            SavePlayer(player);
+            SavePlayer(target);
+            Send(ns, PhoneMsg.MailSend, "{\"ok\":true,\"to\":\"" + to.Replace("\"", "") + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+            SendTo(target, PhoneMsg.MailListData, BuildMailListJson(target));
+        }
+
+        void HandleSweepLabyrinth(ServerPlayer player, NetworkStream ns)
+        {
+            int today = DateTime.Now.DayOfYear;
+            if (player.SweepDay != today)
+            {
+                player.SweepDay = today;
+                player.SweepCount = 0;
+            }
+
+            int maxSweeps = _db != null ? _db.ConfigInt("LabyrinthSweepDayLimit", 3) : 3;
+            if (player.SweepCount >= maxSweeps)
+            {
+                Send(ns, PhoneMsg.SweepLabyrinth, "{\"ok\":false,\"err\":\"limit\"}");
+                return;
+            }
+
+            int floor = Mathf.Max(1, player.LabyrinthFloor);
+            int gold = _db != null ? _db.ComputePveWinGold(0, floor, true) : floor * 50;
+            if (gold <= 0)
+            {
+                gold = 50 + floor * 30;
+            }
+
+            player.SweepCount++;
+            player.Gold += gold;
+            player.AddGp(_db, Mathf.Max(10, floor * 5));
+            player.LabyrinthFloor++;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SweepLabyrinth,
+                "{\"ok\":true,\"gold\":" + gold + ",\"floor\":" + player.LabyrinthFloor + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -4674,6 +4988,10 @@ namespace GunMobile.Net
             public int ElfId, GemLevel, KingBlessDay = -1, FarmHarvests;
             public int FusionKeys, BankGold, MineDay = -1, MineDigs;
             public int WorldBossDay = -1, WorldBossHits;
+            public int NecklaceLevel, HomeTempleLevel;
+            public int RedPacketDay = -1, RedPacketClaims;
+            public int DevilTurnDay = -1, DevilTurnSpins;
+            public int SweepDay = -1, SweepCount;
             public int GodCardEquipId, EngraveSetId;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -4723,6 +5041,10 @@ namespace GunMobile.Net
                 ElfId = p.ElfId, GemLevel = p.GemLevel, KingBlessDay = p.KingBlessDay, FarmHarvests = p.FarmHarvests,
                 FusionKeys = p.FusionKeys, BankGold = p.BankGold, MineDay = p.MineDay, MineDigs = p.MineDigs,
                 WorldBossDay = p.WorldBossDay, WorldBossHits = p.WorldBossHits,
+                NecklaceLevel = p.NecklaceLevel, HomeTempleLevel = p.HomeTempleLevel,
+                RedPacketDay = p.RedPacketDay, RedPacketClaims = p.RedPacketClaims,
+                DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
+                SweepDay = p.SweepDay, SweepCount = p.SweepCount,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -4766,6 +5088,10 @@ namespace GunMobile.Net
                 ElfId = s.ElfId, GemLevel = s.GemLevel, KingBlessDay = s.KingBlessDay, FarmHarvests = s.FarmHarvests,
                 FusionKeys = s.FusionKeys, BankGold = s.BankGold, MineDay = s.MineDay, MineDigs = s.MineDigs,
                 WorldBossDay = s.WorldBossDay, WorldBossHits = s.WorldBossHits,
+                NecklaceLevel = s.NecklaceLevel, HomeTempleLevel = s.HomeTempleLevel,
+                RedPacketDay = s.RedPacketDay, RedPacketClaims = s.RedPacketClaims,
+                DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
+                SweepDay = s.SweepDay, SweepCount = s.SweepCount,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
