@@ -503,6 +503,35 @@ namespace GunMobile.Res
         public int Level;
     }
 
+    public sealed class CardGrooveLevelInfo
+    {
+        public int Level;
+        public int Type;
+        public int Exp;
+        public int Attack;
+        public int Defend;
+        public int Agility;
+        public int Lucky;
+        public int Damage;
+        public int Guard;
+    }
+
+    public sealed class GodCardPointRewardInfo
+    {
+        public int Id;
+        public int ItemId;
+        public int Count;
+        public int Point;
+        public int ValidDays;
+    }
+
+    public sealed class GodCardGroupEntry
+    {
+        public int GroupId;
+        public int CardId;
+        public int Number;
+    }
+
     public sealed class EngraveSetInfo
     {
         public int SetId;
@@ -744,6 +773,9 @@ namespace GunMobile.Res
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
         public List<SignReward> SignIn { get; } = new List<SignReward>();
         public Dictionary<int, GodCardInfo> GodCards { get; } = new Dictionary<int, GodCardInfo>();
+        public List<CardGrooveLevelInfo> CardGrooveLevels { get; } = new List<CardGrooveLevelInfo>();
+        public Dictionary<int, GodCardPointRewardInfo> GodCardPointRewards { get; } = new Dictionary<int, GodCardPointRewardInfo>();
+        public List<GodCardGroupEntry> GodCardGroups { get; } = new List<GodCardGroupEntry>();
         public Dictionary<int, EngraveSetInfo> EngraveSets { get; } = new Dictionary<int, EngraveSetInfo>();
         public List<EngraveElementInfo> EngraveElements { get; } = new List<EngraveElementInfo>();
         public Dictionary<int, StockInfo> Stocks { get; } = new Dictionary<int, StockInfo>();
@@ -807,6 +839,9 @@ namespace GunMobile.Res
             db.LoadStrengthen(loader);
             db.LoadSignIn(loader);
             db.LoadGodCards(loader);
+            db.LoadCardGrooveLevels(loader);
+            db.LoadGodCardPointRewards(loader);
+            db.LoadGodCardGroups(loader);
             db.LoadEngrave(loader);
             db.LoadStocks(loader);
             db.LoadServerConfig(loader);
@@ -3510,25 +3545,108 @@ namespace GunMobile.Res
 
         void LoadGodCards(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/godcardlist.xml", out XmlResultTable table))
-            {
-                return;
-            }
-
+            if (!TryTable(loader, "Request/godcardlist.xml", out XmlResultTable table)) return;
             foreach (var row in table.Rows)
             {
                 int id = Int(row, "ID");
                 GodCards[id] = new GodCardInfo
                 {
-                    Id = id,
-                    Name = Str(row, "Name"),
-                    Pic = Str(row, "Pic"),
-                    Composition = Int(row, "Composition"),
-                    Decompose = Int(row, "Decompose"),
-                    Level = Int(row, "Level")
+                    Id = id, Name = Str(row, "Name"), Pic = Str(row, "Pic"),
+                    Composition = Int(row, "Composition"), Decompose = Int(row, "Decompose"), Level = Int(row, "Level")
                 };
             }
         }
+
+        void LoadCardGrooveLevels(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/cardgrooveupdatelist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                CardGrooveLevels.Add(new CardGrooveLevelInfo
+                {
+                    Level = Int(row, "Level"), Type = Int(row, "Type"), Exp = Int(row, "Exp"),
+                    Attack = Int(row, "Attack"), Defend = Int(row, "Defend"), Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"), Damage = Int(row, "Damage"), Guard = Int(row, "Guard")
+                });
+            }
+        }
+
+        void LoadGodCardPointRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/godCardPointReward.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                GodCardPointRewards[id] = new GodCardPointRewardInfo
+                {
+                    Id = id, ItemId = Int(row, "ItemID"), Count = Int(row, "Count"),
+                    Point = Int(row, "Point"), ValidDays = Int(row, "Valid")
+                };
+            }
+        }
+
+        void LoadGodCardGroups(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/godcardlistgroup.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                GodCardGroups.Add(new GodCardGroupEntry
+                {
+                    GroupId = Int(row, "GroupID"), CardId = Int(row, "CardID"), Number = Int(row, "Number")
+                });
+            }
+        }
+
+        public int GodCardGrooveType(GodCardInfo card) => card == null ? 0 : (card.Level >= 2 ? 1 : 0);
+
+        public CardGrooveLevelInfo GetCardGrooveLevel(int type, int level)
+        {
+            foreach (CardGrooveLevelInfo row in CardGrooveLevels)
+                if (row.Type == type && row.Level == level) return row;
+            return null;
+        }
+
+        public int MaxCardGrooveLevel(int type)
+        {
+            int max = 0;
+            foreach (CardGrooveLevelInfo row in CardGrooveLevels)
+                if (row.Type == type && row.Level > max) max = row.Level;
+            return max;
+        }
+
+        public int NextCardGrooveExp(int type, int currentLevel)
+        {
+            CardGrooveLevelInfo next = GetCardGrooveLevel(type, currentLevel + 1);
+            return next != null ? next.Exp : int.MaxValue;
+        }
+
+        public void ApplyGodCardGrooveBonus(int type, int grooveLevel, ref int atk, ref int def, ref int agi, ref int luk, ref int hp, ref int baseDmg, ref int baseGuard)
+        {
+            for (int lv = 1; lv <= grooveLevel; lv++)
+            {
+                CardGrooveLevelInfo row = GetCardGrooveLevel(type, lv);
+                if (row == null) continue;
+                atk += row.Attack; def += row.Defend; agi += row.Agility; luk += row.Lucky;
+                baseDmg += row.Damage; baseGuard += row.Guard;
+                hp += (row.Attack + row.Defend + row.Agility + row.Lucky) * 5;
+            }
+        }
+
+        public GodCardPointRewardInfo GetGodCardPointReward(int rewardId)
+        {
+            GodCardPointRewards.TryGetValue(rewardId, out GodCardPointRewardInfo row);
+            return row;
+        }
+
+        public int GodCardRaiseExpGain(GodCardInfo card)
+        {
+            if (card == null) return 1;
+            if (card.Decompose > 0) return card.Decompose;
+            if (card.Composition > 0) return Mathf.Max(1, card.Composition / 10);
+            return 1;
+        }
+
+        public int GodCardRaisePointGain(GodCardInfo card) => GodCardRaiseExpGain(card);
 
         void LoadEngrave(ResLoader loader)
         {

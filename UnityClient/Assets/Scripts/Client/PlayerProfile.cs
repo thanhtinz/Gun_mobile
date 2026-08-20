@@ -68,6 +68,8 @@ namespace GunMobile.Client
         public List<int> HonorSystemClaimed = new List<int>();
         public int RedPacketClaims;
         public int DevilTurnSpins;
+        public int SpaRoomDayScore;
+        public int TreasureRoomDraws;
         public int SweepCount;
         public bool FirstRechargeClaimed;
         public int DreamlandChapter = 1;
@@ -101,6 +103,8 @@ namespace GunMobile.Client
         public List<string> ChatLog = new List<string>();
         public List<GodCardSlot> GodCards = new List<GodCardSlot>();
         public int GodCardEquipId;
+        public int GodCardPoints;
+        public List<int> GodCardPointClaimed = new List<int>();
         public int EngraveSetId;
         public List<StockSlot> StockHoldings = new List<StockSlot>();
 
@@ -136,6 +140,7 @@ namespace GunMobile.Client
                         p.HonorSystemClaimed = p.HonorSystemClaimed ?? new List<int>();
                         p.ChatLog = p.ChatLog ?? new List<string>();
                         p.GodCards = p.GodCards ?? new List<GodCardSlot>();
+                        p.GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>();
                         p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
                         p.ConsortiaName = p.ConsortiaName ?? "";
                         return p;
@@ -230,6 +235,16 @@ namespace GunMobile.Client
         {
             EnsureWardrobeProperties();
             return WardrobeProperties.Contains(propertyId);
+        }
+
+        public GodCardSlot FindGodCardSlot(int id)
+        {
+            if (GodCards == null) return null;
+            foreach (GodCardSlot slot in GodCards)
+            {
+                if (slot.Id == id) return slot;
+            }
+            return null;
         }
 
         public void Save()
@@ -494,6 +509,12 @@ namespace GunMobile.Client
                 if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
                 {
                     db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luk, ref hp);
+                    GodCardSlot grooveSlot = FindGodCardSlot(GodCardEquipId);
+                    if (grooveSlot != null)
+                    {
+                        db.ApplyGodCardGrooveBonus(db.GodCardGrooveType(gc), grooveSlot.GrooveLevel,
+                            ref atk, ref def, ref agi, ref luk, ref hp, ref engrDmg, ref engrGuard);
+                    }
                 }
 
                 int engrDmg = 0;
@@ -700,8 +721,8 @@ namespace GunMobile.Client
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化淬炼", "Request/TS_UpgradeTemplate.xml", false, "culture.ui"),
             new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"),
-            new ModuleDef("treasureroom", "藏宝室", null, false, "treasureroom.ui"),
-            new ModuleDef("labyrinthgame", "迷宫游戏", null, false, "labyrinthgame.ui"),
+            new ModuleDef("treasureroom", "藏宝室", "Request/CarnivalActivityItems.xml", false, "treasureroom.ui"),
+            new ModuleDef("labyrinthgame", "温泉炸弹房", "Request/sparoomfixedbomb.xml", false, "labyrinthgame.ui"),
             new ModuleDef("godcardraise", "神卡养成", "Request/godcardlist.xml", false, "godcardraise.ui"),
             new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
             new ModuleDef("carnivalSuperLucker", "超级幸运", null, false, "carnivalSuperLucker.ui"),

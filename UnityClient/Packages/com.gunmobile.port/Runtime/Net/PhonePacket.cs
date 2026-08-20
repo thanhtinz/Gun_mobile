@@ -189,6 +189,8 @@ namespace GunMobile.Net
         public const ushort EmblemEquip = 142;
         public const ushort SoulStampCompose = 143;
         public const ushort SoulStampRefine = 144;
+        public const ushort GodCardRaise = 145;
+        public const ushort GodCardPointClaim = 146;
         public const ushort ForcesBattleStart = 147;
         public const ushort ForcesRelicUpgrade = 148;
         public const ushort CultureUpgrade = 157;
@@ -203,6 +205,10 @@ namespace GunMobile.Net
         public const ushort WarriorFamClaim = 156;
         public const ushort FirstRechargeClaim = 161;
         public const ushort FirstRechargeShop = 162;
+        public const ushort SpaRoomStart = 159;
+        public const ushort SpaRoomBomb = 160;
+        public const ushort TreasureRoomDraw = 163;
+        public const ushort TreasureRoomResult = 164;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

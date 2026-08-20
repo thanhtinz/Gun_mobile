@@ -1106,6 +1106,73 @@ namespace GunMobile.Client
         }
     }
 
+    public static class GodCardRaiseScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "神卡养成 · godcardraise");
+            SysUi.Note(body, $"积分 {app.Profile.GodCardPoints}  ·  装备 #{app.Profile.GodCardEquipId}");
+
+            if (app.Profile.GodCards != null && app.Profile.GodCards.Count > 0)
+            {
+                SysUi.Note(body, "养成卡槽 (消耗重复卡升槽)");
+                foreach (GodCardSlot slot in app.Profile.GodCards)
+                {
+                    if (!app.Database.GodCards.TryGetValue(slot.Id, out GodCardInfo card)) continue;
+                    int sid = slot.Id;
+                    int gain = app.Database.GodCardRaiseExpGain(card);
+                    string label = $"{card.Name} x{slot.Count}  槽Lv{slot.GrooveLevel}  exp{slot.GrooveExp}  (+{gain}/张)";
+                    if (slot.Count > 1)
+                    {
+                        SysUi.Row(body, "raise" + sid, label + "  ·  升槽 x1", () => PhoneNet.RaiseGodCard(sid, 1));
+                        if (slot.Count > 2)
+                        {
+                            int bulk = slot.Count - 1;
+                            SysUi.Row(body, "raiseBulk" + sid, label + "  ·  升槽 x" + bulk, () => PhoneNet.RaiseGodCard(sid, bulk));
+                        }
+                    }
+                    else SysUi.Note(body, label + "  (需要更多重复卡)");
+                }
+            }
+            else SysUi.Note(body, "还没有神卡，请先在 godcard 模块抽卡。");
+
+            if (app.Database.GodCardPointRewards.Count > 0)
+            {
+                SysUi.Note(body, "积分兑换");
+                foreach (GodCardPointRewardInfo reward in app.Database.GodCardPointRewards.Values)
+                {
+                    bool claimed = app.Profile.GodCardPointClaimed != null && app.Profile.GodCardPointClaimed.Contains(reward.Id);
+                    string itemName = app.Database.GetItem(reward.ItemId)?.Name ?? ("#" + reward.ItemId);
+                    string rowLabel = (claimed ? "[已领] " : "") + itemName + " x" + reward.Count + "  需要 " + reward.Point + " 分";
+                    if (!claimed && app.Profile.GodCardPoints >= reward.Point)
+                        SysUi.Row(body, "pt" + reward.Id, rowLabel, () => PhoneNet.ClaimGodCardPoint(reward.Id));
+                    else SysUi.Note(body, rowLabel);
+                }
+            }
+
+            if (app.Database.GodCardGroups.Count > 0)
+            {
+                SysUi.Note(body, "卡组图鉴");
+                var groups = new System.Collections.Generic.Dictionary<int, int>();
+                foreach (GodCardGroupEntry entry in app.Database.GodCardGroups)
+                {
+                    if (!groups.ContainsKey(entry.GroupId)) groups[entry.GroupId] = 0;
+                    foreach (GodCardSlot slot in app.Profile.GodCards)
+                    {
+                        if (slot.Id == entry.CardId && slot.Count >= entry.Number) { groups[entry.GroupId]++; break; }
+                    }
+                }
+                foreach (var kv in groups)
+                {
+                    int need = 0;
+                    foreach (GodCardGroupEntry entry in app.Database.GodCardGroups)
+                        if (entry.GroupId == kv.Key) need++;
+                    SysUi.Note(body, $"组 {kv.Key}: {kv.Value}/{need}");
+                }
+            }
+        }
+    }
+
     public static class EngraveScreen
     {
         public static void Show(RectTransform safe, GameApp app)
