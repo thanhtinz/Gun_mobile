@@ -313,6 +313,12 @@ namespace GunMobile.Client
                 case "honorhall":
                     ExtraModulesScreens.HonorHallScreen(_safe, this);
                     return;
+                case "glory":
+                    ExtraModulesScreens.GloryScreen(_safe, this);
+                    return;
+                case "sigil":
+                    ExtraModulesScreens.SigilScreen(_safe, this);
+                    return;
                 case "dreamland":
                     ExtraModulesScreens.DreamlandScreen(_safe, this);
                     return;
@@ -466,6 +472,9 @@ namespace GunMobile.Client
                     case PhoneMsg.PetStarUpgrade:
                     case PhoneMsg.MountTalismanEquip:
                     case PhoneMsg.ManorUpgrade:
+                    case PhoneMsg.GoldEquipUpgrade:
+                    case PhoneMsg.GloryUpgrade:
+                    case PhoneMsg.SigilRoll:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -693,6 +702,11 @@ namespace GunMobile.Client
             Profile.MountGrade = JsonInt(json, "mountGrade", Profile.MountGrade);
             Profile.MountTalismanId = JsonInt(json, "mountTalismanId", Profile.MountTalismanId);
             Profile.ManorGrade = JsonInt(json, "manorGrade", Profile.ManorGrade);
+            Profile.GoldEquipId = JsonInt(json, "goldEquipId", Profile.GoldEquipId);
+            Profile.GloryTemplateId = JsonInt(json, "gloryTemplateId", Profile.GloryTemplateId);
+            Profile.SigilQuality = JsonInt(json, "sigilQuality", Profile.SigilQuality);
+            Profile.SigilProType = JsonInt(json, "sigilProType", Profile.SigilProType);
+            Profile.SigilProValue = JsonInt(json, "sigilProValue", Profile.SigilProValue);
             Profile.VipLevel = JsonInt(json, "vipLevel", Profile.VipLevel);
             Profile.Honor = JsonInt(json, "honor", Profile.Honor);
             Profile.Texp = JsonInt(json, "texp", Profile.Texp);

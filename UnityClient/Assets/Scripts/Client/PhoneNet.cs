@@ -177,6 +177,21 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.ManorUpgrade, "{}");
         }
 
+        public static void UpgradeGoldEquip(int oldTemplateId)
+        {
+            Road?.Send(PhoneMsg.GoldEquipUpgrade, "{\"oldTemplateId\":" + oldTemplateId + "}");
+        }
+
+        public static void UpgradeGlory(int templateId)
+        {
+            Road?.Send(PhoneMsg.GloryUpgrade, "{\"templateId\":" + templateId + "}");
+        }
+
+        public static void RollSigil(int quality)
+        {
+            Road?.Send(PhoneMsg.SigilRoll, "{\"quality\":" + quality + "}");
+        }
+
         public static void DoSignIn()
         {
             Road?.Send(PhoneMsg.SignIn, "{}");

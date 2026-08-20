@@ -242,6 +242,47 @@ namespace GunMobile.Res
         public int Exp;
     }
 
+    public sealed class GoldEquipTemplate
+    {
+        public int Id;
+        public int OldTemplateId;
+        public int NewTemplateId;
+        public int CategoryId;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int Damage;
+        public int Guard;
+        public int Boold;
+        public int BlessId;
+        public string Pic = "";
+    }
+
+    public sealed class GloryItemUpgrade
+    {
+        public int TemplateId;
+        public int CostItemId;
+        public int NextTemplateId;
+        public int NeedExp;
+    }
+
+    public sealed class GloryLevelInfo
+    {
+        public int Level;
+        public int Exp;
+        public string Title = "";
+        public string Descr = "";
+    }
+
+    public sealed class SigilProLimit
+    {
+        public int Quality;
+        public int ProType;
+        public string Name = "";
+        public int RandomConfig;
+    }
+
     public sealed class MountTalismanInfo
     {
         public int Id;
@@ -278,6 +319,31 @@ namespace GunMobile.Res
         public int CostEnergy;
         public int UseCount;
         public int Pic;
+    }
+
+    public sealed class QuizQuestion
+    {
+        public int QuestionId;
+        public int CatalogId;
+        public string Content = "";
+        public string Option1 = "";
+        public string Option2 = "";
+        public string Option3 = "";
+        public string Option4 = "";
+        public int CorrectOption = 1;
+    }
+
+    public sealed class OneYuanGoods
+    {
+        public int Id;
+        public int GoodsId;
+        public string Name = "";
+        public string Remark = "";
+        public int Cost;
+        public int IsBindMoney;
+        public int GoodType;
+        public int Limit;
+        public string Desc = "";
     }
 
     public sealed class LotteryDrop
@@ -1004,8 +1070,20 @@ namespace GunMobile.Res
         public Dictionary<int, TotemInfo> Totems { get; } = new Dictionary<int, TotemInfo>();
         public Dictionary<int, MountGrade> Mounts { get; } = new Dictionary<int, MountGrade>();
         public Dictionary<int, PetStarUpgrade> PetStarUpgrades { get; } = new Dictionary<int, PetStarUpgrade>();
+        public Dictionary<int, GoldEquipTemplate> GoldEquipByOld { get; } = new Dictionary<int, GoldEquipTemplate>();
+        public Dictionary<int, GoldEquipTemplate> GoldEquipByNew { get; } = new Dictionary<int, GoldEquipTemplate>();
+        public List<GoldEquipTemplate> GoldEquipList { get; } = new List<GoldEquipTemplate>();
+        public Dictionary<int, GloryItemUpgrade> GloryUpgrades { get; } = new Dictionary<int, GloryItemUpgrade>();
+        public List<GloryItemUpgrade> GloryUpgradeList { get; } = new List<GloryItemUpgrade>();
+        public Dictionary<int, GloryLevelInfo> GloryLevels { get; } = new Dictionary<int, GloryLevelInfo>();
+        public List<SigilProLimit> SigilProLimits { get; } = new List<SigilProLimit>();
         public Dictionary<int, MountTalismanInfo> MountTalismans { get; } = new Dictionary<int, MountTalismanInfo>();
         public Dictionary<int, ManorPlantInfo> ManorPlants { get; } = new Dictionary<int, ManorPlantInfo>();
+        public Dictionary<int, QuizQuestion> QuizQuestions { get; } = new Dictionary<int, QuizQuestion>();
+        public List<QuizQuestion> QuizQuestionList { get; } = new List<QuizQuestion>();
+        public Dictionary<int, OneYuanGoods> OneYuanById { get; } = new Dictionary<int, OneYuanGoods>();
+        public Dictionary<int, OneYuanGoods> OneYuanByGoodsId { get; } = new Dictionary<int, OneYuanGoods>();
+        public List<OneYuanGoods> OneYuanGoodsList { get; } = new List<OneYuanGoods>();
         public Dictionary<int, MountSkillTemplate> MountSkills { get; } = new Dictionary<int, MountSkillTemplate>();
         public List<LotteryDrop> Lottery { get; } = new List<LotteryDrop>();
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
@@ -1119,8 +1197,13 @@ namespace GunMobile.Res
             db.LoadTotems(loader);
             db.LoadMounts(loader);
             db.LoadPetStarExp(loader);
+            db.LoadGoldEquip(loader);
+            db.LoadGlory(loader);
+            db.LoadSigil(loader);
             db.LoadMountTalismans(loader);
             db.LoadManorPlants(loader);
+            db.LoadQuizQuestions(loader);
+            db.LoadOneYuanGoods(loader);
             db.LoadMountSkills(loader);
             db.LoadLottery(loader);
             db.LoadVip(loader);
@@ -1272,6 +1355,134 @@ namespace GunMobile.Res
             return row;
         }
 
+        public GoldEquipTemplate GetGoldEquipByOld(int oldTemplateId)
+        {
+            if (oldTemplateId > 0 && GoldEquipByOld.TryGetValue(oldTemplateId, out GoldEquipTemplate row)) return row;
+            return null;
+        }
+
+        public GoldEquipTemplate GetGoldEquipForWeapon(int weaponId)
+        {
+            if (weaponId <= 0) return null;
+            if (GoldEquipByOld.TryGetValue(weaponId, out GoldEquipTemplate byOld)) return byOld;
+            if (GoldEquipByNew.TryGetValue(weaponId, out GoldEquipTemplate byNew)) return byNew;
+            return null;
+        }
+
+        public int GoldEquipUpgradeGoldCost(GoldEquipTemplate row)
+        {
+            int blessId = row != null ? row.BlessId : 0;
+            if (blessId > 0)
+            {
+                ItemTemplate bless = GetItem(blessId);
+                if (bless != null)
+                {
+                    if (bless.FloorPrice > 0) return bless.FloorPrice;
+                    if (bless.ReclaimValue > 0) return bless.ReclaimValue;
+                }
+                for (int i = 0; i < Shop.Count; i++)
+                {
+                    ShopOffer offer = Shop[i];
+                    if (offer.TemplateId == blessId && offer.APrice1 > 0) return offer.APrice1;
+                }
+            }
+            return ConfigInt("GoldEquipUpgradeGold", 2000);
+        }
+
+        public void ApplyGoldEquipBonus(int equipWeapon, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            GoldEquipTemplate row = GetGoldEquipForWeapon(equipWeapon);
+            if (row == null) return;
+            if (row.Attack > 0) atk += row.Attack;
+            if (row.Defence > 0) def += row.Defence;
+            if (row.Agility > 0) agi += row.Agility;
+            if (row.Luck > 0) luck += row.Luck;
+            if (row.Boold > 0) hp += row.Boold;
+        }
+
+        public GloryItemUpgrade GetGloryUpgrade(int templateId)
+        {
+            if (templateId > 0 && GloryUpgrades.TryGetValue(templateId, out GloryItemUpgrade row)) return row;
+            return null;
+        }
+
+        public int GloryUpgradeGoldCost(GloryItemUpgrade row) => row != null ? Mathf.Max(0, row.NeedExp) : 0;
+
+        public int GloryCostItemGoldFallback(GloryItemUpgrade row)
+        {
+            if (row == null || row.CostItemId <= 0) return 0;
+            ItemTemplate costItem = GetItem(row.CostItemId);
+            if (costItem != null)
+            {
+                if (costItem.FloorPrice > 0) return costItem.FloorPrice;
+                if (costItem.ReclaimValue > 0) return costItem.ReclaimValue;
+            }
+            return ConfigInt("GloryCostItemGold", Mathf.Max(100, row.NeedExp / 10));
+        }
+
+        public void ApplyGloryBonus(int gloryTemplateId, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            if (gloryTemplateId <= 0) return;
+            ItemTemplate item = GetItem(gloryTemplateId);
+            if (item != null)
+            {
+                atk += item.Attack; def += item.Defence; agi += item.Agility; luck += item.Luck;
+            }
+            GloryItemUpgrade row = GetGloryUpgrade(gloryTemplateId);
+            if (row != null)
+            {
+                int bonus = Mathf.Max(1, row.NeedExp / 10000);
+                atk += bonus; def += bonus; hp += bonus * 10;
+            }
+        }
+
+        public int SigilRollGoldCost() => ConfigInt("SigilRollGold", 500);
+
+        public SigilProLimit RollSigil(int quality, System.Random rng)
+        {
+            int q = quality > 0 ? quality : 1;
+            int total = 0;
+            for (int i = 0; i < SigilProLimits.Count; i++)
+            {
+                if (SigilProLimits[i].Quality == q) total += Mathf.Max(0, SigilProLimits[i].RandomConfig);
+            }
+            if (total <= 0)
+            {
+                for (int i = 0; i < SigilProLimits.Count; i++) total += Mathf.Max(0, SigilProLimits[i].RandomConfig);
+                q = 0;
+            }
+            if (total <= 0) return null;
+            int roll = rng != null ? rng.Next(0, total) : 0;
+            for (int i = 0; i < SigilProLimits.Count; i++)
+            {
+                SigilProLimit row = SigilProLimits[i];
+                if (q != 0 && row.Quality != q) continue;
+                roll -= Mathf.Max(0, row.RandomConfig);
+                if (roll < 0) return row;
+            }
+            return SigilProLimits.Count > 0 ? SigilProLimits[SigilProLimits.Count - 1] : null;
+        }
+
+        public int SigilBonusValue(SigilProLimit row) => row == null ? 1 : Mathf.Max(1, row.RandomConfig / 10);
+
+        public void ApplySigilBonus(int proType, int proValue, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard, ref int magicAtk, ref int magicDef)
+        {
+            if (proType <= 0 || proValue <= 0) return;
+            switch (proType)
+            {
+                case 1: atk += proValue; break;
+                case 2: def += proValue; break;
+                case 3: agi += proValue; break;
+                case 4: luck += proValue; break;
+                case 5: baseDmg += proValue; break;
+                case 6: baseGuard += proValue; break;
+                case 7: magicAtk += proValue; break;
+                case 8: magicDef += proValue; break;
+                case 9: hp += proValue * 5; break;
+                default: atk += Mathf.Max(1, proValue / 2); break;
+            }
+        }
+
         public MountTalismanInfo GetMountTalisman(int id)
         {
             MountTalismans.TryGetValue(id, out MountTalismanInfo row);
@@ -1304,6 +1515,72 @@ namespace GunMobile.Res
             }
 
             return cost;
+        }
+
+        public int DailyQuizMax()
+        {
+            int n = ConfigInt("QuizCount", 0);
+            if (n <= 0) n = ConfigInt("DailyQuizCount", 0);
+            if (n <= 0) n = ConfigInt("QuestionCount", 0);
+            if (n <= 0) n = ConfigInt("QuestionAwardCount", 0);
+            if (n <= 0) n = ConfigPipeInt("DDTKingQuizPersonMaxCount", 0, 0);
+            return n > 0 ? n : 5;
+        }
+
+        public int QuizGoldReward()
+        {
+            return ConfigInt("QuizGold", 200);
+        }
+
+        public QuizQuestion GetQuizQuestion(int questionId)
+        {
+            if (questionId > 0 && QuizQuestions.TryGetValue(questionId, out QuizQuestion row))
+            {
+                return row;
+            }
+
+            return null;
+        }
+
+        public QuizQuestion PickQuizQuestion(int index)
+        {
+            if (QuizQuestionList.Count == 0)
+            {
+                return null;
+            }
+
+            int i = index % QuizQuestionList.Count;
+            if (i < 0)
+            {
+                i += QuizQuestionList.Count;
+            }
+
+            return QuizQuestionList[i];
+        }
+
+        public OneYuanGoods GetOneYuanGoods(int id, int goodsId)
+        {
+            if (id > 0 && OneYuanById.TryGetValue(id, out OneYuanGoods byId))
+            {
+                return byId;
+            }
+
+            if (goodsId > 0 && OneYuanByGoodsId.TryGetValue(goodsId, out OneYuanGoods byGoods))
+            {
+                return byGoods;
+            }
+
+            return null;
+        }
+
+        public int OneYuanDailyLimit(OneYuanGoods row)
+        {
+            if (row != null && row.Limit > 0)
+            {
+                return row.Limit;
+            }
+
+            return 1;
         }
 
         public int ManorHarvestGold(int manorGrade)
@@ -3984,6 +4261,71 @@ namespace GunMobile.Res
             }
         }
 
+        void LoadGoldEquip(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/goldequiptemplateload.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int oldId = Int(row, "OldTemplateId");
+                int newId = Int(row, "NewTemplateId");
+                if (oldId <= 0 || newId <= 0) continue;
+                var info = new GoldEquipTemplate
+                {
+                    Id = Int(row, "ID"), OldTemplateId = oldId, NewTemplateId = newId,
+                    CategoryId = Int(row, "CategoryID"), Attack = Int(row, "Attack"), Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"), Luck = Int(row, "Luck"), Damage = Int(row, "Damage"),
+                    Guard = Int(row, "Guard"), Boold = Int(row, "Boold"), BlessId = Int(row, "BlessID"), Pic = Str(row, "Pic")
+                };
+                GoldEquipList.Add(info);
+                GoldEquipByOld[oldId] = info;
+                GoldEquipByNew[newId] = info;
+            }
+        }
+
+        void LoadGlory(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/GloryItemUpgradeList.xml", out XmlResultTable upgrades))
+            {
+                foreach (var row in upgrades.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0) continue;
+                    var info = new GloryItemUpgrade
+                    {
+                        TemplateId = templateId, CostItemId = Int(row, "CostItemID"),
+                        NextTemplateId = Int(row, "NextTemplateID"), NeedExp = Int(row, "NeedExp")
+                    };
+                    GloryUpgrades[templateId] = info;
+                    GloryUpgradeList.Add(info);
+                }
+            }
+            if (TryTable(loader, "Request/GloryLevelList.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0) continue;
+                    GloryLevels[level] = new GloryLevelInfo
+                    {
+                        Level = level, Exp = Int(row, "Exp"), Title = Str(row, "Title"), Descr = Str(row, "Descr")
+                    };
+                }
+            }
+        }
+
+        void LoadSigil(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_SigilProValueLimitTemp.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                SigilProLimits.Add(new SigilProLimit
+                {
+                    Quality = Int(row, "Quality"), ProType = Int(row, "ProType"),
+                    Name = Str(row, "Name"), RandomConfig = Int(row, "RandomConfig")
+                });
+            }
+        }
+
         void LoadMountTalismans(ResLoader loader)
         {
             if (!TryTable(loader, "Request/mounttalismansinfolist.xml", out XmlResultTable table))
@@ -4045,6 +4387,131 @@ namespace GunMobile.Res
                     Style = Int(row, "Style"),
                     WorkMax = Int(row, "WorkMax")
                 };
+            }
+        }
+
+        void LoadQuizQuestions(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/loadallquestions.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int qid = Int(row, "QuestionID");
+                    string content = Str(row, "QuestionContent");
+                    if (qid <= 0 || string.IsNullOrEmpty(content))
+                    {
+                        continue;
+                    }
+
+                    var q = new QuizQuestion
+                    {
+                        QuestionId = qid,
+                        CatalogId = Int(row, "QuestionCatalogID"),
+                        Content = content,
+                        Option1 = Str(row, "Option1"),
+                        Option2 = Str(row, "Option2"),
+                        Option3 = Str(row, "Option3"),
+                        Option4 = Str(row, "Option4"),
+                        CorrectOption = ParseQuizCorrectOption(row)
+                    };
+                    QuizQuestions[qid] = q;
+                    QuizQuestionList.Add(q);
+                }
+            }
+
+            if (TryTable(loader, "Request/advancequestionread.xml", out XmlResultTable answers))
+            {
+                foreach (var row in answers.Rows)
+                {
+                    int qid = Int(row, "QuestionID");
+                    if (qid <= 0 || !QuizQuestions.TryGetValue(qid, out QuizQuestion q))
+                    {
+                        continue;
+                    }
+
+                    if (HasQuizAnswerField(row))
+                    {
+                        int parsed = ParseQuizCorrectOption(row);
+                        if (parsed >= 1 && parsed <= 4)
+                        {
+                            q.CorrectOption = parsed;
+                        }
+                    }
+                }
+            }
+        }
+
+        static bool HasQuizAnswerField(IReadOnlyDictionary<string, string> row)
+        {
+            return HasNonEmpty(row, "Answer") || HasNonEmpty(row, "Correct") || HasNonEmpty(row, "CorrectAnswer")
+                || HasNonEmpty(row, "RightAnswer") || HasNonEmpty(row, "AnswerID");
+        }
+
+        static bool HasNonEmpty(IReadOnlyDictionary<string, string> row, string key)
+        {
+            return row.TryGetValue(key, out string raw) && !string.IsNullOrEmpty(raw);
+        }
+
+        static int ParseQuizCorrectOption(IReadOnlyDictionary<string, string> row)
+        {
+            string[] keys = { "Answer", "Correct", "CorrectAnswer", "RightAnswer", "AnswerID" };
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!row.TryGetValue(keys[i], out string raw) || string.IsNullOrEmpty(raw))
+                {
+                    continue;
+                }
+
+                raw = raw.Trim();
+                if (int.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out int n) && n >= 1 && n <= 4)
+                {
+                    return n;
+                }
+
+                if (raw.Length == 1)
+                {
+                    char c = char.ToUpperInvariant(raw[0]);
+                    if (c >= 'A' && c <= 'D')
+                    {
+                        return (c - 'A') + 1;
+                    }
+                }
+            }
+
+            return 1;
+        }
+
+        void LoadOneYuanGoods(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/oneyuanbuyallgoodstemplate.xml", out XmlResultTable table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "Id");
+                int goodsId = Int(row, "GoodsID");
+                if (id <= 0 || goodsId <= 0)
+                {
+                    continue;
+                }
+
+                var goods = new OneYuanGoods
+                {
+                    Id = id,
+                    GoodsId = goodsId,
+                    Name = Str(row, "Name"),
+                    Remark = Str(row, "Remark"),
+                    Cost = Int(row, "Cost"),
+                    IsBindMoney = Int(row, "IsBindMoney"),
+                    GoodType = Int(row, "GoodType"),
+                    Limit = Int(row, "Limit"),
+                    Desc = Str(row, "Desc")
+                };
+                OneYuanById[id] = goods;
+                OneYuanByGoodsId[goodsId] = goods;
+                OneYuanGoodsList.Add(goods);
             }
         }
 

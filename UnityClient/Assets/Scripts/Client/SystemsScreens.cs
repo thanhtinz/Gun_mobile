@@ -834,6 +834,26 @@ namespace GunMobile.Client
                     });
                 ShopScreen.DecorateIcon(app, btn, slot.TemplateId);
             }
+
+            SysUi.Note(body, "--- 金装升阶 goldequiptemplateload.xml ---");
+            if (app.Database != null)
+            {
+                GoldEquipTemplate goldRow = app.Database.GetGoldEquipByOld(app.Profile.EquipWeapon);
+                if (goldRow != null)
+                {
+                    int goldCost = app.Database.GoldEquipUpgradeGoldCost(goldRow);
+                    ItemTemplate nextItem = app.Database.GetItem(goldRow.NewTemplateId);
+                    string nextName = nextItem != null ? nextItem.Name : ("#" + goldRow.NewTemplateId);
+                    SysUi.Row(body, "goldup",
+                        "金装 " + nextName + "  ATK+" + goldRow.Attack + "  " + goldCost + "金",
+                        () => PhoneNet.UpgradeGoldEquip(goldRow.OldTemplateId));
+                }
+                else
+                {
+                    GoldEquipTemplate current = app.Database.GetGoldEquipForWeapon(app.Profile.EquipWeapon);
+                    SysUi.Note(body, current != null ? "当前已是金装 #" + current.NewTemplateId : "当前武器无可升阶金装");
+                }
+            }
         }
     }
 
