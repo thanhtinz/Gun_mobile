@@ -162,6 +162,9 @@ namespace GunMobile.Net
         public List<int> JampsPagesActivated = new List<int>();
         public int CardMainLevel;
         public List<int> OwnedCardTemplateIds = new List<int>();
+        public List<int> CardBookletProfiles = new List<int>();
+        public List<int> CardBookletClaimed = new List<int>();
+        public int CardSoul;
         public int ElfIntimacyExp;
         public int ElfIntimacyLevel;
         public int ElfIntimacyDay = -1;
@@ -335,7 +338,33 @@ namespace GunMobile.Net
         public bool HasJampsDebris(int debrisId) { EnsureJampsLists(); return JampsDebrisOwned.Contains(debrisId); }
         public bool HasJampsPageCollected(int pageId) { EnsureJampsLists(); return JampsPagesCollected.Contains(pageId); }
         public bool HasJampsPageActivated(int pageId) { EnsureJampsLists(); return JampsPagesActivated.Contains(pageId); }
-        public void EnsureOwnedCards() { if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>(); }
+        public void EnsureOwnedCards()
+        {
+            if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>();
+            if (CardBookletProfiles == null) CardBookletProfiles = new List<int>();
+            if (CardBookletClaimed == null) CardBookletClaimed = new List<int>();
+            while (CardBookletProfiles.Count < OwnedCardTemplateIds.Count) CardBookletProfiles.Add(0);
+        }
+        public bool HasCardBookletClaimed(int templateId)
+        {
+            EnsureOwnedCards();
+            return CardBookletClaimed.Contains(templateId);
+        }
+        public void SetCardBookletProfile(int templateId, int profile)
+        {
+            EnsureOwnedCards();
+            for (int i = 0; i < OwnedCardTemplateIds.Count; i++)
+            {
+                if (OwnedCardTemplateIds[i] == templateId)
+                {
+                    while (CardBookletProfiles.Count <= i) CardBookletProfiles.Add(0);
+                    CardBookletProfiles[i] = profile;
+                    return;
+                }
+            }
+            OwnedCardTemplateIds.Add(templateId);
+            CardBookletProfiles.Add(profile);
+        }
         public void SyncElfIntimacyLevel(GameDatabase db) { ElfIntimacyLevel = db != null ? db.ElfIntimacyLevelFromExp(ElfIntimacyExp) : 0; }
         public void TouchElfIntimacyDay() { int day = DateTime.UtcNow.DayOfYear; if (ElfIntimacyDay != day) { ElfIntimacyDay = day; ElfIntimacyActions = 0; } }
 
@@ -454,6 +483,7 @@ namespace GunMobile.Net
             db.ApplyCardMainBonus(CardMainLevel, ref atk, ref def, ref agi, ref luck);
             EnsureOwnedCards();
             db.ApplyCardSuitBonus(OwnedCardTemplateIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
+            db.ApplyCardBookletBonus(OwnedCardTemplateIds, CardBookletProfiles, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             SyncElfIntimacyLevel(db);
             db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);
             db.ApplyGuildLevelBonus(GuildLevel, ref atk);
@@ -654,6 +684,13 @@ namespace GunMobile.Net
             EnsureOwnedCards();
             for (int i = 0; i < OwnedCardTemplateIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(OwnedCardTemplateIds[i]); }
             sb.Append("],");
+            sb.Append("\"cardBookletProfiles\":[");
+            for (int i = 0; i < CardBookletProfiles.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardBookletProfiles[i]); }
+            sb.Append("],");
+            sb.Append("\"cardBookletClaimed\":[");
+            for (int i = 0; i < CardBookletClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardBookletClaimed[i]); }
+            sb.Append("],");
+            J(sb, "cardSoul", CardSoul); sb.Append(",");
             J(sb, "elfIntimacyExp", ElfIntimacyExp); sb.Append(",");
             J(sb, "elfIntimacyLevel", ElfIntimacyLevel); sb.Append(",");
             J(sb, "elfIntimacyActions", ElfIntimacyActions); sb.Append(",");
@@ -1846,6 +1883,22 @@ namespace GunMobile.Net
 
                 case PhoneMsg.OneYuanBuy:
                     HandleOneYuanBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardBookletClaim:
+                    HandleCardBookletClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.StrengthenGoodsMap:
+                    HandleStrengthenGoodsMap(player, ns, json);
+                    break;
+
+                case PhoneMsg.BoxOpen:
+                    HandleBoxOpen(player, ns, json);
+                    break;
+
+                case PhoneMsg.ItemFusion:
+                    HandleItemFusion(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -5741,6 +5794,185 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+
+        int TryRemapStrengthenGoods(ServerPlayer player, BagSlot slot)
+        {
+            if (_db == null || slot == null) return 0;
+            StrengthenGoodsInfo map = _db.FindStrengthenGoodsRemap(slot.TemplateId, slot.Strengthen);
+            if (map == null || map.GainEquip <= 0 || map.GainEquip == slot.TemplateId) return 0;
+            int oldId = slot.TemplateId;
+            slot.TemplateId = map.GainEquip;
+            if (player.EquipWeapon == oldId) { player.EquipWeapon = map.GainEquip; player.WeaponId = map.GainEquip; }
+            if (player.EquipHead == oldId) player.EquipHead = map.GainEquip;
+            if (player.EquipHair == oldId) player.EquipHair = map.GainEquip;
+            if (player.EquipFace == oldId) player.EquipFace = map.GainEquip;
+            if (player.EquipCloth == oldId) player.EquipCloth = map.GainEquip;
+            if (player.EquipGlass == oldId) player.EquipGlass = map.GainEquip;
+            return map.GainEquip;
+        }
+
+        void HandleCardBookletClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            string action = JS(json, "action", "claim");
+            int profile = JI(json, "profile", -999);
+            player.EnsureOwnedCards();
+
+            if (action == "draw" || action == "open")
+            {
+                if (templateId <= 0 && _db.CardBooklets.Count > 0) templateId = _db.CardBooklets[0].TemplateId;
+                CardBookletInfo rolled;
+                lock (_lock) { rolled = _db.RollCardBooklet(templateId, _rng); }
+                if (rolled == null) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+                player.SetCardBookletProfile(rolled.TemplateId, rolled.Profile);
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":true,\"action\":\"draw\",\"templateId\":" + rolled.TemplateId +
+                    ",\"profile\":" + rolled.Profile + ",\"name\":\"" + (rolled.TemplateName ?? "").Replace("\"", "") + "\"}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (action == "recycle")
+            {
+                int idx = player.OwnedCardTemplateIds.IndexOf(templateId);
+                if (idx < 0) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"owned\"}"); return; }
+                int prof = profile != -999 ? profile : (idx < player.CardBookletProfiles.Count ? player.CardBookletProfiles[idx] : 0);
+                CardBookletInfo row = _db.GetCardBooklet(templateId, prof) ?? _db.GetCardBooklet(templateId, 0);
+                int soul = row != null ? Mathf.Max(1, row.RecyclCount) : 5;
+                player.OwnedCardTemplateIds.RemoveAt(idx);
+                if (idx < player.CardBookletProfiles.Count) player.CardBookletProfiles.RemoveAt(idx);
+                player.CardSoul += soul;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":true,\"action\":\"recycle\",\"templateId\":" + templateId + ",\"soul\":" + soul + ",\"cardSoul\":" + player.CardSoul + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (templateId <= 0) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"template\"}"); return; }
+            if (!player.OwnedCardTemplateIds.Contains(templateId))
+            {
+                CardBookletInfo baseRow = _db.GetCardBooklet(templateId, 0);
+                if (baseRow == null) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+                player.SetCardBookletProfile(templateId, 0);
+            }
+            if (player.HasCardBookletClaimed(templateId)) { Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            int ownIdx = player.OwnedCardTemplateIds.IndexOf(templateId);
+            int ownProf = ownIdx >= 0 && ownIdx < player.CardBookletProfiles.Count ? player.CardBookletProfiles[ownIdx] : 0;
+            if (profile != -999) ownProf = profile;
+            CardBookletInfo reward = _db.GetCardBooklet(templateId, ownProf) ?? _db.GetCardBooklet(templateId, 0);
+            int gold = reward != null ? Mathf.Max(10, reward.RecyclCount * 10) : 50;
+            player.Gold += gold;
+            player.CardBookletClaimed.Add(templateId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.CardBookletClaim, "{\"ok\":true,\"action\":\"claim\",\"templateId\":" + templateId +
+                ",\"profile\":" + ownProf + ",\"gold\":" + gold + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleStrengthenGoodsMap(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.StrengthenGoodsMap, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            int level = JI(json, "level", -1);
+            bool apply = JI(json, "apply", 0) != 0 || JS(json, "action", "") == "remap";
+            BagSlot slot = null;
+            foreach (var s in player.Bag) { if (s.TemplateId == templateId) { slot = s; break; } }
+            if (level < 0) level = slot != null ? slot.Strengthen : 0;
+            StrengthenGoodsInfo map = _db.GetStrengthenGoodsMap(templateId, level) ?? _db.FindStrengthenGoodsRemap(templateId, level);
+            if (map == null)
+            {
+                Send(ns, PhoneMsg.StrengthenGoodsMap, "{\"ok\":false,\"err\":\"none\",\"templateId\":" + templateId + ",\"level\":" + level + "}");
+                return;
+            }
+            int gain = map.GainEquip;
+            if (apply && slot != null && gain > 0 && gain != slot.TemplateId)
+            {
+                slot.Strengthen = Mathf.Max(slot.Strengthen, map.Level);
+                int remapped = TryRemapStrengthenGoods(player, slot);
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.StrengthenGoodsMap, "{\"ok\":true,\"applied\":true,\"currentEquip\":" + templateId +
+                    ",\"level\":" + map.Level + ",\"gainEquip\":" + gain + ",\"templateId\":" + (remapped > 0 ? remapped : slot.TemplateId) + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            Send(ns, PhoneMsg.StrengthenGoodsMap, "{\"ok\":true,\"applied\":false,\"currentEquip\":" + map.CurrentEquip +
+                ",\"level\":" + map.Level + ",\"gainEquip\":" + map.GainEquip + ",\"originalEquip\":" + map.OriginalEquip + "}");
+        }
+
+        void HandleBoxOpen(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.BoxOpen, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int templateId = JI(json, "templateId", 0);
+            if (templateId <= 0) { Send(ns, PhoneMsg.BoxOpen, "{\"ok\":false,\"err\":\"template\"}"); return; }
+            if (_db.GetBoxDrops(templateId).Count == 0) { Send(ns, PhoneMsg.BoxOpen, "{\"ok\":false,\"err\":\"box\"}"); return; }
+            if (!player.Consume(templateId, 1)) { Send(ns, PhoneMsg.BoxOpen, "{\"ok\":false,\"err\":\"bag\"}"); return; }
+            BoxTempDrop drop;
+            lock (_lock) { drop = _db.RollBoxDrop(templateId, _rng); }
+            if (drop == null) { player.AddItem(templateId, 1); Send(ns, PhoneMsg.BoxOpen, "{\"ok\":false,\"err\":\"roll\"}"); return; }
+            int rewardId = drop.TemplateId;
+            int count = Mathf.Max(1, drop.ItemCount);
+            if (rewardId < 0)
+            {
+                int gold = Mathf.Abs(rewardId) * count;
+                player.Gold += gold;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.BoxOpen, "{\"ok\":true,\"boxTemplateId\":" + templateId + ",\"gold\":" + gold + ",\"count\":" + count + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            player.AddItem(rewardId, count);
+            if (_db.GetCardBookletRows(rewardId).Count > 0)
+            {
+                CardBookletInfo rolled;
+                lock (_lock) { rolled = _db.RollCardBooklet(rewardId, _rng); }
+                if (rolled != null) player.SetCardBookletProfile(rewardId, rolled.Profile);
+            }
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.BoxOpen, "{\"ok\":true,\"boxTemplateId\":" + templateId + ",\"rewardTemplateId\":" + rewardId +
+                ",\"count\":" + count + ",\"strengthenLevel\":" + drop.StrengthenLevel + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleItemFusion(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.ItemFusion, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int fusionId = JI(json, "fusionId", 0);
+            ItemFusionRecipe recipe = _db.GetItemFusion(fusionId);
+            if (recipe == null) { Send(ns, PhoneMsg.ItemFusion, "{\"ok\":false,\"err\":\"recipe\"}"); return; }
+            int[] items = { recipe.Item1, recipe.Item2, recipe.Item3, recipe.Item4 };
+            int[] counts = { recipe.Count1, recipe.Count2, recipe.Count3, recipe.Count4 };
+            for (int i = 0; i < 4; i++)
+            {
+                if (items[i] > 0 && counts[i] > 0 && !HasEnoughBag(player, items[i], counts[i]))
+                {
+                    Send(ns, PhoneMsg.ItemFusion, "{\"ok\":false,\"err\":\"mat\",\"item\":" + items[i] + "}");
+                    return;
+                }
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                if (items[i] > 0 && counts[i] > 0) player.Consume(items[i], counts[i]);
+            }
+            int rate = recipe.FusionRate > 0 ? recipe.FusionRate : 10000;
+            int roll;
+            lock (_lock) { roll = _rng.Next(0, 10000); }
+            bool success = roll < Mathf.Clamp(rate, 1, 10000);
+            if (success && recipe.Reward > 0) player.AddItem(recipe.Reward, 1);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.ItemFusion, "{\"ok\":true,\"success\":" + (success ? "true" : "false") +
+                ",\"fusionId\":" + fusionId + ",\"reward\":" + (success ? recipe.Reward : 0) + ",\"rate\":" + rate + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        static bool HasEnoughBag(ServerPlayer player, int templateId, int count)
+        {
+            foreach (var s in player.Bag)
+                if (s.TemplateId == templateId && s.Count >= count) return true;
+            return false;
+        }
+
+
         void HandleStrengthen(ServerPlayer player, NetworkStream ns, string json)
         {
             int templateId = JI(json, "templateId", 0);
@@ -5763,10 +5995,16 @@ namespace GunMobile.Net
             int roll;
             lock (_lock) { roll = _rng.Next(0, 100); }
             bool success = roll < successRate;
-            if (success) slot.Strengthen++;
+            int remapped = 0;
+            if (success)
+            {
+                slot.Strengthen++;
+                remapped = TryRemapStrengthenGoods(player, slot);
+            }
             player.RecalcStats(_db);
             SavePlayer(player);
-            Send(ns, PhoneMsg.StrengthenResult, "{\"ok\":true,\"success\":" + (success ? "true" : "false") + ",\"level\":" + slot.Strengthen + "}");
+            Send(ns, PhoneMsg.StrengthenResult, "{\"ok\":true,\"success\":" + (success ? "true" : "false") + ",\"level\":" + slot.Strengthen +
+                ",\"templateId\":" + slot.TemplateId + (remapped > 0 ? ",\"remapped\":" + remapped : "") + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -7752,6 +7990,9 @@ namespace GunMobile.Net
             public List<int> JampsPagesActivated = new List<int>();
             public int CardMainLevel;
             public List<int> OwnedCardTemplateIds = new List<int>();
+            public List<int> CardBookletProfiles = new List<int>();
+            public List<int> CardBookletClaimed = new List<int>();
+            public int CardSoul;
             public int ElfIntimacyExp;
             public int ElfIntimacyLevel;
             public int ElfIntimacyDay = -1;
@@ -7869,6 +8110,9 @@ namespace GunMobile.Net
                 JampsPagesActivated = p.JampsPagesActivated ?? new List<int>(),
                 CardMainLevel = p.CardMainLevel,
                 OwnedCardTemplateIds = p.OwnedCardTemplateIds ?? new List<int>(),
+                CardBookletProfiles = p.CardBookletProfiles ?? new List<int>(),
+                CardBookletClaimed = p.CardBookletClaimed ?? new List<int>(),
+                CardSoul = p.CardSoul,
                 ElfIntimacyExp = p.ElfIntimacyExp,
                 ElfIntimacyLevel = p.ElfIntimacyLevel,
                 ElfIntimacyDay = p.ElfIntimacyDay,
@@ -7988,6 +8232,9 @@ namespace GunMobile.Net
                 JampsPagesActivated = s.JampsPagesActivated ?? new List<int>(),
                 CardMainLevel = s.CardMainLevel,
                 OwnedCardTemplateIds = s.OwnedCardTemplateIds ?? new List<int>(),
+                CardBookletProfiles = s.CardBookletProfiles ?? new List<int>(),
+                CardBookletClaimed = s.CardBookletClaimed ?? new List<int>(),
+                CardSoul = s.CardSoul,
                 ElfIntimacyExp = s.ElfIntimacyExp,
                 ElfIntimacyLevel = s.ElfIntimacyLevel,
                 ElfIntimacyDay = s.ElfIntimacyDay,

@@ -116,6 +116,9 @@ namespace GunMobile.Client
         public List<int> JampsPagesActivated = new List<int>();
         public int CardMainLevel;
         public List<int> OwnedCardTemplateIds = new List<int>();
+        public List<int> CardBookletProfiles = new List<int>();
+        public List<int> CardBookletClaimed = new List<int>();
+        public int CardSoul;
         public int ElfIntimacyExp;
         public int ElfIntimacyLevel;
         public int ElfIntimacyActions;
@@ -158,7 +161,13 @@ namespace GunMobile.Client
         public bool HasJampsDebris(int id) { EnsureJampsLists(); return JampsDebrisOwned.Contains(id); }
         public bool HasJampsPageCollected(int id) { EnsureJampsLists(); return JampsPagesCollected.Contains(id); }
         public bool HasJampsPageActivated(int id) { EnsureJampsLists(); return JampsPagesActivated.Contains(id); }
-        public void EnsureOwnedCards() { if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>(); }
+        public void EnsureOwnedCards()
+        {
+            if (OwnedCardTemplateIds == null) OwnedCardTemplateIds = new List<int>();
+            if (CardBookletProfiles == null) CardBookletProfiles = new List<int>();
+            if (CardBookletClaimed == null) CardBookletClaimed = new List<int>();
+            while (CardBookletProfiles.Count < OwnedCardTemplateIds.Count) CardBookletProfiles.Add(0);
+        }
         public void SyncElfIntimacyLevel(GameDatabase db) { ElfIntimacyLevel = db != null ? db.ElfIntimacyLevelFromExp(ElfIntimacyExp) : 0; }
 
         public static string PathOnDisk => Path.Combine(Application.persistentDataPath, "player.json");
@@ -570,6 +579,8 @@ namespace GunMobile.Client
                 EnsureOwnedCards();
                 int cDmg = 0; int cGuard = 0;
                 db.ApplyCardSuitBonus(OwnedCardTemplateIds, ref atk, ref def, ref agi, ref luk, ref hp, ref cDmg, ref cGuard);
+                EnsureOwnedCards();
+                db.ApplyCardBookletBonus(OwnedCardTemplateIds, CardBookletProfiles, ref atk, ref def, ref agi, ref luk, ref hp, ref cDmg, ref cGuard);
                 atk += cDmg / 4; def += cGuard / 4;
                 SyncElfIntimacyLevel(db);
                 db.ApplyElfIntimacyBonus(ElfIntimacyLevel, ref atk, ref def, ref hp);

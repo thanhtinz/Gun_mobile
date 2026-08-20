@@ -481,6 +481,10 @@ namespace GunMobile.Client
                     case PhoneMsg.GoldEquipUpgrade:
                     case PhoneMsg.GloryUpgrade:
                     case PhoneMsg.SigilRoll:
+                    case PhoneMsg.CardBookletClaim:
+                    case PhoneMsg.StrengthenGoodsMap:
+                    case PhoneMsg.BoxOpen:
+                    case PhoneMsg.ItemFusion:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -813,6 +817,9 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "jampsPagesCollected", Profile.JampsPagesCollected ?? (Profile.JampsPagesCollected = new List<int>()));
             ParseIntListFromServer(json, "jampsPagesActivated", Profile.JampsPagesActivated ?? (Profile.JampsPagesActivated = new List<int>()));
             ParseIntListFromServer(json, "ownedCardTemplateIds", Profile.OwnedCardTemplateIds ?? (Profile.OwnedCardTemplateIds = new List<int>()));
+            ParseIntListFromServer(json, "cardBookletProfiles", Profile.CardBookletProfiles ?? (Profile.CardBookletProfiles = new List<int>()));
+            ParseIntListFromServer(json, "cardBookletClaimed", Profile.CardBookletClaimed ?? (Profile.CardBookletClaimed = new List<int>()));
+            Profile.CardSoul = JsonInt(json, "cardSoul", Profile.CardSoul);
             Profile.Save();
         }
 
