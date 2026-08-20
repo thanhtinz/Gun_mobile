@@ -45,6 +45,8 @@ namespace GunMobile.Net
         public int TitleId;
         public int TotemId;
         public int MountGrade;
+        public int MountTalismanId;
+        public int ManorGrade = 1;
         public int VipLevel;
         public int Honor;
         public int Texp;
@@ -393,6 +395,8 @@ namespace GunMobile.Net
                 hp += mt.AddBlood; atk += mt.AddDamage; baseDmg += mt.AddDamage; baseGuard += mt.AddGuard;
             }
 
+            db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
                 db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luck, ref hp);
@@ -504,6 +508,8 @@ namespace GunMobile.Net
             J(sb, "titleId", TitleId); sb.Append(",");
             J(sb, "totemId", TotemId); sb.Append(",");
             J(sb, "mountGrade", MountGrade); sb.Append(",");
+            J(sb, "mountTalismanId", MountTalismanId); sb.Append(",");
+            J(sb, "manorGrade", ManorGrade); sb.Append(",");
             J(sb, "vipLevel", VipLevel); sb.Append(",");
             J(sb, "honor", Honor); sb.Append(",");
             J(sb, "texp", Texp); sb.Append(",");
@@ -1564,41 +1570,8 @@ namespace GunMobile.Net
                 }
 
                 case PhoneMsg.FriendAdd:
-                {
-                    string fn = JS(json, "name", "");
-                    if (string.IsNullOrEmpty(fn))
-                    {
-                        SendFriendResult(player, ns);
-                        Send(ns, PhoneMsg.ProfileData, player.ToJson());
-                        break;
-                    }
-
-                    if (!player.Friends.Contains(fn))
-                    {
-                        player.Friends.Add(fn);
-                        SavePlayer(player);
-                        // Mutual: add this player to the friend's list too
-                        lock (_lock)
-                        {
-                            foreach (var fp in _players.Values)
-                            {
-                                if (string.Equals(fp.Nick, fn, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    if (!fp.Friends.Contains(player.Nick))
-                                    {
-                                        fp.Friends.Add(player.Nick);
-                                        SavePlayer(fp);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    // Return friend list
-                    SendFriendResult(player, ns);
-                    Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                    HandleFriendAdd(player, ns, json);
                     break;
-                }
 
                 case PhoneMsg.FriendRemove:
                     HandleFriendRemove(player, ns, json);
@@ -1627,6 +1600,10 @@ namespace GunMobile.Net
                     }
                     break;
                 }
+
+                case PhoneMsg.ChatWhisper:
+                    HandleChatWhisper(player, ns, json);
+                    break;
 
                 case PhoneMsg.RankRequest:
                     HandleRankRequest(player, ns, json);
@@ -1802,6 +1779,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ElfIntimacyAction:
                     HandleElfIntimacyAction(player, ns, json);
+                    break;
+
+                case PhoneMsg.PetStarUpgrade:
+                    HandlePetStarUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.MountTalismanEquip:
+                    HandleMountTalismanEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.ManorUpgrade:
+                    HandleManorUpgrade(player, ns);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -2142,6 +2131,11 @@ namespace GunMobile.Net
 
             player.AddItem(recipe.FoodId, 1);
             player.FarmHarvests++;
+            int harvestGold = _db != null ? _db.ManorHarvestGold(player.ManorGrade) : 0;
+            if (harvestGold > 0)
+            {
+                player.Gold += harvestGold;
+            }
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.StatResult, player.ToJson());
@@ -2557,6 +2551,45 @@ namespace GunMobile.Net
             player.ConsortiaName = "";
             SavePlayer(player);
             Send(ns, PhoneMsg.GuildResult, "{\"ok\":true,\"name\":\"\",\"members\":[]}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleFriendAdd(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string fn = JS(json, "name", "");
+            if (string.IsNullOrEmpty(fn))
+            {
+                SendFriendResult(player, ns);
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            fn = fn.Trim();
+            if (!player.Friends.Contains(fn))
+            {
+                player.Friends.Add(fn);
+                SavePlayer(player);
+            }
+
+            // Mutual: in-memory player first (including disconnected sessions still in _players), then save file.
+            lock (_lock)
+            {
+                ServerPlayer fp = FindPlayerByNick(fn, player);
+                if (fp != null)
+                {
+                    if (!fp.Friends.Contains(player.Nick))
+                    {
+                        fp.Friends.Add(player.Nick);
+                        SavePlayer(fp);
+                    }
+                }
+                else
+                {
+                    TryAddFriendToSaveFile(fn, player.Nick);
+                }
+            }
+
+            SendFriendResult(player, ns);
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -4447,43 +4480,8 @@ namespace GunMobile.Net
                 }
             }
 
-            ServerPlayer target = null;
-            lock (_lock)
+            var mail = new ServerMail
             {
-                foreach (ServerPlayer p in _players.Values)
-                {
-                    if (p != player && string.Equals(p.Nick, to, StringComparison.OrdinalIgnoreCase))
-                    {
-                        target = p;
-                        break;
-                    }
-                }
-            }
-
-            if (target == null)
-            {
-                Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"offline\"}");
-                return;
-            }
-
-            if (gold > 0)
-            {
-                player.Gold -= gold;
-            }
-
-            if (itemId > 0 && itemCount > 0)
-            {
-                player.Consume(itemId, itemCount);
-            }
-
-            if (target.Mails == null)
-            {
-                target.Mails = new List<ServerMail>();
-            }
-
-            target.Mails.Add(new ServerMail
-            {
-                Id = target.NextMailId++,
                 Subject = subject,
                 Body = string.IsNullOrEmpty(body)
                     ? "来自 " + (player.Nick ?? "Player") + " 的邮件。"
@@ -4491,13 +4489,92 @@ namespace GunMobile.Net
                 Gold = gold,
                 ItemId = itemId,
                 ItemCount = itemCount
-            });
+            };
 
-            SavePlayer(player);
-            SavePlayer(target);
+            bool delivered = false;
+            lock (_lock)
+            {
+                // Prefer in-memory _players (including disconnected sessions with null RoadStream).
+                ServerPlayer target = FindPlayerByNick(to, player);
+                if (target != null)
+                {
+                    if (gold > 0)
+                    {
+                        player.Gold -= gold;
+                    }
+
+                    if (itemId > 0 && itemCount > 0)
+                    {
+                        player.Consume(itemId, itemCount);
+                    }
+
+                    if (target.Mails == null)
+                    {
+                        target.Mails = new List<ServerMail>();
+                    }
+
+                    mail.Id = target.NextMailId++;
+                    target.Mails.Add(mail);
+                    SavePlayer(player);
+                    SavePlayer(target);
+                    SendTo(target, PhoneMsg.MailListData, BuildMailListJson(target));
+                    delivered = true;
+                }
+                else if (TryAppendMailToSaveFile(to, mail))
+                {
+                    if (gold > 0)
+                    {
+                        player.Gold -= gold;
+                    }
+
+                    if (itemId > 0 && itemCount > 0)
+                    {
+                        player.Consume(itemId, itemCount);
+                    }
+
+                    SavePlayer(player);
+                    delivered = true;
+                }
+            }
+
+            if (!delivered)
+            {
+                Send(ns, PhoneMsg.MailSend, "{\"ok\":false,\"err\":\"offline\"}");
+                return;
+            }
+
             Send(ns, PhoneMsg.MailSend, "{\"ok\":true,\"to\":\"" + to.Replace("\"", "") + "\"}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
-            SendTo(target, PhoneMsg.MailListData, BuildMailListJson(target));
+        }
+
+        void HandleChatWhisper(ServerPlayer player, NetworkStream ns, string json)
+        {
+            string to = JS(json, "to", "");
+            string msg = JS(json, "msg", "");
+            if (string.IsNullOrWhiteSpace(to) || string.IsNullOrEmpty(msg))
+            {
+                Send(ns, PhoneMsg.Error, "{\"err\":\"whisper\"}");
+                return;
+            }
+
+            to = to.Trim();
+            ServerPlayer target;
+            lock (_lock)
+            {
+                target = FindPlayerByNick(to, player);
+            }
+
+            if (target == null || target.RoadStream == null)
+            {
+                Send(ns, PhoneMsg.Error, "{\"err\":\"offline\"}");
+                return;
+            }
+
+            string broadcast = "{\"from\":\"" + (player.Nick ?? "").Replace("\"", "") +
+                               "\",\"to\":\"" + to.Replace("\"", "") +
+                               "\",\"whisper\":true,\"msg\":\"" + msg.Replace("\"", "") + "\"}";
+            SendTo(target, PhoneMsg.ChatBroadcast, broadcast);
+            Send(ns, PhoneMsg.ChatBroadcast, broadcast);
         }
 
         void HandleFirstRechargeClaim(ServerPlayer player, NetworkStream ns)
@@ -5101,6 +5178,121 @@ namespace GunMobile.Net
                 SavePlayer(player);
             }
             Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+
+        void HandlePetStarUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false}");
+                return;
+            }
+
+            PetStarUpgrade row = _db.GetPetStarUpgrade(player.PetId);
+            if (row == null || row.NewId <= 0)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+
+            int cost = Mathf.Max(0, row.Exp);
+            bool payGold = cost > 0 && player.Gold >= cost;
+            bool payGp = cost > 0 && !payGold && player.Gp >= cost;
+            if (cost > 0 && !payGold && !payGp)
+            {
+                Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":false,\"err\":\"cost\"}");
+                return;
+            }
+
+            if (payGold)
+            {
+                player.Gold -= cost;
+            }
+            else if (payGp)
+            {
+                player.Gp -= cost;
+            }
+
+            player.PetId = row.NewId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PetStarUpgrade, "{\"ok\":true,\"petId\":" + player.PetId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMountTalismanEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false}");
+                return;
+            }
+
+            int talismanId = JI(json, "talismanId", 0);
+            MountTalismanInfo row = _db.GetMountTalisman(talismanId);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+
+            if (player.MountTalismanId != talismanId && row.Consume > 0 && player.Gold < row.Consume)
+            {
+                Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (player.MountTalismanId != talismanId && row.Consume > 0)
+            {
+                player.Gold -= row.Consume;
+            }
+
+            player.MountTalismanId = talismanId;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MountTalismanEquip, "{\"ok\":true,\"talismanId\":" + talismanId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleManorUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false}");
+                return;
+            }
+
+            int current = player.ManorGrade > 0 ? player.ManorGrade : 1;
+            ManorPlantInfo next = _db.GetManorPlant(1, current + 1);
+            if (next == null)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+
+            if (next.NeedGrade1 > 0 && player.Level < next.NeedGrade1)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+
+            int cost = _db.ManorUpgradeCost(current);
+            if (cost > 0 && player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            if (cost > 0)
+            {
+                player.Gold -= cost;
+            }
+
+            player.ManorGrade = current + 1;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ManorUpgrade, "{\"ok\":true,\"grade\":" + player.ManorGrade + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
         void HandleSignIn(ServerPlayer player, NetworkStream ns)
@@ -6988,6 +7180,80 @@ namespace GunMobile.Net
                 File.WriteAllText(file, JsonUtility.ToJson(ToSave(p), true));
             }
             catch { }
+        }
+
+        ServerPlayer FindPlayerByNick(string nick, ServerPlayer exclude)
+        {
+            foreach (ServerPlayer p in _players.Values)
+            {
+                if (p == exclude) continue;
+                if (string.Equals(p.Nick, nick, StringComparison.OrdinalIgnoreCase))
+                    return p;
+            }
+            return null;
+        }
+
+        string SaveFileForNick(string nick)
+        {
+            return Path.Combine(_savePath, SanitizeFileName(nick) + ".json");
+        }
+
+        /// <summary>
+        /// Append mail to an offline player's save without inserting them into _players.
+        /// Assigns Id from NextMailId and increments it. Caller should hold _lock.
+        /// </summary>
+        bool TryAppendMailToSaveFile(string nick, ServerMail mail)
+        {
+            string file = SaveFileForNick(nick);
+            if (!File.Exists(file))
+                return false;
+            try
+            {
+                var loaded = JsonUtility.FromJson<ServerPlayerSave>(File.ReadAllText(file));
+                if (loaded == null)
+                    return false;
+                ServerPlayer p = FromSave(loaded);
+                if (p.Mails == null)
+                    p.Mails = new List<ServerMail>();
+                mail.Id = p.NextMailId++;
+                p.Mails.Add(mail);
+                File.WriteAllText(file, JsonUtility.ToJson(ToSave(p), true));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        bool TryAddFriendToSaveFile(string nick, string friendNick)
+        {
+            if (string.IsNullOrEmpty(nick) || string.IsNullOrEmpty(friendNick))
+                return false;
+            string file = SaveFileForNick(nick);
+            if (!File.Exists(file))
+                return false;
+            try
+            {
+                var loaded = JsonUtility.FromJson<ServerPlayerSave>(File.ReadAllText(file));
+                if (loaded == null)
+                    return false;
+                ServerPlayer p = FromSave(loaded);
+                if (p.Friends == null)
+                    p.Friends = new List<string>();
+                foreach (string existing in p.Friends)
+                {
+                    if (string.Equals(existing, friendNick, StringComparison.OrdinalIgnoreCase))
+                        return true;
+                }
+                p.Friends.Add(friendNick);
+                File.WriteAllText(file, JsonUtility.ToJson(ToSave(p), true));
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         static string SanitizeFileName(string name)

@@ -162,6 +162,21 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.MountUpgrade, "{}");
         }
 
+        public static void UpgradePetStar()
+        {
+            Road?.Send(PhoneMsg.PetStarUpgrade, "{}");
+        }
+
+        public static void EquipMountTalisman(int talismanId)
+        {
+            Road?.Send(PhoneMsg.MountTalismanEquip, "{\"talismanId\":" + talismanId + "}");
+        }
+
+        public static void UpgradeManor()
+        {
+            Road?.Send(PhoneMsg.ManorUpgrade, "{}");
+        }
+
         public static void DoSignIn()
         {
             Road?.Send(PhoneMsg.SignIn, "{}");
@@ -609,6 +624,13 @@ namespace GunMobile.Client
         public static void SendChat(string msg)
         {
             Road?.Send(PhoneMsg.ChatSend, "{\"msg\":\"" + (msg ?? "").Replace("\"", "") + "\"}");
+        }
+
+        public static void SendWhisper(string to, string msg)
+        {
+            Road?.Send(PhoneMsg.ChatWhisper,
+                "{\"to\":\"" + (to ?? "").Replace("\"", "") +
+                "\",\"msg\":\"" + (msg ?? "").Replace("\"", "") + "\"}");
         }
 
         public static void RequestRoomList()

@@ -1054,9 +1054,9 @@ namespace GunMobile.Client
             Canvas.ForceUpdateCanvases();
             scroll.verticalNormalizedPosition = 0f;
 
-            InputField field = UiKit.Field(bg.transform, "Msg", "说点什么", new Vector2(520f, 56f));
+            InputField field = UiKit.Field(bg.transform, "Msg", "说点什么", new Vector2(400f, 56f));
             field.characterLimit = 48;
-            field.GetComponent<RectTransform>().anchorMin = field.GetComponent<RectTransform>().anchorMax = new Vector2(0.38f, 0.08f);
+            field.GetComponent<RectTransform>().anchorMin = field.GetComponent<RectTransform>().anchorMax = new Vector2(0.32f, 0.08f);
             var send = UiKit.Button(bg.transform, "Send", "发送", () =>
             {
                 string t = (field.text ?? "").Trim();
@@ -1067,8 +1067,41 @@ namespace GunMobile.Client
 
                 PhoneNet.SendChat(t);
                 field.text = "";
-            }, new Vector2(140f, 56f));
-            send.GetComponent<RectTransform>().anchorMin = send.GetComponent<RectTransform>().anchorMax = new Vector2(0.82f, 0.08f);
+            }, new Vector2(120f, 56f));
+            send.GetComponent<RectTransform>().anchorMin = send.GetComponent<RectTransform>().anchorMax = new Vector2(0.68f, 0.08f);
+            string whisperTo = FirstWhisperNick(app);
+            var whisper = UiKit.Button(bg.transform, "Whisper", "密语", () =>
+            {
+                string t = (field.text ?? "").Trim();
+                if (t.Length == 0)
+                {
+                    return;
+                }
+
+                PhoneNet.SendWhisper(whisperTo, t);
+                field.text = "";
+            }, new Vector2(120f, 56f));
+            whisper.GetComponent<RectTransform>().anchorMin = whisper.GetComponent<RectTransform>().anchorMax = new Vector2(0.86f, 0.08f);
+        }
+
+        static string FirstWhisperNick(GameApp app)
+        {
+            if (app.Profile.Friends != null && app.Profile.Friends.Count > 0)
+            {
+                return app.Profile.Friends[0];
+            }
+
+            string json = PhoneNet.LastFriendListJson;
+            if (!string.IsNullOrEmpty(json))
+            {
+                string nick = GameApp.JsonStr(json, "nick", null);
+                if (!string.IsNullOrEmpty(nick))
+                {
+                    return nick;
+                }
+            }
+
+            return "训练教官";
         }
     }
 

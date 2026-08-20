@@ -461,6 +461,9 @@ namespace GunMobile.Client
                     case PhoneMsg.JampsClaimPage:
                     case PhoneMsg.CardMainUpgrade:
                     case PhoneMsg.ElfIntimacyAction:
+                    case PhoneMsg.PetStarUpgrade:
+                    case PhoneMsg.MountTalismanEquip:
+                    case PhoneMsg.ManorUpgrade:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -609,7 +612,8 @@ namespace GunMobile.Client
                         string cm = JsonStr(msg.Json, "msg", "");
                         if (!string.IsNullOrEmpty(cm))
                         {
-                            Profile.ChatLog.Add(from + ": " + cm);
+                            bool whisper = (msg.Json ?? "").IndexOf("\"whisper\":true", StringComparison.Ordinal) >= 0;
+                            Profile.ChatLog.Add(whisper ? ("[密] " + from + ": " + cm) : (from + ": " + cm));
                             if (Profile.ChatLog.Count > 100) Profile.ChatLog.RemoveAt(0);
                         }
                         if (State == AppState.Module && _currentModuleId == "im")
@@ -685,6 +689,8 @@ namespace GunMobile.Client
             Profile.TitleId = JsonInt(json, "titleId", Profile.TitleId);
             Profile.TotemId = JsonInt(json, "totemId", Profile.TotemId);
             Profile.MountGrade = JsonInt(json, "mountGrade", Profile.MountGrade);
+            Profile.MountTalismanId = JsonInt(json, "mountTalismanId", Profile.MountTalismanId);
+            Profile.ManorGrade = JsonInt(json, "manorGrade", Profile.ManorGrade);
             Profile.VipLevel = JsonInt(json, "vipLevel", Profile.VipLevel);
             Profile.Honor = JsonInt(json, "honor", Profile.Honor);
             Profile.Texp = JsonInt(json, "texp", Profile.Texp);
