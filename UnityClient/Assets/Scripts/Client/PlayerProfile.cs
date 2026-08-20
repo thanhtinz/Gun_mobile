@@ -123,6 +123,8 @@ namespace GunMobile.Client
         public List<int> CalendarClaimedDays = new List<int>();
         public int AuditoriumActions;
         public int BoguAdventureActions;
+        public int QuizAttempts;
+        public List<int> OneYuanBought = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -146,6 +148,7 @@ namespace GunMobile.Client
         public List<StockSlot> StockHoldings = new List<StockSlot>();
 
         public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
+        public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
