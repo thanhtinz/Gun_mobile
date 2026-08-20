@@ -799,17 +799,17 @@ namespace GunMobile.Net
             sb.Append("],");
             J(sb, "butterflyTaskActive", ButterflyTaskActive); sb.Append(",");
             EnsureChargeSpendClaimed();
-            sb.Append(""chargeSpendClaimed":[");
+            sb.Append("\"chargeSpendClaimed\":[");
             for (int i = 0; i < ChargeSpendClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ChargeSpendClaimed[i]); }
             sb.Append("],");
             J(sb, "chargeMoney", ChargeMoney); sb.Append(",");
             J(sb, "spendMoney", SpendMoney); sb.Append(",");
             EnsureActiveBuffs();
-            sb.Append(""activeBuffIds":[");
+            sb.Append("\"activeBuffIds\":[");
             for (int i = 0; i < ActiveBuffIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActiveBuffIds[i]); }
             sb.Append("],");
             EnsureActiveListClaimed();
-            sb.Append(""activeListClaimed":[");
+            sb.Append("\"activeListClaimed\":[");
             for (int i = 0; i < ActiveListClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActiveListClaimed[i]); }
             sb.Append("],");
             J(sb, "totemInfoSynced", TotemInfoSynced ? 1 : 0); sb.Append(",");
