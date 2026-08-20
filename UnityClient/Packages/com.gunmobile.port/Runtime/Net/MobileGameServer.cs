@@ -811,14 +811,14 @@ namespace GunMobile.Net
             J(sb, "communalActiveId", CommunalActiveId); sb.Append(",");
             J(sb, "communalActiveScore", CommunalActiveScore); sb.Append(",");
             J(sb, "communalActiveGrade", CommunalActiveGrade); sb.Append(",");
-            sb.Append(""communalActiveClaimed":[");
+            sb.Append("\"communalActiveClaimed\":[");
             for (int i = 0; i < CommunalActiveClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CommunalActiveClaimed[i]); }
             sb.Append("],");
-            sb.Append(""communalActiveExpClaimed":[");
+            sb.Append("\"communalActiveExpClaimed\":[");
             for (int i = 0; i < CommunalActiveExpClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CommunalActiveExpClaimed[i]); }
             sb.Append("],");
             EnsureCardAchievementClaimed();
-            sb.Append(""cardAchievementClaimed":[");
+            sb.Append("\"cardAchievementClaimed\":[");
             for (int i = 0; i < CardAchievementClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardAchievementClaimed[i]); }
             sb.Append("],");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
