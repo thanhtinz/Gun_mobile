@@ -168,6 +168,9 @@ namespace GunMobile.Client
                 case "godcard":
                     GodCardScreen.Show(_safe, this);
                     return;
+                case "godcardraise":
+                    GodCardRaiseScreen.Show(_safe, this);
+                    return;
                 case "engrave":
                     EngraveScreen.Show(_safe, this);
                     return;
@@ -315,6 +318,12 @@ namespace GunMobile.Client
                 case "firstrecharge":
                     ExtraModulesScreens.FirstRechargeScreen(_safe, this);
                     return;
+                case "labyrinthgame":
+                    ExtraModulesScreens.LabyrinthGameScreen(_safe, this);
+                    return;
+                case "treasureroom":
+                    ExtraModulesScreens.TreasureRoomScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -407,6 +416,8 @@ namespace GunMobile.Client
                     case PhoneMsg.SignInResult:
                     case PhoneMsg.LotteryResult:
                     case PhoneMsg.GodCardResult:
+                    case PhoneMsg.GodCardRaise:
+                    case PhoneMsg.GodCardPointClaim:
                     case PhoneMsg.StockResult:
                     case PhoneMsg.StrengthenResult:
                     case PhoneMsg.GuildResult:
@@ -465,6 +476,23 @@ namespace GunMobile.Client
                     case PhoneMsg.MailSend:
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.SpaRoomStart:
+                    case PhoneMsg.SpaRoomBomb:
+                        PhoneNet.LastSpaRoomJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "labyrinthgame")
+                        {
+                            RefreshCurrentModule();
+                        }
+                        break;
+                    case PhoneMsg.TreasureRoomResult:
+                        PhoneNet.LastTreasureRoomJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "treasureroom")
                         {
                             RefreshCurrentModule();
                         }
@@ -574,6 +602,8 @@ namespace GunMobile.Client
             Profile.HonorSystemLevel = JsonInt(json, "honorSystemLevel", Profile.HonorSystemLevel);
             Profile.RedPacketClaims = JsonInt(json, "redPacketClaims", Profile.RedPacketClaims);
             Profile.DevilTurnSpins = JsonInt(json, "devilTurnSpins", Profile.DevilTurnSpins);
+            Profile.SpaRoomDayScore = JsonInt(json, "spaRoomDayScore", Profile.SpaRoomDayScore);
+            Profile.TreasureRoomDraws = JsonInt(json, "treasureRoomDraws", Profile.TreasureRoomDraws);
             Profile.SweepCount = JsonInt(json, "sweepCount", Profile.SweepCount);
             Profile.FirstRechargeClaimed = JsonInt(json, "firstRechargeClaimed", Profile.FirstRechargeClaimed ? 1 : 0) != 0;
             Profile.DreamlandChapter = JsonInt(json, "dreamlandChapter", Profile.DreamlandChapter);
@@ -585,11 +615,13 @@ namespace GunMobile.Client
             Profile.WarriorFamClearedLevel = JsonInt(json, "warriorFamClearedLevel", Profile.WarriorFamClearedLevel);
             Profile.WarriorFamAttempts = JsonInt(json, "warriorFamAttempts", Profile.WarriorFamAttempts);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
+            Profile.GodCardPoints = JsonInt(json, "godCardPoints", Profile.GodCardPoints);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);
             if (consortia != null) Profile.ConsortiaName = consortia;
             ParseBagFromServer(json);
             ParseGodCardsFromServer(json);
+            ParseGodCardPointClaimedFromServer(json);
             ParseStockFromServer(json);
             ParseFriendsFromServer(json);
             ParseFightSpiritsFromServer(json);
@@ -883,9 +915,11 @@ namespace GunMobile.Client
                 string entry = body.Substring(ob, cb - ob + 1);
                 int id = JsonInt(entry, "id", 0);
                 int count = JsonInt(entry, "count", 1);
+                int grooveLevel = JsonInt(entry, "grooveLevel", 0);
+                int grooveExp = JsonInt(entry, "grooveExp", 0);
                 if (id > 0)
                 {
-                    list.Add(new GodCardSlot { Id = id, Count = count });
+                    list.Add(new GodCardSlot { Id = id, Count = count, GrooveLevel = grooveLevel, GrooveExp = grooveExp });
                 }
 
                 pos = cb + 1;
@@ -895,6 +929,26 @@ namespace GunMobile.Client
             {
                 Profile.GodCards = list;
             }
+        }
+
+        void ParseGodCardPointClaimedFromServer(string json)
+        {
+            int idx = json.IndexOf("\"godCardPointClaimed\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 22;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            var list = new System.Collections.Generic.List<int>();
+            string body = json.Substring(start, end - start);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                while (pos < body.Length && (body[pos] == ' ' || body[pos] == ',')) pos++;
+                int ns = pos;
+                while (pos < body.Length && body[pos] >= '0' && body[pos] <= '9') pos++;
+                if (pos > ns && int.TryParse(body.Substring(ns, pos - ns), out int rid) && rid > 0) list.Add(rid);
+            }
+            Profile.GodCardPointClaimed = list;
         }
 
         void ParseStockFromServer(string json)

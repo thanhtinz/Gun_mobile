@@ -5,6 +5,8 @@ namespace GunMobile.Net
     {
         public int Id;
         public int Count = 1;
+        public int GrooveLevel;
+        public int GrooveExp;
     }
 
     [System.Serializable]

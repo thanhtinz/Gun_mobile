@@ -1634,6 +1634,7 @@ namespace GunMobile.Client
             _loop.EndShot();
             if (PhoneNet.NetBattle)
             {
+                PhoneNet.SendFightSkip(_lastShooter >= 0 ? _lastShooter : _loop.CurrentLiving);
                 _loop.FinishSettleOnline();
             }
             else

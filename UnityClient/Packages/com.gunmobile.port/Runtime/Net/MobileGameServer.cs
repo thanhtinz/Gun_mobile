@@ -98,6 +98,8 @@ namespace GunMobile.Net
         public int NextMailId = 1;
         public List<GodCardSlot> GodCards = new List<GodCardSlot>();
         public int GodCardEquipId;
+        public int GodCardPoints;
+        public List<int> GodCardPointClaimed = new List<int>();
         public int EngraveSetId;
         public List<StockSlot> StockHoldings = new List<StockSlot>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
@@ -314,6 +316,9 @@ namespace GunMobile.Net
             if (GodCardEquipId > 0 && db.GodCards.TryGetValue(GodCardEquipId, out GodCardInfo gc))
             {
                 db.ApplyGodCardBonus(gc, ref atk, ref def, ref agi, ref luck, ref hp);
+                GodCardSlot grooveSlot = FindGodCardSlot(GodCardEquipId);
+                if (grooveSlot != null)
+                    db.ApplyGodCardGrooveBonus(db.GodCardGrooveType(gc), grooveSlot.GrooveLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             }
 
             db.ApplyEngraveSetBonus(EngraveSetId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
@@ -450,12 +455,17 @@ namespace GunMobile.Net
             J(sb, "warriorFamClearedLevel", WarriorFamClearedLevel); sb.Append(",");
             J(sb, "warriorFamAttempts", WarriorFamAttempts); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
+            J(sb, "godCardPoints", GodCardPoints); sb.Append(",");
+            sb.Append("\"godCardPointClaimed\":[");
+            EnsureGodCardPointClaimed();
+            for (int i = 0; i < GodCardPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(GodCardPointClaimed[i]); }
+            sb.Append("],");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
             for (int i = 0; i < GodCards.Count; i++)
             {
                 if (i > 0) sb.Append(",");
-                sb.Append("{\"id\":").Append(GodCards[i].Id).Append(",\"count\":").Append(GodCards[i].Count).Append("}");
+                sb.Append("{\"id\":").Append(GodCards[i].Id).Append(",\"count\":").Append(GodCards[i].Count).Append(",\"grooveLevel\":").Append(GodCards[i].GrooveLevel).Append(",\"grooveExp\":").Append(GodCards[i].GrooveExp).Append("}");
             }
             sb.Append("],");
             sb.Append("\"stockHoldings\":[");
@@ -547,6 +557,9 @@ namespace GunMobile.Net
             }
             return false;
         }
+
+        public void EnsureGodCardPointClaimed() { if (GodCardPointClaimed == null) GodCardPointClaimed = new List<int>(); }
+        public GodCardSlot FindGodCardSlot(int id) { foreach (GodCardSlot slot in GodCards) if (slot.Id == id) return slot; return null; }
 
         public int CompleteAcceptedQuests(GameDatabase db)
         {
@@ -1496,6 +1509,8 @@ namespace GunMobile.Net
                 case PhoneMsg.WardrobeUpgrade: HandleWardrobeUpgrade(player, ns, json); break;
                 case PhoneMsg.HonorSystemAction: HandleHonorSystemAction(player, ns, json); break;
                 case PhoneMsg.HonorSystemClaim: HandleHonorSystemClaim(player, ns, json); break;
+                case PhoneMsg.GodCardRaise: HandleGodCardRaise(player, ns, json); break;
+                case PhoneMsg.GodCardPointClaim: HandleGodCardPointClaim(player, ns, json); break;
 
                 case PhoneMsg.DreamlandStart:
                     HandleDreamlandStart(player, ns, json);
@@ -1743,6 +1758,13 @@ namespace GunMobile.Net
                 case PhoneMsg.FightPetSkill:
                     HandlePetActiveSkill(player, room);
                     break;
+                case PhoneMsg.FightSkip:
+                {
+                    bool allowSkip; lock (_lock) { allowSkip = room.InBattle && player.Seat == room.CurrentPlayer; }
+                    if (!allowSkip) return;
+                    BroadcastToRoom(room, PhoneMsg.FightSkip, EnsureJsonField(json, "who", player.Seat), player.Id);
+                    break;
+                }
 
                 default:
                     Send(ns, PhoneMsg.Error, "{\"err\":\"unknown fight msg " + id + "\"}");
@@ -3410,6 +3432,52 @@ namespace GunMobile.Net
 
             return false;
         }
+        static GodCardSlot GetGodCardSlot(ServerPlayer player, int id) => player.FindGodCardSlot(id);
+        static bool ConsumeGodCards(ServerPlayer player, int id, int count)
+        {
+            GodCardSlot slot = GetGodCardSlot(player, id);
+            if (slot == null || slot.Count < count) return false;
+            slot.Count -= count;
+            if (slot.Count <= 0) { player.GodCards.Remove(slot); if (player.GodCardEquipId == id) player.GodCardEquipId = 0; }
+            return true;
+        }
+        void SyncGodCardGrooveLevel(ServerPlayer player, GodCardSlot slot, GodCardInfo card)
+        {
+            if (_db == null || slot == null || card == null) return;
+            int type = _db.GodCardGrooveType(card), maxLevel = _db.MaxCardGrooveLevel(type);
+            while (slot.GrooveLevel < maxLevel && slot.GrooveExp >= _db.NextCardGrooveExp(type, slot.GrooveLevel)) slot.GrooveLevel++;
+        }
+        void HandleGodCardRaise(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.GodCards.Count == 0) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"no table\"}"); return; }
+            int cardId = JI(json, "cardId", 0), useCount = JI(json, "count", 1);
+            if (cardId <= 0 || useCount <= 0 || !_db.GodCards.TryGetValue(cardId, out GodCardInfo card)) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"card\"}"); return; }
+            GodCardSlot slot = GetGodCardSlot(player, cardId);
+            if (slot == null || slot.Count - useCount < 1) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"not enough\"}"); return; }
+            int type = _db.GodCardGrooveType(card);
+            if (slot.GrooveLevel >= _db.MaxCardGrooveLevel(type)) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            int expGain = _db.GodCardRaiseExpGain(card), pointGain = _db.GodCardRaisePointGain(card);
+            if (!ConsumeGodCards(player, cardId, useCount)) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"consume\"}"); return; }
+            slot = GetGodCardSlot(player, cardId);
+            if (slot == null) { Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":false,\"err\":\"consume\"}"); return; }
+            slot.GrooveExp += expGain * useCount; player.GodCardPoints += pointGain * useCount;
+            SyncGodCardGrooveLevel(player, slot, card); player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.GodCardRaise, "{\"ok\":true,\"cardId\":" + cardId + ",\"grooveLevel\":" + slot.GrooveLevel + ",\"grooveExp\":" + slot.GrooveExp + ",\"godCardPoints\":" + player.GodCardPoints + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.StatResult, player.ToJson());
+        }
+        void HandleGodCardPointClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int rewardId = JI(json, "rewardId", 0);
+            GodCardPointRewardInfo reward = rewardId > 0 && _db != null ? _db.GetGodCardPointReward(rewardId) : null;
+            if (reward == null || reward.ItemId <= 0) { Send(ns, PhoneMsg.GodCardPointClaim, "{\"ok\":false,\"err\":\"reward\"}"); return; }
+            player.EnsureGodCardPointClaimed();
+            if (player.GodCardPointClaimed.Contains(rewardId) || player.GodCardPoints < reward.Point) { Send(ns, PhoneMsg.GodCardPointClaim, "{\"ok\":false,\"err\":\"points\"}"); return; }
+            player.GodCardPointClaimed.Add(rewardId); player.AddItem(reward.ItemId, reward.Count > 0 ? reward.Count : 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GodCardPointClaim, "{\"ok\":true,\"rewardId\":" + rewardId + ",\"profile\":" + player.ToJson() + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
 
         void HandleEngraveEquip(ServerPlayer player, NetworkStream ns, string json)
         {
@@ -5625,6 +5693,8 @@ namespace GunMobile.Net
             public int WarriorFamHardType, WarriorFamLevel = 1, WarriorFamClearedLevel;
             public int WarriorFamDay = -1, WarriorFamAttempts;
             public int GodCardEquipId, EngraveSetId;
+            public int GodCardPoints;
+            public List<int> GodCardPointClaimed = new List<int>();
             public int NextEmblemId = 1, NextSoulStampId = 1;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
@@ -5663,7 +5733,7 @@ namespace GunMobile.Net
         class BagSlotSave { public int t; public int c = 1; public int s; }
 
         [Serializable]
-        class GodCardSlotSave { public int id; public int count = 1; }
+        class GodCardSlotSave { public int id; public int count = 1; public int grooveLevel; public int grooveExp; }
 
         [Serializable]
         class StockSlotSave { public int stockId; public int shares; public int avgPrice; }
@@ -5700,6 +5770,7 @@ namespace GunMobile.Net
                 WarriorFamClearedLevel = p.WarriorFamClearedLevel, WarriorFamDay = p.WarriorFamDay,
                 WarriorFamAttempts = p.WarriorFamAttempts,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
+                GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
@@ -5717,7 +5788,7 @@ namespace GunMobile.Net
             p.EnsureEmblems(); foreach (EmblemSlot e in p.Emblems) s.Emblems.Add(new EmblemSlotSave { id = e.Id, templateId = e.TemplateId, types = e.Types, profile = e.Profile, mainType = e.MainType, mainValue = e.MainValue, subValue = e.SubValue, skillId = e.SkillId, equipped = e.Equipped });
             p.EnsureSoulStamps(); foreach (SoulStampSlot ss in p.SoulStamps) s.SoulStamps.Add(new SoulStampSlotSave { id = ss.Id, tempId = ss.TempId, type = ss.Type, quality = ss.Quality, grade = ss.Grade, proType = ss.ProType, proValue = ss.ProValue, skillId = ss.SkillId, equipped = ss.Equipped });
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
-            foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
+            foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count, grooveLevel = g.GrooveLevel, grooveExp = g.GrooveExp });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
             foreach (KeyValuePair<int, int> kv in p.FirstRechargeShopBuys)
             {
@@ -5768,6 +5839,7 @@ namespace GunMobile.Net
                 WarriorFamClearedLevel = s.WarriorFamClearedLevel,
                 WarriorFamDay = s.WarriorFamDay, WarriorFamAttempts = s.WarriorFamAttempts,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
+                GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,
                 NextSoulStampId = s.NextSoulStampId > 0 ? s.NextSoulStampId : 1,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
@@ -5812,8 +5884,9 @@ namespace GunMobile.Net
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
             if (s.GodCards != null)
             {
-                foreach (GodCardSlotSave g in s.GodCards) p.GodCards.Add(new GodCardSlot { Id = g.id, Count = g.count });
+                foreach (GodCardSlotSave g in s.GodCards) p.GodCards.Add(new GodCardSlot { Id = g.id, Count = g.count, GrooveLevel = g.grooveLevel, GrooveExp = g.grooveExp });
             }
+            p.EnsureGodCardPointClaimed();
 
             if (s.StockHoldings != null)
             {
