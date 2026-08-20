@@ -225,6 +225,10 @@ namespace GunMobile.Net
         public int PairUpPlays;
         public List<int> PairUpClaimed = new List<int>();
         public List<int> StockNoticeClaimed = new List<int>();
+        public int BattleTeamLevel = 1;
+        public int DailyLeagueLevel = 1;
+        public int DailyLeagueDay = -1;
+        public List<int> DailyLeagueClaimed = new List<int>();
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -261,6 +265,13 @@ namespace GunMobile.Net
             if (PairUpDay != t) { PairUpDay = t; PairUpPlays = 0; }
         }
         public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
+        public void EnsureDailyLeagueClaimed() { if (DailyLeagueClaimed == null) DailyLeagueClaimed = new List<int>(); }
+        public void TouchDailyLeagueDay()
+        {
+            EnsureDailyLeagueClaimed();
+            int day = DateTime.Now.DayOfYear;
+            if (DailyLeagueDay != day) { DailyLeagueDay = day; DailyLeagueClaimed.Clear(); }
+        }
         public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
         public void EnsureEngraveDebris()
         {
@@ -999,6 +1010,12 @@ namespace GunMobile.Net
             EnsureStockNoticeClaimed();
             sb.Append("\"stockNoticeClaimed\":[");
             for (int i = 0; i < StockNoticeClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(StockNoticeClaimed[i]); }
+            sb.Append("],");
+            J(sb, "battleTeamLevel", BattleTeamLevel > 0 ? BattleTeamLevel : 1); sb.Append(",");
+            J(sb, "dailyLeagueLevel", DailyLeagueLevel > 0 ? DailyLeagueLevel : 1); sb.Append(",");
+            EnsureDailyLeagueClaimed();
+            sb.Append("\"dailyLeagueClaimed\":[");
+            for (int i = 0; i < DailyLeagueClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DailyLeagueClaimed[i]); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -2264,6 +2281,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.StockNotice:
                     HandleStockNotice(player, ns, json);
+                    break;
+
+                case PhoneMsg.BattleTeamUpgrade:
+                    HandleBattleTeamUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.BattleTeamShopBuy:
+                    HandleBattleTeamShopBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.DailyLeagueClaim:
+                    HandleDailyLeagueClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -6473,6 +6502,155 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.StockNotice, sb.ToString());
         }
 
+
+
+        void HandleBattleTeamUpgrade(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null || _db.BattleTeamLevelList.Count == 0)
+            {
+                Send(ns, PhoneMsg.BattleTeamUpgrade, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+            if (player.BattleTeamLevel <= 0) player.BattleTeamLevel = 1;
+            int maxLv = _db.BattleTeamMaxLevel();
+            if (player.BattleTeamLevel >= maxLv)
+            {
+                Send(ns, PhoneMsg.BattleTeamUpgrade, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+            int next = player.BattleTeamLevel + 1;
+            BattleTeamLevelInfo info = _db.GetBattleTeamLevel(next);
+            if (info == null)
+            {
+                Send(ns, PhoneMsg.BattleTeamUpgrade, "{\"ok\":false,\"err\":\"xml\"}");
+                return;
+            }
+            int cost = _db.BattleTeamUpgradeGold(next);
+            if (cost > 0 && player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.BattleTeamUpgrade, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+            if (cost > 0) player.Gold -= cost;
+            player.BattleTeamLevel = next;
+            player.Honor += Mathf.Max(0, info.BuffParam);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.BattleTeamUpgrade,
+                "{\"ok\":true,\"level\":" + next + ",\"cost\":" + cost +
+                ",\"maxPlayers\":" + info.MaxPlayerNum +
+                ",\"buff\":" + info.BuffParam + ",\"buff2\":" + info.BuffTwoParam + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleBattleTeamShopBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.BattleTeamShopItemList.Count == 0)
+            {
+                Send(ns, PhoneMsg.BattleTeamShopBuy, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+            int id = JI(json, "id", JI(json, "shopId", 0));
+            BattleTeamShopItem item = _db.GetBattleTeamShopItem(id);
+            if (item == null || item.TemplateId <= 0)
+            {
+                Send(ns, PhoneMsg.BattleTeamShopBuy, "{\"ok\":false,\"err\":\"goods\"}");
+                return;
+            }
+            if (player.BattleTeamLevel <= 0) player.BattleTeamLevel = 1;
+            if (item.NeedLevel > 0 && player.BattleTeamLevel < item.NeedLevel)
+            {
+                Send(ns, PhoneMsg.BattleTeamShopBuy, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+            if (item.Condition > 0 && item.Value > 0 && player.Honor < item.Value)
+            {
+                Send(ns, PhoneMsg.BattleTeamShopBuy, "{\"ok\":false,\"err\":\"honor\"}");
+                return;
+            }
+            int price = Mathf.Max(0, item.Price);
+            if (price > 0 && player.Gold < price)
+            {
+                Send(ns, PhoneMsg.BattleTeamShopBuy, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+            if (price > 0) player.Gold -= price;
+            player.GrantTemplateReward(_db, item.TemplateId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.BattleTeamShopBuy,
+                "{\"ok\":true,\"id\":" + item.Id + ",\"templateId\":" + item.TemplateId +
+                ",\"shopType\":" + item.ShopType + ",\"cost\":" + price + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleDailyLeagueClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.DailyLeagueAwards.Count == 0)
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+            int minLv = _db.ConfigInt("DailyLeagueMinPlayerLevel", 24);
+            if (player.Level < minLv)
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"grade\"}");
+                return;
+            }
+            player.TouchDailyLeagueDay();
+            player.DailyLeagueLevel = _db.ResolveDailyLeagueLevel(player.Level, player.DailyLeagueLevel);
+            int level = JI(json, "level", JI(json, "class", 0));
+            if (level <= 0)
+            {
+                for (int i = 0; i < _db.DailyLeagueLevelList.Count; i++)
+                {
+                    int cand = _db.DailyLeagueLevelList[i].Level;
+                    if (cand <= player.DailyLeagueLevel && !player.DailyLeagueClaimed.Contains(cand) &&
+                        _db.GetDailyLeagueAwardsForClass(cand) != null)
+                    {
+                        level = cand;
+                        break;
+                    }
+                }
+            }
+            if (level <= 0)
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"none\"}");
+                return;
+            }
+            if (level > player.DailyLeagueLevel)
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"level\"}");
+                return;
+            }
+            if (player.DailyLeagueClaimed.Contains(level))
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+            List<DailyLeagueAward> awards = _db.GetDailyLeagueAwardsForClass(level);
+            if (awards == null || awards.Count == 0)
+            {
+                Send(ns, PhoneMsg.DailyLeagueClaim, "{\"ok\":false,\"err\":\"award\"}");
+                return;
+            }
+            int granted = 0;
+            int firstTemplate = 0;
+            for (int i = 0; i < awards.Count; i++)
+            {
+                DailyLeagueAward a = awards[i];
+                int count = a.Count > 0 ? a.Count : 1;
+                player.GrantTemplateReward(_db, a.TemplateId, count);
+                if (firstTemplate <= 0) firstTemplate = a.TemplateId;
+                granted += count;
+            }
+            player.DailyLeagueClaimed.Add(level);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DailyLeagueClaim,
+                "{\"ok\":true,\"level\":" + level + ",\"items\":" + awards.Count +
+                ",\"count\":" + granted + ",\"templateId\":" + firstTemplate +
+                ",\"dailyLeagueLevel\":" + player.DailyLeagueLevel + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -9553,6 +9731,10 @@ namespace GunMobile.Net
             public int PairUpPlays;
             public List<int> PairUpClaimed = new List<int>();
             public List<int> StockNoticeClaimed = new List<int>();
+            public int BattleTeamLevel = 1;
+            public int DailyLeagueLevel = 1;
+            public int DailyLeagueDay = -1;
+            public List<int> DailyLeagueClaimed = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -9706,6 +9888,10 @@ namespace GunMobile.Net
                 PairUpPoints = p.PairUpPoints, PairUpDay = p.PairUpDay, PairUpPlays = p.PairUpPlays,
                 PairUpClaimed = p.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = p.StockNoticeClaimed ?? new List<int>(),
+                BattleTeamLevel = p.BattleTeamLevel > 0 ? p.BattleTeamLevel : 1,
+                DailyLeagueLevel = p.DailyLeagueLevel > 0 ? p.DailyLeagueLevel : 1,
+                DailyLeagueDay = p.DailyLeagueDay,
+                DailyLeagueClaimed = p.DailyLeagueClaimed ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -9863,6 +10049,10 @@ namespace GunMobile.Net
                 PairUpPoints = s.PairUpPoints, PairUpDay = s.PairUpDay, PairUpPlays = s.PairUpPlays,
                 PairUpClaimed = s.PairUpClaimed ?? new List<int>(),
                 StockNoticeClaimed = s.StockNoticeClaimed ?? new List<int>(),
+                BattleTeamLevel = s.BattleTeamLevel > 0 ? s.BattleTeamLevel : 1,
+                DailyLeagueLevel = s.DailyLeagueLevel > 0 ? s.DailyLeagueLevel : 1,
+                DailyLeagueDay = s.DailyLeagueDay,
+                DailyLeagueClaimed = s.DailyLeagueClaimed ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

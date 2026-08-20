@@ -266,6 +266,10 @@ namespace GunMobile.Net
         public const ushort PairUpClaim = 219;
         public const ushort ShopShowBuy = 220;
         public const ushort StockNotice = 221;
+        // 222-224 reserved for other features
+        public const ushort BattleTeamUpgrade = 225;
+        public const ushort BattleTeamShopBuy = 226;
+        public const ushort DailyLeagueClaim = 227;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

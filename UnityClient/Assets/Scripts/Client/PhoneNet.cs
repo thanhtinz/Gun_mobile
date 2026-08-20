@@ -51,6 +51,9 @@ namespace GunMobile.Client
         public static string LastPairUpJson;
         public static string LastShopShowJson;
         public static string LastStockNoticeJson;
+        public static string LastBattleTeamJson;
+        public static string LastBattleTeamShopJson;
+        public static string LastDailyLeagueJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -321,6 +324,21 @@ namespace GunMobile.Client
             string act = (action ?? "list").Replace("\"", "");
             Road?.Send(PhoneMsg.StockNotice,
                 "{\"action\":\"" + act + "\",\"newsId\":" + newsId + ",\"stockId\":" + stockId + "}");
+        }
+
+        public static void BattleTeamUpgrade()
+        {
+            Road?.Send(PhoneMsg.BattleTeamUpgrade, "{}");
+        }
+
+        public static void BattleTeamShopBuy(int id)
+        {
+            Road?.Send(PhoneMsg.BattleTeamShopBuy, "{\"id\":" + id + "}");
+        }
+
+        public static void DailyLeagueClaim(int level = 0)
+        {
+            Road?.Send(PhoneMsg.DailyLeagueClaim, "{\"level\":" + level + "}");
         }
 
         public static void DrawLottery(int count)

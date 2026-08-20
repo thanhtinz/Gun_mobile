@@ -163,6 +163,9 @@ namespace GunMobile.Client
         public int PairUpPlays;
         public List<int> PairUpClaimed = new List<int>();
         public List<int> StockNoticeClaimed = new List<int>();
+        public int BattleTeamLevel = 1;
+        public int DailyLeagueLevel = 1;
+        public List<int> DailyLeagueClaimed = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -199,6 +202,7 @@ namespace GunMobile.Client
         public void EnsureVipStoreBought() { if (VipStoreBought == null) VipStoreBought = new List<int>(); }
         public void EnsurePairUpClaimed() { if (PairUpClaimed == null) PairUpClaimed = new List<int>(); }
         public void EnsureStockNoticeClaimed() { if (StockNoticeClaimed == null) StockNoticeClaimed = new List<int>(); }
+        public void EnsureDailyLeagueClaimed() { if (DailyLeagueClaimed == null) DailyLeagueClaimed = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -885,6 +889,9 @@ namespace GunMobile.Client
             new ModuleDef("stock", "股票", "Request/StockTemplateInfo.xml"),
             new ModuleDef("pairup", "配对", "Request/PairUpPointAward.xml"),
             new ModuleDef("shopshow", "精选商城", "Request/ShopGoodsShowList.xml"),
+            new ModuleDef("battleteam", "战队", "Request/battleteamlevellist.xml"),
+            new ModuleDef("battleteamshop", "战队商店", "Request/battleteamshopitemlist1.xml"),
+            new ModuleDef("dailyleague", "每日联赛", "Request/dailyleagueaward.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

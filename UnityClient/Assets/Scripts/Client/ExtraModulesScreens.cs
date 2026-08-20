@@ -1481,6 +1481,124 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+
+        public static void BattleTeamScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "战队升级 · battleteamlevellist");
+            int lv = app.Profile.BattleTeamLevel > 0 ? app.Profile.BattleTeamLevel : 1;
+            SysUi.Note(body, "战队等级 " + lv + "  ·  金 " + app.Profile.Gold + "  ·  荣誉 " + app.Profile.Honor);
+            if (app.Database == null || app.Database.BattleTeamLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/battleteamlevellist.xml");
+                return;
+            }
+
+            BattleTeamLevelInfo cur = app.Database.GetBattleTeamLevel(lv);
+            if (cur != null)
+            {
+                SysUi.Note(body, "人数上限 " + cur.MaxPlayerNum + "  ·  Buff " + cur.BuffParam + "/" + cur.BuffTwoParam);
+            }
+
+            int next = lv + 1;
+            BattleTeamLevelInfo nxt = app.Database.GetBattleTeamLevel(next);
+            if (nxt == null)
+            {
+                SysUi.Note(body, "已达最高等级");
+            }
+            else
+            {
+                int cost = app.Database.BattleTeamUpgradeGold(next);
+                SysUi.Row(body, "btup", "升级到 " + next + "  花费" + cost + "金  人数" + nxt.MaxPlayerNum,
+                    () => PhoneNet.BattleTeamUpgrade());
+            }
+
+            if (app.Database.BattleTeamSegments.Count > 0)
+            {
+                SysUi.Note(body, "段位 " + app.Database.BattleTeamSegments.Count + "  ·  赛季 " +
+                    app.Database.BattleTeamSeasons.Count + "  ·  活跃渠道 " +
+                    app.Database.BattleTeamActiveTemplates.Count);
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastBattleTeamJson))
+            {
+                SysUi.Note(body, PhoneNet.LastBattleTeamJson);
+            }
+        }
+
+        public static void BattleTeamShopScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "战队商店 · battleteamshopitemlist1");
+            int lv = app.Profile.BattleTeamLevel > 0 ? app.Profile.BattleTeamLevel : 1;
+            SysUi.Note(body, "战队Lv" + lv + "  ·  金 " + app.Profile.Gold + "  ·  荣誉 " + app.Profile.Honor);
+            if (app.Database == null || app.Database.BattleTeamShopItemList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/battleteamshopitemlist1.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (BattleTeamShopItem item in app.Database.BattleTeamShopItemList)
+            {
+                string name = SysUi.ItemName(app, item.TemplateId);
+                string lockTxt = item.NeedLevel > lv ? (" 需战队" + item.NeedLevel) : "";
+                string cond = item.Condition > 0 ? (" 需荣誉" + item.Value) : "";
+                string cap = name + "  " + item.Price + "金" + lockTxt + cond;
+                int sid = item.Id;
+                bool can = item.NeedLevel <= lv;
+                var btn = SysUi.Row(body, "bts" + item.Id, cap,
+                    can ? (System.Action)(() => PhoneNet.BattleTeamShopBuy(sid)) : null);
+                ShopScreen.DecorateIcon(app, btn, item.TemplateId);
+                if (++shown >= 40)
+                {
+                    SysUi.Note(body, "… " + (app.Database.BattleTeamShopItemList.Count - shown) + " more");
+                    break;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastBattleTeamShopJson))
+            {
+                SysUi.Note(body, PhoneNet.LastBattleTeamShopJson);
+            }
+        }
+
+        public static void DailyLeagueScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "每日联赛 · dailyleagueaward");
+            app.Profile.EnsureDailyLeagueClaimed();
+            int leagueLv = app.Profile.DailyLeagueLevel > 0 ? app.Profile.DailyLeagueLevel : 1;
+            if (app.Database != null)
+            {
+                leagueLv = app.Database.ResolveDailyLeagueLevel(app.Profile.Level, leagueLv);
+            }
+
+            SysUi.Note(body, "联赛等级 " + leagueLv + "  ·  角色Lv" + app.Profile.Level + "  ·  金 " + app.Profile.Gold);
+            if (app.Database == null || app.Database.DailyLeagueLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/dailyleagueaward.xml");
+                return;
+            }
+
+            foreach (DailyLeagueLevelInfo row in app.Database.DailyLeagueLevelList)
+            {
+                bool claimed = app.Profile.DailyLeagueClaimed.Contains(row.Level);
+                bool ready = !claimed && row.Level <= leagueLv;
+                var awards = app.Database.GetDailyLeagueAwardsForClass(row.Level);
+                int n = awards != null ? awards.Count : 0;
+                string name = string.IsNullOrEmpty(row.Name) ? ("段位" + row.Level) : row.Name;
+                string cap = (claimed ? "[已领] " : ready ? "[可领] " : "[锁定] ") +
+                    name + "  奖励" + n + "项";
+                int lv = row.Level;
+                SysUi.Row(body, "dl" + row.Level, cap,
+                    ready ? (System.Action)(() => PhoneNet.DailyLeagueClaim(lv)) : null);
+            }
+
+            if (!string.IsNullOrEmpty(PhoneNet.LastDailyLeagueJson))
+            {
+                SysUi.Note(body, PhoneNet.LastDailyLeagueJson);
+            }
+        }
+
+
         static int JsonFieldInt(string json, string key, int fallback)
         {
             if (string.IsNullOrEmpty(json))
