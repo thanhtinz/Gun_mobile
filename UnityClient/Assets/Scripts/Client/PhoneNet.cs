@@ -252,6 +252,26 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.PeakBattleStart, "{\"rank\":" + rank + "}");
         }
 
+        public static void ForcesBattleStart(int quality)
+        {
+            Road?.Send(PhoneMsg.ForcesBattleStart, "{\"quality\":" + quality + "}");
+        }
+
+        public static void UpgradeRelic(int relicId)
+        {
+            Road?.Send(PhoneMsg.ForcesRelicUpgrade, "{\"relicId\":" + relicId + "}");
+        }
+
+        public static void CultureUpgrade(int statType)
+        {
+            Road?.Send(PhoneMsg.CultureUpgrade, "{\"statType\":" + statType + "}");
+        }
+
+        public static void CultureGradeUp()
+        {
+            Road?.Send(PhoneMsg.CultureUpgrade, "{\"gradeUp\":1}");
+        }
+
         public static void WorldBossStart()
         {
             Road?.Send(PhoneMsg.WorldBossStart, "{}");

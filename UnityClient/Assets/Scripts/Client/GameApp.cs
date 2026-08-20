@@ -315,6 +315,12 @@ namespace GunMobile.Client
                 case "firstrecharge":
                     ExtraModulesScreens.FirstRechargeScreen(_safe, this);
                     return;
+                case "forcesbattle":
+                    ExtraModulesScreens.ForcesBattleScreen(_safe, this);
+                    return;
+                case "culture":
+                    ExtraModulesScreens.CultureScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -413,6 +419,8 @@ namespace GunMobile.Client
                     case PhoneMsg.WardrobeUpgrade:
                     case PhoneMsg.HonorSystemAction:
                     case PhoneMsg.HonorSystemClaim:
+                    case PhoneMsg.ForcesRelicUpgrade:
+                    case PhoneMsg.CultureResult:
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -584,6 +592,13 @@ namespace GunMobile.Client
             Profile.WarriorFamLevel = JsonInt(json, "warriorFamLevel", Profile.WarriorFamLevel);
             Profile.WarriorFamClearedLevel = JsonInt(json, "warriorFamClearedLevel", Profile.WarriorFamClearedLevel);
             Profile.WarriorFamAttempts = JsonInt(json, "warriorFamAttempts", Profile.WarriorFamAttempts);
+            Profile.ForcesBattleScore = JsonInt(json, "forcesBattleScore", Profile.ForcesBattleScore);
+            Profile.ForcesBattleAttempts = JsonInt(json, "forcesBattleAttempts", Profile.ForcesBattleAttempts);
+            Profile.CultureGrade = JsonInt(json, "cultureGrade", Profile.CultureGrade);
+            Profile.CultureAtk = JsonInt(json, "cultureAtk", Profile.CultureAtk);
+            Profile.CultureDef = JsonInt(json, "cultureDef", Profile.CultureDef);
+            Profile.CultureAgi = JsonInt(json, "cultureAgi", Profile.CultureAgi);
+            Profile.CultureLuck = JsonInt(json, "cultureLuck", Profile.CultureLuck);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
             string consortia = JsonStr(json, "consortiaName", null);
@@ -596,9 +611,37 @@ namespace GunMobile.Client
             ParseMagicStonesFromServer(json);
             ParseEmblemsFromServer(json);
             ParseSoulStampsFromServer(json);
+            ParseRelicsFromServer(json);
             ParseWardrobeFromServer(json);
             ParseHonorSystemFromServer(json);
             Profile.Save();
+        }
+
+        void ParseRelicsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"relics\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 9;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            Profile.EnsureRelics();
+            Profile.Relics.Clear();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = body.Substring(ob, cb - ob + 1);
+                Profile.Relics.Add(new RelicSlot
+                {
+                    RelicId = JsonInt(entry, "relicId", 1),
+                    UpgradeLevel = JsonInt(entry, "upgradeLevel", 0)
+                });
+                pos = cb + 1;
+            }
         }
 
         void ParseFriendsFromServer(string json)

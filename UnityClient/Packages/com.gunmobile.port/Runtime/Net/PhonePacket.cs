@@ -189,6 +189,10 @@ namespace GunMobile.Net
         public const ushort EmblemEquip = 142;
         public const ushort SoulStampCompose = 143;
         public const ushort SoulStampRefine = 144;
+        public const ushort ForcesBattleStart = 147;
+        public const ushort ForcesRelicUpgrade = 148;
+        public const ushort CultureUpgrade = 157;
+        public const ushort CultureResult = 158;
         public const ushort DreamlandStart = 149;
         public const ushort DreamlandClaim = 150;
         public const ushort WardrobeEquip = 151;

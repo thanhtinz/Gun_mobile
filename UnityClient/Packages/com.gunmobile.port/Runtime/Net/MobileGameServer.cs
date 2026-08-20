@@ -104,6 +104,15 @@ namespace GunMobile.Net
         public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
         public List<EmblemSlot> Emblems = new List<EmblemSlot>();
         public List<SoulStampSlot> SoulStamps = new List<SoulStampSlot>();
+        public List<RelicSlot> Relics = new List<RelicSlot>();
+        public int ForcesBattleScore;
+        public int ForcesBattleDay = -1;
+        public int ForcesBattleAttempts;
+        public int CultureGrade = 1;
+        public int CultureAtk;
+        public int CultureDef;
+        public int CultureAgi;
+        public int CultureLuck;
         public int NextEmblemId = 1;
         public int NextSoulStampId = 1;
 
@@ -200,6 +209,10 @@ namespace GunMobile.Net
         public EmblemSlot FindEmblem(int id) { EnsureEmblems(); for (int i = 0; i < Emblems.Count; i++) if (Emblems[i].Id == id) return Emblems[i]; return null; }
         public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
         public SoulStampSlot FindSoulStamp(int id) { EnsureSoulStamps(); for (int i = 0; i < SoulStamps.Count; i++) if (SoulStamps[i].Id == id) return SoulStamps[i]; return null; }
+        public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
+        public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
+        public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
+        public void SetCultureStatLevel(int statType, int level) { switch (statType) { case 116: CultureAtk = level; break; case 117: CultureDef = level; break; case 118: CultureAgi = level; break; case 119: CultureLuck = level; break; } }
 
         public void EnsureWardrobeProperties()
         {
@@ -337,6 +350,9 @@ namespace GunMobile.Net
             db.ApplyWardrobeBonus(WardrobeProperties, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             SyncHonorSystemLevel(db);
             db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luck, ref hp);
+            EnsureRelics();
+            db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref magicAtk, ref magicDef);
+            db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luck, ref hp, ref magicAtk, ref magicDef);
 
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
@@ -449,6 +465,13 @@ namespace GunMobile.Net
             J(sb, "warriorFamLevel", WarriorFamLevel); sb.Append(",");
             J(sb, "warriorFamClearedLevel", WarriorFamClearedLevel); sb.Append(",");
             J(sb, "warriorFamAttempts", WarriorFamAttempts); sb.Append(",");
+            J(sb, "forcesBattleScore", ForcesBattleScore); sb.Append(",");
+            J(sb, "forcesBattleAttempts", ForcesBattleAttempts); sb.Append(",");
+            J(sb, "cultureGrade", CultureGrade); sb.Append(",");
+            J(sb, "cultureAtk", CultureAtk); sb.Append(",");
+            J(sb, "cultureDef", CultureDef); sb.Append(",");
+            J(sb, "cultureAgi", CultureAgi); sb.Append(",");
+            J(sb, "cultureLuck", CultureLuck); sb.Append(",");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "engraveSetId", EngraveSetId); sb.Append(",");
             sb.Append("\"godCards\":[");
@@ -497,6 +520,9 @@ namespace GunMobile.Net
             sb.Append("],");
             EnsureSoulStamps(); sb.Append("\"soulStamps\":[");
             for (int i = 0; i < SoulStamps.Count; i++) { if (i > 0) sb.Append(","); SoulStampSlot s = SoulStamps[i]; sb.Append("{\"id\":").Append(s.Id).Append(",\"tempId\":").Append(s.TempId).Append(",\"type\":").Append(s.Type).Append(",\"quality\":").Append(s.Quality).Append(",\"grade\":").Append(s.Grade).Append(",\"proType\":").Append(s.ProType).Append(",\"proValue\":").Append(s.ProValue).Append(",\"skillId\":").Append(s.SkillId).Append(",\"equipped\":").Append(s.Equipped).Append("}"); }
+            sb.Append("],");
+            EnsureRelics(); sb.Append("\"relics\":[");
+            for (int i = 0; i < Relics.Count; i++) { if (i > 0) sb.Append(","); RelicSlot r = Relics[i]; sb.Append("{\"relicId\":").Append(r.RelicId).Append(",\"upgradeLevel\":").Append(r.UpgradeLevel).Append("}"); }
             sb.Append("],");
             EnsureWardrobeProperties();
             sb.Append("\"wardrobeProperties\":[");
@@ -1513,6 +1539,18 @@ namespace GunMobile.Net
                     HandleWarriorFamClaim(player, ns, json);
                     break;
 
+                case PhoneMsg.ForcesBattleStart:
+                    HandleForcesBattleStart(player, ns, json);
+                    break;
+
+                case PhoneMsg.ForcesRelicUpgrade:
+                    HandleForcesRelicUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.CultureUpgrade:
+                    HandleCultureUpgrade(player, ns, json);
+                    break;
+
                 case PhoneMsg.PveStart:
                 {
                     player.PveNpcId = JI(json, "npcId", 0);
@@ -2518,6 +2556,76 @@ namespace GunMobile.Net
                 ",\"target\":\"" + (target.Nick ?? "").Replace("\"", "") + "\"}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+
+        void HandleForcesBattleStart(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int quality = Mathf.Clamp(JI(json, "quality", 1), 1, 5);
+            int today = DateTime.Now.DayOfYear;
+            if (player.ForcesBattleDay != today) { player.ForcesBattleDay = today; player.ForcesBattleAttempts = 0; }
+            int maxAttempts = _db != null ? _db.ConfigInt("CityOccupationAddScoreCount", 30) : 30;
+            if (player.ForcesBattleAttempts >= maxAttempts) { Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            int entryFee = _db != null ? _db.ForcesBattleEntryFee(quality) : quality * 100;
+            if (player.Gold < entryFee) { Send(ns, PhoneMsg.PveResult, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= entryFee;
+            player.ForcesBattleAttempts++;
+            player.PveNpcId = _db != null ? _db.ForcesBattleNpcId(quality, player.Level) : 44401;
+            player.PveLabyrinth = false;
+            player.PveRewardGold = _db != null ? _db.ForcesBattleRewardGold(quality, player.Level) : 800;
+            player.ForcesBattleScore += _db != null ? _db.ForcesBattleScoreGain(quality) : quality;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PveResult, "{\"ok\":true,\"reward\":" + player.PveRewardGold + ",\"npcId\":" + player.PveNpcId + ",\"quality\":" + quality + ",\"score\":" + player.ForcesBattleScore + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleForcesRelicUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.ForcesRelicUpgrade, "{\"ok\":false}"); return; }
+            int relicId = JI(json, "relicId", 1);
+            player.EnsureRelics();
+            RelicSlot slot = player.FindRelic(relicId);
+            if (slot == null) { slot = new RelicSlot { RelicId = relicId, UpgradeLevel = 0 }; player.Relics.Add(slot); }
+            if (_db.GetRelicItem(relicId) == null) { Send(ns, PhoneMsg.ForcesRelicUpgrade, "{\"ok\":false,\"err\":\"relic\"}"); return; }
+            if (_db.GetRelicUpgrade(relicId, slot.UpgradeLevel + 1) == null) { Send(ns, PhoneMsg.ForcesRelicUpgrade, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            int cost = _db.RelicUpgradeGoldCost(relicId, slot.UpgradeLevel);
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.ForcesRelicUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost;
+            slot.UpgradeLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ForcesRelicUpgrade, "{\"ok\":true,\"relicId\":" + relicId + ",\"level\":" + slot.UpgradeLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCultureUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false}"); return; }
+            if (JI(json, "gradeUp", 0) != 0)
+            {
+                if (_db.GetExerciseInfo(player.CultureGrade + 1) == null) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                int gradeCost = _db.CultureGradeGoldCost(player.CultureGrade);
+                if (gradeCost <= 0 || player.Gold < gradeCost) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= gradeCost;
+                player.CultureGrade++;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.CultureResult, "{\"ok\":true,\"cultureGrade\":" + player.CultureGrade + ",\"cost\":" + gradeCost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            int statType = JI(json, "statType", 116);
+            if (statType < 116 || statType > 119) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false,\"err\":\"stat\"}"); return; }
+            int current = player.GetCultureStatLevel(statType);
+            if (_db.GetCultureUpgrade(statType, current + 1) == null) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            int cost = _db.CultureUpgradeGoldCost(statType, current);
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.CultureResult, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost;
+            player.SetCultureStatLevel(statType, current + 1);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CultureResult, "{\"ok\":true,\"statType\":" + statType + ",\"level\":" + (current + 1) + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
 
         void HandleWorldBossStart(ServerPlayer player, NetworkStream ns)
         {
@@ -5591,6 +5699,7 @@ namespace GunMobile.Net
         class MagicStoneSlotSave { public int templateId; public int level; }
         class EmblemSlotSave { public int id, templateId, types, profile, mainType, mainValue, subValue, skillId, equipped; }
         class SoulStampSlotSave { public int id, tempId, type, quality, grade, proType, proValue, skillId, equipped; }
+        class RelicSlotSave { public int relicId; public int upgradeLevel; }
 
         [Serializable]
         class ServerPlayerSave
@@ -5624,6 +5733,8 @@ namespace GunMobile.Net
             public int DreamlandDay = -1, DreamlandAttempts;
             public int WarriorFamHardType, WarriorFamLevel = 1, WarriorFamClearedLevel;
             public int WarriorFamDay = -1, WarriorFamAttempts;
+            public int ForcesBattleScore, ForcesBattleDay = -1, ForcesBattleAttempts;
+            public int CultureGrade = 1, CultureAtk, CultureDef, CultureAgi, CultureLuck;
             public int GodCardEquipId, EngraveSetId;
             public int NextEmblemId = 1, NextSoulStampId = 1;
             public int NextMailId = 1;
@@ -5637,6 +5748,7 @@ namespace GunMobile.Net
             public List<MagicStoneSlotSave> MagicStones = new List<MagicStoneSlotSave>();
             public List<EmblemSlotSave> Emblems = new List<EmblemSlotSave>();
             public List<SoulStampSlotSave> SoulStamps = new List<SoulStampSlotSave>();
+            public List<RelicSlotSave> Relics = new List<RelicSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
         }
 
@@ -5699,6 +5811,10 @@ namespace GunMobile.Net
                 WarriorFamHardType = p.WarriorFamHardType, WarriorFamLevel = p.WarriorFamLevel,
                 WarriorFamClearedLevel = p.WarriorFamClearedLevel, WarriorFamDay = p.WarriorFamDay,
                 WarriorFamAttempts = p.WarriorFamAttempts,
+                ForcesBattleScore = p.ForcesBattleScore, ForcesBattleDay = p.ForcesBattleDay,
+                ForcesBattleAttempts = p.ForcesBattleAttempts,
+                CultureGrade = p.CultureGrade, CultureAtk = p.CultureAtk, CultureDef = p.CultureDef,
+                CultureAgi = p.CultureAgi, CultureLuck = p.CultureLuck,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
@@ -5716,6 +5832,7 @@ namespace GunMobile.Net
             }
             p.EnsureEmblems(); foreach (EmblemSlot e in p.Emblems) s.Emblems.Add(new EmblemSlotSave { id = e.Id, templateId = e.TemplateId, types = e.Types, profile = e.Profile, mainType = e.MainType, mainValue = e.MainValue, subValue = e.SubValue, skillId = e.SkillId, equipped = e.Equipped });
             p.EnsureSoulStamps(); foreach (SoulStampSlot ss in p.SoulStamps) s.SoulStamps.Add(new SoulStampSlotSave { id = ss.Id, tempId = ss.TempId, type = ss.Type, quality = ss.Quality, grade = ss.Grade, proType = ss.ProType, proValue = ss.ProValue, skillId = ss.SkillId, equipped = ss.Equipped });
+            p.EnsureRelics(); foreach (RelicSlot r in p.Relics) s.Relics.Add(new RelicSlotSave { relicId = r.RelicId, upgradeLevel = r.UpgradeLevel });
             foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
@@ -5767,6 +5884,11 @@ namespace GunMobile.Net
                 WarriorFamLevel = s.WarriorFamLevel > 0 ? s.WarriorFamLevel : 1,
                 WarriorFamClearedLevel = s.WarriorFamClearedLevel,
                 WarriorFamDay = s.WarriorFamDay, WarriorFamAttempts = s.WarriorFamAttempts,
+                ForcesBattleScore = s.ForcesBattleScore, ForcesBattleDay = s.ForcesBattleDay,
+                ForcesBattleAttempts = s.ForcesBattleAttempts,
+                CultureGrade = s.CultureGrade > 0 ? s.CultureGrade : 1,
+                CultureAtk = s.CultureAtk, CultureDef = s.CultureDef,
+                CultureAgi = s.CultureAgi, CultureLuck = s.CultureLuck,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,
                 NextSoulStampId = s.NextSoulStampId > 0 ? s.NextSoulStampId : 1,
@@ -5806,7 +5928,8 @@ namespace GunMobile.Net
             }
             if (s.Emblems != null) foreach (EmblemSlotSave e in s.Emblems) p.Emblems.Add(new EmblemSlot { Id = e.id, TemplateId = e.templateId, Types = e.types, Profile = e.profile, MainType = e.mainType, MainValue = e.mainValue, SubValue = e.subValue, SkillId = e.skillId, Equipped = e.equipped });
             if (s.SoulStamps != null) foreach (SoulStampSlotSave ss in s.SoulStamps) p.SoulStamps.Add(new SoulStampSlot { Id = ss.id, TempId = ss.tempId, Type = ss.type, Quality = ss.quality, Grade = ss.grade, ProType = ss.proType, ProValue = ss.proValue, SkillId = ss.skillId, Equipped = ss.equipped });
-            p.EnsureEmblems(); p.EnsureSoulStamps();
+            if (s.Relics != null) foreach (RelicSlotSave r in s.Relics) p.Relics.Add(new RelicSlot { RelicId = r.relicId, UpgradeLevel = r.upgradeLevel });
+            p.EnsureEmblems(); p.EnsureSoulStamps(); p.EnsureRelics();
             p.EnsureWardrobeProperties();
             p.EnsureHonorSystemClaimed();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });

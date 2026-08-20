@@ -78,6 +78,14 @@ namespace GunMobile.Client
         public int WarriorFamLevel = 1;
         public int WarriorFamClearedLevel;
         public int WarriorFamAttempts;
+        public int ForcesBattleScore;
+        public int ForcesBattleAttempts;
+        public int CultureGrade = 1;
+        public int CultureAtk;
+        public int CultureDef;
+        public int CultureAgi;
+        public int CultureLuck;
+        public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
         public int PendingReward;
@@ -95,6 +103,10 @@ namespace GunMobile.Client
         public int GodCardEquipId;
         public int EngraveSetId;
         public List<StockSlot> StockHoldings = new List<StockSlot>();
+
+        public void EnsureRelics() { if (Relics == null) Relics = new List<RelicSlot>(); if (Relics.Count == 0) Relics.Add(new RelicSlot { RelicId = 1, UpgradeLevel = 0 }); }
+        public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
+        public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
 
         public static string PathOnDisk => Path.Combine(Application.persistentDataPath, "player.json");
 
@@ -465,6 +477,13 @@ namespace GunMobile.Client
                 atk += wDmg / 4; def += wGuard / 4;
                 HonorSystemLevel = db.HonorSystemLevelFromExp(HonorSystemExp);
                 db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luk, ref hp);
+                EnsureRelics();
+                int rDmg = 0;
+                db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref magicAtk, ref magicDef);
+                atk += rDmg / 4;
+                db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luk, ref hp, ref magicAtk, ref magicDef);
+                atk += magicAtk / 4;
+                def += magicDef / 4;
 
                 if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
                 {
@@ -675,11 +694,11 @@ namespace GunMobile.Client
             new ModuleDef("darkboundary", "暗界", "Request/ts_warriorfamfightconfig.xml", false, "darkboundary.ui"),
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
             new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
-            new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
+            new ModuleDef("forcesbattle", "势力战", "Request/cityoccupationsystems.xml", false, "forcesbattle.ui"),
             new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"),
             new ModuleDef("magicwardrobe", "魔衣橱", "Request/magicclothlist.xml", false, "magicwardrobe.ui"),
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
-            new ModuleDef("culture", "文化", null, false, "culture.ui"),
+            new ModuleDef("culture", "文化淬炼", "Request/TS_UpgradeTemplate.xml", false, "culture.ui"),
             new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"),
             new ModuleDef("treasureroom", "藏宝室", null, false, "treasureroom.ui"),
             new ModuleDef("labyrinthgame", "迷宫游戏", null, false, "labyrinthgame.ui"),

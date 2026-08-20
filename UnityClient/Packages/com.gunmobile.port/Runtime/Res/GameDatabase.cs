@@ -614,6 +614,64 @@ namespace GunMobile.Res
         public int FightPower;
     }
 
+    public sealed class RelicItemInfo
+    {
+        public int RelicId;
+        public string Name = "";
+        public int Quality;
+        public int CommonProperty;
+    }
+
+    public sealed class RelicUpgradeRow
+    {
+        public int RelicId;
+        public int Level;
+        public int Type;
+        public int Data;
+        public int NeedExp;
+    }
+
+    public sealed class RelicDegreeRow
+    {
+        public int Quality;
+        public int Level;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int MagicAttack;
+        public int MagicDefence;
+        public int Damage;
+        public int Blood;
+    }
+
+    public sealed class CityOccupationExchange
+    {
+        public int Quality;
+        public int NeedScore;
+    }
+
+    public sealed class CultureUpgradeRow
+    {
+        public int Types;
+        public int Grades;
+        public int Data;
+        public int GoldCost;
+    }
+
+    public sealed class ExerciseInfoRow
+    {
+        public int Grade;
+        public int Gp;
+        public int ExerciseA;
+        public int ExerciseAg;
+        public int ExerciseD;
+        public int ExerciseH;
+        public int ExerciseL;
+        public int ExerciseMa;
+        public int ExerciseMd;
+    }
+
     /// <summary>
     /// Loads every packed Request table the mobile client needs (templates, shop, quests, maps, balls, NPCs).
     /// Nested PC XML (<c>ItemTemplate/Item</c>, <c>Store/Item</c>) is flattened.
@@ -665,6 +723,15 @@ namespace GunMobile.Res
         public List<StoryCopyLevelUp> StoryCopyLevelUps { get; } = new List<StoryCopyLevelUp>();
         public List<WarriorFamFightConfig> WarriorFamFights { get; } = new List<WarriorFamFightConfig>();
         public List<WarriorFamRankEntry> WarriorFamRanks { get; } = new List<WarriorFamRankEntry>();
+
+        // --- Forces battle / culture (PhoneMsg 147-148, 157-158) ---
+        public Dictionary<int, RelicItemInfo> RelicItems { get; } = new Dictionary<int, RelicItemInfo>();
+        public Dictionary<long, RelicUpgradeRow> RelicUpgrades { get; } = new Dictionary<long, RelicUpgradeRow>();
+        public Dictionary<long, RelicDegreeRow> RelicDegrees { get; } = new Dictionary<long, RelicDegreeRow>();
+        public List<CityOccupationExchange> CityOccupationExchanges { get; } = new List<CityOccupationExchange>();
+        public Dictionary<long, CultureUpgradeRow> CultureUpgrades { get; } = new Dictionary<long, CultureUpgradeRow>();
+        public Dictionary<int, ExerciseInfoRow> ExerciseInfoByGrade { get; } = new Dictionary<int, ExerciseInfoRow>();
+        public int RelicAdvanceTemplateCount;
         public List<WarriorFamRankEntry> WarriorHighFamRanks { get; } = new List<WarriorFamRankEntry>();
         public Dictionary<int, MagicClothInfo> MagicCloths { get; } = new Dictionary<int, MagicClothInfo>();
         public List<MagicClothInfo> MagicClothList { get; } = new List<MagicClothInfo>();
@@ -746,6 +813,10 @@ namespace GunMobile.Res
             db.LoadFightLabDrops(loader);
             db.LoadLevels(loader);
             db.LoadCelebLists(loader);
+
+            db.LoadRelics(loader);
+            db.LoadCityOccupation(loader);
+            db.LoadCulture(loader);
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
@@ -3782,6 +3853,307 @@ namespace GunMobile.Res
 
             float.TryParse(raw, NumberStyles.Float, CultureInfo.InvariantCulture, out float n);
             return n;
+        }
+
+
+        static long RelicUpgradeKey(int relicId, int level) => ((long)relicId << 16) | (uint)level;
+        static long RelicDegreeKey(int quality, int level) => ((long)quality << 16) | (uint)level;
+        static long CultureUpgradeKey(int statType, int grade) => ((long)statType << 16) | (uint)grade;
+
+        public RelicItemInfo GetRelicItem(int relicId)
+        {
+            RelicItems.TryGetValue(relicId, out RelicItemInfo row);
+            return row;
+        }
+
+        public RelicUpgradeRow GetRelicUpgrade(int relicId, int level)
+        {
+            RelicUpgrades.TryGetValue(RelicUpgradeKey(relicId, level), out RelicUpgradeRow row);
+            return row;
+        }
+
+        public RelicDegreeRow GetRelicDegree(int quality, int level)
+        {
+            RelicDegrees.TryGetValue(RelicDegreeKey(quality, level), out RelicDegreeRow row);
+            return row;
+        }
+
+        public int RelicUpgradeGoldCost(int relicId, int currentLevel)
+        {
+            RelicUpgradeRow next = GetRelicUpgrade(relicId, currentLevel + 1);
+            return next != null ? next.NeedExp : 0;
+        }
+
+        public CultureUpgradeRow GetCultureUpgrade(int statType, int grade)
+        {
+            CultureUpgrades.TryGetValue(CultureUpgradeKey(statType, grade), out CultureUpgradeRow row);
+            return row;
+        }
+
+        public int CultureUpgradeGoldCost(int statType, int currentLevel)
+        {
+            CultureUpgradeRow next = GetCultureUpgrade(statType, currentLevel + 1);
+            return next != null ? next.GoldCost : 0;
+        }
+
+        public ExerciseInfoRow GetExerciseInfo(int grade)
+        {
+            ExerciseInfoByGrade.TryGetValue(grade, out ExerciseInfoRow row);
+            return row;
+        }
+
+        public int CultureGradeGoldCost(int currentGrade)
+        {
+            ExerciseInfoRow next = GetExerciseInfo(currentGrade + 1);
+            return next != null ? next.Gp : 0;
+        }
+
+        public int ForcesBattleEntryFee(int quality)
+        {
+            int minScore = int.MaxValue;
+            for (int i = 0; i < CityOccupationExchanges.Count; i++)
+            {
+                CityOccupationExchange row = CityOccupationExchanges[i];
+                if (row.Quality == quality && row.NeedScore < minScore)
+                {
+                    minScore = row.NeedScore;
+                }
+            }
+            return minScore == int.MaxValue ? quality * 50 : minScore * 50;
+        }
+
+        public int ForcesBattleScoreGain(int quality)
+        {
+            int minScore = int.MaxValue;
+            for (int i = 0; i < CityOccupationExchanges.Count; i++)
+            {
+                CityOccupationExchange row = CityOccupationExchanges[i];
+                if (row.Quality == quality && row.NeedScore < minScore)
+                {
+                    minScore = row.NeedScore;
+                }
+            }
+            return minScore == int.MaxValue ? quality : minScore;
+        }
+
+        public int ForcesBattleNpcId(int quality, int playerLevel)
+        {
+            int[] ids = { 44401, 44403, 44405, 44407, 44409 };
+            int idx = Mathf.Clamp(quality - 1, 0, ids.Length - 1);
+            return ids[idx];
+        }
+
+        public int ForcesBattleRewardGold(int quality, int playerLevel)
+        {
+            return ComputePveWinGold(ForcesBattleNpcId(quality, playerLevel), 0, false);
+        }
+
+        public void ApplyRelicStats(List<RelicSlot> relics, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int magicAtk, ref int magicDef)
+        {
+            if (relics == null)
+            {
+                return;
+            }
+
+            for (int i = 0; i < relics.Count; i++)
+            {
+                RelicSlot slot = relics[i];
+                RelicItemInfo item = GetRelicItem(slot.RelicId);
+                if (item == null)
+                {
+                    continue;
+                }
+
+                RelicDegreeRow degree = GetRelicDegree(item.Quality, slot.UpgradeLevel);
+                if (degree != null)
+                {
+                    atk += degree.Attack;
+                    def += degree.Defence;
+                    agi += degree.Agility;
+                    luck += degree.Luck;
+                    magicAtk += degree.MagicAttack;
+                    magicDef += degree.MagicDefence;
+                    baseDmg += degree.Damage;
+                    hp += degree.Blood;
+                }
+
+                for (int lv = 1; lv <= slot.UpgradeLevel; lv++)
+                {
+                    RelicUpgradeRow up = GetRelicUpgrade(slot.RelicId, lv);
+                    if (up == null)
+                    {
+                        continue;
+                    }
+
+                    switch (up.Type)
+                    {
+                        case 3: atk += up.Data; break;
+                        case 4: def += up.Data; break;
+                        case 5: agi += up.Data; break;
+                        case 6: luck += up.Data; break;
+                        case 7: magicAtk += up.Data; break;
+                        case 8: magicDef += up.Data; break;
+                    }
+                }
+            }
+        }
+
+        public void ApplyCultureBonus(int cultureGrade, int cultureAtk, int cultureDef, int cultureAgi, int cultureLuck, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int magicAtk, ref int magicDef)
+        {
+            ExerciseInfoRow gradeRow = GetExerciseInfo(cultureGrade);
+            if (gradeRow != null)
+            {
+                atk += gradeRow.ExerciseA;
+                def += gradeRow.ExerciseD;
+                agi += gradeRow.ExerciseAg;
+                luck += gradeRow.ExerciseL;
+                hp += gradeRow.ExerciseH;
+                magicAtk += gradeRow.ExerciseMa;
+                magicDef += gradeRow.ExerciseMd;
+            }
+
+            CultureUpgradeRow atkRow = GetCultureUpgrade(116, cultureAtk);
+            if (atkRow != null) atk += atkRow.Data;
+            CultureUpgradeRow defRow = GetCultureUpgrade(117, cultureDef);
+            if (defRow != null) def += defRow.Data;
+            CultureUpgradeRow agiRow = GetCultureUpgrade(118, cultureAgi);
+            if (agiRow != null) agi += agiRow.Data;
+            CultureUpgradeRow luckRow = GetCultureUpgrade(119, cultureLuck);
+            if (luckRow != null) luck += luckRow.Data;
+        }
+
+        void LoadRelics(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/TS_Relic_ItemTemplate.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int relicId = Int(row, "RelicID");
+                    if (relicId <= 0)
+                    {
+                        continue;
+                    }
+
+                    RelicItems[relicId] = new RelicItemInfo
+                    {
+                        RelicId = relicId,
+                        Name = Str(row, "Name"),
+                        Quality = Int(row, "Quality"),
+                        CommonProperty = Int(row, "CommonProperty")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/TS_Relic_UpgradeTemplate.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int relicId = Int(row, "RelicID");
+                    int level = Int(row, "Level");
+                    RelicUpgrades[RelicUpgradeKey(relicId, level)] = new RelicUpgradeRow
+                    {
+                        RelicId = relicId,
+                        Level = level,
+                        Type = Int(row, "Type"),
+                        Data = Int(row, "Data"),
+                        NeedExp = Int(row, "NeedExp")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/TS_Relic_DegreeTemplate.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int quality = Int(row, "Quality");
+                    int level = Int(row, "Level");
+                    RelicDegrees[RelicDegreeKey(quality, level)] = new RelicDegreeRow
+                    {
+                        Quality = quality,
+                        Level = level,
+                        Attack = Int(row, "Attack"),
+                        Defence = Int(row, "Defence"),
+                        Agility = Int(row, "Agility"),
+                        Luck = Int(row, "Luck"),
+                        MagicAttack = Int(row, "MagicAttack"),
+                        MagicDefence = Int(row, "MagicDefence"),
+                        Damage = Int(row, "Damage"),
+                        Blood = Int(row, "Blood")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/TS_Relic_AdvanceTemplate.xml", out table))
+            {
+                RelicAdvanceTemplateCount = table.Rows.Count;
+            }
+        }
+
+        void LoadCityOccupation(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/cityoccupationsystems.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/cityoccupationsystems1.xml", out table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                CityOccupationExchanges.Add(new CityOccupationExchange
+                {
+                    Quality = Int(row, "Quality"),
+                    NeedScore = Int(row, "NeedScore")
+                });
+            }
+        }
+
+        void LoadCulture(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/TS_UpgradeTemplate.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int statType = Int(row, "Types");
+                    if (statType < 116 || statType > 119)
+                    {
+                        continue;
+                    }
+
+                    int grade = Int(row, "Grades");
+                    CultureUpgrades[CultureUpgradeKey(statType, grade)] = new CultureUpgradeRow
+                    {
+                        Types = statType,
+                        Grades = grade,
+                        Data = Int(row, "Data"),
+                        GoldCost = Int(row, "Param2")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/ExerciseInfoList.xml", out table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int grade = Int(row, "Grage");
+                    if (grade <= 0)
+                    {
+                        continue;
+                    }
+
+                    ExerciseInfoByGrade[grade] = new ExerciseInfoRow
+                    {
+                        Grade = grade,
+                        Gp = Int(row, "GP"),
+                        ExerciseA = Int(row, "ExerciseA"),
+                        ExerciseAg = Int(row, "ExerciseAG"),
+                        ExerciseD = Int(row, "ExerciseD"),
+                        ExerciseH = Int(row, "ExerciseH"),
+                        ExerciseL = Int(row, "ExerciseL"),
+                        ExerciseMa = Int(row, "ExerciseMA"),
+                        ExerciseMd = Int(row, "ExerciseMD")
+                    };
+                }
+            }
         }
 
         public static bool Bool(IReadOnlyDictionary<string, string> row, string key)

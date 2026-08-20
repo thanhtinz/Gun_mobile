@@ -713,6 +713,65 @@ namespace GunMobile.Client
                     }
                 }
             }
+
+        public static void ForcesBattleScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("forcesbattle", "势力战", "Request/cityoccupationsystems.xml", false, "forcesbattle.ui"),
+                "forcesbattle.ui");
+            if (app.Database == null) return;
+            int maxAttempts = app.Database.ConfigInt("CityOccupationAddScoreCount", 30);
+            SysUi.Note(body, "cityoccupationsystems.xml  ·  积分 " + app.Profile.ForcesBattleScore +
+                "  ·  今日 " + app.Profile.ForcesBattleAttempts + " / " + maxAttempts);
+            for (int quality = 1; quality <= 5; quality++)
+            {
+                int fee = app.Database.ForcesBattleEntryFee(quality);
+                int score = app.Database.ForcesBattleScoreGain(quality);
+                int localQuality = quality;
+                SysUi.Row(body, "fb" + quality, "品质" + quality + "  入场" + fee + "金  +" + score + "分",
+                    () => { PhoneNet.ForcesBattleStart(localQuality); app.ShowRoom(); });
+            }
+            SysUi.Note(body, "TS_Relic 圣物升级 (NeedExp 金币)");
+            app.Profile.EnsureRelics();
+            int shown = 0;
+            foreach (RelicItemInfo item in app.Database.RelicItems.Values)
+            {
+                RelicSlot slot = app.Profile.FindRelic(item.RelicId);
+                int level = slot != null ? slot.UpgradeLevel : 0;
+                int cost = app.Database.RelicUpgradeGoldCost(item.RelicId, level);
+                int relicId = item.RelicId;
+                SysUi.Row(body, "relic" + relicId,
+                    item.Name + " Q" + item.Quality + " Lv" + level + (cost > 0 ? "  " + cost + "金" : " MAX"),
+                    cost > 0 ? (System.Action)(() => PhoneNet.UpgradeRelic(relicId)) : null);
+                if (++shown >= 8) break;
+            }
+        }
+
+        public static void CultureScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = ShowMornModule(safe, app,
+                new ModuleDef("culture", "文化淬炼", "Request/TS_UpgradeTemplate.xml", false, "culture.ui"),
+                "culture.ui");
+            if (app.Database == null) return;
+            int gradeCost = app.Database.CultureGradeGoldCost(app.Profile.CultureGrade);
+            SysUi.Note(body, "ExerciseInfoList 品阶 " + app.Profile.CultureGrade +
+                (gradeCost > 0 ? "  ·  升阶 " + gradeCost + " 金" : "  ·  已满"));
+            if (gradeCost > 0) SysUi.Row(body, "grade", "品阶升级 → " + (app.Profile.CultureGrade + 1), PhoneNet.CultureGradeUp);
+            int[] statTypes = { 116, 117, 118, 119 };
+            string[] statNames = { "攻击", "防御", "敏捷", "幸运" };
+            for (int i = 0; i < statTypes.Length; i++)
+            {
+                int statType = statTypes[i];
+                int level = app.Profile.GetCultureStatLevel(statType);
+                int cost = app.Database.CultureUpgradeGoldCost(statType, level);
+                CultureUpgradeRow row = app.Database.GetCultureUpgrade(statType, level);
+                int bonus = row != null ? row.Data : 0;
+                int localType = statType;
+                SysUi.Row(body, "c" + statType,
+                    statNames[i] + " Lv" + level + " +" + bonus + (cost > 0 ? "  " + cost + "金" : " MAX"),
+                    cost > 0 ? (System.Action)(() => PhoneNet.CultureUpgrade(localType)) : null);
+            }
+        }
         }
 
     }

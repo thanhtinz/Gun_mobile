@@ -8,6 +8,13 @@ namespace GunMobile.Net
     }
 
     [System.Serializable]
+    public sealed class RelicSlot
+    {
+        public int RelicId;
+        public int UpgradeLevel;
+    }
+
+    [System.Serializable]
     public sealed class StockSlot
     {
         public int StockId;
