@@ -254,6 +254,9 @@ namespace GunMobile.Net
         public const ushort ActivityQuestClaim = 207;
         public const ushort SwornAction = 208;
         public const ushort VipStoreBuy = 209;
+        public const ushort MountDraw = 210;
+        public const ushort PetFightProperty = 211;
+        public const ushort NewYearRankClaim = 212;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

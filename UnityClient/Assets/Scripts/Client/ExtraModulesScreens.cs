@@ -1128,6 +1128,28 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                         ? null
                         : (System.Action)(() => PhoneNet.NewYearClaimReward(rewardId)));
             }
+
+            SysUi.Note(body, "--- 新年排行 TS_NewYearRankReward.xml ---");
+            app.Profile.EnsureNewYearRankClaimed();
+            foreach (NewYearRankReward row in app.Database.NewYearRankRewards)
+            {
+                bool claimed = app.Profile.NewYearRankClaimed.Contains(row.Id);
+                string label = "排名 " + row.RankMin + "-" + row.RankMax + "  #" + row.RewardId;
+                if (claimed)
+                {
+                    label = "[已领] " + label;
+                }
+                else if (app.Profile.NewYearPoints <= 0)
+                {
+                    label += "  (无积分)";
+                }
+
+                int rid = row.Id;
+                SysUi.Row(body, "nyr" + row.Id, label,
+                    claimed || app.Profile.NewYearPoints <= 0
+                        ? null
+                        : (System.Action)(() => PhoneNet.NewYearRankClaim(rid)));
+            }
         }
 
         public static void WorshipMoonScreen(RectTransform safe, GameApp app)

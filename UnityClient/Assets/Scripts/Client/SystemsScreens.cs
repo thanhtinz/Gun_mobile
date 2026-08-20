@@ -102,6 +102,23 @@ namespace GunMobile.Client
                     if (++shown >= 24) break;
                 }
             }
+
+            if (app.Profile.PetId > 0 && app.Database != null)
+            {
+                int fightLv = app.Profile.PetFightLevel;
+                PetFightPropertyLevel cur = app.Database.GetPetFightProperty(fightLv);
+                PetFightPropertyLevel next = app.Database.GetPetFightProperty(fightLv + 1);
+                int fightCost = app.Database.PetFightPropertyUpgradeCost(fightLv);
+                SysUi.Note(body, "战宠属性 Lv" + fightLv +
+                    (cur != null ? $"  ATK+{cur.Attack} DEF+{cur.Defence} HP+{cur.Blood}" : ""));
+                if (next != null && fightCost > 0)
+                {
+                    SysUi.Row(body, "petFight",
+                        $"升级战宠属性  {fightCost} 金币",
+                        PhoneNet.UpgradePetFightProperty);
+                }
+            }
+
             int n = 0;
             foreach (PetInfo pet in app.Database.Pets.Values)
             {
@@ -266,6 +283,14 @@ namespace GunMobile.Client
             if (cost > 0)
             {
                 SysUi.Row(body, "up", $"升级坐骑  {cost} 金币", () => PhoneNet.UpgradeMount());
+            }
+
+            int drawCost = app.Database != null ? app.Database.MountDrawCost() : 200;
+            int poolCount = app.Database != null ? app.Database.MountDrawList.Count : 0;
+            SysUi.Note(body, "坐骑抽奖  奖池 " + poolCount + "  ·  " + drawCost + " 金/次");
+            if (poolCount > 0)
+            {
+                SysUi.Row(body, "mountdraw", "坐骑抽奖  " + drawCost + " 金", PhoneNet.MountDraw);
             }
 
             MountTalismanInfo equipped = app.Database != null ? app.Database.GetMountTalisman(app.Profile.MountTalismanId) : null;

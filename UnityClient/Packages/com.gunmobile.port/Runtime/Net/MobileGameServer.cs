@@ -41,6 +41,7 @@ namespace GunMobile.Net
         public int EquipGlass;
         public int EquipWeapon = 7001;
         public int PetId;
+        public int PetFightLevel;
         public int CardId;
         public int TitleId;
         public int TotemId;
@@ -119,6 +120,7 @@ namespace GunMobile.Net
         public int NewYearFreeUsed;
         public int NewYearPoints;
         public List<int> NewYearPointClaimed = new List<int>();
+        public List<int> NewYearRankClaimed = new List<int>();
         public int WorshipMoonDay = -1;
         public int WorshipMoonDraws;
         public int SuperLuckerDay = -1;
@@ -465,6 +467,8 @@ namespace GunMobile.Net
                 atk += pet.Attack; def += pet.Defence; hp += pet.Blood; agi += pet.Agility; luck += pet.Luck;
             }
 
+            db.ApplyPetFightPropertyBonus(PetId, PetFightLevel, ref atk, ref def, ref agi, ref luck, ref hp);
+
             if (db.Cards != null)
             {
                 foreach (CardInfo c in db.Cards)
@@ -625,6 +629,7 @@ namespace GunMobile.Net
             J(sb, "equipGlass", EquipGlass); sb.Append(",");
             J(sb, "equipWeapon", EquipWeapon); sb.Append(",");
             J(sb, "petId", PetId); sb.Append(",");
+            J(sb, "petFightLevel", PetFightLevel); sb.Append(",");
             J(sb, "cardId", CardId); sb.Append(",");
             J(sb, "titleId", TitleId); sb.Append(",");
             J(sb, "totemId", TotemId); sb.Append(",");
@@ -727,6 +732,10 @@ namespace GunMobile.Net
             J(sb, "newYearFreeUsed", NewYearFreeUsed); sb.Append(",");
             sb.Append("\"newYearPointClaimed\":[");
             for (int i = 0; i < NewYearPointClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(NewYearPointClaimed[i]); }
+            sb.Append("],");
+            EnsureNewYearRankClaimed();
+            sb.Append("\"newYearRankClaimed\":[");
+            for (int i = 0; i < NewYearRankClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(NewYearRankClaimed[i]); }
             sb.Append("],");
             J(sb, "worshipMoonDraws", WorshipMoonDraws); sb.Append(",");
             J(sb, "superLuckerDraws", SuperLuckerDraws); sb.Append(",");
@@ -933,6 +942,7 @@ namespace GunMobile.Net
 
         public void EnsureGodCardPointClaimed() { if (GodCardPointClaimed == null) GodCardPointClaimed = new List<int>(); }
         public void EnsureDevilTreasPointClaimed() { if (DevilTreasPointClaimed == null) DevilTreasPointClaimed = new List<int>(); }
+        public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public GodCardSlot FindGodCardSlot(int id) { foreach (GodCardSlot slot in GodCards) if (slot.Id == id) return slot; return null; }
 
         public void EnsureQuestProgress(int questId, int conditionCount)
@@ -2103,6 +2113,18 @@ namespace GunMobile.Net
 
                 case PhoneMsg.VipStoreBuy:
                     HandleVipStoreBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.MountDraw:
+                    HandleMountDraw(player, ns);
+                    break;
+
+                case PhoneMsg.PetFightProperty:
+                    HandlePetFightProperty(player, ns);
+                    break;
+
+                case PhoneMsg.NewYearRankClaim:
+                    HandleNewYearRankClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -3323,6 +3345,156 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, resultMsg, "{\"ok\":true,\"item\":" + drop.TemplateId + ",\"count\":" + drop.Count + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+
+        void HandleMountDraw(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.MountDraw, "{\"ok\":false}");
+                return;
+            }
+
+            int cost = _db.MountDrawCost();
+            if (cost <= 0 || player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.MountDraw, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            MountDrawTemplate drop;
+            lock (_lock)
+            {
+                drop = _db.RollMountDraw(_rng);
+            }
+
+            if (drop == null || drop.TemplateId <= 0)
+            {
+                Send(ns, PhoneMsg.MountDraw, "{\"ok\":false,\"err\":\"pool\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            player.AddItem(drop.TemplateId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MountDraw,
+                "{\"ok\":true,\"id\":" + drop.Id + ",\"item\":" + drop.TemplateId + ",\"count\":1,\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandlePetFightProperty(ServerPlayer player, NetworkStream ns)
+        {
+            if (_db == null)
+            {
+                Send(ns, PhoneMsg.PetFightProperty, "{\"ok\":false}");
+                return;
+            }
+
+            if (player.PetId <= 0)
+            {
+                Send(ns, PhoneMsg.PetFightProperty, "{\"ok\":false,\"err\":\"pet\"}");
+                return;
+            }
+
+            int maxLevel = _db.PetFightPropertyMaxLevel();
+            if (maxLevel <= 0 || player.PetFightLevel >= maxLevel || _db.GetPetFightProperty(player.PetFightLevel + 1) == null)
+            {
+                Send(ns, PhoneMsg.PetFightProperty, "{\"ok\":false,\"err\":\"max\"}");
+                return;
+            }
+
+            int cost = _db.PetFightPropertyUpgradeCost(player.PetFightLevel);
+            if (cost <= 0 || player.Gold < cost)
+            {
+                Send(ns, PhoneMsg.PetFightProperty, "{\"ok\":false,\"err\":\"gold\"}");
+                return;
+            }
+
+            player.Gold -= cost;
+            player.PetFightLevel++;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PetFightProperty,
+                "{\"ok\":true,\"level\":" + player.PetFightLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleNewYearRankClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.NewYearRankRewards.Count == 0)
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"config\"}");
+                return;
+            }
+
+            if (player.NewYearPoints <= 0)
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"points\"}");
+                return;
+            }
+
+            int rank = ComputeNewYearRank(player);
+            int rewardId = JI(json, "rewardId", 0);
+            NewYearRankReward row = rewardId > 0
+                ? _db.GetNewYearRankReward(rewardId)
+                : _db.FindNewYearRankRewardForRank(rank);
+            if (row == null)
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"rank\"}");
+                return;
+            }
+
+            if (rank < row.RankMin || rank > row.RankMax)
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"rank\"}");
+                return;
+            }
+
+            player.EnsureNewYearRankClaimed();
+            if (player.NewYearRankClaimed.Contains(row.Id))
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"claimed\"}");
+                return;
+            }
+
+            if (row.RewardId <= 0)
+            {
+                Send(ns, PhoneMsg.NewYearRankClaim, "{\"ok\":false,\"err\":\"reward\"}");
+                return;
+            }
+
+            player.NewYearRankClaimed.Add(row.Id);
+            player.AddItem(row.RewardId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.NewYearRankClaim,
+                "{\"ok\":true,\"rewardId\":" + row.Id + ",\"item\":" + row.RewardId +
+                ",\"rank\":" + rank + ",\"points\":" + player.NewYearPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        int ComputeNewYearRank(ServerPlayer player)
+        {
+            int better = 0;
+            lock (_lock)
+            {
+                foreach (ServerPlayer p in _players.Values)
+                {
+                    if (p == null || p.Id == player.Id)
+                    {
+                        continue;
+                    }
+
+                    if (p.NewYearPoints > player.NewYearPoints ||
+                        (p.NewYearPoints == player.NewYearPoints && p.Id < player.Id))
+                    {
+                        better++;
+                    }
+                }
+            }
+
+            int maxRank = _db != null ? _db.ConfigInt("NewYearRankCount", 2000) : 2000;
+            return Mathf.Clamp(better + 1, 1, Mathf.Max(1, maxRank));
         }
 
         void HandlePeakBattleStart(ServerPlayer player, NetworkStream ns, string json)
@@ -8688,7 +8860,7 @@ namespace GunMobile.Net
             public int Win, Lose;
             public int WeaponId = 7001;
             public int EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon = 7001;
-            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, LinkPalId, AchievementPoints, JadeEquipId, RuneTemplateId, HorseAmuletLevel = 1, HorseAmuletGrade = 1, HorseAmuletPhase = 1, VipLevel, Honor, Texp;
+            public int PetId, PetFightLevel, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, LinkPalId, AchievementPoints, JadeEquipId, RuneTemplateId, HorseAmuletLevel = 1, HorseAmuletGrade = 1, HorseAmuletPhase = 1, VipLevel, Honor, Texp;
             public List<int> MountSkillIds = new List<int>();
             public List<int> CompletedAchievements = new List<int>();
             public List<int> ClaimedAchievements = new List<int>();
@@ -8715,6 +8887,7 @@ namespace GunMobile.Net
             public int ChristmasDay = -1, ChristmasClaims;
             public int NewYearDay = -1, NewYearFreeUsed, NewYearPoints;
             public List<int> NewYearPointClaimed = new List<int>();
+            public List<int> NewYearRankClaimed = new List<int>();
             public int WorshipMoonDay = -1, WorshipMoonDraws;
             public int SuperLuckerDay = -1, SuperLuckerDraws;
             public int JigsawDay = -1, JigsawClaims;
@@ -8814,7 +8987,7 @@ namespace GunMobile.Net
                 Win = p.Win, Lose = p.Lose, WeaponId = p.WeaponId,
                 EquipHead = p.EquipHead, EquipHair = p.EquipHair, EquipFace = p.EquipFace,
                 EquipCloth = p.EquipCloth, EquipGlass = p.EquipGlass, EquipWeapon = p.EquipWeapon,
-                PetId = p.PetId, CardId = p.CardId, TitleId = p.TitleId, TotemId = p.TotemId,
+                PetId = p.PetId, PetFightLevel = p.PetFightLevel, CardId = p.CardId, TitleId = p.TitleId, TotemId = p.TotemId,
                 MountGrade = p.MountGrade, MountTalismanId = p.MountTalismanId, ManorGrade = p.ManorGrade,
                 GoldEquipId = p.GoldEquipId, GloryTemplateId = p.GloryTemplateId,
                 SigilQuality = p.SigilQuality, SigilProType = p.SigilProType, SigilProValue = p.SigilProValue,
@@ -8849,6 +9022,7 @@ namespace GunMobile.Net
                 ChristmasDay = p.ChristmasDay, ChristmasClaims = p.ChristmasClaims,
                 NewYearDay = p.NewYearDay, NewYearFreeUsed = p.NewYearFreeUsed, NewYearPoints = p.NewYearPoints,
                 NewYearPointClaimed = p.NewYearPointClaimed ?? new List<int>(),
+                NewYearRankClaimed = p.NewYearRankClaimed ?? new List<int>(),
                 WorshipMoonDay = p.WorshipMoonDay, WorshipMoonDraws = p.WorshipMoonDraws,
                 SuperLuckerDay = p.SuperLuckerDay, SuperLuckerDraws = p.SuperLuckerDraws,
                 JigsawDay = p.JigsawDay, JigsawClaims = p.JigsawClaims,
@@ -8949,7 +9123,7 @@ namespace GunMobile.Net
                 Win = s.Win, Lose = s.Lose, WeaponId = s.WeaponId,
                 EquipHead = s.EquipHead, EquipHair = s.EquipHair, EquipFace = s.EquipFace,
                 EquipCloth = s.EquipCloth, EquipGlass = s.EquipGlass, EquipWeapon = s.EquipWeapon,
-                PetId = s.PetId, CardId = s.CardId, TitleId = s.TitleId, TotemId = s.TotemId,
+                PetId = s.PetId, PetFightLevel = s.PetFightLevel, CardId = s.CardId, TitleId = s.TitleId, TotemId = s.TotemId,
                 MountGrade = s.MountGrade, MountTalismanId = s.MountTalismanId,
                 ManorGrade = s.ManorGrade > 0 ? s.ManorGrade : 1,
                 GoldEquipId = s.GoldEquipId, GloryTemplateId = s.GloryTemplateId,
@@ -8985,6 +9159,7 @@ namespace GunMobile.Net
                 ChristmasDay = s.ChristmasDay, ChristmasClaims = s.ChristmasClaims,
                 NewYearDay = s.NewYearDay, NewYearFreeUsed = s.NewYearFreeUsed, NewYearPoints = s.NewYearPoints,
                 NewYearPointClaimed = s.NewYearPointClaimed ?? new List<int>(),
+                NewYearRankClaimed = s.NewYearRankClaimed ?? new List<int>(),
                 WorshipMoonDay = s.WorshipMoonDay, WorshipMoonDraws = s.WorshipMoonDraws,
                 SuperLuckerDay = s.SuperLuckerDay, SuperLuckerDraws = s.SuperLuckerDraws,
                 JigsawDay = s.JigsawDay, JigsawClaims = s.JigsawClaims,

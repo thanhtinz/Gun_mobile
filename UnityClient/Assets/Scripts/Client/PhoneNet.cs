@@ -405,6 +405,21 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.TreasureDraw, "{}");
         }
 
+        public static void MountDraw()
+        {
+            Road?.Send(PhoneMsg.MountDraw, "{}");
+        }
+
+        public static void UpgradePetFightProperty()
+        {
+            Road?.Send(PhoneMsg.PetFightProperty, "{}");
+        }
+
+        public static void NewYearRankClaim(int rewardId = 0)
+        {
+            Road?.Send(PhoneMsg.NewYearRankClaim, "{"rewardId":" + rewardId + "}");
+        }
+
         public static void CarnivalDraw()
         {
             Road?.Send(PhoneMsg.CarnivalDraw, "{}");
