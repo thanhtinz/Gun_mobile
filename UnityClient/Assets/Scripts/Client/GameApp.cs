@@ -166,6 +166,12 @@ namespace GunMobile.Client
                 case "calendar":
                     CalendarScreen.Show(_safe, this);
                     return;
+                case "quiz":
+                    ExtraModulesScreens.QuizScreen(_safe, this);
+                    return;
+                case "oneyuan":
+                    ExtraModulesScreens.OneYuanScreen(_safe, this);
+                    return;
                 case "godcard":
                     GodCardScreen.Show(_safe, this);
                     return;
@@ -577,6 +583,16 @@ namespace GunMobile.Client
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && _currentModuleId == "calendar") RefreshCurrentModule();
                         break;
+                    case PhoneMsg.QuizAnswer:
+                        PhoneNet.LastQuizJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "quiz") RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.OneYuanBuy:
+                        PhoneNet.LastOneYuanJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "oneyuan" || _currentModuleId == "shop")) RefreshCurrentModule();
+                        break;
                     case PhoneMsg.AuditoriumAction:
                         PhoneNet.LastAuditoriumJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -756,6 +772,7 @@ namespace GunMobile.Client
             Profile.CalendarMonth = JsonInt(json, "calendarMonth", Profile.CalendarMonth);
             Profile.AuditoriumActions = JsonInt(json, "auditoriumActions", Profile.AuditoriumActions);
             Profile.BoguAdventureActions = JsonInt(json, "boguAdventureActions", Profile.BoguAdventureActions);
+            Profile.QuizAttempts = JsonInt(json, "quizAttempts", Profile.QuizAttempts);
             Profile.GodCardEquipId = JsonInt(json, "godCardEquipId", Profile.GodCardEquipId);
             Profile.GodCardPoints = JsonInt(json, "godCardPoints", Profile.GodCardPoints);
             Profile.EngraveSetId = JsonInt(json, "engraveSetId", Profile.EngraveSetId);
@@ -775,6 +792,7 @@ namespace GunMobile.Client
             ParseHonorSystemFromServer(json);
             ParseNewYearClaimedFromServer(json);
             ParseIntListFromServer(json, "calendarClaimedDays", Profile.CalendarClaimedDays ?? (Profile.CalendarClaimedDays = new List<int>()));
+            ParseIntListFromServer(json, "oneYuanBought", Profile.OneYuanBought ?? (Profile.OneYuanBought = new List<int>()));
             ParseBankDepositsFromServer(json);
             ParseSweepMissionClearsFromServer(json);
             ParseIntListFromServer(json, "jampsDebrisOwned", Profile.JampsDebrisOwned ?? (Profile.JampsDebrisOwned = new List<int>()));

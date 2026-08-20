@@ -32,6 +32,8 @@ namespace GunMobile.Client
         public static string LastWorshipMoonJson;
         public static string LastSuperLuckerJson;
         public static string LastCalendarJson;
+        public static string LastQuizJson;
+        public static string LastOneYuanJson;
         public static string LastAuditoriumJson;
         public static string LastBoguAdventureJson;
         public static string LastJigsawJson;
@@ -374,6 +376,16 @@ namespace GunMobile.Client
         }
 
         public static void CalendarClaim(int dayIndex) { Road?.Send(PhoneMsg.CalendarClaim, "{\"dayIndex\":" + dayIndex + "}"); }
+
+        public static void QuizAnswer(int questionId, int option)
+        {
+            Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
+        }
+
+        public static void OneYuanBuy(int id, int goodsId)
+        {
+            Road?.Send(PhoneMsg.OneYuanBuy, "{\"id\":" + id + ",\"goodsId\":" + goodsId + "}");
+        }
 
         public static void AuditoriumAction(string action, int tierOrIndex = 0)
         {

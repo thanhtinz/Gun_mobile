@@ -169,6 +169,10 @@ namespace GunMobile.Net
         public int AuditoriumActions;
         public int BoguAdventureDay = -1;
         public int BoguAdventureActions;
+        public int QuizDay = -1;
+        public int QuizAttempts;
+        public int OneYuanDay = -1;
+        public List<int> OneYuanBought = new List<int>();
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -176,6 +180,9 @@ namespace GunMobile.Net
         public void TouchCalendarMonth() { EnsureCalendarClaimed(); int mk = DateTime.Now.Year * 100 + DateTime.Now.Month; if (CalendarMonth != mk) { CalendarMonth = mk; CalendarClaimedDays.Clear(); } }
         public void TouchAuditoriumDay() { int t = DateTime.Now.DayOfYear; if (AuditoriumDay != t) { AuditoriumDay = t; AuditoriumActions = 0; } }
         public void TouchBoguAdventureDay() { int t = DateTime.Now.DayOfYear; if (BoguAdventureDay != t) { BoguAdventureDay = t; BoguAdventureActions = 0; } }
+        public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
+        public void TouchQuizDay() { int t = DateTime.Now.DayOfYear; if (QuizDay != t) { QuizDay = t; QuizAttempts = 0; } }
+        public void TouchOneYuanDay() { EnsureOneYuanBought(); int t = DateTime.Now.DayOfYear; if (OneYuanDay != t) { OneYuanDay = t; OneYuanBought.Clear(); } }
 
         public void EnsureFightSpirits()
         {
@@ -642,6 +649,12 @@ namespace GunMobile.Net
             sb.Append("\"calendarClaimedDays\":["); for (int i = 0; i < CalendarClaimedDays.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CalendarClaimedDays[i]); } sb.Append("],");
             J(sb, "auditoriumActions", AuditoriumActions); sb.Append(",");
             J(sb, "boguAdventureActions", BoguAdventureActions); sb.Append(",");
+            TouchQuizDay();
+            J(sb, "quizAttempts", QuizAttempts); sb.Append(",");
+            TouchOneYuanDay();
+            sb.Append("\"oneYuanBought\":[");
+            for (int i = 0; i < OneYuanBought.Count; i++) { if (i > 0) sb.Append(","); sb.Append(OneYuanBought[i]); }
+            sb.Append("],");
             J(sb, "godCardEquipId", GodCardEquipId); sb.Append(",");
             J(sb, "godCardPoints", GodCardPoints); sb.Append(",");
             sb.Append("\"godCardPointClaimed\":[");
@@ -1800,6 +1813,14 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ManorUpgrade:
                     HandleManorUpgrade(player, ns);
+                    break;
+
+                case PhoneMsg.QuizAnswer:
+                    HandleQuizAnswer(player, ns, json);
+                    break;
+
+                case PhoneMsg.OneYuanBuy:
+                    HandleOneYuanBuy(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -4252,6 +4273,62 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.SuperLuckerDraw,
                 "{\"ok\":true,\"cost\":" + cost + ",\"draws\":" + player.SuperLuckerDraws +
                 ",\"rewards\":" + rewards + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleQuizAnswer(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            player.TouchQuizDay();
+            int max = _db.DailyQuizMax();
+            if (player.QuizAttempts >= max)
+            { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"limit\",\"attempts\":" + player.QuizAttempts + ",\"max\":" + max + "}"); return; }
+            int questionId = JI(json, "questionId", 0);
+            QuizQuestion q = _db.GetQuizQuestion(questionId) ?? _db.PickQuizQuestion(player.QuizAttempts);
+            if (q == null) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            int option = JI(json, "option", 0);
+            if (option <= 0) option = JI(json, "answer", 0);
+            if (option < 1 || option > 4) { Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":false,\"err\":\"option\"}"); return; }
+            int gold = _db.QuizGoldReward();
+            bool correct = option == q.CorrectOption;
+            player.Gold += gold;
+            player.QuizAttempts++;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.QuizAnswer, "{\"ok\":true,\"correct\":" + (correct ? "true" : "false") +
+                ",\"questionId\":" + q.QuestionId + ",\"option\":" + option +
+                ",\"gold\":" + gold + ",\"attempts\":" + player.QuizAttempts + ",\"max\":" + max + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleOneYuanBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"config\"}"); return; }
+            int id = JI(json, "id", 0);
+            int goodsId = JI(json, "goodsId", 0);
+            OneYuanGoods row = _db.GetOneYuanGoods(id, goodsId);
+            if (row == null) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"goods\"}"); return; }
+            player.TouchOneYuanDay();
+            int bought = 0;
+            for (int i = 0; i < player.OneYuanBought.Count; i++) if (player.OneYuanBought[i] == row.GoodsId) bought++;
+            int limit = _db.OneYuanDailyLimit(row);
+            if (bought >= limit) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"limit\",\"goodsId\":" + row.GoodsId + "}"); return; }
+            int cost = Mathf.Max(0, row.Cost);
+            bool gift = row.IsBindMoney != 0;
+            if (gift)
+            {
+                if (player.Gift < cost) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gift\"}"); return; }
+                player.Gift -= cost;
+            }
+            else
+            {
+                if (player.Gold < cost) { Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= cost;
+            }
+            player.AddItem(row.GoodsId, 1);
+            player.OneYuanBought.Add(row.GoodsId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.OneYuanBuy, "{\"ok\":true,\"id\":" + row.Id + ",\"goodsId\":" + row.GoodsId +
+                ",\"cost\":" + cost + ",\"gift\":" + (gift ? "true" : "false") + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -7536,6 +7613,9 @@ namespace GunMobile.Net
             public List<int> CalendarClaimedDays = new List<int>();
             public int AuditoriumDay = -1, AuditoriumActions;
             public int BoguAdventureDay = -1, BoguAdventureActions;
+            public int QuizDay = -1, QuizAttempts;
+            public int OneYuanDay = -1;
+            public List<int> OneYuanBought = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public int GodCardPoints;
             public List<int> GodCardPointClaimed = new List<int>();
@@ -7648,6 +7728,9 @@ namespace GunMobile.Net
                 CalendarClaimedDays = p.CalendarClaimedDays ?? new List<int>(),
                 AuditoriumDay = p.AuditoriumDay, AuditoriumActions = p.AuditoriumActions,
                 BoguAdventureDay = p.BoguAdventureDay, BoguAdventureActions = p.BoguAdventureActions,
+                QuizDay = p.QuizDay, QuizAttempts = p.QuizAttempts,
+                OneYuanDay = p.OneYuanDay,
+                OneYuanBought = p.OneYuanBought ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 GodCardPoints = p.GodCardPoints, GodCardPointClaimed = p.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
@@ -7762,6 +7845,9 @@ namespace GunMobile.Net
                 CalendarClaimedDays = s.CalendarClaimedDays ?? new List<int>(),
                 AuditoriumDay = s.AuditoriumDay, AuditoriumActions = s.AuditoriumActions,
                 BoguAdventureDay = s.BoguAdventureDay, BoguAdventureActions = s.BoguAdventureActions,
+                QuizDay = s.QuizDay, QuizAttempts = s.QuizAttempts,
+                OneYuanDay = s.OneYuanDay,
+                OneYuanBought = s.OneYuanBought ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 GodCardPoints = s.GodCardPoints, GodCardPointClaimed = s.GodCardPointClaimed ?? new List<int>(),
                 NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,

@@ -280,6 +280,31 @@ namespace GunMobile.Res
         public int Pic;
     }
 
+    public sealed class QuizQuestion
+    {
+        public int QuestionId;
+        public int CatalogId;
+        public string Content = "";
+        public string Option1 = "";
+        public string Option2 = "";
+        public string Option3 = "";
+        public string Option4 = "";
+        public int CorrectOption = 1;
+    }
+
+    public sealed class OneYuanGoods
+    {
+        public int Id;
+        public int GoodsId;
+        public string Name = "";
+        public string Remark = "";
+        public int Cost;
+        public int IsBindMoney;
+        public int GoodType;
+        public int Limit;
+        public string Desc = "";
+    }
+
     public sealed class LotteryDrop
     {
         public int Id;
@@ -1006,6 +1031,11 @@ namespace GunMobile.Res
         public Dictionary<int, PetStarUpgrade> PetStarUpgrades { get; } = new Dictionary<int, PetStarUpgrade>();
         public Dictionary<int, MountTalismanInfo> MountTalismans { get; } = new Dictionary<int, MountTalismanInfo>();
         public Dictionary<int, ManorPlantInfo> ManorPlants { get; } = new Dictionary<int, ManorPlantInfo>();
+        public Dictionary<int, QuizQuestion> QuizQuestions { get; } = new Dictionary<int, QuizQuestion>();
+        public List<QuizQuestion> QuizQuestionList { get; } = new List<QuizQuestion>();
+        public Dictionary<int, OneYuanGoods> OneYuanById { get; } = new Dictionary<int, OneYuanGoods>();
+        public Dictionary<int, OneYuanGoods> OneYuanByGoodsId { get; } = new Dictionary<int, OneYuanGoods>();
+        public List<OneYuanGoods> OneYuanGoodsList { get; } = new List<OneYuanGoods>();
         public Dictionary<int, MountSkillTemplate> MountSkills { get; } = new Dictionary<int, MountSkillTemplate>();
         public List<LotteryDrop> Lottery { get; } = new List<LotteryDrop>();
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
@@ -1121,6 +1151,8 @@ namespace GunMobile.Res
             db.LoadPetStarExp(loader);
             db.LoadMountTalismans(loader);
             db.LoadManorPlants(loader);
+            db.LoadQuizQuestions(loader);
+            db.LoadOneYuanGoods(loader);
             db.LoadMountSkills(loader);
             db.LoadLottery(loader);
             db.LoadVip(loader);
@@ -1304,6 +1336,49 @@ namespace GunMobile.Res
             }
 
             return cost;
+        }
+
+        public int DailyQuizMax()
+        {
+            int n = ConfigInt("QuizCount", 0);
+            if (n <= 0) n = ConfigInt("DailyQuizCount", 0);
+            if (n <= 0) n = ConfigInt("QuestionCount", 0);
+            if (n <= 0) n = ConfigInt("QuestionAwardCount", 0);
+            if (n <= 0) n = ConfigPipeInt("DDTKingQuizPersonMaxCount", 0, 0);
+            return n > 0 ? n : 5;
+        }
+
+        public int QuizGoldReward()
+        {
+            return ConfigInt("QuizGold", 200);
+        }
+
+        public QuizQuestion GetQuizQuestion(int questionId)
+        {
+            if (questionId > 0 && QuizQuestions.TryGetValue(questionId, out QuizQuestion row))
+                return row;
+            return null;
+        }
+
+        public QuizQuestion PickQuizQuestion(int index)
+        {
+            if (QuizQuestionList.Count == 0) return null;
+            int i = index % QuizQuestionList.Count;
+            if (i < 0) i += QuizQuestionList.Count;
+            return QuizQuestionList[i];
+        }
+
+        public OneYuanGoods GetOneYuanGoods(int id, int goodsId)
+        {
+            if (id > 0 && OneYuanById.TryGetValue(id, out OneYuanGoods byId)) return byId;
+            if (goodsId > 0 && OneYuanByGoodsId.TryGetValue(goodsId, out OneYuanGoods byGoods)) return byGoods;
+            return null;
+        }
+
+        public int OneYuanDailyLimit(OneYuanGoods row)
+        {
+            if (row != null && row.Limit > 0) return row.Limit;
+            return 1;
         }
 
         public int ManorHarvestGold(int manorGrade)
@@ -4045,6 +4120,93 @@ namespace GunMobile.Res
                     Style = Int(row, "Style"),
                     WorkMax = Int(row, "WorkMax")
                 };
+            }
+        }
+
+        void LoadQuizQuestions(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/loadallquestions.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int qid = Int(row, "QuestionID");
+                    string content = Str(row, "QuestionContent");
+                    if (qid <= 0 || string.IsNullOrEmpty(content)) continue;
+                    var q = new QuizQuestion
+                    {
+                        QuestionId = qid,
+                        CatalogId = Int(row, "QuestionCatalogID"),
+                        Content = content,
+                        Option1 = Str(row, "Option1"),
+                        Option2 = Str(row, "Option2"),
+                        Option3 = Str(row, "Option3"),
+                        Option4 = Str(row, "Option4"),
+                        CorrectOption = ParseQuizCorrectOption(row)
+                    };
+                    QuizQuestions[qid] = q;
+                    QuizQuestionList.Add(q);
+                }
+            }
+            if (TryTable(loader, "Request/advancequestionread.xml", out XmlResultTable answers))
+            {
+                foreach (var row in answers.Rows)
+                {
+                    int qid = Int(row, "QuestionID");
+                    if (qid <= 0 || !QuizQuestions.TryGetValue(qid, out QuizQuestion q)) continue;
+                    if (HasQuizAnswerField(row))
+                    {
+                        int parsed = ParseQuizCorrectOption(row);
+                        if (parsed >= 1 && parsed <= 4) q.CorrectOption = parsed;
+                    }
+                }
+            }
+        }
+
+        static bool HasQuizAnswerField(IReadOnlyDictionary<string, string> row)
+        {
+            return HasNonEmpty(row, "Answer") || HasNonEmpty(row, "Correct") || HasNonEmpty(row, "CorrectAnswer")
+                || HasNonEmpty(row, "RightAnswer") || HasNonEmpty(row, "AnswerID");
+        }
+
+        static bool HasNonEmpty(IReadOnlyDictionary<string, string> row, string key)
+        {
+            return row.TryGetValue(key, out string raw) && !string.IsNullOrEmpty(raw);
+        }
+
+        static int ParseQuizCorrectOption(IReadOnlyDictionary<string, string> row)
+        {
+            string[] keys = { "Answer", "Correct", "CorrectAnswer", "RightAnswer", "AnswerID" };
+            for (int i = 0; i < keys.Length; i++)
+            {
+                if (!row.TryGetValue(keys[i], out string raw) || string.IsNullOrEmpty(raw)) continue;
+                raw = raw.Trim();
+                if (int.TryParse(raw, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out int n) && n >= 1 && n <= 4) return n;
+                if (raw.Length == 1)
+                {
+                    char c = char.ToUpperInvariant(raw[0]);
+                    if (c >= 'A' && c <= 'D') return (c - 'A') + 1;
+                }
+            }
+            return 1;
+        }
+
+        void LoadOneYuanGoods(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/oneyuanbuyallgoodstemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "Id");
+                int goodsId = Int(row, "GoodsID");
+                if (id <= 0 || goodsId <= 0) continue;
+                var goods = new OneYuanGoods
+                {
+                    Id = id, GoodsId = goodsId, Name = Str(row, "Name"), Remark = Str(row, "Remark"),
+                    Cost = Int(row, "Cost"), IsBindMoney = Int(row, "IsBindMoney"), GoodType = Int(row, "GoodType"),
+                    Limit = Int(row, "Limit"), Desc = Str(row, "Desc")
+                };
+                OneYuanById[id] = goods;
+                OneYuanByGoodsId[goodsId] = goods;
+                OneYuanGoodsList.Add(goods);
             }
         }
 
