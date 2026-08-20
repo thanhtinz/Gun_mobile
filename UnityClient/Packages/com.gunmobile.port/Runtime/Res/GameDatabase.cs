@@ -2923,7 +2923,6 @@ namespace GunMobile.Res
                 return;
             }
 
-            if (!TryTable(loader, "Request/battleteamshopitemlist.xml", out XmlResultTable table)) return;
             foreach (var row in table.Rows)
             {
                 TeamDungeonShop.Add(new TeamDungeonShopEntry
@@ -2934,8 +2933,6 @@ namespace GunMobile.Res
                     Price = Int(row, "Price"),
                     Condition = Int(row, "Condition"),
                     Value = Int(row, "Value")
-                    Id = Int(row, "ID"), ShopType = Int(row, "ShopType"), NeedLevel = Int(row, "NeedLevel"),
-                    Price = Int(row, "Price"), Condition = Int(row, "Condition"), Value = Int(row, "Value")
                 });
             }
         }
@@ -3120,6 +3117,9 @@ namespace GunMobile.Res
                         NeedItem3 = Int(row, "NeedItem3"), ItemCount3 = Int(row, "ItemCount3"), NeedItem4 = Int(row, "NeedItem4"), ItemCount4 = Int(row, "ItemCount4")
                     };
                 }
+            }
+        }
+
         void LoadMagicCloths(ResLoader loader)
         {
             if (!TryTable(loader, "Request/magicclothlist.xml", out XmlResultTable table)) return;

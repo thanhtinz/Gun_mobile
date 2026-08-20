@@ -5226,10 +5226,6 @@ namespace GunMobile.Net
 
         [Serializable]
         class ServerPlayerSave
-
-
-        [Serializable]
-        class ServerPlayerSave
         {
             public string Nick = "Player";
             public int Sex = 1;
