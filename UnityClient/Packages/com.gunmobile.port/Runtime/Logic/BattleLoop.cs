@@ -107,15 +107,23 @@ namespace GunMobile.Logic
             double dr1 = dr1Denom <= 0 ? 0 : 0.95 * (baseGuard - 3 * grade) / dr1Denom;
 
             double dr2 = 0;
-            double defMinusLuck = defence - attacker.Lucky;
+            int lucky = attacker.Luck;
+            double defMinusLuck = defence - lucky;
             if (defMinusLuck >= 0)
             {
-                double dr2Denom = 600 + defence - attacker.Lucky;
+                double dr2Denom = 600 + defence - lucky;
                 dr2 = dr2Denom <= 0 ? 0 : 0.95 * defMinusLuck / dr2Denom;
             }
 
             double mitigation = dr1 + dr2 - dr1 * dr2;
             double damage = baseDamage * (1 + attack * 0.001) * (1 - mitigation) * damagePlus * shootMinus;
+
+            if (attacker.MagicAttack > 0)
+            {
+                double mDef = defender.MagicDefence + defenderMods.DefenceFlat / 2;
+                double mMit = mDef <= 0 ? 0 : 0.95 * mDef / (600 + mDef);
+                damage += attacker.MagicAttack * (1 - mMit) * 0.01;
+            }
 
             if (blastRadius > 0f)
             {
@@ -142,7 +150,8 @@ namespace GunMobile.Logic
             int baseDmg = Mathf.RoundToInt((float)damage);
             if (isCrit)
             {
-                baseDmg += ComputeCritical(attacker.Lucky, baseDmg);
+                int critBonus = ComputeCritical(lucky, baseDmg);
+                baseDmg += Mathf.RoundToInt(critBonus * (1f + attackerMods.CritDamageAdd));
             }
 
             return Mathf.Min(Mathf.Max(1, baseDmg), defender.Hp);
@@ -161,12 +170,17 @@ namespace GunMobile.Logic
 
         public static int ComputeCritical(int lucky, int baseDamage)
         {
-            return Mathf.RoundToInt((0.5 + lucky * 0.0003) * baseDamage);
+            return Mathf.RoundToInt((0.5f + lucky * 0.0003f) * baseDamage);
         }
 
         public static int ComputeBombHurt(BallPhysics ball, float propDmgMult = 1f)
         {
-            float power = ball != null ? ball.Power : 1f;
+            float power = ball.Power;
+            if (Mathf.Abs(power) < 0.001f)
+            {
+                power = 1f;
+            }
+
             int bombHurt = 80 + Mathf.RoundToInt(Mathf.Abs(power) * 80f);
             if (bombHurt < 40)
             {

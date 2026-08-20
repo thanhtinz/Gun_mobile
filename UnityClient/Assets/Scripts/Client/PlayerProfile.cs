@@ -529,6 +529,15 @@ namespace GunMobile.Client
             new ModuleDef("godcard", "神卡", "Request/godcardlist.xml"),
             new ModuleDef("engrave", "刻印", "Request/engravesetinfo.xml"),
             new ModuleDef("stock", "股票", "Request/StockTemplateInfo.xml"),
+            new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml"),
+            new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml"),
+            new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml"),
+            new ModuleDef("carnival", "嘉年华", "Request/newlotteryitem.xml"),
+            new ModuleDef("bank", "银行", null),
+            new ModuleDef("mines", "矿山", null),
+            new ModuleDef("auditorium", "礼堂", "Request/CelebByDayGPList.xml"),
+            new ModuleDef("treasure", "寻宝", "Request/newlotteryitem.xml"),
+            new ModuleDef("peakbattle", "巅峰战", "Request/areacelebbydayfightpowerlist.xml"),
         };
     }
 }

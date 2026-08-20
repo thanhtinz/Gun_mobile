@@ -36,6 +36,8 @@ Server sẽ tự khởi động `MobileGameServer` lắng nghe:
 - **TCP 4396** (Road — hall/login/shop/quest/...)
 - **TCP 1910** (Fight — battle relay)
 
+Headless build **không** khởi động client `GameApp` (tránh trùng port). Log sẽ báo số map có `fore.map` collision.
+
 ### Systemd service (optional)
 ```ini
 [Unit]
@@ -62,9 +64,46 @@ sudo systemctl enable --now gunmobile
 
 ## Cách 2: Standalone .NET console (không cần Unity)
 
-> Đang phát triển. Hiện tại `MobileGameServer` phụ thuộc vào `UnityEngine.Mathf`,
-> `UnityEngine.Debug`, `UnityEngine.JsonUtility`. Khi tách xong shim layer sẽ có
-> project .NET console chạy trực tiếp trên VPS không cần Unity.
+Project: `Server/GunMobile.Standalone/` — chạy trực tiếp trên VPS với .NET 8.
+
+### Yêu cầu
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- PC data tại `UnityClient/Assets/StreamingAssets/PcData` (hoặc path tùy chỉnh)
+
+### Chạy nhanh
+```bash
+bash tools/run_standalone_server.sh
+```
+
+Hoặc thủ công:
+```bash
+export GUNMOBILE_PC_DATA=/path/to/PcData
+export GUNMOBILE_DATA=/var/lib/gunmobile
+cd Server/GunMobile.Standalone
+dotnet run -c Release -- /path/to/PcData
+```
+
+Server lắng nghe **TCP 4396** (Road) và **1910** (Fight). Player save: `$GUNMOBILE_DATA/server_players/*.json`
+
+### Systemd (standalone)
+```ini
+[Unit]
+Description=GunMobile .NET Server
+After=network.target
+
+[Service]
+Type=simple
+User=gunmobile
+WorkingDirectory=/opt/gunmobile/Server/GunMobile.Standalone
+Environment=GUNMOBILE_PC_DATA=/opt/gunmobile/PcData
+Environment=GUNMOBILE_DATA=/var/lib/gunmobile
+ExecStart=/usr/bin/dotnet /opt/gunmobile/Server/GunMobile.Standalone/bin/Release/net8.0/GunMobileServer.dll
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
 
 ## Client kết nối
 

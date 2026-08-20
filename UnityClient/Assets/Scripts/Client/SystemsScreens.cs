@@ -709,6 +709,7 @@ namespace GunMobile.Client
             int texpCost = app.Database != null ? app.Database.TexpTrainGoldCost() : 400;
             int texpGain = app.Database != null ? app.Database.TexpTrainGain() : 25;
             Transform body = SysUi.Begin(safe, app, "修炼  Texp " + app.Profile.Texp);
+            MornScreenHost.TryEmbedMorn(body, app, "ddttexpsystem.ui");
             SysUi.Row(body, "texp", $"修炼一次  {texpCost} 金币  Texp+{texpGain}", () => PhoneNet.TrainTexp());
         }
     }

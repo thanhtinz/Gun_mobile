@@ -124,6 +124,9 @@ namespace GunMobile.Res
 
         public bool TryReadImageBytes(string relative, out byte[] bytes)
         {
+#if GUNMOBILE_STANDALONE
+            return TryReadBytes(relative, out bytes);
+#else
             relative = GamePaths.Normalize(relative);
             string pkm = PkmImage.ToPkmPath(relative);
             if (!string.Equals(pkm, relative, StringComparison.OrdinalIgnoreCase) && TryReadBytes(pkm, out bytes))
@@ -132,8 +135,10 @@ namespace GunMobile.Res
             }
 
             return TryReadBytes(relative, out bytes);
+#endif
         }
 
+#if !GUNMOBILE_STANDALONE
         public Texture2D ReadTexture(string relative, bool linear = false)
         {
             if (!TryReadImageBytes(relative, out byte[] bytes))
@@ -159,12 +164,14 @@ namespace GunMobile.Res
             tex.wrapMode = TextureWrapMode.Clamp;
             return tex;
         }
+#endif
 
         public static string Foreground(int mapId) => GamePaths.PathCombine(GamePaths.MapImage(mapId), "fore.png");
         public static string Background(int mapId) => GamePaths.PathCombine(GamePaths.MapImage(mapId), "back.jpg");
         public static string MiniMap(int mapId) => GamePaths.PathCombine(GamePaths.MapImage(mapId), "samll_map.png");
     }
 
+#if !GUNMOBILE_STANDALONE
     public sealed class AtlasSprite
     {
         public string Name;
@@ -239,4 +246,5 @@ namespace GunMobile.Res
             return value;
         }
     }
+#endif
 }

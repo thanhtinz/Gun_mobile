@@ -497,6 +497,12 @@ namespace GunMobile.Net
     /// </summary>
     public sealed class MobileGameServer
     {
+        struct PendingSurrender
+        {
+            public ServerPlayer Player;
+            public GameRoom Room;
+        }
+
         readonly object _lock = new object();
         readonly Dictionary<int, ServerPlayer> _players = new Dictionary<int, ServerPlayer>();
         readonly Dictionary<int, GameRoom> _rooms = new Dictionary<int, GameRoom>();
@@ -716,9 +722,7 @@ namespace GunMobile.Net
                     long now = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
                     List<GameRoom> advance = null;
                     List<GameRoom> suicideEnd = null;
-                    // Collect reconnect-expired disconnects and process outside _lock.
-                    class LoseItem { public ServerPlayer Player; public GameRoom Room; }
-                    List<LoseItem> toSurrender = null;
+                    List<PendingSurrender> toSurrender = null;
 
                     lock (_lock)
                     {
@@ -756,8 +760,8 @@ namespace GunMobile.Net
                             if (p.FightDisconnectedAtMs <= 0) continue;
                             if (now - p.FightDisconnectedAtMs < reconnectGraceMs) continue;
 
-                            toSurrender ??= new List<LoseItem>();
-                            toSurrender.Add(new LoseItem { Player = p, Room = room });
+                            toSurrender ??= new List<PendingSurrender>();
+                            toSurrender.Add(new PendingSurrender { Player = p, Room = room });
                         }
                     }
 
@@ -781,7 +785,7 @@ namespace GunMobile.Net
                     {
                         foreach (var item in toSurrender)
                         {
-                            if (item == null || item.Player == null || item.Room == null) continue;
+                            if (item.Player == null || item.Room == null) continue;
 
                             lock (_lock)
                             {

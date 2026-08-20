@@ -367,7 +367,9 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebGpDay { get; } = new List<CelebEntry>();
         public List<CelebEntry> CelebFightPowerDay { get; } = new List<CelebEntry>();
         public List<CelebEntry> CelebOfferDay { get; } = new List<CelebEntry>();
+#if !GUNMOBILE_STANDALONE
         public CharacterDefine CharacterDef { get; private set; }
+#endif
 
         /// <summary>Mobile battle UI prop slots (game_prop_N.png).</summary>
         public static readonly int[] BattlePropPicIds = { 1, 2, 4, 5, 6, 7 };
@@ -406,7 +408,9 @@ namespace GunMobile.Res
             db.LoadFightLabDrops(loader);
             db.LoadLevels(loader);
             db.LoadCelebLists(loader);
+#if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
+#endif
             Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} quests={db.Quests.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
@@ -1199,7 +1203,7 @@ namespace GunMobile.Res
         /// <summary>BallList BombType=1 heals allies in blast radius (PC angel/heal bombs).</summary>
         public static bool BallIsHeal(BallPhysics ball)
         {
-            return ball != null && ball.BombType == 1;
+            return ball.BombType == 1;
         }
 
         public int PetMpMax(int petTemplateId)
@@ -2299,6 +2303,9 @@ namespace GunMobile.Res
 
         void LoadCharacterDefine(ResLoader loader)
         {
+#if GUNMOBILE_STANDALONE
+            return;
+#else
             try
             {
                 byte[] bytes = loader.ReadBytes("Flash/characterdefine.xml");
@@ -2313,6 +2320,7 @@ namespace GunMobile.Res
             {
                 Debug.LogWarning("GameDatabase characterdefine: " + e.Message);
             }
+#endif
         }
 
         public List<CelebEntry> CelebForType(string type)

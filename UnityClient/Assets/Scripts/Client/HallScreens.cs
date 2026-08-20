@@ -71,7 +71,7 @@ namespace GunMobile.Client
                 Place(bg.transform, build, "Boat", "hall_new_boat", new Vector2(0.72f, 0.16f), new Vector2(280f, 56f));
                 Building(bg.transform, build, "FightB", "hall_new_fight", "hall_new_fight_name", new Vector2(0.22f, 0.42f), new Vector2(220f, 240f), app.ShowRoom);
                 Building(bg.transform, build, "DunB", "hall_new_dungeon", "hall_new_dungeon_name", new Vector2(0.5f, 0.46f), new Vector2(230f, 170f), () => Open(app, "dungeon"));
-                Building(bg.transform, build, "AudB", "hall_new_auditorium", "hall_new_auditorium_name", new Vector2(0.78f, 0.48f), new Vector2(210f, 180f), () => Open(app, "consortia"));
+                Building(bg.transform, build, "AudB", "hall_new_auditorium", "hall_new_auditorium_name", new Vector2(0.78f, 0.48f), new Vector2(210f, 180f), () => Open(app, "auditorium"));
                 Building(bg.transform, build, "SecB", "hall_new_secret", "hall_new_secret_name", new Vector2(0.36f, 0.52f), new Vector2(90f, 150f), () => Open(app, "labyrinth"));
                 RankPodium(bg.transform, build, () => Open(app, "rank"));
             }

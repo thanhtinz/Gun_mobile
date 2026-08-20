@@ -252,6 +252,33 @@ namespace GunMobile.Client
                 case "bomb":
                     BombConfigScreen.Show(_safe, this);
                     return;
+                case "magicstone":
+                    ExtraModulesScreens.MagicStoneScreen(_safe, this);
+                    return;
+                case "enchant":
+                    ExtraModulesScreens.EnchantScreen(_safe, this);
+                    return;
+                case "teamdungeon":
+                    ExtraModulesScreens.TeamDungeonScreen(_safe, this);
+                    return;
+                case "carnival":
+                    ExtraModulesScreens.CarnivalScreen(_safe, this);
+                    return;
+                case "bank":
+                    ExtraModulesScreens.BankScreen(_safe, this);
+                    return;
+                case "mines":
+                    ExtraModulesScreens.MinesScreen(_safe, this);
+                    return;
+                case "auditorium":
+                    ExtraModulesScreens.AuditoriumScreen(_safe, this);
+                    return;
+                case "treasure":
+                    ExtraModulesScreens.TreasureScreen(_safe, this);
+                    return;
+                case "peakbattle":
+                    ExtraModulesScreens.PeakBattleScreen(_safe, this);
+                    return;
                 default:
                     DataBrowserScreen.Show(_safe, this, module);
                     return;

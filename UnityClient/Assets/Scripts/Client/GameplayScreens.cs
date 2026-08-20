@@ -429,6 +429,7 @@ namespace GunMobile.Client
             UiKit.ClearChildren(safe);
             var bg = UiKit.PcPanel(safe, "Set");
             ShopScreen.Header(bg.transform, app, "设置");
+            MornScreenHost.TryEmbedMorn(bg.transform, app, "setting.ui");
             string lang = app.Config != null ? app.Config.Language : "cn_trad";
             string info =
                 $"Language {lang}\n" +

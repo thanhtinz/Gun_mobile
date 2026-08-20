@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>GunMobile</RootNamespace>
+    <AssemblyName>GunMobileServer</AssemblyName>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <LangVersion>12</LangVersion>
+    <DefineConstants>GUNMOBILE_STANDALONE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="UnityEngine\UnityTypes.cs" />
+    <Compile Include="UnityEngine\Application.cs" />
+    <Compile Include="UnityEngine\Debug.cs" />
+    <Compile Include="UnityEngine\JsonUtility.cs" />
+    <Compile Include="UnityEngine\Mathf.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Core\*.cs" Link="Port\Core\%(Filename)%(Extension)" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Logic\BattleEffects.cs" Link="Port/Logic/BattleEffects.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Logic\BattleLoop.cs" Link="Port/Logic/BattleLoop.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Logic\PcPhysics.cs" Link="Port/Logic/PcPhysics.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Logic\ProjectileSimulator.cs" Link="Port/Logic/ProjectileSimulator.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Res\FlashConfig.cs" Link="Port/Res/FlashConfig.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Res\GameDatabase.cs" Link="Port/Res/GameDatabase.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Res\MapCollision.cs" Link="Port/Res/MapCollision.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Res\ResLoader.cs" Link="Port/Res/ResLoader.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Net\MobileGameServer.cs" Link="Port/Net/MobileGameServer.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Net\PhonePacket.cs" Link="Port/Net/PhonePacket.cs" />
+    <Compile Include="..\..\UnityClient\Packages\com.gunmobile.port\Runtime\Net\PlayerExtras.cs" Link="Port/Net/PlayerExtras.cs" />
+  </ItemGroup>
+</Project>
