@@ -404,5 +404,64 @@ namespace GunMobile.Client
             SysUi.Row(body, "sweep", "扫荡本层 (跳过战斗)", PhoneNet.SweepLabyrinth);
             SysUi.Row(body, "fight", "手动挑战", () => LabyrinthScreen.Show(safe, app));
         }
+        static readonly string[] EmblemTypeNames = { "", "武器", "副手", "衣服", "帽子" };
+
+        public static void EmblemScreen(RectTransform safe, GameApp app)
+        {
+            app.Profile.EnsureEmblems();
+            Transform body = ShowMornModule(safe, app, new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"), "emblem.ui");
+            int success = app.Database != null ? app.Database.EmblemComposeSuccessRate() : 700;
+            SysUi.Note(body, "TS_Emblem.xml  ·  成功率 " + (success / 10) + "%  ·  已拥有 " + app.Profile.Emblems.Count);
+            for (int types = 1; types <= 4; types++)
+            {
+                for (int profile = 1; profile <= 3; profile++)
+                {
+                    EmblemTemplate row = null;
+                    if (app.Database != null)
+                        for (int i = 0; i < app.Database.EmblemList.Count; i++)
+                            if (app.Database.EmblemList[i].Types == types && app.Database.EmblemList[i].Profile == profile) { row = app.Database.EmblemList[i]; break; }
+                    int cost = row != null && app.Database != null ? app.Database.EmblemCraftGoldCost(row) : 0;
+                    string slotName = types < EmblemTypeNames.Length ? EmblemTypeNames[types] : ("部位" + types);
+                    int t = types, p = profile;
+                    SysUi.Row(body, "craft" + t + "p" + p, slotName + " P" + profile + "  合成 " + cost + " 金", () => PhoneNet.CraftEmblem(t, p));
+                }
+            }
+            for (int i = 0; i < app.Profile.Emblems.Count; i++)
+            {
+                EmblemSlot slot = app.Profile.Emblems[i];
+                string slotName = slot.Types < EmblemTypeNames.Length ? EmblemTypeNames[slot.Types] : ("T" + slot.Types);
+                string label = "#" + slot.Id + " " + slotName + " P" + slot.Profile + " 主" + slot.MainValue + (slot.SubValue > 0 ? " 副" + slot.SubValue : "") + (slot.Equipped != 0 ? " [已装备]" : "");
+                int id = slot.Id;
+                if (slot.Equipped == 0) SysUi.Row(body, "eq" + id, label + "  ·  装备", () => PhoneNet.EquipEmblem(id, 1));
+                else SysUi.Row(body, "ueq" + id, label + "  ·  卸下", () => PhoneNet.EquipEmblem(id, 0));
+            }
+        }
+
+        public static void SoulMarkScreen(RectTransform safe, GameApp app)
+        {
+            app.Profile.EnsureSoulStamps();
+            Transform body = ShowMornModule(safe, app, new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"), "soulMark.ui");
+            SysUi.Note(body, "TS_SoulStampTemplate.xml  ·  已拥有 " + app.Profile.SoulStamps.Count);
+            for (int quality = 1; quality <= 5; quality++)
+            {
+                SoulStampComposeTemplate compose = app.Database != null ? app.Database.GetSoulStampCompose(quality) : null;
+                int cost = compose != null && app.Database != null ? app.Database.SoulStampComposeGoldCost(compose) : 0;
+                int q = quality;
+                SysUi.Row(body, "compose" + q, "品质" + q + "  合成 " + cost + " 金", () => PhoneNet.ComposeSoulStamp(q));
+            }
+            for (int i = 0; i < app.Profile.SoulStamps.Count; i++)
+            {
+                SoulStampSlot slot = app.Profile.SoulStamps[i];
+                SoulRefineRatio next = app.Database != null ? app.Database.GetSoulRefine(slot.Type, slot.Grade + 1) : null;
+                int refineCost = next != null && app.Database != null ? app.Database.SoulStampRefineGoldCost(next) : 0;
+                string pro = slot.ProType == 1 ? "ATK" : slot.ProType == 2 ? "DEF" : slot.ProType == 3 ? "AGI" : "LUK";
+                string label = "#" + slot.Id + " Q" + slot.Quality + " G" + slot.Grade + " " + pro + "+" + slot.ProValue + (slot.Equipped != 0 ? " [已装备]" : "");
+                int id = slot.Id;
+                if (next != null && refineCost > 0)
+                    SysUi.Row(body, "ref" + id, label + "  ·  精炼 →G" + (slot.Grade + 1) + " " + refineCost + " 金", () => PhoneNet.RefineSoulStamp(id));
+                else SysUi.Note(body, label);
+            }
+        }
+
     }
 }

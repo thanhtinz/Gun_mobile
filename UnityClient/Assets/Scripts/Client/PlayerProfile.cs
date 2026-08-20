@@ -74,6 +74,8 @@ namespace GunMobile.Client
         public List<string> Friends = new List<string>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
         public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
+        public List<EmblemSlot> Emblems = new List<EmblemSlot>();
+        public List<SoulStampSlot> SoulStamps = new List<SoulStampSlot>();
         public List<string> ChatLog = new List<string>();
         public List<GodCardSlot> GodCards = new List<GodCardSlot>();
         public int GodCardEquipId;
@@ -99,6 +101,10 @@ namespace GunMobile.Client
                         p.EnsureFightSpirits();
                         p.MagicStones = p.MagicStones ?? new List<MagicStoneSlot>();
                         p.EnsureMagicStones();
+                        p.Emblems = p.Emblems ?? new List<EmblemSlot>();
+                        p.EnsureEmblems();
+                        p.SoulStamps = p.SoulStamps ?? new List<SoulStampSlot>();
+                        p.EnsureSoulStamps();
                         p.ChatLog = p.ChatLog ?? new List<string>();
                         p.GodCards = p.GodCards ?? new List<GodCardSlot>();
                         p.StockHoldings = p.StockHoldings ?? new List<StockSlot>();
@@ -116,6 +122,8 @@ namespace GunMobile.Client
             fresh.EnsureStarterBag();
             fresh.EnsureFightSpirits();
             fresh.EnsureMagicStones();
+            fresh.EnsureEmblems();
+            fresh.EnsureSoulStamps();
             return fresh;
         }
 
@@ -179,6 +187,9 @@ namespace GunMobile.Client
 
             MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
         }
+
+        public void EnsureEmblems() { if (Emblems == null) Emblems = new List<EmblemSlot>(); }
+        public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
 
         public void Save()
         {
@@ -409,6 +420,15 @@ namespace GunMobile.Client
                 db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
                 atk += magicAtk / 4;
                 def += magicDef / 4;
+                db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
+                db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
+                EnsureEmblems();
+                int eMa = magicAtk, eMd = magicDef;
+                db.ApplyEmblemStats(Emblems, ref atk, ref def, ref agi, ref luk, ref hp, ref eMa, ref eMd);
+                atk += (eMa - magicAtk) / 4;
+                def += (eMd - magicDef) / 4;
+                EnsureSoulStamps();
+                db.ApplySoulStampStats(SoulStamps, ref atk, ref def, ref agi, ref luk, ref hp);
 
                 if (db.Elves.TryGetValue(ElfId, out ElfInfo elf))
                 {
@@ -619,11 +639,11 @@ namespace GunMobile.Client
             new ModuleDef("boguadventure", "啵咕冒险", null, false, "boguadventure.ui"),
             new ModuleDef("worshipthemoon", "拜月", null, false, "worshipthemoon.ui"),
             new ModuleDef("forcesbattle", "势力战", null, false, "forcesbattle.ui"),
-            new ModuleDef("soulmark", "魂印", null, false, "soulMark.ui"),
+            new ModuleDef("soulmark", "魂印", "Request/TS_SoulStampTemplate.xml", false, "soulMark.ui"),
             new ModuleDef("magicwardrobe", "魔衣橱", null, false, "magicwardrobe.ui"),
             new ModuleDef("sweep", "扫荡", null, false, "sweep.ui"),
             new ModuleDef("culture", "文化", null, false, "culture.ui"),
-            new ModuleDef("emblem", "徽章", null, false, "emblem.ui"),
+            new ModuleDef("emblem", "徽章", "Request/TS_Emblem.xml", false, "emblem.ui"),
             new ModuleDef("treasureroom", "藏宝室", null, false, "treasureroom.ui"),
             new ModuleDef("labyrinthgame", "迷宫游戏", null, false, "labyrinthgame.ui"),
             new ModuleDef("godcardraise", "神卡养成", "Request/godcardlist.xml", false, "godcardraise.ui"),

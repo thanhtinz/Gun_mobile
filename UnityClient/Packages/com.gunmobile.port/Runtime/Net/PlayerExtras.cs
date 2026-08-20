@@ -30,6 +30,34 @@ namespace GunMobile.Net
     }
 
     [System.Serializable]
+    public sealed class EmblemSlot
+    {
+        public int Id;
+        public int TemplateId;
+        public int Types;
+        public int Profile;
+        public int MainType;
+        public int MainValue;
+        public int SubValue;
+        public int SkillId;
+        public int Equipped;
+    }
+
+    [System.Serializable]
+    public sealed class SoulStampSlot
+    {
+        public int Id;
+        public int TempId;
+        public int Type;
+        public int Quality;
+        public int Grade;
+        public int ProType;
+        public int ProValue;
+        public int SkillId;
+        public int Equipped;
+    }
+
+    [System.Serializable]
     public sealed class AuctionListing
     {
         public int Id;

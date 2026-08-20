@@ -83,6 +83,10 @@ namespace GunMobile.Net
         public List<StockSlot> StockHoldings = new List<StockSlot>();
         public List<FightSpiritSlot> FightSpirits = new List<FightSpiritSlot>();
         public List<MagicStoneSlot> MagicStones = new List<MagicStoneSlot>();
+        public List<EmblemSlot> Emblems = new List<EmblemSlot>();
+        public List<SoulStampSlot> SoulStamps = new List<SoulStampSlot>();
+        public int NextEmblemId = 1;
+        public int NextSoulStampId = 1;
 
         public void EnsureFightSpirits()
         {
@@ -173,6 +177,10 @@ namespace GunMobile.Net
 
             MagicStones.Add(new MagicStoneSlot { TemplateId = templateId, Level = level });
         }
+        public void EnsureEmblems() { if (Emblems == null) Emblems = new List<EmblemSlot>(); }
+        public EmblemSlot FindEmblem(int id) { EnsureEmblems(); for (int i = 0; i < Emblems.Count; i++) if (Emblems[i].Id == id) return Emblems[i]; return null; }
+        public void EnsureSoulStamps() { if (SoulStamps == null) SoulStamps = new List<SoulStampSlot>(); }
+        public SoulStampSlot FindSoulStamp(int id) { EnsureSoulStamps(); for (int i = 0; i < SoulStamps.Count; i++) if (SoulStamps[i].Id == id) return SoulStamps[i]; return null; }
 
         public TcpClient RoadTcp;
         public NetworkStream RoadStream;
@@ -253,11 +261,14 @@ namespace GunMobile.Net
             int magicAtk = 0;
             int magicDef = 0;
             db.ApplyMagicStoneStats(MagicStones, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
-            MagicAttack = magicAtk;
-            MagicDefence = magicDef;
-
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
+            EnsureEmblems();
+            db.ApplyEmblemStats(Emblems, ref atk, ref def, ref agi, ref luck, ref hp, ref magicAtk, ref magicDef);
+            EnsureSoulStamps();
+            db.ApplySoulStampStats(SoulStamps, ref atk, ref def, ref agi, ref luck, ref hp);
+            MagicAttack = magicAtk;
+            MagicDefence = magicDef;
 
             if (db.Spirits.TryGetValue(Mathf.Max(1, GemLevel), out SpiritInfo weaponSpirit))
             {
@@ -391,6 +402,12 @@ namespace GunMobile.Net
                 sb.Append("{\"templateId\":").Append(MagicStones[i].TemplateId)
                     .Append(",\"level\":").Append(MagicStones[i].Level).Append("}");
             }
+            sb.Append("],");
+            EnsureEmblems(); sb.Append("\"emblems\":[");
+            for (int i = 0; i < Emblems.Count; i++) { if (i > 0) sb.Append(","); EmblemSlot e = Emblems[i]; sb.Append("{\"id\":").Append(e.Id).Append(",\"templateId\":").Append(e.TemplateId).Append(",\"types\":").Append(e.Types).Append(",\"profile\":").Append(e.Profile).Append(",\"mainType\":").Append(e.MainType).Append(",\"mainValue\":").Append(e.MainValue).Append(",\"subValue\":").Append(e.SubValue).Append(",\"skillId\":").Append(e.SkillId).Append(",\"equipped\":").Append(e.Equipped).Append("}"); }
+            sb.Append("],");
+            EnsureSoulStamps(); sb.Append("\"soulStamps\":[");
+            for (int i = 0; i < SoulStamps.Count; i++) { if (i > 0) sb.Append(","); SoulStampSlot s = SoulStamps[i]; sb.Append("{\"id\":").Append(s.Id).Append(",\"tempId\":").Append(s.TempId).Append(",\"type\":").Append(s.Type).Append(",\"quality\":").Append(s.Quality).Append(",\"grade\":").Append(s.Grade).Append(",\"proType\":").Append(s.ProType).Append(",\"proValue\":").Append(s.ProValue).Append(",\"skillId\":").Append(s.SkillId).Append(",\"equipped\":").Append(s.Equipped).Append("}"); }
             sb.Append("],");
             sb.Append("\"bag\":[");
             for (int i = 0; i < Bag.Count; i++)
@@ -1365,6 +1382,10 @@ namespace GunMobile.Net
                 case PhoneMsg.SweepLabyrinth:
                     HandleSweepLabyrinth(player, ns);
                     break;
+                case PhoneMsg.EmblemCraft: HandleEmblemCraft(player, ns, json); break;
+                case PhoneMsg.EmblemEquip: HandleEmblemEquip(player, ns, json); break;
+                case PhoneMsg.SoulStampCompose: HandleSoulStampCompose(player, ns, json); break;
+                case PhoneMsg.SoulStampRefine: HandleSoulStampRefine(player, ns, json); break;
 
                 case PhoneMsg.PveStart:
                 {
@@ -2432,6 +2453,78 @@ namespace GunMobile.Net
             SavePlayer(player);
             Send(ns, PhoneMsg.NecklaceUpgrade,
                 "{\"ok\":true,\"level\":" + player.NecklaceLevel + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleEmblemCraft(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.EmblemCraft, "{\"ok\":false}"); return; }
+            int types = JI(json, "types", 1), profile = JI(json, "profile", 1);
+            EmblemTemplate row = null;
+            for (int i = 0; i < _db.EmblemList.Count; i++)
+                if (_db.EmblemList[i].Types == types && _db.EmblemList[i].Profile == profile) { row = _db.EmblemList[i]; break; }
+            if (row == null) { Send(ns, PhoneMsg.EmblemCraft, "{\"ok\":false,\"err\":\"template\"}"); return; }
+            int cost = _db.EmblemCraftGoldCost(row);
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.EmblemCraft, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost;
+            int roll; lock (_lock) { roll = _rng.Next(0, 1000); }
+            if (roll >= _db.EmblemComposeSuccessRate()) {
+                SavePlayer(player); Send(ns, PhoneMsg.EmblemCraft, "{\"ok\":false,\"err\":\"fail\",\"cost\":" + cost + "}"); Send(ns, PhoneMsg.ProfileData, player.ToJson()); return; }
+            int skillId = 0; int skillRoll; lock (_lock) { skillRoll = _rng.Next(0, 1000); }
+            if (skillRoll < _db.EmblemComposeSkillRate()) { int[] skills = _db.EmblemSkillIds(); if (skills.Length > 0) lock (_lock) { skillId = skills[_rng.Next(0, skills.Length)]; } }
+            System.Random rng; lock (_lock) { rng = _rng; }
+            player.EnsureEmblems();
+            var slot = new EmblemSlot { Id = player.NextEmblemId++, TemplateId = row.TemplateId, Types = row.Types, Profile = row.Profile, MainType = row.MainType,
+                MainValue = _db.RollRange(row.MainValue, rng), SubValue = row.SubCount > 0 ? _db.RollRange(row.SubValue, rng) : 0, SkillId = skillId, Equipped = 0 };
+            player.Emblems.Add(slot); player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.EmblemCraft, "{\"ok\":true,\"emblemId\":" + slot.Id + ",\"templateId\":" + slot.TemplateId + ",\"mainValue\":" + slot.MainValue + ",\"subValue\":" + slot.SubValue + ",\"skillId\":" + slot.SkillId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+        void HandleEmblemEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            int emblemId = JI(json, "emblemId", 0), equipped = JI(json, "equipped", 1);
+            player.EnsureEmblems(); EmblemSlot slot = player.FindEmblem(emblemId);
+            if (slot == null) { Send(ns, PhoneMsg.EmblemEquip, "{\"ok\":false,\"err\":\"missing\"}"); return; }
+            if (equipped != 0) { for (int i = 0; i < player.Emblems.Count; i++) { EmblemSlot o = player.Emblems[i]; if (o != null && o.Types == slot.Types && o.Id != slot.Id) o.Equipped = 0; } slot.Equipped = 1; } else slot.Equipped = 0;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.EmblemEquip, "{\"ok\":true,\"emblemId\":" + emblemId + ",\"equipped\":" + slot.Equipped + "}"); Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+        void HandleSoulStampCompose(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.SoulStampCompose, "{\"ok\":false}"); return; }
+            int quality = JI(json, "quality", 1);
+            SoulStampComposeTemplate compose = _db.GetSoulStampCompose(quality);
+            if (compose == null) { Send(ns, PhoneMsg.SoulStampCompose, "{\"ok\":false,\"err\":\"template\"}"); return; }
+            int cost = _db.SoulStampComposeGoldCost(compose);
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.SoulStampCompose, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            System.Random rng; lock (_lock) { rng = _rng; }
+            SoulStampTemplate row = _db.PickSoulStampByQuality(quality, rng);
+            if (row == null) { Send(ns, PhoneMsg.SoulStampCompose, "{\"ok\":false,\"err\":\"template\"}"); return; }
+            int proType = _db.PickSoulStampProType(row, rng), proValue = _db.RollSoulStampProValue(row.TempId, proType, rng);
+            player.Gold -= cost; player.EnsureSoulStamps();
+            var slot = new SoulStampSlot { Id = player.NextSoulStampId++, TempId = row.TempId, Type = row.Type, Quality = row.Quality, Grade = 1, ProType = proType, ProValue = proValue, SkillId = _db.SoulStampSkillId(row, 1), Equipped = 0 };
+            player.SoulStamps.Add(slot);
+            for (int i = 0; i < player.SoulStamps.Count; i++) { SoulStampSlot o = player.SoulStamps[i]; if (o != null && o.Type == slot.Type && o.Id != slot.Id) o.Equipped = 0; }
+            slot.Equipped = 1; player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.SoulStampCompose, "{\"ok\":true,\"soulStampId\":" + slot.Id + ",\"tempId\":" + slot.TempId + ",\"proType\":" + slot.ProType + ",\"proValue\":" + slot.ProValue + ",\"skillId\":" + slot.SkillId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+        void HandleSoulStampRefine(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":false}"); return; }
+            int soulStampId = JI(json, "soulStampId", 0);
+            player.EnsureSoulStamps(); SoulStampSlot slot = player.FindSoulStamp(soulStampId);
+            if (slot == null) { Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":false,\"err\":\"missing\"}"); return; }
+            int nextGrade = slot.Grade + 1; SoulRefineRatio ratio = _db.GetSoulRefine(slot.Type, nextGrade);
+            if (ratio == null) { Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            int cost = _db.SoulStampRefineGoldCost(ratio);
+            if (cost <= 0 || player.Gold < cost) { Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            player.Gold -= cost; int roll; lock (_lock) { roll = _rng.Next(0, 1000); }
+            if (roll >= ratio.Rate) { SavePlayer(player); Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":false,\"err\":\"fail\",\"cost\":" + cost + "}"); Send(ns, PhoneMsg.ProfileData, player.ToJson()); return; }
+            slot.Grade = nextGrade; SoulStampTemplate row = _db.GetSoulStamp(slot.TempId);
+            if (row != null) slot.SkillId = _db.SoulStampSkillId(row, slot.Grade);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.SoulStampRefine, "{\"ok\":true,\"soulStampId\":" + slot.Id + ",\"grade\":" + slot.Grade + ",\"skillId\":" + slot.SkillId + ",\"cost\":" + cost + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -4969,9 +5062,12 @@ namespace GunMobile.Net
         class FightSpiritSlotSave { public int spiritId; public int level; }
 
         class MagicStoneSlotSave { public int templateId; public int level; }
+        class EmblemSlotSave { public int id, templateId, types, profile, mainType, mainValue, subValue, skillId, equipped; }
+        class SoulStampSlotSave { public int id, tempId, type, quality, grade, proType, proValue, skillId, equipped; }
 
         [Serializable]
         class ServerPlayerSave
+
         {
             public string Nick = "Player";
             public int Sex = 1;
@@ -4993,6 +5089,7 @@ namespace GunMobile.Net
             public int DevilTurnDay = -1, DevilTurnSpins;
             public int SweepDay = -1, SweepCount;
             public int GodCardEquipId, EngraveSetId;
+            public int NextEmblemId = 1, NextSoulStampId = 1;
             public int NextMailId = 1;
             public List<BagSlotSave> Bag = new List<BagSlotSave>();
             public List<GodCardSlotSave> GodCards = new List<GodCardSlotSave>();
@@ -5002,6 +5099,8 @@ namespace GunMobile.Net
             public List<string> Friends = new List<string>();
             public List<FightSpiritSlotSave> FightSpirits = new List<FightSpiritSlotSave>();
             public List<MagicStoneSlotSave> MagicStones = new List<MagicStoneSlotSave>();
+            public List<EmblemSlotSave> Emblems = new List<EmblemSlotSave>();
+            public List<SoulStampSlotSave> SoulStamps = new List<SoulStampSlotSave>();
             public List<ServerMailSave> Mails = new List<ServerMailSave>();
         }
 
@@ -5046,6 +5145,7 @@ namespace GunMobile.Net
                 DevilTurnDay = p.DevilTurnDay, DevilTurnSpins = p.DevilTurnSpins,
                 SweepDay = p.SweepDay, SweepCount = p.SweepCount,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
+                NextEmblemId = p.NextEmblemId, NextSoulStampId = p.NextSoulStampId,
                 AcceptedQuests = p.AcceptedQuests, CompletedQuests = p.CompletedQuests,
                 Friends = p.Friends, NextMailId = p.NextMailId
             };
@@ -5059,7 +5159,10 @@ namespace GunMobile.Net
             {
                 s.MagicStones.Add(new MagicStoneSlotSave { templateId = ms.TemplateId, level = ms.Level });
             }
-            foreach (var b in p.Bag) s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
+            p.EnsureEmblems(); foreach (EmblemSlot e in p.Emblems) s.Emblems.Add(new EmblemSlotSave { id = e.Id, templateId = e.TemplateId, types = e.Types, profile = e.Profile, mainType = e.MainType, mainValue = e.MainValue, subValue = e.SubValue, skillId = e.SkillId, equipped = e.Equipped });
+            p.EnsureSoulStamps(); foreach (SoulStampSlot ss in p.SoulStamps) s.SoulStamps.Add(new SoulStampSlotSave { id = ss.Id, tempId = ss.TempId, type = ss.Type, quality = ss.Quality, grade = ss.Grade, proType = ss.ProType, proValue = ss.ProValue, skillId = ss.SkillId, equipped = ss.Equipped });
+            foreach (var b in p.Bag)
+ s.Bag.Add(new BagSlotSave { t = b.TemplateId, c = b.Count, s = b.Strengthen });
             foreach (GodCardSlot g in p.GodCards) s.GodCards.Add(new GodCardSlotSave { id = g.Id, count = g.Count });
             foreach (StockSlot sh in p.StockHoldings) s.StockHoldings.Add(new StockSlotSave { stockId = sh.StockId, shares = sh.Shares, avgPrice = sh.AvgPrice });
             foreach (ServerMail m in p.Mails)
@@ -5093,6 +5196,8 @@ namespace GunMobile.Net
                 DevilTurnDay = s.DevilTurnDay, DevilTurnSpins = s.DevilTurnSpins,
                 SweepDay = s.SweepDay, SweepCount = s.SweepCount,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
+                NextEmblemId = s.NextEmblemId > 0 ? s.NextEmblemId : 1,
+                NextSoulStampId = s.NextSoulStampId > 0 ? s.NextSoulStampId : 1,
                 AcceptedQuests = s.AcceptedQuests ?? new List<int>(),
                 CompletedQuests = s.CompletedQuests ?? new List<int>(),
                 Friends = s.Friends ?? new List<string>(),
@@ -5117,7 +5222,11 @@ namespace GunMobile.Net
 
             p.EnsureFightSpirits();
             p.EnsureMagicStones();
+            if (s.Emblems != null) foreach (EmblemSlotSave e in s.Emblems) p.Emblems.Add(new EmblemSlot { Id = e.id, TemplateId = e.templateId, Types = e.types, Profile = e.profile, MainType = e.mainType, MainValue = e.mainValue, SubValue = e.subValue, SkillId = e.skillId, Equipped = e.equipped });
+            if (s.SoulStamps != null) foreach (SoulStampSlotSave ss in s.SoulStamps) p.SoulStamps.Add(new SoulStampSlot { Id = ss.id, TempId = ss.tempId, Type = ss.type, Quality = ss.quality, Grade = ss.grade, ProType = ss.proType, ProValue = ss.proValue, SkillId = ss.skillId, Equipped = ss.equipped });
+            p.EnsureEmblems(); p.EnsureSoulStamps();
             foreach (var b in s.Bag) p.Bag.Add(new BagSlot { TemplateId = b.t, Count = b.c, Strengthen = b.s });
+
             if (s.GodCards != null)
             {
                 foreach (GodCardSlotSave g in s.GodCards) p.GodCards.Add(new GodCardSlot { Id = g.id, Count = g.count });

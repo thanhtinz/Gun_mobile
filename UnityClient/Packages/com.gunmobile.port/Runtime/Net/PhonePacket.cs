@@ -185,6 +185,10 @@ namespace GunMobile.Net
         public const ushort HomeTempleUpgrade = 138;
         public const ushort MailSend = 139;
         public const ushort SweepLabyrinth = 140;
+        public const ushort EmblemCraft = 141;
+        public const ushort EmblemEquip = 142;
+        public const ushort SoulStampCompose = 143;
+        public const ushort SoulStampRefine = 144;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

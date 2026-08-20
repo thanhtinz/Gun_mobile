@@ -294,6 +294,12 @@ namespace GunMobile.Client
                 case "sweep":
                     ExtraModulesScreens.SweepScreen(_safe, this);
                     return;
+                case "emblem":
+                    ExtraModulesScreens.EmblemScreen(_safe, this);
+                    return;
+                case "soulmark":
+                    ExtraModulesScreens.SoulMarkScreen(_safe, this);
+                    return;
                 default:
                     if (!string.IsNullOrEmpty(module.MornUiFile))
                     {
@@ -543,6 +549,8 @@ namespace GunMobile.Client
             ParseFriendsFromServer(json);
             ParseFightSpiritsFromServer(json);
             ParseMagicStonesFromServer(json);
+            ParseEmblemsFromServer(json);
+            ParseSoulStampsFromServer(json);
             Profile.Save();
         }
 
@@ -708,6 +716,52 @@ namespace GunMobile.Client
             }
         }
 
+
+        void ParseEmblemsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"emblems\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 10;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            var list = new System.Collections.Generic.List<EmblemSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = body.Substring(ob, cb - ob + 1);
+                list.Add(new EmblemSlot { Id = JsonInt(entry, "id", 0), TemplateId = JsonInt(entry, "templateId", 0), Types = JsonInt(entry, "types", 0), Profile = JsonInt(entry, "profile", 0), MainType = JsonInt(entry, "mainType", 0), MainValue = JsonInt(entry, "mainValue", 0), SubValue = JsonInt(entry, "subValue", 0), SkillId = JsonInt(entry, "skillId", 0), Equipped = JsonInt(entry, "equipped", 0) });
+                pos = cb + 1;
+            }
+            if (list.Count > 0) { Profile.Emblems = list; Profile.EnsureEmblems(); }
+        }
+
+        void ParseSoulStampsFromServer(string json)
+        {
+            int idx = json.IndexOf("\"soulStamps\":[", System.StringComparison.Ordinal);
+            if (idx < 0) return;
+            int start = idx + 13;
+            int end = json.IndexOf(']', start);
+            if (end <= start) return;
+            var list = new System.Collections.Generic.List<SoulStampSlot>();
+            string body = json.Substring(start, end - start + 1);
+            int pos = 0;
+            while (pos < body.Length)
+            {
+                int ob = body.IndexOf('{', pos);
+                if (ob < 0) break;
+                int cb = body.IndexOf('}', ob);
+                if (cb < 0) break;
+                string entry = body.Substring(ob, cb - ob + 1);
+                list.Add(new SoulStampSlot { Id = JsonInt(entry, "id", 0), TempId = JsonInt(entry, "tempId", 0), Type = JsonInt(entry, "type", 0), Quality = JsonInt(entry, "quality", 0), Grade = JsonInt(entry, "grade", 0), ProType = JsonInt(entry, "proType", 0), ProValue = JsonInt(entry, "proValue", 0), SkillId = JsonInt(entry, "skillId", 0), Equipped = JsonInt(entry, "equipped", 0) });
+                pos = cb + 1;
+            }
+            if (list.Count > 0) { Profile.SoulStamps = list; Profile.EnsureSoulStamps(); }
+        }
         void ParseGodCardsFromServer(string json)
         {
             int idx = json.IndexOf("\"godCards\":[", System.StringComparison.Ordinal);

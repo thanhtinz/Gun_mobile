@@ -308,6 +308,70 @@ namespace GunMobile.Res
         public int MagicDefence;
     }
 
+    public sealed class EmblemTemplate
+    {
+        public int Id;
+        public int TemplateId;
+        public int Types;
+        public int Profile;
+        public int MainType;
+        public int SubCount;
+        public string MainValue = "";
+        public string SubValue = "";
+        public int NeedItem1;
+        public int ItemCount1;
+        public int NeedItem2;
+        public int ItemCount2;
+        public int NeedItem3;
+        public int ItemCount3;
+        public int NeedItem4;
+        public int ItemCount4;
+    }
+
+    public sealed class SoulStampTemplate
+    {
+        public int TempId;
+        public int Type;
+        public int Quality;
+        public int[] ProTypes = System.Array.Empty<int>();
+        public int SkillId;
+        public int SubSkillId;
+        public string UpSkillId = "";
+        public string UpSubSkillId = "";
+    }
+
+    public sealed class SoulStampComposeTemplate
+    {
+        public int TemplateId;
+        public int Quality;
+        public int ComposeCost;
+        public int ComposePreCost;
+    }
+
+    public sealed class SoulStampProBand
+    {
+        public int Min;
+        public int Max;
+        public int Weight;
+    }
+
+    public sealed class SoulRefineRatio
+    {
+        public int RatioId;
+        public int Grade;
+        public int Index;
+        public int Rate;
+        public int Ratio;
+        public int NeedItem1;
+        public int ItemCount1;
+        public int NeedItem2;
+        public int ItemCount2;
+        public int NeedItem3;
+        public int ItemCount3;
+        public int NeedItem4;
+        public int ItemCount4;
+    }
+
     public sealed class ElfInfo
     {
         public int TemplateId;
@@ -424,6 +488,11 @@ namespace GunMobile.Res
         public List<CelebEntry> CelebAreaFightPower { get; } = new List<CelebEntry>();
         public Dictionary<int, NecklaceCastingLevel> NecklaceLevels { get; } = new Dictionary<int, NecklaceCastingLevel>();
         public List<DevilTreasItem> DevilTreasItems { get; } = new List<DevilTreasItem>();
+        public List<EmblemTemplate> EmblemList { get; } = new List<EmblemTemplate>();
+        public Dictionary<int, SoulStampTemplate> SoulStampTemplates { get; } = new Dictionary<int, SoulStampTemplate>();
+        public Dictionary<int, SoulStampComposeTemplate> SoulStampCompose { get; } = new Dictionary<int, SoulStampComposeTemplate>();
+        readonly Dictionary<long, List<SoulStampProBand>> _soulStampProBands = new Dictionary<long, List<SoulStampProBand>>();
+        readonly Dictionary<long, SoulRefineRatio> _soulRefineRatios = new Dictionary<long, SoulRefineRatio>();
         public Dictionary<int, ElfInfo> Elves { get; } = new Dictionary<int, ElfInfo>();
         public List<FarmRecipe> Farm { get; } = new List<FarmRecipe>();
         public Dictionary<int, int> StrengthenRock { get; } = new Dictionary<int, int>();
@@ -475,6 +544,8 @@ namespace GunMobile.Res
             db.LoadCampWar(loader);
             db.LoadNecklace(loader);
             db.LoadDevilTreas(loader);
+            db.LoadEmblems(loader);
+            db.LoadSoulStamps(loader);
             db.LoadElves(loader);
             db.LoadFarm(loader);
             db.LoadStrengthen(loader);
@@ -853,6 +924,135 @@ namespace GunMobile.Res
         {
             hp += level * 120;
             atk += level * 15;
+        }
+
+        static long SoulStampProKey(int tempId, int proType) => ((long)tempId << 16) | (uint)proType;
+        static long SoulRefineKey(int index, int grade) => ((long)index << 16) | (uint)grade;
+
+        public int[] ConfigIntList(string name)
+        {
+            if (!ServerConfig.TryGetValue(name, out string raw) || string.IsNullOrEmpty(raw)) return Array.Empty<int>();
+            string[] parts = raw.Split(',');
+            var list = new List<int>(parts.Length);
+            for (int i = 0; i < parts.Length; i++)
+                if (int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n)) list.Add(n);
+            return list.ToArray();
+        }
+
+        public int EmblemComposeSuccessRate()
+        {
+            if (!ServerConfig.TryGetValue("EmblemComposeRandom", out string raw) || string.IsNullOrEmpty(raw)) return 700;
+            string[] parts = raw.Split(',');
+            return parts.Length > 0 && int.TryParse(parts[0].Trim(), out int n) ? n : 700;
+        }
+
+        public int EmblemComposeSkillRate()
+        {
+            if (!ServerConfig.TryGetValue("EmblemComposeRandom", out string raw) || string.IsNullOrEmpty(raw)) return 400;
+            string[] parts = raw.Split(',');
+            return parts.Length > 1 && int.TryParse(parts[1].Trim(), out int n) ? n : 400;
+        }
+
+        public int[] EmblemSkillIds() => ConfigIntList("EmblemSkillIds");
+
+        public int EmblemCraftGoldCost(EmblemTemplate row)
+        {
+            if (row == null) return 0;
+            return ConfigInt("EmblemComposeMoney", 2000) + row.ItemCount1 * 10 + row.ItemCount2 * 15 + row.ItemCount3 * 20 + row.ItemCount4 * 25;
+        }
+
+        public int RollRange(string range, System.Random rng)
+        {
+            if (string.IsNullOrEmpty(range) || rng == null) return 0;
+            int dash = range.IndexOf('-');
+            if (dash < 0) return int.TryParse(range.Trim(), out int single) ? single : 0;
+            int min = int.TryParse(range.Substring(0, dash).Trim(), out int a) ? a : 0;
+            int max = int.TryParse(range.Substring(dash + 1).Trim(), out int b) ? b : min;
+            if (max < min) { int t = min; min = max; max = t; }
+            return rng.Next(min, max + 1);
+        }
+
+        static void ApplyEmblemValue(int mainType, int value, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int magicAtk, ref int magicDef)
+        {
+            switch (mainType)
+            {
+                case 1: atk += value; break;
+                case 2: agi += value; break;
+                case 3: def += value; break;
+                case 4: magicAtk += value; break;
+                case 5: hp += value; break;
+                case 6: magicDef += value; break;
+                case 7: luck += value; break;
+                case 8: atk += value / 2; def += value / 2; break;
+                default: luck += value / 2; break;
+            }
+        }
+
+        public void ApplyEmblemStats(IReadOnlyList<EmblemSlot> slots, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int magicAtk, ref int magicDef)
+        {
+            if (slots == null) return;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                EmblemSlot slot = slots[i];
+                if (slot == null || slot.Equipped == 0) continue;
+                ApplyEmblemValue(slot.MainType, slot.MainValue, ref atk, ref def, ref agi, ref luck, ref hp, ref magicAtk, ref magicDef);
+                if (slot.SubValue > 0) ApplyEmblemValue(7, slot.SubValue, ref atk, ref def, ref agi, ref luck, ref hp, ref magicAtk, ref magicDef);
+            }
+        }
+
+        public SoulStampComposeTemplate GetSoulStampCompose(int quality) { SoulStampCompose.TryGetValue(quality, out SoulStampComposeTemplate row); return row; }
+        public int SoulStampComposeGoldCost(SoulStampComposeTemplate compose) => compose != null ? compose.ComposePreCost : 0;
+        public SoulStampTemplate GetSoulStamp(int tempId) { SoulStampTemplates.TryGetValue(tempId, out SoulStampTemplate row); return row; }
+
+        public SoulStampTemplate PickSoulStampByQuality(int quality, System.Random rng)
+        {
+            var pool = new List<SoulStampTemplate>();
+            foreach (var kv in SoulStampTemplates) if (kv.Value != null && kv.Value.Quality == quality) pool.Add(kv.Value);
+            return pool.Count == 0 || rng == null ? null : pool[rng.Next(0, pool.Count)];
+        }
+
+        public int PickSoulStampProType(SoulStampTemplate row, System.Random rng)
+        {
+            if (row?.ProTypes == null || row.ProTypes.Length == 0 || rng == null) return 1;
+            return row.ProTypes[rng.Next(0, row.ProTypes.Length)];
+        }
+
+        public int RollSoulStampProValue(int tempId, int proType, System.Random rng)
+        {
+            if (!_soulStampProBands.TryGetValue(SoulStampProKey(tempId, proType), out List<SoulStampProBand> bands) || bands.Count == 0 || rng == null) return 0;
+            int total = 0; foreach (var b in bands) total += b.Weight;
+            if (total <= 0) return bands[0].Min;
+            int roll = rng.Next(0, total);
+            for (int i = 0; i < bands.Count; i++) { roll -= bands[i].Weight; if (roll < 0) { var band = bands[i]; return rng.Next(band.Min, band.Max + 1); } }
+            var last = bands[bands.Count - 1]; return rng.Next(last.Min, last.Max + 1);
+        }
+
+        static int ParseGradeSkill(string upSkillId, int grade, int fallback)
+        {
+            if (string.IsNullOrEmpty(upSkillId)) return fallback;
+            foreach (string part in upSkillId.Split('|'))
+            {
+                string[] seg = part.Split(',');
+                if (seg.Length >= 2 && int.TryParse(seg[0], out int g) && g == grade && int.TryParse(seg[1], out int skill)) return skill;
+            }
+            return fallback;
+        }
+
+        public int SoulStampSkillId(SoulStampTemplate row, int grade) => row == null ? 0 : (grade <= 1 ? row.SkillId : ParseGradeSkill(row.UpSkillId, grade, row.SkillId));
+
+        public SoulRefineRatio GetSoulRefine(int typeIndex, int grade) { _soulRefineRatios.TryGetValue(SoulRefineKey(typeIndex, grade), out SoulRefineRatio row); return row; }
+
+        public int SoulStampRefineGoldCost(SoulRefineRatio ratio) => ratio == null ? 0 : ratio.ItemCount1 * 10 + ratio.ItemCount2 * 15 + ratio.ItemCount3 * 20 + ratio.ItemCount4 * 25 + ratio.Ratio * 100;
+
+        public void ApplySoulStampStats(IReadOnlyList<SoulStampSlot> slots, ref int atk, ref int def, ref int agi, ref int luck, ref int hp)
+        {
+            if (slots == null) return;
+            for (int i = 0; i < slots.Count; i++)
+            {
+                SoulStampSlot slot = slots[i];
+                if (slot == null || slot.Equipped == 0) continue;
+                switch (slot.ProType) { case 1: atk += slot.ProValue; break; case 2: def += slot.ProValue; break; case 3: agi += slot.ProValue; break; case 4: luck += slot.ProValue; break; default: hp += slot.ProValue / 2; break; }
+            }
         }
 
         public DevilTreasItem RollDevilTreas(System.Random rng)
@@ -2428,6 +2628,83 @@ namespace GunMobile.Res
                     TricRevolt = Int(row, "TricRevolt"),
                     Guardian = Int(row, "Guardian")
                 };
+            }
+        }
+
+        void LoadEmblems(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_Emblem.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                EmblemList.Add(new EmblemTemplate
+                {
+                    Id = Int(row, "ID"), TemplateId = Int(row, "TemplateId"), Types = Int(row, "Types"), Profile = Int(row, "Profile"),
+                    MainType = Int(row, "MainType"), SubCount = Int(row, "SubCount"), MainValue = Str(row, "MainValue"), SubValue = Str(row, "SubValue"),
+                    NeedItem1 = Int(row, "NeedItem1"), ItemCount1 = Int(row, "ItemCount1"), NeedItem2 = Int(row, "NeedItem2"), ItemCount2 = Int(row, "ItemCount2"),
+                    NeedItem3 = Int(row, "NeedItem3"), ItemCount3 = Int(row, "ItemCount3"), NeedItem4 = Int(row, "NeedItem4"), ItemCount4 = Int(row, "ItemCount4")
+                });
+            }
+        }
+
+        void LoadSoulStamps(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/TS_SoulStampTemplate.xml", out XmlResultTable stamps))
+            {
+                foreach (var row in stamps.Rows)
+                {
+                    int tempId = Int(row, "TempID");
+                    string proTypesRaw = Str(row, "ProTypes");
+                    int[] proTypes = Array.Empty<int>();
+                    if (!string.IsNullOrEmpty(proTypesRaw))
+                    {
+                        string[] parts = proTypesRaw.Split(',');
+                        proTypes = new int[parts.Length];
+                        for (int i = 0; i < parts.Length; i++) int.TryParse(parts[i].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out proTypes[i]);
+                    }
+                    SoulStampTemplates[tempId] = new SoulStampTemplate
+                    {
+                        TempId = tempId, Type = Int(row, "Type"), Quality = Int(row, "Quality"), ProTypes = proTypes,
+                        SkillId = Int(row, "SkillID"), SubSkillId = Int(row, "SubSkillID"), UpSkillId = Str(row, "UpSkillID"), UpSubSkillId = Str(row, "UpSubSkillID")
+                    };
+                }
+            }
+            if (TryTable(loader, "Request/TS_SoulStampComposeTemplate.xml", out XmlResultTable composeTable))
+            {
+                foreach (var row in composeTable.Rows)
+                {
+                    int quality = Int(row, "Quality");
+                    SoulStampCompose[quality] = new SoulStampComposeTemplate { TemplateId = Int(row, "TemplateID"), Quality = quality, ComposeCost = Int(row, "ComposeCost"), ComposePreCost = Int(row, "ComposePreCost") };
+                }
+            }
+            if (TryTable(loader, "Request/TS_SoulStampProTemplate.xml", out XmlResultTable proTable))
+            {
+                foreach (var row in proTable.Rows)
+                {
+                    int tempId = Int(row, "TempID"), proType = Int(row, "ProType");
+                    long key = SoulStampProKey(tempId, proType);
+                    if (!_soulStampProBands.TryGetValue(key, out List<SoulStampProBand> bands)) { bands = new List<SoulStampProBand>(); _soulStampProBands[key] = bands; }
+                    foreach (string part in Str(row, "ProValueLimit").Split('|'))
+                    {
+                        string[] seg = part.Split(',');
+                        if (seg.Length < 2) continue;
+                        string[] range = seg[0].Split('-');
+                        if (range.Length < 2) continue;
+                        bands.Add(new SoulStampProBand { Min = int.TryParse(range[0], out int min) ? min : 0, Max = int.TryParse(range[1], out int max) ? max : 0, Weight = int.TryParse(seg[1], out int weight) ? weight : 0 });
+                    }
+                }
+            }
+            if (TryTable(loader, "Request/TS_SoulRefine_Ratio.xml", out XmlResultTable refineTable))
+            {
+                foreach (var row in refineTable.Rows)
+                {
+                    int index = Int(row, "Index"), grade = Int(row, "Grade");
+                    _soulRefineRatios[SoulRefineKey(index, grade)] = new SoulRefineRatio
+                    {
+                        RatioId = Int(row, "RatioId"), Grade = grade, Index = index, Rate = Int(row, "Rate"), Ratio = Int(row, "Ratio"),
+                        NeedItem1 = Int(row, "NeedItem1"), ItemCount1 = Int(row, "ItemCount1"), NeedItem2 = Int(row, "NeedItem2"), ItemCount2 = Int(row, "ItemCount2"),
+                        NeedItem3 = Int(row, "NeedItem3"), ItemCount3 = Int(row, "ItemCount3"), NeedItem4 = Int(row, "NeedItem4"), ItemCount4 = Int(row, "ItemCount4")
+                    };
+                }
             }
         }
 

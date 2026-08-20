@@ -286,10 +286,11 @@ namespace GunMobile.Client
                 "\",\"body\":\"" + (body ?? "").Replace("\"", "") + "\"}");
         }
 
-        public static void SweepLabyrinth()
-        {
-            Road?.Send(PhoneMsg.SweepLabyrinth, "{}");
-        }
+        public static void SweepLabyrinth() { Road?.Send(PhoneMsg.SweepLabyrinth, "{}"); }
+        public static void CraftEmblem(int types, int profile) { Road?.Send(PhoneMsg.EmblemCraft, "{\"types\":" + types + ",\"profile\":" + profile + "}"); }
+        public static void EquipEmblem(int emblemId, int equipped = 1) { Road?.Send(PhoneMsg.EmblemEquip, "{\"emblemId\":" + emblemId + ",\"equipped\":" + equipped + "}"); }
+        public static void ComposeSoulStamp(int quality) { Road?.Send(PhoneMsg.SoulStampCompose, "{\"quality\":" + quality + "}"); }
+        public static void RefineSoulStamp(int soulStampId) { Road?.Send(PhoneMsg.SoulStampRefine, "{\"soulStampId\":" + soulStampId + "}"); }
 
         public static void CookFarm(int foodId)
         {
