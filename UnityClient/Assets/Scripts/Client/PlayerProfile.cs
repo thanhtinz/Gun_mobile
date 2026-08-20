@@ -47,12 +47,17 @@ namespace GunMobile.Client
         public int TitleId;
         public int MountGrade;
         public int MountTalismanId;
+        public List<int> MountSkillIds = new List<int>();
         public int ManorGrade = 1;
         public int GoldEquipId;
         public int GloryTemplateId;
         public int SigilQuality = 1;
         public int SigilProType;
         public int SigilProValue;
+        public int LinkPalId;
+        public int AchievementPoints;
+        public List<int> CompletedAchievements = new List<int>();
+        public List<int> ClaimedAchievements = new List<int>();
         public int VipLevel;
         public int Texp;
         public int LabyrinthFloor = 1;
@@ -151,6 +156,12 @@ namespace GunMobile.Client
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
+        public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
+        public void EnsureAchievements()
+        {
+            if (CompletedAchievements == null) CompletedAchievements = new List<int>();
+            if (ClaimedAchievements == null) ClaimedAchievements = new List<int>();
+        }
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
@@ -513,6 +524,13 @@ namespace GunMobile.Client
                 }
 
                 db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+                EnsureMountSkills();
+                int mountSkillDmg = 0;
+                db.ApplyMountSkillBonuses(MountSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref mountSkillDmg);
+                atk += mountSkillDmg;
+                int linkDmg = 0;
+                db.ApplyLinkPalBonus(LinkPalId, ref atk, ref def, ref agi, ref luk, ref hp, ref linkDmg);
+                atk += linkDmg;
                 db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luk, ref hp);
                 db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luk, ref hp);
 
@@ -756,6 +774,8 @@ namespace GunMobile.Client
             new ModuleDef("title", "称号", "Request/newtitleinfo.xml"),
             new ModuleDef("totem", "图腾", "Request/toteminfo.xml"),
             new ModuleDef("horse", "坐骑", "Request/mounttemplateOUT.xml"),
+            new ModuleDef("achievement", "成就", "Request/achievementlist.xml"),
+            new ModuleDef("linkpal", "灵宝", "Request/TS_LinkPalTemplate.xml"),
             new ModuleDef("elf", "精灵", "Request/TS_ElfIntimacy.xml"),
             new ModuleDef("farm", "农场", "Request/foodcomposelist.xml"),
             new ModuleDef("church", "教堂", "Request/TS_EveryDaySignIn.xml"),

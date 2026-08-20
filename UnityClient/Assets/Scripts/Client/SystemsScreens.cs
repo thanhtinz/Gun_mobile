@@ -255,8 +255,31 @@ namespace GunMobile.Client
             {
                 MountGrade local = m;
                 bool on = app.Profile.MountGrade >= m.Grade;
-                SysUi.Note(body, $"{(on ? "[已达成] " : "")}Grade {m.Grade}  HP+{m.AddBlood} DMG+{m.AddDamage} MAG{m.MagicAttack}");
+                string skillNote = m.SkillId > 0 ? "  Skill#" + m.SkillId : "";
+                SysUi.Note(body, $"{(on ? "[已达成] " : "")}Grade {m.Grade}  HP+{m.AddBlood} DMG+{m.AddDamage} MAG{m.MagicAttack}{skillNote}");
             }
+
+            app.Profile.EnsureMountSkills();
+            SysUi.Note(body, "坐骑技能  已学 " + app.Profile.MountSkillIds.Count);
+            int skillShown = 0;
+            if (app.Database != null)
+            {
+                foreach (MountSkillGet get in app.Database.MountSkillGets.Values)
+                {
+                    MountSkillTemplate skill = app.Database.GetMountSkill(get.SkillId);
+                    if (skill == null) continue;
+                    bool owned = app.Profile.MountSkillIds.Contains(get.SkillId);
+                    int needGrade = app.Database.MountSkillUnlockMountGrade(get.SkillId);
+                    int cost = app.Database.MountSkillUnlockGoldCost(get.SkillId);
+                    string label = (owned ? "[已学] " : "") + skill.Name + " Lv" + get.Level +
+                                   "  需坐骑" + needGrade + "  " + cost + "金";
+                    int sid = get.SkillId;
+                    SysUi.Row(body, "ms" + get.Id, label, owned ? null : (System.Action)(() => PhoneNet.UnlockMountSkill(sid)));
+                    if (++skillShown >= 40) break;
+                }
+                if (app.Database.MountSkills.Count == 0) SysUi.Note(body, "Missing mountskilltemplate.xml");
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastMountSkillJson)) SysUi.Note(body, PhoneNet.LastMountSkillJson);
 
             if (app.Database.Mounts.Count == 0)
             {
@@ -265,7 +288,77 @@ namespace GunMobile.Client
         }
     }
 
-    public static class ElfScreen
+    public static class AchievementScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "成就  点数 " + app.Profile.AchievementPoints);
+            app.Profile.EnsureAchievements();
+            SysUi.Note(body, "achievementlist.xml  ·  已完成 " + app.Profile.CompletedAchievements.Count +
+                             "  已领取 " + app.Profile.ClaimedAchievements.Count);
+            int shown = 0;
+            if (app.Database != null)
+            {
+                foreach (AchievementInfo ach in app.Database.AchievementList)
+                {
+                    if (ach.IsActive == 0) continue;
+                    bool claimed = app.Profile.ClaimedAchievements.Contains(ach.Id);
+                    bool completed = app.Profile.CompletedAchievements.Contains(ach.Id);
+                    string state = claimed ? "[已领]" : completed ? "[可领]" : "[未完成]";
+                    string label = state + " #" + ach.Id + "  " + ach.Title + "  +" + ach.AchievementPoint +
+                                   "  Lv" + ach.NeedMinLevel + "-" + ach.NeedMaxLevel;
+                    int id = ach.Id;
+                    SysUi.Row(body, "ach" + ach.Id, label, claimed ? null : (System.Action)(() => PhoneNet.ClaimAchievement(id)));
+                    if (++shown >= 60) break;
+                }
+                if (app.Database.AchievementList.Count == 0) SysUi.Note(body, "Missing achievementlist.xml");
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastAchievementJson)) SysUi.Note(body, PhoneNet.LastAchievementJson);
+        }
+    }
+
+    public static class LinkPalScreen
+    {
+        public static void Show(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "灵宝 / LinkPal");
+            LinkPalTemplate equipped = app.Database != null ? app.Database.GetLinkPal(app.Profile.LinkPalId) : null;
+            SysUi.Note(body, equipped != null
+                ? "装备 #" + equipped.Id + " T" + equipped.TemplateId + " Lv" + equipped.Level +
+                  "  ATK+" + equipped.Attack + " DEF+" + equipped.Defence + " HP+" + equipped.Blood
+                : "未装备灵宝");
+            if (equipped != null)
+            {
+                LinkPalTemplate next = app.Database.GetLinkPalUpgrade(equipped.Id);
+                if (next != null)
+                {
+                    int cost = app.Database.LinkPalGoldCost(next);
+                    SysUi.Row(body, "lpUp", "升级 → Lv" + next.Level + "  " + cost + "金", () => PhoneNet.LinkPalUpgrade());
+                }
+            }
+            int shown = 0;
+            if (app.Database != null)
+            {
+                foreach (LinkPalTemplate row in app.Database.LinkPalList)
+                {
+                    if (row.Level != 1) continue;
+                    bool on = app.Profile.LinkPalId == row.Id ||
+                              (equipped != null && equipped.TemplateId == row.TemplateId &&
+                               equipped.Type == row.Type && equipped.Quality == row.Quality);
+                    int cost = app.Database.LinkPalGoldCost(row);
+                    string label = (on ? "[装备] " : "") + "T" + row.TemplateId + " Q" + row.Quality +
+                                   "  ATK+" + row.Attack + " HP+" + row.Blood + "  " + cost + "金";
+                    int id = row.Id;
+                    SysUi.Row(body, "lp" + row.Id, label, () => PhoneNet.LinkPalEquip(id));
+                    if (++shown >= 40) break;
+                }
+                if (app.Database.LinkPalList.Count == 0) SysUi.Note(body, "Missing TS_LinkPalTemplate.xml");
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastLinkPalJson)) SysUi.Note(body, PhoneNet.LastLinkPalJson);
+        }
+    }
+
+    public static class ElfScreen    public static class ElfScreen
     {
         public static void Show(RectTransform safe, GameApp app)
         {
@@ -1465,6 +1558,24 @@ namespace GunMobile.Client
                 }
             }
             if (!string.IsNullOrEmpty(PhoneNet.LastCalendarJson)) SysUi.Note(body, PhoneNet.LastCalendarJson);
+
+            SysUi.Note(body, "— 成就快捷 —");
+            SysUi.Row(body, "openAch", "打开成就列表", () => AchievementScreen.Show(safe, app));
+            app.Profile.EnsureAchievements();
+            int achShown = 0;
+            if (app.Database != null)
+            {
+                foreach (AchievementInfo ach in app.Database.AchievementList)
+                {
+                    if (ach.IsActive == 0 || app.Profile.ClaimedAchievements.Contains(ach.Id)) continue;
+                    bool completed = app.Profile.CompletedAchievements.Contains(ach.Id);
+                    if (!completed && achShown >= 6) continue;
+                    string label = (completed ? "[可领] " : "") + ach.Title + "  +" + ach.AchievementPoint;
+                    int id = ach.Id;
+                    SysUi.Row(body, "calAch" + ach.Id, label, () => PhoneNet.ClaimAchievement(id));
+                    if (++achShown >= 8) break;
+                }
+            }
         }
     }
 }

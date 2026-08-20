@@ -46,12 +46,17 @@ namespace GunMobile.Net
         public int TotemId;
         public int MountGrade;
         public int MountTalismanId;
+        public List<int> MountSkillIds = new List<int>();
         public int ManorGrade = 1;
         public int GoldEquipId;
         public int GloryTemplateId;
         public int SigilQuality = 1;
         public int SigilProType;
         public int SigilProValue;
+        public int LinkPalId;
+        public int AchievementPoints;
+        public List<int> CompletedAchievements = new List<int>();
+        public List<int> ClaimedAchievements = new List<int>();
         public int VipLevel;
         public int Honor;
         public int Texp;
@@ -188,6 +193,12 @@ namespace GunMobile.Net
         public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public void TouchQuizDay() { int t = DateTime.Now.DayOfYear; if (QuizDay != t) { QuizDay = t; QuizAttempts = 0; } }
         public void TouchOneYuanDay() { EnsureOneYuanBought(); int t = DateTime.Now.DayOfYear; if (OneYuanDay != t) { OneYuanDay = t; OneYuanBought.Clear(); } }
+        public void EnsureMountSkills() { if (MountSkillIds == null) MountSkillIds = new List<int>(); }
+        public void EnsureAchievements()
+        {
+            if (CompletedAchievements == null) CompletedAchievements = new List<int>();
+            if (ClaimedAchievements == null) ClaimedAchievements = new List<int>();
+        }
 
         public void EnsureFightSpirits()
         {
@@ -411,6 +422,13 @@ namespace GunMobile.Net
             }
 
             db.ApplyMountTalismanBonus(MountTalismanId, ref hp);
+            EnsureMountSkills();
+            int mountSkillDmg = 0;
+            db.ApplyMountSkillBonuses(MountSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref mountSkillDmg);
+            baseDmg += mountSkillDmg;
+            int linkDmg = 0;
+            db.ApplyLinkPalBonus(LinkPalId, ref atk, ref def, ref agi, ref luck, ref hp, ref linkDmg);
+            baseDmg += linkDmg;
             db.ApplyGoldEquipBonus(EquipWeapon, ref atk, ref def, ref agi, ref luck, ref hp);
             db.ApplyGloryBonus(GloryTemplateId, ref atk, ref def, ref agi, ref luck, ref hp);
 
@@ -528,12 +546,25 @@ namespace GunMobile.Net
             J(sb, "totemId", TotemId); sb.Append(",");
             J(sb, "mountGrade", MountGrade); sb.Append(",");
             J(sb, "mountTalismanId", MountTalismanId); sb.Append(",");
+            EnsureMountSkills();
+            sb.Append("\"mountSkillIds\":[");
+            for (int i = 0; i < MountSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(MountSkillIds[i]); }
+            sb.Append("],");
             J(sb, "manorGrade", ManorGrade); sb.Append(",");
             J(sb, "goldEquipId", GoldEquipId); sb.Append(",");
             J(sb, "gloryTemplateId", GloryTemplateId); sb.Append(",");
             J(sb, "sigilQuality", SigilQuality); sb.Append(",");
             J(sb, "sigilProType", SigilProType); sb.Append(",");
             J(sb, "sigilProValue", SigilProValue); sb.Append(",");
+            J(sb, "linkPalId", LinkPalId); sb.Append(",");
+            J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
+            EnsureAchievements();
+            sb.Append("\"completedAchievements\":[");
+            for (int i = 0; i < CompletedAchievements.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CompletedAchievements[i]); }
+            sb.Append("],");
+            sb.Append("\"claimedAchievements\":[");
+            for (int i = 0; i < ClaimedAchievements.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ClaimedAchievements[i]); }
+            sb.Append("],");
             J(sb, "vipLevel", VipLevel); sb.Append(",");
             J(sb, "honor", Honor); sb.Append(",");
             J(sb, "texp", Texp); sb.Append(",");
@@ -852,6 +883,50 @@ namespace GunMobile.Net
                 AddGp(db, q.RewardGp);
             }
             return extra;
+        }
+
+
+        public void UpdateSimpleAchievements(GameDatabase db)
+        {
+            if (db == null || db.AchievementList == null || db.AchievementList.Count == 0) return;
+            EnsureAchievements();
+            for (int i = 0; i < db.AchievementList.Count; i++)
+            {
+                AchievementInfo ach = db.AchievementList[i];
+                if (ach == null || ach.IsActive == 0 || ClaimedAchievements.Contains(ach.Id) || CompletedAchievements.Contains(ach.Id)) continue;
+                if (!db.AchievementHasSimpleConditions(ach)) continue;
+                if (!db.AchievementMeetsLevel(ach, Level)) continue;
+                if (!MeetsSimpleAchievementConditions(ach)) continue;
+                CompletedAchievements.Add(ach.Id);
+            }
+        }
+
+        public bool MeetsSimpleAchievementConditions(AchievementInfo ach)
+        {
+            if (ach.Conditions == null || ach.Conditions.Count == 0) return true;
+            for (int i = 0; i < ach.Conditions.Count; i++)
+            {
+                AchievementCondition cond = ach.Conditions[i];
+                int need = Mathf.Max(1, cond.Para2);
+                bool ok = false;
+                switch (cond.Type)
+                {
+                    case 6: ok = Win >= need; break;
+                    case 10: ok = Level >= need; break;
+                    case 21:
+                    case 22: ok = CompletedQuests != null && CompletedQuests.Count >= need; break;
+                }
+                if (!ok) return false;
+            }
+            return true;
+        }
+
+        public bool MeetsAchievementLevelGp(AchievementInfo ach)
+        {
+            if (ach == null) return false;
+            if (Level < ach.NeedMinLevel) return false;
+            if (ach.NeedMaxLevel > 0 && Level > ach.NeedMaxLevel) return false;
+            return true;
         }
 
         public void GrantTemplateReward(GameDatabase db, int templateId, int count)
@@ -1838,6 +1913,15 @@ namespace GunMobile.Net
 
                 case PhoneMsg.SigilRoll:
                     HandleSigilRoll(player, ns, json);
+                    break;
+                case PhoneMsg.MountSkillUnlock:
+                    HandleMountSkillUnlock(player, ns, json);
+                    break;
+                case PhoneMsg.AchievementClaim:
+                    HandleAchievementClaim(player, ns, json);
+                    break;
+                case PhoneMsg.LinkPalAction:
+                    HandleLinkPalAction(player, ns, json);
                     break;
 
                 case PhoneMsg.QuizAnswer:
@@ -5451,6 +5535,8 @@ namespace GunMobile.Net
                         player.AddGp(_db, q.RewardGp);
                     }
                 }
+
+                player.UpdateSimpleAchievements(_db);
             }
             SavePlayer(player);
             Send(ns, PhoneMsg.QuestResult, player.ToJson());
@@ -5665,6 +5751,108 @@ namespace GunMobile.Net
             player.RecalcStats(_db);
             SavePlayer(player);
             Send(ns, PhoneMsg.SigilRoll, "{\"ok\":true,\"quality\":" + quality + ",\"proType\":" + player.SigilProType + ",\"proValue\":" + player.SigilProValue + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleMountSkillUnlock(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":false}"); return; }
+            int skillId = JI(json, "skillId", 0);
+            MountSkillGet get = _db.GetMountSkillGet(skillId);
+            if (get == null || _db.GetMountSkill(skillId) == null) { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            int needGrade = _db.MountSkillUnlockMountGrade(skillId);
+            if (player.MountGrade < needGrade) { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+            if (get.Level > 1)
+            {
+                MountSkillGet prev = null;
+                foreach (MountSkillGet row in _db.MountSkillGets.Values)
+                {
+                    if (row.Type == get.Type && row.Level == get.Level - 1) { prev = row; break; }
+                }
+                player.EnsureMountSkills();
+                if (prev != null && !player.MountSkillIds.Contains(prev.SkillId))
+                { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":false,\"err\":\"prev\"}"); return; }
+            }
+            player.EnsureMountSkills();
+            if (player.MountSkillIds.Contains(skillId))
+            { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"already\":true}"); return; }
+            int cost = _db.MountSkillUnlockGoldCost(skillId);
+            if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+            if (cost > 0) player.Gold -= cost;
+            for (int i = player.MountSkillIds.Count - 1; i >= 0; i--)
+            {
+                MountSkillGet owned = _db.GetMountSkillGet(player.MountSkillIds[i]);
+                if (owned != null && owned.Type == get.Type && owned.Level < get.Level) player.MountSkillIds.RemoveAt(i);
+            }
+            player.MountSkillIds.Add(skillId);
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.MountSkillUnlock, "{\"ok\":true,\"skillId\":" + skillId + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleAchievementClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":false}"); return; }
+            int achievementId = JI(json, "achievementId", 0);
+            AchievementInfo ach = _db.GetAchievement(achievementId);
+            if (ach == null || ach.IsActive == 0) { Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            player.EnsureAchievements();
+            player.UpdateSimpleAchievements(_db);
+            if (player.ClaimedAchievements.Contains(achievementId)) { Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            bool completed = player.CompletedAchievements.Contains(achievementId);
+            if (!completed)
+            {
+                if (_db.AchievementHasSimpleConditions(ach))
+                {
+                    if (!player.MeetsSimpleAchievementConditions(ach) || !_db.AchievementMeetsLevel(ach, player.Level))
+                    { Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":false,\"err\":\"progress\"}"); return; }
+                }
+                else if (!player.MeetsAchievementLevelGp(ach))
+                { Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+                player.CompletedAchievements.Add(achievementId);
+            }
+            player.ClaimedAchievements.Add(achievementId);
+            player.AchievementPoints += Mathf.Max(0, ach.AchievementPoint);
+            for (int i = 0; i < ach.Rewards.Count; i++)
+            {
+                AchievementReward reward = ach.Rewards[i];
+                if (reward.ValueId > 0) player.GrantTemplateReward(_db, reward.ValueId, reward.Count);
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.AchievementClaim, "{\"ok\":true,\"achievementId\":" + achievementId + ",\"points\":" + player.AchievementPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleLinkPalAction(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null) { Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":false}"); return; }
+            string action = JS(json, "action", "equip");
+            if (string.Equals(action, "upgrade", StringComparison.OrdinalIgnoreCase))
+            {
+                LinkPalTemplate next = _db.GetLinkPalUpgrade(player.LinkPalId);
+                if (next == null) { Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                int cost = _db.LinkPalGoldCost(next);
+                if (cost > 0 && player.Gold < cost) { Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (cost > 0) player.Gold -= cost;
+                player.LinkPalId = next.Id;
+                player.RecalcStats(_db); SavePlayer(player);
+                Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":true,\"action\":\"upgrade\",\"linkPalId\":" + player.LinkPalId + ",\"cost\":" + cost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+            int id = JI(json, "id", JI(json, "linkPalId", 0));
+            LinkPalTemplate row = _db.GetLinkPal(id);
+            if (row == null) { Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":false,\"err\":\"none\"}"); return; }
+            int equipCost = 0;
+            if (player.LinkPalId != id)
+            {
+                equipCost = _db.LinkPalGoldCost(row);
+                if (equipCost > 0 && player.Gold < equipCost) { Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                if (equipCost > 0) player.Gold -= equipCost;
+            }
+            player.LinkPalId = id;
+            player.RecalcStats(_db); SavePlayer(player);
+            Send(ns, PhoneMsg.LinkPalAction, "{\"ok\":true,\"action\":\"equip\",\"linkPalId\":" + id + ",\"cost\":" + equipCost + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
@@ -7097,6 +7285,7 @@ namespace GunMobile.Net
                             p.AddGp(_db, gpGain);
                         }
                         questGold = p.CompleteAcceptedQuests(_db);
+                        p.UpdateSimpleAchievements(_db);
                     }
                     else
                     {
@@ -7709,7 +7898,10 @@ namespace GunMobile.Net
             public int Win, Lose;
             public int WeaponId = 7001;
             public int EquipHead, EquipHair, EquipFace, EquipCloth, EquipGlass, EquipWeapon = 7001;
-            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, VipLevel, Honor, Texp;
+            public int PetId, CardId, TitleId, TotemId, MountGrade, MountTalismanId, ManorGrade = 1, GoldEquipId, GloryTemplateId, SigilQuality = 1, SigilProType, SigilProValue, LinkPalId, AchievementPoints, VipLevel, Honor, Texp;
+            public List<int> MountSkillIds = new List<int>();
+            public List<int> CompletedAchievements = new List<int>();
+            public List<int> ClaimedAchievements = new List<int>();
             public int PreferredBallId, LastSignDay = -1, SignIndex, LabyrinthFloor = 1;
             public string ConsortiaName = "";
             public int GuildLevel;
@@ -7822,6 +8014,10 @@ namespace GunMobile.Net
                 MountGrade = p.MountGrade, MountTalismanId = p.MountTalismanId, ManorGrade = p.ManorGrade,
                 GoldEquipId = p.GoldEquipId, GloryTemplateId = p.GloryTemplateId,
                 SigilQuality = p.SigilQuality, SigilProType = p.SigilProType, SigilProValue = p.SigilProValue,
+                LinkPalId = p.LinkPalId, AchievementPoints = p.AchievementPoints,
+                MountSkillIds = p.MountSkillIds ?? new List<int>(),
+                CompletedAchievements = p.CompletedAchievements ?? new List<int>(),
+                ClaimedAchievements = p.ClaimedAchievements ?? new List<int>(),
                 VipLevel = p.VipLevel, Honor = p.Honor, Texp = p.Texp,
                 PreferredBallId = p.PreferredBallId, LastSignDay = p.LastSignDay, SignIndex = p.SignIndex,
                 LabyrinthFloor = p.LabyrinthFloor, ConsortiaName = p.ConsortiaName, GuildLevel = p.GuildLevel,
@@ -7940,6 +8136,10 @@ namespace GunMobile.Net
                 ManorGrade = s.ManorGrade > 0 ? s.ManorGrade : 1,
                 GoldEquipId = s.GoldEquipId, GloryTemplateId = s.GloryTemplateId,
                 SigilQuality = s.SigilQuality > 0 ? s.SigilQuality : 1, SigilProType = s.SigilProType, SigilProValue = s.SigilProValue,
+                LinkPalId = s.LinkPalId, AchievementPoints = s.AchievementPoints,
+                MountSkillIds = s.MountSkillIds ?? new List<int>(),
+                CompletedAchievements = s.CompletedAchievements ?? new List<int>(),
+                ClaimedAchievements = s.ClaimedAchievements ?? new List<int>(),
                 VipLevel = s.VipLevel, Honor = s.Honor, Texp = s.Texp,
                 PreferredBallId = s.PreferredBallId, LastSignDay = s.LastSignDay, SignIndex = s.SignIndex,
                 LabyrinthFloor = s.LabyrinthFloor, ConsortiaName = s.ConsortiaName, GuildLevel = s.GuildLevel,

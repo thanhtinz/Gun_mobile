@@ -205,6 +205,12 @@ namespace GunMobile.Client
                 case "horse":
                     MountScreen.Show(_safe, this);
                     return;
+                case "achievement":
+                    AchievementScreen.Show(_safe, this);
+                    return;
+                case "linkpal":
+                    LinkPalScreen.Show(_safe, this);
+                    return;
                 case "elf":
                     ElfScreen.Show(_safe, this);
                     return;
@@ -481,6 +487,12 @@ namespace GunMobile.Client
                     case PhoneMsg.GoldEquipUpgrade:
                     case PhoneMsg.GloryUpgrade:
                     case PhoneMsg.SigilRoll:
+                    case PhoneMsg.MountSkillUnlock:
+                    case PhoneMsg.AchievementClaim:
+                    case PhoneMsg.LinkPalAction:
+                        if (msg.Id == PhoneMsg.MountSkillUnlock) PhoneNet.LastMountSkillJson = msg.Json;
+                        if (msg.Id == PhoneMsg.AchievementClaim) PhoneNet.LastAchievementJson = msg.Json;
+                        if (msg.Id == PhoneMsg.LinkPalAction) PhoneNet.LastLinkPalJson = msg.Json;
                         PhoneNet.LastGuildJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
                         if (State == AppState.Module && !string.IsNullOrEmpty(_currentModuleId))
@@ -717,7 +729,14 @@ namespace GunMobile.Client
             Profile.TotemId = JsonInt(json, "totemId", Profile.TotemId);
             Profile.MountGrade = JsonInt(json, "mountGrade", Profile.MountGrade);
             Profile.MountTalismanId = JsonInt(json, "mountTalismanId", Profile.MountTalismanId);
+            Profile.EnsureMountSkills();
+            ParseIntListFromServer(json, "mountSkillIds", Profile.MountSkillIds);
             Profile.ManorGrade = JsonInt(json, "manorGrade", Profile.ManorGrade);
+            Profile.LinkPalId = JsonInt(json, "linkPalId", Profile.LinkPalId);
+            Profile.AchievementPoints = JsonInt(json, "achievementPoints", Profile.AchievementPoints);
+            Profile.EnsureAchievements();
+            ParseIntListFromServer(json, "completedAchievements", Profile.CompletedAchievements);
+            ParseIntListFromServer(json, "claimedAchievements", Profile.ClaimedAchievements);
             Profile.GoldEquipId = JsonInt(json, "goldEquipId", Profile.GoldEquipId);
             Profile.GloryTemplateId = JsonInt(json, "gloryTemplateId", Profile.GloryTemplateId);
             Profile.SigilQuality = JsonInt(json, "sigilQuality", Profile.SigilQuality);

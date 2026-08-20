@@ -228,6 +228,7 @@ namespace GunMobile.Res
     {
         public int Grade;
         public int Experience;
+        public int SkillId;
         public int AddBlood;
         public int AddDamage;
         public int AddGuard;
@@ -316,9 +317,92 @@ namespace GunMobile.Res
     {
         public int Id;
         public string Name = "";
+        public string Description = "";
+        public string ElementIds = "";
         public int CostEnergy;
         public int UseCount;
         public int Pic;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int Blood;
+        public int Damage;
+    }
+
+    public sealed class MountSkillElement
+    {
+        public int Id;
+        public string Name = "";
+        public string Description = "";
+        public int Pic;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+        public int Blood;
+        public int Damage;
+    }
+
+    public sealed class MountSkillGet
+    {
+        public int Id;
+        public int Level;
+        public int NextId;
+        public int SkillId;
+        public int Type;
+        public int Exp;
+    }
+
+    public sealed class AchievementCondition
+    {
+        public int Id;
+        public int Type;
+        public int Para1;
+        public int Para2;
+    }
+
+    public sealed class AchievementReward
+    {
+        public int ValueId;
+        public int Count = 1;
+        public int RewardType = 1;
+        public string Para = "";
+    }
+
+    public sealed class AchievementInfo
+    {
+        public int Id;
+        public int AchievementPoint;
+        public int AchievementType;
+        public string Title = "";
+        public string Detail = "";
+        public int NeedMinLevel;
+        public int NeedMaxLevel = 100;
+        public string PreAchievementId = "";
+        public int IsActive = 1;
+        public List<AchievementCondition> Conditions = new List<AchievementCondition>();
+        public List<AchievementReward> Rewards = new List<AchievementReward>();
+    }
+
+    public sealed class LinkPalTemplate
+    {
+        public int Id;
+        public int TemplateId;
+        public int Type;
+        public int Quality;
+        public int Level;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int Damage;
+        public int Blood;
+        public int SkillId;
+        public int ItemTempId1;
+        public int Param1;
+        public int ItemTempId2;
+        public int Param2;
     }
 
     public sealed class QuizQuestion
@@ -1085,6 +1169,13 @@ namespace GunMobile.Res
         public Dictionary<int, OneYuanGoods> OneYuanByGoodsId { get; } = new Dictionary<int, OneYuanGoods>();
         public List<OneYuanGoods> OneYuanGoodsList { get; } = new List<OneYuanGoods>();
         public Dictionary<int, MountSkillTemplate> MountSkills { get; } = new Dictionary<int, MountSkillTemplate>();
+        public Dictionary<int, MountSkillElement> MountSkillElements { get; } = new Dictionary<int, MountSkillElement>();
+        public Dictionary<int, MountSkillGet> MountSkillGets { get; } = new Dictionary<int, MountSkillGet>();
+        public Dictionary<int, MountSkillGet> MountSkillGetsBySkillId { get; } = new Dictionary<int, MountSkillGet>();
+        public Dictionary<int, AchievementInfo> Achievements { get; } = new Dictionary<int, AchievementInfo>();
+        public List<AchievementInfo> AchievementList { get; } = new List<AchievementInfo>();
+        public Dictionary<int, LinkPalTemplate> LinkPals { get; } = new Dictionary<int, LinkPalTemplate>();
+        public List<LinkPalTemplate> LinkPalList { get; } = new List<LinkPalTemplate>();
         public List<LotteryDrop> Lottery { get; } = new List<LotteryDrop>();
         public List<ShopOffer> VipShop { get; } = new List<ShopOffer>();
         public List<PveMission> Pve { get; } = new List<PveMission>();
@@ -1205,6 +1296,8 @@ namespace GunMobile.Res
             db.LoadQuizQuestions(loader);
             db.LoadOneYuanGoods(loader);
             db.LoadMountSkills(loader);
+            db.LoadAchievements(loader);
+            db.LoadLinkPals(loader);
             db.LoadLottery(loader);
             db.LoadVip(loader);
             db.LoadPve(loader);
@@ -1612,6 +1705,110 @@ namespace GunMobile.Res
             {
                 hp += row.BaseType2Value;
             }
+        }
+
+        public MountSkillGet GetMountSkillGet(int skillId)
+        {
+            if (skillId > 0 && MountSkillGetsBySkillId.TryGetValue(skillId, out MountSkillGet row)) return row;
+            return null;
+        }
+
+        public MountSkillTemplate GetMountSkill(int skillId)
+        {
+            if (skillId > 0 && MountSkills.TryGetValue(skillId, out MountSkillTemplate row)) return row;
+            return null;
+        }
+
+        public int MountSkillUnlockMountGrade(int skillId)
+        {
+            MountSkillGet get = GetMountSkillGet(skillId);
+            int need = get != null ? Mathf.Max(0, get.Level) : 0;
+            foreach (MountGrade mount in Mounts.Values)
+            {
+                if (mount.SkillId == skillId) need = Mathf.Max(need, mount.Grade);
+            }
+            return need;
+        }
+
+        public int MountSkillUnlockGoldCost(int skillId)
+        {
+            MountSkillGet get = GetMountSkillGet(skillId);
+            return get != null ? Mathf.Max(0, get.Exp) : 0;
+        }
+
+        public void ApplyMountSkillBonuses(IReadOnlyList<int> skillIds, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int damage)
+        {
+            if (skillIds == null || skillIds.Count == 0) return;
+            for (int i = 0; i < skillIds.Count; i++)
+            {
+                int skillId = skillIds[i];
+                if (!MountSkills.TryGetValue(skillId, out MountSkillTemplate skill)) continue;
+                atk += skill.Attack; def += skill.Defence; agi += skill.Agility; luck += skill.Luck;
+                hp += skill.Blood; damage += skill.Damage;
+                if (string.IsNullOrEmpty(skill.ElementIds)) continue;
+                string[] parts = skill.ElementIds.Split(new[] { ',', '|', ';' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int p = 0; p < parts.Length; p++)
+                {
+                    if (!int.TryParse(parts[p].Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int elementId) ||
+                        elementId <= 0 || !MountSkillElements.TryGetValue(elementId, out MountSkillElement element)) continue;
+                    atk += element.Attack; def += element.Defence; agi += element.Agility; luck += element.Luck;
+                    hp += element.Blood; damage += element.Damage;
+                }
+            }
+        }
+
+        public AchievementInfo GetAchievement(int id)
+        {
+            if (id > 0 && Achievements.TryGetValue(id, out AchievementInfo row)) return row;
+            return null;
+        }
+
+        public bool AchievementMeetsLevel(AchievementInfo ach, int level)
+        {
+            if (ach == null) return false;
+            if (level < ach.NeedMinLevel) return false;
+            if (ach.NeedMaxLevel > 0 && level > ach.NeedMaxLevel) return false;
+            return true;
+        }
+
+        public bool AchievementHasSimpleConditions(AchievementInfo ach)
+        {
+            if (ach == null || ach.Conditions == null || ach.Conditions.Count == 0) return true;
+            for (int i = 0; i < ach.Conditions.Count; i++)
+            {
+                int t = ach.Conditions[i].Type;
+                if (t != 6 && t != 10 && t != 21 && t != 22) return false;
+            }
+            return true;
+        }
+
+        public LinkPalTemplate GetLinkPal(int id)
+        {
+            if (id > 0 && LinkPals.TryGetValue(id, out LinkPalTemplate row)) return row;
+            return null;
+        }
+
+        public LinkPalTemplate GetLinkPalUpgrade(int currentId)
+        {
+            LinkPalTemplate current = GetLinkPal(currentId);
+            if (current == null) return null;
+            for (int i = 0; i < LinkPalList.Count; i++)
+            {
+                LinkPalTemplate row = LinkPalList[i];
+                if (row.TemplateId == current.TemplateId && row.Type == current.Type &&
+                    row.Quality == current.Quality && row.Level == current.Level + 1) return row;
+            }
+            return null;
+        }
+
+        public int LinkPalGoldCost(LinkPalTemplate row) => row != null ? Mathf.Max(0, row.Param1) : 0;
+
+        public void ApplyLinkPalBonus(int linkPalId, ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int damage)
+        {
+            LinkPalTemplate row = GetLinkPal(linkPalId);
+            if (row == null) return;
+            atk += row.Attack; def += row.Defence; agi += row.Agility; luck += row.Lucky;
+            hp += row.Blood; damage += row.Damage;
         }
 
         public int GemUpgradeCost(int currentLevel)
@@ -4229,6 +4426,7 @@ namespace GunMobile.Res
                 {
                     Grade = g,
                     Experience = Int(row, "Experience"),
+                    SkillId = Int(row, "SkillID"),
                     AddBlood = Int(row, "AddBlood"),
                     AddDamage = Int(row, "AddDamage"),
                     AddGuard = Int(row, "AddGuard"),
@@ -4517,7 +4715,8 @@ namespace GunMobile.Res
 
         void LoadMountSkills(ResLoader loader)
         {
-            if (!TryTable(loader, "Request/mountskilltemplate_out.xml", out XmlResultTable table))
+            if (!TryTable(loader, "Request/mountskilltemplate.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/mountskilltemplate_out.xml", out table))
             {
                 return;
             }
@@ -4525,19 +4724,161 @@ namespace GunMobile.Res
             foreach (var row in table.Rows)
             {
                 int id = Int(row, "ID");
-                if (id <= 0)
-                {
-                    continue;
-                }
-
+                if (id <= 0) continue;
                 MountSkills[id] = new MountSkillTemplate
                 {
                     Id = id,
                     Name = Str(row, "Name"),
+                    Description = Str(row, "Description"),
+                    ElementIds = Str(row, "ElementIDs"),
                     CostEnergy = Int(row, "CostEnergy"),
                     UseCount = Int(row, "UseCount"),
-                    Pic = Int(row, "Pic")
+                    Pic = Int(row, "Pic"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Luck = FirstInt(row, "Lucky", "Luck"),
+                    Blood = FirstInt(row, "Blood", "AddBlood"),
+                    Damage = FirstInt(row, "Damage", "AddDamage")
                 };
+            }
+
+            if (TryTable(loader, "Request/mountskillelementtemplate.xml", out XmlResultTable elements) ||
+                TryTable(loader, "Request/mountskillelementtemplate_out.xml", out elements))
+            {
+                foreach (var row in elements.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0) continue;
+                    MountSkillElements[id] = new MountSkillElement
+                    {
+                        Id = id,
+                        Name = Str(row, "Name"),
+                        Description = Str(row, "Description"),
+                        Pic = Int(row, "Pic"),
+                        Attack = Int(row, "Attack"),
+                        Defence = Int(row, "Defence"),
+                        Agility = Int(row, "Agility"),
+                        Luck = FirstInt(row, "Lucky", "Luck"),
+                        Blood = FirstInt(row, "Blood", "AddBlood"),
+                        Damage = FirstInt(row, "Damage", "AddDamage")
+                    };
+                }
+            }
+
+            if (TryTable(loader, "Request/mountskillgettemplate.xml", out XmlResultTable gets) ||
+                TryTable(loader, "Request/mountskillgettemplate_out.xml", out gets))
+            {
+                foreach (var row in gets.Rows)
+                {
+                    int id = Int(row, "ID");
+                    int skillId = Int(row, "SkillID");
+                    if (id <= 0 || skillId <= 0) continue;
+                    var info = new MountSkillGet
+                    {
+                        Id = id,
+                        Level = Int(row, "Level"),
+                        NextId = Int(row, "NextID"),
+                        SkillId = skillId,
+                        Type = Int(row, "Type"),
+                        Exp = Int(row, "Exp")
+                    };
+                    MountSkillGets[id] = info;
+                    MountSkillGetsBySkillId[skillId] = info;
+                }
+            }
+        }
+
+        void LoadAchievements(ResLoader loader)
+        {
+            if (!loader.TryReadBytes("Request/achievementlist.xml", out byte[] data) &&
+                !loader.TryReadBytes("Request/achievementlist_out.xml", out data))
+            {
+                return;
+            }
+
+            XDocument doc = ZlibXml.Load(data);
+            XElement root = doc.Root;
+            if (root == null) return;
+
+            foreach (XElement item in root.Elements())
+            {
+                if (!string.Equals(item.Name.LocalName, "Item", StringComparison.OrdinalIgnoreCase)) continue;
+                int id = QuestAttrInt(item, "ID");
+                if (id <= 0) continue;
+                var ach = new AchievementInfo
+                {
+                    Id = id,
+                    AchievementPoint = QuestAttrInt(item, "AchievementPoint"),
+                    AchievementType = QuestAttrInt(item, "AchievementType"),
+                    Title = QuestAttrStr(item, "Title"),
+                    Detail = QuestAttrStr(item, "Detail"),
+                    NeedMinLevel = QuestAttrInt(item, "NeedMinLevel"),
+                    NeedMaxLevel = QuestAttrInt(item, "NeedMaxLevel"),
+                    PreAchievementId = QuestAttrStr(item, "PreAchievementID"),
+                    IsActive = QuestAttrInt(item, "IsActive")
+                };
+                if (ach.NeedMaxLevel <= 0) ach.NeedMaxLevel = 100;
+                foreach (XElement child in item.Elements())
+                {
+                    if (string.Equals(child.Name.LocalName, "Item_Condiction", StringComparison.OrdinalIgnoreCase))
+                    {
+                        int para1 = QuestAttrInt(child, "Condiction_Para1");
+                        if (para1 == 0) para1 = QuestAttrInt(child, "Para1");
+                        int para2 = QuestAttrInt(child, "Condiction_Para2");
+                        if (para2 == 0) para2 = QuestAttrInt(child, "Para2");
+                        ach.Conditions.Add(new AchievementCondition
+                        {
+                            Id = QuestAttrInt(child, "CondictionID"),
+                            Type = QuestAttrInt(child, "CondictionType"),
+                            Para1 = para1,
+                            Para2 = para2
+                        });
+                    }
+                    else if (string.Equals(child.Name.LocalName, "Item_Reward", StringComparison.OrdinalIgnoreCase))
+                    {
+                        ach.Rewards.Add(new AchievementReward
+                        {
+                            ValueId = QuestAttrInt(child, "RewardValueId"),
+                            Count = Mathf.Max(1, QuestAttrInt(child, "RewardCount")),
+                            RewardType = QuestAttrInt(child, "RewardType"),
+                            Para = QuestAttrStr(child, "RewardPara")
+                        });
+                    }
+                }
+                Achievements[id] = ach;
+                AchievementList.Add(ach);
+            }
+        }
+
+        void LoadLinkPals(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_LinkPalTemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = FirstInt(row, "Id", "ID");
+                if (id <= 0) continue;
+                var info = new LinkPalTemplate
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateID"),
+                    Type = Int(row, "Type"),
+                    Quality = Int(row, "Quality"),
+                    Level = Int(row, "Level"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = FirstInt(row, "Lucky", "Luck"),
+                    Damage = Int(row, "Damage"),
+                    Blood = Int(row, "Blood"),
+                    SkillId = Int(row, "SkillID"),
+                    ItemTempId1 = Int(row, "ItemTempId1"),
+                    Param1 = Int(row, "Param1"),
+                    ItemTempId2 = Int(row, "ItemTempId2"),
+                    Param2 = Int(row, "Param2")
+                };
+                LinkPals[id] = info;
+                LinkPalList.Add(info);
             }
         }
 
@@ -5964,6 +6305,17 @@ namespace GunMobile.Res
             string head = comma < 0 ? csv : csv.Substring(0, comma);
             int.TryParse(head.Trim(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int n);
             return n;
+        }
+
+        static int FirstInt(IReadOnlyDictionary<string, string> row, params string[] keys)
+        {
+            if (row == null || keys == null) return 0;
+            for (int i = 0; i < keys.Length; i++)
+            {
+                int v = Int(row, keys[i]);
+                if (v != 0) return v;
+            }
+            return 0;
         }
 
         static bool TryTable(ResLoader loader, string path, out XmlResultTable table)

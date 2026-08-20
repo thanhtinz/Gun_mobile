@@ -239,6 +239,9 @@ namespace GunMobile.Net
         public const ushort GoldEquipUpgrade = 192;
         public const ushort GloryUpgrade = 193;
         public const ushort SigilRoll = 194;
+        public const ushort MountSkillUnlock = 195;
+        public const ushort AchievementClaim = 196;
+        public const ushort LinkPalAction = 197;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

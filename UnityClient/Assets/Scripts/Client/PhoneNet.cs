@@ -32,6 +32,9 @@ namespace GunMobile.Client
         public static string LastWorshipMoonJson;
         public static string LastSuperLuckerJson;
         public static string LastCalendarJson;
+        public static string LastAchievementJson;
+        public static string LastLinkPalJson;
+        public static string LastMountSkillJson;
         public static string LastQuizJson;
         public static string LastOneYuanJson;
         public static string LastAuditoriumJson;
@@ -196,7 +199,27 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.SigilRoll, "{\"quality\":" + quality + "}");
         }
 
-        public static void QuizAnswer(int questionId, int option)
+                public static void UnlockMountSkill(int skillId)
+        {
+            Road?.Send(PhoneMsg.MountSkillUnlock, "{\"skillId\":" + skillId + "}");
+        }
+
+        public static void ClaimAchievement(int achievementId)
+        {
+            Road?.Send(PhoneMsg.AchievementClaim, "{\"achievementId\":" + achievementId + "}");
+        }
+
+        public static void LinkPalEquip(int id)
+        {
+            Road?.Send(PhoneMsg.LinkPalAction, "{\"action\":\"equip\",\"id\":" + id + "}");
+        }
+
+        public static void LinkPalUpgrade()
+        {
+            Road?.Send(PhoneMsg.LinkPalAction, "{\"action\":\"upgrade\"}");
+        }
+
+public static void QuizAnswer(int questionId, int option)
         {
             Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
         }
