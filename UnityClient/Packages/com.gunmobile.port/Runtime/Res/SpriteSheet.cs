@@ -150,6 +150,21 @@ namespace GunMobile.Res
             return tex;
         }
 
+        /// <summary>Offset of the IHDR width's most significant byte inside a PNG stream.</summary>
+        const int PngWidthHighByte = 16;
+
+        /// <summary>
+        /// Recovers a loadable PNG from a legacy resource file.
+        /// </summary>
+        /// <remarks>
+        /// 1177 files under <c>Resource/image</c> carry a five byte prefix
+        /// (<c>00 03 5E 5F 5E</c>) ahead of the PNG, and those same files are
+        /// additionally damaged: the high byte of the IHDR width is overwritten with
+        /// <c>0xFF</c>. Stripping the prefix alone is not enough — the IHDR CRC still
+        /// fails and <c>Texture2D.LoadImage</c> returns false, which is why crater art
+        /// silently never appeared. Resetting that byte to zero restores a valid IHDR
+        /// CRC on every affected file, so the repair is exact rather than a guess.
+        /// </remarks>
         public static byte[] StripToPng(byte[] data)
         {
             if (data == null || data.Length < 8)
@@ -159,7 +174,7 @@ namespace GunMobile.Res
 
             if (data[0] == 0x89 && data[1] == 0x50)
             {
-                return data;
+                return RepairPngWidth(data);
             }
 
             for (int i = 1; i < Mathf.Min(32, data.Length - 8); i++)
@@ -168,11 +183,27 @@ namespace GunMobile.Res
                 {
                     var slice = new byte[data.Length - i];
                     System.Buffer.BlockCopy(data, i, slice, 0, slice.Length);
-                    return slice;
+                    return RepairPngWidth(slice);
                 }
             }
 
             return data;
+        }
+
+        /// <summary>
+        /// Clears the corrupted high byte of the IHDR width, leaving a valid PNG alone.
+        /// </summary>
+        static byte[] RepairPngWidth(byte[] png)
+        {
+            if (png.Length <= PngWidthHighByte || png[PngWidthHighByte] != 0xFF)
+            {
+                return png;
+            }
+
+            // A real image is never 16.7M pixels wide, so a set high byte is always
+            // the corruption rather than a legitimate dimension.
+            png[PngWidthHighByte] = 0x00;
+            return png;
         }
 
         public bool TryUv(string nameContains, out SheetFrame frame)

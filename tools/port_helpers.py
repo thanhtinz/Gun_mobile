@@ -30,6 +30,31 @@ def decode_text(data: bytes) -> str:
     return raw.decode("utf-8")
 
 
+OBFUSCATION_PREFIX = b"\x00\x03\x5e\x5f\x5e"
+PNG_MAGIC = b"\x89PNG\r\n\x1a\x08"[:4] + b"\r\n\x1a\n"
+PNG_WIDTH_HIGH_BYTE = 16
+
+
+def deobfuscate(data: bytes) -> bytes:
+    """Strip the resource obfuscation the PC build applies to some assets.
+
+    1177 files under ``Resource/image`` carry a five byte prefix
+    (``00 03 5E 5F 5E``) ahead of the real payload, and the PNGs among them are
+    additionally damaged: the high byte of the IHDR width is overwritten with
+    ``0xFF``. Stripping the prefix alone is not enough — the IHDR CRC still fails
+    and the image will not decode. Resetting that byte to zero restores a valid
+    IHDR CRC on every affected file, so the repair is exact, not a heuristic.
+
+    Anything that is not obfuscated is returned untouched.
+    """
+    if not data.startswith(OBFUSCATION_PREFIX):
+        return data
+    body = data[len(OBFUSCATION_PREFIX):]
+    if body.startswith(PNG_MAGIC) and len(body) > PNG_WIDTH_HIGH_BYTE and body[PNG_WIDTH_HIGH_BYTE] == 0xFF:
+        body = body[:PNG_WIDTH_HIGH_BYTE] + b"\x00" + body[PNG_WIDTH_HIGH_BYTE + 1:]
+    return body
+
+
 def load_xml(data: bytes) -> ET.Element:
     text = decode_text(data).lstrip("\ufeff\0")
     idx = text.find("<")
@@ -75,11 +100,29 @@ class MapCollision:
     stride: int
     bits: bytes
 
+    @staticmethod
+    def stride_for(width: int) -> int:
+        """Bytes per packed row.
+
+        Not ``ceil(width / 8)``: the original writer always emits one extra byte,
+        so a width that is an exact multiple of eight still gets a trailing byte
+        (2000 px -> 251 bytes, not 250). Checked against every mask in the dump --
+        ``(width >> 3) + 1`` matches the file size on all 4685 of them while
+        ``ceil(width / 8)`` matches only 3755.
+        """
+        return (width >> 3) + 1
+
     @classmethod
     def load(cls, data: bytes) -> "MapCollision":
         width, height = struct.unpack_from("<ii", data, 0)
         bits = data[8:]
-        stride = (width + 7) // 8
+        stride = cls.stride_for(width)
+        expected = stride * height
+        if len(bits) != expected:
+            raise ValueError(
+                f"map payload is {len(bits)} bytes, expected {expected} "
+                f"for {width}x{height} (stride {stride})"
+            )
         return cls(width, height, stride, bits)
 
     def is_solid(self, x: int, y: int) -> bool:

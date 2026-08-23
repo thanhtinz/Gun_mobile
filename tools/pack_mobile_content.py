@@ -9,10 +9,14 @@ the Ok zips; unpack with tools/unpack_pc_dump.py for ExtraRoots.
 from __future__ import annotations
 
 import json
+import sys
 import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from port_helpers import deobfuscate
+
 OUT = ROOT / "UnityClient" / "Assets" / "StreamingAssets" / "PcData"
 Z2 = ROOT / "legacy" / "releases" / "Ok" / "Archive.2.zip"
 Z3 = ROOT / "legacy" / "releases" / "Ok" / "Archive.3.zip"
@@ -92,7 +96,10 @@ REQUEST_KEEP = (
 def write_bytes(rel: str, data: bytes) -> None:
     dest = OUT / rel
     dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_bytes(data)
+    # Every asset leaves through here, so this is the one place that has to
+    # undo the PC build's resource obfuscation. Packing it through untouched
+    # ships images the client cannot decode.
+    dest.write_bytes(deobfuscate(data))
 
 
 def extract_named(zf: zipfile.ZipFile, names: tuple[str, ...]) -> int:

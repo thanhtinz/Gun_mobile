@@ -14,6 +14,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 from port_helpers import (  # noqa: E402
     MapCollision,
+    deobfuscate,
     fly_until_map,
     is_zlib,
     launch,
@@ -103,6 +104,48 @@ class XmlHelpers(unittest.TestCase):
         self.assertGreater(len(list(root)), 20)
 
 
+class Obfuscation(unittest.TestCase):
+    """The PC build hides some art behind a prefix and a broken IHDR width."""
+
+    PREFIXED_PNG = (
+        b"\x00\x03\x5e\x5f\x5e"
+        b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\xff\x00\x00\x50\x00\x00\x00\x50"
+    )
+
+    def test_prefix_and_width_byte_are_both_repaired(self):
+        clean = deobfuscate(self.PREFIXED_PNG)
+        self.assertTrue(clean.startswith(b"\x89PNG\r\n\x1a\n"))
+        self.assertEqual(clean[16], 0x00, "the corrupted width byte must be cleared")
+        self.assertEqual(int.from_bytes(clean[16:20], "big"), 80)
+
+    def test_clean_data_is_returned_untouched(self):
+        plain = b"\x89PNG\r\n\x1a\n" + b"\x00" * 32
+        self.assertIs(deobfuscate(plain), plain)
+
+    def test_no_packed_asset_still_carries_the_prefix(self):
+        """Regression: 272 crater PNGs shipped obfuscated and never decoded."""
+        offenders = []
+        for root in (PCDATA, SAMPLES):
+            if not root.exists():
+                continue
+            for path in root.rglob("*"):
+                if path.is_file() and path.read_bytes()[:5] == b"\x00\x03\x5e\x5f\x5e":
+                    offenders.append(str(path.relative_to(ROOT)))
+        self.assertEqual(offenders[:5], [], f"{len(offenders)} obfuscated assets packed")
+
+    def test_packed_pngs_have_a_sane_header(self):
+        pngs = [p for p in (PCDATA / "Resource" / "image" / "bomb").rglob("*.png")]
+        self.assertGreater(len(pngs), 50, "no bomb art packed")
+        for path in pngs:
+            head = path.read_bytes()[:24]
+            with self.subTest(png=path.name):
+                self.assertTrue(head.startswith(b"\x89PNG\r\n\x1a\n"))
+                width = int.from_bytes(head[16:20], "big")
+                height = int.from_bytes(head[20:24], "big")
+                self.assertTrue(0 < width <= 8192, f"implausible width {width}")
+                self.assertTrue(0 < height <= 8192, f"implausible height {height}")
+
+
 class MapAndBallistics(unittest.TestCase):
     def test_fore_map_header(self):
         data = (SAMPLES / "Maps" / "1056" / "fore.map").read_bytes()
@@ -111,6 +154,27 @@ class MapAndBallistics(unittest.TestCase):
         self.assertEqual(m.height, 942)
         self.assertEqual(m.stride, 157)
         self.assertGreater(m.solid_count(), 50)
+
+    def test_stride_keeps_the_writers_spare_byte(self):
+        """A width divisible by eight still carries one extra byte per row.
+
+        ``ceil(width / 8)`` looks right and is wrong for exactly those widths:
+        every row then shifts one byte left and the terrain dissolves. 47 of the
+        127 maps shipped in this repo have such a width.
+        """
+        self.assertEqual(MapCollision.stride_for(1250), 157)  # not divisible by 8
+        self.assertEqual(MapCollision.stride_for(2000), 251)  # divisible; ceil gives 250
+        self.assertEqual(MapCollision.stride_for(1600), 201)  # divisible; ceil gives 200
+
+    def test_every_shipped_map_matches_the_stride(self):
+        maps = sorted(PCDATA.glob("Service/Road/map/*/*.map")) + sorted(SAMPLES.glob("Maps/*/*.map"))
+        self.assertGreater(len(maps), 100, "no map data found to validate")
+        for path in maps:
+            with self.subTest(map=path.parent.name):
+                # load() now rejects any payload whose size disagrees with the
+                # stride, so parsing every map is itself the assertion.
+                m = MapCollision.load(path.read_bytes())
+                self.assertEqual(len(m.bits), m.stride * m.height)
 
     def test_shot_is_deterministic(self):
         data = (SAMPLES / "Maps" / "1056" / "fore.map").read_bytes()
