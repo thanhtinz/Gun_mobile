@@ -181,6 +181,19 @@ namespace GunMobile.Client
         public List<int> ElfSkillIds = new List<int>();
         public List<int> ButterflyTaskClaimed = new List<int>();
         public int ButterflyTaskActive;
+        public int ManorExp;
+        public int ManorSeedTemplateId;
+        public int ManorSeedPlantMin;
+        public int ManorSeedHelpers;
+        public int ManorTaskActions;
+        public List<int> ManorTaskClaimed = new List<int>();
+        public List<int> CardAchievementClaimed = new List<int>();
+        public int GuardCoreGrade = 1;
+        public int GuardCoreExp;
+        public List<int> GuardCoreSkillIds = new List<int>();
+        public int LightRiddleAnswered;
+        public int LightRiddleCorrect;
+        public int LightRiddleQuestionId;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -226,6 +239,9 @@ namespace GunMobile.Client
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureManorTaskClaimed() { if (ManorTaskClaimed == null) ManorTaskClaimed = new List<int>(); }
+        public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
+        public void EnsureGuardCoreSkills() { if (GuardCoreSkillIds == null) GuardCoreSkillIds = new List<int>(); }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -663,6 +679,10 @@ namespace GunMobile.Client
                 db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 db.ApplyScrollBuff(ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard);
                 db.ApplyConsortiaBufferBonus(ConsortiaBufferId, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg);
+                EnsureCardAchievementClaimed();
+                db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                EnsureGuardCoreSkills();
+                db.ApplyGuardCoreBonus(GuardCoreGrade, GuardCoreSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 atk += sDmg;
                 def += sGuard;
                 atk += magicAtk / 4;
@@ -930,6 +950,11 @@ namespace GunMobile.Client
             new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
             new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
             new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
+            new ModuleDef("manorseed", "庄园种植", "Request/templatemanorlist.xml"),
+            new ModuleDef("manortask", "庄园任务", "Request/ts_manortask.xml"),
+            new ModuleDef("cardachievement", "卡牌成就", "Request/cardachievement.xml"),
+            new ModuleDef("guardcore", "守护核心", "Request/guardcoretemplate.xml"),
+            new ModuleDef("lightriddle", "元宵灯谜", "Request/lightriddlequest.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

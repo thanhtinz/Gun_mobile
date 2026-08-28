@@ -223,6 +223,21 @@ namespace GunMobile.Client
                 case "butterflytask":
                     ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
                     return;
+                case "manorseed":
+                    ExtraModulesScreens.ManorSeedScreen(_safe, this);
+                    return;
+                case "manortask":
+                    ExtraModulesScreens.ManorTaskScreen(_safe, this);
+                    return;
+                case "cardachievement":
+                    ExtraModulesScreens.CardAchievementScreen(_safe, this);
+                    return;
+                case "guardcore":
+                    ExtraModulesScreens.GuardCoreScreen(_safe, this);
+                    return;
+                case "lightriddle":
+                    ExtraModulesScreens.LightRiddleScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -804,6 +819,36 @@ namespace GunMobile.Client
                         if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.ManorSeedPlant:
+                        PhoneNet.LastManorSeedJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "manorseed" || _currentModuleId == "manor"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ManorTaskClaim:
+                        PhoneNet.LastManorTaskJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "manortask" || _currentModuleId == "manor"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardAchievementClaim:
+                        PhoneNet.LastCardAchievementJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "cardachievement" || _currentModuleId == "card"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.GuardCoreUpgrade:
+                        PhoneNet.LastGuardCoreJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "guardcore")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LightRiddleAnswer:
+                        PhoneNet.LastLightRiddleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "lightriddle")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1081,6 +1126,22 @@ namespace GunMobile.Client
             Profile.EnsureButterflyTasks();
             ParseIntListFromServer(json, "butterflyTaskClaimed", Profile.ButterflyTaskClaimed);
             Profile.ButterflyTaskActive = JsonInt(json, "butterflyTaskActive", Profile.ButterflyTaskActive);
+            Profile.ManorExp = JsonInt(json, "manorExp", Profile.ManorExp);
+            Profile.ManorSeedTemplateId = JsonInt(json, "manorSeedTemplateId", Profile.ManorSeedTemplateId);
+            Profile.ManorSeedPlantMin = JsonInt(json, "manorSeedPlantMin", Profile.ManorSeedPlantMin);
+            Profile.ManorSeedHelpers = JsonInt(json, "manorSeedHelpers", Profile.ManorSeedHelpers);
+            Profile.ManorTaskActions = JsonInt(json, "manorTaskActions", Profile.ManorTaskActions);
+            Profile.EnsureManorTaskClaimed();
+            ParseIntListFromServer(json, "manorTaskClaimed", Profile.ManorTaskClaimed);
+            Profile.EnsureCardAchievementClaimed();
+            ParseIntListFromServer(json, "cardAchievementClaimed", Profile.CardAchievementClaimed);
+            Profile.GuardCoreGrade = JsonInt(json, "guardCoreGrade", Profile.GuardCoreGrade);
+            Profile.GuardCoreExp = JsonInt(json, "guardCoreExp", Profile.GuardCoreExp);
+            Profile.EnsureGuardCoreSkills();
+            ParseIntListFromServer(json, "guardCoreSkillIds", Profile.GuardCoreSkillIds);
+            Profile.LightRiddleAnswered = JsonInt(json, "lightRiddleAnswered", Profile.LightRiddleAnswered);
+            Profile.LightRiddleCorrect = JsonInt(json, "lightRiddleCorrect", Profile.LightRiddleCorrect);
+            Profile.LightRiddleQuestionId = JsonInt(json, "lightRiddleQuestionId", Profile.LightRiddleQuestionId);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

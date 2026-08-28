@@ -248,6 +248,52 @@ namespace GunMobile.Net
         public int ButterflyTaskDay = -1;
         public int ButterflyTaskActive;
         public int ButterflyTaskStartDay = -1;
+        public int ManorExp;
+        public int ManorSeedTemplateId;
+        public int ManorSeedPlantMin;
+        public int ManorSeedHelpers;
+        public int ManorTaskDay = -1;
+        public int ManorTaskActions;
+        public List<int> ManorTaskClaimed = new List<int>();
+        public List<int> CardAchievementClaimed = new List<int>();
+        public int GuardCoreGrade = 1;
+        public int GuardCoreExp;
+        public List<int> GuardCoreSkillIds = new List<int>();
+        public int LightRiddleDay = -1;
+        public int LightRiddleAnswered;
+        public int LightRiddleCorrect;
+        public int LightRiddleQuestionId;
+
+        public static int NowMinutes()
+        {
+            return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMinutes;
+        }
+        public void EnsureManorTaskClaimed() { if (ManorTaskClaimed == null) ManorTaskClaimed = new List<int>(); }
+        public void TouchManorTaskDay()
+        {
+            EnsureManorTaskClaimed();
+            int day = DateTime.Now.DayOfYear;
+            if (ManorTaskDay != day) { ManorTaskDay = day; ManorTaskActions = 0; ManorTaskClaimed.Clear(); }
+        }
+        public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
+        public void EnsureGuardCoreSkills() { if (GuardCoreSkillIds == null) GuardCoreSkillIds = new List<int>(); }
+        public void TouchLightRiddleDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (LightRiddleDay != day)
+            {
+                LightRiddleDay = day;
+                LightRiddleAnswered = 0;
+                LightRiddleCorrect = 0;
+                LightRiddleQuestionId = 0;
+            }
+        }
+        public void SyncManorGrade(GameDatabase db)
+        {
+            if (db == null) return;
+            int grade = db.ManorGradeFromExp(ManorExp);
+            if (grade > ManorGrade) ManorGrade = grade;
+        }
 
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -656,6 +702,10 @@ namespace GunMobile.Net
             db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyScrollBuff(ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard);
             db.ApplyConsortiaBufferBonus(ConsortiaBufferId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg);
+            EnsureCardAchievementClaimed();
+            db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            EnsureGuardCoreSkills();
+            db.ApplyGuardCoreBonus(GuardCoreGrade, GuardCoreSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
             db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref magicDef);
@@ -785,6 +835,28 @@ namespace GunMobile.Net
             for (int i = 0; i < ButterflyTaskClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ButterflyTaskClaimed[i]); }
             sb.Append("],");
             J(sb, "butterflyTaskActive", ButterflyTaskActive); sb.Append(",");
+            J(sb, "manorExp", ManorExp); sb.Append(",");
+            J(sb, "manorSeedTemplateId", ManorSeedTemplateId); sb.Append(",");
+            J(sb, "manorSeedPlantMin", ManorSeedPlantMin); sb.Append(",");
+            J(sb, "manorSeedHelpers", ManorSeedHelpers); sb.Append(",");
+            J(sb, "manorTaskActions", ManorTaskActions); sb.Append(",");
+            EnsureManorTaskClaimed();
+            sb.Append("\"manorTaskClaimed\":[");
+            for (int i = 0; i < ManorTaskClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ManorTaskClaimed[i]); }
+            sb.Append("],");
+            EnsureCardAchievementClaimed();
+            sb.Append("\"cardAchievementClaimed\":[");
+            for (int i = 0; i < CardAchievementClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardAchievementClaimed[i]); }
+            sb.Append("],");
+            J(sb, "guardCoreGrade", GuardCoreGrade); sb.Append(",");
+            J(sb, "guardCoreExp", GuardCoreExp); sb.Append(",");
+            EnsureGuardCoreSkills();
+            sb.Append("\"guardCoreSkillIds\":[");
+            for (int i = 0; i < GuardCoreSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(GuardCoreSkillIds[i]); }
+            sb.Append("],");
+            J(sb, "lightRiddleAnswered", LightRiddleAnswered); sb.Append(",");
+            J(sb, "lightRiddleCorrect", LightRiddleCorrect); sb.Append(",");
+            J(sb, "lightRiddleQuestionId", LightRiddleQuestionId); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2394,6 +2466,26 @@ namespace GunMobile.Net
 
                 case PhoneMsg.ButterflyTaskClaim:
                     HandleButterflyTaskClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.ManorSeedPlant:
+                    HandleManorSeedPlant(player, ns, json);
+                    break;
+
+                case PhoneMsg.ManorTaskClaim:
+                    HandleManorTaskClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardAchievementClaim:
+                    HandleCardAchievementClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.GuardCoreUpgrade:
+                    HandleGuardCoreUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.LightRiddleAnswer:
+                    HandleLightRiddleAnswer(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -7225,6 +7317,310 @@ namespace GunMobile.Net
                 ",\"rewardGp\":" + row.RewardGp + ",\"rewardItem\":" + row.RewardItemId + "}");
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
+        // Trang viên: gieo hạt từ templatemanorlist rồi thu hoạch khi đủ phút chín.
+        void HandleManorSeedPlant(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ManorSeedList.Count == 0)
+            { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "plant");
+            int now = ServerPlayer.NowMinutes();
+
+            if (string.Equals(action, "help", StringComparison.OrdinalIgnoreCase))
+            {
+                if (player.ManorSeedTemplateId <= 0)
+                { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"empty\"}"); return; }
+                ManorSeedInfo growing = _db.GetManorSeed(player.ManorSeedTemplateId);
+                int helpMax = _db.ConfigInt("ManorHelperMax", 3);
+                if (player.ManorSeedHelpers >= helpMax)
+                { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"helpMax\"}"); return; }
+                player.ManorSeedHelpers++;
+                int helperExp = growing != null ? Mathf.Max(1, growing.HelperExp) : 1;
+                player.ManorExp += helperExp;
+                player.SyncManorGrade(_db);
+                player.TouchManorTaskDay();
+                player.ManorTaskActions++;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":true,\"action\":\"help\",\"helpers\":" + player.ManorSeedHelpers +
+                    ",\"manorExp\":" + player.ManorExp + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "harvest", StringComparison.OrdinalIgnoreCase))
+            {
+                ManorSeedInfo seed = _db.GetManorSeed(player.ManorSeedTemplateId);
+                if (seed == null)
+                { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"empty\"}"); return; }
+                int elapsed = now - player.ManorSeedPlantMin;
+                if (elapsed < 0) elapsed = 0;
+                int need = Mathf.Max(1, seed.RipenMinutes - player.ManorSeedHelpers * _db.ConfigInt("ManorHelperMinutes", 5));
+                if (elapsed < need)
+                {
+                    Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"grow\",\"left\":" + (need - elapsed) + "}");
+                    return;
+                }
+
+                int yield = Mathf.Max(1, seed.Yield);
+                if (seed.ProduceItemId > 0) player.AddItem(seed.ProduceItemId, yield);
+                if (seed.ByProductItemId > 0 && seed.ByProductItemId != seed.ProduceItemId) player.AddItem(seed.ByProductItemId, 1);
+                int gold = _db.ManorSeedHarvestGold(seed, player.ManorGrade);
+                player.Gold += gold;
+                player.ManorExp += Mathf.Max(1, seed.ManorExp);
+                player.SyncManorGrade(_db);
+                player.ManorSeedTemplateId = 0;
+                player.ManorSeedPlantMin = 0;
+                player.ManorSeedHelpers = 0;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":true,\"action\":\"harvest\",\"templateId\":" + seed.TemplateId +
+                    ",\"itemId\":" + seed.ProduceItemId + ",\"count\":" + yield + ",\"gold\":" + gold +
+                    ",\"manorExp\":" + player.ManorExp + ",\"grade\":" + player.ManorGrade + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.ManorSeedTemplateId > 0)
+            { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"busy\"}"); return; }
+
+            int templateId = JI(json, "templateId", 0);
+            ManorSeedInfo row = _db.GetManorSeed(templateId);
+            if (row == null) { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"seed\"}"); return; }
+            if (row.Level > 0 && player.ManorGrade < row.Level)
+            { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+
+            bool paidWithItem = player.Consume(row.TemplateId, 1);
+            int cost = 0;
+            if (!paidWithItem)
+            {
+                cost = _db.ManorSeedBuyGold(row);
+                if (player.Gold < cost)
+                { Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= cost;
+            }
+
+            player.ManorSeedTemplateId = row.TemplateId;
+            player.ManorSeedPlantMin = now;
+            player.ManorSeedHelpers = 0;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ManorSeedPlant, "{\"ok\":true,\"action\":\"plant\",\"templateId\":" + row.TemplateId +
+                ",\"minutes\":" + row.RipenMinutes + ",\"cost\":" + cost + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // ts_manortask: TaskType 1 = phụ giúp bạn (Condition1 lượt/ngày),
+        // TaskType 2 = nộp Condition2 món Condition1. Condition3 = cấp trang viên tối thiểu.
+        void HandleManorTaskClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ManorTaskList.Count == 0)
+            { Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchManorTaskDay();
+            int taskId = JI(json, "taskId", 0);
+            ManorTaskInfo row = _db.GetManorTask(taskId);
+            if (row == null) { Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"task\"}"); return; }
+            if (player.ManorTaskClaimed.Contains(taskId))
+            { Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (row.Condition3 > 0 && player.ManorGrade < row.Condition3)
+            { Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+
+            if (row.TaskType == 2)
+            {
+                int needCount = Mathf.Max(1, row.Condition2);
+                if (row.Condition1 <= 0 || !player.Consume(row.Condition1, needCount))
+                { Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"item\"}"); return; }
+            }
+            else
+            {
+                int needActions = Mathf.Max(1, row.Condition1);
+                if (player.ManorTaskActions < needActions)
+                {
+                    Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":false,\"err\":\"progress\",\"have\":" +
+                        player.ManorTaskActions + ",\"need\":" + needActions + "}");
+                    return;
+                }
+                player.ManorTaskActions -= needActions;
+            }
+
+            player.ManorTaskClaimed.Add(taskId);
+            if (row.RewardItemId1 > 0) player.AddItem(row.RewardItemId1, Mathf.Max(1, row.RewardCount1));
+            if (row.RewardItemId2 > 0) player.AddItem(row.RewardItemId2, Mathf.Max(1, row.RewardCount2));
+            int manorExp = _db.ConfigInt("ManorTaskExp", 10) * Mathf.Max(1, row.Condition3);
+            player.ManorExp += manorExp;
+            player.SyncManorGrade(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ManorTaskClaim, "{\"ok\":true,\"taskId\":" + taskId + ",\"type\":" + row.TaskType +
+                ",\"itemId\":" + row.RewardItemId1 + ",\"count\":" + Mathf.Max(1, row.RewardCount1) +
+                ",\"manorExp\":" + manorExp + ",\"grade\":" + player.ManorGrade + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleCardAchievementClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.CardAchievementList.Count == 0)
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureOwnedCards();
+            player.EnsureCardAchievementClaimed();
+            int achievementId = JI(json, "achievementId", 0);
+            CardAchievementInfo row = _db.GetCardAchievement(achievementId);
+            if (row == null) { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"achievement\"}"); return; }
+            if (player.CardAchievementClaimed.Contains(achievementId))
+            { Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            int have = _db.CardAchievementProgress(row, player.OwnedCardTemplateIds);
+            int need = _db.CardAchievementNeed(row);
+            if (have < need)
+            {
+                Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":false,\"err\":\"progress\",\"have\":" + have +
+                    ",\"need\":" + need + "}");
+                return;
+            }
+
+            player.CardAchievementClaimed.Add(achievementId);
+            int points = _db.ConfigInt("CardAchievementPoints", 10);
+            player.AchievementPoints += points;
+            if (row.HonorId > 0) player.Honor += _db.ConfigInt("CardAchievementHonor", 50);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CardAchievementClaim, "{\"ok\":true,\"achievementId\":" + achievementId +
+                ",\"have\":" + have + ",\"need\":" + need + ",\"points\":" + points +
+                ",\"honorId\":" + row.HonorId + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // guardcoreleveltemplate cho exp/gold mỗi cấp, guardcoretemplate là kỹ năng mở theo GuardGrade.
+        void HandleGuardCoreUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.GuardCoreLevelList.Count == 0)
+            { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureGuardCoreSkills();
+            if (player.GuardCoreGrade <= 0) player.GuardCoreGrade = 1;
+            string action = JS(json, "action", "upgrade");
+
+            if (string.Equals(action, "skill", StringComparison.OrdinalIgnoreCase))
+            {
+                int skillId = JI(json, "skillId", 0);
+                GuardCoreSkill skill = _db.GetGuardCoreSkill(skillId);
+                if (skill == null) { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"skill\"}"); return; }
+                if (player.GuardCoreSkillIds.Contains(skillId))
+                {
+                    Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":true,\"action\":\"skill\",\"skillId\":" + skillId + ",\"already\":true}");
+                    return;
+                }
+                if (player.GuardCoreGrade < skill.GuardGrade)
+                { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"grade\"}"); return; }
+                int skillCost = _db.ConfigInt("GuardCoreSkillGold", 200) * Mathf.Max(1, skill.SkillGrade);
+                if (player.Gold < skillCost)
+                { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                player.Gold -= skillCost;
+                player.GuardCoreSkillIds.Add(skillId);
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":true,\"action\":\"skill\",\"skillId\":" + skillId +
+                    ",\"cost\":" + skillCost + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "exp", StringComparison.OrdinalIgnoreCase))
+            {
+                int itemId = JI(json, "itemId", 0);
+                int expGain = _db.ConfigInt("GuardCoreExpPerItem", 100000);
+                if (itemId > 0)
+                {
+                    if (!player.Consume(itemId, 1))
+                    { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                }
+                else
+                {
+                    int goldCost = _db.ConfigInt("GuardCoreExpGold", 10000);
+                    if (player.Gold < goldCost)
+                    { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"gold\"}"); return; }
+                    player.Gold -= goldCost;
+                }
+                player.GuardCoreExp += expGain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":true,\"action\":\"exp\",\"exp\":" + player.GuardCoreExp +
+                    ",\"gain\":" + expGain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int nextGrade = player.GuardCoreGrade + 1;
+            GuardCoreLevel next = _db.GetGuardCoreLevel(nextGrade);
+            if (next == null) { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            if (player.GuardCoreExp < next.Exp)
+            {
+                Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.GuardCoreExp +
+                    ",\"need\":" + next.Exp + "}");
+                return;
+            }
+            if (player.Gold < next.Gold)
+            { Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":false,\"err\":\"gold\",\"need\":" + next.Gold + "}"); return; }
+
+            player.GuardCoreExp -= next.Exp;
+            player.Gold -= next.Gold;
+            player.GuardCoreGrade = nextGrade;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GuardCoreUpgrade, "{\"ok\":true,\"action\":\"upgrade\",\"grade\":" + player.GuardCoreGrade +
+                ",\"guard\":" + next.Guard + ",\"gold\":" + next.Gold + ",\"exp\":" + player.GuardCoreExp + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // lightriddlequest.xml không kèm cột đáp án nên server coi Option1 là đúng
+        // (ServerConfig LightRiddleAnswerIndex đổi được) và chỉ trả câu hỏi theo id.
+        void HandleLightRiddleAnswer(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.LightRiddleList.Count == 0)
+            { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchLightRiddleDay();
+            string action = JS(json, "action", "answer");
+            int max = _db.LightRiddleDailyMax();
+
+            if (string.Equals(action, "next", StringComparison.OrdinalIgnoreCase))
+            {
+                if (player.LightRiddleAnswered >= max)
+                { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+                LightRiddleQuestion pick = _db.PickLightRiddle(player.LightRiddleDay * 31 + player.Level * 7 + player.LightRiddleAnswered);
+                if (pick == null) { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"question\"}"); return; }
+                player.LightRiddleQuestionId = pick.QuestionId;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":true,\"action\":\"next\",\"questionId\":" + pick.QuestionId +
+                    ",\"answered\":" + player.LightRiddleAnswered + ",\"max\":" + max + "}");
+                return;
+            }
+
+            if (player.LightRiddleAnswered >= max)
+            { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+
+            int questionId = JI(json, "questionId", player.LightRiddleQuestionId);
+            LightRiddleQuestion row = _db.GetLightRiddle(questionId);
+            if (row == null) { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"question\"}"); return; }
+            if (player.LightRiddleQuestionId > 0 && player.LightRiddleQuestionId != questionId)
+            { Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":false,\"err\":\"mismatch\"}"); return; }
+
+            int option = JI(json, "option", 0);
+            bool correct = option == _db.LightRiddleAnswerIndex();
+            player.LightRiddleAnswered++;
+            player.LightRiddleQuestionId = 0;
+            int gold = 0;
+            if (correct)
+            {
+                player.LightRiddleCorrect++;
+                gold = _db.LightRiddleGoldReward();
+                player.Gold += gold;
+                player.AddGp(_db, _db.ConfigInt("LightRiddleGp", 20));
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.LightRiddleAnswer, "{\"ok\":true,\"action\":\"answer\",\"questionId\":" + questionId +
+                ",\"correct\":" + (correct ? "true" : "false") + ",\"gold\":" + gold +
+                ",\"answered\":" + player.LightRiddleAnswered + ",\"max\":" + max + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -10321,6 +10717,13 @@ namespace GunMobile.Net
             public List<int> ElfSkillIds = new List<int>();
             public List<int> ButterflyTaskClaimed = new List<int>();
             public int ButterflyTaskDay = -1, ButterflyTaskActive, ButterflyTaskStartDay = -1;
+            public int ManorExp, ManorSeedTemplateId, ManorSeedPlantMin, ManorSeedHelpers;
+            public int ManorTaskDay = -1, ManorTaskActions;
+            public List<int> ManorTaskClaimed = new List<int>();
+            public List<int> CardAchievementClaimed = new List<int>();
+            public int GuardCoreGrade = 1, GuardCoreExp;
+            public List<int> GuardCoreSkillIds = new List<int>();
+            public int LightRiddleDay = -1, LightRiddleAnswered, LightRiddleCorrect, LightRiddleQuestionId;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -10490,6 +10893,15 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = p.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = p.ButterflyTaskDay, ButterflyTaskActive = p.ButterflyTaskActive,
                 ButterflyTaskStartDay = p.ButterflyTaskStartDay,
+                ManorExp = p.ManorExp, ManorSeedTemplateId = p.ManorSeedTemplateId,
+                ManorSeedPlantMin = p.ManorSeedPlantMin, ManorSeedHelpers = p.ManorSeedHelpers,
+                ManorTaskDay = p.ManorTaskDay, ManorTaskActions = p.ManorTaskActions,
+                ManorTaskClaimed = p.ManorTaskClaimed ?? new List<int>(),
+                CardAchievementClaimed = p.CardAchievementClaimed ?? new List<int>(),
+                GuardCoreGrade = p.GuardCoreGrade > 0 ? p.GuardCoreGrade : 1, GuardCoreExp = p.GuardCoreExp,
+                GuardCoreSkillIds = p.GuardCoreSkillIds ?? new List<int>(),
+                LightRiddleDay = p.LightRiddleDay, LightRiddleAnswered = p.LightRiddleAnswered,
+                LightRiddleCorrect = p.LightRiddleCorrect, LightRiddleQuestionId = p.LightRiddleQuestionId,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -10663,6 +11075,15 @@ namespace GunMobile.Net
                 ButterflyTaskClaimed = s.ButterflyTaskClaimed ?? new List<int>(),
                 ButterflyTaskDay = s.ButterflyTaskDay, ButterflyTaskActive = s.ButterflyTaskActive,
                 ButterflyTaskStartDay = s.ButterflyTaskStartDay,
+                ManorExp = s.ManorExp, ManorSeedTemplateId = s.ManorSeedTemplateId,
+                ManorSeedPlantMin = s.ManorSeedPlantMin, ManorSeedHelpers = s.ManorSeedHelpers,
+                ManorTaskDay = s.ManorTaskDay, ManorTaskActions = s.ManorTaskActions,
+                ManorTaskClaimed = s.ManorTaskClaimed ?? new List<int>(),
+                CardAchievementClaimed = s.CardAchievementClaimed ?? new List<int>(),
+                GuardCoreGrade = s.GuardCoreGrade > 0 ? s.GuardCoreGrade : 1, GuardCoreExp = s.GuardCoreExp,
+                GuardCoreSkillIds = s.GuardCoreSkillIds ?? new List<int>(),
+                LightRiddleDay = s.LightRiddleDay, LightRiddleAnswered = s.LightRiddleAnswered,
+                LightRiddleCorrect = s.LightRiddleCorrect, LightRiddleQuestionId = s.LightRiddleQuestionId,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

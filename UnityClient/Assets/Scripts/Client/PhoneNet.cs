@@ -62,6 +62,11 @@ namespace GunMobile.Client
         public static string LastConsortiaBufferJson;
         public static string LastElfSkillBookJson;
         public static string LastButterflyTaskJson;
+        public static string LastManorSeedJson;
+        public static string LastManorTaskJson;
+        public static string LastCardAchievementJson;
+        public static string LastGuardCoreJson;
+        public static string LastLightRiddleJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -389,6 +394,36 @@ namespace GunMobile.Client
         {
             string act = (action ?? "claim").Replace("\"", "");
             Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
+        }
+
+        public static void ManorSeed(string action = "plant", int templateId = 0)
+        {
+            string act = (action ?? "plant").Replace("\"", "");
+            Road?.Send(PhoneMsg.ManorSeedPlant, "{\"action\":\"" + act + "\",\"templateId\":" + templateId + "}");
+        }
+
+        public static void ManorTask(int taskId)
+        {
+            Road?.Send(PhoneMsg.ManorTaskClaim, "{\"taskId\":" + taskId + "}");
+        }
+
+        public static void ClaimCardAchievement(int achievementId)
+        {
+            Road?.Send(PhoneMsg.CardAchievementClaim, "{\"achievementId\":" + achievementId + "}");
+        }
+
+        public static void GuardCore(string action = "upgrade", int skillId = 0, int itemId = 0)
+        {
+            string act = (action ?? "upgrade").Replace("\"", "");
+            Road?.Send(PhoneMsg.GuardCoreUpgrade,
+                "{\"action\":\"" + act + "\",\"skillId\":" + skillId + ",\"itemId\":" + itemId + "}");
+        }
+
+        public static void LightRiddle(string action = "answer", int questionId = 0, int option = 0)
+        {
+            string act = (action ?? "answer").Replace("\"", "");
+            Road?.Send(PhoneMsg.LightRiddleAnswer,
+                "{\"action\":\"" + act + "\",\"questionId\":" + questionId + ",\"option\":" + option + "}");
         }
 
         public static void DrawLottery(int count)

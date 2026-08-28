@@ -2,6 +2,7 @@ using GunMobile.Core;
 using GunMobile.Net;
 using GunMobile.Res;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GunMobile.Client
 {
@@ -384,7 +385,7 @@ public static void BankScreen(RectTransform safe, GameApp app)
                     int rid = reward.Id;
                     SysUi.Row(body, "mile" + reward.Id,
                         state + "  " + reward.Points + "分 → " + SysUi.ItemName(app, reward.TemplateId),
-                        claimed ? (System.Action)(() => { }) : () => PhoneNet.ClaimDevilTreasPoint(rid));
+                        claimed ? (UnityAction)(() => { }) : () => PhoneNet.ClaimDevilTreasPoint(rid));
                 }
 
                 SysUi.Note(body, "--- 排行奖励 DevilTreasRankRewardList.xml ---");
@@ -395,7 +396,7 @@ public static void BankScreen(RectTransform safe, GameApp app)
                     int rid = row.Id;
                     SysUi.Row(body, "rank" + row.Id,
                         (claimed ? "已领" : "领取") + "  #" + row.RankMin + "-" + row.RankMax + "  " + row.Desc,
-                        claimed ? (System.Action)(() => { }) : () => PhoneNet.ClaimDevilTreasRank(rid));
+                        claimed ? (UnityAction)(() => { }) : () => PhoneNet.ClaimDevilTreasRank(rid));
                 }
                 if (app.Database.DevilTreasSarahToBoxes.Count > 0)
                     SysUi.Note(body, "SarahToBox 兑换 " + app.Database.DevilTreasSarahToBoxes.Count + " 项");
@@ -1008,7 +1009,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 int relicId = item.RelicId;
                 SysUi.Row(body, "relic" + relicId,
                     item.Name + " Q" + item.Quality + " Lv" + level + (cost > 0 ? "  " + cost + "金" : " MAX"),
-                    cost > 0 ? (System.Action)(() => PhoneNet.UpgradeRelic(relicId)) : null);
+                    cost > 0 ? (UnityAction)(() => PhoneNet.UpgradeRelic(relicId)) : null);
                 if (++shown >= 8) break;
             }
         }
@@ -1035,7 +1036,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 int localType = statType;
                 SysUi.Row(body, "c" + statType,
                     statNames[i] + " Lv" + level + " +" + bonus + (cost > 0 ? "  " + cost + "金" : " MAX"),
-                    cost > 0 ? (System.Action)(() => PhoneNet.CultureUpgrade(localType)) : null);
+                    cost > 0 ? (UnityAction)(() => PhoneNet.CultureUpgrade(localType)) : null);
             }
         }
         }
@@ -1179,7 +1180,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Row(body, "ny" + row.Id, label,
                     claimed || app.Profile.NewYearPoints < row.Points
                         ? null
-                        : (System.Action)(() => PhoneNet.NewYearClaimReward(rewardId)));
+                        : (UnityAction)(() => PhoneNet.NewYearClaimReward(rewardId)));
             }
 
             SysUi.Note(body, "--- 新年排行 TS_NewYearRankReward.xml ---");
@@ -1201,7 +1202,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SysUi.Row(body, "nyr" + row.Id, label,
                     claimed || app.Profile.NewYearPoints <= 0
                         ? null
-                        : (System.Action)(() => PhoneNet.NewYearRankClaim(rid)));
+                        : (UnityAction)(() => PhoneNet.NewYearRankClaim(rid)));
             }
         }
 
@@ -1226,17 +1227,17 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
         public static void JigsawScreen(RectTransform safe, GameApp app)
         {
             ShowPcActivityScreen(safe, app, "jigsaw", "拼图", "jigsaw.ui", app.Profile.JigsawClaims,
-                PhoneNet.LastJigsawJson, PhoneNet.JigsawAction);
+                PhoneNet.LastJigsawJson, () => PhoneNet.JigsawAction());
         }
 
         public static void BibleScreen(RectTransform safe, GameApp app)
         {
             ShowPcActivityScreen(safe, app, "bible", "圣经", "bible.ui", app.Profile.BibleClaims,
-                PhoneNet.LastBibleJson, PhoneNet.BibleAction);
+                PhoneNet.LastBibleJson, () => PhoneNet.BibleAction());
         }
 
         static void ShowPcActivityScreen(RectTransform safe, GameApp app, string moduleId, string title,
-            string uiFile, int claims, string lastJson, System.Action claimAction)
+            string uiFile, int claims, string lastJson, UnityAction claimAction)
         {
             Transform body = ShowMornModule(safe, app,
                 new ModuleDef(moduleId, title, null, false, uiFile), uiFile);
@@ -1430,7 +1431,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     "需" + award.Point + "分  " + name + " x" + award.Count;
                 int rid = award.Id;
                 SysUi.Row(body, "pu" + award.Id, cap,
-                    ready ? (System.Action)(() => PhoneNet.PairUpClaim(rid, "claim")) : null);
+                    ready ? (UnityAction)(() => PhoneNet.PairUpClaim(rid, "claim")) : null);
             }
 
             if (!string.IsNullOrEmpty(PhoneNet.LastPairUpJson))
@@ -1677,7 +1678,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 int sid = item.Id;
                 bool can = item.NeedLevel <= lv;
                 var btn = SysUi.Row(body, "bts" + item.Id, cap,
-                    can ? (System.Action)(() => PhoneNet.BattleTeamShopBuy(sid)) : null);
+                    can ? (UnityAction)(() => PhoneNet.BattleTeamShopBuy(sid)) : null);
                 ShopScreen.DecorateIcon(app, btn, item.TemplateId);
                 if (++shown >= 40)
                 {
@@ -1719,13 +1720,178 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     name + "  奖励" + n + "项";
                 int lv = row.Level;
                 SysUi.Row(body, "dl" + row.Level, cap,
-                    ready ? (System.Action)(() => PhoneNet.DailyLeagueClaim(lv)) : null);
+                    ready ? (UnityAction)(() => PhoneNet.DailyLeagueClaim(lv)) : null);
             }
 
             if (!string.IsNullOrEmpty(PhoneNet.LastDailyLeagueJson))
             {
                 SysUi.Note(body, PhoneNet.LastDailyLeagueJson);
             }
+        }
+
+        public static void ManorSeedScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "庄园种植 · templatemanorlist");
+            SysUi.Note(body, "庄园等级 " + app.Profile.ManorGrade + "  经验 " + app.Profile.ManorExp +
+                "  帮工 " + app.Profile.ManorSeedHelpers);
+            if (app.Database == null || app.Database.ManorSeedList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/templatemanorlist.xml");
+                return;
+            }
+
+            if (app.Profile.ManorSeedTemplateId > 0)
+            {
+                ManorSeedInfo growing = app.Database.GetManorSeed(app.Profile.ManorSeedTemplateId);
+                string name = growing != null ? growing.Name : app.Profile.ManorSeedTemplateId.ToString();
+                int minutes = growing != null ? growing.RipenMinutes : 0;
+                SysUi.Note(body, "正在种植 " + name + "  需 " + minutes + " 分钟");
+                SysUi.Row(body, "manorHarvest", "收获", () => PhoneNet.ManorSeed("harvest"));
+                SysUi.Row(body, "manorHelp", "帮工加速", () => PhoneNet.ManorSeed("help"));
+            }
+            else
+            {
+                int shown = 0;
+                foreach (ManorSeedInfo row in app.Database.ManorSeedList)
+                {
+                    if (row.ProduceItemId <= 0) continue;
+                    ManorSeedInfo local = row;
+                    int gold = app.Database.ManorSeedBuyGold(row);
+                    SysUi.Row(body, "seed" + row.TemplateId,
+                        row.Name + "  " + row.RipenMinutes + "分  收" + row.Yield + "  " + gold + "金",
+                        () => PhoneNet.ManorSeed("plant", local.TemplateId));
+                    if (++shown >= 24) break;
+                }
+            }
+            SysUi.Row(body, "manorTaskGo", "庄园任务 ts_manortask", () => ManorTaskScreen(safe, app));
+            if (!string.IsNullOrEmpty(PhoneNet.LastManorSeedJson)) SysUi.Note(body, PhoneNet.LastManorSeedJson);
+        }
+
+        public static void ManorTaskScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "庄园任务 · ts_manortask");
+            app.Profile.EnsureManorTaskClaimed();
+            SysUi.Note(body, "庄园等级 " + app.Profile.ManorGrade + "  今日帮工 " + app.Profile.ManorTaskActions +
+                "  已领 " + app.Profile.ManorTaskClaimed.Count);
+            if (app.Database == null || app.Database.ManorTaskList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/ts_manortask.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (ManorTaskInfo row in app.Database.ManorTaskList)
+            {
+                bool claimed = app.Profile.ManorTaskClaimed.Contains(row.TemplateId);
+                bool locked = row.Condition3 > 0 && app.Profile.ManorGrade < row.Condition3;
+                string need = row.TaskType == 2
+                    ? "交 " + row.Condition1 + " x" + Mathf.Max(1, row.Condition2)
+                    : "帮工 " + Mathf.Max(1, row.Condition1) + " 次";
+                ManorTaskInfo local = row;
+                SysUi.Row(body, "mtask" + row.TemplateId,
+                    (claimed ? "[已领] " : locked ? "[庄园" + row.Condition3 + "] " : "") + row.TaskName + "  " + need +
+                    "  奖 " + row.RewardItemId1 + "x" + Mathf.Max(1, row.RewardCount1),
+                    claimed || locked ? null : (UnityAction)(() => PhoneNet.ManorTask(local.TemplateId)));
+                if (++shown >= 30) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastManorTaskJson)) SysUi.Note(body, PhoneNet.LastManorTaskJson);
+        }
+
+        public static void CardAchievementScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "卡牌成就 · cardachievement");
+            app.Profile.EnsureOwnedCards();
+            app.Profile.EnsureCardAchievementClaimed();
+            SysUi.Note(body, "已有卡牌 " + app.Profile.OwnedCardTemplateIds.Count +
+                "  已领成就 " + app.Profile.CardAchievementClaimed.Count +
+                "  成就点 " + app.Profile.AchievementPoints);
+            if (app.Database == null || app.Database.CardAchievementList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/cardachievement.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (CardAchievementInfo row in app.Database.CardAchievementList)
+            {
+                bool claimed = app.Profile.CardAchievementClaimed.Contains(row.AchievementId);
+                int have = app.Database.CardAchievementProgress(row, app.Profile.OwnedCardTemplateIds);
+                int need = app.Database.CardAchievementNeed(row);
+                CardAchievementInfo local = row;
+                SysUi.Row(body, "cach" + row.AchievementId,
+                    (claimed ? "[已领] " : "") + row.Name + "  " + have + "/" + need +
+                    "  攻+" + row.AddAttack + " 防+" + row.AddDefend,
+                    claimed || have < need ? null : (UnityAction)(() => PhoneNet.ClaimCardAchievement(local.AchievementId)));
+                if (++shown >= 36) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCardAchievementJson)) SysUi.Note(body, PhoneNet.LastCardAchievementJson);
+        }
+
+        public static void GuardCoreScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "守护核心 · guardcoretemplate");
+            app.Profile.EnsureGuardCoreSkills();
+            int grade = Mathf.Max(1, app.Profile.GuardCoreGrade);
+            SysUi.Note(body, "核心等级 " + grade + "  经验 " + app.Profile.GuardCoreExp +
+                "  技能 " + app.Profile.GuardCoreSkillIds.Count);
+            if (app.Database == null || app.Database.GuardCoreLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/guardcoreleveltemplate.xml");
+                return;
+            }
+
+            GuardCoreLevel next = app.Database.GetGuardCoreLevel(grade + 1);
+            if (next != null)
+            {
+                SysUi.Row(body, "gcUp", "升级到 " + next.Grade + "  需经验 " + next.Exp + " / 金 " + next.Gold,
+                    () => PhoneNet.GuardCore("upgrade"));
+            }
+            else
+            {
+                SysUi.Note(body, "已满级 " + grade);
+            }
+            SysUi.Row(body, "gcExp", "注入经验 (消耗金币)", () => PhoneNet.GuardCore("exp"));
+
+            int shown = 0;
+            foreach (GuardCoreSkill row in app.Database.GuardCoreSkillList)
+            {
+                bool owned = app.Profile.GuardCoreSkillIds.Contains(row.Id);
+                bool locked = grade < row.GuardGrade;
+                GuardCoreSkill local = row;
+                SysUi.Row(body, "gcs" + row.Id,
+                    (owned ? "[已学] " : locked ? "[需" + row.GuardGrade + "级] " : "") + row.Name +
+                    "  " + row.TipsDescription,
+                    owned || locked ? null : (UnityAction)(() => PhoneNet.GuardCore("skill", local.Id)));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastGuardCoreJson)) SysUi.Note(body, PhoneNet.LastGuardCoreJson);
+        }
+
+        public static void LightRiddleScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "元宵灯谜 · lightriddlequest");
+            SysUi.Note(body, "今日已答 " + app.Profile.LightRiddleAnswered + "  答对 " + app.Profile.LightRiddleCorrect);
+            if (app.Database == null || app.Database.LightRiddleList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/lightriddlequest.xml");
+                return;
+            }
+
+            LightRiddleQuestion q = app.Database.GetLightRiddle(app.Profile.LightRiddleQuestionId);
+            if (q == null)
+            {
+                SysUi.Row(body, "lrNext", "抽一道灯谜", () => PhoneNet.LightRiddle("next"));
+            }
+            else
+            {
+                SysUi.Note(body, q.Content);
+                int questionId = q.QuestionId;
+                SysUi.Row(body, "lr1", "A. " + q.Option1, () => PhoneNet.LightRiddle("answer", questionId, 1));
+                SysUi.Row(body, "lr2", "B. " + q.Option2, () => PhoneNet.LightRiddle("answer", questionId, 2));
+                SysUi.Row(body, "lr3", "C. " + q.Option3, () => PhoneNet.LightRiddle("answer", questionId, 3));
+                SysUi.Row(body, "lr4", "D. " + q.Option4, () => PhoneNet.LightRiddle("answer", questionId, 4));
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastLightRiddleJson)) SysUi.Note(body, PhoneNet.LastLightRiddleJson);
         }
 
         public static void ScrollScreen(RectTransform safe, GameApp app)
@@ -1769,7 +1935,7 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                 SigilSkillTemplate local = row;
                 SysUi.Row(body, "ssk" + row.SkillId,
                     (owned ? "[已学] " : "") + row.SkillName + " T" + row.SkillType + " Lv" + row.SkillLv + "  " + cost + "金",
-                    owned ? null : (System.Action)(() => PhoneNet.UnlockSigilSkill(local.SkillId)));
+                    owned ? null : (UnityAction)(() => PhoneNet.UnlockSigilSkill(local.SkillId)));
                 if (++shown >= 36) break;
             }
             if (!string.IsNullOrEmpty(PhoneNet.LastSigilSkillJson)) SysUi.Note(body, PhoneNet.LastSigilSkillJson);

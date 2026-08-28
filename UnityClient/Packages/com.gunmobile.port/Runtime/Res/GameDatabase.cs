@@ -1290,6 +1290,95 @@ namespace GunMobile.Res
         public string TaskDescr = "";
     }
 
+    public sealed class ManorSeedInfo
+    {
+        public int TemplateId;
+        public string Name = "";
+        public string Description = "";
+        public string Pic = "";
+        public int Level;
+        public int Quality;
+        public int SeedType;
+        public int Yield = 1;
+        public int RipenMinutes = 30;
+        public int ProduceItemId;
+        public int ManorExp;
+        public int HelperExp;
+        public int ByProductItemId;
+    }
+
+    public sealed class ManorTaskInfo
+    {
+        public int TemplateId;
+        public int TaskType;
+        public string TaskName = "";
+        public int Condition1;
+        public int Condition2;
+        public int Condition3;
+        public int RewardItemId1;
+        public int RewardCount1;
+        public int RewardItemId2;
+        public int RewardCount2;
+        public string TaskDescp = "";
+    }
+
+    public sealed class CardAchievementInfo
+    {
+        public int AchievementId;
+        public string Name = "";
+        public string Desc = "";
+        public int Type;
+        public int RequireType;
+        public int RequireNum;
+        public int RequireGroupId;
+        public int RequireGroupNum;
+        public int HonorId;
+        public int AddAttack;
+        public int AddDefend;
+        public int AddDamage;
+        public int AddGuard;
+        public int AddBlood;
+        public int AddLucky;
+        public int AddMagicAttack;
+        public int AddMagicDefend;
+    }
+
+    public sealed class GuardCoreSkill
+    {
+        public int Id;
+        public string Name = "";
+        public string Description = "";
+        public string TipsDescription = "";
+        public int Type;
+        public int GroupType;
+        public int GuardGrade;
+        public int SkillGrade;
+        public int KeepTurn;
+        public int GainGrade;
+        public int Parameter1;
+        public int Parameter2;
+        public int Parameter3;
+        public int Parameter4;
+    }
+
+    public sealed class GuardCoreLevel
+    {
+        public int Grade;
+        public int Exp;
+        public int Gold;
+        public int Guard;
+    }
+
+    public sealed class LightRiddleQuestion
+    {
+        public int QuestionId;
+        public string Content = "";
+        public string Option1 = "";
+        public string Option2 = "";
+        public string Option3 = "";
+        public string Option4 = "";
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1841,6 +1930,18 @@ namespace GunMobile.Res
         public List<ElfSkillBookTemp> ElfSkillBookList { get; } = new List<ElfSkillBookTemp>();
         public Dictionary<int, ButterflyTaskInfo> ButterflyTasks { get; } = new Dictionary<int, ButterflyTaskInfo>();
         public List<ButterflyTaskInfo> ButterflyTaskList { get; } = new List<ButterflyTaskInfo>();
+        public Dictionary<int, ManorSeedInfo> ManorSeeds { get; } = new Dictionary<int, ManorSeedInfo>();
+        public List<ManorSeedInfo> ManorSeedList { get; } = new List<ManorSeedInfo>();
+        public Dictionary<int, ManorTaskInfo> ManorTasks { get; } = new Dictionary<int, ManorTaskInfo>();
+        public List<ManorTaskInfo> ManorTaskList { get; } = new List<ManorTaskInfo>();
+        public Dictionary<int, CardAchievementInfo> CardAchievements { get; } = new Dictionary<int, CardAchievementInfo>();
+        public List<CardAchievementInfo> CardAchievementList { get; } = new List<CardAchievementInfo>();
+        public Dictionary<int, GuardCoreSkill> GuardCoreSkills { get; } = new Dictionary<int, GuardCoreSkill>();
+        public List<GuardCoreSkill> GuardCoreSkillList { get; } = new List<GuardCoreSkill>();
+        public Dictionary<int, GuardCoreLevel> GuardCoreLevels { get; } = new Dictionary<int, GuardCoreLevel>();
+        public List<GuardCoreLevel> GuardCoreLevelList { get; } = new List<GuardCoreLevel>();
+        public Dictionary<int, LightRiddleQuestion> LightRiddles { get; } = new Dictionary<int, LightRiddleQuestion>();
+        public List<LightRiddleQuestion> LightRiddleList { get; } = new List<LightRiddleQuestion>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -1962,6 +2063,11 @@ namespace GunMobile.Res
             db.LoadConsortiaBuffers(loader);
             db.LoadElfSkillBooks(loader);
             db.LoadButterflyTasks(loader);
+            db.LoadManorSeeds(loader);
+            db.LoadManorTasks(loader);
+            db.LoadCardAchievements(loader);
+            db.LoadGuardCore(loader);
+            db.LoadLightRiddles(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -1983,7 +2089,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -2345,6 +2451,211 @@ namespace GunMobile.Res
         {
             if (taskId > 0 && ButterflyTasks.TryGetValue(taskId, out ButterflyTaskInfo row)) return row;
             return null;
+        }
+
+        public ManorSeedInfo GetManorSeed(int templateId)
+        {
+            if (templateId > 0 && ManorSeeds.TryGetValue(templateId, out ManorSeedInfo row)) return row;
+            return null;
+        }
+
+        public int ManorSeedBuyGold(ManorSeedInfo seed)
+        {
+            if (seed == null) return 0;
+            int quality = Mathf.Max(1, seed.Quality);
+            return ConfigInt("ManorSeedGold", 100) * quality;
+        }
+
+        public int ManorSeedHarvestGold(ManorSeedInfo seed, int manorGrade)
+        {
+            if (seed == null) return 0;
+            int baseGold = ManorHarvestGold(manorGrade);
+            return baseGold + Mathf.Max(1, seed.ManorExp) * ConfigInt("ManorSeedGoldPerExp", 10);
+        }
+
+        public ManorTaskInfo GetManorTask(int templateId)
+        {
+            if (templateId > 0 && ManorTasks.TryGetValue(templateId, out ManorTaskInfo row)) return row;
+            return null;
+        }
+
+        public int ManorGradeFromExp(int manorExp)
+        {
+            int grade = 1;
+            int need = ConfigInt("ManorExpPerGrade", 100);
+            if (need <= 0) need = 100;
+            while (grade < 30 && manorExp >= need * grade) { manorExp -= need * grade; grade++; }
+            return grade;
+        }
+
+        public CardAchievementInfo GetCardAchievement(int achievementId)
+        {
+            if (achievementId > 0 && CardAchievements.TryGetValue(achievementId, out CardAchievementInfo row)) return row;
+            return null;
+        }
+
+        // RequireType theo chất lượng thẻ PC: 1 = kim (vàng), 2 = ngân (bạc), 3 = mọi thẻ.
+        // RequireGroupid > 0 nghĩa là gom đủ RequireGroupNum thẻ trong bộ đó (CardSuits).
+        public int CardAchievementProgress(CardAchievementInfo row, IReadOnlyList<int> ownedCardTemplateIds)
+        {
+            if (row == null || ownedCardTemplateIds == null) return 0;
+            if (row.RequireGroupId > 0)
+            {
+                CardSuitInfo suit = null;
+                for (int i = 0; i < CardSuits.Count; i++)
+                {
+                    if (CardSuits[i].SuitTemplateId == row.RequireGroupId) { suit = CardSuits[i]; break; }
+                }
+                if (suit == null || suit.NeedCardTempIds == null) return 0;
+                int owned = 0;
+                for (int i = 0; i < suit.NeedCardTempIds.Length; i++)
+                {
+                    if (ListHasInt(ownedCardTemplateIds, suit.NeedCardTempIds[i])) owned++;
+                }
+                return owned;
+            }
+
+            int goldQuality = ConfigInt("CardGoldQuality", 5);
+            int silverQuality = ConfigInt("CardSilverQuality", 4);
+            int count = 0;
+            for (int i = 0; i < ownedCardTemplateIds.Count; i++)
+            {
+                if (row.RequireType == 3) { count++; continue; }
+                ItemTemplate item = GetItem(ownedCardTemplateIds[i]);
+                if (item == null) continue;
+                if (row.RequireType == 1 && item.Quality >= goldQuality) count++;
+                else if (row.RequireType == 2 && item.Quality >= silverQuality && item.Quality < goldQuality) count++;
+            }
+            return count;
+        }
+
+        public int CardAchievementNeed(CardAchievementInfo row)
+        {
+            if (row == null) return 0;
+            if (row.RequireGroupId > 0) return Mathf.Max(1, row.RequireGroupNum);
+            return Mathf.Max(1, row.RequireNum);
+        }
+
+        public bool CardAchievementDone(CardAchievementInfo row, IReadOnlyList<int> ownedCardTemplateIds)
+        {
+            return row != null && CardAchievementProgress(row, ownedCardTemplateIds) >= CardAchievementNeed(row);
+        }
+
+        public void ApplyCardAchievementBonus(IReadOnlyList<int> claimedAchievementIds,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard,
+            ref int magicAtk, ref int magicDef)
+        {
+            if (claimedAchievementIds == null) return;
+            for (int i = 0; i < claimedAchievementIds.Count; i++)
+            {
+                CardAchievementInfo row = GetCardAchievement(claimedAchievementIds[i]);
+                if (row == null) continue;
+                atk += row.AddAttack;
+                def += row.AddDefend;
+                luck += row.AddLucky;
+                hp += row.AddBlood;
+                baseDmg += row.AddDamage;
+                baseGuard += row.AddGuard;
+                magicAtk += row.AddMagicAttack;
+                magicDef += row.AddMagicDefend;
+                if (row.Type > 10) agi += 1;
+            }
+        }
+
+        public GuardCoreLevel GetGuardCoreLevel(int grade)
+        {
+            if (grade > 0 && GuardCoreLevels.TryGetValue(grade, out GuardCoreLevel row)) return row;
+            return null;
+        }
+
+        public GuardCoreSkill GetGuardCoreSkill(int id)
+        {
+            if (id > 0 && GuardCoreSkills.TryGetValue(id, out GuardCoreSkill row)) return row;
+            return null;
+        }
+
+        public int GuardCoreMaxGrade()
+        {
+            return GuardCoreLevelList.Count > 0 ? GuardCoreLevelList[GuardCoreLevelList.Count - 1].Grade : 1;
+        }
+
+        public int GuardCoreUpgradeExp(int currentGrade)
+        {
+            GuardCoreLevel next = GetGuardCoreLevel(currentGrade + 1);
+            return next != null ? next.Exp : 0;
+        }
+
+        public int GuardCoreUpgradeGold(int currentGrade)
+        {
+            GuardCoreLevel next = GetGuardCoreLevel(currentGrade + 1);
+            return next != null ? next.Gold : 0;
+        }
+
+        // Parameter1 = phần nghìn (15 = 1.5%), Parameter2 = cộng thẳng; âm là debuff phe địch nên bỏ qua.
+        public void ApplyGuardCoreBonus(int grade, IReadOnlyList<int> skillIds,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseDmg, ref int baseGuard,
+            ref int magicAtk, ref int magicDef)
+        {
+            GuardCoreLevel lv = GetGuardCoreLevel(Mathf.Max(1, grade));
+            if (lv != null)
+            {
+                baseGuard += lv.Guard;
+                def += lv.Guard;
+                magicDef += lv.Guard;
+            }
+
+            if (skillIds == null) return;
+            for (int i = 0; i < skillIds.Count; i++)
+            {
+                GuardCoreSkill row = GetGuardCoreSkill(skillIds[i]);
+                if (row == null || row.GroupType != 1) continue;
+                int flat = Mathf.Max(0, row.Parameter2);
+                int percent = Mathf.Max(0, row.Parameter1);
+                switch (row.Type)
+                {
+                    case 1: magicDef += flat + magicDef * percent / 1000; break;
+                    case 3: def += flat + def * percent / 1000; break;
+                    case 4: atk += flat + atk * percent / 1000; break;
+                    case 5: magicAtk += flat + magicAtk * percent / 1000; break;
+                    case 6: hp += flat * 2; break;
+                    case 7: luck += Mathf.Max(1, flat / 10); break;
+                    case 8: baseDmg += Mathf.Max(1, flat / 10); break;
+                    default: baseGuard += Mathf.Max(1, flat / 10); agi += percent / 100; break;
+                }
+            }
+        }
+
+        public LightRiddleQuestion GetLightRiddle(int questionId)
+        {
+            if (questionId > 0 && LightRiddles.TryGetValue(questionId, out LightRiddleQuestion row)) return row;
+            return null;
+        }
+
+        public LightRiddleQuestion PickLightRiddle(int index)
+        {
+            if (LightRiddleList.Count == 0) return null;
+            int i = index % LightRiddleList.Count;
+            if (i < 0) i += LightRiddleList.Count;
+            return LightRiddleList[i];
+        }
+
+        // Bảng dump không có cột đáp án — PC giữ đáp án ở DB và Flash xáo thứ tự option.
+        // Server dùng Option1 làm đáp án đúng (đổi được bằng ServerConfig LightRiddleAnswerIndex).
+        public int LightRiddleAnswerIndex()
+        {
+            int idx = ConfigInt("LightRiddleAnswerIndex", 1);
+            return idx >= 1 && idx <= 4 ? idx : 1;
+        }
+
+        public int LightRiddleDailyMax()
+        {
+            int n = ConfigInt("LightRiddleCount", 0);
+            return n > 0 ? n : 10;
+        }
+
+        public int LightRiddleGoldReward()
+        {
+            return ConfigInt("LightRiddleGold", 500);
         }
 
         public JadeTemp GetJade(int id)
@@ -9084,6 +9395,175 @@ namespace GunMobile.Res
                 ButterflyTaskList.Add(info);
             }
             ButterflyTaskList.Sort((a, b) => a.TaskId.CompareTo(b.TaskId));
+        }
+
+        // templatemanorlist.xml giu nguyen format ItemTemplate cua PC: hat giong dung
+        // Property1=loai, Property2=so luong thu, Property3=phut chin, Property4=item thu duoc,
+        // Property6=exp trang vien, Property7=exp phu giup, Property8=item phu.
+        void LoadManorSeeds(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/templatemanorlist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateID");
+                if (templateId <= 0) templateId = Int(row, "TemplateId");
+                if (templateId <= 0 || ManorSeeds.ContainsKey(templateId)) continue;
+                var info = new ManorSeedInfo
+                {
+                    TemplateId = templateId,
+                    Name = Str(row, "Name"),
+                    Description = Str(row, "Description"),
+                    Pic = Str(row, "Pic"),
+                    Level = Int(row, "Level"),
+                    Quality = Int(row, "Quality"),
+                    SeedType = Int(row, "Property1"),
+                    Yield = Mathf.Max(1, Int(row, "Property2")),
+                    RipenMinutes = Int(row, "Property3"),
+                    ProduceItemId = Int(row, "Property4"),
+                    ManorExp = Int(row, "Property6"),
+                    HelperExp = Int(row, "Property7"),
+                    ByProductItemId = Int(row, "Property8")
+                };
+                if (info.RipenMinutes <= 0) info.RipenMinutes = ConfigInt("ManorSeedDefaultMinutes", 30);
+                ManorSeeds[templateId] = info;
+                ManorSeedList.Add(info);
+            }
+            ManorSeedList.Sort((a, b) => a.TemplateId.CompareTo(b.TemplateId));
+        }
+
+        void LoadManorTasks(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/ts_manortask.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int templateId = Int(row, "TemplateId");
+                if (templateId <= 0) templateId = Int(row, "TemplateID");
+                if (templateId <= 0 || ManorTasks.ContainsKey(templateId)) continue;
+                var info = new ManorTaskInfo
+                {
+                    TemplateId = templateId,
+                    TaskType = Int(row, "TaskType"),
+                    TaskName = Str(row, "TaskName"),
+                    Condition1 = Int(row, "Condition1"),
+                    Condition2 = Int(row, "Condition2"),
+                    Condition3 = Int(row, "Condition3"),
+                    RewardItemId1 = Int(row, "RewardItemId1"),
+                    RewardCount1 = Int(row, "RewardCount1"),
+                    RewardItemId2 = Int(row, "RewardItemId2"),
+                    RewardCount2 = Int(row, "RewardCount2"),
+                    TaskDescp = Str(row, "TaskDescp")
+                };
+                ManorTasks[templateId] = info;
+                ManorTaskList.Add(info);
+            }
+            ManorTaskList.Sort((a, b) => a.TemplateId.CompareTo(b.TemplateId));
+        }
+
+        void LoadCardAchievements(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/cardachievement.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "AchievementID");
+                if (id <= 0) id = Int(row, "AchievementId");
+                if (id <= 0 || CardAchievements.ContainsKey(id)) continue;
+                var info = new CardAchievementInfo
+                {
+                    AchievementId = id,
+                    Name = Str(row, "Name"),
+                    Desc = Str(row, "Desc"),
+                    Type = Int(row, "Type"),
+                    RequireType = Int(row, "RequireType"),
+                    RequireNum = Int(row, "RequireNum"),
+                    RequireGroupId = Int(row, "RequireGroupid"),
+                    RequireGroupNum = Int(row, "RequireGroupNum"),
+                    HonorId = Int(row, "Honor_id"),
+                    AddAttack = Int(row, "AddAttack"),
+                    AddDefend = Int(row, "AddDefend"),
+                    AddDamage = Int(row, "AddDamage"),
+                    AddGuard = Int(row, "AddGuard"),
+                    AddBlood = Int(row, "AddBlood"),
+                    AddLucky = Int(row, "AddLucky"),
+                    AddMagicAttack = Int(row, "AddMagicAttack"),
+                    AddMagicDefend = Int(row, "AddMagicDefend")
+                };
+                CardAchievements[id] = info;
+                CardAchievementList.Add(info);
+            }
+            CardAchievementList.Sort((a, b) => a.AchievementId.CompareTo(b.AchievementId));
+        }
+
+        void LoadGuardCore(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/guardcoreleveltemplate.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int grade = Int(row, "Grade");
+                    if (grade <= 0 || GuardCoreLevels.ContainsKey(grade)) continue;
+                    var lv = new GuardCoreLevel
+                    {
+                        Grade = grade,
+                        Exp = Int(row, "Exp"),
+                        Gold = Int(row, "Gold"),
+                        Guard = Int(row, "Guard")
+                    };
+                    GuardCoreLevels[grade] = lv;
+                    GuardCoreLevelList.Add(lv);
+                }
+                GuardCoreLevelList.Sort((a, b) => a.Grade.CompareTo(b.Grade));
+            }
+
+            if (!TryTable(loader, "Request/guardcoretemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) id = Int(row, "Id");
+                if (id <= 0 || GuardCoreSkills.ContainsKey(id)) continue;
+                var info = new GuardCoreSkill
+                {
+                    Id = id,
+                    Name = Str(row, "Name"),
+                    Description = Str(row, "Description"),
+                    TipsDescription = Str(row, "TipsDescription"),
+                    Type = Int(row, "Type"),
+                    GroupType = Int(row, "GroupType"),
+                    GuardGrade = Int(row, "GuardGrade"),
+                    SkillGrade = Int(row, "SkillGrade"),
+                    KeepTurn = Int(row, "KeepTurn"),
+                    GainGrade = Int(row, "GainGrade"),
+                    Parameter1 = Int(row, "Parameter1"),
+                    Parameter2 = Int(row, "Parameter2"),
+                    Parameter3 = Int(row, "Parameter3"),
+                    Parameter4 = Int(row, "Parameter4")
+                };
+                GuardCoreSkills[id] = info;
+                GuardCoreSkillList.Add(info);
+            }
+            GuardCoreSkillList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadLightRiddles(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/lightriddlequest.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "QuestionID");
+                if (id <= 0) id = Int(row, "QuestionId");
+                if (id <= 0 || LightRiddles.ContainsKey(id)) continue;
+                var info = new LightRiddleQuestion
+                {
+                    QuestionId = id,
+                    Content = Str(row, "QuestionContent"),
+                    Option1 = Str(row, "Option1"),
+                    Option2 = Str(row, "Option2"),
+                    Option3 = Str(row, "Option3"),
+                    Option4 = Str(row, "Option4")
+                };
+                LightRiddles[id] = info;
+                LightRiddleList.Add(info);
+            }
+            LightRiddleList.Sort((a, b) => a.QuestionId.CompareTo(b.QuestionId));
         }
 
         void LoadServerConfig(ResLoader loader)
