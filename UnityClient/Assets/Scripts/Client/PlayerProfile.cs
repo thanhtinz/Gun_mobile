@@ -220,6 +220,17 @@ namespace GunMobile.Client
         public List<int> MiniGameShopIds = new List<int>();
         public List<int> MiniGameShopCounts = new List<int>();
         public int WasteRecyclePoints;
+        public List<int> SetsBuildLevels = new List<int>();
+        public List<int> SetsBuildExp = new List<int>();
+        public List<int> EngraveRefineGrades = new List<int>();
+        public List<int> EngraveTemperLevels = new List<int>();
+        public int UserBoxPoints;
+        public List<int> UserBoxOpened = new List<int>();
+        public int CommunalScore;
+        public int CommunalDayScore;
+        public List<int> CommunalClaimed = new List<int>();
+        public List<int> GoodsCollected = new List<int>();
+        public List<int> HelpGameDone = new List<int>();
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -276,6 +287,24 @@ namespace GunMobile.Client
         }
         public void EnsureKingRoad() { if (KingRoadQuestDone == null) KingRoadQuestDone = new List<int>(); }
         public void EnsureActiveConvert() { if (ActiveConvertUsed == null) ActiveConvertUsed = new List<int>(); }
+        public void EnsureSetsBuild()
+        {
+            if (SetsBuildLevels == null) SetsBuildLevels = new List<int>();
+            if (SetsBuildExp == null) SetsBuildExp = new List<int>();
+            while (SetsBuildLevels.Count < 4) SetsBuildLevels.Add(0);
+            while (SetsBuildExp.Count < 4) SetsBuildExp.Add(0);
+        }
+        public void EnsureEngraveRefine()
+        {
+            if (EngraveRefineGrades == null) EngraveRefineGrades = new List<int>();
+            if (EngraveTemperLevels == null) EngraveTemperLevels = new List<int>();
+            while (EngraveRefineGrades.Count < 4) EngraveRefineGrades.Add(0);
+            while (EngraveTemperLevels.Count < 4) EngraveTemperLevels.Add(0);
+        }
+        public void EnsureUserBox() { if (UserBoxOpened == null) UserBoxOpened = new List<int>(); }
+        public void EnsureCommunal() { if (CommunalClaimed == null) CommunalClaimed = new List<int>(); }
+        public void EnsureGoodsCollect() { if (GoodsCollected == null) GoodsCollected = new List<int>(); }
+        public void EnsureHelpGame() { if (HelpGameDone == null) HelpGameDone = new List<int>(); }
         public void EnsureMiniGameShop()
         {
             if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
@@ -740,6 +769,16 @@ namespace GunMobile.Client
                 db.ApplyOnlineArmBonus(OnlineArmSlotLevels, ref atk, ref def, ref agi, ref luk);
                 db.ApplySubWeaponBonus(SubWeaponLevel, ref hp, ref sGuard);
                 db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luk);
+                EnsureSetsBuild();
+                db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luk, ref hp, ref sGuard, ref magicDef);
+                EnsureEngraveRefine();
+                for (int i = 0; i < EngraveRefineGrades.Count; i++)
+                {
+                    int refineGrade = EngraveRefineGrades[i];
+                    int temperLevel = i < EngraveTemperLevels.Count ? EngraveTemperLevels[i] : 0;
+                    atk += refineGrade * 2 + temperLevel;
+                    def += refineGrade * 2 + temperLevel;
+                }
                 atk += sDmg;
                 def += sGuard;
                 atk += magicAtk / 4;
@@ -1023,6 +1062,12 @@ namespace GunMobile.Client
             new ModuleDef("activeconvert", "活跃兑换", "Request/activeconvertiteminfo.xml"),
             new ModuleDef("minigameshop", "小游戏商店", "Request/minigameshoptemplate.xml"),
             new ModuleDef("wasterecycle", "废品回收", "Request/WasteRecycle_Award.xml"),
+            new ModuleDef("setsbuild", "套装培养", "Request/setsbuildtemp.xml"),
+            new ModuleDef("engraverefine", "刻印精炼", "Request/engraverefineryconfiginfo.xml"),
+            new ModuleDef("userbox", "成长宝箱", "Request/loaduserbox.xml"),
+            new ModuleDef("communal", "全民活动", "Request/communalactive.xml"),
+            new ModuleDef("goodscollect", "物品收集", "Request/goodscollect.xml"),
+            new ModuleDef("helpgame", "助战奖励", "Request/helpgamereward.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

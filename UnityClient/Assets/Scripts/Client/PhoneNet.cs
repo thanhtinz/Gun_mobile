@@ -78,6 +78,12 @@ namespace GunMobile.Client
         public static string LastActiveConvertJson;
         public static string LastMiniGameShopJson;
         public static string LastWasteRecycleJson;
+        public static string LastSetsBuildJson;
+        public static string LastEngraveRefineJson;
+        public static string LastUserBoxJson;
+        public static string LastCommunalJson;
+        public static string LastGoodsCollectJson;
+        public static string LastHelpGameJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -506,6 +512,39 @@ namespace GunMobile.Client
         {
             string act = (action ?? "draw").Replace("\"", "");
             Road?.Send(PhoneMsg.WasteRecycleClaim, "{\"action\":\"" + act + "\",\"itemId\":" + itemId + "}");
+        }
+
+        public static void SetsBuild(string action = "feed", int setsType = 1)
+        {
+            string act = (action ?? "feed").Replace("\"", "");
+            Road?.Send(PhoneMsg.SetsBuild, "{\"action\":\"" + act + "\",\"setsType\":" + setsType + "}");
+        }
+
+        public static void EngraveRefine(string action = "refine", int character = 1)
+        {
+            string act = (action ?? "refine").Replace("\"", "");
+            Road?.Send(PhoneMsg.EngraveRefine, "{\"action\":\"" + act + "\",\"character\":" + character + "}");
+        }
+
+        public static void OpenUserBox(int id)
+        {
+            Road?.Send(PhoneMsg.UserBoxOpen, "{\"id\":" + id + "}");
+        }
+
+        public static void CommunalActive(string action = "score", int activeId = 1)
+        {
+            string act = (action ?? "score").Replace("\"", "");
+            Road?.Send(PhoneMsg.CommunalActive, "{\"action\":\"" + act + "\",\"activeId\":" + activeId + "}");
+        }
+
+        public static void CollectGoods(int id)
+        {
+            Road?.Send(PhoneMsg.GoodsCollect, "{\"id\":" + id + "}");
+        }
+
+        public static void HelpGame(int missionId, int star = 1)
+        {
+            Road?.Send(PhoneMsg.HelpGameReward, "{\"missionId\":" + missionId + ",\"star\":" + star + "}");
         }
 
         public static void DrawLottery(int count)

@@ -1562,6 +1562,113 @@ namespace GunMobile.Res
         public bool IsBinds;
     }
 
+    public sealed class SetsBuildTemp
+    {
+        public int Level;
+        public int SetsType;
+        public int UseItemTemplate;
+        public int Exp;
+        public int DefenceGrow;
+        public int BloodGrow;
+        public int LuckGrow;
+        public int AgilityGrow;
+        public int MagicDefenceGrow;
+        public int GuardGrow;
+    }
+
+    public sealed class SuitTemplateInfo
+    {
+        public int SuitId;
+        public string SuitName = "";
+        public int[] EquipCounts = System.Array.Empty<int>();
+        public string[] SkillDescribes = System.Array.Empty<string>();
+    }
+
+    public sealed class SuitPartEquip
+    {
+        public int Id;
+        public string PartName = "";
+        public int[] ContainEquip = System.Array.Empty<int>();
+    }
+
+    public sealed class EngraveRefineryConfig
+    {
+        public int Grade;
+        public int Character;
+        public int Currency;
+        public int Expend;
+        public int Material;
+        public int NeedMaterial;
+    }
+
+    public sealed class EngraveTemperConfig
+    {
+        public int Level;
+        public int Character;
+        public int Currency;
+        public int Expend;
+        public int SuccessRate;
+    }
+
+    public sealed class UserBoxItem
+    {
+        public int Id;
+        public int Type;
+        public int Level;
+        public int Condition;
+        public int TemplateId;
+    }
+
+    public sealed class CommunalActiveInfo
+    {
+        public int ActiveId;
+        public int LimitGrade;
+        public int DayMaxScore;
+        public int MinScore;
+        public string AddPropertyByMoney = "";
+        public string AddPropertyByProp = "";
+    }
+
+    public sealed class CommunalActiveAward
+    {
+        public int ActiveId;
+        public int RandId;
+        public int IsArea;
+        public int TemplateId;
+        public int Count = 1;
+        public bool IsBind;
+        public int ValidDate;
+    }
+
+    public sealed class CommunalActiveExp
+    {
+        public int ActiveId;
+        public int Grade;
+        public int Exp;
+        public int AddExpPlus;
+    }
+
+    public sealed class GoodsCollectItem
+    {
+        public int Id;
+        public int Type;
+        public int TemplateId;
+        public int Count = 1;
+        public bool IsBind;
+        public int ValidDate;
+        public string GetFrom = "";
+    }
+
+    public sealed class HelpGameReward
+    {
+        public int MissionId;
+        public int Star;
+        public int TemplateId;
+        public int Count = 1;
+        public bool IsBind;
+        public int ValidDate;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2155,6 +2262,26 @@ namespace GunMobile.Res
         public List<MiniGameShopGoods> MiniGameShopList { get; } = new List<MiniGameShopGoods>();
         public Dictionary<int, WasteRecycleAward> WasteRecycleAwards { get; } = new Dictionary<int, WasteRecycleAward>();
         public List<WasteRecycleAward> WasteRecycleAwardList { get; } = new List<WasteRecycleAward>();
+        public Dictionary<int, SetsBuildTemp> SetsBuilds { get; } = new Dictionary<int, SetsBuildTemp>();
+        public List<SetsBuildTemp> SetsBuildList { get; } = new List<SetsBuildTemp>();
+        public List<int> SetsBuildTypes { get; } = new List<int>();
+        public Dictionary<int, SuitTemplateInfo> SuitTemplates { get; } = new Dictionary<int, SuitTemplateInfo>();
+        public List<SuitTemplateInfo> SuitTemplateList { get; } = new List<SuitTemplateInfo>();
+        public List<SuitPartEquip> SuitPartEquips { get; } = new List<SuitPartEquip>();
+        public Dictionary<int, EngraveRefineryConfig> EngraveRefineries { get; } = new Dictionary<int, EngraveRefineryConfig>();
+        public List<EngraveRefineryConfig> EngraveRefineryList { get; } = new List<EngraveRefineryConfig>();
+        public Dictionary<int, EngraveTemperConfig> EngraveTempers { get; } = new Dictionary<int, EngraveTemperConfig>();
+        public List<EngraveTemperConfig> EngraveTemperList { get; } = new List<EngraveTemperConfig>();
+        public Dictionary<int, UserBoxItem> UserBoxes { get; } = new Dictionary<int, UserBoxItem>();
+        public List<UserBoxItem> UserBoxList { get; } = new List<UserBoxItem>();
+        public Dictionary<int, CommunalActiveInfo> CommunalActives { get; } = new Dictionary<int, CommunalActiveInfo>();
+        public List<CommunalActiveInfo> CommunalActiveList { get; } = new List<CommunalActiveInfo>();
+        public List<CommunalActiveAward> CommunalActiveAwards { get; } = new List<CommunalActiveAward>();
+        public List<CommunalActiveExp> CommunalActiveExps { get; } = new List<CommunalActiveExp>();
+        public Dictionary<int, GoodsCollectItem> GoodsCollects { get; } = new Dictionary<int, GoodsCollectItem>();
+        public List<GoodsCollectItem> GoodsCollectList { get; } = new List<GoodsCollectItem>();
+        public List<HelpGameReward> HelpGameRewards { get; } = new List<HelpGameReward>();
+        public List<int> HelpGameMissionIds { get; } = new List<int>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2292,6 +2419,13 @@ namespace GunMobile.Res
             db.LoadActiveConvert(loader);
             db.LoadMiniGameShop(loader);
             db.LoadWasteRecycle(loader);
+            db.LoadSetsBuild(loader);
+            db.LoadSuitTemplates(loader);
+            db.LoadEngraveConfigs(loader);
+            db.LoadUserBoxes(loader);
+            db.LoadCommunalActive(loader);
+            db.LoadGoodsCollect(loader);
+            db.LoadHelpGameRewards(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2313,7 +2447,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -3148,6 +3282,117 @@ namespace GunMobile.Res
         public int WasteRecycleCost()
         {
             return ConfigInt("WasteRecycleCost", 100);
+        }
+
+        public static int SetsBuildKey(int type, int level)
+        {
+            return (type << 12) | (level & 0xFFF);
+        }
+
+        public SetsBuildTemp GetSetsBuild(int setsType, int level)
+        {
+            SetsBuilds.TryGetValue(SetsBuildKey(setsType, level), out SetsBuildTemp row);
+            return row;
+        }
+
+        public int SetsBuildMaxLevel(int setsType)
+        {
+            int max = 0;
+            for (int i = 0; i < SetsBuildList.Count; i++)
+            {
+                if (SetsBuildList[i].SetsType == setsType) max = Mathf.Max(max, SetsBuildList[i].Level);
+            }
+            return max;
+        }
+
+        public void ApplySetsBuildBonus(IReadOnlyList<int> setsLevels,
+            ref int def, ref int agi, ref int luck, ref int hp, ref int baseGuard, ref int magicDef)
+        {
+            if (setsLevels == null) return;
+            for (int type = 0; type < setsLevels.Count; type++)
+            {
+                int level = setsLevels[type];
+                for (int lv = 1; lv <= level; lv++)
+                {
+                    SetsBuildTemp row = GetSetsBuild(type + 1, lv);
+                    if (row == null) continue;
+                    def += row.DefenceGrow;
+                    hp += row.BloodGrow;
+                    luck += row.LuckGrow;
+                    agi += row.AgilityGrow;
+                    magicDef += row.MagicDefenceGrow;
+                    baseGuard += row.GuardGrow;
+                }
+            }
+        }
+
+        public SuitTemplateInfo GetSuitTemplate(int suitId)
+        {
+            if (suitId > 0 && SuitTemplates.TryGetValue(suitId, out SuitTemplateInfo row)) return row;
+            return null;
+        }
+
+        public EngraveRefineryConfig GetEngraveRefinery(int character, int grade)
+        {
+            EngraveRefineries.TryGetValue(SetsBuildKey(character, grade), out EngraveRefineryConfig row);
+            return row;
+        }
+
+        public EngraveTemperConfig GetEngraveTemper(int character, int level)
+        {
+            EngraveTempers.TryGetValue(SetsBuildKey(character, level), out EngraveTemperConfig row);
+            return row;
+        }
+
+        public UserBoxItem GetUserBox(int id)
+        {
+            if (id > 0 && UserBoxes.TryGetValue(id, out UserBoxItem row)) return row;
+            return null;
+        }
+
+        public CommunalActiveInfo GetCommunalActive(int activeId)
+        {
+            if (activeId > 0 && CommunalActives.TryGetValue(activeId, out CommunalActiveInfo row)) return row;
+            return null;
+        }
+
+        public List<CommunalActiveAward> GetCommunalAwards(int activeId)
+        {
+            var list = new List<CommunalActiveAward>();
+            for (int i = 0; i < CommunalActiveAwards.Count; i++)
+            {
+                if (CommunalActiveAwards[i].ActiveId == activeId) list.Add(CommunalActiveAwards[i]);
+            }
+            return list;
+        }
+
+        public int CommunalActiveGradeFromExp(int activeId, int exp)
+        {
+            int grade = 1;
+            for (int i = 0; i < CommunalActiveExps.Count; i++)
+            {
+                CommunalActiveExp row = CommunalActiveExps[i];
+                if (row.ActiveId != activeId) continue;
+                if (exp >= row.Exp) grade = row.Grade;
+            }
+            return grade;
+        }
+
+        public GoodsCollectItem GetGoodsCollect(int id)
+        {
+            if (id > 0 && GoodsCollects.TryGetValue(id, out GoodsCollectItem row)) return row;
+            return null;
+        }
+
+        public List<HelpGameReward> GetHelpGameRewards(int missionId, int star)
+        {
+            var list = new List<HelpGameReward>();
+            for (int i = 0; i < HelpGameRewards.Count; i++)
+            {
+                HelpGameReward row = HelpGameRewards[i];
+                if (row.MissionId == missionId && (star <= 0 || row.Star == star)) list.Add(row);
+            }
+            return list;
         }
 
         public JadeTemp GetJade(int id)
@@ -10462,6 +10707,257 @@ namespace GunMobile.Res
                 WasteRecycleAwardList.Add(info);
             }
             WasteRecycleAwardList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        // setsbuildtemp: nuôi bộ trang bị theo SetsType, mỗi Level tốn UseItemTemplate + Exp.
+        void LoadSetsBuild(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/setsbuildtemp.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                int type = Int(row, "SetsType");
+                if (level <= 0 || type <= 0) continue;
+                int key = SetsBuildKey(type, level);
+                if (SetsBuilds.ContainsKey(key)) continue;
+                var info = new SetsBuildTemp
+                {
+                    Level = level,
+                    SetsType = type,
+                    UseItemTemplate = Int(row, "UseItemTemplate"),
+                    Exp = Int(row, "Exp"),
+                    DefenceGrow = Int(row, "DefenceGrow"),
+                    BloodGrow = Int(row, "BloodGrow"),
+                    LuckGrow = Int(row, "LuckGrow"),
+                    AgilityGrow = Int(row, "AgilityGrow"),
+                    MagicDefenceGrow = Int(row, "MagicDefenceGrow"),
+                    GuardGrow = Int(row, "GuardGrow")
+                };
+                SetsBuilds[key] = info;
+                SetsBuildList.Add(info);
+                if (!SetsBuildTypes.Contains(type)) SetsBuildTypes.Add(type);
+            }
+            SetsBuildList.Sort((a, b) => a.SetsType != b.SetsType ? a.SetsType.CompareTo(b.SetsType) : a.Level.CompareTo(b.Level));
+            SetsBuildTypes.Sort();
+        }
+
+        void LoadSuitTemplates(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/suittemplateinfolist.xml", out XmlResultTable suits))
+            {
+                foreach (var row in suits.Rows)
+                {
+                    int suitId = Int(row, "SuitId");
+                    if (suitId <= 0 || SuitTemplates.ContainsKey(suitId)) continue;
+                    var counts = new List<int>();
+                    var describes = new List<string>();
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        int need = Int(row, "EqipCount" + i);
+                        string desc = Str(row, "SkillDescribe" + i);
+                        if (need <= 0 && string.IsNullOrEmpty(desc)) continue;
+                        counts.Add(need);
+                        describes.Add(desc);
+                    }
+                    var info = new SuitTemplateInfo
+                    {
+                        SuitId = suitId,
+                        SuitName = Str(row, "SuitName"),
+                        EquipCounts = counts.ToArray(),
+                        SkillDescribes = describes.ToArray()
+                    };
+                    SuitTemplates[suitId] = info;
+                    SuitTemplateList.Add(info);
+                }
+                SuitTemplateList.Sort((a, b) => a.SuitId.CompareTo(b.SuitId));
+            }
+
+            if (!TryTable(loader, "Request/suitpartequipinfolist.xml", out XmlResultTable parts)) return;
+            foreach (var row in parts.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) continue;
+                SuitPartEquips.Add(new SuitPartEquip
+                {
+                    Id = id,
+                    PartName = Str(row, "PartName"),
+                    ContainEquip = ParseIntCsv(Str(row, "ContainEquip"))
+                });
+            }
+        }
+
+        void LoadEngraveConfigs(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/engraverefineryconfiginfo.xml", out XmlResultTable refinery))
+            {
+                foreach (var row in refinery.Rows)
+                {
+                    int grade = Int(row, "Grade");
+                    int character = Int(row, "Character");
+                    if (grade <= 0 || character <= 0) continue;
+                    int key = SetsBuildKey(character, grade);
+                    if (EngraveRefineries.ContainsKey(key)) continue;
+                    var info = new EngraveRefineryConfig
+                    {
+                        Grade = grade,
+                        Character = character,
+                        Currency = Int(row, "Currency"),
+                        Expend = Int(row, "Expend"),
+                        Material = Int(row, "Material"),
+                        NeedMaterial = Mathf.Max(1, Int(row, "NeedMaterial"))
+                    };
+                    EngraveRefineries[key] = info;
+                    EngraveRefineryList.Add(info);
+                }
+                EngraveRefineryList.Sort((a, b) => a.Grade != b.Grade ? a.Grade.CompareTo(b.Grade) : a.Character.CompareTo(b.Character));
+            }
+
+            if (!TryTable(loader, "Request/engravetemperconfiginfo.xml", out XmlResultTable temper)) return;
+            foreach (var row in temper.Rows)
+            {
+                int level = Int(row, "Level");
+                int character = Int(row, "Character");
+                if (level <= 0 || character <= 0) continue;
+                int key = SetsBuildKey(character, level);
+                if (EngraveTempers.ContainsKey(key)) continue;
+                var info = new EngraveTemperConfig
+                {
+                    Level = level,
+                    Character = character,
+                    Currency = Int(row, "Currency"),
+                    Expend = Int(row, "Expend"),
+                    SuccessRate = Int(row, "SuccessRate")
+                };
+                EngraveTempers[key] = info;
+                EngraveTemperList.Add(info);
+            }
+            EngraveTemperList.Sort((a, b) => a.Level != b.Level ? a.Level.CompareTo(b.Level) : a.Character.CompareTo(b.Character));
+        }
+
+        void LoadUserBoxes(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/loaduserbox.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || UserBoxes.ContainsKey(id)) continue;
+                var info = new UserBoxItem
+                {
+                    Id = id,
+                    Type = Int(row, "Type"),
+                    Level = Int(row, "Level"),
+                    Condition = Int(row, "Condition"),
+                    TemplateId = Int(row, "TemplateID")
+                };
+                UserBoxes[id] = info;
+                UserBoxList.Add(info);
+            }
+            UserBoxList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadCommunalActive(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/communalactive.xml", out XmlResultTable actives))
+            {
+                foreach (var row in actives.Rows)
+                {
+                    int activeId = Int(row, "ActiveID");
+                    if (activeId <= 0 || CommunalActives.ContainsKey(activeId)) continue;
+                    var info = new CommunalActiveInfo
+                    {
+                        ActiveId = activeId,
+                        LimitGrade = Int(row, "LimitGrade"),
+                        DayMaxScore = Int(row, "DayMaxScore"),
+                        MinScore = Int(row, "MinScore"),
+                        AddPropertyByMoney = Str(row, "AddPropertyByMoney"),
+                        AddPropertyByProp = Str(row, "AddPropertyByProp")
+                    };
+                    CommunalActives[activeId] = info;
+                    CommunalActiveList.Add(info);
+                }
+                CommunalActiveList.Sort((a, b) => a.ActiveId.CompareTo(b.ActiveId));
+            }
+
+            if (TryTable(loader, "Request/communalactiveawarditems.xml", out XmlResultTable awards))
+            {
+                foreach (var row in awards.Rows)
+                {
+                    int activeId = Int(row, "ActiveID");
+                    int templateId = Int(row, "TemplateID");
+                    if (activeId <= 0 || templateId <= 0) continue;
+                    CommunalActiveAwards.Add(new CommunalActiveAward
+                    {
+                        ActiveId = activeId,
+                        RandId = Int(row, "RandID"),
+                        IsArea = Int(row, "IsArea"),
+                        TemplateId = templateId,
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        IsBind = Bool(row, "IsBind"),
+                        ValidDate = Int(row, "ValidDate")
+                    });
+                }
+            }
+
+            if (!TryTable(loader, "Request/communalactiveexp.xml", out XmlResultTable exps)) return;
+            foreach (var row in exps.Rows)
+            {
+                int activeId = Int(row, "ActiveID");
+                int grade = Int(row, "Grade");
+                if (activeId <= 0 || grade <= 0) continue;
+                CommunalActiveExps.Add(new CommunalActiveExp
+                {
+                    ActiveId = activeId,
+                    Grade = grade,
+                    Exp = Int(row, "Exp"),
+                    AddExpPlus = Int(row, "AddExpPlus")
+                });
+            }
+            CommunalActiveExps.Sort((a, b) => a.ActiveId != b.ActiveId ? a.ActiveId.CompareTo(b.ActiveId) : a.Grade.CompareTo(b.Grade));
+        }
+
+        void LoadGoodsCollect(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/goodscollect.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || GoodsCollects.ContainsKey(id)) continue;
+                var info = new GoodsCollectItem
+                {
+                    Id = id,
+                    Type = Int(row, "Type"),
+                    TemplateId = Int(row, "TemplateID"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    IsBind = Bool(row, "IsBind"),
+                    ValidDate = Int(row, "ValidDate"),
+                    GetFrom = Str(row, "GetFrom")
+                };
+                GoodsCollects[id] = info;
+                GoodsCollectList.Add(info);
+            }
+            GoodsCollectList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadHelpGameRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/helpgamereward.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int missionId = Int(row, "MissionID");
+                int templateId = Int(row, "TemplateID");
+                if (missionId <= 0 || templateId <= 0) continue;
+                HelpGameRewards.Add(new HelpGameReward
+                {
+                    MissionId = missionId,
+                    Star = Int(row, "Star"),
+                    TemplateId = templateId,
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    IsBind = Bool(row, "IsBind"),
+                    ValidDate = Int(row, "ValidDate")
+                });
+                if (!HelpGameMissionIds.Contains(missionId)) HelpGameMissionIds.Add(missionId);
+            }
+            HelpGameMissionIds.Sort();
         }
 
         void LoadServerConfig(ResLoader loader)

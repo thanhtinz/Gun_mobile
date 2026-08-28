@@ -295,6 +295,19 @@ namespace GunMobile.Net
         public List<int> MiniGameShopIds = new List<int>();
         public List<int> MiniGameShopCounts = new List<int>();
         public int WasteRecyclePoints;
+        public List<int> SetsBuildLevels = new List<int>();
+        public List<int> SetsBuildExp = new List<int>();
+        public List<int> EngraveRefineGrades = new List<int>();
+        public List<int> EngraveTemperLevels = new List<int>();
+        public int UserBoxPoints;
+        public List<int> UserBoxOpened = new List<int>();
+        public int CommunalScore;
+        public int CommunalDayScore;
+        public int CommunalDay = -1;
+        public List<int> CommunalClaimed = new List<int>();
+        public List<int> GoodsCollected = new List<int>();
+        public int HelpGameDay = -1;
+        public List<int> HelpGameDone = new List<int>();
 
         public static int NowMinutes()
         {
@@ -411,6 +424,37 @@ namespace GunMobile.Net
             }
             MiniGameShopIds.Add(id);
             MiniGameShopCounts.Add(1);
+        }
+        public void EnsureSetsBuild(GameDatabase db)
+        {
+            if (SetsBuildLevels == null) SetsBuildLevels = new List<int>();
+            if (SetsBuildExp == null) SetsBuildExp = new List<int>();
+            int types = db != null && db.SetsBuildTypes.Count > 0 ? db.SetsBuildTypes[db.SetsBuildTypes.Count - 1] : 4;
+            while (SetsBuildLevels.Count < types) SetsBuildLevels.Add(0);
+            while (SetsBuildExp.Count < types) SetsBuildExp.Add(0);
+        }
+        public void EnsureEngraveRefine()
+        {
+            if (EngraveRefineGrades == null) EngraveRefineGrades = new List<int>();
+            if (EngraveTemperLevels == null) EngraveTemperLevels = new List<int>();
+            while (EngraveRefineGrades.Count < 4) EngraveRefineGrades.Add(0);
+            while (EngraveTemperLevels.Count < 4) EngraveTemperLevels.Add(0);
+        }
+        public void EnsureUserBox() { if (UserBoxOpened == null) UserBoxOpened = new List<int>(); }
+        public void EnsureCommunal() { if (CommunalClaimed == null) CommunalClaimed = new List<int>(); }
+        public void TouchCommunalDay()
+        {
+            EnsureCommunal();
+            int day = DateTime.Now.DayOfYear;
+            if (CommunalDay != day) { CommunalDay = day; CommunalDayScore = 0; }
+        }
+        public void EnsureGoodsCollect() { if (GoodsCollected == null) GoodsCollected = new List<int>(); }
+        public void EnsureHelpGame() { if (HelpGameDone == null) HelpGameDone = new List<int>(); }
+        public void TouchHelpGameDay()
+        {
+            EnsureHelpGame();
+            int day = DateTime.Now.DayOfYear;
+            if (HelpGameDay != day) { HelpGameDay = day; HelpGameDone.Clear(); }
         }
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -828,6 +872,16 @@ namespace GunMobile.Net
             db.ApplySubWeaponBonus(SubWeaponLevel, ref hp, ref baseGuard);
             SyncLoveLevel(db);
             db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luck);
+            EnsureSetsBuild(db);
+            db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luck, ref hp, ref baseGuard, ref magicDef);
+            EnsureEngraveRefine();
+            for (int i = 0; i < EngraveRefineGrades.Count; i++)
+            {
+                int refineGrade = EngraveRefineGrades[i];
+                int temperLevel = i < EngraveTemperLevels.Count ? EngraveTemperLevels[i] : 0;
+                atk += refineGrade * 2 + temperLevel;
+                def += refineGrade * 2 + temperLevel;
+            }
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
             db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref magicDef);
@@ -1029,6 +1083,39 @@ namespace GunMobile.Net
             for (int i = 0; i < MiniGameShopCounts.Count; i++) { if (i > 0) sb.Append(","); sb.Append(MiniGameShopCounts[i]); }
             sb.Append("],");
             J(sb, "wasteRecyclePoints", WasteRecyclePoints); sb.Append(",");
+            EnsureSetsBuild(null);
+            sb.Append("\"setsBuildLevels\":[");
+            for (int i = 0; i < SetsBuildLevels.Count; i++) { if (i > 0) sb.Append(","); sb.Append(SetsBuildLevels[i]); }
+            sb.Append("],");
+            sb.Append("\"setsBuildExp\":[");
+            for (int i = 0; i < SetsBuildExp.Count; i++) { if (i > 0) sb.Append(","); sb.Append(SetsBuildExp[i]); }
+            sb.Append("],");
+            EnsureEngraveRefine();
+            sb.Append("\"engraveRefineGrades\":[");
+            for (int i = 0; i < EngraveRefineGrades.Count; i++) { if (i > 0) sb.Append(","); sb.Append(EngraveRefineGrades[i]); }
+            sb.Append("],");
+            sb.Append("\"engraveTemperLevels\":[");
+            for (int i = 0; i < EngraveTemperLevels.Count; i++) { if (i > 0) sb.Append(","); sb.Append(EngraveTemperLevels[i]); }
+            sb.Append("],");
+            J(sb, "userBoxPoints", UserBoxPoints); sb.Append(",");
+            EnsureUserBox();
+            sb.Append("\"userBoxOpened\":[");
+            for (int i = 0; i < UserBoxOpened.Count; i++) { if (i > 0) sb.Append(","); sb.Append(UserBoxOpened[i]); }
+            sb.Append("],");
+            J(sb, "communalScore", CommunalScore); sb.Append(",");
+            J(sb, "communalDayScore", CommunalDayScore); sb.Append(",");
+            EnsureCommunal();
+            sb.Append("\"communalClaimed\":[");
+            for (int i = 0; i < CommunalClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CommunalClaimed[i]); }
+            sb.Append("],");
+            EnsureGoodsCollect();
+            sb.Append("\"goodsCollected\":[");
+            for (int i = 0; i < GoodsCollected.Count; i++) { if (i > 0) sb.Append(","); sb.Append(GoodsCollected[i]); }
+            sb.Append("],");
+            EnsureHelpGame();
+            sb.Append("\"helpGameDone\":[");
+            for (int i = 0; i < HelpGameDone.Count; i++) { if (i > 0) sb.Append(","); sb.Append(HelpGameDone[i]); }
+            sb.Append("],");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2716,6 +2803,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.WasteRecycleClaim:
                     HandleWasteRecycleClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.SetsBuild:
+                    HandleSetsBuild(player, ns, json);
+                    break;
+
+                case PhoneMsg.EngraveRefine:
+                    HandleEngraveRefine(player, ns, json);
+                    break;
+
+                case PhoneMsg.UserBoxOpen:
+                    HandleUserBoxOpen(player, ns, json);
+                    break;
+
+                case PhoneMsg.CommunalActive:
+                    HandleCommunalActive(player, ns, json);
+                    break;
+
+                case PhoneMsg.GoodsCollect:
+                    HandleGoodsCollect(player, ns, json);
+                    break;
+
+                case PhoneMsg.HelpGameReward:
+                    HandleHelpGameReward(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -8386,6 +8497,268 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // setsbuildtemp: nuôi từng bộ (SetsType), nạp UseItemTemplate lấy Exp rồi lên Level.
+        void HandleSetsBuild(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.SetsBuildList.Count == 0)
+            { Send(ns, PhoneMsg.SetsBuild, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureSetsBuild(_db);
+            int setsType = Mathf.Max(1, JI(json, "setsType", 1));
+            int index = setsType - 1;
+            if (index < 0 || index >= player.SetsBuildLevels.Count)
+            { Send(ns, PhoneMsg.SetsBuild, "{\"ok\":false,\"err\":\"type\"}"); return; }
+
+            int level = player.SetsBuildLevels[index];
+            SetsBuildTemp next = _db.GetSetsBuild(setsType, level + 1);
+            if (next == null) { Send(ns, PhoneMsg.SetsBuild, "{\"ok\":false,\"err\":\"max\"}"); return; }
+
+            string action = JS(json, "action", "feed");
+            if (string.Equals(action, "feed", StringComparison.OrdinalIgnoreCase))
+            {
+                int gain;
+                if (next.UseItemTemplate > 0 && player.Consume(next.UseItemTemplate, 1))
+                {
+                    gain = _db.ConfigInt("SetsBuildExpPerItem", 100);
+                }
+                else
+                {
+                    int goldCost = _db.ConfigInt("SetsBuildExpGold", 1000);
+                    if (player.Gold < goldCost)
+                    { Send(ns, PhoneMsg.SetsBuild, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                    player.Gold -= goldCost;
+                    gain = _db.ConfigInt("SetsBuildExpPerGold", 60);
+                }
+                player.SetsBuildExp[index] += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.SetsBuild, "{\"ok\":true,\"action\":\"feed\",\"setsType\":" + setsType +
+                    ",\"exp\":" + player.SetsBuildExp[index] + ",\"gain\":" + gain + ",\"need\":" + next.Exp + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.SetsBuildExp[index] < next.Exp)
+            {
+                Send(ns, PhoneMsg.SetsBuild, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.SetsBuildExp[index] +
+                    ",\"need\":" + next.Exp + "}");
+                return;
+            }
+
+            player.SetsBuildExp[index] -= next.Exp;
+            player.SetsBuildLevels[index] = next.Level;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SetsBuild, "{\"ok\":true,\"action\":\"up\",\"setsType\":" + setsType +
+                ",\"level\":" + next.Level + ",\"def\":" + next.DefenceGrow + ",\"hp\":" + next.BloodGrow + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // engraverefineryconfiginfo (tinh luyện theo Grade) và engravetemperconfiginfo (tôi luyện theo Level,
+        // SuccessRate phần nghìn). Currency âm là loại tiền PC, ở đây quy về vàng.
+        void HandleEngraveRefine(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || (_db.EngraveRefineryList.Count == 0 && _db.EngraveTemperList.Count == 0))
+            { Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureEngraveRefine();
+            int character = Mathf.Clamp(JI(json, "character", 1), 1, 4);
+            int index = character - 1;
+            string action = JS(json, "action", "refine");
+
+            if (string.Equals(action, "temper", StringComparison.OrdinalIgnoreCase))
+            {
+                int level = player.EngraveTemperLevels[index];
+                EngraveTemperConfig cfg = _db.GetEngraveTemper(character, level + 1);
+                if (cfg == null) { Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                if (player.Gold < cfg.Expend)
+                { Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"gold\",\"need\":" + cfg.Expend + "}"); return; }
+
+                player.Gold -= cfg.Expend;
+                int roll;
+                lock (_lock) { roll = _rng.Next(1000); }
+                bool ok = roll < Mathf.Max(1, cfg.SuccessRate);
+                if (ok) player.EngraveTemperLevels[index] = cfg.Level;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":true,\"action\":\"temper\",\"character\":" + character +
+                    ",\"success\":" + (ok ? "true" : "false") + ",\"level\":" + player.EngraveTemperLevels[index] +
+                    ",\"rate\":" + cfg.SuccessRate + ",\"cost\":" + cfg.Expend + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int grade = player.EngraveRefineGrades[index];
+            EngraveRefineryConfig refine = _db.GetEngraveRefinery(character, grade + 1);
+            if (refine == null) { Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            if (refine.Material > 0 && !player.HasItem(refine.Material, refine.NeedMaterial))
+            {
+                Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"material\",\"itemId\":" + refine.Material +
+                    ",\"need\":" + refine.NeedMaterial + "}");
+                return;
+            }
+            if (player.Gold < refine.Expend)
+            { Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":false,\"err\":\"gold\",\"need\":" + refine.Expend + "}"); return; }
+
+            if (refine.Material > 0) player.Consume(refine.Material, refine.NeedMaterial);
+            player.Gold -= refine.Expend;
+            player.EngraveRefineGrades[index] = refine.Grade;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.EngraveRefine, "{\"ok\":true,\"action\":\"refine\",\"character\":" + character +
+                ",\"grade\":" + refine.Grade + ",\"cost\":" + refine.Expend + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // loaduserbox: rương theo Level/Condition, mở khi đủ điều kiện (Condition = số sao/điểm).
+        void HandleUserBoxOpen(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.UserBoxList.Count == 0)
+            { Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureUserBox();
+            int id = JI(json, "id", 0);
+            UserBoxItem row = _db.GetUserBox(id);
+            if (row == null) { Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":false,\"err\":\"box\"}"); return; }
+            if (player.UserBoxOpened.Contains(id))
+            { Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":false,\"err\":\"opened\"}"); return; }
+            if (row.Level > 0 && player.Level < row.Level)
+            { Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":false,\"err\":\"level\",\"need\":" + row.Level + "}"); return; }
+            if (row.Condition > 0 && player.UserBoxPoints < row.Condition)
+            {
+                Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":false,\"err\":\"condition\",\"have\":" + player.UserBoxPoints +
+                    ",\"need\":" + row.Condition + "}");
+                return;
+            }
+
+            player.UserBoxOpened.Add(id);
+            if (row.TemplateId > 0) player.AddItem(row.TemplateId, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.UserBoxOpen, "{\"ok\":true,\"id\":" + id + ",\"templateId\":" + row.TemplateId +
+                ",\"points\":" + player.UserBoxPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // communalactive + communalactiveawarditems + communalactiveexp: hoạt động chung,
+        // cộng điểm mỗi ngày (DayMaxScore), đủ MinScore thì bốc thưởng theo RandID.
+        void HandleCommunalActive(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.CommunalActiveList.Count == 0)
+            { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchCommunalDay();
+            int activeId = JI(json, "activeId", 0);
+            CommunalActiveInfo info = _db.GetCommunalActive(activeId);
+            if (info == null) { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"active\"}"); return; }
+            if (info.LimitGrade > 0 && player.Level < info.LimitGrade)
+            { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"level\",\"need\":" + info.LimitGrade + "}"); return; }
+
+            string action = JS(json, "action", "score");
+            if (string.Equals(action, "score", StringComparison.OrdinalIgnoreCase))
+            {
+                int gain = _db.ConfigInt("CommunalScoreGain", 1000);
+                if (info.DayMaxScore > 0 && player.CommunalDayScore + gain > info.DayMaxScore)
+                    gain = Mathf.Max(0, info.DayMaxScore - player.CommunalDayScore);
+                if (gain <= 0)
+                { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"dayMax\"}"); return; }
+
+                player.CommunalDayScore += gain;
+                player.CommunalScore += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.CommunalActive, "{\"ok\":true,\"action\":\"score\",\"gain\":" + gain +
+                    ",\"day\":" + player.CommunalDayScore + ",\"total\":" + player.CommunalScore +
+                    ",\"grade\":" + _db.CommunalActiveGradeFromExp(activeId, player.CommunalScore) + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.CommunalScore < info.MinScore)
+            {
+                Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"score\",\"have\":" + player.CommunalScore +
+                    ",\"need\":" + info.MinScore + "}");
+                return;
+            }
+            if (player.CommunalClaimed.Contains(activeId))
+            { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            List<CommunalActiveAward> awards = _db.GetCommunalAwards(activeId);
+            if (awards.Count == 0) { Send(ns, PhoneMsg.CommunalActive, "{\"ok\":false,\"err\":\"award\"}"); return; }
+            int pick;
+            lock (_lock) { pick = _rng.Next(awards.Count); }
+            CommunalActiveAward award = awards[pick];
+            player.AddItem(award.TemplateId, award.Count);
+            player.CommunalClaimed.Add(activeId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CommunalActive, "{\"ok\":true,\"action\":\"claim\",\"activeId\":" + activeId +
+                ",\"templateId\":" + award.TemplateId + ",\"count\":" + award.Count + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // goodscollect: bộ sưu tập vật phẩm, nộp đủ mọi món để nhận điểm sưu tầm.
+        void HandleGoodsCollect(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.GoodsCollectList.Count == 0)
+            { Send(ns, PhoneMsg.GoodsCollect, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureGoodsCollect();
+            int id = JI(json, "id", 0);
+            GoodsCollectItem row = _db.GetGoodsCollect(id);
+            if (row == null) { Send(ns, PhoneMsg.GoodsCollect, "{\"ok\":false,\"err\":\"goods\"}"); return; }
+            if (player.GoodsCollected.Contains(id))
+            { Send(ns, PhoneMsg.GoodsCollect, "{\"ok\":false,\"err\":\"collected\"}"); return; }
+            if (!player.Consume(row.TemplateId, row.Count))
+            {
+                Send(ns, PhoneMsg.GoodsCollect, "{\"ok\":false,\"err\":\"item\",\"itemId\":" + row.TemplateId +
+                    ",\"need\":" + row.Count + "}");
+                return;
+            }
+
+            player.GoodsCollected.Add(id);
+            int gold = _db.ConfigInt("GoodsCollectGold", 2000);
+            player.Gold += gold;
+            player.AddGp(_db, _db.ConfigInt("GoodsCollectGp", 50));
+            bool all = player.GoodsCollected.Count >= _db.GoodsCollectList.Count;
+            if (all) player.Honor += _db.ConfigInt("GoodsCollectHonor", 500);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.GoodsCollect, "{\"ok\":true,\"id\":" + id + ",\"gold\":" + gold +
+                ",\"collected\":" + player.GoodsCollected.Count + ",\"total\":" + _db.GoodsCollectList.Count +
+                ",\"all\":" + (all ? "true" : "false") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // helpgamereward: thưởng theo MissionID + số sao khi giúp người chơi khác.
+        void HandleHelpGameReward(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.HelpGameRewards.Count == 0)
+            { Send(ns, PhoneMsg.HelpGameReward, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchHelpGameDay();
+            int missionId = JI(json, "missionId", 0);
+            int star = Mathf.Clamp(JI(json, "star", 1), 1, 3);
+            List<HelpGameReward> rewards = _db.GetHelpGameRewards(missionId, star);
+            if (rewards.Count == 0) { Send(ns, PhoneMsg.HelpGameReward, "{\"ok\":false,\"err\":\"mission\"}"); return; }
+            if (player.HelpGameDone.Contains(missionId))
+            { Send(ns, PhoneMsg.HelpGameReward, "{\"ok\":false,\"err\":\"done\"}"); return; }
+
+            int helpMax = _db.ConfigInt("HelpGameDayMax", 5);
+            if (player.HelpGameDone.Count >= helpMax)
+            { Send(ns, PhoneMsg.HelpGameReward, "{\"ok\":false,\"err\":\"limit\",\"max\":" + helpMax + "}"); return; }
+
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < rewards.Count; i++)
+            {
+                player.AddItem(rewards[i].TemplateId, rewards[i].Count);
+                if (firstTemplate == 0) firstTemplate = rewards[i].TemplateId;
+                granted += rewards[i].Count;
+            }
+            player.HelpGameDone.Add(missionId);
+            player.UserBoxPoints += star;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.HelpGameReward, "{\"ok\":true,\"missionId\":" + missionId + ",\"star\":" + star +
+                ",\"items\":" + rewards.Count + ",\"count\":" + granted + ",\"templateId\":" + firstTemplate +
+                ",\"boxPoints\":" + player.UserBoxPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -11510,6 +11883,17 @@ namespace GunMobile.Net
             public List<int> MiniGameShopIds = new List<int>();
             public List<int> MiniGameShopCounts = new List<int>();
             public int WasteRecyclePoints;
+            public List<int> SetsBuildLevels = new List<int>();
+            public List<int> SetsBuildExp = new List<int>();
+            public List<int> EngraveRefineGrades = new List<int>();
+            public List<int> EngraveTemperLevels = new List<int>();
+            public int UserBoxPoints;
+            public List<int> UserBoxOpened = new List<int>();
+            public int CommunalScore, CommunalDayScore, CommunalDay = -1;
+            public List<int> CommunalClaimed = new List<int>();
+            public List<int> GoodsCollected = new List<int>();
+            public int HelpGameDay = -1;
+            public List<int> HelpGameDone = new List<int>();
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -11710,6 +12094,17 @@ namespace GunMobile.Net
                 MiniGameShopIds = p.MiniGameShopIds ?? new List<int>(),
                 MiniGameShopCounts = p.MiniGameShopCounts ?? new List<int>(),
                 WasteRecyclePoints = p.WasteRecyclePoints,
+                SetsBuildLevels = p.SetsBuildLevels ?? new List<int>(),
+                SetsBuildExp = p.SetsBuildExp ?? new List<int>(),
+                EngraveRefineGrades = p.EngraveRefineGrades ?? new List<int>(),
+                EngraveTemperLevels = p.EngraveTemperLevels ?? new List<int>(),
+                UserBoxPoints = p.UserBoxPoints,
+                UserBoxOpened = p.UserBoxOpened ?? new List<int>(),
+                CommunalScore = p.CommunalScore, CommunalDayScore = p.CommunalDayScore, CommunalDay = p.CommunalDay,
+                CommunalClaimed = p.CommunalClaimed ?? new List<int>(),
+                GoodsCollected = p.GoodsCollected ?? new List<int>(),
+                HelpGameDay = p.HelpGameDay,
+                HelpGameDone = p.HelpGameDone ?? new List<int>(),
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -11914,6 +12309,17 @@ namespace GunMobile.Net
                 MiniGameShopIds = s.MiniGameShopIds ?? new List<int>(),
                 MiniGameShopCounts = s.MiniGameShopCounts ?? new List<int>(),
                 WasteRecyclePoints = s.WasteRecyclePoints,
+                SetsBuildLevels = s.SetsBuildLevels ?? new List<int>(),
+                SetsBuildExp = s.SetsBuildExp ?? new List<int>(),
+                EngraveRefineGrades = s.EngraveRefineGrades ?? new List<int>(),
+                EngraveTemperLevels = s.EngraveTemperLevels ?? new List<int>(),
+                UserBoxPoints = s.UserBoxPoints,
+                UserBoxOpened = s.UserBoxOpened ?? new List<int>(),
+                CommunalScore = s.CommunalScore, CommunalDayScore = s.CommunalDayScore, CommunalDay = s.CommunalDay,
+                CommunalClaimed = s.CommunalClaimed ?? new List<int>(),
+                GoodsCollected = s.GoodsCollected ?? new List<int>(),
+                HelpGameDay = s.HelpGameDay,
+                HelpGameDone = s.HelpGameDone ?? new List<int>(),
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

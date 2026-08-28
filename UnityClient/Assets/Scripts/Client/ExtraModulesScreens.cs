@@ -2210,6 +2210,187 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastWasteRecycleJson)) SysUi.Note(body, PhoneNet.LastWasteRecycleJson);
         }
 
+        public static void SetsBuildScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "套装培养 · setsbuildtemp");
+            app.Profile.EnsureSetsBuild();
+            if (app.Database == null || app.Database.SetsBuildList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/setsbuildtemp.xml");
+                return;
+            }
+
+            foreach (int type in app.Database.SetsBuildTypes)
+            {
+                int index = type - 1;
+                if (index < 0 || index >= app.Profile.SetsBuildLevels.Count) continue;
+                int level = app.Profile.SetsBuildLevels[index];
+                int exp = app.Profile.SetsBuildExp[index];
+                SetsBuildTemp next = app.Database.GetSetsBuild(type, level + 1);
+                int localType = type;
+                SysUi.Note(body, "套装 " + type + "  Lv" + level + " / " + app.Database.SetsBuildMaxLevel(type) +
+                    "  经验 " + exp + (next != null ? " / " + next.Exp : " MAX"));
+                if (next != null)
+                {
+                    SysUi.Row(body, "sbFeed" + type,
+                        "培养  料 " + SysUi.ItemName(app, next.UseItemTemplate),
+                        () => PhoneNet.SetsBuild("feed", localType));
+                    SysUi.Row(body, "sbUp" + type,
+                        "升级 → Lv" + next.Level + "  防+" + next.DefenceGrow + " 血+" + next.BloodGrow,
+                        () => PhoneNet.SetsBuild("up", localType));
+                }
+            }
+
+            int suits = 0;
+            foreach (SuitTemplateInfo suit in app.Database.SuitTemplateList)
+            {
+                SysUi.Note(body, suit.SuitName + "  档位 " + suit.EquipCounts.Length);
+                if (++suits >= 8) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastSetsBuildJson)) SysUi.Note(body, PhoneNet.LastSetsBuildJson);
+        }
+
+        public static void EngraveRefineScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "刻印精炼 · engrave refine/temper");
+            app.Profile.EnsureEngraveRefine();
+            if (app.Database == null || (app.Database.EngraveRefineryList.Count == 0 && app.Database.EngraveTemperList.Count == 0))
+            {
+                SysUi.Note(body, "缺少 Request/engraverefineryconfiginfo.xml");
+                return;
+            }
+
+            for (int i = 0; i < app.Profile.EngraveRefineGrades.Count; i++)
+            {
+                int character = i + 1;
+                int grade = app.Profile.EngraveRefineGrades[i];
+                int temper = app.Profile.EngraveTemperLevels[i];
+                EngraveRefineryConfig nextRefine = app.Database.GetEngraveRefinery(character, grade + 1);
+                EngraveTemperConfig nextTemper = app.Database.GetEngraveTemper(character, temper + 1);
+                SysUi.Note(body, "部位 " + character + "  精炼 " + grade + "  淬炼 " + temper);
+                if (nextRefine != null)
+                {
+                    SysUi.Row(body, "erRef" + character,
+                        "精炼 → " + nextRefine.Grade + "  " + nextRefine.Expend + "金  料 " +
+                        SysUi.ItemName(app, nextRefine.Material) + "x" + nextRefine.NeedMaterial,
+                        () => PhoneNet.EngraveRefine("refine", character));
+                }
+                if (nextTemper != null)
+                {
+                    SysUi.Row(body, "erTem" + character,
+                        "淬炼 → " + nextTemper.Level + "  " + nextTemper.Expend + "金  成功率 " +
+                        (nextTemper.SuccessRate / 10f).ToString("0.#") + "%",
+                        () => PhoneNet.EngraveRefine("temper", character));
+                }
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastEngraveRefineJson)) SysUi.Note(body, PhoneNet.LastEngraveRefineJson);
+        }
+
+        public static void UserBoxScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "成长宝箱 · loaduserbox");
+            app.Profile.EnsureUserBox();
+            SysUi.Note(body, "宝箱积分 " + app.Profile.UserBoxPoints + "  已开 " + app.Profile.UserBoxOpened.Count);
+            if (app.Database == null || app.Database.UserBoxList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/loaduserbox.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (UserBoxItem row in app.Database.UserBoxList)
+            {
+                bool opened = app.Profile.UserBoxOpened.Contains(row.Id);
+                bool locked = (row.Level > 0 && app.Profile.Level < row.Level) ||
+                    (row.Condition > 0 && app.Profile.UserBoxPoints < row.Condition);
+                UserBoxItem local = row;
+                SysUi.Row(body, "ub" + row.Id,
+                    (opened ? "[已开] " : locked ? "[需" + row.Condition + "分] " : "") +
+                    SysUi.ItemName(app, row.TemplateId) + "  Lv" + row.Level,
+                    opened || locked ? null : (UnityAction)(() => PhoneNet.OpenUserBox(local.Id)));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastUserBoxJson)) SysUi.Note(body, PhoneNet.LastUserBoxJson);
+        }
+
+        public static void CommunalActiveScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "全民活动 · communalactive");
+            app.Profile.EnsureCommunal();
+            SysUi.Note(body, "总积分 " + app.Profile.CommunalScore + "  今日 " + app.Profile.CommunalDayScore);
+            if (app.Database == null || app.Database.CommunalActiveList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/communalactive.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (CommunalActiveInfo row in app.Database.CommunalActiveList)
+            {
+                bool claimed = app.Profile.CommunalClaimed.Contains(row.ActiveId);
+                bool ready = app.Profile.CommunalScore >= row.MinScore;
+                int local = row.ActiveId;
+                SysUi.Note(body, "活动 " + row.ActiveId + "  Lv" + row.LimitGrade + "  日上限 " + row.DayMaxScore +
+                    "  门槛 " + row.MinScore);
+                SysUi.Row(body, "caScore" + row.ActiveId, "参与 (+积分)", () => PhoneNet.CommunalActive("score", local));
+                SysUi.Row(body, "caClaim" + row.ActiveId,
+                    (claimed ? "[已领] " : ready ? "[可领] " : "") + "领取活动奖励",
+                    claimed || !ready ? null : (UnityAction)(() => PhoneNet.CommunalActive("claim", local)));
+                if (++shown >= 8) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCommunalJson)) SysUi.Note(body, PhoneNet.LastCommunalJson);
+        }
+
+        public static void GoodsCollectScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "物品收集 · goodscollect");
+            app.Profile.EnsureGoodsCollect();
+            if (app.Database == null || app.Database.GoodsCollectList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/goodscollect.xml");
+                return;
+            }
+
+            SysUi.Note(body, "已收集 " + app.Profile.GoodsCollected.Count + " / " + app.Database.GoodsCollectList.Count);
+            int shown = 0;
+            foreach (GoodsCollectItem row in app.Database.GoodsCollectList)
+            {
+                bool done = app.Profile.GoodsCollected.Contains(row.Id);
+                GoodsCollectItem local = row;
+                SysUi.Row(body, "gc" + row.Id,
+                    (done ? "[已交] " : "") + SysUi.ItemName(app, row.TemplateId) + " x" + row.Count + "  " + row.GetFrom,
+                    done ? null : (UnityAction)(() => PhoneNet.CollectGoods(local.Id)));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastGoodsCollectJson)) SysUi.Note(body, PhoneNet.LastGoodsCollectJson);
+        }
+
+        public static void HelpGameScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "助战奖励 · helpgamereward");
+            app.Profile.EnsureHelpGame();
+            SysUi.Note(body, "今日助战 " + app.Profile.HelpGameDone.Count + "  宝箱积分 " + app.Profile.UserBoxPoints);
+            if (app.Database == null || app.Database.HelpGameMissionIds.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/helpgamereward.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (int missionId in app.Database.HelpGameMissionIds)
+            {
+                bool done = app.Profile.HelpGameDone.Contains(missionId);
+                int local = missionId;
+                var rewards = app.Database.GetHelpGameRewards(missionId, 1);
+                string first = rewards.Count > 0 ? SysUi.ItemName(app, rewards[0].TemplateId) : "-";
+                SysUi.Row(body, "hg" + missionId,
+                    (done ? "[已领] " : "") + "任务 " + missionId + "  奖 " + first,
+                    done ? null : (UnityAction)(() => PhoneNet.HelpGame(local, 1)));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastHelpGameJson)) SysUi.Note(body, PhoneNet.LastHelpGameJson);
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

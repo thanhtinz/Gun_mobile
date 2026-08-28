@@ -271,6 +271,24 @@ namespace GunMobile.Client
                 case "wasterecycle":
                     ExtraModulesScreens.WasteRecycleScreen(_safe, this);
                     return;
+                case "setsbuild":
+                    ExtraModulesScreens.SetsBuildScreen(_safe, this);
+                    return;
+                case "engraverefine":
+                    ExtraModulesScreens.EngraveRefineScreen(_safe, this);
+                    return;
+                case "userbox":
+                    ExtraModulesScreens.UserBoxScreen(_safe, this);
+                    return;
+                case "communal":
+                    ExtraModulesScreens.CommunalActiveScreen(_safe, this);
+                    return;
+                case "goodscollect":
+                    ExtraModulesScreens.GoodsCollectScreen(_safe, this);
+                    return;
+                case "helpgame":
+                    ExtraModulesScreens.HelpGameScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -949,6 +967,42 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "wasterecycle")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.SetsBuild:
+                        PhoneNet.LastSetsBuildJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "setsbuild")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.EngraveRefine:
+                        PhoneNet.LastEngraveRefineJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "engraverefine")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.UserBoxOpen:
+                        PhoneNet.LastUserBoxJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "userbox")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CommunalActive:
+                        PhoneNet.LastCommunalJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "communal")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.GoodsCollect:
+                        PhoneNet.LastGoodsCollectJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "goodscollect")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.HelpGameReward:
+                        PhoneNet.LastHelpGameJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "helpgame")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1276,6 +1330,25 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "miniGameShopCounts", Profile.MiniGameShopCounts);
             Profile.EnsureMiniGameShop();
             Profile.WasteRecyclePoints = JsonInt(json, "wasteRecyclePoints", Profile.WasteRecyclePoints);
+            Profile.EnsureSetsBuild();
+            ParseIntListFromServer(json, "setsBuildLevels", Profile.SetsBuildLevels);
+            ParseIntListFromServer(json, "setsBuildExp", Profile.SetsBuildExp);
+            Profile.EnsureSetsBuild();
+            Profile.EnsureEngraveRefine();
+            ParseIntListFromServer(json, "engraveRefineGrades", Profile.EngraveRefineGrades);
+            ParseIntListFromServer(json, "engraveTemperLevels", Profile.EngraveTemperLevels);
+            Profile.EnsureEngraveRefine();
+            Profile.UserBoxPoints = JsonInt(json, "userBoxPoints", Profile.UserBoxPoints);
+            Profile.EnsureUserBox();
+            ParseIntListFromServer(json, "userBoxOpened", Profile.UserBoxOpened);
+            Profile.CommunalScore = JsonInt(json, "communalScore", Profile.CommunalScore);
+            Profile.CommunalDayScore = JsonInt(json, "communalDayScore", Profile.CommunalDayScore);
+            Profile.EnsureCommunal();
+            ParseIntListFromServer(json, "communalClaimed", Profile.CommunalClaimed);
+            Profile.EnsureGoodsCollect();
+            ParseIntListFromServer(json, "goodsCollected", Profile.GoodsCollected);
+            Profile.EnsureHelpGame();
+            ParseIntListFromServer(json, "helpGameDone", Profile.HelpGameDone);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

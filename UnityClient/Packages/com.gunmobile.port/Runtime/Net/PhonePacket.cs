@@ -294,6 +294,12 @@ namespace GunMobile.Net
         public const ushort ActiveConvert = 247;
         public const ushort MiniGameShopBuy = 248;
         public const ushort WasteRecycleClaim = 249;
+        public const ushort SetsBuild = 250;
+        public const ushort EngraveRefine = 251;
+        public const ushort UserBoxOpen = 252;
+        public const ushort CommunalActive = 253;
+        public const ushort GoodsCollect = 254;
+        public const ushort HelpGameReward = 255;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;
