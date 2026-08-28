@@ -26,6 +26,7 @@ Hoặc mở folder `UnityClient/` trong Unity Hub rồi menu **GunMobile → Bui
 ## Test
 
 ```bash
+bash tools/compilecheck/compile_check.sh   # biên dịch server + client (chỉ cần .NET 8 runtime)
 python3 tools/test_port_helpers.py
 python3 tools/unpack_pc_dump.py   # optional, ~maps + equip PNG
 python3 tools/pack_mobile_content.py
