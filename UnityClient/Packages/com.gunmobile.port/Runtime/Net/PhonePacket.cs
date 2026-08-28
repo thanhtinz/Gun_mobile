@@ -299,7 +299,7 @@ namespace GunMobile.Net
         public const ushort UserBoxOpen = 252;
         public const ushort CommunalActive = 253;
         public const ushort GoodsCollect = 254;
-        public const ushort HelpGameReward = 255;
+        public const ushort HelpGameReward = 256;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;
