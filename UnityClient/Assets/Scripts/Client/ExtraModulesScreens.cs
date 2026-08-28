@@ -2391,6 +2391,189 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastHelpGameJson)) SysUi.Note(body, PhoneNet.LastHelpGameJson);
         }
 
+        public static void PetFormScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "宠物幻化 · loadpetformdata");
+            SysUi.Note(body, "萌宠 Lv" + app.Profile.PetMoeLevel + "  经验 " + app.Profile.PetMoeExp +
+                "  幻化 " + app.Profile.PetFormTemplateId);
+            if (app.Database == null || (app.Database.PetFormList.Count == 0 && app.Database.PetMoeList.Count == 0))
+            {
+                SysUi.Note(body, "缺少 Request/loadpetformdata.xml");
+                return;
+            }
+
+            PetMoeProperty cur = app.Database.GetPetMoe(app.Profile.PetMoeLevel);
+            if (cur != null)
+            {
+                SysUi.Note(body, "加成 攻+" + cur.Attack + " 防+" + cur.Defence + " 血+" + cur.Blood +
+                    " 护+" + cur.Guard + "  升级需经验 " + cur.Exp);
+            }
+            SysUi.Row(body, "pfFeed", "喂经验丹 x1", () => PhoneNet.PetForm("feed", 0, 1));
+            SysUi.Row(body, "pfFeed10", "喂经验丹 x10", () => PhoneNet.PetForm("feed", 0, 10));
+            SysUi.Row(body, "pfUp", "提升萌宠等级", () => PhoneNet.PetForm("up"));
+
+            int shown = 0;
+            foreach (PetFormData row in app.Database.PetFormList)
+            {
+                bool active = app.Profile.PetFormTemplateId == row.TemplateId;
+                PetFormData local = row;
+                SysUi.Row(body, "pf" + row.TemplateId,
+                    (active ? "[使用中] " : "") + row.Name + "  " + row.Appearance +
+                    "  减伤" + row.DamageReduce + " 血+" + row.HeathUp,
+                    () => PhoneNet.PetForm("form", local.TemplateId));
+                if (++shown >= 20) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastPetFormJson)) SysUi.Note(body, PhoneNet.LastPetFormJson);
+        }
+
+        public static void RuneAdvanceScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "符文进阶 · runeadvancetemplatelist");
+            SysUi.Note(body, "当前符文 " + app.Profile.RuneTemplateId + "  品质 " + app.Profile.RuneAdvanceQuality);
+            if (app.Database == null || app.Database.RuneAdvanceList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/runeadvancetemplatelist.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (RuneAdvanceTemplate row in app.Database.RuneAdvanceList)
+            {
+                RuneAdvanceTemplate local = row;
+                SysUi.Row(body, "ra" + row.AdvancedTempId,
+                    row.RuneName + "  Q" + row.Quality + "  主料 " + SysUi.ItemName(app, row.MainMaterials) +
+                    "  辅料x" + row.AuxiliaryMaterials.Length,
+                    () => PhoneNet.RuneAdvance(local.AdvancedTempId));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastRuneAdvanceJson)) SysUi.Note(body, PhoneNet.LastRuneAdvanceJson);
+        }
+
+        public static void ChargeRewardScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "充值奖励 · loadchargeactivetemplate");
+            app.Profile.EnsureChargeReward();
+            SysUi.Note(body, "充值积分 " + app.Profile.ChargePoints + "  已领 " + app.Profile.ChargeClaimed.Count);
+            if (app.Database == null || (app.Database.ChargeActiveList.Count == 0 && app.Database.TxPlayerAwardList.Count == 0))
+            {
+                SysUi.Note(body, "缺少 Request/loadchargeactivetemplate.xml");
+                return;
+            }
+
+            SysUi.Row(body, "chAdd", "用金币换 100 充值积分", () => PhoneNet.ChargeReward("charge", 0, 0, 100));
+            int shown = 0;
+            foreach (ChargeActiveTemplate row in app.Database.ChargeActiveList)
+            {
+                bool claimed = app.Profile.ChargeClaimed.Contains(row.Id);
+                bool ready = app.Profile.ChargePoints >= row.Condition;
+                ChargeActiveTemplate local = row;
+                SysUi.Row(body, "ch" + row.Id,
+                    (claimed ? "[已领] " : ready ? "[可领] " : "") + "累充 " + row.Condition,
+                    claimed || !ready ? null : (UnityAction)(() => PhoneNet.ChargeReward("claim", local.Id)));
+                if (++shown >= 16) break;
+            }
+
+            int txShown = 0;
+            foreach (TxPlayerAward row in app.Database.TxPlayerAwardList)
+            {
+                bool claimed = app.Profile.TxAwardClaimed.Contains(row.Id);
+                bool locked = app.Profile.Level < row.PlayerLevel;
+                TxPlayerAward local = row;
+                SysUi.Row(body, "tx" + row.Id,
+                    (claimed ? "[已领] " : locked ? "[需Lv" + row.PlayerLevel + "] " : "") +
+                    "等级礼包 " + row.AwardIndex + "  " + row.RewardItemIds.Length + " 件",
+                    claimed || locked ? null : (UnityAction)(() => PhoneNet.ChargeReward("level", 0, local.Id)));
+                if (++txShown >= 12) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastChargeRewardJson)) SysUi.Note(body, PhoneNet.LastChargeRewardJson);
+        }
+
+        public static void ThreeCleanScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "三清积分 · threecleanpointaward");
+            app.Profile.EnsureThreeClean();
+            SysUi.Note(body, "三清积分 " + app.Profile.ThreeCleanPoints);
+            if (app.Database == null || app.Database.ThreeCleanAwardList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/threecleanpointaward.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (ThreeCleanAward row in app.Database.ThreeCleanAwardList)
+            {
+                bool claimed = app.Profile.ThreeCleanClaimed.Contains(row.Id);
+                bool ready = app.Profile.ThreeCleanPoints >= row.Point;
+                ThreeCleanAward local = row;
+                SysUi.Row(body, "tc" + row.Id,
+                    (claimed ? "[已领] " : ready ? "[可领] " : "") + row.Point + "分  " +
+                    SysUi.ItemName(app, row.ItemId) + " x" + row.Count,
+                    claimed || !ready ? null : (UnityAction)(() => PhoneNet.ThreeCleanClaim(local.Id)));
+                if (++shown >= 20) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastThreeCleanJson)) SysUi.Note(body, PhoneNet.LastThreeCleanJson);
+        }
+
+        public static void DiceGameScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "骰子游戏 · dicegameawarditem");
+            SysUi.Note(body, "今日投掷 " + app.Profile.DiceRolls + "  累计点数 " + app.Profile.DiceScore);
+            if (app.Database == null || app.Database.DiceGameAwards.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/dicegameawarditem.xml");
+                return;
+            }
+
+            SysUi.Row(body, "diceRoll", "投两颗骰子", PhoneNet.DiceGame);
+            int shown = 0;
+            foreach (int rank in app.Database.DiceGameRanks)
+            {
+                var awards = app.Database.GetDiceGameAwards(rank);
+                if (awards.Count == 0) continue;
+                SysUi.Note(body, "档 " + rank + "  " + SysUi.ItemName(app, awards[0].TemplateId) +
+                    " x" + awards[0].Count + "  共 " + awards.Count + " 件");
+                if (++shown >= 10) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastDiceGameJson)) SysUi.Note(body, PhoneNet.LastDiceGameJson);
+        }
+
+        public static void HomeFishScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "家园钓鱼 · homefishinfo");
+            SysUi.Note(body, "今日抛竿 " + app.Profile.FishCasts + "  钓鱼积分 " + app.Profile.FishScore +
+                "  月卡 " + app.Profile.MonthCardId + " 剩 " + app.Profile.MonthCardDaysLeft + " 天");
+            if (app.Database == null || (app.Database.HomeFishList.Count == 0 && app.Database.MonthCardGoodList.Count == 0))
+            {
+                SysUi.Note(body, "缺少 Request/homefishinfo.xml");
+                return;
+            }
+
+            SysUi.Row(body, "hfCast", "抛竿", () => PhoneNet.HomeFish("fish"));
+            if (app.Profile.MonthCardDaysLeft > 0)
+            {
+                SysUi.Row(body, "hfMonthClaim", "领取月卡今日奖励", () => PhoneNet.HomeFish("monthclaim"));
+            }
+
+            int shown = 0;
+            foreach (HomeFishInfo row in app.Database.HomeFishList)
+            {
+                SysUi.Note(body, row.Name + "  " + row.Score + " 分");
+                if (++shown >= 10) break;
+            }
+
+            int cards = 0;
+            foreach (MonthCardGood row in app.Database.MonthCardGoodList)
+            {
+                MonthCardGood local = row;
+                SysUi.Row(body, "mc" + row.Id,
+                    "月卡 " + row.Id + "  " + row.Money + "金  " + row.Day + "天  " +
+                    SysUi.ItemName(app, row.GoodId) + " x" + row.Count,
+                    () => PhoneNet.HomeFish("monthcard", local.Id));
+                if (++cards >= 8) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastHomeFishJson)) SysUi.Note(body, PhoneNet.LastHomeFishJson);
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

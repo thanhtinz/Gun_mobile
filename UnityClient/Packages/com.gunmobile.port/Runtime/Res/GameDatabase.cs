@@ -1669,6 +1669,115 @@ namespace GunMobile.Res
         public int ValidDate;
     }
 
+    public sealed class PetFormData
+    {
+        public int TemplateId;
+        public string Appearance = "";
+        public string Name = "";
+        public string Resource = "";
+        public int DamageReduce;
+        public int HeathUp;
+    }
+
+    public sealed class PetMoeProperty
+    {
+        public int Level;
+        public int Attack;
+        public int Lucky;
+        public int Agility;
+        public int Blood;
+        public int Defence;
+        public int Guard;
+        public int Exp;
+    }
+
+    public sealed class PetLevelGp
+    {
+        public int Level;
+        public int Gp;
+    }
+
+    public sealed class PetExpItemPrice
+    {
+        public int Count;
+        public int Money;
+        public int ItemCount;
+    }
+
+    public sealed class RuneAdvanceTemplate
+    {
+        public int AdvancedTempId;
+        public string RuneName = "";
+        public int MainMaterials;
+        public int Quality;
+        public int MaxLevelTempRunId;
+        public int[] AuxiliaryMaterials = System.Array.Empty<int>();
+        public string AdvanceDesc = "";
+    }
+
+    public sealed class ChargeActiveTemplate
+    {
+        public int Id;
+        public int Condition;
+        public string Description = "";
+        public int RegetType;
+        public int TypeId;
+    }
+
+    public sealed class ChargeSpendReward
+    {
+        public int Id;
+        public int RewardId;
+        public int RewardItemId;
+        public int RewardItemCount = 1;
+        public bool IsBind;
+        public int RewardItemValid;
+    }
+
+    public sealed class TxPlayerAward
+    {
+        public int Id;
+        public int AwardIndex;
+        public int Type;
+        public int PlayerLevel;
+        public int[] RewardItemIds = System.Array.Empty<int>();
+        public int[] RewardCounts = System.Array.Empty<int>();
+    }
+
+    public sealed class ThreeCleanAward
+    {
+        public int Id;
+        public int ItemId;
+        public int Count = 1;
+        public int Point;
+        public int Type;
+        public bool IsBind;
+    }
+
+    public sealed class DiceGameAward
+    {
+        public int Rank;
+        public int TemplateId;
+        public int Count = 1;
+    }
+
+    public sealed class HomeFishInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int Score;
+        public int Pic;
+    }
+
+    public sealed class MonthCardGood
+    {
+        public int Id;
+        public int GoodId;
+        public int Money;
+        public int Count = 1;
+        public int Day;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2282,6 +2391,27 @@ namespace GunMobile.Res
         public List<GoodsCollectItem> GoodsCollectList { get; } = new List<GoodsCollectItem>();
         public List<HelpGameReward> HelpGameRewards { get; } = new List<HelpGameReward>();
         public List<int> HelpGameMissionIds { get; } = new List<int>();
+        public Dictionary<int, PetFormData> PetForms { get; } = new Dictionary<int, PetFormData>();
+        public List<PetFormData> PetFormList { get; } = new List<PetFormData>();
+        public Dictionary<int, PetMoeProperty> PetMoeProperties { get; } = new Dictionary<int, PetMoeProperty>();
+        public List<PetMoeProperty> PetMoeList { get; } = new List<PetMoeProperty>();
+        public Dictionary<int, PetLevelGp> PetLevelGps { get; } = new Dictionary<int, PetLevelGp>();
+        public List<PetExpItemPrice> PetExpPrices { get; } = new List<PetExpItemPrice>();
+        public Dictionary<int, RuneAdvanceTemplate> RuneAdvances { get; } = new Dictionary<int, RuneAdvanceTemplate>();
+        public List<RuneAdvanceTemplate> RuneAdvanceList { get; } = new List<RuneAdvanceTemplate>();
+        public Dictionary<int, ChargeActiveTemplate> ChargeActives { get; } = new Dictionary<int, ChargeActiveTemplate>();
+        public List<ChargeActiveTemplate> ChargeActiveList { get; } = new List<ChargeActiveTemplate>();
+        public List<ChargeSpendReward> ChargeSpendRewards { get; } = new List<ChargeSpendReward>();
+        public Dictionary<int, TxPlayerAward> TxPlayerAwards { get; } = new Dictionary<int, TxPlayerAward>();
+        public List<TxPlayerAward> TxPlayerAwardList { get; } = new List<TxPlayerAward>();
+        public Dictionary<int, ThreeCleanAward> ThreeCleanAwards { get; } = new Dictionary<int, ThreeCleanAward>();
+        public List<ThreeCleanAward> ThreeCleanAwardList { get; } = new List<ThreeCleanAward>();
+        public List<DiceGameAward> DiceGameAwards { get; } = new List<DiceGameAward>();
+        public List<int> DiceGameRanks { get; } = new List<int>();
+        public Dictionary<int, HomeFishInfo> HomeFishes { get; } = new Dictionary<int, HomeFishInfo>();
+        public List<HomeFishInfo> HomeFishList { get; } = new List<HomeFishInfo>();
+        public Dictionary<int, MonthCardGood> MonthCardGoods { get; } = new Dictionary<int, MonthCardGood>();
+        public List<MonthCardGood> MonthCardGoodList { get; } = new List<MonthCardGood>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2426,6 +2556,12 @@ namespace GunMobile.Res
             db.LoadCommunalActive(loader);
             db.LoadGoodsCollect(loader);
             db.LoadHelpGameRewards(loader);
+            db.LoadPetExtras(loader);
+            db.LoadRuneAdvance(loader);
+            db.LoadChargeRewards(loader);
+            db.LoadThreeClean(loader);
+            db.LoadDiceGame(loader);
+            db.LoadHomeFish(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2447,7 +2583,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -3393,6 +3529,118 @@ namespace GunMobile.Res
                 if (row.MissionId == missionId && (star <= 0 || row.Star == star)) list.Add(row);
             }
             return list;
+        }
+
+        public PetFormData GetPetForm(int templateId)
+        {
+            if (templateId > 0 && PetForms.TryGetValue(templateId, out PetFormData row)) return row;
+            return null;
+        }
+
+        public PetMoeProperty GetPetMoe(int level)
+        {
+            if (level > 0 && PetMoeProperties.TryGetValue(level, out PetMoeProperty row)) return row;
+            return null;
+        }
+
+        public int PetMoeMaxLevel()
+        {
+            return PetMoeList.Count > 0 ? PetMoeList[PetMoeList.Count - 1].Level : 1;
+        }
+
+        public int PetLevelGpNeed(int level)
+        {
+            if (level > 0 && PetLevelGps.TryGetValue(level, out PetLevelGp row)) return row.Gp;
+            return 0;
+        }
+
+        public int PetExpItemGold(int count)
+        {
+            int money = 0;
+            for (int i = 0; i < PetExpPrices.Count; i++)
+            {
+                if (PetExpPrices[i].Count <= count) money = PetExpPrices[i].Money;
+            }
+            return money > 0 ? money : ConfigInt("PetExpItemGold", 80);
+        }
+
+        public void ApplyPetMoeBonus(int moeLevel, int formTemplateId,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int hp, ref int baseGuard)
+        {
+            PetMoeProperty row = GetPetMoe(moeLevel);
+            if (row != null)
+            {
+                atk += row.Attack;
+                def += row.Defence;
+                agi += row.Agility;
+                luck += row.Lucky;
+                hp += row.Blood;
+                baseGuard += row.Guard;
+            }
+
+            PetFormData form = GetPetForm(formTemplateId);
+            if (form != null)
+            {
+                hp += form.HeathUp * 10;
+                baseGuard += form.DamageReduce;
+            }
+        }
+
+        public RuneAdvanceTemplate GetRuneAdvance(int advancedTempId)
+        {
+            if (advancedTempId > 0 && RuneAdvances.TryGetValue(advancedTempId, out RuneAdvanceTemplate row)) return row;
+            return null;
+        }
+
+        public ChargeActiveTemplate GetChargeActive(int id)
+        {
+            if (id > 0 && ChargeActives.TryGetValue(id, out ChargeActiveTemplate row)) return row;
+            return null;
+        }
+
+        public List<ChargeSpendReward> GetChargeSpendRewards(int rewardId)
+        {
+            var list = new List<ChargeSpendReward>();
+            for (int i = 0; i < ChargeSpendRewards.Count; i++)
+            {
+                if (ChargeSpendRewards[i].RewardId == rewardId) list.Add(ChargeSpendRewards[i]);
+            }
+            return list;
+        }
+
+        public TxPlayerAward GetTxPlayerAward(int id)
+        {
+            if (id > 0 && TxPlayerAwards.TryGetValue(id, out TxPlayerAward row)) return row;
+            return null;
+        }
+
+        public ThreeCleanAward GetThreeCleanAward(int id)
+        {
+            if (id > 0 && ThreeCleanAwards.TryGetValue(id, out ThreeCleanAward row)) return row;
+            return null;
+        }
+
+        public List<DiceGameAward> GetDiceGameAwards(int rank)
+        {
+            var list = new List<DiceGameAward>();
+            for (int i = 0; i < DiceGameAwards.Count; i++)
+            {
+                if (DiceGameAwards[i].Rank == rank) list.Add(DiceGameAwards[i]);
+            }
+            return list;
+        }
+
+        public HomeFishInfo RollHomeFish(System.Random rng)
+        {
+            if (HomeFishList.Count == 0) return null;
+            int idx = rng != null ? rng.Next(HomeFishList.Count) : 0;
+            return HomeFishList[idx];
+        }
+
+        public MonthCardGood GetMonthCard(int id)
+        {
+            if (id > 0 && MonthCardGoods.TryGetValue(id, out MonthCardGood row)) return row;
+            return null;
         }
 
         public JadeTemp GetJade(int id)
@@ -10958,6 +11206,259 @@ namespace GunMobile.Res
                 if (!HelpGameMissionIds.Contains(missionId)) HelpGameMissionIds.Add(missionId);
             }
             HelpGameMissionIds.Sort();
+        }
+
+        void LoadPetExtras(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/loadpetformdata.xml", out XmlResultTable forms))
+            {
+                foreach (var row in forms.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0 || PetForms.ContainsKey(templateId)) continue;
+                    var info = new PetFormData
+                    {
+                        TemplateId = templateId,
+                        Appearance = Str(row, "Appearance"),
+                        Name = Str(row, "Name"),
+                        Resource = Str(row, "Resource"),
+                        DamageReduce = Int(row, "DamageReduce"),
+                        HeathUp = Int(row, "HeathUp")
+                    };
+                    PetForms[templateId] = info;
+                    PetFormList.Add(info);
+                }
+                PetFormList.Sort((a, b) => a.TemplateId.CompareTo(b.TemplateId));
+            }
+
+            if (TryTable(loader, "Request/loadpetmoeproperty.xml", out XmlResultTable moe))
+            {
+                foreach (var row in moe.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0 || PetMoeProperties.ContainsKey(level)) continue;
+                    var info = new PetMoeProperty
+                    {
+                        Level = level,
+                        Attack = Int(row, "Attack"),
+                        Lucky = Int(row, "Lucky"),
+                        Agility = Int(row, "Agility"),
+                        Blood = Int(row, "Blood"),
+                        Defence = Int(row, "Defence"),
+                        Guard = Int(row, "Guard"),
+                        Exp = Int(row, "Exp")
+                    };
+                    PetMoeProperties[level] = info;
+                    PetMoeList.Add(info);
+                }
+                PetMoeList.Sort((a, b) => a.Level.CompareTo(b.Level));
+            }
+
+            if (TryTable(loader, "Request/petlevelinfo.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0 || PetLevelGps.ContainsKey(level)) continue;
+                    PetLevelGps[level] = new PetLevelGp { Level = level, Gp = Int(row, "GP") };
+                }
+            }
+
+            if (!TryTable(loader, "Request/petexpitemprice.xml", out XmlResultTable prices)) return;
+            foreach (var row in prices.Rows)
+            {
+                int count = Int(row, "Count");
+                if (count <= 0) continue;
+                PetExpPrices.Add(new PetExpItemPrice
+                {
+                    Count = count,
+                    Money = Int(row, "Money"),
+                    ItemCount = Mathf.Max(1, Int(row, "ItemCount"))
+                });
+            }
+            PetExpPrices.Sort((a, b) => a.Count.CompareTo(b.Count));
+        }
+
+        void LoadRuneAdvance(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/runeadvancetemplatelist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "AdvancedTempId");
+                if (id <= 0 || RuneAdvances.ContainsKey(id)) continue;
+                var info = new RuneAdvanceTemplate
+                {
+                    AdvancedTempId = id,
+                    RuneName = Str(row, "RuneName"),
+                    MainMaterials = Int(row, "MainMaterials"),
+                    Quality = Int(row, "Quality"),
+                    MaxLevelTempRunId = Int(row, "MaxLevelTempRunId"),
+                    AuxiliaryMaterials = ParsePipeInts(Str(row, "AuxiliaryMaterials")),
+                    AdvanceDesc = Str(row, "AdvanceDesc")
+                };
+                RuneAdvances[id] = info;
+                RuneAdvanceList.Add(info);
+            }
+            RuneAdvanceList.Sort((a, b) => a.AdvancedTempId.CompareTo(b.AdvancedTempId));
+        }
+
+        void LoadChargeRewards(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/loadchargeactivetemplate.xml", out XmlResultTable actives))
+            {
+                foreach (var row in actives.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || ChargeActives.ContainsKey(id)) continue;
+                    var info = new ChargeActiveTemplate
+                    {
+                        Id = id,
+                        Condition = Int(row, "Condition"),
+                        Description = Str(row, "Description"),
+                        RegetType = Int(row, "RegetType"),
+                        TypeId = Int(row, "TypeID")
+                    };
+                    ChargeActives[id] = info;
+                    ChargeActiveList.Add(info);
+                }
+                ChargeActiveList.Sort((a, b) => a.Condition.CompareTo(b.Condition));
+            }
+
+            if (TryTable(loader, "Request/chargespendrewardtemplateinfolist.xml", out XmlResultTable rewards))
+            {
+                foreach (var row in rewards.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0) continue;
+                    ChargeSpendRewards.Add(new ChargeSpendReward
+                    {
+                        Id = id,
+                        RewardId = Int(row, "RewardID"),
+                        RewardItemId = Int(row, "RewardItemID"),
+                        RewardItemCount = Mathf.Max(1, Int(row, "RewardItemCount")),
+                        IsBind = Bool(row, "IsBind"),
+                        RewardItemValid = Int(row, "RewardItemValid")
+                    });
+                }
+            }
+
+            if (!TryTable(loader, "Request/txplayerawardtemplatelist.xml", out XmlResultTable tx)) return;
+            foreach (var row in tx.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || TxPlayerAwards.ContainsKey(id)) continue;
+                var ids = new List<int>();
+                var counts = new List<int>();
+                string reward = Str(row, "Reward");
+                if (!string.IsNullOrEmpty(reward))
+                {
+                    string[] parts = reward.Split('|');
+                    for (int i = 0; i < parts.Length; i++)
+                    {
+                        string[] pair = parts[i].Split(',');
+                        if (pair.Length < 1) continue;
+                        int.TryParse(pair[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out int templateId);
+                        int count = 1;
+                        if (pair.Length > 1) int.TryParse(pair[1], NumberStyles.Integer, CultureInfo.InvariantCulture, out count);
+                        if (templateId <= 0) continue;
+                        ids.Add(templateId);
+                        counts.Add(Mathf.Max(1, count));
+                    }
+                }
+                var info = new TxPlayerAward
+                {
+                    Id = id,
+                    AwardIndex = Int(row, "AwardIndex"),
+                    Type = Int(row, "Type"),
+                    PlayerLevel = Int(row, "PlayerLevel"),
+                    RewardItemIds = ids.ToArray(),
+                    RewardCounts = counts.ToArray()
+                };
+                TxPlayerAwards[id] = info;
+                TxPlayerAwardList.Add(info);
+            }
+            TxPlayerAwardList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadThreeClean(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/threecleanpointaward.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || ThreeCleanAwards.ContainsKey(id)) continue;
+                var info = new ThreeCleanAward
+                {
+                    Id = id,
+                    ItemId = Int(row, "ItemID"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    Point = Int(row, "Point"),
+                    Type = Int(row, "Type"),
+                    IsBind = Bool(row, "IsBind")
+                };
+                ThreeCleanAwards[id] = info;
+                ThreeCleanAwardList.Add(info);
+            }
+            ThreeCleanAwardList.Sort((a, b) => a.Point.CompareTo(b.Point));
+        }
+
+        void LoadDiceGame(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/dicegameawarditem.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int rank = Int(row, "rank");
+                int templateId = Int(row, "template");
+                if (rank <= 0 || templateId <= 0) continue;
+                DiceGameAwards.Add(new DiceGameAward
+                {
+                    Rank = rank,
+                    TemplateId = templateId,
+                    Count = Mathf.Max(1, Int(row, "count"))
+                });
+                if (!DiceGameRanks.Contains(rank)) DiceGameRanks.Add(rank);
+            }
+            DiceGameRanks.Sort();
+        }
+
+        void LoadHomeFish(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/homefishinfo.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || HomeFishes.ContainsKey(id)) continue;
+                    var info = new HomeFishInfo
+                    {
+                        Id = id,
+                        Name = Str(row, "Name"),
+                        Score = Int(row, "Score"),
+                        Pic = Int(row, "Pic")
+                    };
+                    HomeFishes[id] = info;
+                    HomeFishList.Add(info);
+                }
+                HomeFishList.Sort((a, b) => a.Id.CompareTo(b.Id));
+            }
+
+            if (!TryTable(loader, "Request/monthcardgoodinfo.xml", out XmlResultTable cards)) return;
+            foreach (var row in cards.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || MonthCardGoods.ContainsKey(id)) continue;
+                var info = new MonthCardGood
+                {
+                    Id = id,
+                    GoodId = Int(row, "GoodID"),
+                    Money = Int(row, "Money"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    Day = Int(row, "Day")
+                };
+                MonthCardGoods[id] = info;
+                MonthCardGoodList.Add(info);
+            }
+            MonthCardGoodList.Sort((a, b) => a.Id.CompareTo(b.Id));
         }
 
         void LoadServerConfig(ResLoader loader)

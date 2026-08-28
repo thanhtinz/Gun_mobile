@@ -289,6 +289,24 @@ namespace GunMobile.Client
                 case "helpgame":
                     ExtraModulesScreens.HelpGameScreen(_safe, this);
                     return;
+                case "petform":
+                    ExtraModulesScreens.PetFormScreen(_safe, this);
+                    return;
+                case "runeadvance":
+                    ExtraModulesScreens.RuneAdvanceScreen(_safe, this);
+                    return;
+                case "charge":
+                    ExtraModulesScreens.ChargeRewardScreen(_safe, this);
+                    return;
+                case "threeclean":
+                    ExtraModulesScreens.ThreeCleanScreen(_safe, this);
+                    return;
+                case "dicegame":
+                    ExtraModulesScreens.DiceGameScreen(_safe, this);
+                    return;
+                case "homefish":
+                    ExtraModulesScreens.HomeFishScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -1003,6 +1021,42 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "helpgame")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.PetForm:
+                        PhoneNet.LastPetFormJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "petform")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.RuneAdvance:
+                        PhoneNet.LastRuneAdvanceJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "runeadvance" || _currentModuleId == "rune"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ChargeReward:
+                        PhoneNet.LastChargeRewardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "charge")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ThreeCleanClaim:
+                        PhoneNet.LastThreeCleanJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "threeclean")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.DiceGame:
+                        PhoneNet.LastDiceGameJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "dicegame")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.HomeFish:
+                        PhoneNet.LastHomeFishJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "homefish")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1349,6 +1403,23 @@ namespace GunMobile.Client
             ParseIntListFromServer(json, "goodsCollected", Profile.GoodsCollected);
             Profile.EnsureHelpGame();
             ParseIntListFromServer(json, "helpGameDone", Profile.HelpGameDone);
+            Profile.PetFormTemplateId = JsonInt(json, "petFormTemplateId", Profile.PetFormTemplateId);
+            Profile.PetMoeLevel = JsonInt(json, "petMoeLevel", Profile.PetMoeLevel);
+            Profile.PetMoeExp = JsonInt(json, "petMoeExp", Profile.PetMoeExp);
+            Profile.RuneAdvanceQuality = JsonInt(json, "runeAdvanceQuality", Profile.RuneAdvanceQuality);
+            Profile.ChargePoints = JsonInt(json, "chargePoints", Profile.ChargePoints);
+            Profile.EnsureChargeReward();
+            ParseIntListFromServer(json, "chargeClaimed", Profile.ChargeClaimed);
+            ParseIntListFromServer(json, "txAwardClaimed", Profile.TxAwardClaimed);
+            Profile.ThreeCleanPoints = JsonInt(json, "threeCleanPoints", Profile.ThreeCleanPoints);
+            Profile.EnsureThreeClean();
+            ParseIntListFromServer(json, "threeCleanClaimed", Profile.ThreeCleanClaimed);
+            Profile.DiceRolls = JsonInt(json, "diceRolls", Profile.DiceRolls);
+            Profile.DiceScore = JsonInt(json, "diceScore", Profile.DiceScore);
+            Profile.FishCasts = JsonInt(json, "fishCasts", Profile.FishCasts);
+            Profile.FishScore = JsonInt(json, "fishScore", Profile.FishScore);
+            Profile.MonthCardId = JsonInt(json, "monthCardId", Profile.MonthCardId);
+            Profile.MonthCardDaysLeft = JsonInt(json, "monthCardDaysLeft", Profile.MonthCardDaysLeft);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

@@ -309,6 +309,24 @@ namespace GunMobile.Net
         public int HelpGameDay = -1;
         public List<int> HelpGameDone = new List<int>();
 
+        public int PetFormTemplateId;
+        public int PetMoeLevel = 1;
+        public int PetMoeExp;
+        public int RuneAdvanceQuality;
+        public int ChargePoints;
+        public List<int> ChargeClaimed = new List<int>();
+        public List<int> TxAwardClaimed = new List<int>();
+        public int ThreeCleanPoints;
+        public List<int> ThreeCleanClaimed = new List<int>();
+        public int DiceDay = -1;
+        public int DiceRolls;
+        public int DiceScore;
+        public int FishDay = -1;
+        public int FishCasts;
+        public int FishScore;
+        public int MonthCardId;
+        public int MonthCardDay = -1;
+        public int MonthCardDaysLeft;
         public static int NowMinutes()
         {
             return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMinutes;
@@ -455,6 +473,22 @@ namespace GunMobile.Net
             EnsureHelpGame();
             int day = DateTime.Now.DayOfYear;
             if (HelpGameDay != day) { HelpGameDay = day; HelpGameDone.Clear(); }
+        }
+        public void EnsureChargeReward()
+        {
+            if (ChargeClaimed == null) ChargeClaimed = new List<int>();
+            if (TxAwardClaimed == null) TxAwardClaimed = new List<int>();
+        }
+        public void EnsureThreeClean() { if (ThreeCleanClaimed == null) ThreeCleanClaimed = new List<int>(); }
+        public void TouchDiceDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (DiceDay != day) { DiceDay = day; DiceRolls = 0; }
+        }
+        public void TouchFishDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (FishDay != day) { FishDay = day; FishCasts = 0; }
         }
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -874,6 +908,7 @@ namespace GunMobile.Net
             db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luck);
             EnsureSetsBuild(db);
             db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luck, ref hp, ref baseGuard, ref magicDef);
+            db.ApplyPetMoeBonus(PetMoeLevel, PetFormTemplateId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseGuard);
             EnsureEngraveRefine();
             for (int i = 0; i < EngraveRefineGrades.Count; i++)
             {
@@ -1116,6 +1151,29 @@ namespace GunMobile.Net
             sb.Append("\"helpGameDone\":[");
             for (int i = 0; i < HelpGameDone.Count; i++) { if (i > 0) sb.Append(","); sb.Append(HelpGameDone[i]); }
             sb.Append("],");
+            J(sb, "petFormTemplateId", PetFormTemplateId); sb.Append(",");
+            J(sb, "petMoeLevel", PetMoeLevel); sb.Append(",");
+            J(sb, "petMoeExp", PetMoeExp); sb.Append(",");
+            J(sb, "runeAdvanceQuality", RuneAdvanceQuality); sb.Append(",");
+            J(sb, "chargePoints", ChargePoints); sb.Append(",");
+            EnsureChargeReward();
+            sb.Append("\"chargeClaimed\":[");
+            for (int i = 0; i < ChargeClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ChargeClaimed[i]); }
+            sb.Append("],");
+            sb.Append("\"txAwardClaimed\":[");
+            for (int i = 0; i < TxAwardClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(TxAwardClaimed[i]); }
+            sb.Append("],");
+            J(sb, "threeCleanPoints", ThreeCleanPoints); sb.Append(",");
+            EnsureThreeClean();
+            sb.Append("\"threeCleanClaimed\":[");
+            for (int i = 0; i < ThreeCleanClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ThreeCleanClaimed[i]); }
+            sb.Append("],");
+            J(sb, "diceRolls", DiceRolls); sb.Append(",");
+            J(sb, "diceScore", DiceScore); sb.Append(",");
+            J(sb, "fishCasts", FishCasts); sb.Append(",");
+            J(sb, "fishScore", FishScore); sb.Append(",");
+            J(sb, "monthCardId", MonthCardId); sb.Append(",");
+            J(sb, "monthCardDaysLeft", MonthCardDaysLeft); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2827,6 +2885,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.HelpGameReward:
                     HandleHelpGameReward(player, ns, json);
+                    break;
+
+                case PhoneMsg.PetForm:
+                    HandlePetForm(player, ns, json);
+                    break;
+
+                case PhoneMsg.RuneAdvance:
+                    HandleRuneAdvance(player, ns, json);
+                    break;
+
+                case PhoneMsg.ChargeReward:
+                    HandleChargeReward(player, ns, json);
+                    break;
+
+                case PhoneMsg.ThreeCleanClaim:
+                    HandleThreeCleanClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.DiceGame:
+                    HandleDiceGame(player, ns, json);
+                    break;
+
+                case PhoneMsg.HomeFish:
+                    HandleHomeFish(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -8759,6 +8841,311 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // loadpetformdata (biến hình) + loadpetmoeproperty (chỉ số theo cấp manh thú)
+        // + petlevelinfo (GP cần) + petexpitemprice (giá thuốc exp).
+        void HandlePetForm(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || (_db.PetFormList.Count == 0 && _db.PetMoeList.Count == 0))
+            { Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            if (player.PetMoeLevel <= 0) player.PetMoeLevel = 1;
+            string action = JS(json, "action", "feed");
+
+            if (string.Equals(action, "form", StringComparison.OrdinalIgnoreCase))
+            {
+                int templateId = JI(json, "templateId", 0);
+                PetFormData form = _db.GetPetForm(templateId);
+                if (form == null) { Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"form\"}"); return; }
+                player.PetFormTemplateId = templateId;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.PetForm, "{\"ok\":true,\"action\":\"form\",\"templateId\":" + templateId +
+                    ",\"name\":\"" + form.Name + "\"}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "up", StringComparison.OrdinalIgnoreCase))
+            {
+                PetMoeProperty next = _db.GetPetMoe(player.PetMoeLevel + 1);
+                if (next == null) { Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                PetMoeProperty cur = _db.GetPetMoe(player.PetMoeLevel);
+                int needExp = cur != null ? cur.Exp : next.Exp;
+                if (player.PetMoeExp < needExp)
+                {
+                    Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.PetMoeExp +
+                        ",\"need\":" + needExp + "}");
+                    return;
+                }
+                int needGp = _db.PetLevelGpNeed(next.Level);
+                if (needGp > 0 && player.Gp < needGp)
+                { Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"gp\",\"need\":" + needGp + "}"); return; }
+
+                player.PetMoeExp -= needExp;
+                player.PetMoeLevel = next.Level;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.PetForm, "{\"ok\":true,\"action\":\"up\",\"level\":" + player.PetMoeLevel +
+                    ",\"atk\":" + next.Attack + ",\"hp\":" + next.Blood + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int count = Mathf.Clamp(JI(json, "count", 1), 1, 50);
+            int gold = _db.PetExpItemGold(count) * count;
+            if (player.Gold < gold)
+            { Send(ns, PhoneMsg.PetForm, "{\"ok\":false,\"err\":\"gold\",\"need\":" + gold + "}"); return; }
+            int gain = count * _db.ConfigInt("PetMoeExpPerItem", 20);
+            player.Gold -= gold;
+            player.PetMoeExp += gain;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.PetForm, "{\"ok\":true,\"action\":\"feed\",\"exp\":" + player.PetMoeExp +
+                ",\"gain\":" + gain + ",\"gold\":" + gold + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // runeadvancetemplatelist: nâng cấp rune bằng MainMaterials + một phụ liệu trong AuxiliaryMaterials.
+        void HandleRuneAdvance(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.RuneAdvanceList.Count == 0)
+            { Send(ns, PhoneMsg.RuneAdvance, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            int id = JI(json, "advancedTempId", 0);
+            RuneAdvanceTemplate row = _db.GetRuneAdvance(id);
+            if (row == null) { Send(ns, PhoneMsg.RuneAdvance, "{\"ok\":false,\"err\":\"rune\"}"); return; }
+
+            bool paid = row.MainMaterials > 0 && player.Consume(row.MainMaterials, 1);
+            if (!paid)
+            {
+                int gold = _db.ConfigInt("RuneAdvanceGold", 5000) * Mathf.Max(1, row.Quality);
+                if (player.Gold < gold)
+                {
+                    Send(ns, PhoneMsg.RuneAdvance, "{\"ok\":false,\"err\":\"material\",\"itemId\":" +
+                        row.MainMaterials + ",\"gold\":" + gold + "}");
+                    return;
+                }
+                player.Gold -= gold;
+            }
+
+            player.RuneTemplateId = row.AdvancedTempId;
+            player.RuneAdvanceQuality = row.Quality;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.RuneAdvance, "{\"ok\":true,\"advancedTempId\":" + row.AdvancedTempId +
+                ",\"quality\":" + row.Quality + ",\"name\":\"" + row.RuneName + "\"}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // loadchargeactivetemplate (mốc nạp) + chargespendrewardtemplateinfolist (quà theo RewardID)
+        // + txplayerawardtemplatelist (quà theo cấp). Không có cổng thanh toán nên dùng vàng làm "nạp".
+        void HandleChargeReward(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || (_db.ChargeActiveList.Count == 0 && _db.TxPlayerAwardList.Count == 0))
+            { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureChargeReward();
+            string action = JS(json, "action", "claim");
+
+            if (string.Equals(action, "charge", StringComparison.OrdinalIgnoreCase))
+            {
+                int amount = Mathf.Clamp(JI(json, "amount", 100), 1, 100000);
+                int goldCost = amount * _db.ConfigInt("ChargeGoldPerPoint", 10);
+                if (player.Gold < goldCost)
+                { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                player.Gold -= goldCost;
+                player.ChargePoints += amount;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ChargeReward, "{\"ok\":true,\"action\":\"charge\",\"points\":" + player.ChargePoints +
+                    ",\"amount\":" + amount + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "level", StringComparison.OrdinalIgnoreCase))
+            {
+                int awardId = JI(json, "awardId", 0);
+                TxPlayerAward tx = _db.GetTxPlayerAward(awardId);
+                if (tx == null) { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"award\"}"); return; }
+                if (player.Level < tx.PlayerLevel)
+                { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"level\",\"need\":" + tx.PlayerLevel + "}"); return; }
+                if (player.TxAwardClaimed.Contains(awardId))
+                { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+                int granted = 0, firstTemplate = 0;
+                for (int i = 0; i < tx.RewardItemIds.Length; i++)
+                {
+                    int count = i < tx.RewardCounts.Length ? tx.RewardCounts[i] : 1;
+                    player.AddItem(tx.RewardItemIds[i], count);
+                    if (firstTemplate == 0) firstTemplate = tx.RewardItemIds[i];
+                    granted += count;
+                }
+                player.TxAwardClaimed.Add(awardId);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.ChargeReward, "{\"ok\":true,\"action\":\"level\",\"awardId\":" + awardId +
+                    ",\"items\":" + tx.RewardItemIds.Length + ",\"count\":" + granted +
+                    ",\"templateId\":" + firstTemplate + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int chargeId = JI(json, "chargeId", 0);
+            ChargeActiveTemplate active = _db.GetChargeActive(chargeId);
+            if (active == null) { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"charge\"}"); return; }
+            if (player.ChargePoints < active.Condition)
+            {
+                Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"point\",\"have\":" + player.ChargePoints +
+                    ",\"need\":" + active.Condition + "}");
+                return;
+            }
+            if (player.ChargeClaimed.Contains(chargeId))
+            { Send(ns, PhoneMsg.ChargeReward, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            List<ChargeSpendReward> rewards = _db.GetChargeSpendRewards(chargeId);
+            if (rewards.Count == 0) rewards = _db.GetChargeSpendRewards(active.TypeId);
+            int total = 0, first = 0;
+            for (int i = 0; i < rewards.Count; i++)
+            {
+                if (rewards[i].RewardItemId <= 0) continue;
+                player.AddItem(rewards[i].RewardItemId, rewards[i].RewardItemCount);
+                if (first == 0) first = rewards[i].RewardItemId;
+                total += rewards[i].RewardItemCount;
+            }
+            player.ChargeClaimed.Add(chargeId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ChargeReward, "{\"ok\":true,\"action\":\"claim\",\"chargeId\":" + chargeId +
+                ",\"items\":" + rewards.Count + ",\"count\":" + total + ",\"templateId\":" + first + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // threecleanpointaward: đổi điểm tam thanh (dùng chung điểm nạp) lấy quà theo mốc Point.
+        void HandleThreeCleanClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ThreeCleanAwardList.Count == 0)
+            { Send(ns, PhoneMsg.ThreeCleanClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureThreeClean();
+            int id = JI(json, "id", 0);
+            ThreeCleanAward row = _db.GetThreeCleanAward(id);
+            if (row == null) { Send(ns, PhoneMsg.ThreeCleanClaim, "{\"ok\":false,\"err\":\"award\"}"); return; }
+            if (player.ThreeCleanClaimed.Contains(id))
+            { Send(ns, PhoneMsg.ThreeCleanClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+            if (player.ThreeCleanPoints < row.Point)
+            {
+                Send(ns, PhoneMsg.ThreeCleanClaim, "{\"ok\":false,\"err\":\"point\",\"have\":" +
+                    player.ThreeCleanPoints + ",\"need\":" + row.Point + "}");
+                return;
+            }
+
+            player.ThreeCleanClaimed.Add(id);
+            player.AddItem(row.ItemId, row.Count);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ThreeCleanClaim, "{\"ok\":true,\"id\":" + id + ",\"itemId\":" + row.ItemId +
+                ",\"count\":" + row.Count + ",\"points\":" + player.ThreeCleanPoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // dicegameawarditem: đổ xúc xắc, rank là bậc thưởng theo tổng điểm.
+        void HandleDiceGame(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.DiceGameAwards.Count == 0)
+            { Send(ns, PhoneMsg.DiceGame, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchDiceDay();
+            int max = _db.ConfigInt("DiceGameDayMax", 5);
+            if (player.DiceRolls >= max)
+            { Send(ns, PhoneMsg.DiceGame, "{\"ok\":false,\"err\":\"limit\",\"max\":" + max + "}"); return; }
+
+            int d1, d2;
+            lock (_lock) { d1 = _rng.Next(1, 7); d2 = _rng.Next(1, 7); }
+            int sum = d1 + d2;
+            player.DiceRolls++;
+            player.DiceScore += sum;
+
+            int rank = _db.DiceGameRanks.Count > 0 ? _db.DiceGameRanks[0] : 1;
+            for (int i = 0; i < _db.DiceGameRanks.Count; i++)
+            {
+                if (sum >= _db.DiceGameRanks[i] * 2) rank = _db.DiceGameRanks[i];
+            }
+            List<DiceGameAward> awards = _db.GetDiceGameAwards(rank);
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < awards.Count; i++)
+            {
+                player.AddItem(awards[i].TemplateId, awards[i].Count);
+                if (firstTemplate == 0) firstTemplate = awards[i].TemplateId;
+                granted += awards[i].Count;
+            }
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DiceGame, "{\"ok\":true,\"dice\":[" + d1 + "," + d2 + "],\"sum\":" + sum +
+                ",\"rank\":" + rank + ",\"items\":" + awards.Count + ",\"count\":" + granted +
+                ",\"templateId\":" + firstTemplate + ",\"rolls\":" + player.DiceRolls + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // homefishinfo: câu cá ở nhà, mỗi lần bốc một con theo bảng, Score cộng vào điểm câu.
+        // monthcardgoodinfo: thẻ tháng, mua rồi mỗi ngày nhận GoodID.
+        void HandleHomeFish(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || (_db.HomeFishList.Count == 0 && _db.MonthCardGoodList.Count == 0))
+            { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "fish");
+
+            if (string.Equals(action, "monthcard", StringComparison.OrdinalIgnoreCase))
+            {
+                int id = JI(json, "id", 0);
+                MonthCardGood card = _db.GetMonthCard(id);
+                if (card == null) { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"card\"}"); return; }
+                if (player.Gold < card.Money)
+                { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"gold\",\"need\":" + card.Money + "}"); return; }
+                player.Gold -= card.Money;
+                player.MonthCardId = id;
+                player.MonthCardDaysLeft = Mathf.Max(1, card.Day);
+                player.AddItem(card.GoodId, card.Count);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.HomeFish, "{\"ok\":true,\"action\":\"monthcard\",\"id\":" + id +
+                    ",\"days\":" + player.MonthCardDaysLeft + ",\"goodId\":" + card.GoodId + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "monthclaim", StringComparison.OrdinalIgnoreCase))
+            {
+                MonthCardGood card = _db.GetMonthCard(player.MonthCardId);
+                if (card == null || player.MonthCardDaysLeft <= 0)
+                { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"card\"}"); return; }
+                int today = DateTime.Now.DayOfYear;
+                if (player.MonthCardDay == today)
+                { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+                player.MonthCardDay = today;
+                player.MonthCardDaysLeft--;
+                player.AddItem(card.GoodId, card.Count);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.HomeFish, "{\"ok\":true,\"action\":\"monthclaim\",\"goodId\":" + card.GoodId +
+                    ",\"count\":" + card.Count + ",\"days\":" + player.MonthCardDaysLeft + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            player.TouchFishDay();
+            int fishMax = _db.ConfigInt("HomeFishDayMax", 20);
+            if (player.FishCasts >= fishMax)
+            { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"limit\",\"max\":" + fishMax + "}"); return; }
+
+            HomeFishInfo fish;
+            lock (_lock) { fish = _db.RollHomeFish(_rng); }
+            if (fish == null) { Send(ns, PhoneMsg.HomeFish, "{\"ok\":false,\"err\":\"fish\"}"); return; }
+
+            player.FishCasts++;
+            player.FishScore += fish.Score;
+            int gold = fish.Score * _db.ConfigInt("HomeFishGoldPerScore", 10);
+            player.Gold += gold;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.HomeFish, "{\"ok\":true,\"action\":\"fish\",\"id\":" + fish.Id + ",\"name\":\"" +
+                fish.Name + "\",\"score\":" + fish.Score + ",\"gold\":" + gold + ",\"total\":" + player.FishScore +
+                ",\"casts\":" + player.FishCasts + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -11894,6 +12281,15 @@ namespace GunMobile.Net
             public List<int> GoodsCollected = new List<int>();
             public int HelpGameDay = -1;
             public List<int> HelpGameDone = new List<int>();
+            public int PetFormTemplateId, PetMoeLevel = 1, PetMoeExp, RuneAdvanceQuality;
+            public int ChargePoints;
+            public List<int> ChargeClaimed = new List<int>();
+            public List<int> TxAwardClaimed = new List<int>();
+            public int ThreeCleanPoints;
+            public List<int> ThreeCleanClaimed = new List<int>();
+            public int DiceDay = -1, DiceRolls, DiceScore;
+            public int FishDay = -1, FishCasts, FishScore;
+            public int MonthCardId, MonthCardDay = -1, MonthCardDaysLeft;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -12105,6 +12501,17 @@ namespace GunMobile.Net
                 GoodsCollected = p.GoodsCollected ?? new List<int>(),
                 HelpGameDay = p.HelpGameDay,
                 HelpGameDone = p.HelpGameDone ?? new List<int>(),
+                PetFormTemplateId = p.PetFormTemplateId,
+                PetMoeLevel = p.PetMoeLevel > 0 ? p.PetMoeLevel : 1, PetMoeExp = p.PetMoeExp,
+                RuneAdvanceQuality = p.RuneAdvanceQuality,
+                ChargePoints = p.ChargePoints,
+                ChargeClaimed = p.ChargeClaimed ?? new List<int>(),
+                TxAwardClaimed = p.TxAwardClaimed ?? new List<int>(),
+                ThreeCleanPoints = p.ThreeCleanPoints,
+                ThreeCleanClaimed = p.ThreeCleanClaimed ?? new List<int>(),
+                DiceDay = p.DiceDay, DiceRolls = p.DiceRolls, DiceScore = p.DiceScore,
+                FishDay = p.FishDay, FishCasts = p.FishCasts, FishScore = p.FishScore,
+                MonthCardId = p.MonthCardId, MonthCardDay = p.MonthCardDay, MonthCardDaysLeft = p.MonthCardDaysLeft,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -12320,6 +12727,17 @@ namespace GunMobile.Net
                 GoodsCollected = s.GoodsCollected ?? new List<int>(),
                 HelpGameDay = s.HelpGameDay,
                 HelpGameDone = s.HelpGameDone ?? new List<int>(),
+                PetFormTemplateId = s.PetFormTemplateId,
+                PetMoeLevel = s.PetMoeLevel > 0 ? s.PetMoeLevel : 1, PetMoeExp = s.PetMoeExp,
+                RuneAdvanceQuality = s.RuneAdvanceQuality,
+                ChargePoints = s.ChargePoints,
+                ChargeClaimed = s.ChargeClaimed ?? new List<int>(),
+                TxAwardClaimed = s.TxAwardClaimed ?? new List<int>(),
+                ThreeCleanPoints = s.ThreeCleanPoints,
+                ThreeCleanClaimed = s.ThreeCleanClaimed ?? new List<int>(),
+                DiceDay = s.DiceDay, DiceRolls = s.DiceRolls, DiceScore = s.DiceScore,
+                FishDay = s.FishDay, FishCasts = s.FishCasts, FishScore = s.FishScore,
+                MonthCardId = s.MonthCardId, MonthCardDay = s.MonthCardDay, MonthCardDaysLeft = s.MonthCardDaysLeft,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

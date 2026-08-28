@@ -300,6 +300,12 @@ namespace GunMobile.Net
         public const ushort CommunalActive = 253;
         public const ushort GoodsCollect = 254;
         public const ushort HelpGameReward = 256;
+        public const ushort PetForm = 257;
+        public const ushort RuneAdvance = 258;
+        public const ushort ChargeReward = 259;
+        public const ushort ThreeCleanClaim = 260;
+        public const ushort DiceGame = 261;
+        public const ushort HomeFish = 262;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

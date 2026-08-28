@@ -84,6 +84,12 @@ namespace GunMobile.Client
         public static string LastCommunalJson;
         public static string LastGoodsCollectJson;
         public static string LastHelpGameJson;
+        public static string LastPetFormJson;
+        public static string LastRuneAdvanceJson;
+        public static string LastChargeRewardJson;
+        public static string LastThreeCleanJson;
+        public static string LastDiceGameJson;
+        public static string LastHomeFishJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -545,6 +551,42 @@ namespace GunMobile.Client
         public static void HelpGame(int missionId, int star = 1)
         {
             Road?.Send(PhoneMsg.HelpGameReward, "{\"missionId\":" + missionId + ",\"star\":" + star + "}");
+        }
+
+        public static void PetForm(string action = "feed", int templateId = 0, int count = 1)
+        {
+            string act = (action ?? "feed").Replace("\"", "");
+            Road?.Send(PhoneMsg.PetForm,
+                "{\"action\":\"" + act + "\",\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
+        public static void RuneAdvance(int advancedTempId)
+        {
+            Road?.Send(PhoneMsg.RuneAdvance, "{\"advancedTempId\":" + advancedTempId + "}");
+        }
+
+        public static void ChargeReward(string action = "claim", int chargeId = 0, int awardId = 0, int amount = 100)
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.ChargeReward,
+                "{\"action\":\"" + act + "\",\"chargeId\":" + chargeId + ",\"awardId\":" + awardId +
+                ",\"amount\":" + amount + "}");
+        }
+
+        public static void ThreeCleanClaim(int id)
+        {
+            Road?.Send(PhoneMsg.ThreeCleanClaim, "{\"id\":" + id + "}");
+        }
+
+        public static void DiceGame()
+        {
+            Road?.Send(PhoneMsg.DiceGame, "{}");
+        }
+
+        public static void HomeFish(string action = "fish", int id = 0)
+        {
+            string act = (action ?? "fish").Replace("\"", "");
+            Road?.Send(PhoneMsg.HomeFish, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
         }
 
         public static void DrawLottery(int count)

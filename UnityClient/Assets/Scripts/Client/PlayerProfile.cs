@@ -231,6 +231,21 @@ namespace GunMobile.Client
         public List<int> CommunalClaimed = new List<int>();
         public List<int> GoodsCollected = new List<int>();
         public List<int> HelpGameDone = new List<int>();
+        public int PetFormTemplateId;
+        public int PetMoeLevel = 1;
+        public int PetMoeExp;
+        public int RuneAdvanceQuality;
+        public int ChargePoints;
+        public List<int> ChargeClaimed = new List<int>();
+        public List<int> TxAwardClaimed = new List<int>();
+        public int ThreeCleanPoints;
+        public List<int> ThreeCleanClaimed = new List<int>();
+        public int DiceRolls;
+        public int DiceScore;
+        public int FishCasts;
+        public int FishScore;
+        public int MonthCardId;
+        public int MonthCardDaysLeft;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -305,6 +320,12 @@ namespace GunMobile.Client
         public void EnsureCommunal() { if (CommunalClaimed == null) CommunalClaimed = new List<int>(); }
         public void EnsureGoodsCollect() { if (GoodsCollected == null) GoodsCollected = new List<int>(); }
         public void EnsureHelpGame() { if (HelpGameDone == null) HelpGameDone = new List<int>(); }
+        public void EnsureChargeReward()
+        {
+            if (ChargeClaimed == null) ChargeClaimed = new List<int>();
+            if (TxAwardClaimed == null) TxAwardClaimed = new List<int>();
+        }
+        public void EnsureThreeClean() { if (ThreeCleanClaimed == null) ThreeCleanClaimed = new List<int>(); }
         public void EnsureMiniGameShop()
         {
             if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
@@ -771,6 +792,7 @@ namespace GunMobile.Client
                 db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luk);
                 EnsureSetsBuild();
                 db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luk, ref hp, ref sGuard, ref magicDef);
+                db.ApplyPetMoeBonus(PetMoeLevel, PetFormTemplateId, ref atk, ref def, ref agi, ref luk, ref hp, ref sGuard);
                 EnsureEngraveRefine();
                 for (int i = 0; i < EngraveRefineGrades.Count; i++)
                 {
@@ -1068,6 +1090,12 @@ namespace GunMobile.Client
             new ModuleDef("communal", "全民活动", "Request/communalactive.xml"),
             new ModuleDef("goodscollect", "物品收集", "Request/goodscollect.xml"),
             new ModuleDef("helpgame", "助战奖励", "Request/helpgamereward.xml"),
+            new ModuleDef("petform", "宠物幻化", "Request/loadpetformdata.xml"),
+            new ModuleDef("runeadvance", "符文进阶", "Request/runeadvancetemplatelist.xml"),
+            new ModuleDef("charge", "充值奖励", "Request/loadchargeactivetemplate.xml"),
+            new ModuleDef("threeclean", "三清积分", "Request/threecleanpointaward.xml"),
+            new ModuleDef("dicegame", "骰子游戏", "Request/dicegameawarditem.xml"),
+            new ModuleDef("homefish", "家园钓鱼", "Request/homefishinfo.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
