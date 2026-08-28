@@ -253,6 +253,7 @@ namespace GunMobile.Client
         public int CardBuffStep;
         public int SearchCount;
         public int MaxLevelGrade;
+        public int StrengthenExp;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -376,7 +377,6 @@ namespace GunMobile.Client
             if (CompletedAchievements == null) CompletedAchievements = new List<int>();
             if (ClaimedAchievements == null) ClaimedAchievements = new List<int>();
         }
-        public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
         public void EnsureJampsLists() { if (JampsDebrisOwned == null) JampsDebrisOwned = new List<int>(); if (JampsPagesCollected == null) JampsPagesCollected = new List<int>(); if (JampsPagesActivated == null) JampsPagesActivated = new List<int>(); }
@@ -1116,6 +1116,8 @@ namespace GunMobile.Client
             new ModuleDef("cardbuff", "卡牌增益", "Request/cardbufflist.xml"),
             new ModuleDef("searchgoods", "寻宝", "Request/searchgoodstemp.xml"),
             new ModuleDef("maxlevel", "等级突破", "Request/maxleveltemplate.xml"),
+            new ModuleDef("strengthenexp", "强化经验", "Request/loadstrengthexp.xml"),
+            new ModuleDef("gameinfo", "游戏资料", "Request/ranktemplateall.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

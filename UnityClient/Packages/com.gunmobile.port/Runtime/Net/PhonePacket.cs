@@ -312,6 +312,7 @@ namespace GunMobile.Net
         public const ushort CardBuffActivate = 266;
         public const ushort SearchGoods = 267;
         public const ushort MaxLevelUp = 268;
+        public const ushort StrengthenExp = 269;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

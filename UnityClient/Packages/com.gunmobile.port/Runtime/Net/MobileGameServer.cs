@@ -336,6 +336,7 @@ namespace GunMobile.Net
         public int CardBuffStep;
         public int SearchCount;
         public int MaxLevelGrade;
+        public int StrengthenExp;
         public static int NowMinutes()
         {
             return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMinutes;
@@ -1213,6 +1214,7 @@ namespace GunMobile.Net
             J(sb, "cardBuffStep", CardBuffStep); sb.Append(",");
             J(sb, "searchCount", SearchCount); sb.Append(",");
             J(sb, "maxLevelGrade", MaxLevelGrade); sb.Append(",");
+            J(sb, "strengthenExp", StrengthenExp); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2972,6 +2974,10 @@ namespace GunMobile.Net
 
                 case PhoneMsg.MaxLevelUp:
                     HandleMaxLevelUp(player, ns, json);
+                    break;
+
+                case PhoneMsg.StrengthenExp:
+                    HandleStrengthenExp(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -9410,6 +9416,60 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // loadstrengthexp cho lộ trình cường hoá không hên xui: tích exp rồi lên thẳng một cấp,
+        // itemstrengthendata cho biết giá trị cộng thêm của template ở cấp đó.
+        void HandleStrengthenExp(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.StrengthExpList.Count == 0)
+            { Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "add");
+            if (string.Equals(action, "add", StringComparison.OrdinalIgnoreCase))
+            {
+                int goldCost = _db.ConfigInt("StrengthenExpGold", 800);
+                if (player.Gold < goldCost)
+                { Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                int gain = _db.ConfigInt("StrengthenExpGain", 10);
+                player.Gold -= goldCost;
+                player.StrengthenExp += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":true,\"action\":\"add\",\"exp\":" + player.StrengthenExp +
+                    ",\"gain\":" + gain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int templateId = JI(json, "templateId", 0);
+            BagSlot slot = null;
+            foreach (var s in player.Bag) { if (s.TemplateId == templateId) { slot = s; break; } }
+            if (slot == null) { Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":false,\"err\":\"item\"}"); return; }
+
+            int next = slot.Strengthen + 1;
+            int maxLevel = _db.StrengthMaxLevel();
+            if (maxLevel > 0 && next > maxLevel)
+            { Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":false,\"err\":\"max\",\"max\":" + maxLevel + "}"); return; }
+
+            int need = _db.StrengthExpNeed(next);
+            if (need <= 0) need = next * _db.ConfigInt("StrengthenExpPerLevel", 10);
+            if (player.StrengthenExp < need)
+            {
+                Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.StrengthenExp +
+                    ",\"need\":" + need + "}");
+                return;
+            }
+
+            player.StrengthenExp -= need;
+            slot.Strengthen = next;
+            int remapped = TryRemapStrengthenGoods(player, slot);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.StrengthenExp, "{\"ok\":true,\"action\":\"up\",\"templateId\":" + templateId +
+                ",\"level\":" + slot.Strengthen + ",\"used\":" + need +
+                ",\"data\":" + _db.ItemStrengthenDataValue(templateId, slot.Strengthen) +
+                (remapped > 0 ? ",\"remapped\":" + remapped : "") + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -12559,6 +12619,7 @@ namespace GunMobile.Net
             public int EventRewardDay = -1, EventRewardDraws;
             public List<int> CardBuffActivated = new List<int>();
             public int CardBuffStep, SearchCount, MaxLevelGrade;
+            public int StrengthenExp;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -12786,6 +12847,7 @@ namespace GunMobile.Net
                 EventRewardDay = p.EventRewardDay, EventRewardDraws = p.EventRewardDraws,
                 CardBuffActivated = p.CardBuffActivated ?? new List<int>(),
                 CardBuffStep = p.CardBuffStep, SearchCount = p.SearchCount, MaxLevelGrade = p.MaxLevelGrade,
+                StrengthenExp = p.StrengthenExp,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -13017,6 +13079,7 @@ namespace GunMobile.Net
                 EventRewardDay = s.EventRewardDay, EventRewardDraws = s.EventRewardDraws,
                 CardBuffActivated = s.CardBuffActivated ?? new List<int>(),
                 CardBuffStep = s.CardBuffStep, SearchCount = s.SearchCount, MaxLevelGrade = s.MaxLevelGrade,
+                StrengthenExp = s.StrengthenExp,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

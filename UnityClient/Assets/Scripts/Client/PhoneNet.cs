@@ -43,8 +43,6 @@ namespace GunMobile.Client
         public static string LastBoguAdventureJson;
         public static string LastJigsawJson;
         public static string LastBibleJson;
-        public static string LastQuizJson;
-        public static string LastOneYuanJson;
         public static string LastActivityQuestJson;
         public static string LastSwornJson;
         public static string LastVipStoreJson;
@@ -96,6 +94,7 @@ namespace GunMobile.Client
         public static string LastCardBuffJson;
         public static string LastSearchGoodsJson;
         public static string LastMaxLevelJson;
+        public static string LastStrengthenExpJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -627,6 +626,12 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.MaxLevelUp, "{}");
         }
 
+        public static void StrengthenExp(string action = "add", int templateId = 0)
+        {
+            string act = (action ?? "add").Replace("\"", "");
+            Road?.Send(PhoneMsg.StrengthenExp, "{\"action\":\"" + act + "\",\"templateId\":" + templateId + "}");
+        }
+
         public static void DrawLottery(int count)
         {
             Road?.Send(PhoneMsg.LotteryDraw, "{\"count\":" + count + "}");
@@ -869,16 +874,6 @@ namespace GunMobile.Client
         }
 
         public static void CalendarClaim(int dayIndex) { Road?.Send(PhoneMsg.CalendarClaim, "{\"dayIndex\":" + dayIndex + "}"); }
-
-        public static void QuizAnswer(int questionId, int option)
-        {
-            Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
-        }
-
-        public static void OneYuanBuy(int id, int goodsId)
-        {
-            Road?.Send(PhoneMsg.OneYuanBuy, "{\"id\":" + id + ",\"goodsId\":" + goodsId + "}");
-        }
 
         public static void AuditoriumAction(string action, int tierOrIndex = 0)
         {

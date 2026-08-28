@@ -2735,6 +2735,77 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastMaxLevelJson)) SysUi.Note(body, PhoneNet.LastMaxLevelJson);
         }
 
+        public static void StrengthenExpScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "强化经验 · loadstrengthexp");
+            SysUi.Note(body, "强化经验 " + app.Profile.StrengthenExp);
+            if (app.Database == null || app.Database.StrengthExpList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/loadstrengthexp.xml");
+                return;
+            }
+
+            SysUi.Row(body, "seAdd", "购买强化经验 (金币)", () => PhoneNet.StrengthenExp("add"));
+            int shown = 0;
+            foreach (BagItem slot in app.Profile.Bag)
+            {
+                int templateId = slot.TemplateId;
+                int next = slot.Strengthen + 1;
+                int need = app.Database.StrengthExpNeed(next);
+                int data = app.Database.ItemStrengthenDataValue(templateId, next);
+                SysUi.Row(body, "se" + templateId,
+                    SysUi.ItemName(app, templateId) + "  +" + slot.Strengthen + " → +" + next +
+                    "  需 " + need + " 经验" + (data > 0 ? "  加成 " + data : ""),
+                    () => PhoneNet.StrengthenExp("up", templateId));
+                if (++shown >= 16) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastStrengthenExpJson)) SysUi.Note(body, PhoneNet.LastStrengthenExpJson);
+        }
+
+        // Màn tra cứu dữ liệu PC: danh hiệu, hoạt động, map theo server, thông báo phiên bản.
+        public static void GameInfoScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "游戏资料 · rank / active / server");
+            if (app.Database == null)
+            {
+                SysUi.Note(body, "GameDatabase chưa tải");
+                return;
+            }
+
+            SysUi.Note(body, "--- 军衔 ranktemplateall (" + app.Database.RankTitles.Count + ") ---");
+            int shown = 0;
+            foreach (RankTitleInfo row in app.Database.RankTitles)
+            {
+                SysUi.Note(body, row.Index + ". " + row.Rank + "  攻+" + row.Attack + " 防+" + row.Defend);
+                if (++shown >= 10) break;
+            }
+
+            SysUi.Note(body, "--- 活动 ActiveList (" + app.Database.ActiveListEntries.Count + ") ---");
+            shown = 0;
+            foreach (ActiveListEntry row in app.Database.ActiveListOrder)
+            {
+                SysUi.Note(body, row.ActiveId + ". " + row.Title + "  " + row.Description);
+                if (++shown >= 8) break;
+            }
+
+            SysUi.Note(body, "--- 服务器开放地图 mapserverlist (" + app.Database.MapServers.Count + ") ---");
+            shown = 0;
+            foreach (MapServerEntry row in app.Database.MapServers)
+            {
+                SysUi.Note(body, "Server " + row.ServerId + "  " + row.OpenMaps.Length + " 张地图" +
+                    (row.IsSpecial != 0 ? "  (特殊)" : ""));
+                if (++shown >= 8) break;
+            }
+
+            SysUi.Note(body, "--- 版本公告 ts_versionnotice (" + app.Database.VersionNotices.Count + ") ---");
+            shown = 0;
+            foreach (VersionNoticeEntry row in app.Database.VersionNotices)
+            {
+                SysUi.Note(body, row.VersionId + ". " + row.VersionName);
+                if (++shown >= 6) break;
+            }
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

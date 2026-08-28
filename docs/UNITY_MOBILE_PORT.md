@@ -48,6 +48,42 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] Server bag sync (ProfileData→Bag), room create/join, turn advancement
 - [x] Auto-reconnect, damage clamping, server turn broadcast
 
+### PhoneMsg 233–269 — nốt các bảng PC còn lại
+
+Đợt port cuối gom hết bảng `Request/*.xml` còn dùng được thành module có server validate + màn hình client:
+
+| Msg | Hệ thống | Bảng PC |
+| --- | --- | --- |
+| 233–234 | Trang viên: gieo/thu hoạch/phụ giúp, nhiệm vụ | `templatemanorlist`, `ts_manortask` |
+| 235 | Thành tựu thẻ bài (cộng chỉ số vĩnh viễn) | `cardachievement` |
+| 236 | Thủ hộ hạch nhân: cấp + kỹ năng | `guardcoretemplate`, `guardcoreleveltemplate` |
+| 237 | Đèn lồng đố chữ | `lightriddlequest` |
+| 238–239 | Công bằng chiến: học kỹ năng, quân hàm, thưởng tuần | `fairbattleskillgettemplate` (+material), `fairbattlerewardtemp`, `fairbatttleweeklyawardtemp` |
+| 240 | Trang bị online 5 ô + đào mỏ | `onlinearmlevelinfo`, `onlinearmdropitem` |
+| 241–243 | Phó vũ khí tiến hoá, tình lữ, thần thụ | `subweaponevolutiontemplate`, `lovelevelist`, `treetemplatelist` |
+| 244–245 | Hoạt động ngày, thưởng đăng nhập | `everydayactive*`, `loginawarditemtemplate` |
+| 246–247 | Vương giả chi lộ, đổi vật phẩm hoạt động | `kingofroadquestinfolist`, `activeconvertiteminfo` |
+| 248–249 | Shop mini game, phế liệu | `minigameshoptemplate`, `WasteRecycle_Award` |
+| 250–252 | Nuôi bộ trang bị, tinh/tôi luyện khắc ấn, rương thành trưởng | `setsbuildtemp` (+`suittemplateinfolist`), `engraverefinery/temperconfiginfo`, `loaduserbox` |
+| 253–256 | Hoạt động toàn server, sưu tầm, trợ chiến | `communalactive*`, `goodscollect`, `helpgamereward` |
+| 257–259 | Pet biến hình/manh thú, rune tiến giai, mốc nạp | `loadpetformdata`/`loadpetmoeproperty`/`petlevelinfo`, `runeadvancetemplatelist`, `loadchargeactivetemplate` + `chargespendreward*` + `txplayerawardtemplatelist` |
+| 260–262 | Tam thanh, xúc xắc, câu cá + thẻ tháng | `threecleanpointaward`, `dicegameawarditem`, `homefishinfo`, `monthcardgoodinfo` |
+| 263–265 | Trang bị nại khoái, bốc quà hoạt động/sự kiện | `TS_NaiKuaiEquip`, `activitysystemitems`(+rate), `eventrewarditemlist` |
+| 266–268 | Buff bộ thẻ, tầm bảo, đột phá cấp | `cardbufflist`+`cardinfolist`, `searchgoodstemp`+`lotteryshowtemplate`, `maxleveltemplate` |
+| 269 | Cường hoá theo exp (không hên xui) | `itemstrengthendata`, `loadstrengthexp` |
+
+Bảng chỉ để tra cứu (không có msg riêng, hiện trong màn **游戏资料**): `ranktemplateall`, `ActiveList`, `mapserverlist`, `ts_versionnotice`, `loaditemscategory`, `bufftemplateinfo`, `TS_Relic_AdvanceValue`, `missionenergyprice`.
+
+Chỗ dump thiếu dữ liệu nên server phải giả định (đã ghi chú ngay trong code):
+
+- `lightriddlequest` không có cột đáp án → coi `Option1` là đúng, đổi bằng ServerConfig `LightRiddleAnswerIndex`.
+- `onlinearmdropitem` chỉ có `Rate1..11` mà không kèm danh sách vật phẩm → quy bậc rớt ra vàng/exp thay vì bịa template id.
+- `templatemanorlist` giữ format ItemTemplate: `Property2` số lượng thu, `Property3` phút chín, `Property4` item thu, `Property6/7` exp trang viên/phụ giúp.
+- `cardachievement.RequireType` 1/2/3 = kim/ngân/mọi thẻ, ngưỡng `Quality` lấy từ ServerConfig `CardGoldQuality` / `CardSilverQuality`.
+- Không có cổng thanh toán nên "nạp" (msg 259) tiêu vàng để đổi ra điểm nạp.
+
+Chưa port (không phải bảng gameplay): backup `TemplateAlllistbkap`, biến thể trùng dữ liệu (`*_out`, `balllist_b`, `Totem_Info`, `exerciseinfolist1 (2)`), bảng xếp hạng chụp từ server PC (`celeb*`, `areaceleb*`, `manorwealth`, `user_lotteryrank`) và file cấu hình client Flash (`config`, `buttonconfig`, `debugConfig`, `crossdomain`).
+
 ### SWF living / bomb trên điện thoại
 
 Unity **không** chạy Flash. `tools/swf_extract.py` lấy JPEG/PNG lớn nhất trong tag `DefineBitsJPEG3` / `DefineBitsLossless2` từ SWF living + bullet (+ vài blastout) vào:

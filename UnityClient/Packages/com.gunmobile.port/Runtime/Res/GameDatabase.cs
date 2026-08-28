@@ -1899,6 +1899,56 @@ namespace GunMobile.Res
         public int Energy;
     }
 
+    public sealed class ItemStrengthenData
+    {
+        public int TemplateId;
+        public int StrengthenLevel;
+        public int Data;
+    }
+
+    public sealed class StrengthExpLevel
+    {
+        public int Level;
+        public int Exp;
+        public int NecklaceStrengthExp;
+        public int NecklaceStrengthPlus;
+    }
+
+    public sealed class RankTitleInfo
+    {
+        public int Index;
+        public string Rank = "";
+        public int Attack;
+        public int Defend;
+        public int Agility;
+        public int Lucky;
+    }
+
+    public sealed class ActiveListEntry
+    {
+        public int ActiveId;
+        public string Title = "";
+        public string Description = "";
+        public string Content = "";
+        public string AwardContent = "";
+        public string StartDate = "";
+        public string EndDate = "";
+    }
+
+    public sealed class MapServerEntry
+    {
+        public int ServerId;
+        public int[] OpenMaps = System.Array.Empty<int>();
+        public int IsSpecial;
+    }
+
+    public sealed class VersionNoticeEntry
+    {
+        public int VersionId;
+        public string VersionName = "";
+        public string VersionDesc = "";
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2555,6 +2605,14 @@ namespace GunMobile.Res
         public List<BuffTemplateInfoRow> BuffTemplateList { get; } = new List<BuffTemplateInfoRow>();
         public List<RelicAdvanceValue> RelicAdvanceValues { get; } = new List<RelicAdvanceValue>();
         public List<MissionEnergyPrice> MissionEnergyPrices { get; } = new List<MissionEnergyPrice>();
+        public Dictionary<int, ItemStrengthenData> ItemStrengthenDatas { get; } = new Dictionary<int, ItemStrengthenData>();
+        public Dictionary<int, StrengthExpLevel> StrengthExpLevels { get; } = new Dictionary<int, StrengthExpLevel>();
+        public List<StrengthExpLevel> StrengthExpList { get; } = new List<StrengthExpLevel>();
+        public List<RankTitleInfo> RankTitles { get; } = new List<RankTitleInfo>();
+        public Dictionary<int, ActiveListEntry> ActiveListEntries { get; } = new Dictionary<int, ActiveListEntry>();
+        public List<ActiveListEntry> ActiveListOrder { get; } = new List<ActiveListEntry>();
+        public List<MapServerEntry> MapServers { get; } = new List<MapServerEntry>();
+        public List<VersionNoticeEntry> VersionNotices { get; } = new List<VersionNoticeEntry>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2712,6 +2770,8 @@ namespace GunMobile.Res
             db.LoadLotteryShow(loader);
             db.LoadMaxLevels(loader);
             db.LoadReferenceTables(loader);
+            db.LoadStrengthenData(loader);
+            db.LoadInfoTables(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2733,7 +2793,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} naiKuai={db.NaiKuaiEquips.Count} actSys={db.ActivitySystemItems.Count} eventRw={db.EventRewardItems.Count} cardBuff={db.CardBuffs.Count} lotteryShow={db.LotteryShowItems.Count} maxLevel={db.MaxLevels.Count} buffTpl={db.BuffTemplates.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} naiKuai={db.NaiKuaiEquips.Count} actSys={db.ActivitySystemItems.Count} eventRw={db.EventRewardItems.Count} cardBuff={db.CardBuffs.Count} lotteryShow={db.LotteryShowItems.Count} maxLevel={db.MaxLevels.Count} buffTpl={db.BuffTemplates.Count} strengthExp={db.StrengthExpList.Count} rankTitles={db.RankTitles.Count} activeList={db.ActiveListEntries.Count} mapServers={db.MapServers.Count} notices={db.VersionNotices.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -3980,6 +4040,50 @@ namespace GunMobile.Res
                 if (MissionEnergyPrices[i].Count <= count) money = MissionEnergyPrices[i].Money;
             }
             return money > 0 ? money : ConfigInt("MissionEnergyGold", 8000);
+        }
+
+        public static int StrengthenDataKey(int templateId, int level)
+        {
+            return (templateId * 64) + (level & 63);
+        }
+
+        public int ItemStrengthenDataValue(int templateId, int level)
+        {
+            if (ItemStrengthenDatas.TryGetValue(StrengthenDataKey(templateId, level), out ItemStrengthenData row))
+                return row.Data;
+            return 0;
+        }
+
+        public StrengthExpLevel GetStrengthExp(int level)
+        {
+            if (StrengthExpLevels.TryGetValue(level, out StrengthExpLevel row)) return row;
+            return null;
+        }
+
+        public int StrengthExpNeed(int level)
+        {
+            StrengthExpLevel row = GetStrengthExp(level);
+            return row != null ? row.Exp : 0;
+        }
+
+        public int StrengthMaxLevel()
+        {
+            return StrengthExpList.Count > 0 ? StrengthExpList[StrengthExpList.Count - 1].Level : 0;
+        }
+
+        public RankTitleInfo GetRankTitle(int index)
+        {
+            if (index >= 1 && index <= RankTitles.Count) return RankTitles[index - 1];
+            return null;
+        }
+
+        public MapServerEntry GetMapServer(int serverId)
+        {
+            for (int i = 0; i < MapServers.Count; i++)
+            {
+                if (MapServers[i].ServerId == serverId) return MapServers[i];
+            }
+            return null;
         }
 
         public JadeTemp GetJade(int id)
@@ -12079,6 +12183,123 @@ namespace GunMobile.Res
                 });
             }
             MissionEnergyPrices.Sort((a, b) => a.Count.CompareTo(b.Count));
+        }
+
+        // itemstrengthendata: giá trị cộng thêm theo TemplateID + StrengthenLevel.
+        // loadstrengthexp: exp cần cho mỗi mức cường hoá (và mức dây chuyền).
+        void LoadStrengthenData(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/itemstrengthendata.xml", out XmlResultTable data))
+            {
+                foreach (var row in data.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    int level = Int(row, "StrengthenLevel");
+                    if (templateId <= 0) continue;
+                    int key = StrengthenDataKey(templateId, level);
+                    if (ItemStrengthenDatas.ContainsKey(key)) continue;
+                    ItemStrengthenDatas[key] = new ItemStrengthenData
+                    {
+                        TemplateId = templateId,
+                        StrengthenLevel = level,
+                        Data = Int(row, "Data")
+                    };
+                }
+            }
+
+            if (!TryTable(loader, "Request/loadstrengthexp.xml", out XmlResultTable exps)) return;
+            foreach (var row in exps.Rows)
+            {
+                int level = Int(row, "Level");
+                if (StrengthExpLevels.ContainsKey(level)) continue;
+                var info = new StrengthExpLevel
+                {
+                    Level = level,
+                    Exp = Int(row, "Exp"),
+                    NecklaceStrengthExp = Int(row, "NecklaceStrengthExp"),
+                    NecklaceStrengthPlus = Int(row, "NecklaceStrengthPlus")
+                };
+                StrengthExpLevels[level] = info;
+                StrengthExpList.Add(info);
+            }
+            StrengthExpList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        // Bảng chỉ để hiển thị: danh hiệu, danh sách hoạt động, map mở theo server, thông báo phiên bản.
+        void LoadInfoTables(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/ranktemplateall.xml", out XmlResultTable ranks))
+            {
+                int index = 0;
+                foreach (var row in ranks.Rows)
+                {
+                    string rank = Str(row, "Rank");
+                    if (string.IsNullOrEmpty(rank)) continue;
+                    RankTitles.Add(new RankTitleInfo
+                    {
+                        Index = ++index,
+                        Rank = rank,
+                        Attack = Int(row, "Attack"),
+                        Defend = Int(row, "Defend"),
+                        Agility = Int(row, "Agility"),
+                        Lucky = Int(row, "Lucky")
+                    });
+                }
+            }
+
+            if (TryTable(loader, "Request/ActiveList.xml", out XmlResultTable actives) ||
+                TryTable(loader, "Request/activelist.xml", out actives))
+            {
+                foreach (var row in actives.Rows)
+                {
+                    int activeId = Int(row, "ActiveID");
+                    if (activeId <= 0 || ActiveListEntries.ContainsKey(activeId)) continue;
+                    var info = new ActiveListEntry
+                    {
+                        ActiveId = activeId,
+                        Title = Str(row, "Title"),
+                        Description = Str(row, "Description"),
+                        Content = Str(row, "Content"),
+                        AwardContent = Str(row, "AwardContent"),
+                        StartDate = Str(row, "StartDate"),
+                        EndDate = Str(row, "EndDate")
+                    };
+                    ActiveListEntries[activeId] = info;
+                    ActiveListOrder.Add(info);
+                }
+                ActiveListOrder.Sort((a, b) => a.ActiveId.CompareTo(b.ActiveId));
+            }
+
+            if (TryTable(loader, "Request/mapserverlist.xml", out XmlResultTable servers))
+            {
+                foreach (var row in servers.Rows)
+                {
+                    int serverId = Int(row, "ServerID");
+                    var info = new MapServerEntry
+                    {
+                        ServerId = serverId,
+                        OpenMaps = ParseIntCsv(Str(row, "OpenMap")),
+                        IsSpecial = Int(row, "IsSpecial")
+                    };
+                    MapServers.Add(info);
+                }
+            }
+
+            if (!TryTable(loader, "Request/ts_versionnotice.xml", out XmlResultTable notices)) return;
+            foreach (var row in notices.Rows)
+            {
+                int versionId = Int(row, "VersionId");
+                if (versionId <= 0) continue;
+                string desc = Str(row, "VersionDesc");
+                if (desc.Length > 400) desc = desc.Substring(0, 400);
+                VersionNotices.Add(new VersionNoticeEntry
+                {
+                    VersionId = versionId,
+                    VersionName = Str(row, "VersionName"),
+                    VersionDesc = desc
+                });
+                if (VersionNotices.Count >= 20) break;
+            }
         }
 
         void LoadServerConfig(ResLoader loader)

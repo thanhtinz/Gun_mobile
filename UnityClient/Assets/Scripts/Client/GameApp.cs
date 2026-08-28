@@ -325,6 +325,12 @@ namespace GunMobile.Client
                 case "maxlevel":
                     ExtraModulesScreens.MaxLevelScreen(_safe, this);
                     return;
+                case "strengthenexp":
+                    ExtraModulesScreens.StrengthenExpScreen(_safe, this);
+                    return;
+                case "gameinfo":
+                    ExtraModulesScreens.GameInfoScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -1111,6 +1117,12 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "maxlevel")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.StrengthenExp:
+                        PhoneNet.LastStrengthenExpJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "strengthenexp")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1483,6 +1495,7 @@ namespace GunMobile.Client
             Profile.CardBuffStep = JsonInt(json, "cardBuffStep", Profile.CardBuffStep);
             Profile.SearchCount = JsonInt(json, "searchCount", Profile.SearchCount);
             Profile.MaxLevelGrade = JsonInt(json, "maxLevelGrade", Profile.MaxLevelGrade);
+            Profile.StrengthenExp = JsonInt(json, "strengthenExp", Profile.StrengthenExp);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;
