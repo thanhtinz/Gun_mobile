@@ -327,6 +327,15 @@ namespace GunMobile.Net
         public int MonthCardId;
         public int MonthCardDay = -1;
         public int MonthCardDaysLeft;
+        public List<int> NaiKuaiEquipIds = new List<int>();
+        public int ActivitySystemDay = -1;
+        public int ActivitySystemDraws;
+        public int EventRewardDay = -1;
+        public int EventRewardDraws;
+        public List<int> CardBuffActivated = new List<int>();
+        public int CardBuffStep;
+        public int SearchCount;
+        public int MaxLevelGrade;
         public static int NowMinutes()
         {
             return (int)(DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc)).TotalMinutes;
@@ -489,6 +498,18 @@ namespace GunMobile.Net
         {
             int day = DateTime.Now.DayOfYear;
             if (FishDay != day) { FishDay = day; FishCasts = 0; }
+        }
+        public void EnsureNaiKuai() { if (NaiKuaiEquipIds == null) NaiKuaiEquipIds = new List<int>(); }
+        public void EnsureCardBuff() { if (CardBuffActivated == null) CardBuffActivated = new List<int>(); }
+        public void TouchActivitySystemDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (ActivitySystemDay != day) { ActivitySystemDay = day; ActivitySystemDraws = 0; }
+        }
+        public void TouchEventRewardDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (EventRewardDay != day) { EventRewardDay = day; EventRewardDraws = 0; }
         }
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -909,6 +930,11 @@ namespace GunMobile.Net
             EnsureSetsBuild(db);
             db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luck, ref hp, ref baseGuard, ref magicDef);
             db.ApplyPetMoeBonus(PetMoeLevel, PetFormTemplateId, ref atk, ref def, ref agi, ref luck, ref hp, ref baseGuard);
+            EnsureNaiKuai();
+            db.ApplyNaiKuaiBonus(NaiKuaiEquipIds, ref atk, ref def, ref magicAtk, ref magicDef);
+            EnsureCardBuff();
+            db.ApplyCardBuffBonus(CardBuffActivated, CardBuffStep, ref atk, ref def, ref hp, ref luck);
+            db.ApplyMaxLevelBonus(MaxLevelGrade, ref atk, ref def, ref agi, ref luck, ref magicAtk, ref magicDef);
             EnsureEngraveRefine();
             for (int i = 0; i < EngraveRefineGrades.Count; i++)
             {
@@ -1174,6 +1200,19 @@ namespace GunMobile.Net
             J(sb, "fishScore", FishScore); sb.Append(",");
             J(sb, "monthCardId", MonthCardId); sb.Append(",");
             J(sb, "monthCardDaysLeft", MonthCardDaysLeft); sb.Append(",");
+            EnsureNaiKuai();
+            sb.Append("\"naiKuaiEquipIds\":[");
+            for (int i = 0; i < NaiKuaiEquipIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(NaiKuaiEquipIds[i]); }
+            sb.Append("],");
+            J(sb, "activitySystemDraws", ActivitySystemDraws); sb.Append(",");
+            J(sb, "eventRewardDraws", EventRewardDraws); sb.Append(",");
+            EnsureCardBuff();
+            sb.Append("\"cardBuffActivated\":[");
+            for (int i = 0; i < CardBuffActivated.Count; i++) { if (i > 0) sb.Append(","); sb.Append(CardBuffActivated[i]); }
+            sb.Append("],");
+            J(sb, "cardBuffStep", CardBuffStep); sb.Append(",");
+            J(sb, "searchCount", SearchCount); sb.Append(",");
+            J(sb, "maxLevelGrade", MaxLevelGrade); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2909,6 +2948,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.HomeFish:
                     HandleHomeFish(player, ns, json);
+                    break;
+
+                case PhoneMsg.NaiKuaiEquip:
+                    HandleNaiKuaiEquip(player, ns, json);
+                    break;
+
+                case PhoneMsg.ActivitySystemDraw:
+                    HandleActivitySystemDraw(player, ns, json);
+                    break;
+
+                case PhoneMsg.EventRewardDraw:
+                    HandleEventRewardDraw(player, ns, json);
+                    break;
+
+                case PhoneMsg.CardBuffActivate:
+                    HandleCardBuffActivate(player, ns, json);
+                    break;
+
+                case PhoneMsg.SearchGoods:
+                    HandleSearchGoods(player, ns, json);
+                    break;
+
+                case PhoneMsg.MaxLevelUp:
+                    HandleMaxLevelUp(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -9146,6 +9209,207 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // TS_NaiKuaiEquip: bộ trang bị phụ, mặc theo EquipLevel, cộng thẳng lý/ma công thủ.
+        void HandleNaiKuaiEquip(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.NaiKuaiEquipList.Count == 0)
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureNaiKuai();
+            int id = JI(json, "id", 0);
+            NaiKuaiEquip row = _db.GetNaiKuaiEquip(id);
+            if (row == null) { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"equip\"}"); return; }
+
+            string action = JS(json, "action", "equip");
+            if (string.Equals(action, "unequip", StringComparison.OrdinalIgnoreCase))
+            {
+                player.NaiKuaiEquipIds.Remove(id);
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":true,\"action\":\"unequip\",\"id\":" + id + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.Level < row.EquipLevel)
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"level\",\"need\":" + row.EquipLevel + "}"); return; }
+            if (player.NaiKuaiEquipIds.Contains(id))
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":true,\"id\":" + id + ",\"already\":true}"); return; }
+
+            int slots = _db.ConfigInt("NaiKuaiSlots", 4);
+            if (player.NaiKuaiEquipIds.Count >= slots)
+            { Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":false,\"err\":\"slots\",\"max\":" + slots + "}"); return; }
+
+            player.NaiKuaiEquipIds.Add(id);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.NaiKuaiEquip, "{\"ok\":true,\"action\":\"equip\",\"id\":" + id +
+                ",\"templateId\":" + row.TemplateId + ",\"atk\":" + row.PhyAttack + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // activitysystemitems (+rate): bốc quà hoạt động theo ActivityType, Probability là trọng số.
+        void HandleActivitySystemDraw(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ActivitySystemItems.Count == 0)
+            { Send(ns, PhoneMsg.ActivitySystemDraw, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchActivitySystemDay();
+            int max = _db.ConfigInt("ActivitySystemDayMax", 10);
+            if (player.ActivitySystemDraws >= max)
+            { Send(ns, PhoneMsg.ActivitySystemDraw, "{\"ok\":false,\"err\":\"limit\",\"max\":" + max + "}"); return; }
+
+            int activityType = JI(json, "activityType", 0);
+            if (activityType <= 0 && _db.ActivitySystemTypes.Count > 0) activityType = _db.ActivitySystemTypes[0];
+            int cost = _db.ConfigInt("ActivitySystemGold", 500);
+            if (player.Gold < cost)
+            { Send(ns, PhoneMsg.ActivitySystemDraw, "{\"ok\":false,\"err\":\"gold\",\"need\":" + cost + "}"); return; }
+
+            ActivitySystemItem item;
+            lock (_lock) { item = _db.RollActivitySystem(activityType, _rng); }
+            if (item == null) { Send(ns, PhoneMsg.ActivitySystemDraw, "{\"ok\":false,\"err\":\"pool\"}"); return; }
+
+            player.Gold -= cost;
+            player.ActivitySystemDraws++;
+            player.AddItem(item.TemplateId, item.Count);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActivitySystemDraw, "{\"ok\":true,\"activityType\":" + activityType +
+                ",\"templateId\":" + item.TemplateId + ",\"count\":" + item.Count + ",\"quality\":" + item.Quality +
+                ",\"draws\":" + player.ActivitySystemDraws + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // eventrewarditemlist: quà sự kiện theo ActivityType, cột Random là trọng số bốc.
+        void HandleEventRewardDraw(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.EventRewardItems.Count == 0)
+            { Send(ns, PhoneMsg.EventRewardDraw, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchEventRewardDay();
+            int max = _db.ConfigInt("EventRewardDayMax", 5);
+            if (player.EventRewardDraws >= max)
+            { Send(ns, PhoneMsg.EventRewardDraw, "{\"ok\":false,\"err\":\"limit\",\"max\":" + max + "}"); return; }
+
+            int activityType = JI(json, "activityType", 0);
+            if (activityType <= 0 && _db.EventRewardTypes.Count > 0) activityType = _db.EventRewardTypes[0];
+
+            EventRewardItem reward;
+            lock (_lock) { reward = _db.RollEventReward(activityType, _rng); }
+            if (reward == null) { Send(ns, PhoneMsg.EventRewardDraw, "{\"ok\":false,\"err\":\"pool\"}"); return; }
+
+            player.EventRewardDraws++;
+            player.AddItem(reward.TemplateId, reward.Count);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.EventRewardDraw, "{\"ok\":true,\"activityType\":" + activityType +
+                ",\"templateId\":" + reward.TemplateId + ",\"count\":" + reward.Count +
+                ",\"draws\":" + player.EventRewardDraws + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // cardbufflist + cardinfolist: kích hoạt buff bộ thẻ, mức buff theo số thẻ đã gom (step 0..3).
+        void HandleCardBuffActivate(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.CardBuffs.Count == 0)
+            { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureCardBuff();
+            int cardId = JI(json, "cardId", 0);
+            List<CardBuffEntry> buffs = _db.GetCardBuffs(cardId);
+            if (buffs.Count == 0) { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"card\"}"); return; }
+
+            string action = JS(json, "action", "activate");
+            if (string.Equals(action, "step", StringComparison.OrdinalIgnoreCase))
+            {
+                int cost = _db.ConfigInt("CardBuffStepGold", 5000);
+                if (player.CardBuffStep >= 3)
+                { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"max\"}"); return; }
+                if (player.Gold < cost)
+                { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"gold\",\"need\":" + cost + "}"); return; }
+                player.Gold -= cost;
+                player.CardBuffStep++;
+                player.RecalcStats(_db);
+                SavePlayer(player);
+                Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":true,\"action\":\"step\",\"step\":" + player.CardBuffStep + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (player.CardBuffActivated.Contains(cardId))
+            { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":true,\"cardId\":" + cardId + ",\"already\":true}"); return; }
+
+            player.EnsureOwnedCards();
+            int need = buffs[0].Condition;
+            if (need > 0 && player.OwnedCardTemplateIds.Count < need)
+            {
+                Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"cards\",\"have\":" +
+                    player.OwnedCardTemplateIds.Count + ",\"need\":" + need + "}");
+                return;
+            }
+
+            player.CardBuffActivated.Add(cardId);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":true,\"action\":\"activate\",\"cardId\":" + cardId +
+                ",\"buffs\":" + buffs.Count + ",\"step\":" + player.CardBuffStep + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // searchgoodstemp: tìm bảo theo bậc sao, NeedMoney là phí, DestinationReward là quà đích.
+        // lotteryshowtemplate chỉ để hiển thị nội dung hộp.
+        void HandleSearchGoods(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.SearchGoodsList.Count == 0)
+            { Send(ns, PhoneMsg.SearchGoods, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            int starId = JI(json, "starId", 0);
+            if (starId <= 0) starId = _db.SearchGoodsList[0].StarId;
+            SearchGoodsTemp row = _db.GetSearchGoods(starId);
+            if (row == null) { Send(ns, PhoneMsg.SearchGoods, "{\"ok\":false,\"err\":\"star\"}"); return; }
+            if (row.VipLevel > 0 && player.VipLevel < row.VipLevel)
+            { Send(ns, PhoneMsg.SearchGoods, "{\"ok\":false,\"err\":\"vip\",\"need\":" + row.VipLevel + "}"); return; }
+            if (player.Gold < row.NeedMoney)
+            { Send(ns, PhoneMsg.SearchGoods, "{\"ok\":false,\"err\":\"gold\",\"need\":" + row.NeedMoney + "}"); return; }
+
+            player.Gold -= row.NeedMoney;
+            player.SearchCount++;
+            int steps = row.ExtractNumber.Length > 0 ? row.ExtractNumber[0] : 10;
+            bool reached = steps > 0 && player.SearchCount % steps == 0;
+            if (reached && row.DestinationReward > 0) player.AddItem(row.DestinationReward, 1);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SearchGoods, "{\"ok\":true,\"starId\":" + starId + ",\"count\":" + player.SearchCount +
+                ",\"steps\":" + steps + ",\"reached\":" + (reached ? "true" : "false") +
+                ",\"templateId\":" + (reached ? row.DestinationReward : 0) + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // maxleveltemplate: đột phá giới hạn cấp, mỗi bậc tốn Cost và cộng chỉ số nền.
+        void HandleMaxLevelUp(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.MaxLevelList.Count == 0)
+            { Send(ns, PhoneMsg.MaxLevelUp, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            int next = player.MaxLevelGrade + 1;
+            MaxLevelTemplate row = _db.GetMaxLevel(next);
+            if (row == null) { Send(ns, PhoneMsg.MaxLevelUp, "{\"ok\":false,\"err\":\"max\"}"); return; }
+
+            int itemId = _db.ConfigInt("MaxLevelItemId", 0);
+            bool paid = itemId > 0 && player.Consume(itemId, row.Cost);
+            if (!paid)
+            {
+                int gold = row.Cost * _db.ConfigInt("MaxLevelGoldPerCost", 20000);
+                if (player.Gold < gold)
+                { Send(ns, PhoneMsg.MaxLevelUp, "{\"ok\":false,\"err\":\"gold\",\"need\":" + gold + "}"); return; }
+                player.Gold -= gold;
+            }
+
+            player.MaxLevelGrade = next;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MaxLevelUp, "{\"ok\":true,\"grade\":" + player.MaxLevelGrade + ",\"cost\":" + row.Cost +
+                ",\"atk\":" + row.Attack + ",\"def\":" + row.Defence + ",\"cap\":" + _db.MaxLevelCap() + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -12290,6 +12554,11 @@ namespace GunMobile.Net
             public int DiceDay = -1, DiceRolls, DiceScore;
             public int FishDay = -1, FishCasts, FishScore;
             public int MonthCardId, MonthCardDay = -1, MonthCardDaysLeft;
+            public List<int> NaiKuaiEquipIds = new List<int>();
+            public int ActivitySystemDay = -1, ActivitySystemDraws;
+            public int EventRewardDay = -1, EventRewardDraws;
+            public List<int> CardBuffActivated = new List<int>();
+            public int CardBuffStep, SearchCount, MaxLevelGrade;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -12512,6 +12781,11 @@ namespace GunMobile.Net
                 DiceDay = p.DiceDay, DiceRolls = p.DiceRolls, DiceScore = p.DiceScore,
                 FishDay = p.FishDay, FishCasts = p.FishCasts, FishScore = p.FishScore,
                 MonthCardId = p.MonthCardId, MonthCardDay = p.MonthCardDay, MonthCardDaysLeft = p.MonthCardDaysLeft,
+                NaiKuaiEquipIds = p.NaiKuaiEquipIds ?? new List<int>(),
+                ActivitySystemDay = p.ActivitySystemDay, ActivitySystemDraws = p.ActivitySystemDraws,
+                EventRewardDay = p.EventRewardDay, EventRewardDraws = p.EventRewardDraws,
+                CardBuffActivated = p.CardBuffActivated ?? new List<int>(),
+                CardBuffStep = p.CardBuffStep, SearchCount = p.SearchCount, MaxLevelGrade = p.MaxLevelGrade,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -12738,6 +13012,11 @@ namespace GunMobile.Net
                 DiceDay = s.DiceDay, DiceRolls = s.DiceRolls, DiceScore = s.DiceScore,
                 FishDay = s.FishDay, FishCasts = s.FishCasts, FishScore = s.FishScore,
                 MonthCardId = s.MonthCardId, MonthCardDay = s.MonthCardDay, MonthCardDaysLeft = s.MonthCardDaysLeft,
+                NaiKuaiEquipIds = s.NaiKuaiEquipIds ?? new List<int>(),
+                ActivitySystemDay = s.ActivitySystemDay, ActivitySystemDraws = s.ActivitySystemDraws,
+                EventRewardDay = s.EventRewardDay, EventRewardDraws = s.EventRewardDraws,
+                CardBuffActivated = s.CardBuffActivated ?? new List<int>(),
+                CardBuffStep = s.CardBuffStep, SearchCount = s.SearchCount, MaxLevelGrade = s.MaxLevelGrade,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

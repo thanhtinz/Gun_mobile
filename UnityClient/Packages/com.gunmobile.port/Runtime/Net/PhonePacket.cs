@@ -306,6 +306,12 @@ namespace GunMobile.Net
         public const ushort ThreeCleanClaim = 260;
         public const ushort DiceGame = 261;
         public const ushort HomeFish = 262;
+        public const ushort NaiKuaiEquip = 263;
+        public const ushort ActivitySystemDraw = 264;
+        public const ushort EventRewardDraw = 265;
+        public const ushort CardBuffActivate = 266;
+        public const ushort SearchGoods = 267;
+        public const ushort MaxLevelUp = 268;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

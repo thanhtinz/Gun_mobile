@@ -246,6 +246,13 @@ namespace GunMobile.Client
         public int FishScore;
         public int MonthCardId;
         public int MonthCardDaysLeft;
+        public List<int> NaiKuaiEquipIds = new List<int>();
+        public int ActivitySystemDraws;
+        public int EventRewardDraws;
+        public List<int> CardBuffActivated = new List<int>();
+        public int CardBuffStep;
+        public int SearchCount;
+        public int MaxLevelGrade;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -326,6 +333,8 @@ namespace GunMobile.Client
             if (TxAwardClaimed == null) TxAwardClaimed = new List<int>();
         }
         public void EnsureThreeClean() { if (ThreeCleanClaimed == null) ThreeCleanClaimed = new List<int>(); }
+        public void EnsureNaiKuai() { if (NaiKuaiEquipIds == null) NaiKuaiEquipIds = new List<int>(); }
+        public void EnsureCardBuff() { if (CardBuffActivated == null) CardBuffActivated = new List<int>(); }
         public void EnsureMiniGameShop()
         {
             if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
@@ -793,6 +802,11 @@ namespace GunMobile.Client
                 EnsureSetsBuild();
                 db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luk, ref hp, ref sGuard, ref magicDef);
                 db.ApplyPetMoeBonus(PetMoeLevel, PetFormTemplateId, ref atk, ref def, ref agi, ref luk, ref hp, ref sGuard);
+                EnsureNaiKuai();
+                db.ApplyNaiKuaiBonus(NaiKuaiEquipIds, ref atk, ref def, ref magicAtk, ref magicDef);
+                EnsureCardBuff();
+                db.ApplyCardBuffBonus(CardBuffActivated, CardBuffStep, ref atk, ref def, ref hp, ref luk);
+                db.ApplyMaxLevelBonus(MaxLevelGrade, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
                 EnsureEngraveRefine();
                 for (int i = 0; i < EngraveRefineGrades.Count; i++)
                 {
@@ -1096,6 +1110,12 @@ namespace GunMobile.Client
             new ModuleDef("threeclean", "三清积分", "Request/threecleanpointaward.xml"),
             new ModuleDef("dicegame", "骰子游戏", "Request/dicegameawarditem.xml"),
             new ModuleDef("homefish", "家园钓鱼", "Request/homefishinfo.xml"),
+            new ModuleDef("naikuai", "耐快装备", "Request/TS_NaiKuaiEquip.xml"),
+            new ModuleDef("activitysystem", "活动系统", "Request/activitysystemitems.xml"),
+            new ModuleDef("eventreward", "事件奖励", "Request/eventrewarditemlist.xml"),
+            new ModuleDef("cardbuff", "卡牌增益", "Request/cardbufflist.xml"),
+            new ModuleDef("searchgoods", "寻宝", "Request/searchgoodstemp.xml"),
+            new ModuleDef("maxlevel", "等级突破", "Request/maxleveltemplate.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

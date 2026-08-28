@@ -307,6 +307,24 @@ namespace GunMobile.Client
                 case "homefish":
                     ExtraModulesScreens.HomeFishScreen(_safe, this);
                     return;
+                case "naikuai":
+                    ExtraModulesScreens.NaiKuaiScreen(_safe, this);
+                    return;
+                case "activitysystem":
+                    ExtraModulesScreens.ActivitySystemScreen(_safe, this);
+                    return;
+                case "eventreward":
+                    ExtraModulesScreens.EventRewardScreen(_safe, this);
+                    return;
+                case "cardbuff":
+                    ExtraModulesScreens.CardBuffScreen(_safe, this);
+                    return;
+                case "searchgoods":
+                    ExtraModulesScreens.SearchGoodsScreen(_safe, this);
+                    return;
+                case "maxlevel":
+                    ExtraModulesScreens.MaxLevelScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -1057,6 +1075,42 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "homefish")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.NaiKuaiEquip:
+                        PhoneNet.LastNaiKuaiJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "naikuai")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActivitySystemDraw:
+                        PhoneNet.LastActivitySystemJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "activitysystem")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.EventRewardDraw:
+                        PhoneNet.LastEventRewardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "eventreward")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardBuffActivate:
+                        PhoneNet.LastCardBuffJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "cardbuff")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SearchGoods:
+                        PhoneNet.LastSearchGoodsJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "searchgoods")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.MaxLevelUp:
+                        PhoneNet.LastMaxLevelJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "maxlevel")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1420,6 +1474,15 @@ namespace GunMobile.Client
             Profile.FishScore = JsonInt(json, "fishScore", Profile.FishScore);
             Profile.MonthCardId = JsonInt(json, "monthCardId", Profile.MonthCardId);
             Profile.MonthCardDaysLeft = JsonInt(json, "monthCardDaysLeft", Profile.MonthCardDaysLeft);
+            Profile.EnsureNaiKuai();
+            ParseIntListFromServer(json, "naiKuaiEquipIds", Profile.NaiKuaiEquipIds);
+            Profile.ActivitySystemDraws = JsonInt(json, "activitySystemDraws", Profile.ActivitySystemDraws);
+            Profile.EventRewardDraws = JsonInt(json, "eventRewardDraws", Profile.EventRewardDraws);
+            Profile.EnsureCardBuff();
+            ParseIntListFromServer(json, "cardBuffActivated", Profile.CardBuffActivated);
+            Profile.CardBuffStep = JsonInt(json, "cardBuffStep", Profile.CardBuffStep);
+            Profile.SearchCount = JsonInt(json, "searchCount", Profile.SearchCount);
+            Profile.MaxLevelGrade = JsonInt(json, "maxLevelGrade", Profile.MaxLevelGrade);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

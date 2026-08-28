@@ -90,6 +90,12 @@ namespace GunMobile.Client
         public static string LastThreeCleanJson;
         public static string LastDiceGameJson;
         public static string LastHomeFishJson;
+        public static string LastNaiKuaiJson;
+        public static string LastActivitySystemJson;
+        public static string LastEventRewardJson;
+        public static string LastCardBuffJson;
+        public static string LastSearchGoodsJson;
+        public static string LastMaxLevelJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -587,6 +593,38 @@ namespace GunMobile.Client
         {
             string act = (action ?? "fish").Replace("\"", "");
             Road?.Send(PhoneMsg.HomeFish, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void NaiKuaiEquip(string action = "equip", int id = 0)
+        {
+            string act = (action ?? "equip").Replace("\"", "");
+            Road?.Send(PhoneMsg.NaiKuaiEquip, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void ActivitySystemDraw(int activityType = 0)
+        {
+            Road?.Send(PhoneMsg.ActivitySystemDraw, "{\"activityType\":" + activityType + "}");
+        }
+
+        public static void EventRewardDraw(int activityType = 0)
+        {
+            Road?.Send(PhoneMsg.EventRewardDraw, "{\"activityType\":" + activityType + "}");
+        }
+
+        public static void CardBuff(string action = "activate", int cardId = 0)
+        {
+            string act = (action ?? "activate").Replace("\"", "");
+            Road?.Send(PhoneMsg.CardBuffActivate, "{\"action\":\"" + act + "\",\"cardId\":" + cardId + "}");
+        }
+
+        public static void SearchGoods(int starId = 0)
+        {
+            Road?.Send(PhoneMsg.SearchGoods, "{\"starId\":" + starId + "}");
+        }
+
+        public static void MaxLevelUp()
+        {
+            Road?.Send(PhoneMsg.MaxLevelUp, "{}");
         }
 
         public static void DrawLottery(int count)

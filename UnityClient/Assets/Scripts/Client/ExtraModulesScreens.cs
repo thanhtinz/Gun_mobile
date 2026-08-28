@@ -2574,6 +2574,167 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastHomeFishJson)) SysUi.Note(body, PhoneNet.LastHomeFishJson);
         }
 
+        public static void NaiKuaiScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "耐快装备 · TS_NaiKuaiEquip");
+            app.Profile.EnsureNaiKuai();
+            SysUi.Note(body, "已装备 " + app.Profile.NaiKuaiEquipIds.Count + " 件");
+            if (app.Database == null || app.Database.NaiKuaiEquipList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/TS_NaiKuaiEquip.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (NaiKuaiEquip row in app.Database.NaiKuaiEquipList)
+            {
+                bool equipped = app.Profile.NaiKuaiEquipIds.Contains(row.Id);
+                NaiKuaiEquip local = row;
+                SysUi.Row(body, "nk" + row.Id,
+                    (equipped ? "[已装备] " : "") + SysUi.ItemName(app, row.TemplateId) +
+                    "  Lv" + row.EquipLevel + "  攻" + row.PhyAttack + " 防" + row.PhyDefence,
+                    () => PhoneNet.NaiKuaiEquip(equipped ? "unequip" : "equip", local.Id));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastNaiKuaiJson)) SysUi.Note(body, PhoneNet.LastNaiKuaiJson);
+        }
+
+        public static void ActivitySystemScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "活动系统 · activitysystemitems");
+            SysUi.Note(body, "今日抽取 " + app.Profile.ActivitySystemDraws);
+            if (app.Database == null || app.Database.ActivitySystemItems.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/activitysystemitems.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (int type in app.Database.ActivitySystemTypes)
+            {
+                var pool = app.Database.GetActivitySystemItems(type);
+                int local = type;
+                SysUi.Row(body, "as" + type,
+                    "活动类型 " + type + "  奖池 " + pool.Count + " 件  抽取",
+                    () => PhoneNet.ActivitySystemDraw(local));
+                if (++shown >= 16) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastActivitySystemJson)) SysUi.Note(body, PhoneNet.LastActivitySystemJson);
+        }
+
+        public static void EventRewardScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "事件奖励 · eventrewarditemlist");
+            SysUi.Note(body, "今日领取 " + app.Profile.EventRewardDraws);
+            if (app.Database == null || app.Database.EventRewardItems.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/eventrewarditemlist.xml");
+                return;
+            }
+
+            int shown = 0;
+            foreach (int type in app.Database.EventRewardTypes)
+            {
+                var pool = app.Database.GetEventRewards(type);
+                int local = type;
+                SysUi.Row(body, "er" + type,
+                    "事件 " + type + "  奖池 " + pool.Count + " 件  领取",
+                    () => PhoneNet.EventRewardDraw(local));
+                if (++shown >= 16) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastEventRewardJson)) SysUi.Note(body, PhoneNet.LastEventRewardJson);
+        }
+
+        public static void CardBuffScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "卡牌增益 · cardbufflist");
+            app.Profile.EnsureCardBuff();
+            SysUi.Note(body, "已激活 " + app.Profile.CardBuffActivated.Count + "  强化档 " + app.Profile.CardBuffStep);
+            if (app.Database == null || app.Database.CardBuffs.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/cardbufflist.xml");
+                return;
+            }
+
+            SysUi.Row(body, "cbStep", "提升增益档位 (金币)", () => PhoneNet.CardBuff("step"));
+            int shown = 0;
+            foreach (CardSuitDesc suit in app.Database.CardSuitDescList)
+            {
+                var buffs = app.Database.GetCardBuffs(suit.SuitId);
+                if (buffs.Count == 0) continue;
+                bool active = app.Profile.CardBuffActivated.Contains(suit.SuitId);
+                CardSuitDesc local = suit;
+                SysUi.Row(body, "cb" + suit.SuitId,
+                    (active ? "[已激活] " : "") + suit.Name + "  需 " + buffs[0].Condition + " 张",
+                    active ? null : (UnityAction)(() => PhoneNet.CardBuff("activate", local.SuitId)));
+                if (++shown >= 20) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastCardBuffJson)) SysUi.Note(body, PhoneNet.LastCardBuffJson);
+        }
+
+        public static void SearchGoodsScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "寻宝 · searchgoodstemp");
+            SysUi.Note(body, "累计寻宝 " + app.Profile.SearchCount + " 次");
+            if (app.Database == null || app.Database.SearchGoodsList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/searchgoodstemp.xml");
+                return;
+            }
+
+            foreach (SearchGoodsTemp row in app.Database.SearchGoodsList)
+            {
+                SearchGoodsTemp local = row;
+                SysUi.Row(body, "sg" + row.StarId,
+                    "星级 " + row.StarId + "  " + row.NeedMoney + "金  目标 " +
+                    SysUi.ItemName(app, row.DestinationReward) +
+                    (row.VipLevel > 0 ? "  VIP" + row.VipLevel : ""),
+                    () => PhoneNet.SearchGoods(local.StarId));
+            }
+
+            int shown = 0;
+            foreach (int boxType in app.Database.LotteryBoxTypes)
+            {
+                var items = app.Database.GetLotteryShow(boxType);
+                if (items.Count == 0) continue;
+                SysUi.Note(body, "箱 " + boxType + "  " + SysUi.ItemName(app, items[0].TemplateId) +
+                    " 等 " + items.Count + " 件");
+                if (++shown >= 8) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastSearchGoodsJson)) SysUi.Note(body, PhoneNet.LastSearchGoodsJson);
+        }
+
+        public static void MaxLevelScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "等级突破 · maxleveltemplate");
+            if (app.Database == null || app.Database.MaxLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/maxleveltemplate.xml");
+                return;
+            }
+
+            SysUi.Note(body, "突破档 " + app.Profile.MaxLevelGrade + " / " + app.Database.MaxLevelCap());
+            MaxLevelTemplate next = app.Database.GetMaxLevel(app.Profile.MaxLevelGrade + 1);
+            if (next != null)
+            {
+                SysUi.Row(body, "mlUp",
+                    "突破到 " + next.Level + "  消耗 " + next.Cost + "  攻+" + next.Attack + " 防+" + next.Defence,
+                    PhoneNet.MaxLevelUp);
+            }
+            else
+            {
+                SysUi.Note(body, "已达上限");
+            }
+
+            int shown = 0;
+            foreach (BuffTemplateInfoRow buff in app.Database.BuffTemplateList)
+            {
+                SysUi.Note(body, "Buff " + buff.Id + "  " + buff.Name + "  " + buff.Description);
+                if (++shown >= 8) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastMaxLevelJson)) SysUi.Note(body, PhoneNet.LastMaxLevelJson);
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

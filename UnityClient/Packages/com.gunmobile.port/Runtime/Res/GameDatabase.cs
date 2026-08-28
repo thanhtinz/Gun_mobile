@@ -1778,6 +1778,127 @@ namespace GunMobile.Res
         public int Day;
     }
 
+    public sealed class NaiKuaiEquip
+    {
+        public int Id;
+        public int TemplateId;
+        public int PhyAttack;
+        public int PhyDefence;
+        public int MagAttack;
+        public int MagDefence;
+        public int EquipLevel;
+    }
+
+    public sealed class ActivitySystemItem
+    {
+        public int Id;
+        public int ActivityType;
+        public int Quality;
+        public int Probability;
+        public int TemplateId;
+        public int Count = 1;
+        public int ValidDate;
+        public bool IsBind;
+    }
+
+    public sealed class ActivitySystemRate
+    {
+        public int ActivityType;
+        public int Quality;
+        public int TemplateId;
+        public int Rate;
+    }
+
+    public sealed class EventRewardItem
+    {
+        public int Id;
+        public int ActivityType;
+        public int TemplateId;
+        public int Count = 1;
+        public int ValidDate;
+        public bool IsBinds;
+        public int Random;
+    }
+
+    public sealed class CardBuffEntry
+    {
+        public int CardId;
+        public int Condition;
+        public int PropertiesDscripId;
+        public int[] Values = System.Array.Empty<int>();
+        public string Description = "";
+    }
+
+    public sealed class CardSuitDesc
+    {
+        public int Id;
+        public int SuitId;
+        public string Name = "";
+        public string Description = "";
+    }
+
+    public sealed class LotteryShowItem
+    {
+        public int BoxType;
+        public int SortId;
+        public int TemplateId;
+        public int Count = 1;
+    }
+
+    public sealed class SearchGoodsTemp
+    {
+        public int StarId;
+        public int NeedMoney;
+        public int DestinationReward;
+        public int VipLevel;
+        public int[] ExtractNumber = System.Array.Empty<int>();
+    }
+
+    public sealed class MaxLevelTemplate
+    {
+        public int Level;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+        public int MagicAttack;
+        public int MagicDefence;
+        public int Cost;
+    }
+
+    public sealed class ItemCategoryInfo
+    {
+        public int Id;
+        public string Name = "";
+        public int Place;
+    }
+
+    public sealed class BuffTemplateInfoRow
+    {
+        public int Id;
+        public int Type;
+        public int ShowType;
+        public string Name = "";
+        public string Description = "";
+        public int Pic;
+    }
+
+    public sealed class RelicAdvanceValue
+    {
+        public int Id;
+        public int Quality;
+        public int Type;
+        public int MinValue;
+        public int MaxValue;
+    }
+
+    public sealed class MissionEnergyPrice
+    {
+        public int Count;
+        public int Money;
+        public int Energy;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2412,6 +2533,28 @@ namespace GunMobile.Res
         public List<HomeFishInfo> HomeFishList { get; } = new List<HomeFishInfo>();
         public Dictionary<int, MonthCardGood> MonthCardGoods { get; } = new Dictionary<int, MonthCardGood>();
         public List<MonthCardGood> MonthCardGoodList { get; } = new List<MonthCardGood>();
+        public Dictionary<int, NaiKuaiEquip> NaiKuaiEquips { get; } = new Dictionary<int, NaiKuaiEquip>();
+        public List<NaiKuaiEquip> NaiKuaiEquipList { get; } = new List<NaiKuaiEquip>();
+        public List<ActivitySystemItem> ActivitySystemItems { get; } = new List<ActivitySystemItem>();
+        public List<ActivitySystemRate> ActivitySystemRates { get; } = new List<ActivitySystemRate>();
+        public List<int> ActivitySystemTypes { get; } = new List<int>();
+        public List<EventRewardItem> EventRewardItems { get; } = new List<EventRewardItem>();
+        public List<int> EventRewardTypes { get; } = new List<int>();
+        public List<CardBuffEntry> CardBuffs { get; } = new List<CardBuffEntry>();
+        public Dictionary<int, CardSuitDesc> CardSuitDescs { get; } = new Dictionary<int, CardSuitDesc>();
+        public List<CardSuitDesc> CardSuitDescList { get; } = new List<CardSuitDesc>();
+        public List<LotteryShowItem> LotteryShowItems { get; } = new List<LotteryShowItem>();
+        public List<int> LotteryBoxTypes { get; } = new List<int>();
+        public Dictionary<int, SearchGoodsTemp> SearchGoods { get; } = new Dictionary<int, SearchGoodsTemp>();
+        public List<SearchGoodsTemp> SearchGoodsList { get; } = new List<SearchGoodsTemp>();
+        public Dictionary<int, MaxLevelTemplate> MaxLevels { get; } = new Dictionary<int, MaxLevelTemplate>();
+        public List<MaxLevelTemplate> MaxLevelList { get; } = new List<MaxLevelTemplate>();
+        public Dictionary<int, ItemCategoryInfo> ItemCategories { get; } = new Dictionary<int, ItemCategoryInfo>();
+        public List<ItemCategoryInfo> ItemCategoryList { get; } = new List<ItemCategoryInfo>();
+        public Dictionary<int, BuffTemplateInfoRow> BuffTemplates { get; } = new Dictionary<int, BuffTemplateInfoRow>();
+        public List<BuffTemplateInfoRow> BuffTemplateList { get; } = new List<BuffTemplateInfoRow>();
+        public List<RelicAdvanceValue> RelicAdvanceValues { get; } = new List<RelicAdvanceValue>();
+        public List<MissionEnergyPrice> MissionEnergyPrices { get; } = new List<MissionEnergyPrice>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2562,6 +2705,13 @@ namespace GunMobile.Res
             db.LoadThreeClean(loader);
             db.LoadDiceGame(loader);
             db.LoadHomeFish(loader);
+            db.LoadNaiKuaiEquips(loader);
+            db.LoadActivitySystem(loader);
+            db.LoadEventRewards(loader);
+            db.LoadCardBuffs(loader);
+            db.LoadLotteryShow(loader);
+            db.LoadMaxLevels(loader);
+            db.LoadReferenceTables(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2583,7 +2733,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} naiKuai={db.NaiKuaiEquips.Count} actSys={db.ActivitySystemItems.Count} eventRw={db.EventRewardItems.Count} cardBuff={db.CardBuffs.Count} lotteryShow={db.LotteryShowItems.Count} maxLevel={db.MaxLevels.Count} buffTpl={db.BuffTemplates.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -3641,6 +3791,195 @@ namespace GunMobile.Res
         {
             if (id > 0 && MonthCardGoods.TryGetValue(id, out MonthCardGood row)) return row;
             return null;
+        }
+
+        public NaiKuaiEquip GetNaiKuaiEquip(int id)
+        {
+            if (id > 0 && NaiKuaiEquips.TryGetValue(id, out NaiKuaiEquip row)) return row;
+            return null;
+        }
+
+        public void ApplyNaiKuaiBonus(IReadOnlyList<int> equipIds,
+            ref int atk, ref int def, ref int magicAtk, ref int magicDef)
+        {
+            if (equipIds == null) return;
+            for (int i = 0; i < equipIds.Count; i++)
+            {
+                NaiKuaiEquip row = GetNaiKuaiEquip(equipIds[i]);
+                if (row == null) continue;
+                atk += row.PhyAttack;
+                def += row.PhyDefence;
+                magicAtk += row.MagAttack;
+                magicDef += row.MagDefence;
+            }
+        }
+
+        public List<ActivitySystemItem> GetActivitySystemItems(int activityType)
+        {
+            var list = new List<ActivitySystemItem>();
+            for (int i = 0; i < ActivitySystemItems.Count; i++)
+            {
+                if (ActivitySystemItems[i].ActivityType == activityType) list.Add(ActivitySystemItems[i]);
+            }
+            return list;
+        }
+
+        public int ActivitySystemRateOf(int activityType, int templateId)
+        {
+            for (int i = 0; i < ActivitySystemRates.Count; i++)
+            {
+                ActivitySystemRate row = ActivitySystemRates[i];
+                if (row.ActivityType == activityType && row.TemplateId == templateId) return row.Rate;
+            }
+            return 0;
+        }
+
+        public ActivitySystemItem RollActivitySystem(int activityType, System.Random rng)
+        {
+            List<ActivitySystemItem> pool = GetActivitySystemItems(activityType);
+            if (pool.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < pool.Count; i++) total += Mathf.Max(0, pool[i].Probability);
+            if (total <= 0) return pool[rng != null ? rng.Next(pool.Count) : 0];
+            int pick = rng != null ? rng.Next(total) : 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                pick -= Mathf.Max(0, pool[i].Probability);
+                if (pick < 0) return pool[i];
+            }
+            return pool[0];
+        }
+
+        public List<EventRewardItem> GetEventRewards(int activityType)
+        {
+            var list = new List<EventRewardItem>();
+            for (int i = 0; i < EventRewardItems.Count; i++)
+            {
+                if (EventRewardItems[i].ActivityType == activityType) list.Add(EventRewardItems[i]);
+            }
+            return list;
+        }
+
+        public EventRewardItem RollEventReward(int activityType, System.Random rng)
+        {
+            List<EventRewardItem> pool = GetEventRewards(activityType);
+            if (pool.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < pool.Count; i++) total += Mathf.Max(0, pool[i].Random);
+            if (total <= 0) return pool[rng != null ? rng.Next(pool.Count) : 0];
+            int pick = rng != null ? rng.Next(total) : 0;
+            for (int i = 0; i < pool.Count; i++)
+            {
+                pick -= Mathf.Max(0, pool[i].Random);
+                if (pick < 0) return pool[i];
+            }
+            return pool[0];
+        }
+
+        public List<CardBuffEntry> GetCardBuffs(int cardId)
+        {
+            var list = new List<CardBuffEntry>();
+            for (int i = 0; i < CardBuffs.Count; i++)
+            {
+                if (CardBuffs[i].CardId == cardId) list.Add(CardBuffs[i]);
+            }
+            return list;
+        }
+
+        // Mỗi buff có 4 mức theo số thẻ đã gom; step 0..3.
+        public int CardBuffValue(CardBuffEntry entry, int step)
+        {
+            if (entry == null || entry.Values.Length == 0) return 0;
+            int i = Mathf.Clamp(step, 0, entry.Values.Length - 1);
+            return entry.Values[i];
+        }
+
+        public void ApplyCardBuffBonus(IReadOnlyList<int> activatedCardIds, int step,
+            ref int atk, ref int def, ref int hp, ref int luck)
+        {
+            if (activatedCardIds == null) return;
+            for (int i = 0; i < activatedCardIds.Count; i++)
+            {
+                List<CardBuffEntry> buffs = GetCardBuffs(activatedCardIds[i]);
+                for (int j = 0; j < buffs.Count; j++)
+                {
+                    int value = CardBuffValue(buffs[j], step);
+                    if (value <= 0) continue;
+                    switch (buffs[j].PropertiesDscripId % 4)
+                    {
+                        case 0: hp += value; break;
+                        case 1: atk += Mathf.Max(1, value / 10); break;
+                        case 2: def += Mathf.Max(1, value / 10); break;
+                        default: luck += Mathf.Max(1, value / 20); break;
+                    }
+                }
+            }
+        }
+
+        public List<LotteryShowItem> GetLotteryShow(int boxType)
+        {
+            var list = new List<LotteryShowItem>();
+            for (int i = 0; i < LotteryShowItems.Count; i++)
+            {
+                if (LotteryShowItems[i].BoxType == boxType) list.Add(LotteryShowItems[i]);
+            }
+            list.Sort((a, b) => a.SortId.CompareTo(b.SortId));
+            return list;
+        }
+
+        public SearchGoodsTemp GetSearchGoods(int starId)
+        {
+            if (starId > 0 && SearchGoods.TryGetValue(starId, out SearchGoodsTemp row)) return row;
+            return null;
+        }
+
+        public MaxLevelTemplate GetMaxLevel(int level)
+        {
+            if (level > 0 && MaxLevels.TryGetValue(level, out MaxLevelTemplate row)) return row;
+            return null;
+        }
+
+        public int MaxLevelCap()
+        {
+            return MaxLevelList.Count > 0 ? MaxLevelList[MaxLevelList.Count - 1].Level : 1;
+        }
+
+        public void ApplyMaxLevelBonus(int level,
+            ref int atk, ref int def, ref int agi, ref int luck, ref int magicAtk, ref int magicDef)
+        {
+            for (int i = 0; i < MaxLevelList.Count; i++)
+            {
+                MaxLevelTemplate row = MaxLevelList[i];
+                if (row.Level > level) break;
+                atk += row.Attack;
+                def += row.Defence;
+                agi += row.Agility;
+                luck += row.Lucky;
+                magicAtk += row.MagicAttack;
+                magicDef += row.MagicDefence;
+            }
+        }
+
+        public BuffTemplateInfoRow GetBuffTemplate(int id)
+        {
+            if (id > 0 && BuffTemplates.TryGetValue(id, out BuffTemplateInfoRow row)) return row;
+            return null;
+        }
+
+        public ItemCategoryInfo GetItemCategory(int id)
+        {
+            if (id > 0 && ItemCategories.TryGetValue(id, out ItemCategoryInfo row)) return row;
+            return null;
+        }
+
+        public int MissionEnergyGold(int count)
+        {
+            int money = 0;
+            for (int i = 0; i < MissionEnergyPrices.Count; i++)
+            {
+                if (MissionEnergyPrices[i].Count <= count) money = MissionEnergyPrices[i].Money;
+            }
+            return money > 0 ? money : ConfigInt("MissionEnergyGold", 8000);
         }
 
         public JadeTemp GetJade(int id)
@@ -11459,6 +11798,287 @@ namespace GunMobile.Res
                 MonthCardGoodList.Add(info);
             }
             MonthCardGoodList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadNaiKuaiEquips(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/TS_NaiKuaiEquip.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || NaiKuaiEquips.ContainsKey(id)) continue;
+                var info = new NaiKuaiEquip
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateID"),
+                    PhyAttack = Int(row, "PhyAttack"),
+                    PhyDefence = Int(row, "PhyDefence"),
+                    MagAttack = Int(row, "MagAttack"),
+                    MagDefence = Int(row, "MagDefence"),
+                    EquipLevel = Int(row, "EquipLevel")
+                };
+                NaiKuaiEquips[id] = info;
+                NaiKuaiEquipList.Add(info);
+            }
+            NaiKuaiEquipList.Sort((a, b) => a.EquipLevel != b.EquipLevel ? a.EquipLevel.CompareTo(b.EquipLevel) : a.Id.CompareTo(b.Id));
+        }
+
+        void LoadActivitySystem(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/activitysystemitems.xml", out XmlResultTable items))
+            {
+                foreach (var row in items.Rows)
+                {
+                    int id = Int(row, "ID");
+                    int templateId = Int(row, "TemplateID");
+                    if (id <= 0 || templateId <= 0) continue;
+                    var info = new ActivitySystemItem
+                    {
+                        Id = id,
+                        ActivityType = Int(row, "ActivityType"),
+                        Quality = Int(row, "Quality"),
+                        Probability = Int(row, "Probability"),
+                        TemplateId = templateId,
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        ValidDate = Int(row, "ValidDate"),
+                        IsBind = Bool(row, "IsBind")
+                    };
+                    ActivitySystemItems.Add(info);
+                    if (!ActivitySystemTypes.Contains(info.ActivityType)) ActivitySystemTypes.Add(info.ActivityType);
+                }
+                ActivitySystemTypes.Sort();
+            }
+
+            if (!TryTable(loader, "Request/activitysystemitemsrate.xml", out XmlResultTable rates)) return;
+            foreach (var row in rates.Rows)
+            {
+                int templateId = Int(row, "TemplateID");
+                if (templateId <= 0) continue;
+                ActivitySystemRates.Add(new ActivitySystemRate
+                {
+                    ActivityType = Int(row, "ActivityType"),
+                    Quality = Int(row, "Quality"),
+                    TemplateId = templateId,
+                    Rate = Int(row, "Rate")
+                });
+            }
+        }
+
+        void LoadEventRewards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/eventrewarditemlist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                int templateId = Int(row, "TemplateID");
+                if (id <= 0 || templateId <= 0) continue;
+                var info = new EventRewardItem
+                {
+                    Id = id,
+                    ActivityType = Int(row, "ActivityType"),
+                    TemplateId = templateId,
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    ValidDate = Int(row, "ValidDate"),
+                    IsBinds = Bool(row, "IsBinds"),
+                    Random = Int(row, "Random")
+                };
+                EventRewardItems.Add(info);
+                if (!EventRewardTypes.Contains(info.ActivityType)) EventRewardTypes.Add(info.ActivityType);
+            }
+            EventRewardTypes.Sort();
+        }
+
+        // cardbufflist lồng <Card CardID><Item .../></Card>, value là 4 mức theo condition.
+        void LoadCardBuffs(ResLoader loader)
+        {
+            if (loader.TryReadBytes("Request/cardbufflist.xml", out byte[] data))
+            {
+                try
+                {
+                    XDocument doc = ZlibXml.Load(data);
+                    XElement root = doc != null ? doc.Root : null;
+                    if (root != null)
+                    {
+                        foreach (XElement card in root.Elements())
+                        {
+                            int cardId = QuestAttrInt(card, "CardID");
+                            if (cardId <= 0) continue;
+                            foreach (XElement item in card.Elements())
+                            {
+                                int condition = QuestAttrInt(item, "condition");
+                                if (condition <= 0) continue;
+                                CardBuffs.Add(new CardBuffEntry
+                                {
+                                    CardId = cardId,
+                                    Condition = condition,
+                                    PropertiesDscripId = QuestAttrInt(item, "PropertiesDscripID"),
+                                    Values = ParsePipeInts(QuestAttrStr(item, "value")),
+                                    Description = QuestAttrStr(item, "Description")
+                                });
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("GameDatabase cardbufflist: " + e.Message);
+                }
+            }
+
+            if (!TryTable(loader, "Request/cardinfolist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || CardSuitDescs.ContainsKey(id)) continue;
+                var info = new CardSuitDesc
+                {
+                    Id = id,
+                    SuitId = Int(row, "SuitID"),
+                    Name = Str(row, "Name"),
+                    Description = Str(row, "Description")
+                };
+                CardSuitDescs[id] = info;
+                CardSuitDescList.Add(info);
+            }
+            CardSuitDescList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadLotteryShow(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/lotteryshowtemplate.xml", out XmlResultTable table))
+            {
+                foreach (var row in table.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0) continue;
+                    var info = new LotteryShowItem
+                    {
+                        BoxType = Int(row, "BoxType"),
+                        SortId = Int(row, "SortID"),
+                        TemplateId = templateId,
+                        Count = Mathf.Max(1, Int(row, "Count"))
+                    };
+                    LotteryShowItems.Add(info);
+                    if (!LotteryBoxTypes.Contains(info.BoxType)) LotteryBoxTypes.Add(info.BoxType);
+                }
+                LotteryBoxTypes.Sort();
+            }
+
+            if (!TryTable(loader, "Request/searchgoodstemp.xml", out XmlResultTable search)) return;
+            foreach (var row in search.Rows)
+            {
+                int starId = Int(row, "StarID");
+                if (starId <= 0 || SearchGoods.ContainsKey(starId)) continue;
+                var info = new SearchGoodsTemp
+                {
+                    StarId = starId,
+                    NeedMoney = Int(row, "NeedMoney"),
+                    DestinationReward = Int(row, "DestinationReward"),
+                    VipLevel = Int(row, "VIPLevel"),
+                    ExtractNumber = ParseIntCsv(Str(row, "ExtractNumber"))
+                };
+                SearchGoods[starId] = info;
+                SearchGoodsList.Add(info);
+            }
+            SearchGoodsList.Sort((a, b) => a.StarId.CompareTo(b.StarId));
+        }
+
+        void LoadMaxLevels(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/maxleveltemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (level <= 0 || MaxLevels.ContainsKey(level)) continue;
+                var info = new MaxLevelTemplate
+                {
+                    Level = level,
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Lucky = Int(row, "Lucky"),
+                    MagicAttack = Int(row, "MagicAttack"),
+                    MagicDefence = Int(row, "MagicDefence"),
+                    Cost = Mathf.Max(1, Int(row, "Cost"))
+                };
+                MaxLevels[level] = info;
+                MaxLevelList.Add(info);
+            }
+            MaxLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        // Bảng tham chiếu: phân loại túi, buff hiển thị, khoảng giá trị thánh tích, giá mua thể lực.
+        void LoadReferenceTables(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/loaditemscategory.xml", out XmlResultTable categories))
+            {
+                foreach (var row in categories.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || ItemCategories.ContainsKey(id)) continue;
+                    var info = new ItemCategoryInfo
+                    {
+                        Id = id,
+                        Name = Str(row, "Name"),
+                        Place = Int(row, "Place")
+                    };
+                    ItemCategories[id] = info;
+                    ItemCategoryList.Add(info);
+                }
+                ItemCategoryList.Sort((a, b) => a.Id.CompareTo(b.Id));
+            }
+
+            if (TryTable(loader, "Request/bufftemplateinfo.xml", out XmlResultTable buffs))
+            {
+                foreach (var row in buffs.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || BuffTemplates.ContainsKey(id)) continue;
+                    var info = new BuffTemplateInfoRow
+                    {
+                        Id = id,
+                        Type = Int(row, "Type"),
+                        ShowType = Int(row, "ShowType"),
+                        Name = Str(row, "Name"),
+                        Description = Str(row, "Description"),
+                        Pic = Int(row, "Pic")
+                    };
+                    BuffTemplates[id] = info;
+                    BuffTemplateList.Add(info);
+                }
+                BuffTemplateList.Sort((a, b) => a.Id.CompareTo(b.Id));
+            }
+
+            if (TryTable(loader, "Request/TS_Relic_AdvanceValue.xml", out XmlResultTable relicValues))
+            {
+                foreach (var row in relicValues.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0) continue;
+                    RelicAdvanceValues.Add(new RelicAdvanceValue
+                    {
+                        Id = id,
+                        Quality = Int(row, "Quality"),
+                        Type = Int(row, "Type"),
+                        MinValue = Int(row, "MinValue"),
+                        MaxValue = Int(row, "MaxValue")
+                    });
+                }
+            }
+
+            if (!TryTable(loader, "Request/missionenergyprice.xml", out XmlResultTable energy)) return;
+            foreach (var row in energy.Rows)
+            {
+                int count = Int(row, "Count");
+                if (count <= 0) continue;
+                MissionEnergyPrices.Add(new MissionEnergyPrice
+                {
+                    Count = count,
+                    Money = Int(row, "Money"),
+                    Energy = Int(row, "Energy")
+                });
+            }
+            MissionEnergyPrices.Sort((a, b) => a.Count.CompareTo(b.Count));
         }
 
         void LoadServerConfig(ResLoader loader)
