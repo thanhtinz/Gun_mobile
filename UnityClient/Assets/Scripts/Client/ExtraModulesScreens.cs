@@ -1894,6 +1894,145 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             if (!string.IsNullOrEmpty(PhoneNet.LastLightRiddleJson)) SysUi.Note(body, PhoneNet.LastLightRiddleJson);
         }
 
+        public static void FairBattleScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "公平竞技 · fairbattle");
+            app.Profile.EnsureFairBattleSkills();
+            FairBattleRank rank = app.Database != null
+                ? app.Database.FairBattleRankFromPrestige(app.Profile.FairBattlePrestige)
+                : null;
+            SysUi.Note(body, "威望 " + app.Profile.FairBattlePrestige +
+                "  军衔 " + (rank != null ? rank.Name + " Lv" + rank.Level : "-") +
+                "  已学技能 " + app.Profile.FairBattleSkillIds.Count);
+            if (app.Database == null || app.Database.FairBattleSkillList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/fairbattleskillgettemplate.xml");
+                return;
+            }
+
+            SysUi.Row(body, "fbWin", "结算一场胜利 (+威望)", () => PhoneNet.FairBattle("battle", 0, true));
+            SysUi.Row(body, "fbLose", "结算一场失败 (+威望)", () => PhoneNet.FairBattle("battle", 0, false));
+            SysUi.Row(body, "fbWeek", "领取本周排名奖励 (前10)", () => PhoneNet.FairBattle("week", 1));
+
+            int shown = 0;
+            foreach (FairBattleSkillGet row in app.Database.FairBattleSkillList)
+            {
+                bool owned = app.Profile.FairBattleSkillIds.Contains(row.SkillId);
+                var mats = app.Database.GetFairBattleSkillMaterials(row.SkillId);
+                string matText = mats.Count > 0 ? "料x" + mats.Count : "金币";
+                FairBattleSkillGet local = row;
+                SysUi.Row(body, "fbs" + row.Id,
+                    (owned ? "[已学] " : "") + "技能 " + row.SkillId + " T" + row.Type + " Lv" + row.Level + "  " + matText,
+                    owned ? null : (UnityAction)(() => PhoneNet.LearnFairBattleSkill(local.Id)));
+                if (++shown >= 24) break;
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastFairBattleJson)) SysUi.Note(body, PhoneNet.LastFairBattleJson);
+        }
+
+        static readonly string[] OnlineArmSlotNames = { "镐子", "头盔", "衣服", "剑", "盾" };
+
+        public static void OnlineArmScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "在线装备 · onlinearmlevelinfo");
+            app.Profile.EnsureOnlineArm();
+            SysUi.Note(body, "今日挖矿 " + app.Profile.OnlineArmDigs + " 次");
+            if (app.Database == null || app.Database.OnlineArmLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/onlinearmlevelinfo.xml");
+                return;
+            }
+
+            SysUi.Row(body, "oaDig", "挖矿 (按 onlinearmdropitem 掉落档)", () => PhoneNet.OnlineArm("dig"));
+            for (int i = 0; i < OnlineArmSlotNames.Length; i++)
+            {
+                int slot = i;
+                int level = app.Profile.OnlineArmSlotLevels[i];
+                int exp = app.Profile.OnlineArmSlotExp[i];
+                int need = app.Database.OnlineArmNeedExp(i, level);
+                SysUi.Row(body, "oaUp" + i,
+                    OnlineArmSlotNames[i] + " Lv" + level + "  " + exp + "/" + (need > 0 ? need.ToString() : "MAX") + "  升级",
+                    () => PhoneNet.OnlineArm("upgrade", slot));
+                SysUi.Row(body, "oaExp" + i, OnlineArmSlotNames[i] + "  注入经验 (金币)",
+                    () => PhoneNet.OnlineArm("exp", slot));
+            }
+            if (!string.IsNullOrEmpty(PhoneNet.LastOnlineArmJson)) SysUi.Note(body, PhoneNet.LastOnlineArmJson);
+        }
+
+        public static void SubWeaponScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "副武器进化 · subweaponevolutiontemplate");
+            int level = Mathf.Max(1, app.Profile.SubWeaponLevel);
+            SysUi.Note(body, "进化 Lv" + level + "  经验 " + app.Profile.SubWeaponExp);
+            if (app.Database == null || app.Database.SubWeaponEvolutionList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/subweaponevolutiontemplate.xml");
+                return;
+            }
+
+            SubWeaponEvolution cur = app.Database.GetSubWeaponEvolution(level);
+            if (cur != null) SysUi.Note(body, "当前  血+" + cur.AddBlood + "  减伤 " + cur.ReduceDamage);
+            SubWeaponEvolution next = app.Database.GetSubWeaponEvolution(level + 1);
+            if (next != null)
+            {
+                SysUi.Row(body, "swUp", "进化到 Lv" + next.Level + "  需经验 " + next.Exp,
+                    () => PhoneNet.SubWeapon("evolve"));
+            }
+            else
+            {
+                SysUi.Note(body, "已满级");
+            }
+            SysUi.Row(body, "swExp", "注入经验 (金币)", () => PhoneNet.SubWeapon("exp"));
+            if (!string.IsNullOrEmpty(PhoneNet.LastSubWeaponJson)) SysUi.Note(body, PhoneNet.LastSubWeaponJson);
+        }
+
+        public static void LoveScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "情侣等级 · lovelevelist");
+            SysUi.Note(body, "伴侣 " + (string.IsNullOrEmpty(app.Profile.LovePartner) ? "无" : app.Profile.LovePartner) +
+                "  Lv" + app.Profile.LoveLevel + "  经验 " + app.Profile.LoveExp);
+            if (app.Database == null || app.Database.LoveLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/lovelevelist.xml");
+                return;
+            }
+
+            LoveLevelInfo cur = app.Database.GetLoveLevel(app.Profile.LoveLevel);
+            if (cur != null)
+            {
+                SysUi.Note(body, "加成 攻+" + cur.Attack + " 防+" + cur.Defence + " 敏+" + cur.Agility +
+                    " 幸+" + cur.Luck + (cur.SkillId > 0 ? "  技能 " + cur.SkillId : ""));
+            }
+            LoveLevelInfo next = app.Database.GetLoveLevel(app.Profile.LoveLevel + 1);
+            if (next != null) SysUi.Note(body, "下一级需经验 " + next.Exp);
+            SysUi.Row(body, "lovePair", "与在线好友结对 (用当前昵称)",
+                () => PhoneNet.Love("pair", app.Profile.Nick + "_love"));
+            SysUi.Row(body, "loveAdd", "增加亲密 (金币)", () => PhoneNet.Love("add"));
+            if (!string.IsNullOrEmpty(PhoneNet.LastLoveJson)) SysUi.Note(body, PhoneNet.LastLoveJson);
+        }
+
+        public static void TreeScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "神树 · treetemplatelist");
+            SysUi.Note(body, "树 Lv" + app.Profile.TreeLevel + "  经验 " + app.Profile.TreeExp +
+                "  今日挑战 " + app.Profile.TreeFights);
+            if (app.Database == null || app.Database.TreeLevelList.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/treetemplatelist.xml");
+                return;
+            }
+
+            TreeLevelInfo cur = app.Database.GetTreeLevel(app.Profile.TreeLevel);
+            if (cur != null)
+            {
+                SysUi.Note(body, cur.MonsterName + "  怪 " + cur.MonsterId + "  消耗经验 " + cur.CostExp +
+                    "  奖励 " + cur.AwardId);
+                SysUi.Row(body, "treeFight", "挑战 " + cur.MonsterName, PhoneNet.TreeChallenge);
+            }
+            TreeLevelInfo next = app.Database.GetTreeLevel(app.Profile.TreeLevel + 1);
+            if (next != null) SysUi.Note(body, "升级需经验 " + next.Exp);
+            if (!string.IsNullOrEmpty(PhoneNet.LastTreeJson)) SysUi.Note(body, PhoneNet.LastTreeJson);
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

@@ -67,6 +67,11 @@ namespace GunMobile.Client
         public static string LastCardAchievementJson;
         public static string LastGuardCoreJson;
         public static string LastLightRiddleJson;
+        public static string LastFairBattleJson;
+        public static string LastOnlineArmJson;
+        public static string LastSubWeaponJson;
+        public static string LastLoveJson;
+        public static string LastTreeJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -424,6 +429,43 @@ namespace GunMobile.Client
             string act = (action ?? "answer").Replace("\"", "");
             Road?.Send(PhoneMsg.LightRiddleAnswer,
                 "{\"action\":\"" + act + "\",\"questionId\":" + questionId + ",\"option\":" + option + "}");
+        }
+
+        public static void LearnFairBattleSkill(int id)
+        {
+            Road?.Send(PhoneMsg.FairBattleSkillLearn, "{\"id\":" + id + "}");
+        }
+
+        public static void FairBattle(string action = "week", int rank = 0, bool win = false)
+        {
+            string act = (action ?? "week").Replace("\"", "");
+            Road?.Send(PhoneMsg.FairBattleClaim,
+                "{\"action\":\"" + act + "\",\"rank\":" + rank + ",\"win\":" + (win ? 1 : 0) + "}");
+        }
+
+        public static void OnlineArm(string action = "upgrade", int slot = 0, int floor = 1)
+        {
+            string act = (action ?? "upgrade").Replace("\"", "");
+            Road?.Send(PhoneMsg.OnlineArmUpgrade,
+                "{\"action\":\"" + act + "\",\"slot\":" + slot + ",\"floor\":" + floor + "}");
+        }
+
+        public static void SubWeapon(string action = "evolve", int itemId = 0)
+        {
+            string act = (action ?? "evolve").Replace("\"", "");
+            Road?.Send(PhoneMsg.SubWeaponEvolve, "{\"action\":\"" + act + "\",\"itemId\":" + itemId + "}");
+        }
+
+        public static void Love(string action = "add", string nick = "")
+        {
+            string act = (action ?? "add").Replace("\"", "");
+            string who = (nick ?? "").Replace("\"", "");
+            Road?.Send(PhoneMsg.LoveLevelUp, "{\"action\":\"" + act + "\",\"nick\":\"" + who + "\"}");
+        }
+
+        public static void TreeChallenge()
+        {
+            Road?.Send(PhoneMsg.TreeChallenge, "{}");
         }
 
         public static void DrawLottery(int count)

@@ -194,6 +194,20 @@ namespace GunMobile.Client
         public int LightRiddleAnswered;
         public int LightRiddleCorrect;
         public int LightRiddleQuestionId;
+        public int FairBattlePrestige;
+        public int FairBattleRankLevel = 1;
+        public List<int> FairBattleSkillIds = new List<int>();
+        public List<int> OnlineArmSlotLevels = new List<int>();
+        public List<int> OnlineArmSlotExp = new List<int>();
+        public int OnlineArmDigs;
+        public int SubWeaponLevel = 1;
+        public int SubWeaponExp;
+        public int LoveExp;
+        public int LoveLevel = 1;
+        public string LovePartner = "";
+        public int TreeLevel;
+        public int TreeExp;
+        public int TreeFights;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -242,6 +256,14 @@ namespace GunMobile.Client
         public void EnsureManorTaskClaimed() { if (ManorTaskClaimed == null) ManorTaskClaimed = new List<int>(); }
         public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
         public void EnsureGuardCoreSkills() { if (GuardCoreSkillIds == null) GuardCoreSkillIds = new List<int>(); }
+        public void EnsureFairBattleSkills() { if (FairBattleSkillIds == null) FairBattleSkillIds = new List<int>(); }
+        public void EnsureOnlineArm()
+        {
+            if (OnlineArmSlotLevels == null) OnlineArmSlotLevels = new List<int>();
+            if (OnlineArmSlotExp == null) OnlineArmSlotExp = new List<int>();
+            while (OnlineArmSlotLevels.Count < 5) OnlineArmSlotLevels.Add(1);
+            while (OnlineArmSlotExp.Count < 5) OnlineArmSlotExp.Add(0);
+        }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -683,6 +705,10 @@ namespace GunMobile.Client
                 db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 EnsureGuardCoreSkills();
                 db.ApplyGuardCoreBonus(GuardCoreGrade, GuardCoreSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                EnsureOnlineArm();
+                db.ApplyOnlineArmBonus(OnlineArmSlotLevels, ref atk, ref def, ref agi, ref luk);
+                db.ApplySubWeaponBonus(SubWeaponLevel, ref hp, ref sGuard);
+                db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luk);
                 atk += sDmg;
                 def += sGuard;
                 atk += magicAtk / 4;
@@ -955,6 +981,11 @@ namespace GunMobile.Client
             new ModuleDef("cardachievement", "卡牌成就", "Request/cardachievement.xml"),
             new ModuleDef("guardcore", "守护核心", "Request/guardcoretemplate.xml"),
             new ModuleDef("lightriddle", "元宵灯谜", "Request/lightriddlequest.xml"),
+            new ModuleDef("fairbattle", "公平竞技", "Request/fairbattleskillgettemplate.xml"),
+            new ModuleDef("onlinearm", "在线装备", "Request/onlinearmlevelinfo.xml"),
+            new ModuleDef("subweapon", "副武器进化", "Request/subweaponevolutiontemplate.xml"),
+            new ModuleDef("love", "情侣等级", "Request/lovelevelist.xml"),
+            new ModuleDef("tree", "神树", "Request/treetemplatelist.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

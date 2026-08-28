@@ -263,6 +263,23 @@ namespace GunMobile.Net
         public int LightRiddleAnswered;
         public int LightRiddleCorrect;
         public int LightRiddleQuestionId;
+        public int FairBattlePrestige;
+        public int FairBattleRankLevel = 1;
+        public List<int> FairBattleSkillIds = new List<int>();
+        public int FairBattleWeekClaimWeek = -1;
+        public List<int> OnlineArmSlotLevels = new List<int>();
+        public List<int> OnlineArmSlotExp = new List<int>();
+        public int OnlineArmDay = -1;
+        public int OnlineArmDigs;
+        public int SubWeaponLevel = 1;
+        public int SubWeaponExp;
+        public int LoveExp;
+        public int LoveLevel = 1;
+        public string LovePartner = "";
+        public int TreeLevel;
+        public int TreeExp;
+        public int TreeDay = -1;
+        public int TreeFights;
 
         public static int NowMinutes()
         {
@@ -295,6 +312,36 @@ namespace GunMobile.Net
             if (grade > ManorGrade) ManorGrade = grade;
         }
 
+        public void EnsureFairBattleSkills() { if (FairBattleSkillIds == null) FairBattleSkillIds = new List<int>(); }
+        public void EnsureOnlineArm()
+        {
+            if (OnlineArmSlotLevels == null) OnlineArmSlotLevels = new List<int>();
+            if (OnlineArmSlotExp == null) OnlineArmSlotExp = new List<int>();
+            while (OnlineArmSlotLevels.Count < 5) OnlineArmSlotLevels.Add(1);
+            while (OnlineArmSlotExp.Count < 5) OnlineArmSlotExp.Add(0);
+        }
+        public void TouchOnlineArmDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (OnlineArmDay != day) { OnlineArmDay = day; OnlineArmDigs = 0; }
+        }
+        public void TouchTreeDay()
+        {
+            int day = DateTime.Now.DayOfYear;
+            if (TreeDay != day) { TreeDay = day; TreeFights = 0; }
+        }
+        public void SyncFairBattleRank(GameDatabase db)
+        {
+            if (db == null) return;
+            FairBattleRank rank = db.FairBattleRankFromPrestige(FairBattlePrestige);
+            if (rank != null) FairBattleRankLevel = rank.Level;
+        }
+        public void SyncLoveLevel(GameDatabase db)
+        {
+            if (db == null) return;
+            int level = db.LoveLevelFromExp(LoveExp);
+            if (level > LoveLevel) LoveLevel = level;
+        }
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
         public void EnsureCalendarClaimed() { if (CalendarClaimedDays == null) CalendarClaimedDays = new List<int>(); }
@@ -706,6 +753,11 @@ namespace GunMobile.Net
             db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
             EnsureGuardCoreSkills();
             db.ApplyGuardCoreBonus(GuardCoreGrade, GuardCoreSkillIds, ref atk, ref def, ref agi, ref luck, ref hp, ref baseDmg, ref baseGuard, ref magicAtk, ref magicDef);
+            EnsureOnlineArm();
+            db.ApplyOnlineArmBonus(OnlineArmSlotLevels, ref atk, ref def, ref agi, ref luck);
+            db.ApplySubWeaponBonus(SubWeaponLevel, ref hp, ref baseGuard);
+            SyncLoveLevel(db);
+            db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luck);
             db.ApplyNecklaceBonus(NecklaceLevel, ref hp, ref def);
             db.ApplyHomeTempleBonus(HomeTempleLevel, ref atk, ref hp);
             db.ApplyHomeTemplePracticeBonus(HomeTemplePracticeLevel, ref atk, ref def, ref agi, ref luck, ref hp, ref magicDef);
@@ -857,6 +909,28 @@ namespace GunMobile.Net
             J(sb, "lightRiddleAnswered", LightRiddleAnswered); sb.Append(",");
             J(sb, "lightRiddleCorrect", LightRiddleCorrect); sb.Append(",");
             J(sb, "lightRiddleQuestionId", LightRiddleQuestionId); sb.Append(",");
+            J(sb, "fairBattlePrestige", FairBattlePrestige); sb.Append(",");
+            J(sb, "fairBattleRankLevel", FairBattleRankLevel); sb.Append(",");
+            EnsureFairBattleSkills();
+            sb.Append("\"fairBattleSkillIds\":[");
+            for (int i = 0; i < FairBattleSkillIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(FairBattleSkillIds[i]); }
+            sb.Append("],");
+            EnsureOnlineArm();
+            sb.Append("\"onlineArmSlotLevels\":[");
+            for (int i = 0; i < OnlineArmSlotLevels.Count; i++) { if (i > 0) sb.Append(","); sb.Append(OnlineArmSlotLevels[i]); }
+            sb.Append("],");
+            sb.Append("\"onlineArmSlotExp\":[");
+            for (int i = 0; i < OnlineArmSlotExp.Count; i++) { if (i > 0) sb.Append(","); sb.Append(OnlineArmSlotExp[i]); }
+            sb.Append("],");
+            J(sb, "onlineArmDigs", OnlineArmDigs); sb.Append(",");
+            J(sb, "subWeaponLevel", SubWeaponLevel); sb.Append(",");
+            J(sb, "subWeaponExp", SubWeaponExp); sb.Append(",");
+            J(sb, "loveExp", LoveExp); sb.Append(",");
+            J(sb, "loveLevel", LoveLevel); sb.Append(",");
+            J(sb, "lovePartner", LovePartner ?? ""); sb.Append(",");
+            J(sb, "treeLevel", TreeLevel); sb.Append(",");
+            J(sb, "treeExp", TreeExp); sb.Append(",");
+            J(sb, "treeFights", TreeFights); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -1184,6 +1258,16 @@ namespace GunMobile.Net
             foreach (var s in Bag) { if (s.TemplateId == templateId) { s.Count += count; return true; } }
             Bag.Add(new BagSlot { TemplateId = templateId, Count = count });
             return true;
+        }
+
+        public bool HasItem(int templateId, int count)
+        {
+            if (templateId <= 0 || count <= 0) return false;
+            for (int i = 0; i < Bag.Count; i++)
+            {
+                if (Bag[i].TemplateId == templateId && Bag[i].Count >= count) return true;
+            }
+            return false;
         }
 
         public bool Consume(int templateId, int count)
@@ -2486,6 +2570,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.LightRiddleAnswer:
                     HandleLightRiddleAnswer(player, ns, json);
+                    break;
+
+                case PhoneMsg.FairBattleSkillLearn:
+                    HandleFairBattleSkillLearn(player, ns, json);
+                    break;
+
+                case PhoneMsg.FairBattleClaim:
+                    HandleFairBattleClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.OnlineArmUpgrade:
+                    HandleOnlineArmUpgrade(player, ns, json);
+                    break;
+
+                case PhoneMsg.SubWeaponEvolve:
+                    HandleSubWeaponEvolve(player, ns, json);
+                    break;
+
+                case PhoneMsg.LoveLevelUp:
+                    HandleLoveLevelUp(player, ns, json);
+                    break;
+
+                case PhoneMsg.TreeChallenge:
+                    HandleTreeChallenge(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -7621,6 +7729,285 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // fairbattleskillgettemplate + fairbattleskillmaterialtemplate: học kỹ năng công bằng chiến
+        // theo chuỗi NextID, tốn vật liệu trong bảng material (thiếu vật liệu thì trả err).
+        void HandleFairBattleSkillLearn(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.FairBattleSkillList.Count == 0)
+            { Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureFairBattleSkills();
+            int id = JI(json, "id", 0);
+            FairBattleSkillGet row = _db.GetFairBattleSkill(id);
+            if (row == null) { Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":false,\"err\":\"skill\"}"); return; }
+            if (player.FairBattleSkillIds.Contains(row.SkillId))
+            {
+                Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":true,\"skillId\":" + row.SkillId + ",\"already\":true}");
+                return;
+            }
+
+            IReadOnlyList<FairBattleSkillMaterial> mats = _db.GetFairBattleSkillMaterials(row.SkillId);
+            for (int i = 0; i < mats.Count; i++)
+            {
+                if (!player.HasItem(mats[i].TemplateId, mats[i].Count))
+                {
+                    Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":false,\"err\":\"material\",\"itemId\":" +
+                        mats[i].TemplateId + ",\"need\":" + mats[i].Count + "}");
+                    return;
+                }
+            }
+            for (int i = 0; i < mats.Count; i++) player.Consume(mats[i].TemplateId, mats[i].Count);
+
+            int gold = _db.ConfigInt("FairBattleSkillGold", 500) * Mathf.Max(1, row.Level);
+            if (mats.Count == 0)
+            {
+                if (player.Gold < gold)
+                { Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":false,\"err\":\"gold\",\"need\":" + gold + "}"); return; }
+                player.Gold -= gold;
+            }
+
+            player.FairBattleSkillIds.Add(row.SkillId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FairBattleSkillLearn, "{\"ok\":true,\"id\":" + row.Id + ",\"skillId\":" + row.SkillId +
+                ",\"nextId\":" + row.NextId + ",\"materials\":" + mats.Count + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // fairbattlerewardtemp = bậc quân hàm theo Prestige, fairbatttleweeklyawardtemp = thưởng tuần theo hạng.
+        void HandleFairBattleClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.FairBattleRankList.Count == 0)
+            { Send(ns, PhoneMsg.FairBattleClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "week");
+            if (string.Equals(action, "battle", StringComparison.OrdinalIgnoreCase))
+            {
+                bool win = JI(json, "win", 0) != 0;
+                int gain = _db.FairBattlePrestigeGain(player.FairBattlePrestige, win);
+                player.FairBattlePrestige += gain;
+                player.SyncFairBattleRank(_db);
+                SavePlayer(player);
+                FairBattleRank now = _db.FairBattleRankFromPrestige(player.FairBattlePrestige);
+                Send(ns, PhoneMsg.FairBattleClaim, "{\"ok\":true,\"action\":\"battle\",\"gain\":" + gain +
+                    ",\"prestige\":" + player.FairBattlePrestige + ",\"level\":" + player.FairBattleRankLevel +
+                    ",\"name\":\"" + (now != null ? now.Name : "") + "\"}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int week = DateTime.Now.Year * 100 + ((DateTime.Now.DayOfYear - 1) / 7 + 1);
+            if (player.FairBattleWeekClaimWeek == week)
+            { Send(ns, PhoneMsg.FairBattleClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            int rank = Mathf.Max(1, JI(json, "rank", 0));
+            List<FairBattleWeekAward> awards = _db.GetFairBattleWeekAwards(rank);
+            if (awards.Count == 0)
+            { Send(ns, PhoneMsg.FairBattleClaim, "{\"ok\":false,\"err\":\"rank\"}"); return; }
+
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < awards.Count; i++)
+            {
+                player.AddItem(awards[i].TemplateId, awards[i].Count);
+                if (firstTemplate == 0) firstTemplate = awards[i].TemplateId;
+                granted += awards[i].Count;
+            }
+            player.FairBattleWeekClaimWeek = week;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.FairBattleClaim, "{\"ok\":true,\"action\":\"week\",\"rank\":" + rank +
+                ",\"items\":" + awards.Count + ",\"count\":" + granted + ",\"templateId\":" + firstTemplate + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // onlinearmlevelinfo: 5 trang bị online (cuốc/mũ/giáp/kiếm/khiên) nạp exp rồi lên cấp.
+        // onlinearmdropitem: bảng tỉ lệ theo cấp cuốc, dump không kèm item nên quy ra vàng theo bậc.
+        void HandleOnlineArmUpgrade(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.OnlineArmLevelList.Count == 0)
+            { Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureOnlineArm();
+            string action = JS(json, "action", "upgrade");
+            int slot = Mathf.Clamp(JI(json, "slot", 0), 0, 4);
+
+            if (string.Equals(action, "dig", StringComparison.OrdinalIgnoreCase))
+            {
+                player.TouchOnlineArmDay();
+                int digMax = _db.ConfigInt("OnlineArmDigMax", 20);
+                if (player.OnlineArmDigs >= digMax)
+                { Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+
+                int pickLevel = player.OnlineArmSlotLevels[0];
+                int floor = Mathf.Max(1, JI(json, "floor", 1));
+                OnlineArmDrop drop = _db.GetOnlineArmDrop(pickLevel, floor);
+                int tier = _db.RollOnlineArmTier(drop, _rng);
+                int gold = tier * _db.ConfigInt("OnlineArmDigGold", 200);
+                int exp = tier * _db.ConfigInt("OnlineArmDigExp", 500);
+                player.OnlineArmDigs++;
+                player.Gold += gold;
+                player.OnlineArmSlotExp[0] += exp;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":true,\"action\":\"dig\",\"tier\":" + tier +
+                    ",\"gold\":" + gold + ",\"exp\":" + exp + ",\"digs\":" + player.OnlineArmDigs +
+                    ",\"max\":" + digMax + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.Equals(action, "exp", StringComparison.OrdinalIgnoreCase))
+            {
+                int goldCost = _db.ConfigInt("OnlineArmExpGold", 5000);
+                if (player.Gold < goldCost)
+                { Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                int gain = _db.ConfigInt("OnlineArmExpGain", 10000);
+                player.Gold -= goldCost;
+                player.OnlineArmSlotExp[slot] += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":true,\"action\":\"exp\",\"slot\":" + slot +
+                    ",\"exp\":" + player.OnlineArmSlotExp[slot] + ",\"gain\":" + gain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int level = player.OnlineArmSlotLevels[slot];
+            int need = _db.OnlineArmNeedExp(slot, level);
+            if (need <= 0) { Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            if (player.OnlineArmSlotExp[slot] < need)
+            {
+                Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":false,\"err\":\"exp\",\"have\":" +
+                    player.OnlineArmSlotExp[slot] + ",\"need\":" + need + "}");
+                return;
+            }
+
+            player.OnlineArmSlotExp[slot] -= need;
+            player.OnlineArmSlotLevels[slot] = level + 1;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.OnlineArmUpgrade, "{\"ok\":true,\"action\":\"upgrade\",\"slot\":" + slot +
+                ",\"level\":" + player.OnlineArmSlotLevels[slot] + ",\"used\":" + need + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        void HandleSubWeaponEvolve(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.SubWeaponEvolutionList.Count == 0)
+            { Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            if (player.SubWeaponLevel <= 0) player.SubWeaponLevel = 1;
+            string action = JS(json, "action", "evolve");
+            if (string.Equals(action, "exp", StringComparison.OrdinalIgnoreCase))
+            {
+                int itemId = JI(json, "itemId", 0);
+                int gain = _db.ConfigInt("SubWeaponExpGain", 400);
+                if (itemId > 0)
+                {
+                    if (!player.Consume(itemId, 1))
+                    { Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                }
+                else
+                {
+                    int goldCost = _db.ConfigInt("SubWeaponExpGold", 2000);
+                    if (player.Gold < goldCost)
+                    { Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                    player.Gold -= goldCost;
+                }
+                player.SubWeaponExp += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":true,\"action\":\"exp\",\"exp\":" + player.SubWeaponExp +
+                    ",\"gain\":" + gain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            SubWeaponEvolution next = _db.GetSubWeaponEvolution(player.SubWeaponLevel + 1);
+            if (next == null) { Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":false,\"err\":\"max\"}"); return; }
+            if (player.SubWeaponExp < next.Exp)
+            {
+                Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.SubWeaponExp +
+                    ",\"need\":" + next.Exp + "}");
+                return;
+            }
+
+            player.SubWeaponExp -= next.Exp;
+            player.SubWeaponLevel = next.Level;
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.SubWeaponEvolve, "{\"ok\":true,\"action\":\"evolve\",\"level\":" + player.SubWeaponLevel +
+                ",\"addBlood\":" + next.AddBlood + ",\"reduceDamage\":" + next.ReduceDamage + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // lovelevelist: kết đôi tăng exp tình cảm, mỗi cấp cộng thẳng chỉ số và mở SkillID.
+        void HandleLoveLevelUp(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.LoveLevelList.Count == 0)
+            { Send(ns, PhoneMsg.LoveLevelUp, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "add");
+            if (string.Equals(action, "pair", StringComparison.OrdinalIgnoreCase))
+            {
+                string nick = JS(json, "nick", "");
+                player.LovePartner = nick ?? "";
+                SavePlayer(player);
+                Send(ns, PhoneMsg.LoveLevelUp, "{\"ok\":true,\"action\":\"pair\",\"nick\":\"" + player.LovePartner + "\"}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            if (string.IsNullOrEmpty(player.LovePartner))
+            { Send(ns, PhoneMsg.LoveLevelUp, "{\"ok\":false,\"err\":\"partner\"}"); return; }
+
+            int goldCost = _db.ConfigInt("LoveExpGold", 1000);
+            if (player.Gold < goldCost)
+            { Send(ns, PhoneMsg.LoveLevelUp, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+            player.Gold -= goldCost;
+            player.LoveExp += _db.ConfigInt("LoveExpGain", 30);
+            int before = player.LoveLevel;
+            player.SyncLoveLevel(_db);
+            player.RecalcStats(_db);
+            SavePlayer(player);
+            LoveLevelInfo cur = _db.GetLoveLevel(player.LoveLevel);
+            Send(ns, PhoneMsg.LoveLevelUp, "{\"ok\":true,\"action\":\"add\",\"exp\":" + player.LoveExp +
+                ",\"level\":" + player.LoveLevel + ",\"up\":" + (player.LoveLevel > before ? "true" : "false") +
+                ",\"skillId\":" + (cur != null ? cur.SkillId : 0) + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // treetemplatelist: mỗi cấp thần thụ là một quái, tốn CostExp để nhận AwardID + MonsterExp.
+        void HandleTreeChallenge(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.TreeLevelList.Count == 0)
+            { Send(ns, PhoneMsg.TreeChallenge, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchTreeDay();
+            int fightMax = _db.ConfigInt("TreeFightMax", 10);
+            if (player.TreeFights >= fightMax)
+            { Send(ns, PhoneMsg.TreeChallenge, "{\"ok\":false,\"err\":\"limit\",\"max\":" + fightMax + "}"); return; }
+
+            TreeLevelInfo row = _db.GetTreeLevel(player.TreeLevel);
+            if (row == null) { Send(ns, PhoneMsg.TreeChallenge, "{\"ok\":false,\"err\":\"level\"}"); return; }
+            if (row.CostExp > 0 && player.TreeExp < row.CostExp)
+            {
+                Send(ns, PhoneMsg.TreeChallenge, "{\"ok\":false,\"err\":\"exp\",\"have\":" + player.TreeExp +
+                    ",\"need\":" + row.CostExp + "}");
+                return;
+            }
+
+            if (row.CostExp > 0) player.TreeExp -= row.CostExp;
+            player.TreeExp += row.MonsterExp;
+            player.TreeFights++;
+            if (row.AwardId > 0) player.AddItem(row.AwardId, 1);
+            player.AddGp(_db, _db.ConfigInt("TreeGp", 10));
+
+            TreeLevelInfo next = _db.GetTreeLevel(player.TreeLevel + 1);
+            bool levelUp = next != null && player.TreeExp >= next.Exp;
+            if (levelUp) player.TreeLevel++;
+            SavePlayer(player);
+            Send(ns, PhoneMsg.TreeChallenge, "{\"ok\":true,\"level\":" + player.TreeLevel + ",\"exp\":" + player.TreeExp +
+                ",\"monster\":" + row.MonsterId + ",\"awardId\":" + row.AwardId +
+                ",\"up\":" + (levelUp ? "true" : "false") + ",\"fights\":" + player.TreeFights + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -10724,6 +11111,15 @@ namespace GunMobile.Net
             public int GuardCoreGrade = 1, GuardCoreExp;
             public List<int> GuardCoreSkillIds = new List<int>();
             public int LightRiddleDay = -1, LightRiddleAnswered, LightRiddleCorrect, LightRiddleQuestionId;
+            public int FairBattlePrestige, FairBattleRankLevel = 1, FairBattleWeekClaimWeek = -1;
+            public List<int> FairBattleSkillIds = new List<int>();
+            public List<int> OnlineArmSlotLevels = new List<int>();
+            public List<int> OnlineArmSlotExp = new List<int>();
+            public int OnlineArmDay = -1, OnlineArmDigs;
+            public int SubWeaponLevel = 1, SubWeaponExp;
+            public int LoveExp, LoveLevel = 1;
+            public string LovePartner = "";
+            public int TreeLevel, TreeExp, TreeDay = -1, TreeFights;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -10902,6 +11298,16 @@ namespace GunMobile.Net
                 GuardCoreSkillIds = p.GuardCoreSkillIds ?? new List<int>(),
                 LightRiddleDay = p.LightRiddleDay, LightRiddleAnswered = p.LightRiddleAnswered,
                 LightRiddleCorrect = p.LightRiddleCorrect, LightRiddleQuestionId = p.LightRiddleQuestionId,
+                FairBattlePrestige = p.FairBattlePrestige,
+                FairBattleRankLevel = p.FairBattleRankLevel > 0 ? p.FairBattleRankLevel : 1,
+                FairBattleWeekClaimWeek = p.FairBattleWeekClaimWeek,
+                FairBattleSkillIds = p.FairBattleSkillIds ?? new List<int>(),
+                OnlineArmSlotLevels = p.OnlineArmSlotLevels ?? new List<int>(),
+                OnlineArmSlotExp = p.OnlineArmSlotExp ?? new List<int>(),
+                OnlineArmDay = p.OnlineArmDay, OnlineArmDigs = p.OnlineArmDigs,
+                SubWeaponLevel = p.SubWeaponLevel > 0 ? p.SubWeaponLevel : 1, SubWeaponExp = p.SubWeaponExp,
+                LoveExp = p.LoveExp, LoveLevel = p.LoveLevel > 0 ? p.LoveLevel : 1, LovePartner = p.LovePartner ?? "",
+                TreeLevel = p.TreeLevel, TreeExp = p.TreeExp, TreeDay = p.TreeDay, TreeFights = p.TreeFights,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -11084,6 +11490,16 @@ namespace GunMobile.Net
                 GuardCoreSkillIds = s.GuardCoreSkillIds ?? new List<int>(),
                 LightRiddleDay = s.LightRiddleDay, LightRiddleAnswered = s.LightRiddleAnswered,
                 LightRiddleCorrect = s.LightRiddleCorrect, LightRiddleQuestionId = s.LightRiddleQuestionId,
+                FairBattlePrestige = s.FairBattlePrestige,
+                FairBattleRankLevel = s.FairBattleRankLevel > 0 ? s.FairBattleRankLevel : 1,
+                FairBattleWeekClaimWeek = s.FairBattleWeekClaimWeek,
+                FairBattleSkillIds = s.FairBattleSkillIds ?? new List<int>(),
+                OnlineArmSlotLevels = s.OnlineArmSlotLevels ?? new List<int>(),
+                OnlineArmSlotExp = s.OnlineArmSlotExp ?? new List<int>(),
+                OnlineArmDay = s.OnlineArmDay, OnlineArmDigs = s.OnlineArmDigs,
+                SubWeaponLevel = s.SubWeaponLevel > 0 ? s.SubWeaponLevel : 1, SubWeaponExp = s.SubWeaponExp,
+                LoveExp = s.LoveExp, LoveLevel = s.LoveLevel > 0 ? s.LoveLevel : 1, LovePartner = s.LovePartner ?? "",
+                TreeLevel = s.TreeLevel, TreeExp = s.TreeExp, TreeDay = s.TreeDay, TreeFights = s.TreeFights,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

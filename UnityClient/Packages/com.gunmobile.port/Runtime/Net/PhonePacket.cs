@@ -282,6 +282,12 @@ namespace GunMobile.Net
         public const ushort CardAchievementClaim = 235;
         public const ushort GuardCoreUpgrade = 236;
         public const ushort LightRiddleAnswer = 237;
+        public const ushort FairBattleSkillLearn = 238;
+        public const ushort FairBattleClaim = 239;
+        public const ushort OnlineArmUpgrade = 240;
+        public const ushort SubWeaponEvolve = 241;
+        public const ushort LoveLevelUp = 242;
+        public const ushort TreeChallenge = 243;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

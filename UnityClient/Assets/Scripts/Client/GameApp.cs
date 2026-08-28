@@ -238,6 +238,21 @@ namespace GunMobile.Client
                 case "lightriddle":
                     ExtraModulesScreens.LightRiddleScreen(_safe, this);
                     return;
+                case "fairbattle":
+                    ExtraModulesScreens.FairBattleScreen(_safe, this);
+                    return;
+                case "onlinearm":
+                    ExtraModulesScreens.OnlineArmScreen(_safe, this);
+                    return;
+                case "subweapon":
+                    ExtraModulesScreens.SubWeaponScreen(_safe, this);
+                    return;
+                case "love":
+                    ExtraModulesScreens.LoveScreen(_safe, this);
+                    return;
+                case "tree":
+                    ExtraModulesScreens.TreeScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -849,6 +864,37 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "lightriddle")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.FairBattleSkillLearn:
+                    case PhoneMsg.FairBattleClaim:
+                        PhoneNet.LastFairBattleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "fairbattle")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.OnlineArmUpgrade:
+                        PhoneNet.LastOnlineArmJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "onlinearm")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SubWeaponEvolve:
+                        PhoneNet.LastSubWeaponJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "subweapon")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LoveLevelUp:
+                        PhoneNet.LastLoveJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "love")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.TreeChallenge:
+                        PhoneNet.LastTreeJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "tree")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1142,6 +1188,23 @@ namespace GunMobile.Client
             Profile.LightRiddleAnswered = JsonInt(json, "lightRiddleAnswered", Profile.LightRiddleAnswered);
             Profile.LightRiddleCorrect = JsonInt(json, "lightRiddleCorrect", Profile.LightRiddleCorrect);
             Profile.LightRiddleQuestionId = JsonInt(json, "lightRiddleQuestionId", Profile.LightRiddleQuestionId);
+            Profile.FairBattlePrestige = JsonInt(json, "fairBattlePrestige", Profile.FairBattlePrestige);
+            Profile.FairBattleRankLevel = JsonInt(json, "fairBattleRankLevel", Profile.FairBattleRankLevel);
+            Profile.EnsureFairBattleSkills();
+            ParseIntListFromServer(json, "fairBattleSkillIds", Profile.FairBattleSkillIds);
+            Profile.EnsureOnlineArm();
+            ParseIntListFromServer(json, "onlineArmSlotLevels", Profile.OnlineArmSlotLevels);
+            ParseIntListFromServer(json, "onlineArmSlotExp", Profile.OnlineArmSlotExp);
+            Profile.EnsureOnlineArm();
+            Profile.OnlineArmDigs = JsonInt(json, "onlineArmDigs", Profile.OnlineArmDigs);
+            Profile.SubWeaponLevel = JsonInt(json, "subWeaponLevel", Profile.SubWeaponLevel);
+            Profile.SubWeaponExp = JsonInt(json, "subWeaponExp", Profile.SubWeaponExp);
+            Profile.LoveExp = JsonInt(json, "loveExp", Profile.LoveExp);
+            Profile.LoveLevel = JsonInt(json, "loveLevel", Profile.LoveLevel);
+            Profile.LovePartner = JsonStr(json, "lovePartner", Profile.LovePartner);
+            Profile.TreeLevel = JsonInt(json, "treeLevel", Profile.TreeLevel);
+            Profile.TreeExp = JsonInt(json, "treeExp", Profile.TreeExp);
+            Profile.TreeFights = JsonInt(json, "treeFights", Profile.TreeFights);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

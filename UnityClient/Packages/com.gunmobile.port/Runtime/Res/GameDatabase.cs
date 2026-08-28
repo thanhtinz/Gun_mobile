@@ -1379,6 +1379,100 @@ namespace GunMobile.Res
         public string Option4 = "";
     }
 
+    public sealed class FairBattleSkillGet
+    {
+        public int Id;
+        public int SkillId;
+        public int Level;
+        public int NextId;
+        public int Type;
+    }
+
+    public sealed class FairBattleSkillMaterial
+    {
+        public int SkillId;
+        public int TemplateId;
+        public int Count = 1;
+        public int OrderId;
+    }
+
+    public sealed class FairBattleRank
+    {
+        public int Level;
+        public int Prestige;
+        public string Name = "";
+        public string Title = "";
+        public int PrestigeForWin;
+        public int PrestigeForLose;
+    }
+
+    public sealed class FairBattleWeekAward
+    {
+        public int TemplateId;
+        public int MinRank;
+        public int MaxRank;
+        public int Count = 1;
+        public bool IsBinds;
+        public int ValidDate;
+        public int Attack;
+        public int Defense;
+        public int Agility;
+        public int Luck;
+    }
+
+    public sealed class OnlineArmLevel
+    {
+        public int LevelCount;
+        public int PickAxeExp;
+        public int HeadExp;
+        public int ClothExp;
+        public int SwordExp;
+        public int ShieldExp;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Lucky;
+    }
+
+    public sealed class OnlineArmDrop
+    {
+        public int Id;
+        public int FloorCount;
+        public int PickAxeLevel;
+        public int[] Rates = System.Array.Empty<int>();
+    }
+
+    public sealed class SubWeaponEvolution
+    {
+        public int Level;
+        public int Exp;
+        public int AddBlood;
+        public int ReduceDamage;
+    }
+
+    public sealed class LoveLevelInfo
+    {
+        public int Level;
+        public int Exp;
+        public int Animation;
+        public int SkillId;
+        public int Attack;
+        public int Defence;
+        public int Agility;
+        public int Luck;
+    }
+
+    public sealed class TreeLevelInfo
+    {
+        public int Level;
+        public int AwardId;
+        public int CostExp;
+        public int MonsterExp;
+        public int MonsterId;
+        public string MonsterName = "";
+        public int Exp;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -1942,6 +2036,21 @@ namespace GunMobile.Res
         public List<GuardCoreLevel> GuardCoreLevelList { get; } = new List<GuardCoreLevel>();
         public Dictionary<int, LightRiddleQuestion> LightRiddles { get; } = new Dictionary<int, LightRiddleQuestion>();
         public List<LightRiddleQuestion> LightRiddleList { get; } = new List<LightRiddleQuestion>();
+        public Dictionary<int, FairBattleSkillGet> FairBattleSkills { get; } = new Dictionary<int, FairBattleSkillGet>();
+        public List<FairBattleSkillGet> FairBattleSkillList { get; } = new List<FairBattleSkillGet>();
+        public Dictionary<int, List<FairBattleSkillMaterial>> FairBattleSkillMaterials { get; } = new Dictionary<int, List<FairBattleSkillMaterial>>();
+        public Dictionary<int, FairBattleRank> FairBattleRanks { get; } = new Dictionary<int, FairBattleRank>();
+        public List<FairBattleRank> FairBattleRankList { get; } = new List<FairBattleRank>();
+        public List<FairBattleWeekAward> FairBattleWeekAwards { get; } = new List<FairBattleWeekAward>();
+        public Dictionary<int, OnlineArmLevel> OnlineArmLevels { get; } = new Dictionary<int, OnlineArmLevel>();
+        public List<OnlineArmLevel> OnlineArmLevelList { get; } = new List<OnlineArmLevel>();
+        public List<OnlineArmDrop> OnlineArmDrops { get; } = new List<OnlineArmDrop>();
+        public Dictionary<int, SubWeaponEvolution> SubWeaponEvolutions { get; } = new Dictionary<int, SubWeaponEvolution>();
+        public List<SubWeaponEvolution> SubWeaponEvolutionList { get; } = new List<SubWeaponEvolution>();
+        public Dictionary<int, LoveLevelInfo> LoveLevels { get; } = new Dictionary<int, LoveLevelInfo>();
+        public List<LoveLevelInfo> LoveLevelList { get; } = new List<LoveLevelInfo>();
+        public Dictionary<int, TreeLevelInfo> TreeLevels { get; } = new Dictionary<int, TreeLevelInfo>();
+        public List<TreeLevelInfo> TreeLevelList { get; } = new List<TreeLevelInfo>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2068,6 +2177,11 @@ namespace GunMobile.Res
             db.LoadCardAchievements(loader);
             db.LoadGuardCore(loader);
             db.LoadLightRiddles(loader);
+            db.LoadFairBattle(loader);
+            db.LoadOnlineArm(loader);
+            db.LoadSubWeaponEvolution(loader);
+            db.LoadLoveLevels(loader);
+            db.LoadTreeLevels(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2089,7 +2203,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -2656,6 +2770,176 @@ namespace GunMobile.Res
         public int LightRiddleGoldReward()
         {
             return ConfigInt("LightRiddleGold", 500);
+        }
+
+        public FairBattleSkillGet GetFairBattleSkill(int id)
+        {
+            if (id > 0 && FairBattleSkills.TryGetValue(id, out FairBattleSkillGet row)) return row;
+            return null;
+        }
+
+        public IReadOnlyList<FairBattleSkillMaterial> GetFairBattleSkillMaterials(int skillId)
+        {
+            if (skillId > 0 && FairBattleSkillMaterials.TryGetValue(skillId, out List<FairBattleSkillMaterial> list) && list != null)
+                return list;
+            return System.Array.Empty<FairBattleSkillMaterial>();
+        }
+
+        public FairBattleRank FairBattleRankFromPrestige(int prestige)
+        {
+            FairBattleRank best = null;
+            for (int i = 0; i < FairBattleRankList.Count; i++)
+            {
+                if (prestige >= FairBattleRankList[i].Prestige) best = FairBattleRankList[i];
+                else break;
+            }
+            return best;
+        }
+
+        public int FairBattlePrestigeGain(int prestige, bool win)
+        {
+            FairBattleRank rank = FairBattleRankFromPrestige(prestige);
+            if (rank == null) return win ? 20 : 4;
+            return win ? rank.PrestigeForWin : rank.PrestigeForLose;
+        }
+
+        public List<FairBattleWeekAward> GetFairBattleWeekAwards(int rank)
+        {
+            var list = new List<FairBattleWeekAward>();
+            for (int i = 0; i < FairBattleWeekAwards.Count; i++)
+            {
+                FairBattleWeekAward row = FairBattleWeekAwards[i];
+                if (rank >= row.MinRank && (row.MaxRank <= 0 || rank <= row.MaxRank)) list.Add(row);
+            }
+            return list;
+        }
+
+        public OnlineArmLevel GetOnlineArmLevel(int level)
+        {
+            if (level > 0 && OnlineArmLevels.TryGetValue(level, out OnlineArmLevel row)) return row;
+            return null;
+        }
+
+        public int OnlineArmMaxLevel()
+        {
+            return OnlineArmLevelList.Count > 0 ? OnlineArmLevelList[OnlineArmLevelList.Count - 1].LevelCount : 1;
+        }
+
+        // slot 0 cuốc, 1 mũ, 2 giáp, 3 kiếm, 4 khiên — đúng thứ tự cột onlinearmlevelinfo.
+        public int OnlineArmNeedExp(int slot, int currentLevel)
+        {
+            OnlineArmLevel next = GetOnlineArmLevel(currentLevel + 1);
+            if (next == null) return 0;
+            switch (slot)
+            {
+                case 0: return next.PickAxeExp;
+                case 1: return next.HeadExp;
+                case 2: return next.ClothExp;
+                case 3: return next.SwordExp;
+                default: return next.ShieldExp;
+            }
+        }
+
+        public void ApplyOnlineArmBonus(IReadOnlyList<int> slotLevels, ref int atk, ref int def, ref int agi, ref int luck)
+        {
+            if (slotLevels == null) return;
+            for (int i = 0; i < slotLevels.Count; i++)
+            {
+                OnlineArmLevel row = GetOnlineArmLevel(slotLevels[i]);
+                if (row == null) continue;
+                atk += row.Attack / 5;
+                def += row.Defence / 5;
+                agi += row.Agility / 5;
+                luck += row.Lucky / 5;
+            }
+        }
+
+        // Rate1..11 là bảng phần trăm theo bậc rớt đồ; dump không kèm danh sách vật phẩm
+        // nên server dùng bậc để quy ra vàng/exp thay vì bịa template id.
+        public OnlineArmDrop GetOnlineArmDrop(int pickAxeLevel, int floor)
+        {
+            OnlineArmDrop best = null;
+            for (int i = 0; i < OnlineArmDrops.Count; i++)
+            {
+                OnlineArmDrop row = OnlineArmDrops[i];
+                if (row.PickAxeLevel > pickAxeLevel) continue;
+                if (floor > 0 && row.FloorCount > floor) continue;
+                if (best == null || row.PickAxeLevel > best.PickAxeLevel ||
+                    (row.PickAxeLevel == best.PickAxeLevel && row.FloorCount > best.FloorCount)) best = row;
+            }
+            return best;
+        }
+
+        public int RollOnlineArmTier(OnlineArmDrop row, System.Random rng)
+        {
+            if (row == null || row.Rates == null || row.Rates.Length == 0) return 1;
+            int total = 0;
+            for (int i = 0; i < row.Rates.Length; i++) total += Mathf.Max(0, row.Rates[i]);
+            if (total <= 0) return 1;
+            int pick = rng != null ? rng.Next(total) : 0;
+            for (int i = 0; i < row.Rates.Length; i++)
+            {
+                pick -= Mathf.Max(0, row.Rates[i]);
+                if (pick < 0) return i + 1;
+            }
+            return 1;
+        }
+
+        public SubWeaponEvolution GetSubWeaponEvolution(int level)
+        {
+            if (level > 0 && SubWeaponEvolutions.TryGetValue(level, out SubWeaponEvolution row)) return row;
+            return null;
+        }
+
+        public int SubWeaponMaxLevel()
+        {
+            return SubWeaponEvolutionList.Count > 0 ? SubWeaponEvolutionList[SubWeaponEvolutionList.Count - 1].Level : 1;
+        }
+
+        public void ApplySubWeaponBonus(int level, ref int hp, ref int baseGuard)
+        {
+            SubWeaponEvolution row = GetSubWeaponEvolution(level);
+            if (row == null) return;
+            hp += row.AddBlood;
+            baseGuard += row.ReduceDamage / 10;
+        }
+
+        public LoveLevelInfo GetLoveLevel(int level)
+        {
+            if (level > 0 && LoveLevels.TryGetValue(level, out LoveLevelInfo row)) return row;
+            return null;
+        }
+
+        public int LoveLevelFromExp(int exp)
+        {
+            int level = 1;
+            for (int i = 0; i < LoveLevelList.Count; i++)
+            {
+                if (exp >= LoveLevelList[i].Exp) level = LoveLevelList[i].Level;
+                else break;
+            }
+            return level;
+        }
+
+        public void ApplyLoveBonus(int level, ref int atk, ref int def, ref int agi, ref int luck)
+        {
+            LoveLevelInfo row = GetLoveLevel(level);
+            if (row == null) return;
+            atk += row.Attack;
+            def += row.Defence;
+            agi += row.Agility;
+            luck += row.Luck;
+        }
+
+        public TreeLevelInfo GetTreeLevel(int level)
+        {
+            if (TreeLevels.TryGetValue(level, out TreeLevelInfo row)) return row;
+            return null;
+        }
+
+        public int TreeMaxLevel()
+        {
+            return TreeLevelList.Count > 0 ? TreeLevelList[TreeLevelList.Count - 1].Level : 0;
         }
 
         public JadeTemp GetJade(int id)
@@ -9564,6 +9848,224 @@ namespace GunMobile.Res
                 LightRiddleList.Add(info);
             }
             LightRiddleList.Sort((a, b) => a.QuestionId.CompareTo(b.QuestionId));
+        }
+
+        void LoadFairBattle(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/fairbattleskillgettemplate.xml", out XmlResultTable skills))
+            {
+                foreach (var row in skills.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || FairBattleSkills.ContainsKey(id)) continue;
+                    var info = new FairBattleSkillGet
+                    {
+                        Id = id,
+                        SkillId = Int(row, "SkillID"),
+                        Level = Int(row, "Level"),
+                        NextId = Int(row, "NextID"),
+                        Type = Int(row, "Type")
+                    };
+                    FairBattleSkills[id] = info;
+                    FairBattleSkillList.Add(info);
+                }
+                FairBattleSkillList.Sort((a, b) => a.Id.CompareTo(b.Id));
+            }
+
+            // fairbattleskillmaterialtemplate lồng <Skill><SkillDetail/></Skill> nên đọc thẳng XDocument.
+            if (loader.TryReadBytes("Request/fairbattleskillmaterialtemplate.xml", out byte[] matData))
+            {
+                try
+                {
+                    XDocument doc = ZlibXml.Load(matData);
+                    XElement root = doc != null ? doc.Root : null;
+                    if (root != null)
+                    {
+                        foreach (XElement skill in root.Elements())
+                        {
+                            int skillId = QuestAttrInt(skill, "SkillID");
+                            if (skillId <= 0) continue;
+                            foreach (XElement detail in skill.Elements())
+                            {
+                                int templateId = QuestAttrInt(detail, "TemplateID");
+                                if (templateId <= 0) continue;
+                                var mat = new FairBattleSkillMaterial
+                                {
+                                    SkillId = skillId,
+                                    TemplateId = templateId,
+                                    Count = Mathf.Max(1, QuestAttrInt(detail, "Count")),
+                                    OrderId = QuestAttrInt(detail, "OrderID")
+                                };
+                                if (!FairBattleSkillMaterials.TryGetValue(skillId, out List<FairBattleSkillMaterial> list))
+                                {
+                                    list = new List<FairBattleSkillMaterial>();
+                                    FairBattleSkillMaterials[skillId] = list;
+                                }
+                                list.Add(mat);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogWarning("GameDatabase fairbattleskillmaterialtemplate: " + e.Message);
+                }
+            }
+
+            if (TryTable(loader, "Request/fairbattlerewardtemp.xml", out XmlResultTable ranks))
+            {
+                foreach (var row in ranks.Rows)
+                {
+                    int level = Int(row, "Level");
+                    if (level <= 0 || FairBattleRanks.ContainsKey(level)) continue;
+                    var info = new FairBattleRank
+                    {
+                        Level = level,
+                        Prestige = Int(row, "Prestige"),
+                        Name = Str(row, "Name"),
+                        Title = Str(row, "Title"),
+                        PrestigeForWin = Int(row, "PrestigeForWin"),
+                        PrestigeForLose = Int(row, "PrestigeForLose")
+                    };
+                    FairBattleRanks[level] = info;
+                    FairBattleRankList.Add(info);
+                }
+                FairBattleRankList.Sort((a, b) => a.Level.CompareTo(b.Level));
+            }
+
+            if (TryTable(loader, "Request/fairbatttleweeklyawardtemp.xml", out XmlResultTable weekly))
+            {
+                foreach (var row in weekly.Rows)
+                {
+                    int templateId = Int(row, "TemplateID");
+                    if (templateId <= 0) continue;
+                    FairBattleWeekAwards.Add(new FairBattleWeekAward
+                    {
+                        TemplateId = templateId,
+                        MinRank = Int(row, "MinRank"),
+                        MaxRank = Int(row, "MaxRank"),
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        IsBinds = Bool(row, "IsBinds"),
+                        ValidDate = Int(row, "ValidDate"),
+                        Attack = Int(row, "Attack"),
+                        Defense = Int(row, "Defense"),
+                        Agility = Int(row, "Agility"),
+                        Luck = Int(row, "Luck")
+                    });
+                }
+            }
+        }
+
+        void LoadOnlineArm(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/onlinearmlevelinfo.xml", out XmlResultTable levels))
+            {
+                foreach (var row in levels.Rows)
+                {
+                    int level = Int(row, "LevelCount");
+                    if (level <= 0 || OnlineArmLevels.ContainsKey(level)) continue;
+                    var info = new OnlineArmLevel
+                    {
+                        LevelCount = level,
+                        PickAxeExp = Int(row, "PickAxeExp"),
+                        HeadExp = Int(row, "HeadExp"),
+                        ClothExp = Int(row, "ClothExp"),
+                        SwordExp = Int(row, "SwordExp"),
+                        ShieldExp = Int(row, "ShieldExp"),
+                        Attack = Int(row, "Attack"),
+                        Defence = Int(row, "Defence"),
+                        Agility = Int(row, "Agility"),
+                        Lucky = Int(row, "Lucky")
+                    };
+                    OnlineArmLevels[level] = info;
+                    OnlineArmLevelList.Add(info);
+                }
+                OnlineArmLevelList.Sort((a, b) => a.LevelCount.CompareTo(b.LevelCount));
+            }
+
+            if (!TryTable(loader, "Request/onlinearmdropitem.xml", out XmlResultTable drops)) return;
+            foreach (var row in drops.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) continue;
+                var rates = new int[11];
+                for (int i = 0; i < rates.Length; i++) rates[i] = Int(row, "Rate" + (i + 1));
+                OnlineArmDrops.Add(new OnlineArmDrop
+                {
+                    Id = id,
+                    FloorCount = Int(row, "FloorCount"),
+                    PickAxeLevel = Int(row, "PickAxeLevel"),
+                    Rates = rates
+                });
+            }
+            OnlineArmDrops.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadSubWeaponEvolution(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/subweaponevolutiontemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (level <= 0 || SubWeaponEvolutions.ContainsKey(level)) continue;
+                var info = new SubWeaponEvolution
+                {
+                    Level = level,
+                    Exp = Int(row, "Exp"),
+                    AddBlood = Int(row, "AddBlood"),
+                    ReduceDamage = Int(row, "ReduceDamage")
+                };
+                SubWeaponEvolutions[level] = info;
+                SubWeaponEvolutionList.Add(info);
+            }
+            SubWeaponEvolutionList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        void LoadLoveLevels(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/lovelevelist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (level <= 0 || LoveLevels.ContainsKey(level)) continue;
+                var info = new LoveLevelInfo
+                {
+                    Level = level,
+                    Exp = Int(row, "Exp"),
+                    Animation = Int(row, "Animation"),
+                    SkillId = Int(row, "SkillID"),
+                    Attack = Int(row, "Attack"),
+                    Defence = Int(row, "Defence"),
+                    Agility = Int(row, "Agility"),
+                    Luck = Int(row, "Luck")
+                };
+                LoveLevels[level] = info;
+                LoveLevelList.Add(info);
+            }
+            LoveLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        void LoadTreeLevels(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/treetemplatelist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int level = Int(row, "Level");
+                if (TreeLevels.ContainsKey(level)) continue;
+                var info = new TreeLevelInfo
+                {
+                    Level = level,
+                    AwardId = Int(row, "AwardID"),
+                    CostExp = Int(row, "CostExp"),
+                    MonsterExp = Int(row, "MonsterExp"),
+                    MonsterId = Int(row, "MonsterID"),
+                    MonsterName = Str(row, "MonsterName"),
+                    Exp = Int(row, "Exp")
+                };
+                TreeLevels[level] = info;
+                TreeLevelList.Add(info);
+            }
+            TreeLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
         }
 
         void LoadServerConfig(ResLoader loader)
