@@ -253,6 +253,24 @@ namespace GunMobile.Client
                 case "tree":
                     ExtraModulesScreens.TreeScreen(_safe, this);
                     return;
+                case "dailyactive":
+                    ExtraModulesScreens.DailyActiveScreen(_safe, this);
+                    return;
+                case "loginaward":
+                    ExtraModulesScreens.LoginAwardScreen(_safe, this);
+                    return;
+                case "kingroad":
+                    ExtraModulesScreens.KingRoadScreen(_safe, this);
+                    return;
+                case "activeconvert":
+                    ExtraModulesScreens.ActiveConvertScreen(_safe, this);
+                    return;
+                case "minigameshop":
+                    ExtraModulesScreens.MiniGameShopScreen(_safe, this);
+                    return;
+                case "wasterecycle":
+                    ExtraModulesScreens.WasteRecycleScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
@@ -895,6 +913,42 @@ namespace GunMobile.Client
                         if (State == AppState.Module && _currentModuleId == "tree")
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.DailyActiveClaim:
+                        PhoneNet.LastDailyActiveJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "dailyactive")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LoginAwardClaim:
+                        PhoneNet.LastLoginAwardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "loginaward")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.KingRoadQuest:
+                        PhoneNet.LastKingRoadJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "kingroad")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActiveConvert:
+                        PhoneNet.LastActiveConvertJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "activeconvert")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.MiniGameShopBuy:
+                        PhoneNet.LastMiniGameShopJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "minigameshop")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.WasteRecycleClaim:
+                        PhoneNet.LastWasteRecycleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "wasterecycle")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1205,6 +1259,23 @@ namespace GunMobile.Client
             Profile.TreeLevel = JsonInt(json, "treeLevel", Profile.TreeLevel);
             Profile.TreeExp = JsonInt(json, "treeExp", Profile.TreeExp);
             Profile.TreeFights = JsonInt(json, "treeFights", Profile.TreeFights);
+            Profile.DailyActivePoints = JsonInt(json, "dailyActivePoints", Profile.DailyActivePoints);
+            Profile.EnsureDailyActive();
+            ParseIntListFromServer(json, "dailyActiveTaskDone", Profile.DailyActiveTaskDone);
+            ParseIntListFromServer(json, "dailyActiveRewardClaimed", Profile.DailyActiveRewardClaimed);
+            Profile.LoginAwardIndex = JsonInt(json, "loginAwardIndex", Profile.LoginAwardIndex);
+            Profile.LoginAwardDay = JsonInt(json, "loginAwardDay", Profile.LoginAwardDay);
+            Profile.KingRoadScore = JsonInt(json, "kingRoadScore", Profile.KingRoadScore);
+            Profile.EnsureKingRoad();
+            ParseIntListFromServer(json, "kingRoadQuestDone", Profile.KingRoadQuestDone);
+            Profile.EnsureActiveConvert();
+            ParseIntListFromServer(json, "activeConvertUsed", Profile.ActiveConvertUsed);
+            Profile.MiniGamePoints = JsonInt(json, "miniGamePoints", Profile.MiniGamePoints);
+            Profile.EnsureMiniGameShop();
+            ParseIntListFromServer(json, "miniGameShopIds", Profile.MiniGameShopIds);
+            ParseIntListFromServer(json, "miniGameShopCounts", Profile.MiniGameShopCounts);
+            Profile.EnsureMiniGameShop();
+            Profile.WasteRecyclePoints = JsonInt(json, "wasteRecyclePoints", Profile.WasteRecyclePoints);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;

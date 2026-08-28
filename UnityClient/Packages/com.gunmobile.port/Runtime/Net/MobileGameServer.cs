@@ -280,6 +280,21 @@ namespace GunMobile.Net
         public int TreeExp;
         public int TreeDay = -1;
         public int TreeFights;
+        public int DailyActivePoints;
+        public int DailyActiveDay = -1;
+        public List<int> DailyActiveTaskDone = new List<int>();
+        public List<int> DailyActiveRewardClaimed = new List<int>();
+        public int LoginAwardDay = -1;
+        public int LoginAwardIndex;
+        public List<int> LoginAwardClaimed = new List<int>();
+        public int KingRoadScore;
+        public int KingRoadDay = -1;
+        public List<int> KingRoadQuestDone = new List<int>();
+        public List<int> ActiveConvertUsed = new List<int>();
+        public int MiniGamePoints;
+        public List<int> MiniGameShopIds = new List<int>();
+        public List<int> MiniGameShopCounts = new List<int>();
+        public int WasteRecyclePoints;
 
         public static int NowMinutes()
         {
@@ -341,6 +356,61 @@ namespace GunMobile.Net
             if (db == null) return;
             int level = db.LoveLevelFromExp(LoveExp);
             if (level > LoveLevel) LoveLevel = level;
+        }
+        public void EnsureDailyActive()
+        {
+            if (DailyActiveTaskDone == null) DailyActiveTaskDone = new List<int>();
+            if (DailyActiveRewardClaimed == null) DailyActiveRewardClaimed = new List<int>();
+        }
+        public void TouchDailyActiveDay()
+        {
+            EnsureDailyActive();
+            int day = DateTime.Now.DayOfYear;
+            if (DailyActiveDay != day)
+            {
+                DailyActiveDay = day;
+                DailyActivePoints = 0;
+                DailyActiveTaskDone.Clear();
+                DailyActiveRewardClaimed.Clear();
+            }
+        }
+        public void EnsureLoginAward() { if (LoginAwardClaimed == null) LoginAwardClaimed = new List<int>(); }
+        public void EnsureKingRoad() { if (KingRoadQuestDone == null) KingRoadQuestDone = new List<int>(); }
+        public void TouchKingRoadDay()
+        {
+            EnsureKingRoad();
+            int day = DateTime.Now.DayOfYear;
+            if (KingRoadDay != day) { KingRoadDay = day; KingRoadQuestDone.Clear(); }
+        }
+        public void EnsureActiveConvert() { if (ActiveConvertUsed == null) ActiveConvertUsed = new List<int>(); }
+        public int CountActiveConvert(int activeId)
+        {
+            EnsureActiveConvert();
+            int n = 0;
+            for (int i = 0; i < ActiveConvertUsed.Count; i++) if (ActiveConvertUsed[i] == activeId) n++;
+            return n;
+        }
+        public void EnsureMiniGameShop()
+        {
+            if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
+            if (MiniGameShopCounts == null) MiniGameShopCounts = new List<int>();
+            while (MiniGameShopCounts.Count < MiniGameShopIds.Count) MiniGameShopCounts.Add(0);
+        }
+        public int CountMiniGameBought(int id)
+        {
+            EnsureMiniGameShop();
+            for (int i = 0; i < MiniGameShopIds.Count; i++) if (MiniGameShopIds[i] == id) return MiniGameShopCounts[i];
+            return 0;
+        }
+        public void AddMiniGameBought(int id)
+        {
+            EnsureMiniGameShop();
+            for (int i = 0; i < MiniGameShopIds.Count; i++)
+            {
+                if (MiniGameShopIds[i] == id) { MiniGameShopCounts[i]++; return; }
+            }
+            MiniGameShopIds.Add(id);
+            MiniGameShopCounts.Add(1);
         }
         public void EnsureBankDeposits() { if (BankDeposits == null) BankDeposits = new List<BankTermDeposit>(); }
         public void EnsureSweepMissionClears() { if (SweepMissionClears == null) SweepMissionClears = new List<int>(); }
@@ -931,6 +1001,34 @@ namespace GunMobile.Net
             J(sb, "treeLevel", TreeLevel); sb.Append(",");
             J(sb, "treeExp", TreeExp); sb.Append(",");
             J(sb, "treeFights", TreeFights); sb.Append(",");
+            J(sb, "dailyActivePoints", DailyActivePoints); sb.Append(",");
+            EnsureDailyActive();
+            sb.Append("\"dailyActiveTaskDone\":[");
+            for (int i = 0; i < DailyActiveTaskDone.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DailyActiveTaskDone[i]); }
+            sb.Append("],");
+            sb.Append("\"dailyActiveRewardClaimed\":[");
+            for (int i = 0; i < DailyActiveRewardClaimed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(DailyActiveRewardClaimed[i]); }
+            sb.Append("],");
+            J(sb, "loginAwardIndex", LoginAwardIndex); sb.Append(",");
+            J(sb, "loginAwardDay", LoginAwardDay); sb.Append(",");
+            J(sb, "kingRoadScore", KingRoadScore); sb.Append(",");
+            EnsureKingRoad();
+            sb.Append("\"kingRoadQuestDone\":[");
+            for (int i = 0; i < KingRoadQuestDone.Count; i++) { if (i > 0) sb.Append(","); sb.Append(KingRoadQuestDone[i]); }
+            sb.Append("],");
+            EnsureActiveConvert();
+            sb.Append("\"activeConvertUsed\":[");
+            for (int i = 0; i < ActiveConvertUsed.Count; i++) { if (i > 0) sb.Append(","); sb.Append(ActiveConvertUsed[i]); }
+            sb.Append("],");
+            J(sb, "miniGamePoints", MiniGamePoints); sb.Append(",");
+            EnsureMiniGameShop();
+            sb.Append("\"miniGameShopIds\":[");
+            for (int i = 0; i < MiniGameShopIds.Count; i++) { if (i > 0) sb.Append(","); sb.Append(MiniGameShopIds[i]); }
+            sb.Append("],");
+            sb.Append("\"miniGameShopCounts\":[");
+            for (int i = 0; i < MiniGameShopCounts.Count; i++) { if (i > 0) sb.Append(","); sb.Append(MiniGameShopCounts[i]); }
+            sb.Append("],");
+            J(sb, "wasteRecyclePoints", WasteRecyclePoints); sb.Append(",");
             J(sb, "linkPalId", LinkPalId); sb.Append(",");
             J(sb, "achievementPoints", AchievementPoints); sb.Append(",");
             EnsureAchievements();
@@ -2594,6 +2692,30 @@ namespace GunMobile.Net
 
                 case PhoneMsg.TreeChallenge:
                     HandleTreeChallenge(player, ns, json);
+                    break;
+
+                case PhoneMsg.DailyActiveClaim:
+                    HandleDailyActiveClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.LoginAwardClaim:
+                    HandleLoginAwardClaim(player, ns, json);
+                    break;
+
+                case PhoneMsg.KingRoadQuest:
+                    HandleKingRoadQuest(player, ns, json);
+                    break;
+
+                case PhoneMsg.ActiveConvert:
+                    HandleActiveConvert(player, ns, json);
+                    break;
+
+                case PhoneMsg.MiniGameShopBuy:
+                    HandleMiniGameShopBuy(player, ns, json);
+                    break;
+
+                case PhoneMsg.WasteRecycleClaim:
+                    HandleWasteRecycleClaim(player, ns, json);
                     break;
 
                 case PhoneMsg.CalendarClaim: HandleCalendarClaim(player, ns, json); break;
@@ -8008,6 +8130,262 @@ namespace GunMobile.Net
             Send(ns, PhoneMsg.ProfileData, player.ToJson());
         }
 
+        // everydayactivepointtemplateinfolist = nhiệm vụ ngày (ActivePoint), reward list = mốc quà theo RewardID.
+        void HandleDailyActiveClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.DailyActiveTaskList.Count == 0)
+            { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchDailyActiveDay();
+            string action = JS(json, "action", "task");
+
+            if (string.Equals(action, "task", StringComparison.OrdinalIgnoreCase))
+            {
+                int taskId = JI(json, "taskId", 0);
+                DailyActiveTask task = _db.GetDailyActiveTask(taskId);
+                if (task == null) { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"task\"}"); return; }
+                if (player.Level < task.MinLevel || (task.MaxLevel > 0 && player.Level > task.MaxLevel))
+                { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"level\"}"); return; }
+                if (player.DailyActiveTaskDone.Contains(taskId))
+                { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"done\"}"); return; }
+
+                player.DailyActiveTaskDone.Add(taskId);
+                player.DailyActivePoints += task.ActivePoint;
+                if (task.MoneyPoint > 0) player.Gold += task.MoneyPoint;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":true,\"action\":\"task\",\"taskId\":" + taskId +
+                    ",\"point\":" + task.ActivePoint + ",\"gold\":" + task.MoneyPoint +
+                    ",\"total\":" + player.DailyActivePoints + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int step = JI(json, "step", 0);
+            if (step <= 0) { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"step\"}"); return; }
+            if (player.DailyActivePoints < step)
+            {
+                Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"point\",\"have\":" +
+                    player.DailyActivePoints + ",\"need\":" + step + "}");
+                return;
+            }
+            if (player.DailyActiveRewardClaimed.Contains(step))
+            { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            List<DailyActiveReward> rewards = _db.GetDailyActiveRewards(step);
+            if (rewards.Count == 0) { Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":false,\"err\":\"reward\"}"); return; }
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < rewards.Count; i++)
+            {
+                if (rewards[i].RewardItemId <= 0) continue;
+                player.AddItem(rewards[i].RewardItemId, rewards[i].RewardItemCount);
+                if (firstTemplate == 0) firstTemplate = rewards[i].RewardItemId;
+                granted += rewards[i].RewardItemCount;
+            }
+            player.DailyActiveRewardClaimed.Add(step);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.DailyActiveClaim, "{\"ok\":true,\"action\":\"reward\",\"step\":" + step +
+                ",\"items\":" + rewards.Count + ",\"count\":" + granted + ",\"templateId\":" + firstTemplate + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // loginawarditemtemplate: ID là ngày đăng nhập thứ N, mỗi ngày nhận một lần.
+        void HandleLoginAwardClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.LoginAwardList.Count == 0)
+            { Send(ns, PhoneMsg.LoginAwardClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureLoginAward();
+            int today = DateTime.Now.DayOfYear;
+            if (player.LoginAwardDay == today)
+            { Send(ns, PhoneMsg.LoginAwardClaim, "{\"ok\":false,\"err\":\"claimed\"}"); return; }
+
+            int maxDay = _db.LoginAwardMaxDay();
+            int day = player.LoginAwardIndex + 1;
+            if (maxDay > 0 && day > maxDay) day = 1;
+
+            List<LoginAwardItem> awards = _db.GetLoginAwardsForDay(day);
+            if (awards.Count == 0) { Send(ns, PhoneMsg.LoginAwardClaim, "{\"ok\":false,\"err\":\"day\"}"); return; }
+
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < awards.Count; i++)
+            {
+                if (awards[i].RewardItemId <= 0) continue;
+                player.AddItem(awards[i].RewardItemId, awards[i].RewardItemCount);
+                if (firstTemplate == 0) firstTemplate = awards[i].RewardItemId;
+                granted += awards[i].RewardItemCount;
+            }
+            player.LoginAwardDay = today;
+            player.LoginAwardIndex = day;
+            if (!player.LoginAwardClaimed.Contains(day)) player.LoginAwardClaimed.Add(day);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.LoginAwardClaim, "{\"ok\":true,\"day\":" + day + ",\"items\":" + awards.Count +
+                ",\"count\":" + granted + ",\"templateId\":" + firstTemplate + ",\"maxDay\":" + maxDay + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // kingofroadquestinfolist: mục tiêu tranh bá, AddScore cộng điểm theo AddRule (ngày trong đợt).
+        void HandleKingRoadQuest(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.KingRoadQuestList.Count == 0)
+            { Send(ns, PhoneMsg.KingRoadQuest, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.TouchKingRoadDay();
+            int questId = JI(json, "questId", 0);
+            KingRoadQuest row = _db.GetKingRoadQuest(questId);
+            if (row == null) { Send(ns, PhoneMsg.KingRoadQuest, "{\"ok\":false,\"err\":\"quest\"}"); return; }
+            if (player.KingRoadQuestDone.Contains(questId))
+            { Send(ns, PhoneMsg.KingRoadQuest, "{\"ok\":false,\"err\":\"done\"}"); return; }
+
+            player.KingRoadQuestDone.Add(questId);
+            player.KingRoadScore += row.AddScore;
+            player.AddGp(_db, row.AddScore);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.KingRoadQuest, "{\"ok\":true,\"questId\":" + questId + ",\"score\":" + row.AddScore +
+                ",\"total\":" + player.KingRoadScore + ",\"group\":" + row.QuestGroup + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // activeconvertiteminfo: ItemType 0 là giá (TemplateID âm = tiền tệ PC), ItemType 1 là phần thưởng.
+        void HandleActiveConvert(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.ActiveConvertItems.Count == 0)
+            { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureActiveConvert();
+            int activeId = JI(json, "activeId", 0);
+            List<ActiveConvertItem> costs = _db.GetActiveConvert(activeId, 0);
+            List<ActiveConvertItem> gains = _db.GetActiveConvert(activeId, 1);
+            if (gains.Count == 0) { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"active\"}"); return; }
+
+            int limit = 0;
+            for (int i = 0; i < gains.Count; i++) limit = Mathf.Max(limit, gains[i].LimitValue);
+            if (limit > 0 && player.CountActiveConvert(activeId) >= limit)
+            { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+
+            for (int i = 0; i < costs.Count; i++)
+            {
+                ActiveConvertItem cost = costs[i];
+                if (cost.TemplateId < 0)
+                {
+                    if (player.Gold < cost.ItemCount)
+                    { Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"gold\",\"need\":" + cost.ItemCount + "}"); return; }
+                }
+                else if (!player.HasItem(cost.TemplateId, cost.ItemCount))
+                {
+                    Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":false,\"err\":\"item\",\"itemId\":" + cost.TemplateId +
+                        ",\"need\":" + cost.ItemCount + "}");
+                    return;
+                }
+            }
+
+            for (int i = 0; i < costs.Count; i++)
+            {
+                ActiveConvertItem cost = costs[i];
+                if (cost.TemplateId < 0) player.Gold -= cost.ItemCount;
+                else player.Consume(cost.TemplateId, cost.ItemCount);
+            }
+
+            int granted = 0, firstTemplate = 0;
+            for (int i = 0; i < gains.Count; i++)
+            {
+                if (gains[i].TemplateId <= 0) { player.Gold += gains[i].ItemCount; continue; }
+                player.AddItem(gains[i].TemplateId, gains[i].ItemCount);
+                if (firstTemplate == 0) firstTemplate = gains[i].TemplateId;
+                granted += gains[i].ItemCount;
+            }
+            player.ActiveConvertUsed.Add(activeId);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.ActiveConvert, "{\"ok\":true,\"activeId\":" + activeId + ",\"items\":" + gains.Count +
+                ",\"count\":" + granted + ",\"templateId\":" + firstTemplate + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // minigameshoptemplate: dùng điểm mini game (Price), LimitCount là giới hạn mua.
+        void HandleMiniGameShopBuy(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.MiniGameShopList.Count == 0)
+            { Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            player.EnsureMiniGameShop();
+            string action = JS(json, "action", "buy");
+            if (string.Equals(action, "point", StringComparison.OrdinalIgnoreCase))
+            {
+                int goldCost = _db.ConfigInt("MiniGamePointGold", 1000);
+                if (player.Gold < goldCost)
+                { Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":false,\"err\":\"gold\",\"need\":" + goldCost + "}"); return; }
+                int gain = _db.ConfigInt("MiniGamePointGain", 100);
+                player.Gold -= goldCost;
+                player.MiniGamePoints += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":true,\"action\":\"point\",\"points\":" +
+                    player.MiniGamePoints + ",\"gain\":" + gain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int id = JI(json, "id", 0);
+            MiniGameShopGoods row = _db.GetMiniGameGoods(id);
+            if (row == null) { Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":false,\"err\":\"goods\"}"); return; }
+            int bought = player.CountMiniGameBought(id);
+            if (row.LimitCount > 0 && bought >= row.LimitCount)
+            { Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":false,\"err\":\"limit\"}"); return; }
+            if (player.MiniGamePoints < row.Price)
+            {
+                Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":false,\"err\":\"point\",\"have\":" +
+                    player.MiniGamePoints + ",\"need\":" + row.Price + "}");
+                return;
+            }
+
+            player.MiniGamePoints -= row.Price;
+            player.AddItem(row.ItemId, row.Count);
+            player.AddMiniGameBought(id);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.MiniGameShopBuy, "{\"ok\":true,\"id\":" + id + ",\"itemId\":" + row.ItemId +
+                ",\"count\":" + row.Count + ",\"price\":" + row.Price + ",\"points\":" + player.MiniGamePoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
+        // WasteRecycle_Award: đổi điểm phế liệu lấy đồ theo Rate (Rate 0 thì bốc đều).
+        void HandleWasteRecycleClaim(ServerPlayer player, NetworkStream ns, string json)
+        {
+            if (_db == null || _db.WasteRecycleAwardList.Count == 0)
+            { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"config\"}"); return; }
+
+            string action = JS(json, "action", "draw");
+            if (string.Equals(action, "recycle", StringComparison.OrdinalIgnoreCase))
+            {
+                int itemId = JI(json, "itemId", 0);
+                if (itemId <= 0 || !player.Consume(itemId, 1))
+                { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"item\"}"); return; }
+                int gain = _db.ConfigInt("WasteRecycleGain", 20);
+                player.WasteRecyclePoints += gain;
+                SavePlayer(player);
+                Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":true,\"action\":\"recycle\",\"points\":" +
+                    player.WasteRecyclePoints + ",\"gain\":" + gain + "}");
+                Send(ns, PhoneMsg.ProfileData, player.ToJson());
+                return;
+            }
+
+            int cost = _db.WasteRecycleCost();
+            if (player.WasteRecyclePoints < cost)
+            {
+                Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"point\",\"have\":" +
+                    player.WasteRecyclePoints + ",\"need\":" + cost + "}");
+                return;
+            }
+
+            WasteRecycleAward award;
+            lock (_lock) { award = _db.RollWasteRecycle(_rng); }
+            if (award == null) { Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":false,\"err\":\"award\"}"); return; }
+
+            player.WasteRecyclePoints -= cost;
+            player.AddItem(award.TemplateId, award.Count);
+            SavePlayer(player);
+            Send(ns, PhoneMsg.WasteRecycleClaim, "{\"ok\":true,\"action\":\"draw\",\"templateId\":" + award.TemplateId +
+                ",\"count\":" + award.Count + ",\"points\":" + player.WasteRecyclePoints + "}");
+            Send(ns, PhoneMsg.ProfileData, player.ToJson());
+        }
+
         void HandleSurrender(ServerPlayer player, GameRoom room)
         {
             lock (_lock)
@@ -11120,6 +11498,18 @@ namespace GunMobile.Net
             public int LoveExp, LoveLevel = 1;
             public string LovePartner = "";
             public int TreeLevel, TreeExp, TreeDay = -1, TreeFights;
+            public int DailyActivePoints, DailyActiveDay = -1;
+            public List<int> DailyActiveTaskDone = new List<int>();
+            public List<int> DailyActiveRewardClaimed = new List<int>();
+            public int LoginAwardDay = -1, LoginAwardIndex;
+            public List<int> LoginAwardClaimed = new List<int>();
+            public int KingRoadScore, KingRoadDay = -1;
+            public List<int> KingRoadQuestDone = new List<int>();
+            public List<int> ActiveConvertUsed = new List<int>();
+            public int MiniGamePoints;
+            public List<int> MiniGameShopIds = new List<int>();
+            public List<int> MiniGameShopCounts = new List<int>();
+            public int WasteRecyclePoints;
             public int GodCardEquipId, EngraveSetId;
             public List<int> EngraveDebrisIds = new List<int>();
             public List<int> EngraveDebrisPropTypes = new List<int>();
@@ -11308,6 +11698,18 @@ namespace GunMobile.Net
                 SubWeaponLevel = p.SubWeaponLevel > 0 ? p.SubWeaponLevel : 1, SubWeaponExp = p.SubWeaponExp,
                 LoveExp = p.LoveExp, LoveLevel = p.LoveLevel > 0 ? p.LoveLevel : 1, LovePartner = p.LovePartner ?? "",
                 TreeLevel = p.TreeLevel, TreeExp = p.TreeExp, TreeDay = p.TreeDay, TreeFights = p.TreeFights,
+                DailyActivePoints = p.DailyActivePoints, DailyActiveDay = p.DailyActiveDay,
+                DailyActiveTaskDone = p.DailyActiveTaskDone ?? new List<int>(),
+                DailyActiveRewardClaimed = p.DailyActiveRewardClaimed ?? new List<int>(),
+                LoginAwardDay = p.LoginAwardDay, LoginAwardIndex = p.LoginAwardIndex,
+                LoginAwardClaimed = p.LoginAwardClaimed ?? new List<int>(),
+                KingRoadScore = p.KingRoadScore, KingRoadDay = p.KingRoadDay,
+                KingRoadQuestDone = p.KingRoadQuestDone ?? new List<int>(),
+                ActiveConvertUsed = p.ActiveConvertUsed ?? new List<int>(),
+                MiniGamePoints = p.MiniGamePoints,
+                MiniGameShopIds = p.MiniGameShopIds ?? new List<int>(),
+                MiniGameShopCounts = p.MiniGameShopCounts ?? new List<int>(),
+                WasteRecyclePoints = p.WasteRecyclePoints,
                 GodCardEquipId = p.GodCardEquipId, EngraveSetId = p.EngraveSetId,
                 EngraveDebrisIds = p.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = p.EngraveDebrisPropTypes ?? new List<int>(),
@@ -11500,6 +11902,18 @@ namespace GunMobile.Net
                 SubWeaponLevel = s.SubWeaponLevel > 0 ? s.SubWeaponLevel : 1, SubWeaponExp = s.SubWeaponExp,
                 LoveExp = s.LoveExp, LoveLevel = s.LoveLevel > 0 ? s.LoveLevel : 1, LovePartner = s.LovePartner ?? "",
                 TreeLevel = s.TreeLevel, TreeExp = s.TreeExp, TreeDay = s.TreeDay, TreeFights = s.TreeFights,
+                DailyActivePoints = s.DailyActivePoints, DailyActiveDay = s.DailyActiveDay,
+                DailyActiveTaskDone = s.DailyActiveTaskDone ?? new List<int>(),
+                DailyActiveRewardClaimed = s.DailyActiveRewardClaimed ?? new List<int>(),
+                LoginAwardDay = s.LoginAwardDay, LoginAwardIndex = s.LoginAwardIndex,
+                LoginAwardClaimed = s.LoginAwardClaimed ?? new List<int>(),
+                KingRoadScore = s.KingRoadScore, KingRoadDay = s.KingRoadDay,
+                KingRoadQuestDone = s.KingRoadQuestDone ?? new List<int>(),
+                ActiveConvertUsed = s.ActiveConvertUsed ?? new List<int>(),
+                MiniGamePoints = s.MiniGamePoints,
+                MiniGameShopIds = s.MiniGameShopIds ?? new List<int>(),
+                MiniGameShopCounts = s.MiniGameShopCounts ?? new List<int>(),
+                WasteRecyclePoints = s.WasteRecyclePoints,
                 GodCardEquipId = s.GodCardEquipId, EngraveSetId = s.EngraveSetId,
                 EngraveDebrisIds = s.EngraveDebrisIds ?? new List<int>(),
                 EngraveDebrisPropTypes = s.EngraveDebrisPropTypes ?? new List<int>(),

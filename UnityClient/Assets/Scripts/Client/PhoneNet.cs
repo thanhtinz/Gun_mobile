@@ -72,6 +72,12 @@ namespace GunMobile.Client
         public static string LastSubWeaponJson;
         public static string LastLoveJson;
         public static string LastTreeJson;
+        public static string LastDailyActiveJson;
+        public static string LastLoginAwardJson;
+        public static string LastKingRoadJson;
+        public static string LastActiveConvertJson;
+        public static string LastMiniGameShopJson;
+        public static string LastWasteRecycleJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -466,6 +472,40 @@ namespace GunMobile.Client
         public static void TreeChallenge()
         {
             Road?.Send(PhoneMsg.TreeChallenge, "{}");
+        }
+
+        public static void DailyActive(string action = "task", int taskId = 0, int step = 0)
+        {
+            string act = (action ?? "task").Replace("\"", "");
+            Road?.Send(PhoneMsg.DailyActiveClaim,
+                "{\"action\":\"" + act + "\",\"taskId\":" + taskId + ",\"step\":" + step + "}");
+        }
+
+        public static void ClaimLoginAward()
+        {
+            Road?.Send(PhoneMsg.LoginAwardClaim, "{}");
+        }
+
+        public static void KingRoadQuest(int questId)
+        {
+            Road?.Send(PhoneMsg.KingRoadQuest, "{\"questId\":" + questId + "}");
+        }
+
+        public static void ActiveConvert(int activeId)
+        {
+            Road?.Send(PhoneMsg.ActiveConvert, "{\"activeId\":" + activeId + "}");
+        }
+
+        public static void MiniGameShop(string action = "buy", int id = 0)
+        {
+            string act = (action ?? "buy").Replace("\"", "");
+            Road?.Send(PhoneMsg.MiniGameShopBuy, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void WasteRecycle(string action = "draw", int itemId = 0)
+        {
+            string act = (action ?? "draw").Replace("\"", "");
+            Road?.Send(PhoneMsg.WasteRecycleClaim, "{\"action\":\"" + act + "\",\"itemId\":" + itemId + "}");
         }
 
         public static void DrawLottery(int count)

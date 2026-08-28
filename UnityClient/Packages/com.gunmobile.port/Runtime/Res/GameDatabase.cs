@@ -1473,6 +1473,95 @@ namespace GunMobile.Res
         public int Exp;
     }
 
+    public sealed class DailyActiveTask
+    {
+        public int Id;
+        public int MinLevel;
+        public int MaxLevel;
+        public int ActivityType;
+        public int JumpType;
+        public string Description = "";
+        public int Count = 1;
+        public int ActivePoint;
+        public int MoneyPoint;
+    }
+
+    public sealed class DailyActiveReward
+    {
+        public int Id;
+        public int RewardId;
+        public int RewardItemId;
+        public int RewardItemCount = 1;
+        public int StrengthenLevel;
+        public bool IsBind;
+    }
+
+    public sealed class DailyActiveProgram
+    {
+        public int Id;
+        public string ActiveName = "";
+        public string ActiveTime = "";
+        public string Count = "";
+        public string Description = "";
+        public int JumpType;
+        public int LevelLimit;
+        public string DayOfWeek = "";
+    }
+
+    public sealed class LoginAwardItem
+    {
+        public int Id;
+        public int Count = 1;
+        public int RewardItemId;
+        public int RewardItemCount = 1;
+        public int StrengthenLevel;
+        public bool IsBind;
+    }
+
+    public sealed class KingRoadQuest
+    {
+        public int QuestId;
+        public string Description = "";
+        public int QuestGroup;
+        public int QuestType;
+        public int AddScore;
+        public int AddRule;
+        public int ValidDay;
+    }
+
+    public sealed class ActiveConvertItem
+    {
+        public int ActiveId;
+        public int TemplateId;
+        public int ItemType;
+        public int ItemCount = 1;
+        public int LimitValue;
+        public bool IsBind;
+        public int ValidDate;
+    }
+
+    public sealed class MiniGameShopGoods
+    {
+        public int Id;
+        public int ItemId;
+        public int Count = 1;
+        public int Price;
+        public int LimitCount;
+        public int Type;
+        public bool IsBind;
+        public int Valid;
+    }
+
+    public sealed class WasteRecycleAward
+    {
+        public int Id;
+        public int TemplateId;
+        public int Count = 1;
+        public int ShowIndex;
+        public int Rate;
+        public bool IsBinds;
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2051,6 +2140,21 @@ namespace GunMobile.Res
         public List<LoveLevelInfo> LoveLevelList { get; } = new List<LoveLevelInfo>();
         public Dictionary<int, TreeLevelInfo> TreeLevels { get; } = new Dictionary<int, TreeLevelInfo>();
         public List<TreeLevelInfo> TreeLevelList { get; } = new List<TreeLevelInfo>();
+        public Dictionary<int, DailyActiveTask> DailyActiveTasks { get; } = new Dictionary<int, DailyActiveTask>();
+        public List<DailyActiveTask> DailyActiveTaskList { get; } = new List<DailyActiveTask>();
+        public List<DailyActiveReward> DailyActiveRewardList { get; } = new List<DailyActiveReward>();
+        public Dictionary<int, DailyActiveProgram> DailyActivePrograms { get; } = new Dictionary<int, DailyActiveProgram>();
+        public List<DailyActiveProgram> DailyActiveProgramList { get; } = new List<DailyActiveProgram>();
+        public Dictionary<int, LoginAwardItem> LoginAwards { get; } = new Dictionary<int, LoginAwardItem>();
+        public List<LoginAwardItem> LoginAwardList { get; } = new List<LoginAwardItem>();
+        public Dictionary<int, KingRoadQuest> KingRoadQuests { get; } = new Dictionary<int, KingRoadQuest>();
+        public List<KingRoadQuest> KingRoadQuestList { get; } = new List<KingRoadQuest>();
+        public List<ActiveConvertItem> ActiveConvertItems { get; } = new List<ActiveConvertItem>();
+        public List<int> ActiveConvertIds { get; } = new List<int>();
+        public Dictionary<int, MiniGameShopGoods> MiniGameShop { get; } = new Dictionary<int, MiniGameShopGoods>();
+        public List<MiniGameShopGoods> MiniGameShopList { get; } = new List<MiniGameShopGoods>();
+        public Dictionary<int, WasteRecycleAward> WasteRecycleAwards { get; } = new Dictionary<int, WasteRecycleAward>();
+        public List<WasteRecycleAward> WasteRecycleAwardList { get; } = new List<WasteRecycleAward>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2182,6 +2286,12 @@ namespace GunMobile.Res
             db.LoadSubWeaponEvolution(loader);
             db.LoadLoveLevels(loader);
             db.LoadTreeLevels(loader);
+            db.LoadDailyActive(loader);
+            db.LoadLoginAwards(loader);
+            db.LoadKingRoadQuests(loader);
+            db.LoadActiveConvert(loader);
+            db.LoadMiniGameShop(loader);
+            db.LoadWasteRecycle(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2203,7 +2313,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -2940,6 +3050,104 @@ namespace GunMobile.Res
         public int TreeMaxLevel()
         {
             return TreeLevelList.Count > 0 ? TreeLevelList[TreeLevelList.Count - 1].Level : 0;
+        }
+
+        public DailyActiveTask GetDailyActiveTask(int id)
+        {
+            if (id > 0 && DailyActiveTasks.TryGetValue(id, out DailyActiveTask row)) return row;
+            return null;
+        }
+
+        // everydayactiverewardtemplateinfolist dùng RewardID làm mốc điểm hoạt động.
+        public List<DailyActiveReward> GetDailyActiveRewards(int rewardId)
+        {
+            var list = new List<DailyActiveReward>();
+            for (int i = 0; i < DailyActiveRewardList.Count; i++)
+            {
+                if (DailyActiveRewardList[i].RewardId == rewardId) list.Add(DailyActiveRewardList[i]);
+            }
+            return list;
+        }
+
+        public List<int> DailyActiveRewardSteps()
+        {
+            var steps = new List<int>();
+            for (int i = 0; i < DailyActiveRewardList.Count; i++)
+            {
+                int step = DailyActiveRewardList[i].RewardId;
+                if (step > 0 && !steps.Contains(step)) steps.Add(step);
+            }
+            steps.Sort();
+            return steps;
+        }
+
+        public LoginAwardItem GetLoginAward(int id)
+        {
+            if (id > 0 && LoginAwards.TryGetValue(id, out LoginAwardItem row)) return row;
+            return null;
+        }
+
+        public List<LoginAwardItem> GetLoginAwardsForDay(int day)
+        {
+            var list = new List<LoginAwardItem>();
+            for (int i = 0; i < LoginAwardList.Count; i++)
+            {
+                if (LoginAwardList[i].Id == day) list.Add(LoginAwardList[i]);
+            }
+            return list;
+        }
+
+        public int LoginAwardMaxDay()
+        {
+            return LoginAwardList.Count > 0 ? LoginAwardList[LoginAwardList.Count - 1].Id : 0;
+        }
+
+        public KingRoadQuest GetKingRoadQuest(int questId)
+        {
+            if (questId > 0 && KingRoadQuests.TryGetValue(questId, out KingRoadQuest row)) return row;
+            return null;
+        }
+
+        public List<ActiveConvertItem> GetActiveConvert(int activeId, int itemType)
+        {
+            var list = new List<ActiveConvertItem>();
+            for (int i = 0; i < ActiveConvertItems.Count; i++)
+            {
+                ActiveConvertItem row = ActiveConvertItems[i];
+                if (row.ActiveId == activeId && row.ItemType == itemType) list.Add(row);
+            }
+            return list;
+        }
+
+        public MiniGameShopGoods GetMiniGameGoods(int id)
+        {
+            if (id > 0 && MiniGameShop.TryGetValue(id, out MiniGameShopGoods row)) return row;
+            return null;
+        }
+
+        public WasteRecycleAward RollWasteRecycle(System.Random rng)
+        {
+            if (WasteRecycleAwardList.Count == 0) return null;
+            int total = 0;
+            for (int i = 0; i < WasteRecycleAwardList.Count; i++) total += Mathf.Max(0, WasteRecycleAwardList[i].Rate);
+            if (total <= 0)
+            {
+                int idx = rng != null ? rng.Next(WasteRecycleAwardList.Count) : 0;
+                return WasteRecycleAwardList[idx];
+            }
+
+            int pick = rng != null ? rng.Next(total) : 0;
+            for (int i = 0; i < WasteRecycleAwardList.Count; i++)
+            {
+                pick -= Mathf.Max(0, WasteRecycleAwardList[i].Rate);
+                if (pick < 0) return WasteRecycleAwardList[i];
+            }
+            return WasteRecycleAwardList[0];
+        }
+
+        public int WasteRecycleCost()
+        {
+            return ConfigInt("WasteRecycleCost", 100);
         }
 
         public JadeTemp GetJade(int id)
@@ -10066,6 +10274,194 @@ namespace GunMobile.Res
                 TreeLevelList.Add(info);
             }
             TreeLevelList.Sort((a, b) => a.Level.CompareTo(b.Level));
+        }
+
+        void LoadDailyActive(ResLoader loader)
+        {
+            if (TryTable(loader, "Request/everydayactivepointtemplateinfolist.xml", out XmlResultTable tasks))
+            {
+                foreach (var row in tasks.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0 || DailyActiveTasks.ContainsKey(id)) continue;
+                    var info = new DailyActiveTask
+                    {
+                        Id = id,
+                        MinLevel = Int(row, "MinLevel"),
+                        MaxLevel = Int(row, "MaxLevel"),
+                        ActivityType = Int(row, "ActivityType"),
+                        JumpType = Int(row, "JumpType"),
+                        Description = Str(row, "Description"),
+                        Count = Mathf.Max(1, Int(row, "Count")),
+                        ActivePoint = Int(row, "ActivePoint"),
+                        MoneyPoint = Int(row, "MoneyPoint")
+                    };
+                    DailyActiveTasks[id] = info;
+                    DailyActiveTaskList.Add(info);
+                }
+                DailyActiveTaskList.Sort((a, b) => a.Id.CompareTo(b.Id));
+            }
+
+            if (TryTable(loader, "Request/everydayactiverewardtemplateinfolist.xml", out XmlResultTable rewards))
+            {
+                foreach (var row in rewards.Rows)
+                {
+                    int id = Int(row, "ID");
+                    if (id <= 0) continue;
+                    var info = new DailyActiveReward
+                    {
+                        Id = id,
+                        RewardId = Int(row, "RewardID"),
+                        RewardItemId = Int(row, "RewardItemID"),
+                        RewardItemCount = Mathf.Max(1, Int(row, "RewardItemCount")),
+                        StrengthenLevel = Int(row, "StrengthenLevel"),
+                        IsBind = Bool(row, "IsBind")
+                    };
+                    DailyActiveRewardList.Add(info);
+                }
+                DailyActiveRewardList.Sort((a, b) => a.RewardId.CompareTo(b.RewardId));
+            }
+
+            if (!TryTable(loader, "Request/everydayactiveprogressinfolist.xml", out XmlResultTable programs)) return;
+            foreach (var row in programs.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || DailyActivePrograms.ContainsKey(id)) continue;
+                var info = new DailyActiveProgram
+                {
+                    Id = id,
+                    ActiveName = Str(row, "ActiveName"),
+                    ActiveTime = Str(row, "ActiveTime"),
+                    Count = Str(row, "Count"),
+                    Description = Str(row, "Description"),
+                    JumpType = Int(row, "JumpType"),
+                    LevelLimit = Int(row, "LevelLimit"),
+                    DayOfWeek = Str(row, "DayOfWeek")
+                };
+                DailyActivePrograms[id] = info;
+                DailyActiveProgramList.Add(info);
+            }
+            DailyActiveProgramList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadLoginAwards(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/loginawarditemtemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0) continue;
+                var info = new LoginAwardItem
+                {
+                    Id = id,
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    RewardItemId = Int(row, "RewardItemID"),
+                    RewardItemCount = Mathf.Max(1, Int(row, "RewardItemCount")),
+                    StrengthenLevel = Int(row, "StrengthenLevel"),
+                    IsBind = Bool(row, "IsBind")
+                };
+                LoginAwardList.Add(info);
+                if (!LoginAwards.ContainsKey(id)) LoginAwards[id] = info;
+            }
+            LoginAwardList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadKingRoadQuests(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/kingofroadquestinfolist.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int questId = Int(row, "QuestID");
+                if (questId <= 0 || KingRoadQuests.ContainsKey(questId)) continue;
+                var info = new KingRoadQuest
+                {
+                    QuestId = questId,
+                    Description = Str(row, "Descripiton"),
+                    QuestGroup = Int(row, "QuestGroup"),
+                    QuestType = Int(row, "QuestType"),
+                    AddScore = Int(row, "AddScore"),
+                    AddRule = Int(row, "AddRule"),
+                    ValidDay = Int(row, "Validay")
+                };
+                KingRoadQuests[questId] = info;
+                KingRoadQuestList.Add(info);
+            }
+            KingRoadQuestList.Sort((a, b) => a.QuestId.CompareTo(b.QuestId));
+        }
+
+        // activeconvertiteminfo: ItemType 0 = giá phải trả (TemplateID âm là tiền tệ PC), 1 = phần thưởng.
+        void LoadActiveConvert(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/activeconvertiteminfo.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int activeId = Int(row, "ActiveID");
+                if (activeId <= 0) continue;
+                var info = new ActiveConvertItem
+                {
+                    ActiveId = activeId,
+                    TemplateId = Int(row, "TemplateID"),
+                    ItemType = Int(row, "ItemType"),
+                    ItemCount = Mathf.Max(1, Int(row, "ItemCount")),
+                    LimitValue = Int(row, "LimitValue"),
+                    IsBind = Bool(row, "IsBind"),
+                    ValidDate = Int(row, "ValidDate")
+                };
+                ActiveConvertItems.Add(info);
+                if (!ActiveConvertIds.Contains(activeId)) ActiveConvertIds.Add(activeId);
+            }
+            ActiveConvertIds.Sort();
+        }
+
+        void LoadMiniGameShop(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/minigameshoptemplate.xml", out XmlResultTable table)) return;
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || MiniGameShop.ContainsKey(id)) continue;
+                var info = new MiniGameShopGoods
+                {
+                    Id = id,
+                    ItemId = Int(row, "ItemID"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    Price = Int(row, "Price"),
+                    LimitCount = Int(row, "LimitCount"),
+                    Type = Int(row, "Type"),
+                    IsBind = Bool(row, "IsBind"),
+                    Valid = Int(row, "Valid")
+                };
+                MiniGameShop[id] = info;
+                MiniGameShopList.Add(info);
+            }
+            MiniGameShopList.Sort((a, b) => a.Id.CompareTo(b.Id));
+        }
+
+        void LoadWasteRecycle(ResLoader loader)
+        {
+            if (!TryTable(loader, "Request/WasteRecycle_Award.xml", out XmlResultTable table) &&
+                !TryTable(loader, "Request/wasterecycle_award.xml", out table))
+            {
+                return;
+            }
+
+            foreach (var row in table.Rows)
+            {
+                int id = Int(row, "ID");
+                if (id <= 0 || WasteRecycleAwards.ContainsKey(id)) continue;
+                var info = new WasteRecycleAward
+                {
+                    Id = id,
+                    TemplateId = Int(row, "TemplateID"),
+                    Count = Mathf.Max(1, Int(row, "Count")),
+                    ShowIndex = Int(row, "ShowIndex"),
+                    Rate = Int(row, "Rate"),
+                    IsBinds = Bool(row, "IsBinds")
+                };
+                WasteRecycleAwards[id] = info;
+                WasteRecycleAwardList.Add(info);
+            }
+            WasteRecycleAwardList.Sort((a, b) => a.Id.CompareTo(b.Id));
         }
 
         void LoadServerConfig(ResLoader loader)

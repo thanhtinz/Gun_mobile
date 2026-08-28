@@ -288,6 +288,12 @@ namespace GunMobile.Net
         public const ushort SubWeaponEvolve = 241;
         public const ushort LoveLevelUp = 242;
         public const ushort TreeChallenge = 243;
+        public const ushort DailyActiveClaim = 244;
+        public const ushort LoginAwardClaim = 245;
+        public const ushort KingRoadQuest = 246;
+        public const ushort ActiveConvert = 247;
+        public const ushort MiniGameShopBuy = 248;
+        public const ushort WasteRecycleClaim = 249;
         public const ushort RoomReady = 86;
         public const ushort RoomState = 87;
         public const ushort RoomLeave = 88;

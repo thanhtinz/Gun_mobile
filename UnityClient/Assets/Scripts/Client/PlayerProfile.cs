@@ -208,6 +208,18 @@ namespace GunMobile.Client
         public int TreeLevel;
         public int TreeExp;
         public int TreeFights;
+        public int DailyActivePoints;
+        public List<int> DailyActiveTaskDone = new List<int>();
+        public List<int> DailyActiveRewardClaimed = new List<int>();
+        public int LoginAwardIndex;
+        public int LoginAwardDay = -1;
+        public int KingRoadScore;
+        public List<int> KingRoadQuestDone = new List<int>();
+        public List<int> ActiveConvertUsed = new List<int>();
+        public int MiniGamePoints;
+        public List<int> MiniGameShopIds = new List<int>();
+        public List<int> MiniGameShopCounts = new List<int>();
+        public int WasteRecyclePoints;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -257,6 +269,25 @@ namespace GunMobile.Client
         public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
         public void EnsureGuardCoreSkills() { if (GuardCoreSkillIds == null) GuardCoreSkillIds = new List<int>(); }
         public void EnsureFairBattleSkills() { if (FairBattleSkillIds == null) FairBattleSkillIds = new List<int>(); }
+        public void EnsureDailyActive()
+        {
+            if (DailyActiveTaskDone == null) DailyActiveTaskDone = new List<int>();
+            if (DailyActiveRewardClaimed == null) DailyActiveRewardClaimed = new List<int>();
+        }
+        public void EnsureKingRoad() { if (KingRoadQuestDone == null) KingRoadQuestDone = new List<int>(); }
+        public void EnsureActiveConvert() { if (ActiveConvertUsed == null) ActiveConvertUsed = new List<int>(); }
+        public void EnsureMiniGameShop()
+        {
+            if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
+            if (MiniGameShopCounts == null) MiniGameShopCounts = new List<int>();
+            while (MiniGameShopCounts.Count < MiniGameShopIds.Count) MiniGameShopCounts.Add(0);
+        }
+        public int CountMiniGameBought(int id)
+        {
+            EnsureMiniGameShop();
+            for (int i = 0; i < MiniGameShopIds.Count; i++) if (MiniGameShopIds[i] == id) return MiniGameShopCounts[i];
+            return 0;
+        }
         public void EnsureOnlineArm()
         {
             if (OnlineArmSlotLevels == null) OnlineArmSlotLevels = new List<int>();
@@ -986,6 +1017,12 @@ namespace GunMobile.Client
             new ModuleDef("subweapon", "副武器进化", "Request/subweaponevolutiontemplate.xml"),
             new ModuleDef("love", "情侣等级", "Request/lovelevelist.xml"),
             new ModuleDef("tree", "神树", "Request/treetemplatelist.xml"),
+            new ModuleDef("dailyactive", "每日活跃", "Request/everydayactivepointtemplateinfolist.xml"),
+            new ModuleDef("loginaward", "登录奖励", "Request/loginawarditemtemplate.xml"),
+            new ModuleDef("kingroad", "王者之路", "Request/kingofroadquestinfolist.xml"),
+            new ModuleDef("activeconvert", "活跃兑换", "Request/activeconvertiteminfo.xml"),
+            new ModuleDef("minigameshop", "小游戏商店", "Request/minigameshoptemplate.xml"),
+            new ModuleDef("wasterecycle", "废品回收", "Request/WasteRecycle_Award.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
