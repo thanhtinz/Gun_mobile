@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Net;
@@ -341,9 +342,9 @@ namespace GunMobile.Client
                     if (skill == null) continue;
                     bool owned = app.Profile.MountSkillIds.Contains(get.SkillId);
                     int needGrade = app.Database.MountSkillUnlockMountGrade(get.SkillId);
-                    int cost = app.Database.MountSkillUnlockGoldCost(get.SkillId);
+                    int skillCost = app.Database.MountSkillUnlockGoldCost(get.SkillId);
                     string label = (owned ? "[已学] " : "") + skill.Name + " Lv" + get.Level +
-                                   "  需坐骑" + needGrade + "  " + cost + "金";
+                                   "  需坐骑" + needGrade + "  " + skillCost + "金";
                     int sid = get.SkillId;
                     SysUi.Row(body, "ms" + get.Id, label, owned ? null : (UnityAction)(() => PhoneNet.UnlockMountSkill(sid)));
                     if (++skillShown >= 40) break;

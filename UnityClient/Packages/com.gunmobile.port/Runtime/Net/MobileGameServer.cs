@@ -9319,10 +9319,6 @@ namespace GunMobile.Net
             { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"config\"}"); return; }
 
             player.EnsureCardBuff();
-            int cardId = JI(json, "cardId", 0);
-            List<CardBuffEntry> buffs = _db.GetCardBuffs(cardId);
-            if (buffs.Count == 0) { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"card\"}"); return; }
-
             string action = JS(json, "action", "activate");
             if (string.Equals(action, "step", StringComparison.OrdinalIgnoreCase))
             {
@@ -9339,6 +9335,10 @@ namespace GunMobile.Net
                 Send(ns, PhoneMsg.ProfileData, player.ToJson());
                 return;
             }
+
+            int cardId = JI(json, "cardId", 0);
+            List<CardBuffEntry> buffs = _db.GetCardBuffs(cardId);
+            if (buffs.Count == 0) { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":false,\"err\":\"card\"}"); return; }
 
             if (player.CardBuffActivated.Contains(cardId))
             { Send(ns, PhoneMsg.CardBuffActivate, "{\"ok\":true,\"cardId\":" + cardId + ",\"already\":true}"); return; }

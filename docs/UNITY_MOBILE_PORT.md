@@ -84,6 +84,27 @@ Chỗ dump thiếu dữ liệu nên server phải giả định (đã ghi chú n
 
 Chưa port (không phải bảng gameplay): backup `TemplateAlllistbkap`, biến thể trùng dữ liệu (`*_out`, `balllist_b`, `Totem_Info`, `exerciseinfolist1 (2)`), bảng xếp hạng chụp từ server PC (`celeb*`, `areaceleb*`, `manorwealth`, `user_lotteryrank`) và file cấu hình client Flash (`config`, `buttonconfig`, `debugConfig`, `crossdomain`).
 
+
+### Kiểm tra biên dịch không cần Unity
+
+`tools/compilecheck/compile_check.sh` chỉ cần **.NET 8 runtime**: script tải Roslyn (`csc.dll`) từ NuGet vào thư mục tạm rồi biên dịch
+
+1. server standalone (`Server/GunMobile.Standalone` + `Runtime/` của package), và
+2. **toàn bộ script client**, dùng `tools/compilecheck/UnityCompileStubs.cs` thay cho `UnityEngine` / `UnityEngine.UI`.
+
+Stub chỉ mô phỏng API Unity đủ để bắt lỗi cú pháp, sai tên, sai kiểu, delegate lệch — build APK/IPA thật vẫn phải chạy Unity. Cách chạy:
+
+```bash
+bash tools/compilecheck/compile_check.sh     # in "OK: server + client compile clean"
+```
+
+Muốn chạy thử server với bảng PC thật (không cần đóng gói StreamingAssets):
+
+```bash
+GUNMOBILE_PC_DATA=legacy/data GUNMOBILE_DATA=/tmp/gm dotnet /tmp/gunmobile-compilecheck/GunMobileServer.dll
+```
+
+Server in ra số dòng đã nạp của từng bảng rồi lắng nghe 4396/1910; save người chơi nằm ở `$GUNMOBILE_DATA/server_players/*.json`.
 ### SWF living / bomb trên điện thoại
 
 Unity **không** chạy Flash. `tools/swf_extract.py` lấy JPEG/PNG lớn nhất trong tag `DefineBitsJPEG3` / `DefineBitsLossless2` từ SWF living + bullet (+ vài blastout) vào:

@@ -749,22 +749,22 @@ namespace GunMobile.Client
 
         public static void NewYearRankClaim(int rewardId = 0)
         {
-            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}
+            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}");
+        }
 
         public static void ClaimDailyAward(int awardId = 0)
         {
-            Road?.Send(PhoneMsg.DailyAwardClaim, "{"awardId":" + awardId + "}");
+            Road?.Send(PhoneMsg.DailyAwardClaim, "{\"awardId\":" + awardId + "}");
         }
 
         public static void SelectElfTemplate(int elfId)
         {
-            Road?.Send(PhoneMsg.ElfTemplateSelect, "{"elfId":" + elfId + "}");
+            Road?.Send(PhoneMsg.ElfTemplateSelect, "{\"elfId\":" + elfId + "}");
         }
 
         public static void ButterflyAction(string action)
         {
-            Road?.Send(PhoneMsg.ButterflyAction, "{"action":"" + (action ?? "equip").Replace(""", "") + ""}");
-        }");
+            Road?.Send(PhoneMsg.ButterflyAction, "{\"action\":\"" + (action ?? "equip").Replace("\"", "") + "\"}");
         }
 
         public static void CarnivalDraw()

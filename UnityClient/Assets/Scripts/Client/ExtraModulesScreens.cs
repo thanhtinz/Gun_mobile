@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Net;
 using GunMobile.Res;
@@ -1038,7 +1040,6 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
                     statNames[i] + " Lv" + level + " +" + bonus + (cost > 0 ? "  " + cost + "金" : " MAX"),
                     cost > 0 ? (UnityAction)(() => PhoneNet.CultureUpgrade(localType)) : null);
             }
-        }
         }
 
         public static void LabyrinthGameScreen(RectTransform safe, GameApp app)

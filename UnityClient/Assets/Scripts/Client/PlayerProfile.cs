@@ -840,9 +840,9 @@ namespace GunMobile.Client
                 HonorSystemLevel = db.HonorSystemLevelFromExp(HonorSystemExp);
                 db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luk, ref hp);
                 EnsureRelics();
-                int rDmg = 0;
-                db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref magicAtk, ref magicDef);
-                atk += rDmg / 4;
+                int relicDmg = 0;
+                db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref relicDmg, ref magicAtk, ref magicDef);
+                atk += relicDmg / 4;
                 db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luk, ref hp, ref magicAtk, ref magicDef);
                 EnsureJampsLists();
                 int jDmg = 0; int jGuard = 0;

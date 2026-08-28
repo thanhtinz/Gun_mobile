@@ -128,13 +128,13 @@ namespace GunMobile.UI
             }
         }
 
-        static Transform Create(string name, Transform parent, float w, float h)
+        static RectTransform Create(string name, Transform parent, float w, float h)
         {
             var go = new GameObject(name, typeof(RectTransform));
             go.transform.SetParent(parent, false);
             var rt = go.GetComponent<RectTransform>();
             rt.sizeDelta = new Vector2(w, h);
-            return go.transform;
+            return rt;
         }
 
         static float F(System.Xml.Linq.XElement el, string name, float fallback = 0f)

@@ -1005,7 +1005,6 @@ namespace GunMobile.Client
                 }
             }
 
-            if (_ball != null)
             {
                 int craterId = _ball.Crater > 0 ? _ball.Crater : 65;
                 _craterTex = TryLoadCraterTexture(craterId);
@@ -1038,7 +1037,7 @@ namespace GunMobile.Client
                     _ballsByLiving[who] = _ball;
                 }
             }
-            else if (_ballsByLiving != null && who >= 0 && who < _ballsByLiving.Length && _ballsByLiving[who] != null)
+            else if (_ballsByLiving != null && who >= 0 && who < _ballsByLiving.Length && _ballsByLiving[who].Id > 0)
             {
                 _ball = _ballsByLiving[who];
             }
@@ -1055,7 +1054,7 @@ namespace GunMobile.Client
             _netShotDonePending = false;
             if (PhoneNet.NetBattle)
             {
-                _netShotsPending = Mathf.Max(1, _ball != null ? _ball.Amount : 1);
+                _netShotsPending = Mathf.Max(1, _ball.Amount);
                 _netShotTimeout = 12f;
                 _shotRemaining = 0;
             }
@@ -1147,7 +1146,7 @@ namespace GunMobile.Client
                         maxHp[i] = JsonInt(msg.Json, "p" + i + "_maxhp", _loop.Livings[i].MaxHp);
 
                         float x = JsonFloat(msg.Json, "p" + i + "_x", _pos[i].x);
-                        int facing = JsonInt(msg.Json, "p" + i + "_facing", _facing[i]);
+                        int msgFacing = JsonInt(msg.Json, "p" + i + "_facing", _facing[i]);
 
                         if (_pos != null && i >= 0 && i < _pos.Length)
                         {
@@ -1155,7 +1154,7 @@ namespace GunMobile.Client
                         }
                         if (_facing != null && i >= 0 && i < _facing.Length)
                         {
-                            _facing[i] = facing;
+                            _facing[i] = msgFacing;
                         }
                         if (_map != null && i < _pos.Length)
                         {
@@ -1200,7 +1199,7 @@ namespace GunMobile.Client
 
                 if (msg.Id == PhoneMsg.FightShotResult)
                 {
-                    int who = JsonInt(msg.Json, "who", -1);
+                    int msgWho = JsonInt(msg.Json, "who", -1);
                     int shot = JsonInt(msg.Json, "shot", 0);
                     int hx = JsonInt(msg.Json, "x", -1);
                     int hy = JsonInt(msg.Json, "y", -1);
@@ -1208,7 +1207,7 @@ namespace GunMobile.Client
                     int total = JsonInt(msg.Json, "total", 0);
                     bool done = msg.Json.IndexOf("\"done\":true", System.StringComparison.Ordinal) >= 0;
                     ParseShotPath(msg.Json, hx, hy);
-                    if (_flying && who == _lastShooter && hx >= 0 && hy >= 0)
+                    if (_flying && msgWho == _lastShooter && hx >= 0 && hy >= 0)
                     {
                         if (total > 0 && shot == 0)
                         {
@@ -1254,8 +1253,8 @@ namespace GunMobile.Client
 
                 if (msg.Id == PhoneMsg.FightSkip)
                 {
-                    int who = JsonInt(msg.Json, "who", -1);
-                    if (_flying && who == _lastShooter)
+                    int msgWho = JsonInt(msg.Json, "who", -1);
+                    if (_flying && msgWho == _lastShooter)
                     {
                         _flying = false;
                         _netShotsPending = 0;
@@ -1308,17 +1307,17 @@ namespace GunMobile.Client
 
                 if (msg.Id == PhoneMsg.FightPetSkill)
                 {
-                    int who = JsonInt(msg.Json, "who", -1);
+                    int msgWho = JsonInt(msg.Json, "who", -1);
                     int mp = JsonInt(msg.Json, "mp", -1);
                     int cd = JsonInt(msg.Json, "cd", -1);
-                    if (who >= 0 && _petMp != null && who < _petMp.Length && mp >= 0)
+                    if (msgWho >= 0 && _petMp != null && msgWho < _petMp.Length && mp >= 0)
                     {
-                        _petMp[who] = mp;
+                        _petMp[msgWho] = mp;
                     }
 
-                    if (who >= 0 && _petSkillCd != null && who < _petSkillCd.Length && cd >= 0)
+                    if (msgWho >= 0 && _petSkillCd != null && msgWho < _petSkillCd.Length && cd >= 0)
                     {
-                        _petSkillCd[who] = cd;
+                        _petSkillCd[msgWho] = cd;
                     }
 
                     continue;
@@ -1825,7 +1824,7 @@ namespace GunMobile.Client
                 ? _app.Database.ComputeBombHurt(_ball, _propDmg)
                 : DamageCalculator.ComputeBombHurt(_ball, _propDmg);
 
-            int blastRadius = Mathf.Max(20, _ball != null ? _ball.Radii : 24);
+            int blastRadius = Mathf.Max(20, _ball.Radii);
 
             if (GameDatabase.BallIsHeal(_ball))
             {
@@ -2552,7 +2551,7 @@ namespace GunMobile.Client
             }
 
             Vector2 p = _pos[me];
-            if (_ballsByLiving != null && me >= 0 && me < _ballsByLiving.Length && _ballsByLiving[me] != null)
+            if (_ballsByLiving != null && me >= 0 && me < _ballsByLiving.Length && _ballsByLiving[me].Id > 0)
             {
                 _ball = _ballsByLiving[me];
                 _sim.ApplyBall(_ball);
