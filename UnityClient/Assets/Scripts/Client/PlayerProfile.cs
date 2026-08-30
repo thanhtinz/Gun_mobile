@@ -1118,6 +1118,7 @@ namespace GunMobile.Client
             new ModuleDef("maxlevel", "等级突破", "Request/maxleveltemplate.xml"),
             new ModuleDef("strengthenexp", "强化经验", "Request/loadstrengthexp.xml"),
             new ModuleDef("gameinfo", "游戏资料", "Request/ranktemplateall.xml"),
+            new ModuleDef("rankboard", "排行榜数据", "Request/CelebByGpList.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),

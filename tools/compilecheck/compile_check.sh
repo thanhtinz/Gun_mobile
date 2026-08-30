@@ -64,6 +64,16 @@ echo "==> server (GUNMOBILE_STANDALONE)"
 } > "$WORK/server.rsp"
 dotnet "$CSC" "@$(win "$WORK/server.rsp")"
 
+
+# runtimeconfig để chạy thẳng: dotnet "$WORK/GunMobileServer.dll"
+cat > "$WORK/GunMobileServer.runtimeconfig.json" <<JSON
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": { "name": "Microsoft.NETCore.App", "version": "8.0.0" }
+  }
+}
+JSON
 echo "==> client + package (UnityEngine stubs)"
 {
   echo "-nologo"; echo "-nostdlib"; echo "-langversion:12"; echo "-target:library"

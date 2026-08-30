@@ -2807,6 +2807,52 @@ public static void HomeTempleScreen(RectTransform safe, GameApp app)
             }
         }
 
+        static string _rankBoardId;
+
+        // Bảng xếp hạng snapshot từ server PC (celeb*/manorwealth) — chỉ xem, không có msg riêng.
+        public static void RankBoardScreen(RectTransform safe, GameApp app)
+        {
+            Transform body = SysUi.Begin(safe, app, "排行榜 · celeb snapshot");
+            if (app.Database == null || app.Database.RankBoardOrder.Count == 0)
+            {
+                SysUi.Note(body, "缺少 Request/Celeb*.xml");
+                return;
+            }
+
+            RankBoard current = app.Database.GetRankBoard(_rankBoardId);
+            if (current == null)
+            {
+                current = app.Database.RankBoardOrder[0];
+                _rankBoardId = current.Id;
+            }
+
+            SysUi.Note(body, current.Title + "  ·  " + current.Source + "  ·  " + current.Rows.Count + " dòng");
+
+            int shown = 0;
+            foreach (RankBoardRow row in current.Rows)
+            {
+                string extra = string.IsNullOrEmpty(row.Extra) ? "" : "  [" + row.Extra + "]";
+                SysUi.Note(body, row.Rank + ". " + row.Name + extra +
+                    (row.Grade > 0 ? "  Lv" + row.Grade : "") + "  " + row.Value);
+                if (++shown >= 30) break;
+            }
+
+            SysUi.Note(body, "--- 换榜 ---");
+            int tabs = 0;
+            foreach (RankBoard board in app.Database.RankBoardOrder)
+            {
+                RankBoard local = board;
+                SysUi.Row(body, "rb" + board.Id,
+                    (board.Id == current.Id ? "[当前] " : "") + board.Title + "  (" + board.Rows.Count + ")",
+                    () =>
+                    {
+                        _rankBoardId = local.Id;
+                        RankBoardScreen(safe, app);
+                    });
+                if (++tabs >= 28) break;
+            }
+        }
+
         public static void ScrollScreen(RectTransform safe, GameApp app)
         {
             Transform body = SysUi.Begin(safe, app, "纹章卷轴 · TS_Scroll");

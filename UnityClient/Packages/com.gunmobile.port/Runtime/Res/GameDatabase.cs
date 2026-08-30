@@ -1949,6 +1949,24 @@ namespace GunMobile.Res
         public string VersionDesc = "";
     }
 
+    public sealed class RankBoardRow
+    {
+        public int Rank;
+        public string Name = "";
+        public string Extra = "";
+        public int Grade;
+        public long Value;
+    }
+
+    public sealed class RankBoard
+    {
+        public string Id = "";
+        public string Title = "";
+        public string Source = "";
+        public bool Consortia;
+        public List<RankBoardRow> Rows { get; } = new List<RankBoardRow>();
+    }
+
     public sealed class MagicFusionRecipe
     {
         public int Id;
@@ -2613,6 +2631,8 @@ namespace GunMobile.Res
         public List<ActiveListEntry> ActiveListOrder { get; } = new List<ActiveListEntry>();
         public List<MapServerEntry> MapServers { get; } = new List<MapServerEntry>();
         public List<VersionNoticeEntry> VersionNotices { get; } = new List<VersionNoticeEntry>();
+        public Dictionary<string, RankBoard> RankBoards { get; } = new Dictionary<string, RankBoard>();
+        public List<RankBoard> RankBoardOrder { get; } = new List<RankBoard>();
         public Dictionary<string, string> ServerConfig { get; } = new Dictionary<string, string>();
         public List<FightLabDrop> FightLabDrops { get; } = new List<FightLabDrop>();
         public List<LevelGrade> Levels { get; } = new List<LevelGrade>();
@@ -2772,6 +2792,7 @@ namespace GunMobile.Res
             db.LoadReferenceTables(loader);
             db.LoadStrengthenData(loader);
             db.LoadInfoTables(loader);
+            db.LoadRankBoards(loader);
             db.LoadServerConfig(loader);
             db.LoadFireworksFromConfig();
             db.BuildSeasonalConfig();
@@ -2793,7 +2814,7 @@ namespace GunMobile.Res
 #if !GUNMOBILE_STANDALONE
             db.LoadCharacterDefine(loader);
 #endif
-            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} naiKuai={db.NaiKuaiEquips.Count} actSys={db.ActivitySystemItems.Count} eventRw={db.EventRewardItems.Count} cardBuff={db.CardBuffs.Count} lotteryShow={db.LotteryShowItems.Count} maxLevel={db.MaxLevels.Count} buffTpl={db.BuffTemplates.Count} strengthExp={db.StrengthExpList.Count} rankTitles={db.RankTitles.Count} activeList={db.ActiveListEntries.Count} mapServers={db.MapServers.Count} notices={db.VersionNotices.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
+            Debug.Log($"GunMobile DB items={db.Items.Count} shop={db.Shop.Count} shopShow={db.ShopShowList.Count} pairUp={db.PairUpAwards.Count} stockNotice={db.StockNotices.Count} jewel={db.JewelAdditions.Count} warPass={db.WarPassQuests.Count} timeLimitShop={db.TimeLimitShop.Count} scrolls={db.Scrolls.Count} sigilSkills={db.SigilSkills.Count} consortiaBuf={db.ConsortiaBuffers.Count} elfBooks={db.ElfSkillBooks.Count} bfTasks={db.ButterflyTasks.Count} manorSeeds={db.ManorSeeds.Count} manorTasks={db.ManorTasks.Count} cardAch={db.CardAchievements.Count} guardCore={db.GuardCoreSkills.Count} riddles={db.LightRiddles.Count} fairSkills={db.FairBattleSkills.Count} onlineArm={db.OnlineArmLevels.Count} subWeapon={db.SubWeaponEvolutions.Count} love={db.LoveLevels.Count} tree={db.TreeLevels.Count} dailyActive={db.DailyActiveTasks.Count} loginAward={db.LoginAwardList.Count} kingRoad={db.KingRoadQuests.Count} miniShop={db.MiniGameShop.Count} waste={db.WasteRecycleAwards.Count} setsBuild={db.SetsBuilds.Count} suits={db.SuitTemplates.Count} engraveRef={db.EngraveRefineries.Count} userBox={db.UserBoxes.Count} communal={db.CommunalActives.Count} goodsCollect={db.GoodsCollects.Count} helpGame={db.HelpGameRewards.Count} petForm={db.PetForms.Count} runeAdv={db.RuneAdvances.Count} charge={db.ChargeActives.Count} threeClean={db.ThreeCleanAwards.Count} dice={db.DiceGameAwards.Count} fish={db.HomeFishes.Count} naiKuai={db.NaiKuaiEquips.Count} actSys={db.ActivitySystemItems.Count} eventRw={db.EventRewardItems.Count} cardBuff={db.CardBuffs.Count} lotteryShow={db.LotteryShowItems.Count} maxLevel={db.MaxLevels.Count} buffTpl={db.BuffTemplates.Count} strengthExp={db.StrengthExpList.Count} rankTitles={db.RankTitles.Count} activeList={db.ActiveListEntries.Count} mapServers={db.MapServers.Count} notices={db.VersionNotices.Count} rankBoards={db.RankBoards.Count} quests={db.Quests.Count} activityQuests={db.ActivityQuests.Count} sworn={db.SwornItems.Count} vipStore={db.VipStore.Count} maps={db.Maps.Count} balls={db.Balls.Count} pets={db.Pets.Count} npcs={db.Npcs.Count} pve={db.Pve.Count} levels={db.Levels.Count} fightProps={db.FightPropsByPic.Count} celebGp={db.CelebGpDay.Count} celebUsers={db.CelebUsers.Count} cfg={db.ServerConfig.Count}");
             return db;
         }
 
@@ -4083,6 +4104,12 @@ namespace GunMobile.Res
             {
                 if (MapServers[i].ServerId == serverId) return MapServers[i];
             }
+            return null;
+        }
+
+        public RankBoard GetRankBoard(string id)
+        {
+            if (!string.IsNullOrEmpty(id) && RankBoards.TryGetValue(id, out RankBoard board)) return board;
             return null;
         }
 
@@ -12300,6 +12327,118 @@ namespace GunMobile.Res
                 });
                 if (VersionNotices.Count >= 20) break;
             }
+        }
+
+        // Bảng xếp hạng PC (celeb*/areaceleb*/manorwealth) là snapshot server cũ, chỉ để xem.
+        // Cột giá trị mỗi bảng một tên nên dò theo danh sách ưu tiên bên dưới.
+        static readonly string[][] RankBoardFiles =
+        {
+            new[] { "gpTotal", "总战斗力 GP", "Request/CelebByGpList.xml" },
+            new[] { "gpWeek", "周 GP", "Request/CelebByWeekGPList.xml" },
+            new[] { "gpDay", "日 GP", "Request/CelebByDayGPList.xml" },
+            new[] { "offerTotal", "总贡献", "Request/CelebByOfferList.xml" },
+            new[] { "offerWeek", "周贡献", "Request/CelebByWeekOfferList.xml" },
+            new[] { "offerDay", "日贡献", "Request/CelebByDayOfferList.xml" },
+            new[] { "prestigeTotal", "总威望", "Request/CelebByTotalPrestige.xml" },
+            new[] { "prestigeWeek", "周威望", "Request/celebbyweekprestige.xml" },
+            new[] { "prestigeDay", "日威望", "Request/celebbydayprestige.xml" },
+            new[] { "fightPowerDay", "日战力", "Request/CelebByDayFightPowerList.xml" },
+            new[] { "giftGpTotal", "总礼物 GP", "Request/celebbygiftgplist.xml" },
+            new[] { "giftGpWeek", "周礼物 GP", "Request/celebbyweekgiftgp.xml" },
+            new[] { "giftGpDay", "日礼物 GP", "Request/celebbydaygiftgp.xml" },
+            new[] { "mountExp", "坐骑经验", "Request/celebbymountexplist.xml" },
+            new[] { "bestEquip", "极品装备", "Request/CelebForBestEquip.xml" },
+            new[] { "users", "玩家榜", "Request/CelebForUsers.xml" },
+            new[] { "usersDay", "日玩家榜", "Request/CelebForUsersByDay.xml" },
+            new[] { "manorWealth", "庄园财富", "Request/manorwealth.xml" },
+        };
+
+        static readonly string[][] RankBoardConsortiaFiles =
+        {
+            new[] { "consortia", "公会榜", "Request/CelebForConsortia.xml" },
+            new[] { "consortiaHonor", "公会荣誉", "Request/CelebByConsortiaHonor.xml" },
+            new[] { "consortiaWeekHonor", "公会周荣誉", "Request/CelebByConsortiaWeekHonor.xml" },
+            new[] { "consortiaDayHonor", "公会日荣誉", "Request/CelebByConsortiaDayHonor.xml" },
+            new[] { "consortiaRiches", "公会财富", "Request/CelebByConsortiaRiches.xml" },
+            new[] { "consortiaWeekRiches", "公会周财富", "Request/CelebByConsortiaWeekRiches.xml" },
+            new[] { "consortiaDayRiches", "公会日财富", "Request/CelebByConsortiaDayRiches.xml" },
+            new[] { "consortiaLevel", "公会等级", "Request/CelebByConsortiaLevel.xml" },
+            new[] { "consortiaFightPower", "公会战力", "Request/CelebByConsortiaFightPower.xml" },
+            new[] { "consortiaGiftGp", "公会礼物 GP", "Request/celebbyconsortiagiftgp.xml" },
+        };
+
+        static readonly string[] RankValueKeys =
+        {
+            "GP", "TotalGP", "Wealth", "Money", "Offer", "TotalOffer", "Repute", "Prestige",
+            "FightPower", "Honor", "Riches", "Exp", "MountExp", "GiftGP", "GiftGp", "Score", "Level",
+            "ConsortiaLevel", "ConsortiaRiches", "ConsortiaHonor", "Value", "Count"
+        };
+
+        static readonly string[] RankNameKeys = { "NickName", "ConsortiaName", "UserName", "Name" };
+
+        void LoadRankBoards(ResLoader loader)
+        {
+            for (int i = 0; i < RankBoardFiles.Length; i++)
+            {
+                AddRankBoard(loader, RankBoardFiles[i][0], RankBoardFiles[i][1], RankBoardFiles[i][2], false);
+            }
+
+            for (int i = 0; i < RankBoardConsortiaFiles.Length; i++)
+            {
+                AddRankBoard(loader, RankBoardConsortiaFiles[i][0], RankBoardConsortiaFiles[i][1],
+                    RankBoardConsortiaFiles[i][2], true);
+            }
+        }
+
+        void AddRankBoard(ResLoader loader, string id, string title, string path, bool consortia)
+        {
+            if (RankBoards.ContainsKey(id)) return;
+            if (!TryTable(loader, path, out XmlResultTable table) || table.Rows.Count == 0) return;
+
+            var board = new RankBoard { Id = id, Title = title, Source = path, Consortia = consortia };
+            int max = ConfigInt("RankBoardRows", 50);
+            if (max <= 0) max = 50;
+
+            foreach (var row in table.Rows)
+            {
+                string name = "";
+                for (int i = 0; i < RankNameKeys.Length && string.IsNullOrEmpty(name); i++)
+                {
+                    name = Str(row, RankNameKeys[i]);
+                }
+
+                if (string.IsNullOrEmpty(name)) continue;
+
+                long value = 0;
+                for (int i = 0; i < RankValueKeys.Length; i++)
+                {
+                    if (!row.TryGetValue(RankValueKeys[i], out string raw) || string.IsNullOrEmpty(raw)) continue;
+                    if (!long.TryParse(raw, NumberStyles.Integer, CultureInfo.InvariantCulture, out long parsed)) continue;
+                    if (parsed <= 0) continue;
+                    value = parsed;
+                    break;
+                }
+
+                int order = Int(row, "Order");
+                if (order <= 0) order = board.Rows.Count + 1;
+
+                board.Rows.Add(new RankBoardRow
+                {
+                    Rank = order,
+                    Name = name,
+                    Extra = consortia ? Str(row, "ChairmanName") : Str(row, "ConsortiaName"),
+                    Grade = Int(row, "Grade"),
+                    Value = value
+                });
+
+                if (board.Rows.Count >= max) break;
+            }
+
+            if (board.Rows.Count == 0) return;
+            board.Rows.Sort((a, b) => b.Value != a.Value ? b.Value.CompareTo(a.Value) : a.Rank.CompareTo(b.Rank));
+            for (int i = 0; i < board.Rows.Count; i++) board.Rows[i].Rank = i + 1;
+            RankBoards[id] = board;
+            RankBoardOrder.Add(board);
         }
 
         void LoadServerConfig(ResLoader loader)

@@ -332,6 +332,9 @@ namespace GunMobile.Client
                 case "gameinfo":
                     ExtraModulesScreens.GameInfoScreen(_safe, this);
                     return;
+                case "rankboard":
+                    ExtraModulesScreens.RankBoardScreen(_safe, this);
+                    return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
                     return;
