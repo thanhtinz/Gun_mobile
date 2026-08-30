@@ -33,3 +33,6 @@ legacy/releases/Ok/equip_arm_bundle.zip
 # Unity tự sinh .meta cho StreamingAssets (11k+ file, không có GUID nào tham chiếu)
 UnityClient/Assets/StreamingAssets/**/*.meta
 UnityClient/Assets/StreamingAssets/*.meta
+
+# Unity temp
+UnityClient/.utmp/
