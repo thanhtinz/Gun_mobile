@@ -36,10 +36,16 @@ dotnet "$CSC" "@$(win "$WORK/smoke.rsp")"
 cp "$WORK/GunMobileServer.runtimeconfig.json" "$WORK/SmokeClient.runtimeconfig.json"
 
 rm -rf "$DATA"
+rm -f "$WORK/server.log"
 mkdir -p "$DATA"
 
-echo "==> server (PC data: legacy/data)"
-GUNMOBILE_PC_DATA="$(win "$ROOT/legacy/data")" GUNMOBILE_DATA="$(win "$DATA")" \
+# StreamingAssets có cả Request lẫn Service/Road/map (cần map để mô phỏng đạn);
+# legacy/data chỉ có bảng XML nên dùng làm phương án dự phòng.
+PC_DATA="$ROOT/UnityClient/Assets/StreamingAssets/PcData"
+if [ ! -d "$PC_DATA/Request" ]; then PC_DATA="$ROOT/legacy/data"; fi
+
+echo "==> server (PC data: $PC_DATA)"
+GUNMOBILE_PC_DATA="$(win "$PC_DATA")" GUNMOBILE_DATA="$(win "$DATA")" \
   dotnet "$WORK/GunMobileServer.dll" > "$WORK/server.log" 2>&1 &
 SERVER_PID=$!
 trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT

@@ -11327,7 +11327,9 @@ namespace GunMobile.Net
 
             int mapH = map.Height;
             int mapW = map.Width;
-            float unityY = mapH - startY - 18f;
+            // Nòng súng cao hơn chân nhân vật; map-Y đi xuống còn sim-Y đi lên nên phải CỘNG 18.
+            // Trước đây trừ 18 khiến đạn xuất phát ~17px dưới mặt đất và nổ ngay dưới chân.
+            float unityY = mapH - startY + 18f;
 
             int shotCount = Mathf.Max(1, ball.Amount);
             int blastRadius = Mathf.Max(20, Mathf.RoundToInt(ball.Radii * propRadius));

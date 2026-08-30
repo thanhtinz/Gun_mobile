@@ -223,7 +223,9 @@ Kéo package vào Unity (`manifest.json` file: path) rồi add `GunMobileBootstr
 
 - SWF không port máy móc — UI phải dựng lại.
 - `fore.map` bit order giả định MSB-left (khớp stride 1250→157). Nếu terrain lệch, đảo mask `0x80 >>` thành `1 << (x & 7)`.
-- Physics (client): `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE.
+- Physics: `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE. Hai điểm cần soi lại khi có bản PC để đối chiếu:
+  * Gió đổi mỗi lượt trong khoảng ±30, nhân 0.04 thành ±1.2 px/frame² — lớn hơn cả trọng lực 0.7, nên gió mạnh đủ để đẩy ngược một phát bắn (đo được bằng `tools/compilecheck/smoke_test.sh`).
+  * Nòng súng lấy `mapH - standY + 18`; nếu đổi dấu thành `- 18` thì đạn sinh ra ~17px dưới mặt đất và nổ ngay dưới chân — client lẫn server phải dùng chung dấu.
 - Anti-cheat (server): damage và địa hình do server mô phỏng nên client không tự khai được sát thương. Còn hở: vị trí đi bộ (`FightWalk`) vẫn tin client, và hằng số vật lý phải khớp `game.logic.dll` thì đường đạn server mới trùng với client.
 - Resource ~2GB: APK chứa **mọi map playable** + XML; equip PNG unpack local (`legacy/unpacked`).
 - Online PC Road/Fight (RSA + SQL Server) không chạy trên điện thoại. Thay bằng **PhoneRoad** TCP cổng 4396/1910, magic 0x7D01, JSON bắn đồng bộ LAN.

@@ -912,7 +912,7 @@ namespace GunMobile.Client
             {
                 for (int p = 35; p <= 95; p += 6)
                 {
-                    ProjectileState s = _sim.Launch(_pos[1].x, _map.Height - _pos[1].y - 18f, a, p, _facing[1]);
+                    ProjectileState s = _sim.Launch(_pos[1].x, _map.Height - _pos[1].y + 18f, a, p, _facing[1]);
                     s = _sim.FlyUntil(
                         s,
                         _loop.Wind,
@@ -1045,7 +1045,7 @@ namespace GunMobile.Client
             _sim.ApplyBall(_ball);
             ApplyShotVisuals();
             Vector2 p = _pos[who];
-            float unityY = _map.Height - p.y - 18f;
+            float unityY = _map.Height - p.y + 18f;   // nòng súng trên chân, xem ghi chú ở MobileGameServer
             _shot = _sim.Launch(p.x, unityY, angle, power, _facing[who]);
             _flying = true;
             _netPathPoints.Clear();
@@ -1627,7 +1627,7 @@ namespace GunMobile.Client
                 float spread = UnityEngine.Random.Range(-8f, 8f);
                 _shot = _sim.Launch(
                     _pos[_loop.CurrentLiving].x + spread,
-                    _map.Height - _pos[_loop.CurrentLiving].y - 18f,
+                    _map.Height - _pos[_loop.CurrentLiving].y + 18f,
                     _aim != null ? _aim.AngleDeg + UnityEngine.Random.Range(-5f, 5f) : 50f,
                     Mathf.Clamp((_aim != null ? _aim.Power : 60f) + UnityEngine.Random.Range(-6f, 6f), 20f, 100f),
                     _facing[_loop.CurrentLiving]);
@@ -2556,7 +2556,7 @@ namespace GunMobile.Client
                 _ball = _ballsByLiving[me];
                 _sim.ApplyBall(_ball);
             }
-            ProjectileState s = _sim.Launch(p.x, _map.Height - p.y - 18f, _aim.AngleDeg, _aim.Power, _facing[me]);
+            ProjectileState s = _sim.Launch(p.x, _map.Height - p.y + 18f, _aim.AngleDeg, _aim.Power, _facing[me]);
             for (int i = 0; i < _dots.Length; i++)
             {
                 for (int k = 0; k < 3; k++)
