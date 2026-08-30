@@ -22,7 +22,7 @@ if [ ! -f "$CSC" ]; then
   unzip -q -o "$WORK/roslyn.nupkg" -d "$WORK/roslyn"
 fi
 
-FW_LINE="$(dotnet --list-runtimes | grep '^Microsoft.NETCore.App 8\.' | tail -1)"
+FW_LINE="$(dotnet --list-runtimes | grep '^Microsoft.NETCore.App 8\.' | tail -1 || true)"
 FW_VER="$(printf '%s' "$FW_LINE" | awk '{print $2}')"
 FW_DIR="$(printf '%s' "$FW_LINE" | sed -n 's/.*\[\(.*\)\]$/\1/p')"
 if command -v cygpath >/dev/null 2>&1 && [ -n "$FW_DIR" ]; then FW_DIR="$(cygpath -u "$FW_DIR")"; fi
