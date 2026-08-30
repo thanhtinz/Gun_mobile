@@ -176,7 +176,7 @@ namespace GunMobile.Res
     {
         public string Name;
         public Rect Region;
-        public Rect? Frame;
+        [NonSerialized] public Rect? Frame;   // Nullable không serialize được đồng nhất editor/player
         public Vector2 Pivot;
     }
 

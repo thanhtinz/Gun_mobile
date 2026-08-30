@@ -1769,7 +1769,7 @@ namespace GunMobile.Net
         public int[] MaxHp;
         public long TurnStartMs;
         public long BattleStartMs;
-        public System.Random Rng;
+        [NonSerialized] public System.Random Rng;   // Unity serialize khác nhau giữa editor và player -> build lỗi layout
 
         // Server-authoritative battle state
         public MapCollision Map;
