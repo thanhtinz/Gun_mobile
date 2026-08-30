@@ -81,6 +81,7 @@ echo "==> client + package (UnityEngine stubs)"
   refs
   echo "\"$(win "$ROOT/tools/compilecheck/UnityCompileStubs.cs")\""
   for f in "$ROOT"/UnityClient/Assets/Scripts/Client/*.cs \
+           "$ROOT"/UnityClient/Assets/Scripts/Server/*.cs \
            "$PORT"/Core/*.cs "$PORT"/Logic/*.cs "$PORT"/Res/*.cs \
            "$PORT"/Net/*.cs "$PORT"/UI/*.cs "$PORT"/*.cs; do
     echo "\"$(win "$f")\""
