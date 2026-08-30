@@ -1160,5 +1160,91 @@ namespace GunMobile.Client
             new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
             new ModuleDef("carnivalSuperLucker", "超级幸运", "Request/CarnivalActivityItems.xml", false, "carnivalSuperLucker.ui"),
         };
+        public sealed class ModuleGroup
+        {
+            public string Title;
+            public string[] Ids;
+
+            public ModuleGroup(string title, params string[] ids)
+            {
+                Title = title;
+                Ids = ids;
+            }
+        }
+
+        // Sảnh có hơn 130 module nên chia nhóm cho đỡ rối; id nào không nằm trong
+        // nhóm nào sẽ rơi vào tab "其他" chứ không biến mất.
+        public static readonly ModuleGroup[] Groups =
+        {
+            new ModuleGroup("战斗",
+                "room", "dungeon", "labyrinth", "labyrinthgame", "worldboss", "peakbattle", "teamdungeon",
+                "battleteam", "dailyleague", "dreamland", "darkboundary", "forcesbattle", "kingroad",
+                "fairbattle", "tree", "sweep"),
+            new ModuleGroup("养成",
+                "character", "texp", "gemstone", "culture", "honorhall", "glory", "achievement", "maxlevel",
+                "strengthenexp", "sigil", "sigilskill", "soulmark", "emblem", "jamps", "guardcore", "kingbless"),
+            new ModuleGroup("装备",
+                "bag", "engrave", "engraverefine", "enchant", "magicstone", "jade", "jewel", "necklace",
+                "rune", "runeadvance", "setsbuild", "subweapon", "onlinearm", "naikuai", "magicwardrobe",
+                "godcard", "godcardraise", "horseamulet", "magicitem", "scroll"),
+            new ModuleGroup("伙伴",
+                "pet", "petform", "card", "cardachievement", "cardbuff", "elf", "elfskillbook", "butterfly",
+                "butterflytask", "totem", "horse", "title", "linkpal", "love"),
+            new ModuleGroup("家园",
+                "farm", "manorseed", "manortask", "homefish", "church", "auditorium", "mines", "bank",
+                "treasure", "treasureroom", "redpacket", "homeTemple"),
+            new ModuleGroup("活动",
+                "signin", "lottery", "quiz", "oneyuan", "calendar", "carnival", "christmas", "newyear",
+                "devilturn", "jigsaw", "bible", "worshipthemoon", "boguadventure", "dailyactive",
+                "loginaward", "activeconvert", "activitysystem", "eventreward", "communal", "dicegame",
+                "threeclean", "warpass", "firstrecharge", "charge", "recycle", "wasterecycle",
+                "goodscollect", "helpgame", "pairup", "minigameshop", "searchgoods", "userbox",
+                "carnivalSuperLucker"),
+            new ModuleGroup("社交/商城",
+                "consortia", "consortiabuffer", "friend", "mail", "im", "auction", "stock", "vip",
+                "shop", "store", "shopshow", "timelimitshop", "battleteamshop"),
+            new ModuleGroup("资料",
+                "quest", "npc", "ball", "bomb", "rank", "rankboard", "gameinfo", "lightriddle", "setting"),
+        };
+
+        public const string OtherGroupTitle = "其他";
+
+        public static string GroupTitleOf(string moduleId)
+        {
+            for (int g = 0; g < Groups.Length; g++)
+            {
+                string[] ids = Groups[g].Ids;
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    if (ids[i] == moduleId) return Groups[g].Title;
+                }
+            }
+
+            return OtherGroupTitle;
+        }
+
+        public static List<ModuleDef> InGroup(string groupTitle)
+        {
+            var list = new List<ModuleDef>();
+            for (int i = 0; i < All.Length; i++)
+            {
+                if (GroupTitleOf(All[i].Id) == groupTitle) list.Add(All[i]);
+            }
+
+            return list;
+        }
+
+        public static List<string> GroupTitles()
+        {
+            var titles = new List<string>();
+            for (int g = 0; g < Groups.Length; g++)
+            {
+                if (InGroup(Groups[g].Title).Count > 0) titles.Add(Groups[g].Title);
+            }
+
+            if (InGroup(OtherGroupTitle).Count > 0) titles.Add(OtherGroupTitle);
+            return titles;
+        }
+
     }
 }
