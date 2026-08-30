@@ -42,7 +42,7 @@ Tọa độ map: bitmap Y đi xuống. Unity 2D: Y đi lên — helper collision
 - [x] HUD trận `gameprop.png` + sảnh podium `hall_new_rankbg`
 - [x] LAN đồng bộ đi bộ `FightWalk` (92) + mộ `game_tombAsset` + pet/title PNG PC
 - [x] Multi-shot (Amount>1) + damage popup + equip layer preview + arm/equip game.png
-- [x] `MobileGameServer` — thay thế Road/Fight (hall server-authoritative); battle LAN relay (damage tính trên client, server clamp/trừ HP)
+- [x] `MobileGameServer` — thay thế Road/Fight (hall server-authoritative); battle server-authoritative (server mô phỏng đường đạn, cắt địa hình, tự tính damage)
 - [x] Client wired: every screen sends PhoneMsg → server validates → ProfileData sync back
 - [x] VIP/Texp/Gem/KingBless/Mail/Auction all server-notified
 - [x] Server bag sync (ProfileData→Bag), room create/join, turn advancement
@@ -120,7 +120,7 @@ Không phải `Road.Service.exe` + SQL. Mỗi máy chạy `TcpListener` native:
 1. Máy A: Hall → 开战 → **开房 Fight** (status hiện IP LAN).
 2. Máy B: gõ IP của A → **加入** (Road 4396 + Fight 1910).
 3. Máy A chọn map → server broadcast `FightStart`. Cả Host và Joiner **đều chờ `FightStart`** (map + stats/weapon/preferredBallId cho 2 ghế).
-4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz). Chỉ **người bắn** mới report `FightDamage`.
+4. Tới lượt mình thì kéo ngắm / bắn; `FightFire` JSON đồng bộ góc/lực/facing. Đi bộ gửi `FightWalk` (msg 92, ~8Hz). Server nhận `FightFire`, tự mô phỏng đường đạn rồi broadcast `FightShotResult` / `FightCrater` / `FightDamage` — client chỉ vẽ lại.
 
 Nếu bạn muốn chơi **online qua VPS** (server chạy độc lập headless trên VPS):
 - Build **Dedicated Server → Linux** trong Unity hoặc dùng CI workflow (`GunMobileServer-Linux` artifact)
@@ -198,8 +198,7 @@ Trục: Unity `y` lên; map bit `y` xuống. Bootstrap demo: `IsSolid(x, map.Hei
 - **Auth**: nick-based login, server tạo player profile, JSON persistence
 - **Hall systems server-authoritative**: shop buy, equip, quest, pet/card/title/totem/mount select, sign-in, lottery, forge, guild, friends, mail, chat broadcast
 - **Room/matchmaking**: create/join room, room list
-- **Battle relay (LAN)**: server broadcast `FightStart` (map + per-seat stats + `weaponId`/`preferredBallId`) và relay `FightWalk`/`FightFire`/`FightDamage`. Client khởi tạo cả 2 ghế từ `FightStart`; chỉ **người bắn** mới report `FightDamage` → server clamp và trừ HP. Khi trận kết, client gửi `FightOver` → server award gold/exp và gửi `FightReward` + `ProfileData`.
-  * Lưu ý: server hiện vẫn chưa mô phỏng/validate toàn bộ projectile/path như PC server.
+- **Battle (server-authoritative)**: server broadcast `FightStart` (map + per-seat stats + `weaponId`/`preferredBallId`), relay `FightWalk`, và với mỗi `FightFire` (góc/lực/facing) thì `ServerSimulateFire()` chạy `ProjectileSimulator` + `MapCollision` ngay trên server: dò va chạm, `CutCircle` địa hình, `DamageCalculator` tính damage/heal/chí mạng, rồi broadcast `FightShotResult` (kèm path mẫu) + `FightCrater` + `FightDamage`. `FightDamage` do client gửi lên bị **bỏ qua**. Khi trận kết, client gửi `FightOver` → server award gold/exp và gửi `FightReward` + `ProfileData`.
 - **Persistence**: JSON save per player in `persistentDataPath/server_players/`
 
 Không dùng SQL Server / RSA / LoginKey PC. Client gửi PhoneMsg, server validate và reply.
@@ -225,7 +224,7 @@ Kéo package vào Unity (`manifest.json` file: path) rồi add `GunMobileBootstr
 - SWF không port máy móc — UI phải dựng lại.
 - `fore.map` bit order giả định MSB-left (khớp stride 1250→157). Nếu terrain lệch, đảo mask `0x80 >>` thành `1 << (x & 7)`.
 - Physics (client): `game.logic.dll` `Physics`/`SimpleBomb` — gravity 0.7/frame, wind 0.04/frame. Chưa binary-identical với mọi bomb script PVE.
-- Anti-cheat (server): server chưa validate toàn bộ projectile physics; chỉ clamp dmg và trừ HP. Muốn chặt hơn cần đổi protocol để gửi shot params và server mô phỏng lại.
+- Anti-cheat (server): damage và địa hình do server mô phỏng nên client không tự khai được sát thương. Còn hở: vị trí đi bộ (`FightWalk`) vẫn tin client, và hằng số vật lý phải khớp `game.logic.dll` thì đường đạn server mới trùng với client.
 - Resource ~2GB: APK chứa **mọi map playable** + XML; equip PNG unpack local (`legacy/unpacked`).
 - Online PC Road/Fight (RSA + SQL Server) không chạy trên điện thoại. Thay bằng **PhoneRoad** TCP cổng 4396/1910, magic 0x7D01, JSON bắn đồng bộ LAN.
 - Dump có `__MACOSX`, file tên Trung + backup — `extract_legacy.py` đã bỏ png/swf/exe và thư mục backup.
