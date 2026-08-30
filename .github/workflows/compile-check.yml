@@ -13,7 +13,7 @@ on:
 
 jobs:
   compile:
-    name: Roslyn compile (server + client)
+    name: Compile + smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -37,3 +37,8 @@ jobs:
         run: |
           export GUNMOBILE_COMPILE_WORK="$HOME/.cache/gunmobile-compilecheck"
           bash tools/compilecheck/compile_check.sh
+
+      - name: Smoke test (server + PhoneMsg)
+        run: |
+          export GUNMOBILE_COMPILE_WORK="$HOME/.cache/gunmobile-compilecheck"
+          bash tools/compilecheck/smoke_test.sh
