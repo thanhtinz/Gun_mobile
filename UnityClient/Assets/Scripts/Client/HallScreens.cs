@@ -49,6 +49,8 @@ namespace GunMobile.Client
 
     public static class HallScreen
     {
+        static string _moduleGroup;
+
         public static void Show(RectTransform safe, GameApp app)
         {
             var battle = safe.GetComponent<BattleHost>();
@@ -102,6 +104,42 @@ namespace GunMobile.Client
             var fight = UiKit.Button(bg.transform, "Fight", "开战", app.ShowRoom, new Vector2(160f, 52f));
             fight.GetComponent<RectTransform>().anchorMin = fight.GetComponent<RectTransform>().anchorMax = new Vector2(0.92f, 0.95f);
 
+            // Tab nhóm module: sảnh có >130 mục nên chỉ vẽ nhóm đang chọn.
+            List<string> groupTitles = ModuleCatalog.GroupTitles();
+            if (groupTitles.Count > 0 && !groupTitles.Contains(_moduleGroup))
+            {
+                _moduleGroup = groupTitles[0];
+            }
+
+            var tabs = UiKit.Scroll(bg.transform, "ModuleTabs");
+            var trt = tabs.GetComponent<RectTransform>();
+            trt.anchorMin = new Vector2(0f, 0.22f);
+            trt.anchorMax = new Vector2(1f, 0.29f);
+            trt.offsetMin = new Vector2(8f, 2f);
+            trt.offsetMax = new Vector2(-8f, -2f);
+            Object.Destroy(tabs.content.gameObject.GetComponent<VerticalLayoutGroup>());
+            var tabGrid = tabs.content.gameObject.AddComponent<GridLayoutGroup>();
+            tabGrid.cellSize = new Vector2(120f, 44f);
+            tabGrid.spacing = new Vector2(6f, 6f);
+            tabGrid.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+            tabGrid.constraintCount = 10;
+            tabGrid.padding = new RectOffset(4, 2, 2, 2);
+            tabs.content.gameObject.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+            foreach (string title in groupTitles)
+            {
+                string local = title;
+                int count = ModuleCatalog.InGroup(title).Count;
+                UiKit.Button(tabs.content, "tab" + title,
+                    (title == _moduleGroup ? "▸ " : "") + title + " " + count,
+                    () =>
+                    {
+                        _moduleGroup = local;
+                        Show(safe, app);
+                    },
+                    tabGrid.cellSize);
+            }
+
             var scroll = UiKit.Scroll(bg.transform, "Modules");
             var srt = scroll.GetComponent<RectTransform>();
             srt.anchorMin = Vector2.zero;
@@ -117,7 +155,7 @@ namespace GunMobile.Client
             grid.padding = new RectOffset(4, 4, 4, 4);
             scroll.content.gameObject.GetComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
-            foreach (ModuleDef mod in ModuleCatalog.All)
+            foreach (ModuleDef mod in ModuleCatalog.InGroup(_moduleGroup))
             {
                 ModuleDef local = mod;
                 var btn = UiKit.Button(scroll.content, local.Id, local.Title, () => app.ShowModule(local), grid.cellSize);

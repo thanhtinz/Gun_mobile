@@ -181,6 +181,79 @@ namespace GunMobile.Client
         public List<int> ElfSkillIds = new List<int>();
         public List<int> ButterflyTaskClaimed = new List<int>();
         public int ButterflyTaskActive;
+        public int ManorExp;
+        public int ManorSeedTemplateId;
+        public int ManorSeedPlantMin;
+        public int ManorSeedHelpers;
+        public int ManorTaskActions;
+        public List<int> ManorTaskClaimed = new List<int>();
+        public List<int> CardAchievementClaimed = new List<int>();
+        public int GuardCoreGrade = 1;
+        public int GuardCoreExp;
+        public List<int> GuardCoreSkillIds = new List<int>();
+        public int LightRiddleAnswered;
+        public int LightRiddleCorrect;
+        public int LightRiddleQuestionId;
+        public int FairBattlePrestige;
+        public int FairBattleRankLevel = 1;
+        public List<int> FairBattleSkillIds = new List<int>();
+        public List<int> OnlineArmSlotLevels = new List<int>();
+        public List<int> OnlineArmSlotExp = new List<int>();
+        public int OnlineArmDigs;
+        public int SubWeaponLevel = 1;
+        public int SubWeaponExp;
+        public int LoveExp;
+        public int LoveLevel = 1;
+        public string LovePartner = "";
+        public int TreeLevel;
+        public int TreeExp;
+        public int TreeFights;
+        public int DailyActivePoints;
+        public List<int> DailyActiveTaskDone = new List<int>();
+        public List<int> DailyActiveRewardClaimed = new List<int>();
+        public int LoginAwardIndex;
+        public int LoginAwardDay = -1;
+        public int KingRoadScore;
+        public List<int> KingRoadQuestDone = new List<int>();
+        public List<int> ActiveConvertUsed = new List<int>();
+        public int MiniGamePoints;
+        public List<int> MiniGameShopIds = new List<int>();
+        public List<int> MiniGameShopCounts = new List<int>();
+        public int WasteRecyclePoints;
+        public List<int> SetsBuildLevels = new List<int>();
+        public List<int> SetsBuildExp = new List<int>();
+        public List<int> EngraveRefineGrades = new List<int>();
+        public List<int> EngraveTemperLevels = new List<int>();
+        public int UserBoxPoints;
+        public List<int> UserBoxOpened = new List<int>();
+        public int CommunalScore;
+        public int CommunalDayScore;
+        public List<int> CommunalClaimed = new List<int>();
+        public List<int> GoodsCollected = new List<int>();
+        public List<int> HelpGameDone = new List<int>();
+        public int PetFormTemplateId;
+        public int PetMoeLevel = 1;
+        public int PetMoeExp;
+        public int RuneAdvanceQuality;
+        public int ChargePoints;
+        public List<int> ChargeClaimed = new List<int>();
+        public List<int> TxAwardClaimed = new List<int>();
+        public int ThreeCleanPoints;
+        public List<int> ThreeCleanClaimed = new List<int>();
+        public int DiceRolls;
+        public int DiceScore;
+        public int FishCasts;
+        public int FishScore;
+        public int MonthCardId;
+        public int MonthCardDaysLeft;
+        public List<int> NaiKuaiEquipIds = new List<int>();
+        public int ActivitySystemDraws;
+        public int EventRewardDraws;
+        public List<int> CardBuffActivated = new List<int>();
+        public int CardBuffStep;
+        public int SearchCount;
+        public int MaxLevelGrade;
+        public int StrengthenExp;
         public List<RelicSlot> Relics = new List<RelicSlot>();
         public int PreferredBallId;
         public int MailGoldWaiting;
@@ -226,6 +299,62 @@ namespace GunMobile.Client
         public void EnsureSigilSkills() { if (SigilSkillIds == null) SigilSkillIds = new List<int>(); }
         public void EnsureElfSkills() { if (ElfSkillIds == null) ElfSkillIds = new List<int>(); }
         public void EnsureButterflyTasks() { if (ButterflyTaskClaimed == null) ButterflyTaskClaimed = new List<int>(); }
+        public void EnsureManorTaskClaimed() { if (ManorTaskClaimed == null) ManorTaskClaimed = new List<int>(); }
+        public void EnsureCardAchievementClaimed() { if (CardAchievementClaimed == null) CardAchievementClaimed = new List<int>(); }
+        public void EnsureGuardCoreSkills() { if (GuardCoreSkillIds == null) GuardCoreSkillIds = new List<int>(); }
+        public void EnsureFairBattleSkills() { if (FairBattleSkillIds == null) FairBattleSkillIds = new List<int>(); }
+        public void EnsureDailyActive()
+        {
+            if (DailyActiveTaskDone == null) DailyActiveTaskDone = new List<int>();
+            if (DailyActiveRewardClaimed == null) DailyActiveRewardClaimed = new List<int>();
+        }
+        public void EnsureKingRoad() { if (KingRoadQuestDone == null) KingRoadQuestDone = new List<int>(); }
+        public void EnsureActiveConvert() { if (ActiveConvertUsed == null) ActiveConvertUsed = new List<int>(); }
+        public void EnsureSetsBuild()
+        {
+            if (SetsBuildLevels == null) SetsBuildLevels = new List<int>();
+            if (SetsBuildExp == null) SetsBuildExp = new List<int>();
+            while (SetsBuildLevels.Count < 4) SetsBuildLevels.Add(0);
+            while (SetsBuildExp.Count < 4) SetsBuildExp.Add(0);
+        }
+        public void EnsureEngraveRefine()
+        {
+            if (EngraveRefineGrades == null) EngraveRefineGrades = new List<int>();
+            if (EngraveTemperLevels == null) EngraveTemperLevels = new List<int>();
+            while (EngraveRefineGrades.Count < 4) EngraveRefineGrades.Add(0);
+            while (EngraveTemperLevels.Count < 4) EngraveTemperLevels.Add(0);
+        }
+        public void EnsureUserBox() { if (UserBoxOpened == null) UserBoxOpened = new List<int>(); }
+        public void EnsureCommunal() { if (CommunalClaimed == null) CommunalClaimed = new List<int>(); }
+        public void EnsureGoodsCollect() { if (GoodsCollected == null) GoodsCollected = new List<int>(); }
+        public void EnsureHelpGame() { if (HelpGameDone == null) HelpGameDone = new List<int>(); }
+        public void EnsureChargeReward()
+        {
+            if (ChargeClaimed == null) ChargeClaimed = new List<int>();
+            if (TxAwardClaimed == null) TxAwardClaimed = new List<int>();
+        }
+        public void EnsureThreeClean() { if (ThreeCleanClaimed == null) ThreeCleanClaimed = new List<int>(); }
+        public void EnsureNaiKuai() { if (NaiKuaiEquipIds == null) NaiKuaiEquipIds = new List<int>(); }
+        public void EnsureCardBuff() { if (CardBuffActivated == null) CardBuffActivated = new List<int>(); }
+        public void EnsureMiniGameShop()
+        {
+            if (MiniGameShopIds == null) MiniGameShopIds = new List<int>();
+            if (MiniGameShopCounts == null) MiniGameShopCounts = new List<int>();
+            while (MiniGameShopCounts.Count < MiniGameShopIds.Count) MiniGameShopCounts.Add(0);
+        }
+        public int CountMiniGameBought(int id)
+        {
+            EnsureMiniGameShop();
+            for (int i = 0; i < MiniGameShopIds.Count; i++) if (MiniGameShopIds[i] == id) return MiniGameShopCounts[i];
+            return 0;
+        }
+        public void EnsureOnlineArm()
+        {
+            if (OnlineArmSlotLevels == null) OnlineArmSlotLevels = new List<int>();
+            if (OnlineArmSlotExp == null) OnlineArmSlotExp = new List<int>();
+            while (OnlineArmSlotLevels.Count < 5) OnlineArmSlotLevels.Add(1);
+            while (OnlineArmSlotExp.Count < 5) OnlineArmSlotExp.Add(0);
+        }
         public void EnsureNewYearClaimed() { if (NewYearPointClaimed == null) NewYearPointClaimed = new List<int>(); }
         public void EnsureNewYearRankClaimed() { if (NewYearRankClaimed == null) NewYearRankClaimed = new List<int>(); }
         public void EnsureDailyAwardClaimed()
@@ -248,7 +377,6 @@ namespace GunMobile.Client
             if (CompletedAchievements == null) CompletedAchievements = new List<int>();
             if (ClaimedAchievements == null) ClaimedAchievements = new List<int>();
         }
-        public void EnsureOneYuanBought() { if (OneYuanBought == null) OneYuanBought = new List<int>(); }
         public RelicSlot FindRelic(int relicId) { EnsureRelics(); for (int i = 0; i < Relics.Count; i++) if (Relics[i].RelicId == relicId) return Relics[i]; return null; }
         public int GetCultureStatLevel(int statType) { switch (statType) { case 116: return CultureAtk; case 117: return CultureDef; case 118: return CultureAgi; case 119: return CultureLuck; default: return 0; } }
         public void EnsureJampsLists() { if (JampsDebrisOwned == null) JampsDebrisOwned = new List<int>(); if (JampsPagesCollected == null) JampsPagesCollected = new List<int>(); if (JampsPagesActivated == null) JampsPagesActivated = new List<int>(); }
@@ -663,6 +791,30 @@ namespace GunMobile.Client
                 db.ApplySigilSkillBonuses(SigilSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
                 db.ApplyScrollBuff(ScrollBuffTypes, ScrollBuffProfile, ScrollBuffValue, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard);
                 db.ApplyConsortiaBufferBonus(ConsortiaBufferId, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg);
+                EnsureCardAchievementClaimed();
+                db.ApplyCardAchievementBonus(CardAchievementClaimed, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                EnsureGuardCoreSkills();
+                db.ApplyGuardCoreBonus(GuardCoreGrade, GuardCoreSkillIds, ref atk, ref def, ref agi, ref luk, ref hp, ref sDmg, ref sGuard, ref magicAtk, ref magicDef);
+                EnsureOnlineArm();
+                db.ApplyOnlineArmBonus(OnlineArmSlotLevels, ref atk, ref def, ref agi, ref luk);
+                db.ApplySubWeaponBonus(SubWeaponLevel, ref hp, ref sGuard);
+                db.ApplyLoveBonus(LoveLevel, ref atk, ref def, ref agi, ref luk);
+                EnsureSetsBuild();
+                db.ApplySetsBuildBonus(SetsBuildLevels, ref def, ref agi, ref luk, ref hp, ref sGuard, ref magicDef);
+                db.ApplyPetMoeBonus(PetMoeLevel, PetFormTemplateId, ref atk, ref def, ref agi, ref luk, ref hp, ref sGuard);
+                EnsureNaiKuai();
+                db.ApplyNaiKuaiBonus(NaiKuaiEquipIds, ref atk, ref def, ref magicAtk, ref magicDef);
+                EnsureCardBuff();
+                db.ApplyCardBuffBonus(CardBuffActivated, CardBuffStep, ref atk, ref def, ref hp, ref luk);
+                db.ApplyMaxLevelBonus(MaxLevelGrade, ref atk, ref def, ref agi, ref luk, ref magicAtk, ref magicDef);
+                EnsureEngraveRefine();
+                for (int i = 0; i < EngraveRefineGrades.Count; i++)
+                {
+                    int refineGrade = EngraveRefineGrades[i];
+                    int temperLevel = i < EngraveTemperLevels.Count ? EngraveTemperLevels[i] : 0;
+                    atk += refineGrade * 2 + temperLevel;
+                    def += refineGrade * 2 + temperLevel;
+                }
                 atk += sDmg;
                 def += sGuard;
                 atk += magicAtk / 4;
@@ -688,9 +840,9 @@ namespace GunMobile.Client
                 HonorSystemLevel = db.HonorSystemLevelFromExp(HonorSystemExp);
                 db.ApplyHonorSystemBonus(HonorSystemLevel, ref atk, ref def, ref agi, ref luk, ref hp);
                 EnsureRelics();
-                int rDmg = 0;
-                db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref rDmg, ref magicAtk, ref magicDef);
-                atk += rDmg / 4;
+                int relicDmg = 0;
+                db.ApplyRelicStats(Relics, ref atk, ref def, ref agi, ref luk, ref hp, ref relicDmg, ref magicAtk, ref magicDef);
+                atk += relicDmg / 4;
                 db.ApplyCultureBonus(CultureGrade, CultureAtk, CultureDef, CultureAgi, CultureLuck, ref atk, ref def, ref agi, ref luk, ref hp, ref magicAtk, ref magicDef);
                 EnsureJampsLists();
                 int jDmg = 0; int jGuard = 0;
@@ -930,6 +1082,43 @@ namespace GunMobile.Client
             new ModuleDef("consortiabuffer", "公会增益", "Request/consortiabuffertemp.xml"),
             new ModuleDef("elfskillbook", "精灵技能书", "Request/TS_ElfSkillBook.xml"),
             new ModuleDef("butterflytask", "蝶妖任务", "Request/TS_ButterflyTask.xml"),
+            new ModuleDef("manorseed", "庄园种植", "Request/templatemanorlist.xml"),
+            new ModuleDef("manortask", "庄园任务", "Request/ts_manortask.xml"),
+            new ModuleDef("cardachievement", "卡牌成就", "Request/cardachievement.xml"),
+            new ModuleDef("guardcore", "守护核心", "Request/guardcoretemplate.xml"),
+            new ModuleDef("lightriddle", "元宵灯谜", "Request/lightriddlequest.xml"),
+            new ModuleDef("fairbattle", "公平竞技", "Request/fairbattleskillgettemplate.xml"),
+            new ModuleDef("onlinearm", "在线装备", "Request/onlinearmlevelinfo.xml"),
+            new ModuleDef("subweapon", "副武器进化", "Request/subweaponevolutiontemplate.xml"),
+            new ModuleDef("love", "情侣等级", "Request/lovelevelist.xml"),
+            new ModuleDef("tree", "神树", "Request/treetemplatelist.xml"),
+            new ModuleDef("dailyactive", "每日活跃", "Request/everydayactivepointtemplateinfolist.xml"),
+            new ModuleDef("loginaward", "登录奖励", "Request/loginawarditemtemplate.xml"),
+            new ModuleDef("kingroad", "王者之路", "Request/kingofroadquestinfolist.xml"),
+            new ModuleDef("activeconvert", "活跃兑换", "Request/activeconvertiteminfo.xml"),
+            new ModuleDef("minigameshop", "小游戏商店", "Request/minigameshoptemplate.xml"),
+            new ModuleDef("wasterecycle", "废品回收", "Request/WasteRecycle_Award.xml"),
+            new ModuleDef("setsbuild", "套装培养", "Request/setsbuildtemp.xml"),
+            new ModuleDef("engraverefine", "刻印精炼", "Request/engraverefineryconfiginfo.xml"),
+            new ModuleDef("userbox", "成长宝箱", "Request/loaduserbox.xml"),
+            new ModuleDef("communal", "全民活动", "Request/communalactive.xml"),
+            new ModuleDef("goodscollect", "物品收集", "Request/goodscollect.xml"),
+            new ModuleDef("helpgame", "助战奖励", "Request/helpgamereward.xml"),
+            new ModuleDef("petform", "宠物幻化", "Request/loadpetformdata.xml"),
+            new ModuleDef("runeadvance", "符文进阶", "Request/runeadvancetemplatelist.xml"),
+            new ModuleDef("charge", "充值奖励", "Request/loadchargeactivetemplate.xml"),
+            new ModuleDef("threeclean", "三清积分", "Request/threecleanpointaward.xml"),
+            new ModuleDef("dicegame", "骰子游戏", "Request/dicegameawarditem.xml"),
+            new ModuleDef("homefish", "家园钓鱼", "Request/homefishinfo.xml"),
+            new ModuleDef("naikuai", "耐快装备", "Request/TS_NaiKuaiEquip.xml"),
+            new ModuleDef("activitysystem", "活动系统", "Request/activitysystemitems.xml"),
+            new ModuleDef("eventreward", "事件奖励", "Request/eventrewarditemlist.xml"),
+            new ModuleDef("cardbuff", "卡牌增益", "Request/cardbufflist.xml"),
+            new ModuleDef("searchgoods", "寻宝", "Request/searchgoodstemp.xml"),
+            new ModuleDef("maxlevel", "等级突破", "Request/maxleveltemplate.xml"),
+            new ModuleDef("strengthenexp", "强化经验", "Request/loadstrengthexp.xml"),
+            new ModuleDef("gameinfo", "游戏资料", "Request/ranktemplateall.xml"),
+            new ModuleDef("rankboard", "排行榜数据", "Request/CelebByGpList.xml"),
             new ModuleDef("magicstone", "魔石", "Request/magicstonetemplate.xml", false, "magicStone.ui"),
             new ModuleDef("enchant", "附魔", "Request/magicfusiondata.xml", false, "enchant.ui"),
             new ModuleDef("teamdungeon", "团队副本", "Request/battleteamshopitemlist.xml", false, "teamdungeon.ui"),
@@ -971,5 +1160,91 @@ namespace GunMobile.Client
             new ModuleDef("homeTemple", "家园神殿", null, false, "homeTemple.ui"),
             new ModuleDef("carnivalSuperLucker", "超级幸运", "Request/CarnivalActivityItems.xml", false, "carnivalSuperLucker.ui"),
         };
+        public sealed class ModuleGroup
+        {
+            public string Title;
+            public string[] Ids;
+
+            public ModuleGroup(string title, params string[] ids)
+            {
+                Title = title;
+                Ids = ids;
+            }
+        }
+
+        // Sảnh có hơn 130 module nên chia nhóm cho đỡ rối; id nào không nằm trong
+        // nhóm nào sẽ rơi vào tab "其他" chứ không biến mất.
+        public static readonly ModuleGroup[] Groups =
+        {
+            new ModuleGroup("战斗",
+                "room", "dungeon", "labyrinth", "labyrinthgame", "worldboss", "peakbattle", "teamdungeon",
+                "battleteam", "dailyleague", "dreamland", "darkboundary", "forcesbattle", "kingroad",
+                "fairbattle", "tree", "sweep"),
+            new ModuleGroup("养成",
+                "character", "texp", "gemstone", "culture", "honorhall", "glory", "achievement", "maxlevel",
+                "strengthenexp", "sigil", "sigilskill", "soulmark", "emblem", "jamps", "guardcore", "kingbless"),
+            new ModuleGroup("装备",
+                "bag", "engrave", "engraverefine", "enchant", "magicstone", "jade", "jewel", "necklace",
+                "rune", "runeadvance", "setsbuild", "subweapon", "onlinearm", "naikuai", "magicwardrobe",
+                "godcard", "godcardraise", "horseamulet", "magicitem", "scroll"),
+            new ModuleGroup("伙伴",
+                "pet", "petform", "card", "cardachievement", "cardbuff", "elf", "elfskillbook", "butterfly",
+                "butterflytask", "totem", "horse", "title", "linkpal", "love"),
+            new ModuleGroup("家园",
+                "farm", "manorseed", "manortask", "homefish", "church", "auditorium", "mines", "bank",
+                "treasure", "treasureroom", "redpacket", "homeTemple"),
+            new ModuleGroup("活动",
+                "signin", "lottery", "quiz", "oneyuan", "calendar", "carnival", "christmas", "newyear",
+                "devilturn", "jigsaw", "bible", "worshipthemoon", "boguadventure", "dailyactive",
+                "loginaward", "activeconvert", "activitysystem", "eventreward", "communal", "dicegame",
+                "threeclean", "warpass", "firstrecharge", "charge", "recycle", "wasterecycle",
+                "goodscollect", "helpgame", "pairup", "minigameshop", "searchgoods", "userbox",
+                "carnivalSuperLucker"),
+            new ModuleGroup("社交/商城",
+                "consortia", "consortiabuffer", "friend", "mail", "im", "auction", "stock", "vip",
+                "shop", "store", "shopshow", "timelimitshop", "battleteamshop"),
+            new ModuleGroup("资料",
+                "quest", "npc", "ball", "bomb", "rank", "rankboard", "gameinfo", "lightriddle", "setting"),
+        };
+
+        public const string OtherGroupTitle = "其他";
+
+        public static string GroupTitleOf(string moduleId)
+        {
+            for (int g = 0; g < Groups.Length; g++)
+            {
+                string[] ids = Groups[g].Ids;
+                for (int i = 0; i < ids.Length; i++)
+                {
+                    if (ids[i] == moduleId) return Groups[g].Title;
+                }
+            }
+
+            return OtherGroupTitle;
+        }
+
+        public static List<ModuleDef> InGroup(string groupTitle)
+        {
+            var list = new List<ModuleDef>();
+            for (int i = 0; i < All.Length; i++)
+            {
+                if (GroupTitleOf(All[i].Id) == groupTitle) list.Add(All[i]);
+            }
+
+            return list;
+        }
+
+        public static List<string> GroupTitles()
+        {
+            var titles = new List<string>();
+            for (int g = 0; g < Groups.Length; g++)
+            {
+                if (InGroup(Groups[g].Title).Count > 0) titles.Add(Groups[g].Title);
+            }
+
+            if (InGroup(OtherGroupTitle).Count > 0) titles.Add(OtherGroupTitle);
+            return titles;
+        }
+
     }
 }

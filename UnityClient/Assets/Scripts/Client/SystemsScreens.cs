@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GunMobile.Core;
 using GunMobile.Net;
@@ -20,9 +21,11 @@ namespace GunMobile.Client
             return ShopScreen.BodyScroll(bg.transform).content;
         }
 
+        static readonly UnityAction NoOp = () => { };
+
         public static Button Row(Transform content, string id, string cap, UnityAction click)
         {
-            var btn = UiKit.Button(content, id, cap, click, new Vector2(0f, 72f));
+            var btn = UiKit.Button(content, id, cap, click ?? NoOp, new Vector2(0f, 72f));
             btn.gameObject.AddComponent<LayoutElement>().preferredHeight = 72f;
             return btn;
         }
@@ -98,7 +101,7 @@ namespace GunMobile.Client
                     int sid = tmpl.SkillId;
                     SysUi.Row(body, "pskill" + sid,
                         (owned ? "[已学] " : "") + skill.Name + " #" + sid + "  Lv" + tmpl.MinLevel,
-                        owned ? null : (System.Action)(() => PhoneNet.UnlockPetSkill(sid)));
+                        owned ? null : (UnityAction)(() => PhoneNet.UnlockPetSkill(sid)));
                     if (++shown >= 24) break;
                 }
             }
@@ -197,6 +200,7 @@ namespace GunMobile.Client
             }
 
             SysUi.Note(body, "--- 卡牌册 TS_CardBooklet.xml  卡魂 " + app.Profile.CardSoul + " ---");
+            SysUi.Row(body, "cardAchGo", "卡牌成就 cardachievement", () => ExtraModulesScreens.CardAchievementScreen(safe, app));
             app.Profile.EnsureOwnedCards();
             int bookletN = 0;
             if (app.Database != null)
@@ -338,11 +342,11 @@ namespace GunMobile.Client
                     if (skill == null) continue;
                     bool owned = app.Profile.MountSkillIds.Contains(get.SkillId);
                     int needGrade = app.Database.MountSkillUnlockMountGrade(get.SkillId);
-                    int cost = app.Database.MountSkillUnlockGoldCost(get.SkillId);
+                    int skillCost = app.Database.MountSkillUnlockGoldCost(get.SkillId);
                     string label = (owned ? "[已学] " : "") + skill.Name + " Lv" + get.Level +
-                                   "  需坐骑" + needGrade + "  " + cost + "金";
+                                   "  需坐骑" + needGrade + "  " + skillCost + "金";
                     int sid = get.SkillId;
-                    SysUi.Row(body, "ms" + get.Id, label, owned ? null : (System.Action)(() => PhoneNet.UnlockMountSkill(sid)));
+                    SysUi.Row(body, "ms" + get.Id, label, owned ? null : (UnityAction)(() => PhoneNet.UnlockMountSkill(sid)));
                     if (++skillShown >= 40) break;
                 }
                 if (app.Database.MountSkills.Count == 0) SysUi.Note(body, "Missing mountskilltemplate.xml");
@@ -376,7 +380,7 @@ namespace GunMobile.Client
                     string label = state + " #" + ach.Id + "  " + ach.Title + "  +" + ach.AchievementPoint +
                                    "  Lv" + ach.NeedMinLevel + "-" + ach.NeedMaxLevel;
                     int id = ach.Id;
-                    SysUi.Row(body, "ach" + ach.Id, label, claimed ? null : (System.Action)(() => PhoneNet.ClaimAchievement(id)));
+                    SysUi.Row(body, "ach" + ach.Id, label, claimed ? null : (UnityAction)(() => PhoneNet.ClaimAchievement(id)));
                     if (++shown >= 60) break;
                 }
                 if (app.Database.AchievementList.Count == 0) SysUi.Note(body, "Missing achievementlist.xml");
@@ -550,6 +554,8 @@ namespace GunMobile.Client
                 SysUi.Row(body, "manorUp", $"升级庄园  {manorCost} 金币", PhoneNet.UpgradeManor);
             }
             int farmCost = app.Database != null ? app.Database.FarmBuyVegetableCost() : 200;
+            SysUi.Row(body, "manorSeedGo", "庄园种植 templatemanorlist", () => ExtraModulesScreens.ManorSeedScreen(safe, app));
+            SysUi.Row(body, "manorTaskGo", "庄园任务 ts_manortask", () => ExtraModulesScreens.ManorTaskScreen(safe, app));
             SysUi.Note(body, "合成食物：消耗蔬菜，获得成品。没有蔬菜时用 " + farmCost + " 金币补货。");
             foreach (FarmRecipe r in app.Database.Farm)
             {
@@ -1711,7 +1717,7 @@ namespace GunMobile.Client
                     int sid = firstStockId;
                     string label = (claimed ? "[已领] " : "") + "#" + nid + "  " + preview;
                     SysUi.Row(body, "sn" + nid, label,
-                        claimed ? null : (System.Action)(() => PhoneNet.StockNotice("claim", nid, sid)));
+                        claimed ? null : (UnityAction)(() => PhoneNet.StockNotice("claim", nid, sid)));
                     if (++shown >= 12) break;
                 }
                 if (!string.IsNullOrEmpty(PhoneNet.LastStockNoticeJson))
@@ -1782,7 +1788,7 @@ namespace GunMobile.Client
                     if (claimed) label = "[已领] " + label;
                     else if (r.Day > today) label += "  (未到)";
                     int day = r.Day;
-                    SysUi.Row(body, "cal" + r.Day, label, claimed || r.Day > today ? null : (System.Action)(() => PhoneNet.CalendarClaim(day)));
+                    SysUi.Row(body, "cal" + r.Day, label, claimed || r.Day > today ? null : (UnityAction)(() => PhoneNet.CalendarClaim(day)));
                 }
             }
             SysUi.Note(body, "— 每日领取 DailyAwardList.xml —");
@@ -1801,7 +1807,7 @@ namespace GunMobile.Client
                     string label = (claimed ? "[已领] " : "") + "#" + a.Id + " GetWay" + a.GetWay +
                         " Day" + a.AwardDays + "  T" + a.TemplateId + " x" + a.Count;
                     int id = a.Id;
-                    SysUi.Row(body, "da" + a.Id, label, claimed ? null : (System.Action)(() => PhoneNet.ClaimDailyAward(id)));
+                    SysUi.Row(body, "da" + a.Id, label, claimed ? null : (UnityAction)(() => PhoneNet.ClaimDailyAward(id)));
                     if (++shown >= 24) break;
                 }
                 if (app.Database.DailyAwardList.Count == 0) SysUi.Note(body, "Missing DailyAwardList.xml");

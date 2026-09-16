@@ -43,8 +43,6 @@ namespace GunMobile.Client
         public static string LastBoguAdventureJson;
         public static string LastJigsawJson;
         public static string LastBibleJson;
-        public static string LastQuizJson;
-        public static string LastOneYuanJson;
         public static string LastActivityQuestJson;
         public static string LastSwornJson;
         public static string LastVipStoreJson;
@@ -62,6 +60,41 @@ namespace GunMobile.Client
         public static string LastConsortiaBufferJson;
         public static string LastElfSkillBookJson;
         public static string LastButterflyTaskJson;
+        public static string LastManorSeedJson;
+        public static string LastManorTaskJson;
+        public static string LastCardAchievementJson;
+        public static string LastGuardCoreJson;
+        public static string LastLightRiddleJson;
+        public static string LastFairBattleJson;
+        public static string LastOnlineArmJson;
+        public static string LastSubWeaponJson;
+        public static string LastLoveJson;
+        public static string LastTreeJson;
+        public static string LastDailyActiveJson;
+        public static string LastLoginAwardJson;
+        public static string LastKingRoadJson;
+        public static string LastActiveConvertJson;
+        public static string LastMiniGameShopJson;
+        public static string LastWasteRecycleJson;
+        public static string LastSetsBuildJson;
+        public static string LastEngraveRefineJson;
+        public static string LastUserBoxJson;
+        public static string LastCommunalJson;
+        public static string LastGoodsCollectJson;
+        public static string LastHelpGameJson;
+        public static string LastPetFormJson;
+        public static string LastRuneAdvanceJson;
+        public static string LastChargeRewardJson;
+        public static string LastThreeCleanJson;
+        public static string LastDiceGameJson;
+        public static string LastHomeFishJson;
+        public static string LastNaiKuaiJson;
+        public static string LastActivitySystemJson;
+        public static string LastEventRewardJson;
+        public static string LastCardBuffJson;
+        public static string LastSearchGoodsJson;
+        public static string LastMaxLevelJson;
+        public static string LastStrengthenExpJson;
         public static int PendingPveMapId;
         public static int PendingPveNpcId;
 
@@ -391,6 +424,214 @@ namespace GunMobile.Client
             Road?.Send(PhoneMsg.ButterflyTaskClaim, "{\"action\":\"" + act + "\",\"taskId\":" + taskId + "}");
         }
 
+        public static void ManorSeed(string action = "plant", int templateId = 0)
+        {
+            string act = (action ?? "plant").Replace("\"", "");
+            Road?.Send(PhoneMsg.ManorSeedPlant, "{\"action\":\"" + act + "\",\"templateId\":" + templateId + "}");
+        }
+
+        public static void ManorTask(int taskId)
+        {
+            Road?.Send(PhoneMsg.ManorTaskClaim, "{\"taskId\":" + taskId + "}");
+        }
+
+        public static void ClaimCardAchievement(int achievementId)
+        {
+            Road?.Send(PhoneMsg.CardAchievementClaim, "{\"achievementId\":" + achievementId + "}");
+        }
+
+        public static void GuardCore(string action = "upgrade", int skillId = 0, int itemId = 0)
+        {
+            string act = (action ?? "upgrade").Replace("\"", "");
+            Road?.Send(PhoneMsg.GuardCoreUpgrade,
+                "{\"action\":\"" + act + "\",\"skillId\":" + skillId + ",\"itemId\":" + itemId + "}");
+        }
+
+        public static void LightRiddle(string action = "answer", int questionId = 0, int option = 0)
+        {
+            string act = (action ?? "answer").Replace("\"", "");
+            Road?.Send(PhoneMsg.LightRiddleAnswer,
+                "{\"action\":\"" + act + "\",\"questionId\":" + questionId + ",\"option\":" + option + "}");
+        }
+
+        public static void LearnFairBattleSkill(int id)
+        {
+            Road?.Send(PhoneMsg.FairBattleSkillLearn, "{\"id\":" + id + "}");
+        }
+
+        public static void FairBattle(string action = "week", int rank = 0, bool win = false)
+        {
+            string act = (action ?? "week").Replace("\"", "");
+            Road?.Send(PhoneMsg.FairBattleClaim,
+                "{\"action\":\"" + act + "\",\"rank\":" + rank + ",\"win\":" + (win ? 1 : 0) + "}");
+        }
+
+        public static void OnlineArm(string action = "upgrade", int slot = 0, int floor = 1)
+        {
+            string act = (action ?? "upgrade").Replace("\"", "");
+            Road?.Send(PhoneMsg.OnlineArmUpgrade,
+                "{\"action\":\"" + act + "\",\"slot\":" + slot + ",\"floor\":" + floor + "}");
+        }
+
+        public static void SubWeapon(string action = "evolve", int itemId = 0)
+        {
+            string act = (action ?? "evolve").Replace("\"", "");
+            Road?.Send(PhoneMsg.SubWeaponEvolve, "{\"action\":\"" + act + "\",\"itemId\":" + itemId + "}");
+        }
+
+        public static void Love(string action = "add", string nick = "")
+        {
+            string act = (action ?? "add").Replace("\"", "");
+            string who = (nick ?? "").Replace("\"", "");
+            Road?.Send(PhoneMsg.LoveLevelUp, "{\"action\":\"" + act + "\",\"nick\":\"" + who + "\"}");
+        }
+
+        public static void TreeChallenge()
+        {
+            Road?.Send(PhoneMsg.TreeChallenge, "{}");
+        }
+
+        public static void DailyActive(string action = "task", int taskId = 0, int step = 0)
+        {
+            string act = (action ?? "task").Replace("\"", "");
+            Road?.Send(PhoneMsg.DailyActiveClaim,
+                "{\"action\":\"" + act + "\",\"taskId\":" + taskId + ",\"step\":" + step + "}");
+        }
+
+        public static void ClaimLoginAward()
+        {
+            Road?.Send(PhoneMsg.LoginAwardClaim, "{}");
+        }
+
+        public static void KingRoadQuest(int questId)
+        {
+            Road?.Send(PhoneMsg.KingRoadQuest, "{\"questId\":" + questId + "}");
+        }
+
+        public static void ActiveConvert(int activeId)
+        {
+            Road?.Send(PhoneMsg.ActiveConvert, "{\"activeId\":" + activeId + "}");
+        }
+
+        public static void MiniGameShop(string action = "buy", int id = 0)
+        {
+            string act = (action ?? "buy").Replace("\"", "");
+            Road?.Send(PhoneMsg.MiniGameShopBuy, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void WasteRecycle(string action = "draw", int itemId = 0)
+        {
+            string act = (action ?? "draw").Replace("\"", "");
+            Road?.Send(PhoneMsg.WasteRecycleClaim, "{\"action\":\"" + act + "\",\"itemId\":" + itemId + "}");
+        }
+
+        public static void SetsBuild(string action = "feed", int setsType = 1)
+        {
+            string act = (action ?? "feed").Replace("\"", "");
+            Road?.Send(PhoneMsg.SetsBuild, "{\"action\":\"" + act + "\",\"setsType\":" + setsType + "}");
+        }
+
+        public static void EngraveRefine(string action = "refine", int character = 1)
+        {
+            string act = (action ?? "refine").Replace("\"", "");
+            Road?.Send(PhoneMsg.EngraveRefine, "{\"action\":\"" + act + "\",\"character\":" + character + "}");
+        }
+
+        public static void OpenUserBox(int id)
+        {
+            Road?.Send(PhoneMsg.UserBoxOpen, "{\"id\":" + id + "}");
+        }
+
+        public static void CommunalActive(string action = "score", int activeId = 1)
+        {
+            string act = (action ?? "score").Replace("\"", "");
+            Road?.Send(PhoneMsg.CommunalActive, "{\"action\":\"" + act + "\",\"activeId\":" + activeId + "}");
+        }
+
+        public static void CollectGoods(int id)
+        {
+            Road?.Send(PhoneMsg.GoodsCollect, "{\"id\":" + id + "}");
+        }
+
+        public static void HelpGame(int missionId, int star = 1)
+        {
+            Road?.Send(PhoneMsg.HelpGameReward, "{\"missionId\":" + missionId + ",\"star\":" + star + "}");
+        }
+
+        public static void PetForm(string action = "feed", int templateId = 0, int count = 1)
+        {
+            string act = (action ?? "feed").Replace("\"", "");
+            Road?.Send(PhoneMsg.PetForm,
+                "{\"action\":\"" + act + "\",\"templateId\":" + templateId + ",\"count\":" + count + "}");
+        }
+
+        public static void RuneAdvance(int advancedTempId)
+        {
+            Road?.Send(PhoneMsg.RuneAdvance, "{\"advancedTempId\":" + advancedTempId + "}");
+        }
+
+        public static void ChargeReward(string action = "claim", int chargeId = 0, int awardId = 0, int amount = 100)
+        {
+            string act = (action ?? "claim").Replace("\"", "");
+            Road?.Send(PhoneMsg.ChargeReward,
+                "{\"action\":\"" + act + "\",\"chargeId\":" + chargeId + ",\"awardId\":" + awardId +
+                ",\"amount\":" + amount + "}");
+        }
+
+        public static void ThreeCleanClaim(int id)
+        {
+            Road?.Send(PhoneMsg.ThreeCleanClaim, "{\"id\":" + id + "}");
+        }
+
+        public static void DiceGame()
+        {
+            Road?.Send(PhoneMsg.DiceGame, "{}");
+        }
+
+        public static void HomeFish(string action = "fish", int id = 0)
+        {
+            string act = (action ?? "fish").Replace("\"", "");
+            Road?.Send(PhoneMsg.HomeFish, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void NaiKuaiEquip(string action = "equip", int id = 0)
+        {
+            string act = (action ?? "equip").Replace("\"", "");
+            Road?.Send(PhoneMsg.NaiKuaiEquip, "{\"action\":\"" + act + "\",\"id\":" + id + "}");
+        }
+
+        public static void ActivitySystemDraw(int activityType = 0)
+        {
+            Road?.Send(PhoneMsg.ActivitySystemDraw, "{\"activityType\":" + activityType + "}");
+        }
+
+        public static void EventRewardDraw(int activityType = 0)
+        {
+            Road?.Send(PhoneMsg.EventRewardDraw, "{\"activityType\":" + activityType + "}");
+        }
+
+        public static void CardBuff(string action = "activate", int cardId = 0)
+        {
+            string act = (action ?? "activate").Replace("\"", "");
+            Road?.Send(PhoneMsg.CardBuffActivate, "{\"action\":\"" + act + "\",\"cardId\":" + cardId + "}");
+        }
+
+        public static void SearchGoods(int starId = 0)
+        {
+            Road?.Send(PhoneMsg.SearchGoods, "{\"starId\":" + starId + "}");
+        }
+
+        public static void MaxLevelUp()
+        {
+            Road?.Send(PhoneMsg.MaxLevelUp, "{}");
+        }
+
+        public static void StrengthenExp(string action = "add", int templateId = 0)
+        {
+            string act = (action ?? "add").Replace("\"", "");
+            Road?.Send(PhoneMsg.StrengthenExp, "{\"action\":\"" + act + "\",\"templateId\":" + templateId + "}");
+        }
+
         public static void DrawLottery(int count)
         {
             Road?.Send(PhoneMsg.LotteryDraw, "{\"count\":" + count + "}");
@@ -508,22 +749,22 @@ namespace GunMobile.Client
 
         public static void NewYearRankClaim(int rewardId = 0)
         {
-            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}
+            Road?.Send(PhoneMsg.NewYearRankClaim, "{\"rewardId\":" + rewardId + "}");
+        }
 
         public static void ClaimDailyAward(int awardId = 0)
         {
-            Road?.Send(PhoneMsg.DailyAwardClaim, "{"awardId":" + awardId + "}");
+            Road?.Send(PhoneMsg.DailyAwardClaim, "{\"awardId\":" + awardId + "}");
         }
 
         public static void SelectElfTemplate(int elfId)
         {
-            Road?.Send(PhoneMsg.ElfTemplateSelect, "{"elfId":" + elfId + "}");
+            Road?.Send(PhoneMsg.ElfTemplateSelect, "{\"elfId\":" + elfId + "}");
         }
 
         public static void ButterflyAction(string action)
         {
-            Road?.Send(PhoneMsg.ButterflyAction, "{"action":"" + (action ?? "equip").Replace(""", "") + ""}");
-        }");
+            Road?.Send(PhoneMsg.ButterflyAction, "{\"action\":\"" + (action ?? "equip").Replace("\"", "") + "\"}");
         }
 
         public static void CarnivalDraw()
@@ -633,16 +874,6 @@ namespace GunMobile.Client
         }
 
         public static void CalendarClaim(int dayIndex) { Road?.Send(PhoneMsg.CalendarClaim, "{\"dayIndex\":" + dayIndex + "}"); }
-
-        public static void QuizAnswer(int questionId, int option)
-        {
-            Road?.Send(PhoneMsg.QuizAnswer, "{\"questionId\":" + questionId + ",\"option\":" + option + "}");
-        }
-
-        public static void OneYuanBuy(int id, int goodsId)
-        {
-            Road?.Send(PhoneMsg.OneYuanBuy, "{\"id\":" + id + ",\"goodsId\":" + goodsId + "}");
-        }
 
         public static void AuditoriumAction(string action, int tierOrIndex = 0)
         {

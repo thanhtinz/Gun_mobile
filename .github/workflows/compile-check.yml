@@ -1,0 +1,44 @@
+name: Compile check
+
+# Biên dịch server standalone + toàn bộ script client (dùng UnityEngine stub)
+# bằng Roslyn, không cần Unity license. Chạy nhanh, chặn lỗi cú pháp/kiểu trước
+# khi tốn slot build APK/IPA.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  compile:
+    name: Compile + smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false
+        env:
+          GIT_LFS_SKIP_SMUDGE: "1"
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Cache Roslyn toolset
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/gunmobile-compilecheck
+          key: roslyn-4.9.2
+
+      - name: Compile
+        run: |
+          export GUNMOBILE_COMPILE_WORK="$HOME/.cache/gunmobile-compilecheck"
+          bash tools/compilecheck/compile_check.sh
+
+      - name: Smoke test (server + PhoneMsg)
+        run: |
+          export GUNMOBILE_COMPILE_WORK="$HOME/.cache/gunmobile-compilecheck"
+          bash tools/compilecheck/smoke_test.sh

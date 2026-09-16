@@ -105,6 +105,37 @@ namespace GunMobile.Res
             return sheet;
         }
 
+        // Morn skin lookup: đổi một frame trong atlas thành Sprite (cache theo tên).
+        public Sprite Get(string name)
+        {
+            if (Texture == null || string.IsNullOrEmpty(name))
+            {
+                return null;
+            }
+
+            if (_spriteCache.TryGetValue(name, out Sprite cached))
+            {
+                return cached;
+            }
+
+            if (!TryGet(name, out SheetFrame frame))
+            {
+                return null;
+            }
+
+            Rect pixel = frame.Pixel;
+            if (pixel.width <= 0f || pixel.height <= 0f)
+            {
+                return null;
+            }
+
+            Sprite sprite = Sprite.Create(Texture, pixel, new Vector2(0.5f, 0.5f), 100f);
+            _spriteCache[name] = sprite;
+            return sprite;
+        }
+
+        readonly Dictionary<string, Sprite> _spriteCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
+
         public bool TryGet(string name, out SheetFrame frame)
         {
             frame = default;

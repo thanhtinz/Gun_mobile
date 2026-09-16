@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GunMobile.Core;
@@ -222,6 +223,117 @@ namespace GunMobile.Client
                     return;
                 case "butterflytask":
                     ExtraModulesScreens.ButterflyTaskScreen(_safe, this);
+                    return;
+                case "manorseed":
+                    ExtraModulesScreens.ManorSeedScreen(_safe, this);
+                    return;
+                case "manortask":
+                    ExtraModulesScreens.ManorTaskScreen(_safe, this);
+                    return;
+                case "cardachievement":
+                    ExtraModulesScreens.CardAchievementScreen(_safe, this);
+                    return;
+                case "guardcore":
+                    ExtraModulesScreens.GuardCoreScreen(_safe, this);
+                    return;
+                case "lightriddle":
+                    ExtraModulesScreens.LightRiddleScreen(_safe, this);
+                    return;
+                case "fairbattle":
+                    ExtraModulesScreens.FairBattleScreen(_safe, this);
+                    return;
+                case "onlinearm":
+                    ExtraModulesScreens.OnlineArmScreen(_safe, this);
+                    return;
+                case "subweapon":
+                    ExtraModulesScreens.SubWeaponScreen(_safe, this);
+                    return;
+                case "love":
+                    ExtraModulesScreens.LoveScreen(_safe, this);
+                    return;
+                case "tree":
+                    ExtraModulesScreens.TreeScreen(_safe, this);
+                    return;
+                case "dailyactive":
+                    ExtraModulesScreens.DailyActiveScreen(_safe, this);
+                    return;
+                case "loginaward":
+                    ExtraModulesScreens.LoginAwardScreen(_safe, this);
+                    return;
+                case "kingroad":
+                    ExtraModulesScreens.KingRoadScreen(_safe, this);
+                    return;
+                case "activeconvert":
+                    ExtraModulesScreens.ActiveConvertScreen(_safe, this);
+                    return;
+                case "minigameshop":
+                    ExtraModulesScreens.MiniGameShopScreen(_safe, this);
+                    return;
+                case "wasterecycle":
+                    ExtraModulesScreens.WasteRecycleScreen(_safe, this);
+                    return;
+                case "setsbuild":
+                    ExtraModulesScreens.SetsBuildScreen(_safe, this);
+                    return;
+                case "engraverefine":
+                    ExtraModulesScreens.EngraveRefineScreen(_safe, this);
+                    return;
+                case "userbox":
+                    ExtraModulesScreens.UserBoxScreen(_safe, this);
+                    return;
+                case "communal":
+                    ExtraModulesScreens.CommunalActiveScreen(_safe, this);
+                    return;
+                case "goodscollect":
+                    ExtraModulesScreens.GoodsCollectScreen(_safe, this);
+                    return;
+                case "helpgame":
+                    ExtraModulesScreens.HelpGameScreen(_safe, this);
+                    return;
+                case "petform":
+                    ExtraModulesScreens.PetFormScreen(_safe, this);
+                    return;
+                case "runeadvance":
+                    ExtraModulesScreens.RuneAdvanceScreen(_safe, this);
+                    return;
+                case "charge":
+                    ExtraModulesScreens.ChargeRewardScreen(_safe, this);
+                    return;
+                case "threeclean":
+                    ExtraModulesScreens.ThreeCleanScreen(_safe, this);
+                    return;
+                case "dicegame":
+                    ExtraModulesScreens.DiceGameScreen(_safe, this);
+                    return;
+                case "homefish":
+                    ExtraModulesScreens.HomeFishScreen(_safe, this);
+                    return;
+                case "naikuai":
+                    ExtraModulesScreens.NaiKuaiScreen(_safe, this);
+                    return;
+                case "activitysystem":
+                    ExtraModulesScreens.ActivitySystemScreen(_safe, this);
+                    return;
+                case "eventreward":
+                    ExtraModulesScreens.EventRewardScreen(_safe, this);
+                    return;
+                case "cardbuff":
+                    ExtraModulesScreens.CardBuffScreen(_safe, this);
+                    return;
+                case "searchgoods":
+                    ExtraModulesScreens.SearchGoodsScreen(_safe, this);
+                    return;
+                case "maxlevel":
+                    ExtraModulesScreens.MaxLevelScreen(_safe, this);
+                    return;
+                case "strengthenexp":
+                    ExtraModulesScreens.StrengthenExpScreen(_safe, this);
+                    return;
+                case "gameinfo":
+                    ExtraModulesScreens.GameInfoScreen(_safe, this);
+                    return;
+                case "rankboard":
+                    ExtraModulesScreens.RankBoardScreen(_safe, this);
                     return;
                 case "setting":
                     SettingsScreen.Show(_safe, this);
@@ -804,6 +916,217 @@ namespace GunMobile.Client
                         if (State == AppState.Module && (_currentModuleId == "butterflytask" || _currentModuleId == "butterfly"))
                             RefreshCurrentModule();
                         break;
+                    case PhoneMsg.ManorSeedPlant:
+                        PhoneNet.LastManorSeedJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "manorseed" || _currentModuleId == "manor"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ManorTaskClaim:
+                        PhoneNet.LastManorTaskJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "manortask" || _currentModuleId == "manor"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardAchievementClaim:
+                        PhoneNet.LastCardAchievementJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "cardachievement" || _currentModuleId == "card"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.GuardCoreUpgrade:
+                        PhoneNet.LastGuardCoreJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "guardcore")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LightRiddleAnswer:
+                        PhoneNet.LastLightRiddleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "lightriddle")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.FairBattleSkillLearn:
+                    case PhoneMsg.FairBattleClaim:
+                        PhoneNet.LastFairBattleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "fairbattle")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.OnlineArmUpgrade:
+                        PhoneNet.LastOnlineArmJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "onlinearm")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SubWeaponEvolve:
+                        PhoneNet.LastSubWeaponJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "subweapon")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LoveLevelUp:
+                        PhoneNet.LastLoveJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "love")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.TreeChallenge:
+                        PhoneNet.LastTreeJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "tree")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.DailyActiveClaim:
+                        PhoneNet.LastDailyActiveJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "dailyactive")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.LoginAwardClaim:
+                        PhoneNet.LastLoginAwardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "loginaward")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.KingRoadQuest:
+                        PhoneNet.LastKingRoadJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "kingroad")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActiveConvert:
+                        PhoneNet.LastActiveConvertJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "activeconvert")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.MiniGameShopBuy:
+                        PhoneNet.LastMiniGameShopJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "minigameshop")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.WasteRecycleClaim:
+                        PhoneNet.LastWasteRecycleJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "wasterecycle")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SetsBuild:
+                        PhoneNet.LastSetsBuildJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "setsbuild")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.EngraveRefine:
+                        PhoneNet.LastEngraveRefineJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "engraverefine")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.UserBoxOpen:
+                        PhoneNet.LastUserBoxJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "userbox")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CommunalActive:
+                        PhoneNet.LastCommunalJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "communal")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.GoodsCollect:
+                        PhoneNet.LastGoodsCollectJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "goodscollect")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.HelpGameReward:
+                        PhoneNet.LastHelpGameJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "helpgame")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.PetForm:
+                        PhoneNet.LastPetFormJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "petform")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.RuneAdvance:
+                        PhoneNet.LastRuneAdvanceJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && (_currentModuleId == "runeadvance" || _currentModuleId == "rune"))
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ChargeReward:
+                        PhoneNet.LastChargeRewardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "charge")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ThreeCleanClaim:
+                        PhoneNet.LastThreeCleanJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "threeclean")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.DiceGame:
+                        PhoneNet.LastDiceGameJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "dicegame")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.HomeFish:
+                        PhoneNet.LastHomeFishJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "homefish")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.NaiKuaiEquip:
+                        PhoneNet.LastNaiKuaiJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "naikuai")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.ActivitySystemDraw:
+                        PhoneNet.LastActivitySystemJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "activitysystem")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.EventRewardDraw:
+                        PhoneNet.LastEventRewardJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "eventreward")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.CardBuffActivate:
+                        PhoneNet.LastCardBuffJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "cardbuff")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.SearchGoods:
+                        PhoneNet.LastSearchGoodsJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "searchgoods")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.MaxLevelUp:
+                        PhoneNet.LastMaxLevelJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "maxlevel")
+                            RefreshCurrentModule();
+                        break;
+                    case PhoneMsg.StrengthenExp:
+                        PhoneNet.LastStrengthenExpJson = msg.Json;
+                        ApplyProfileFromServer(msg.Json);
+                        if (State == AppState.Module && _currentModuleId == "strengthenexp")
+                            RefreshCurrentModule();
+                        break;
                     case PhoneMsg.VipStoreBuy:
                         PhoneNet.LastVipStoreJson = msg.Json;
                         ApplyProfileFromServer(msg.Json);
@@ -1081,6 +1404,102 @@ namespace GunMobile.Client
             Profile.EnsureButterflyTasks();
             ParseIntListFromServer(json, "butterflyTaskClaimed", Profile.ButterflyTaskClaimed);
             Profile.ButterflyTaskActive = JsonInt(json, "butterflyTaskActive", Profile.ButterflyTaskActive);
+            Profile.ManorExp = JsonInt(json, "manorExp", Profile.ManorExp);
+            Profile.ManorSeedTemplateId = JsonInt(json, "manorSeedTemplateId", Profile.ManorSeedTemplateId);
+            Profile.ManorSeedPlantMin = JsonInt(json, "manorSeedPlantMin", Profile.ManorSeedPlantMin);
+            Profile.ManorSeedHelpers = JsonInt(json, "manorSeedHelpers", Profile.ManorSeedHelpers);
+            Profile.ManorTaskActions = JsonInt(json, "manorTaskActions", Profile.ManorTaskActions);
+            Profile.EnsureManorTaskClaimed();
+            ParseIntListFromServer(json, "manorTaskClaimed", Profile.ManorTaskClaimed);
+            Profile.EnsureCardAchievementClaimed();
+            ParseIntListFromServer(json, "cardAchievementClaimed", Profile.CardAchievementClaimed);
+            Profile.GuardCoreGrade = JsonInt(json, "guardCoreGrade", Profile.GuardCoreGrade);
+            Profile.GuardCoreExp = JsonInt(json, "guardCoreExp", Profile.GuardCoreExp);
+            Profile.EnsureGuardCoreSkills();
+            ParseIntListFromServer(json, "guardCoreSkillIds", Profile.GuardCoreSkillIds);
+            Profile.LightRiddleAnswered = JsonInt(json, "lightRiddleAnswered", Profile.LightRiddleAnswered);
+            Profile.LightRiddleCorrect = JsonInt(json, "lightRiddleCorrect", Profile.LightRiddleCorrect);
+            Profile.LightRiddleQuestionId = JsonInt(json, "lightRiddleQuestionId", Profile.LightRiddleQuestionId);
+            Profile.FairBattlePrestige = JsonInt(json, "fairBattlePrestige", Profile.FairBattlePrestige);
+            Profile.FairBattleRankLevel = JsonInt(json, "fairBattleRankLevel", Profile.FairBattleRankLevel);
+            Profile.EnsureFairBattleSkills();
+            ParseIntListFromServer(json, "fairBattleSkillIds", Profile.FairBattleSkillIds);
+            Profile.EnsureOnlineArm();
+            ParseIntListFromServer(json, "onlineArmSlotLevels", Profile.OnlineArmSlotLevels);
+            ParseIntListFromServer(json, "onlineArmSlotExp", Profile.OnlineArmSlotExp);
+            Profile.EnsureOnlineArm();
+            Profile.OnlineArmDigs = JsonInt(json, "onlineArmDigs", Profile.OnlineArmDigs);
+            Profile.SubWeaponLevel = JsonInt(json, "subWeaponLevel", Profile.SubWeaponLevel);
+            Profile.SubWeaponExp = JsonInt(json, "subWeaponExp", Profile.SubWeaponExp);
+            Profile.LoveExp = JsonInt(json, "loveExp", Profile.LoveExp);
+            Profile.LoveLevel = JsonInt(json, "loveLevel", Profile.LoveLevel);
+            Profile.LovePartner = JsonStr(json, "lovePartner", Profile.LovePartner);
+            Profile.TreeLevel = JsonInt(json, "treeLevel", Profile.TreeLevel);
+            Profile.TreeExp = JsonInt(json, "treeExp", Profile.TreeExp);
+            Profile.TreeFights = JsonInt(json, "treeFights", Profile.TreeFights);
+            Profile.DailyActivePoints = JsonInt(json, "dailyActivePoints", Profile.DailyActivePoints);
+            Profile.EnsureDailyActive();
+            ParseIntListFromServer(json, "dailyActiveTaskDone", Profile.DailyActiveTaskDone);
+            ParseIntListFromServer(json, "dailyActiveRewardClaimed", Profile.DailyActiveRewardClaimed);
+            Profile.LoginAwardIndex = JsonInt(json, "loginAwardIndex", Profile.LoginAwardIndex);
+            Profile.LoginAwardDay = JsonInt(json, "loginAwardDay", Profile.LoginAwardDay);
+            Profile.KingRoadScore = JsonInt(json, "kingRoadScore", Profile.KingRoadScore);
+            Profile.EnsureKingRoad();
+            ParseIntListFromServer(json, "kingRoadQuestDone", Profile.KingRoadQuestDone);
+            Profile.EnsureActiveConvert();
+            ParseIntListFromServer(json, "activeConvertUsed", Profile.ActiveConvertUsed);
+            Profile.MiniGamePoints = JsonInt(json, "miniGamePoints", Profile.MiniGamePoints);
+            Profile.EnsureMiniGameShop();
+            ParseIntListFromServer(json, "miniGameShopIds", Profile.MiniGameShopIds);
+            ParseIntListFromServer(json, "miniGameShopCounts", Profile.MiniGameShopCounts);
+            Profile.EnsureMiniGameShop();
+            Profile.WasteRecyclePoints = JsonInt(json, "wasteRecyclePoints", Profile.WasteRecyclePoints);
+            Profile.EnsureSetsBuild();
+            ParseIntListFromServer(json, "setsBuildLevels", Profile.SetsBuildLevels);
+            ParseIntListFromServer(json, "setsBuildExp", Profile.SetsBuildExp);
+            Profile.EnsureSetsBuild();
+            Profile.EnsureEngraveRefine();
+            ParseIntListFromServer(json, "engraveRefineGrades", Profile.EngraveRefineGrades);
+            ParseIntListFromServer(json, "engraveTemperLevels", Profile.EngraveTemperLevels);
+            Profile.EnsureEngraveRefine();
+            Profile.UserBoxPoints = JsonInt(json, "userBoxPoints", Profile.UserBoxPoints);
+            Profile.EnsureUserBox();
+            ParseIntListFromServer(json, "userBoxOpened", Profile.UserBoxOpened);
+            Profile.CommunalScore = JsonInt(json, "communalScore", Profile.CommunalScore);
+            Profile.CommunalDayScore = JsonInt(json, "communalDayScore", Profile.CommunalDayScore);
+            Profile.EnsureCommunal();
+            ParseIntListFromServer(json, "communalClaimed", Profile.CommunalClaimed);
+            Profile.EnsureGoodsCollect();
+            ParseIntListFromServer(json, "goodsCollected", Profile.GoodsCollected);
+            Profile.EnsureHelpGame();
+            ParseIntListFromServer(json, "helpGameDone", Profile.HelpGameDone);
+            Profile.PetFormTemplateId = JsonInt(json, "petFormTemplateId", Profile.PetFormTemplateId);
+            Profile.PetMoeLevel = JsonInt(json, "petMoeLevel", Profile.PetMoeLevel);
+            Profile.PetMoeExp = JsonInt(json, "petMoeExp", Profile.PetMoeExp);
+            Profile.RuneAdvanceQuality = JsonInt(json, "runeAdvanceQuality", Profile.RuneAdvanceQuality);
+            Profile.ChargePoints = JsonInt(json, "chargePoints", Profile.ChargePoints);
+            Profile.EnsureChargeReward();
+            ParseIntListFromServer(json, "chargeClaimed", Profile.ChargeClaimed);
+            ParseIntListFromServer(json, "txAwardClaimed", Profile.TxAwardClaimed);
+            Profile.ThreeCleanPoints = JsonInt(json, "threeCleanPoints", Profile.ThreeCleanPoints);
+            Profile.EnsureThreeClean();
+            ParseIntListFromServer(json, "threeCleanClaimed", Profile.ThreeCleanClaimed);
+            Profile.DiceRolls = JsonInt(json, "diceRolls", Profile.DiceRolls);
+            Profile.DiceScore = JsonInt(json, "diceScore", Profile.DiceScore);
+            Profile.FishCasts = JsonInt(json, "fishCasts", Profile.FishCasts);
+            Profile.FishScore = JsonInt(json, "fishScore", Profile.FishScore);
+            Profile.MonthCardId = JsonInt(json, "monthCardId", Profile.MonthCardId);
+            Profile.MonthCardDaysLeft = JsonInt(json, "monthCardDaysLeft", Profile.MonthCardDaysLeft);
+            Profile.EnsureNaiKuai();
+            ParseIntListFromServer(json, "naiKuaiEquipIds", Profile.NaiKuaiEquipIds);
+            Profile.ActivitySystemDraws = JsonInt(json, "activitySystemDraws", Profile.ActivitySystemDraws);
+            Profile.EventRewardDraws = JsonInt(json, "eventRewardDraws", Profile.EventRewardDraws);
+            Profile.EnsureCardBuff();
+            ParseIntListFromServer(json, "cardBuffActivated", Profile.CardBuffActivated);
+            Profile.CardBuffStep = JsonInt(json, "cardBuffStep", Profile.CardBuffStep);
+            Profile.SearchCount = JsonInt(json, "searchCount", Profile.SearchCount);
+            Profile.MaxLevelGrade = JsonInt(json, "maxLevelGrade", Profile.MaxLevelGrade);
+            Profile.StrengthenExp = JsonInt(json, "strengthenExp", Profile.StrengthenExp);
             Profile.ActivityQuestPeriod = JsonInt(json, "activityQuestPeriod", Profile.ActivityQuestPeriod);
             string swornNick = JsonStr(json, "swornNick", null);
             if (swornNick != null) Profile.SwornNick = swornNick;
