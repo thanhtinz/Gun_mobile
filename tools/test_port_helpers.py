@@ -215,6 +215,51 @@ def _ui_bundle(views) -> bytes:
     return zlib.compress(bytes(body))
 
 
+class ZipAtlases(unittest.TestCase):
+    """Some atlases are a zip of xml+png, and 8 of the 90 in the dump are obfuscated."""
+
+    def test_a_prefixed_zip_deobfuscates_to_a_readable_zip(self):
+        """Regression: the PK test ran on the raw bytes and saw the prefix instead.
+
+        Those atlases then took the PNG path, which cannot decode a zip, and
+        loaded as nothing. The signature has to be tested after the strip.
+        """
+        import io
+        import zipfile
+
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w") as archive:
+            archive.writestr("horse.xml", "<TextureAtlas />")
+            archive.writestr("horse.png", b"\x89PNG\r\n\x1a\n")
+        plain = buffer.getvalue()
+
+        packed = bytearray(plain)
+        packed[16] ^= 0xFF
+        packed = b"\x00\x03\x5e\x5f\x5e" + bytes(packed)
+
+        self.assertNotEqual(packed[:2], b"PK", "the raw bytes do not look like a zip")
+        clean = deobfuscate(packed)
+        self.assertEqual(clean, plain)
+        with zipfile.ZipFile(io.BytesIO(clean)) as archive:
+            self.assertEqual(sorted(archive.namelist()), ["horse.png", "horse.xml"])
+
+    def test_shipped_zip_atlases_open(self):
+        import zipfile
+
+        found = 0
+        for root in (PCDATA, SAMPLES):
+            if not root.exists():
+                continue
+            for path in root.rglob("*"):
+                if not path.is_file() or path.read_bytes()[:4] != b"PK\x03\x04":
+                    continue
+                found += 1
+                with self.subTest(atlas=path.name):
+                    with zipfile.ZipFile(path) as archive:
+                        self.assertIsNone(archive.testzip())
+        self.assertGreater(found, 0, "no zip atlases packed")
+
+
 class RepeatedChildren(unittest.TestCase):
     """A flat attribute map cannot hold a child element that repeats."""
 

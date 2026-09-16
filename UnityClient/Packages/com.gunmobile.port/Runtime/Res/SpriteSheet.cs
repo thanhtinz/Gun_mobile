@@ -32,6 +32,11 @@ namespace GunMobile.Res
                 return null;
             }
 
+            // Strip before testing the signature, not after. 8 of the 90 zip atlases
+            // in the dump are obfuscated (the mount art under image/mounts/horse), so
+            // testing the raw bytes sees the five byte prefix instead of "PK": they
+            // took the PNG path, which cannot decode a zip, and loaded as nothing.
+            data = Obfuscation.Strip(data);
             if (data[0] == 0x50 && data[1] == 0x4B)
             {
                 return LoadZipAtlas(data);
