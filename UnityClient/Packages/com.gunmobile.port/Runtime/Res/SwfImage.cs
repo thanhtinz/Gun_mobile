@@ -39,6 +39,11 @@ namespace GunMobile.Res
                         continue;
                     }
 
+                    // 63 of the shipped .swf files are obfuscated. Testing the
+                    // signature against the raw bytes sees the five byte prefix, not
+                    // "CWS", so those used to fall through and come back null.
+                    bytes = Obfuscation.Strip(bytes);
+
                     if (PkmImage.IsPkm(bytes))
                     {
                         Texture2D fromPkm = PkmImage.Load(bytes, false);
@@ -75,6 +80,8 @@ namespace GunMobile.Res
             {
                 return null;
             }
+
+            swf = Obfuscation.Strip(swf);
 
             byte[] body;
             try

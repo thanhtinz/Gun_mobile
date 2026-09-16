@@ -31,28 +31,41 @@ def decode_text(data: bytes) -> str:
 
 
 OBFUSCATION_PREFIX = b"\x00\x03\x5e\x5f\x5e"
-PNG_MAGIC = b"\x89PNG\r\n\x1a\x08"[:4] + b"\r\n\x1a\n"
-PNG_WIDTH_HIGH_BYTE = 16
+OBFUSCATED_BYTE = 16
 
 
 def deobfuscate(data: bytes) -> bytes:
     """Strip the resource obfuscation the PC build applies to some assets.
 
-    1177 files under ``Resource/image`` carry a five byte prefix
-    (``00 03 5E 5F 5E``) ahead of the real payload, and the PNGs among them are
-    additionally damaged: the high byte of the IHDR width is overwritten with
-    ``0xFF``. Stripping the prefix alone is not enough — the IHDR CRC still fails
-    and the image will not decode. Resetting that byte to zero restores a valid
-    IHDR CRC on every affected file, so the repair is exact, not a heuristic.
+    1177 files under ``Resource/image`` are obfuscated, and the scheme is two
+    steps, not one: a five byte prefix (``00 03 5E 5F 5E``) is put in front of
+    the payload, and the byte at offset 16 of the payload is bitwise
+    complemented. Undoing only the prefix leaves a file no decoder accepts.
 
-    Anything that is not obfuscated is returned untouched.
+    Offset 16 is format-agnostic — the packer does not look at what it is
+    wrapping — so the damage lands somewhere different in each format and
+    looks like a different bug every time:
+
+    * PNG (1104 files): the high byte of the IHDR width, ``00`` becoming
+      ``FF``, which fails the IHDR CRC.
+    * CWS/SWF (63 files): six bytes into the deflate stream, which fails to
+      inflate at all ("invalid code lengths set").
+    * JPEG (2 files): the high byte of the EXIF IFD offset.
+    * ZIP (8 files): a byte of the local header CRC, which readers ignore in
+      favour of the central directory, so these happened to survive.
+
+    Complementing that one byte back is exact rather than a heuristic: every
+    one of the 1104 PNGs then passes its IHDR CRC and every one of the 63 SWFs
+    then inflates, while none of the 16929 unobfuscated PNGs in the dump is
+    damaged in the first place. The prefix is therefore the whole signal, and
+    anything without it is returned untouched.
     """
     if not data.startswith(OBFUSCATION_PREFIX):
         return data
-    body = data[len(OBFUSCATION_PREFIX):]
-    if body.startswith(PNG_MAGIC) and len(body) > PNG_WIDTH_HIGH_BYTE and body[PNG_WIDTH_HIGH_BYTE] == 0xFF:
-        body = body[:PNG_WIDTH_HIGH_BYTE] + b"\x00" + body[PNG_WIDTH_HIGH_BYTE + 1:]
-    return body
+    body = bytearray(data[len(OBFUSCATION_PREFIX):])
+    if len(body) > OBFUSCATED_BYTE:
+        body[OBFUSCATED_BYTE] ^= 0xFF
+    return bytes(body)
 
 
 def write_asset(dest, data: bytes) -> int:

@@ -109,22 +109,56 @@ class XmlHelpers(unittest.TestCase):
 
 
 class Obfuscation(unittest.TestCase):
-    """The PC build hides some art behind a prefix and a broken IHDR width."""
+    """The PC build hides some art behind a prefix and a complemented byte."""
 
+    PREFIX = b"\x00\x03\x5e\x5f\x5e"
     PREFIXED_PNG = (
-        b"\x00\x03\x5e\x5f\x5e"
-        b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\xff\x00\x00\x50\x00\x00\x00\x50"
+        PREFIX
+        + b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\xff\x00\x00\x50\x00\x00\x00\x50"
     )
 
-    def test_prefix_and_width_byte_are_both_repaired(self):
+    def test_prefix_and_damaged_byte_are_both_repaired(self):
         clean = deobfuscate(self.PREFIXED_PNG)
         self.assertTrue(clean.startswith(b"\x89PNG\r\n\x1a\n"))
-        self.assertEqual(clean[16], 0x00, "the corrupted width byte must be cleared")
+        self.assertEqual(clean[16], 0x00, "the damaged byte must be restored")
         self.assertEqual(int.from_bytes(clean[16:20], "big"), 80)
+
+    def test_byte_sixteen_is_complemented_whatever_the_format(self):
+        """PNG is not special: the packer complements offset 16 sight unseen.
+
+        Reading it as "clear the IHDR width high byte" happens to be right for
+        PNG and wrong for everything else, which is why 63 obfuscated .swf files
+        were dropped by both the packer and the client.
+        """
+        for payload in (b"CWS\x09" + bytes(range(4, 40)), b"\xff\xd8" + b"\x5a" * 38):
+            with self.subTest(head=payload[:4]):
+                clean = deobfuscate(self.PREFIX + payload)
+                self.assertEqual(clean[:16], payload[:16])
+                self.assertEqual(clean[16], payload[16] ^ 0xFF)
+                self.assertEqual(clean[17:], payload[17:])
+
+    def test_a_short_payload_is_not_read_past_its_end(self):
+        short = b"\x89PNG\r\n\x1a\n"
+        self.assertEqual(deobfuscate(self.PREFIX + short), short)
 
     def test_clean_data_is_returned_untouched(self):
         plain = b"\x89PNG\r\n\x1a\n" + b"\x00" * 32
         self.assertIs(deobfuscate(plain), plain)
+
+    def test_obfuscated_swf_reaches_the_extractor(self):
+        """swf_body must deobfuscate before it looks at the signature."""
+        import swf_extract
+
+        body = b"\x00" * 5 + b"\x00\x00\x00\x00"  # empty RECT, rate, frame count
+        swf = bytearray(b"FWS\x09" + len(body).to_bytes(4, "little") + body)
+        swf[16] ^= 0xFF
+        packed = self.PREFIX + bytes(swf)
+
+        # As stored, the file looks like nothing: the signature bytes a reader
+        # would test are the prefix, and the body byte is complemented. Both
+        # have to be undone before the tag walk, and swf_body owns that.
+        self.assertNotIn(packed[:3], (b"CWS", b"FWS"))
+        self.assertEqual(swf_extract.swf_body(packed), body)
 
     def test_no_packed_asset_still_carries_the_prefix(self):
         """Regression: 272 crater PNGs shipped obfuscated and never decoded."""
