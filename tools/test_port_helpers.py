@@ -6,6 +6,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -15,6 +16,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 from port_helpers import (  # noqa: E402
     MapCollision,
     deobfuscate,
+    write_asset,
     fly_until_map,
     is_zlib,
     launch,
@@ -144,6 +146,57 @@ class Obfuscation(unittest.TestCase):
                 height = int.from_bytes(head[20:24], "big")
                 self.assertTrue(0 < width <= 8192, f"implausible width {width}")
                 self.assertTrue(0 < height <= 8192, f"implausible height {height}")
+
+
+class AssetWriters(unittest.TestCase):
+    """Every packer must copy assets through the de-obfuscating writer.
+
+    pack_mobile_content.main() also runs pack_shop_icons, pack_pet_title_art
+    and pack_equip_game. Those wrote bytes straight out of the zip, so a
+    regenerated pack re-obfuscated 252 of the 272 files the prefix fix had
+    repaired (17 farm, 97 pet/title, 138 equip/arm) and broke the check below.
+    """
+
+    PACKERS = (
+        "pack_mobile_content.py",
+        "pack_shop_icons.py",
+        "pack_pet_title_art.py",
+        "pack_equip_game.py",
+    )
+
+    def test_write_asset_repairs_and_creates_parents(self):
+        dest = Path(tempfile.mkdtemp()) / "nested" / "icon.png"
+        raw = Obfuscation.PREFIXED_PNG
+        written = write_asset(dest, raw)
+
+        self.assertTrue(dest.exists(), "write_asset must create missing parents")
+        clean = dest.read_bytes()
+        self.assertEqual(clean, deobfuscate(raw))
+        self.assertEqual(written, len(clean))
+
+    def test_clean_bytes_survive_the_writer_unchanged(self):
+        dest = Path(tempfile.mkdtemp()) / "plain.png"
+        raw = b"\x89PNG\r\n\x1a\n" + b"\x00" * 32
+        self.assertEqual(write_asset(dest, raw), len(raw))
+        self.assertEqual(dest.read_bytes(), raw)
+
+    def test_no_packer_writes_asset_bytes_directly(self):
+        """Regression: a raw write here re-ships obfuscated art.
+
+        Copying bytes with dest.write_bytes(...) or shutil.copy2(...) bypasses
+        the repair, and nothing else in the suite would notice until someone
+        regenerated the pack.
+        """
+        offenders = []
+        for name in self.PACKERS:
+            source = (ROOT / "tools" / name).read_text(encoding="utf-8")
+            for number, text in enumerate(source.splitlines(), start=1):
+                stripped = text.strip()
+                if stripped.startswith("#"):
+                    continue
+                if ".write_bytes(" in stripped or "shutil.copy2(" in stripped:
+                    offenders.append(f"{name}:{number}: {stripped}")
+        self.assertEqual(offenders, [], "these must go through write_asset()")
 
 
 class MapAndBallistics(unittest.TestCase):

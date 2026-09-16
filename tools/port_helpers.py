@@ -55,6 +55,22 @@ def deobfuscate(data: bytes) -> bytes:
     return body
 
 
+def write_asset(dest, data: bytes) -> int:
+    """Write one packed asset, undoing the PC build's obfuscation on the way.
+
+    Every packer that copies bytes out of the Ok archives into StreamingAssets
+    must go through here. Writing ``dest.write_bytes(zf.read(...))`` directly
+    ships files the client cannot decode, and the packers are separate modules,
+    so the only way that stays fixed is for them to share one writer.
+
+    Returns the number of bytes written, which is what the callers report.
+    """
+    clean = deobfuscate(data)
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_bytes(clean)
+    return len(clean)
+
+
 def load_xml(data: bytes) -> ET.Element:
     text = decode_text(data).lstrip("\ufeff\0")
     idx = text.find("<")

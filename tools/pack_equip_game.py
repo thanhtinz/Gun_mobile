@@ -8,9 +8,12 @@ Targets every TemplateAlllist item with a body slot or weapon (CategoryID 1-7, 1
 from __future__ import annotations
 
 import json
-import shutil
 import zipfile
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from port_helpers import write_asset
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "UnityClient" / "Assets" / "StreamingAssets" / "PcData"
@@ -80,16 +83,16 @@ def _copy_one(rel: str, z3: zipfile.ZipFile | None) -> bool:
         return False
     src_unpacked = UNPACKED / rel
     if src_unpacked.exists():
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(src_unpacked, dest)
+        # legacy/unpacked holds the archives verbatim, obfuscation included,
+        # so this copy needs the same treatment as the one out of the zip.
+        write_asset(dest, src_unpacked.read_bytes())
         return True
     if z3 is not None:
         try:
             data = z3.read(rel)
         except KeyError:
             return False
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(data)
+        write_asset(dest, data)
         return True
     return False
 

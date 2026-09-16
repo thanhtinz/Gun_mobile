@@ -15,7 +15,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from port_helpers import deobfuscate
+from port_helpers import write_asset
 
 OUT = ROOT / "UnityClient" / "Assets" / "StreamingAssets" / "PcData"
 Z2 = ROOT / "legacy" / "releases" / "Ok" / "Archive.2.zip"
@@ -94,12 +94,9 @@ REQUEST_KEEP = (
 
 
 def write_bytes(rel: str, data: bytes) -> None:
-    dest = OUT / rel
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    # Every asset leaves through here, so this is the one place that has to
-    # undo the PC build's resource obfuscation. Packing it through untouched
-    # ships images the client cannot decode.
-    dest.write_bytes(deobfuscate(data))
+    # Shared with the sibling packers this module invokes (shop icons, pet and
+    # title art, equip/arm), so the de-obfuscation lives in exactly one place.
+    write_asset(OUT / rel, data)
 
 
 def extract_named(zf: zipfile.ZipFile, names: tuple[str, ...]) -> int:
