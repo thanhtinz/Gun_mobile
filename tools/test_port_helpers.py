@@ -8,6 +8,7 @@ import json
 import struct
 import sys
 import tempfile
+import xml.etree.ElementTree as ET
 import zlib
 import unittest
 from pathlib import Path
@@ -212,6 +213,53 @@ def _ui_bundle(views) -> bytes:
         body += bytes([11]) + _amf3_u29((len(raw) << 1) | 1) + raw
     body += _amf3_str("")            # end of the dynamic section
     return zlib.compress(bytes(body))
+
+
+class RepeatedChildren(unittest.TestCase):
+    """A flat attribute map cannot hold a child element that repeats."""
+
+    SAMPLE = (
+        "<Result>"
+        '  <Item ID="1" Title="a">'
+        '    <Item_Good RewardItemID="11" RewardItemCount1="2" />'
+        '    <Item_Good RewardItemID="22" RewardItemCount1="3" />'
+        "    <Note>plain text</Note>"
+        "  </Item>"
+        '  <Item ID="2" Title="b" />'
+        "</Result>"
+    )
+
+    def rows(self):
+        return parse_result_table(ET.fromstring(self.SAMPLE))
+
+    def test_every_repeat_survives_in_document_order(self):
+        rewards = self.rows()[0].children["Item_Good"]
+        self.assertEqual([r["RewardItemID"] for r in rewards], ["11", "22"])
+        self.assertEqual(rewards[0]["RewardItemCount1"], "2")
+
+    def test_a_row_is_still_a_plain_attribute_map(self):
+        """Every existing caller reads rows as dicts; that must not change."""
+        rows = self.rows()
+        self.assertIsInstance(rows[0], dict)
+        self.assertEqual(rows[0]["ID"], "1")
+        self.assertEqual(rows[1]["Title"], "b")
+        self.assertEqual(rows[1].children, {})
+
+    def test_text_only_children_stay_in_the_map(self):
+        row = self.rows()[0]
+        self.assertEqual(row["Note"], "plain text")
+        self.assertNotIn("Note", row.children)
+
+    def test_shipped_quest_rewards_are_reachable(self):
+        """Regression: QuestList's rewards read as "" and all but one were lost."""
+        quests = parse_result_table(load_xml((DATA / "Request" / "QuestList.xml").read_bytes()))
+        goods = sum(len(q.children.get("Item_Good", ())) for q in quests)
+        conditions = sum(len(q.children.get("Item_Condiction", ())) for q in quests)
+        self.assertGreater(goods, 1000, "quest item rewards are unreachable")
+        self.assertGreater(conditions, 1000, "quest conditions are unreachable")
+        for quest in quests:
+            for reward in quest.children.get("Item_Good", ()):
+                self.assertIn("RewardItemID", reward)
 
 
 class PkmHeaders(unittest.TestCase):

@@ -310,20 +310,45 @@ def step(
     )
 
 
-def parse_nested_items(root: ET.Element) -> List[Dict[str, str]]:
-    rows: List[Dict[str, str]] = []
+class Row(Dict[str, str]):
+    """One row's attributes, with its repeated child elements kept aside.
+
+    A row is a flat attribute map, which cannot hold a child element that appears
+    more than once — and 1971 such children sit in 13 of the shipped
+    ``Request/*.xml`` files. ``QuestList.xml`` alone carries 1067 ``Item_Good``
+    (the quest's item rewards) and 317 ``Item_Condiction``. The flat map kept the
+    first of each and stored its *text*, which is empty because the data is in the
+    attributes, so ``row["Item_Good"]`` read ``""`` with no way to reach the rest.
+
+    This subclasses ``dict``, so every existing caller keeps working unchanged and
+    ``row.children["Item_Good"]`` reaches what the map cannot hold.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.children: Dict[str, List["Row"]] = {}
+
+
+def _row_from_element(el: ET.Element) -> Row:
+    row = Row(el.attrib)
+    for nested in list(el):
+        row.setdefault(nested.tag, nested.text or "")
+        if nested.attrib:
+            # A text-only child is already in the map under its own tag.
+            row.children.setdefault(nested.tag, []).append(_row_from_element(nested))
+    return row
+
+
+def parse_nested_items(root: ET.Element) -> List[Row]:
+    rows: List[Row] = []
     for child in list(root):
         if len(list(child)) and child.attrib == {}:
             for nested in list(child):
-                row = dict(nested.attrib)
-                for inner in list(nested):
-                    row.setdefault(inner.tag, inner.text or "")
+                row = _row_from_element(nested)
                 if row:
                     rows.append(row)
             continue
-        row = dict(child.attrib)
-        for nested in list(child):
-            row.setdefault(nested.tag, nested.text or "")
+        row = _row_from_element(child)
         if row:
             rows.append(row)
     return rows
