@@ -83,29 +83,129 @@ def parse_result_table(root: ET.Element) -> List[Dict[str, str]]:
     return parse_nested_items(root)
 
 
+class Amf3Error(ValueError):
+    """The bytes are not the AMF3 object a .ui bundle wraps."""
+
+
+class _Amf3Bundle:
+    """The slice of AMF3 a Morn ``.ui`` bundle uses.
+
+    One dynamic object: string keys are view paths, values are XML markup.
+    Markers outside that slice are rejected rather than guessed at.
+    """
+
+    OBJECT, XML, XML_DOC, STRING, INTEGER, DOUBLE = 10, 11, 7, 6, 4, 5
+    UNDEFINED, NULL, FALSE, TRUE = 0, 1, 2, 3
+
+    def __init__(self, data: bytes):
+        self.data = data
+        self.pos = 0
+        self.strings: List[str] = []
+
+    def _byte(self) -> int:
+        if self.pos >= len(self.data):
+            raise Amf3Error("AMF3 stream ended early")
+        value = self.data[self.pos]
+        self.pos += 1
+        return value
+
+    def _u29(self) -> int:
+        """Variable-length integer: up to three continuation bytes, then a full byte."""
+        value = 0
+        for _ in range(3):
+            byte = self._byte()
+            value = (value << 7) | (byte & 0x7F)
+            if not byte & 0x80:
+                return value
+        return (value << 8) | self._byte()
+
+    def _string(self) -> str:
+        head = self._u29()
+        if not head & 1:
+            return self.strings[head >> 1]
+        length = head >> 1
+        text = self.data[self.pos : self.pos + length].decode("utf-8")
+        self.pos += length
+        # The empty string is never table-referenced; adding it would shift
+        # every later reference by one.
+        if text:
+            self.strings.append(text)
+        return text
+
+    def _value(self):
+        marker = self._byte()
+        if marker in (self.UNDEFINED, self.NULL):
+            return None
+        if marker == self.FALSE:
+            return False
+        if marker == self.TRUE:
+            return True
+        if marker == self.INTEGER:
+            n = self._u29()
+            return n - 0x20000000 if n & 0x10000000 else n
+        if marker == self.DOUBLE:
+            value = struct.unpack_from(">d", self.data, self.pos)[0]
+            self.pos += 8
+            return value
+        if marker == self.STRING:
+            return self._string()
+        if marker in (self.XML, self.XML_DOC):
+            head = self._u29()
+            if not head & 1:
+                raise Amf3Error("xml references are not supported")
+            length = head >> 1
+            text = self.data[self.pos : self.pos + length].decode("utf-8")
+            self.pos += length
+            return text
+        raise Amf3Error(f"unsupported AMF3 marker 0x{marker:02x}")
+
+    def views(self) -> List[Tuple[str, str]]:
+        if self._byte() != self.OBJECT:
+            raise Amf3Error("a .ui bundle starts with an AMF3 object")
+        traits = self._u29()
+        if not traits & 1 or not traits & 2 or traits & 4:
+            raise Amf3Error("object/trait references and externalizables are not bundles")
+        dynamic = bool(traits & 8)
+        sealed_count = traits >> 4
+
+        self._string()  # class name, always empty here
+        names = [self._string() for _ in range(sealed_count)]
+        out: List[Tuple[str, str]] = []
+        for name in names:
+            value = self._value()
+            if isinstance(value, str):
+                out.append((name, value))
+        if dynamic:
+            while True:
+                key = self._string()
+                if not key:
+                    break
+                value = self._value()
+                if isinstance(value, str):
+                    out.append((key, value))
+        return out
+
+
 def parse_morn_views(data: bytes) -> List[Tuple[str, int, int]]:
-    text = decode_bytes(data).decode("utf-8", errors="replace")
-    views = []
-    search = 0
-    while True:
-        start = text.find("<View", search)
-        if start < 0:
-            break
-        end = text.find("</View>", start)
-        if end < 0:
-            break
-        end += len("</View>")
-        xml = text[start:end]
-        el = ET.fromstring(xml)
-        name = "View"
-        xml_ext = text.rfind(".xml", 0, start)
-        if xml_ext >= 0:
-            s = xml_ext
-            while s > 0 and (text[s - 1].isalnum() or text[s - 1] in "_/.-"):
-                s -= 1
-            name = text[s : xml_ext + 4]
+    """Read a Morn ``.ui`` bundle: (view path, width, height) in stored order.
+
+    This reads the AMF3 container rather than scanning the decoded bytes for
+    ``<View>`` … ``</View>`` pairs. The scan was wrong three ways on the real
+    data: a self-closing ``<View …/>`` has no closing tag so the scan ran past
+    it and produced a chunk with two roots and raw length bytes between them
+    (not well-formed, so parsing threw); names walked backwards from ``.xml``
+    over letters/digits/``_/-.`` and so swallowed the AMF3 length prefix
+    whenever that byte was one of those, which hit 580 of the 950 shipped
+    views; and a view holding a nested ``<View>`` closed early.
+    """
+    views: List[Tuple[str, int, int]] = []
+    for name, markup in _Amf3Bundle(decode_bytes(data)).views():
+        try:
+            el = ET.fromstring(markup)
+        except ET.ParseError:
+            # One unreadable view must not cost the caller the whole bundle.
+            continue
         views.append((name, int(el.get("width", 0)), int(el.get("height", 0))))
-        search = end
     return views
 
 

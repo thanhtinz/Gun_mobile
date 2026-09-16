@@ -7,6 +7,7 @@ import hashlib
 import json
 import sys
 import tempfile
+import zlib
 import unittest
 from pathlib import Path
 
@@ -16,6 +17,7 @@ sys.path.insert(0, str(ROOT / "tools"))
 from port_helpers import (  # noqa: E402
     MapCollision,
     deobfuscate,
+    parse_morn_views,
     write_asset,
     fly_until_map,
     is_zlib,
@@ -146,6 +148,95 @@ class Obfuscation(unittest.TestCase):
                 height = int.from_bytes(head[20:24], "big")
                 self.assertTrue(0 < width <= 8192, f"implausible width {width}")
                 self.assertTrue(0 < height <= 8192, f"implausible height {height}")
+
+
+def _amf3_u29(value: int) -> bytes:
+    if value < 0x80:
+        return bytes([value])
+    if value < 0x4000:
+        return bytes([(value >> 7) | 0x80, value & 0x7F])
+    if value < 0x200000:
+        return bytes([(value >> 14) | 0x80, ((value >> 7) & 0x7F) | 0x80, value & 0x7F])
+    return bytes([(value >> 22) | 0x80, ((value >> 15) & 0x7F) | 0x80,
+                  ((value >> 8) & 0x7F) | 0x80, value & 0xFF])
+
+
+def _amf3_str(text: str) -> bytes:
+    raw = text.encode("utf-8")
+    return _amf3_u29((len(raw) << 1) | 1) + raw
+
+
+def _ui_bundle(views) -> bytes:
+    """Build a .ui bundle the way the PC tooling does: zlib over one AMF3 object."""
+    body = bytearray([10])           # object marker
+    body += _amf3_u29(0x0B)          # inline traits, dynamic, no sealed members
+    body += _amf3_str("")            # empty class name
+    for key, markup in views:
+        body += _amf3_str(key)
+        raw = markup.encode("utf-8")
+        body += bytes([11]) + _amf3_u29((len(raw) << 1) | 1) + raw
+    body += _amf3_str("")            # end of the dynamic section
+    return zlib.compress(bytes(body))
+
+
+class MornBundles(unittest.TestCase):
+    """The .ui reader must read the AMF3 container, not scan for <View> tags.
+
+    The scan it replaced was wrong three ways on the shipped data: a
+    self-closing <View .../> has no closing tag, so the scan ran past it into
+    the next view and produced a chunk with two roots and raw AMF3 length bytes
+    between them — not well-formed, so parsing threw and took the whole screen
+    with it (magicStone, magicStone_bk, dreamlandChallenge). Names walked
+    backwards from ".xml" over letters/digits/_-. and so swallowed the AMF3
+    length prefix whenever that byte was one of those, which corrupted 580 of
+    the 950 shipped view names. And a view holding a nested <View> closed early.
+    """
+
+    def test_reads_names_and_sizes_in_stored_order(self):
+        bundle = _ui_bundle([
+            ("bank/BankMainFrame.xml", '<View width="334" height="383"/>'),
+            ("view/BibleMainView.xml", '<View width="600" height="400"><Image skin="a"/></View>'),
+        ])
+        self.assertEqual(
+            parse_morn_views(bundle),
+            [("bank/BankMainFrame.xml", 334, 383), ("view/BibleMainView.xml", 600, 400)],
+        )
+
+    def test_self_closing_view_does_not_swallow_the_next_one(self):
+        """magicStone.ui: MagicStoneMain is <View .../> and the scan lost two views."""
+        bundle = _ui_bundle([
+            ("MagicStoneMain.xml", '<View width="600" height="400"/>'),
+            ("MagicJadeProTip.xml", '<View width="153" height="300"><Image skin="bg"/></View>'),
+        ])
+        views = parse_morn_views(bundle)
+        self.assertEqual([name for name, _, _ in views],
+                         ["MagicStoneMain.xml", "MagicJadeProTip.xml"])
+
+    def test_length_prefix_never_leaks_into_the_name(self):
+        """A key of 24 bytes has length byte (24<<1)|1 = 0x31 = '1', a digit.
+
+        The old backwards walk treated that as part of the name.
+        """
+        key = "view/BibleStrongVie.xml"
+        self.assertEqual(((len(key) << 1) | 1), ord("/"))
+        name = parse_morn_views(_ui_bundle([(key, '<View width="1" height="2"/>')]))[0][0]
+        self.assertEqual(name, key)
+
+    def test_nested_view_element_stays_with_its_parent(self):
+        markup = '<View width="10" height="20"><View width="5" height="5"/></View>'
+        views = parse_morn_views(_ui_bundle([("outer.xml", markup)]))
+        self.assertEqual(views, [("outer.xml", 10, 20)])
+
+    def test_unreadable_view_is_skipped_not_fatal(self):
+        bundle = _ui_bundle([
+            ("broken.xml", "<View width='1'"),
+            ("fine.xml", '<View width="7" height="8"/>'),
+        ])
+        self.assertEqual(parse_morn_views(bundle), [("fine.xml", 7, 8)])
+
+    def test_non_bundle_bytes_are_rejected_loudly(self):
+        with self.assertRaises(ValueError):
+            parse_morn_views(zlib.compress(b"<View width='1' height='2'/>"))
 
 
 class AssetWriters(unittest.TestCase):
