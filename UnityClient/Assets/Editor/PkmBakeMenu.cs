@@ -112,7 +112,9 @@ namespace GunMobile.EditorTools
                 return false;
             }
 
-            byte[] header = PkmImage.WriteHeader(pw, ph, true);
+            // w/h, not pw/ph: the padded size is derivable, the authored size
+            // is not, and the header has a field for each.
+            byte[] header = PkmImage.WriteHeader(w, h, true);
             string outPath = PkmImage.ToPkmPath(sourcePath);
             using (var fs = new FileStream(outPath, FileMode.Create, FileAccess.Write))
             {

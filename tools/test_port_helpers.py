@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import struct
 import sys
 import tempfile
 import zlib
@@ -211,6 +212,44 @@ def _ui_bundle(views) -> bytes:
         body += bytes([11]) + _amf3_u29((len(raw) << 1) | 1) + raw
     body += _amf3_str("")            # end of the dynamic section
     return zlib.compress(bytes(body))
+
+
+class PkmHeaders(unittest.TestCase):
+    """ETC pads to 4x4 blocks, so the authored size has to be written down."""
+
+    def header(self, width, height, fmt=3):
+        import png_to_pkm
+
+        return png_to_pkm.write_pkm_header(width, height, fmt)
+
+    def fields(self, header):
+        self.assertEqual(header[:6], b"PKM 20")
+        return struct.unpack_from(">HHHHH", header, 6)
+
+    def test_padded_and_authored_sizes_are_both_recorded(self):
+        kind, ext_w, ext_h, w, h = self.fields(self.header(90, 50))
+        self.assertEqual(kind, 3)
+        self.assertEqual((ext_w, ext_h), (92, 52), "payload covers whole blocks")
+        self.assertEqual((w, h), (90, 50), "authored size must survive the bake")
+
+    def test_exact_multiples_pad_to_themselves(self):
+        _, ext_w, ext_h, w, h = self.fields(self.header(64, 32))
+        self.assertEqual((ext_w, ext_h), (64, 32))
+        self.assertEqual((w, h), (64, 32))
+
+    def test_the_data_type_has_its_own_field(self):
+        """Regression: the format was written at offset 15 and read at 14.
+
+        Offset 14 is the authored height, so the format a reader saw was the
+        image's height. Heights of 1 and 4 map to formats whose payload is a
+        different size, and the texture upload fails outright.
+        """
+        for fmt in (1, 3, 4):
+            with self.subTest(fmt=fmt):
+                self.assertEqual(self.fields(self.header(40, 4, fmt))[0], fmt)
+
+    def test_the_header_is_sixteen_bytes(self):
+        self.assertEqual(len(self.header(90, 50)), 16)
 
 
 class MornBundles(unittest.TestCase):
