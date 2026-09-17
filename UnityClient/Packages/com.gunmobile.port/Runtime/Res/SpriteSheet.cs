@@ -128,15 +128,41 @@ namespace GunMobile.Res
                 return null;
             }
 
-            Rect pixel = frame.Pixel;
-            if (pixel.width <= 0f || pixel.height <= 0f)
+            if (frame.Pixel.width <= 0f || frame.Pixel.height <= 0f)
             {
                 return null;
             }
 
-            Sprite sprite = Sprite.Create(Texture, pixel, new Vector2(0.5f, 0.5f), 100f);
+            Sprite sprite = Sprite.Create(Texture, UnityRect(frame), new Vector2(0.5f, 0.5f), 100f);
             _spriteCache[name] = sprite;
             return sprite;
+        }
+
+        /// <summary>
+        /// <paramref name="frame"/>'s rectangle in the space <see cref="Sprite.Create"/>
+        /// expects.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="SheetFrame.Pixel"/> keeps Starling's y, measured from the top of
+        /// the texture; Unity measures a sprite rect from the bottom. Handing
+        /// <c>Pixel</c> to <c>Sprite.Create</c> unchanged mirrors the frame about the
+        /// texture's middle, so the sprite is cut from a different part of the atlas
+        /// — 285 of the 286 frames in the six shipped Starling atlases, a median of
+        /// 268px and as much as 1585px away from where they belong.
+        /// <para>
+        /// The conversion lives here so it is written once. It was previously spelled
+        /// out in PcSkin.Chrome, correctly, and left out of <see cref="Get"/>, which
+        /// is what MornScreenHost calls for every Morn widget's skin.
+        /// </para>
+        /// </remarks>
+        public Rect UnityRect(SheetFrame frame)
+        {
+            float height = Texture != null ? Texture.height : 0f;
+            return new Rect(
+                frame.Pixel.x,
+                height - frame.Pixel.y - frame.Pixel.height,
+                frame.Pixel.width,
+                frame.Pixel.height);
         }
 
         readonly Dictionary<string, Sprite> _spriteCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);

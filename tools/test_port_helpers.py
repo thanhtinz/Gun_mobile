@@ -215,6 +215,51 @@ def _ui_bundle(views) -> bytes:
     return zlib.compress(bytes(body))
 
 
+class StarlingCoordinates(unittest.TestCase):
+    """Starling measures y from the top of the texture; Unity from the bottom."""
+
+    ATLASES = ROOT / "UnityClient/Assets/StreamingAssets/PcData/Flash/ui/cn_trad/starling"
+
+    @staticmethod
+    def unity_y(texture_height, y, height):
+        return texture_height - y - height
+
+    def test_the_flip_is_not_a_no_op_on_the_shipped_atlases(self):
+        """Regression: SpriteSheet.Get handed Starling's y straight to Sprite.Create.
+
+        That mirrors each frame about the texture's middle, so it is cut from a
+        different part of the atlas entirely. Only a frame centred vertically
+        survives, and exactly one of the 286 shipped frames is.
+        """
+        if not self.ATLASES.exists():
+            self.skipTest("starling atlases not packed")
+
+        frames = wrong = 0
+        worst = 0
+        for xml in sorted(self.ATLASES.rglob("*.xml")):
+            png = xml.with_suffix(".png")
+            if not png.exists():
+                continue
+            width, height = struct.unpack_from(">II", png.read_bytes(), 16)
+            self.assertGreater(width, 0)
+            for sub in load_xml(xml.read_bytes()).iter("SubTexture"):
+                y = float(sub.get("y", 0))
+                h = float(sub.get("height", 0))
+                frames += 1
+                error = abs(y - self.unity_y(height, y, h))
+                if error:
+                    wrong += 1
+                worst = max(worst, error)
+
+        self.assertGreater(frames, 200, "starling atlases did not parse")
+        self.assertGreater(wrong / frames, 0.9, "the flip barely matters — check this")
+        self.assertGreater(worst, 1000, "expected frames far from the texture middle")
+
+    def test_a_full_texture_frame_is_unchanged_by_the_flip(self):
+        """Non-atlas sheets use one (0, 0, w, h) frame, which must survive intact."""
+        self.assertEqual(self.unity_y(512, 0, 512), 0)
+
+
 class ZipAtlases(unittest.TestCase):
     """Some atlases are a zip of xml+png, and 8 of the 90 in the dump are obfuscated."""
 

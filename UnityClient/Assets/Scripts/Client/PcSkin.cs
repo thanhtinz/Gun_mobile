@@ -154,10 +154,9 @@ namespace GunMobile.Client
                 return;
             }
 
-            float y = sheet.Texture.height - fr.Pixel.y - fr.Pixel.height;
             var sprite = Sprite.Create(
                 sheet.Texture,
-                new Rect(fr.Pixel.x, y, fr.Pixel.width, fr.Pixel.height),
+                sheet.UnityRect(fr),
                 new Vector2(0.5f, 0.5f),
                 100f,
                 0,
