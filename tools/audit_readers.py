@@ -31,6 +31,25 @@ from port_helpers import MapCollision, deobfuscate, load_xml, parse_result_table
 PREFIX = b"\x00\x03\x5e\x5f\x5e"
 
 
+def walk(root, pattern="*"):
+    """Files matching *pattern*, minus the junk a macOS zip carries.
+
+    An archive zipped on macOS ships an AppleDouble shadow for every entry —
+    ``__MACOSX/Service/Road/Bomb/._11295.bomb`` beside the real one, 224 bytes
+    of resource-fork metadata. Plain ``unzip`` writes them out, so a naive
+    rglob sees two "masks" for every real one and half of them fail every
+    check. That is a defect in this script, not in the data: it reported
+    9378/18756 on a freshly unzipped dump and read as a regression in the
+    stride fix. The repo's own extract_legacy.py already drops these.
+    """
+    for path in sorted(root.rglob(pattern)):
+        if not path.is_file():
+            continue
+        if "__MACOSX" in path.parts or path.name.startswith("._"):
+            continue
+        yield path
+
+
 class Audit:
     def __init__(self) -> None:
         self.failures: list[str] = []
@@ -46,9 +65,7 @@ def obfuscation(dump: Path, audit: Audit) -> None:
     print("\nobfuscation — prefix plus a complemented byte at offset 16")
     kinds = collections.Counter()
     repaired = collections.Counter()
-    for path in dump.rglob("*"):
-        if not path.is_file():
-            continue
+    for path in walk(dump):
         try:
             raw = path.read_bytes()
         except OSError:
@@ -81,9 +98,7 @@ def obfuscation(dump: Path, audit: Audit) -> None:
 
     # The prefix must be the whole signal: untouched PNGs are never damaged.
     clean = damaged = 0
-    for path in dump.rglob("*.png"):
-        if not path.is_file():
-            continue
+    for path in walk(dump, "*.png"):
         raw = path.read_bytes()
         if raw.startswith(PREFIX) or raw[:8] != b"\x89PNG\r\n\x1a\n":
             continue
@@ -100,21 +115,33 @@ def obfuscation(dump: Path, audit: Audit) -> None:
 def map_stride(dump: Path, audit: Audit) -> None:
     """Stride is (width >> 3) + 1, not ceil(width / 8)."""
     print("\nmap collision — one spare byte per packed row")
-    shipped = ceil_matches = stride_matches = 0
-    for path in sorted(dump.rglob("*.map")) + sorted(dump.rglob("*.bomb")):
+    shipped = ceil_matches = stride_matches = skipped = 0
+    for path in list(walk(dump, "*.map")) + list(walk(dump, "*.bomb")):
         raw = path.read_bytes()
-        if len(raw) < 8:
+        payload = len(raw) - 8
+        if payload <= 0:
+            skipped += 1
             continue
         width, height = struct.unpack_from("<ii", raw, 0)
-        if width <= 0 or height <= 0:
+        # Classify by content, not by extension: NewPanel ships
+        # jquery-1.11.3.min.map, a JSON source map, which is not terrain.
+        # The test here is independent of which stride formula is right —
+        # plausible dimensions, and rows of equal length — so it cannot
+        # quietly define away a mask the formula would fail on.
+        if not (0 < width <= 20000 and 0 < height <= 20000) or payload % height:
+            skipped += 1
             continue
         shipped += 1
-        payload = len(raw) - 8
         ceil_matches += payload == ((width + 7) // 8) * height
         stride_matches += payload == MapCollision.stride_for(width) * height
 
+    if skipped:
+        print(f"  [note] {skipped} file(s) named .map/.bomb are not terrain masks")
+    if not shipped:
+        print("  (no terrain masks in this dump)")
+        return
     audit.check(
-        shipped > 0 and stride_matches == shipped,
+        stride_matches == shipped,
         "(width >> 3) + 1 matches every mask's file size",
         f"{stride_matches}/{shipped}  (ceil(width/8) would match {ceil_matches})",
     )
@@ -125,7 +152,7 @@ def starling_atlases(dump: Path, audit: Audit) -> None:
     print("\nstarling atlases — the y flip, and the trim offsets nobody reads")
     frames = needs_flip = trimmed = off_centre = 0
     worst_flip = worst_trim = 0.0
-    for xml in sorted(dump.rglob("*.xml")):
+    for xml in walk(dump, "*.xml"):
         png = xml.with_suffix(".png")
         if not png.exists():
             continue
@@ -172,7 +199,7 @@ def repeated_children(dump: Path, audit: Audit) -> None:
     print("\nrequest tables — children a flat row cannot hold")
     files = reachable = 0
     per_file: collections.Counter[str] = collections.Counter()
-    for xml in sorted(dump.rglob("Request/*.xml")):
+    for xml in walk(dump, "Request/*.xml"):
         try:
             rows = parse_result_table(load_xml(xml.read_bytes()))
         except Exception:
