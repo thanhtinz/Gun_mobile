@@ -9,15 +9,23 @@ loads PNG/JPEG instead of a Flash player.
 from __future__ import annotations
 
 import struct
+import sys
 import zlib
 from pathlib import Path
 from typing import Iterator
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from port_helpers import deobfuscate  # noqa: E402
 
 JPEG_SOI = b"\xff\xd8"
 PNG_SIG = b"\x89PNG"
 
 
 def swf_body(data: bytes) -> bytes:
+    # 63 of the shipped .swf files are obfuscated. Without this the signature
+    # check below sees the five byte prefix and rejects them as "not swf", so
+    # those 63 animations were dropped at pack time as well as at runtime.
+    data = deobfuscate(data)
     if len(data) < 8:
         raise ValueError("too short")
     sig = data[:3]

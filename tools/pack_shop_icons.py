@@ -8,7 +8,11 @@ from __future__ import annotations
 
 import json
 import zipfile
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from port_helpers import write_asset
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "UnityClient" / "Assets" / "StreamingAssets" / "PcData"
@@ -161,11 +165,8 @@ def pack() -> dict:
                 skipped += 1
                 files.append(hit)
                 continue
-            dest.parent.mkdir(parents=True, exist_ok=True)
-            data = zf.read(hit)
-            dest.write_bytes(data)
+            bytes_out += write_asset(dest, zf.read(hit))
             copied += 1
-            bytes_out += len(data)
             files.append(hit)
 
     idx_path = OUT / "content_index.json"

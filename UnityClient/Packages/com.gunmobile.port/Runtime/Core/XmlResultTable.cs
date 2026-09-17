@@ -15,6 +15,45 @@ namespace GunMobile.Core
         public string RowName { get; private set; }
         public IReadOnlyList<IReadOnlyDictionary<string, string>> Rows { get; private set; }
 
+        /// <summary>
+        /// Repeated child elements of each row, keyed by element name.
+        /// </summary>
+        /// <remarks>
+        /// A row is a flat attribute map, which cannot hold a child element that
+        /// appears more than once — and 1971 such children sit in 13 of the shipped
+        /// <c>Request/*.xml</c> files. <c>QuestList.xml</c> alone carries 1067
+        /// <c>Item_Good</c> (the quest's item rewards) and 317 <c>Item_Condiction</c>.
+        /// The flat map kept the first of each and stored its <em>text</em>, which is
+        /// empty because the data is in the attributes, so a caller reading
+        /// <c>row["Item_Good"]</c> got <c>""</c> and no way to reach the rest.
+        /// <para>
+        /// That is why <c>GameDatabase</c> walks <c>XElement</c> by hand in 13 places
+        /// instead of using this table. The children are kept here so it does not
+        /// have to; the flat map is unchanged, so nothing that reads it needs to move.
+        /// </para>
+        /// </remarks>
+        private List<Dictionary<string, List<IReadOnlyDictionary<string, string>>>> _children =
+            new List<Dictionary<string, List<IReadOnlyDictionary<string, string>>>>();
+
+        private static readonly IReadOnlyList<IReadOnlyDictionary<string, string>> NoChildren =
+            Array.Empty<IReadOnlyDictionary<string, string>>();
+
+        /// <summary>
+        /// The <paramref name="name"/> children of <paramref name="row"/>, in document
+        /// order; empty when the row has none.
+        /// </summary>
+        public IReadOnlyList<IReadOnlyDictionary<string, string>> ChildRows(int row, string name)
+        {
+            if (row < 0 || row >= _children.Count || string.IsNullOrEmpty(name))
+            {
+                return NoChildren;
+            }
+
+            return _children[row].TryGetValue(name, out List<IReadOnlyDictionary<string, string>> found)
+                ? found
+                : NoChildren;
+        }
+
         public static XmlResultTable Parse(XDocument doc)
         {
             var table = new XmlResultTable();
@@ -46,6 +85,7 @@ namespace GunMobile.Core
 
                         rowName = nested.Name.LocalName;
                         rows.Add(nestedMap);
+                        table._children.Add(ChildrenOf(nested));
                     }
 
                     continue;
@@ -56,12 +96,38 @@ namespace GunMobile.Core
                 if (map.Count > 0)
                 {
                     rows.Add(map);
+                    table._children.Add(ChildrenOf(child));
                 }
             }
 
             table.RowName = rowName ?? "Item";
             table.Rows = rows;
             return table;
+        }
+
+        static Dictionary<string, List<IReadOnlyDictionary<string, string>>> ChildrenOf(XElement el)
+        {
+            var byName = new Dictionary<string, List<IReadOnlyDictionary<string, string>>>(
+                StringComparer.OrdinalIgnoreCase);
+            foreach (XElement child in el.Elements())
+            {
+                if (!child.HasAttributes)
+                {
+                    // A text-only child is already in the flat map under its own name.
+                    continue;
+                }
+
+                string name = child.Name.LocalName;
+                if (!byName.TryGetValue(name, out List<IReadOnlyDictionary<string, string>> list))
+                {
+                    list = new List<IReadOnlyDictionary<string, string>>();
+                    byName[name] = list;
+                }
+
+                list.Add(RowFromElement(child));
+            }
+
+            return byName;
         }
 
         static Dictionary<string, string> RowFromElement(XElement el)

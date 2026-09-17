@@ -32,6 +32,11 @@ namespace GunMobile.Res
                 return null;
             }
 
+            // Strip before testing the signature, not after. 8 of the 90 zip atlases
+            // in the dump are obfuscated (the mount art under image/mounts/horse), so
+            // testing the raw bytes sees the five byte prefix instead of "PK": they
+            // took the PNG path, which cannot decode a zip, and loaded as nothing.
+            data = Obfuscation.Strip(data);
             if (data[0] == 0x50 && data[1] == 0x4B)
             {
                 return LoadZipAtlas(data);
@@ -123,15 +128,41 @@ namespace GunMobile.Res
                 return null;
             }
 
-            Rect pixel = frame.Pixel;
-            if (pixel.width <= 0f || pixel.height <= 0f)
+            if (frame.Pixel.width <= 0f || frame.Pixel.height <= 0f)
             {
                 return null;
             }
 
-            Sprite sprite = Sprite.Create(Texture, pixel, new Vector2(0.5f, 0.5f), 100f);
+            Sprite sprite = Sprite.Create(Texture, UnityRect(frame), new Vector2(0.5f, 0.5f), 100f);
             _spriteCache[name] = sprite;
             return sprite;
+        }
+
+        /// <summary>
+        /// <paramref name="frame"/>'s rectangle in the space <see cref="Sprite.Create"/>
+        /// expects.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="SheetFrame.Pixel"/> keeps Starling's y, measured from the top of
+        /// the texture; Unity measures a sprite rect from the bottom. Handing
+        /// <c>Pixel</c> to <c>Sprite.Create</c> unchanged mirrors the frame about the
+        /// texture's middle, so the sprite is cut from a different part of the atlas
+        /// — 285 of the 286 frames in the six shipped Starling atlases, a median of
+        /// 268px and as much as 1585px away from where they belong.
+        /// <para>
+        /// The conversion lives here so it is written once. It was previously spelled
+        /// out in PcSkin.Chrome, correctly, and left out of <see cref="Get"/>, which
+        /// is what MornScreenHost calls for every Morn widget's skin.
+        /// </para>
+        /// </remarks>
+        public Rect UnityRect(SheetFrame frame)
+        {
+            float height = Texture != null ? Texture.height : 0f;
+            return new Rect(
+                frame.Pixel.x,
+                height - frame.Pixel.y - frame.Pixel.height,
+                frame.Pixel.width,
+                frame.Pixel.height);
         }
 
         readonly Dictionary<string, Sprite> _spriteCache = new Dictionary<string, Sprite>(StringComparer.OrdinalIgnoreCase);
@@ -181,6 +212,17 @@ namespace GunMobile.Res
             return tex;
         }
 
+        /// <summary>Offset of the IHDR width's most significant byte inside a PNG stream.</summary>
+        /// <summary>
+        /// Recovers a loadable PNG from a legacy resource file.
+        /// </summary>
+        /// <remarks>
+        /// Obfuscated files need both halves of the scheme undone, which is
+        /// <see cref="Obfuscation"/>'s job; this used to clear the corrupted IHDR
+        /// width byte itself, which was right for PNG and useless for every other
+        /// format the same packer wrapped. What is left here is the fallback for a
+        /// file that merely has some other junk ahead of the PNG signature.
+        /// </remarks>
         public static byte[] StripToPng(byte[] data)
         {
             if (data == null || data.Length < 8)
@@ -188,6 +230,7 @@ namespace GunMobile.Res
                 return null;
             }
 
+            data = Obfuscation.Strip(data);
             if (data[0] == 0x89 && data[1] == 0x50)
             {
                 return data;

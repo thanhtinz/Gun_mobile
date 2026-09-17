@@ -27,17 +27,27 @@ PKM_HEADER = 16
 
 
 def write_pkm_header(width: int, height: int, etc2_format: int = 3) -> bytes:
-    encoded_w = (width + 3) // 4
-    encoded_h = (height + 3) // 4
+    """Khronos PKM 2.0 header for an ETC payload covering *width* x *height*.
+
+    Five big endian UInt16s follow the magic and version: data type, the size
+    the payload covers (rounded up to whole 4x4 ETC blocks), then the size the
+    image was authored at. Writing the padded size into both pairs, as this and
+    the editor bake used to, throws the authored size away — and the atlas .xml
+    files describe rectangles in authored coordinates.
+    """
     header = bytearray(PKM_HEADER)
     header[0:4] = b"PKM "
     header[4:6] = b"20"
-    header[6:8] = b"\r\n"
-    struct.pack_into(">HH", header, 8, width, height)
-    header[12] = encoded_w & 0xFF
-    header[13] = encoded_h & 0xFF
-    header[14] = 0
-    header[15] = etc2_format & 0xFF
+    struct.pack_into(
+        ">HHHHH",
+        header,
+        6,
+        etc2_format & 0xFFFF,
+        (width + 3) & ~3,
+        (height + 3) & ~3,
+        width,
+        height,
+    )
     return bytes(header)
 
 
