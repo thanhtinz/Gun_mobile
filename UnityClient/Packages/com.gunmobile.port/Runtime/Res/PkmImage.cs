@@ -41,10 +41,13 @@ namespace GunMobile.Res
         /// size, and the bake wrote the padded size into the original slot as well,
         /// so the real size was not recorded anywhere. 4724 of the 4984 images under
         /// StreamingAssets are not a multiple of four in both axes, so nearly every
-        /// baked atlas came back 1-3 pixels taller than its .xml describes — and
-        /// <c>ResLoader.CreateUnitySprite</c> flips Starling's top-left y with
-        /// <c>atlas.height - y - height</c>, so every sprite in such an atlas was
-        /// offset by exactly that padding.
+        /// baked atlas came back 1-3 pixels taller than its .xml describes — and both
+        /// <c>SpriteSheet.UnityRect</c> and <c>SpriteSheet.PixelToUv</c> turn
+        /// Starling's top-left y into Unity's bottom-left one against the texture
+        /// height, so every sprite in such an atlas is offset by exactly that padding.
+        /// (<c>ResLoader.CreateUnitySprite</c> does the same conversion and is the
+        /// obvious place to look, but it has no callers; the live path is
+        /// SpriteSheet.)
         /// </remarks>
         public static bool TryReadSize(byte[] data, out int width, out int height)
         {
