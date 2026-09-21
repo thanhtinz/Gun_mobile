@@ -215,6 +215,53 @@ def _ui_bundle(views) -> bytes:
     return zlib.compress(bytes(body))
 
 
+class MornFontSize(unittest.TestCase):
+    """Text widgets name their font size `size`; the Button family says `labelSize`."""
+
+    BUNDLES = ROOT / "legacy" / "data" / "Flash" / "ui"
+
+    def widgets(self):
+        """Every text-rendering widget in the shipped bundles, if they are here."""
+        from port_helpers import _Amf3Bundle, decode_bytes
+
+        if not self.BUNDLES.exists():
+            self.skipTest("Morn bundles not unpacked")
+        for ui in sorted(self.BUNDLES.rglob("*.ui")):
+            if "__MACOSX" in ui.parts or ui.name.startswith("._"):
+                continue
+            try:
+                views = _Amf3Bundle(decode_bytes(ui.read_bytes())).views()
+            except Exception:
+                continue
+            for _, markup in views:
+                try:
+                    root = ET.fromstring(markup)
+                except ET.ParseError:
+                    continue
+                for el in root.iter():
+                    if el.get("label") is not None or el.get("text") is not None:
+                        yield el
+
+    def test_the_two_attributes_never_appear_together(self):
+        """Regression: only `labelSize` was read, so 81% of text fell back to 14.
+
+        The fix reads whichever of the two a widget carries. That is only safe
+        because they are disjoint — if a widget ever carried both, the order
+        would start deciding the answer.
+        """
+        both = [el.tag for el in self.widgets()
+                if el.get("size") is not None and el.get("labelSize") is not None]
+        self.assertEqual(both, [], "size and labelSize are no longer disjoint")
+
+    def test_most_text_widgets_use_size_not_labelSize(self):
+        widgets = list(self.widgets())
+        self.assertGreater(len(widgets), 3000, "bundles did not parse")
+        size_only = sum(1 for el in widgets
+                        if el.get("size") is not None and el.get("labelSize") is None)
+        self.assertGreater(size_only / len(widgets), 0.75,
+                           "reading only labelSize would still miss most text")
+
+
 class StarlingCoordinates(unittest.TestCase):
     """Starling measures y from the top of the texture; Unity from the bottom."""
 

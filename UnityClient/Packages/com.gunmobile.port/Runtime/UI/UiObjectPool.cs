@@ -118,7 +118,7 @@ namespace GunMobile.UI
                 text.text = label;
                 text.alignment = TextAnchor.MiddleCenter;
                 text.font = UiFonts.Default;
-                text.fontSize = Mathf.Max(12, (int)F(el, "labelSize", 14f));
+                text.fontSize = Mathf.Max(MinReadableFontSize, (int)FontSizeOf(el));
                 text.raycastTarget = false;
             }
 
@@ -126,6 +126,39 @@ namespace GunMobile.UI
             {
                 BuildNode(node, child, skinLookup);
             }
+        }
+
+        /// <summary>Floor applied to a phone screen, whatever the .ui asks for.</summary>
+        const int MinReadableFontSize = 12;
+
+        /// <summary>
+        /// The font size a Morn widget asks for.
+        /// </summary>
+        /// <remarks>
+        /// The two families name it differently, and this used to read only the
+        /// button one. Measured across the 95 shipped bundles (950 views), of the
+        /// 3322 widgets that render text, 2695 carry <c>size</c> and no
+        /// <c>labelSize</c> — every Label, LabelEx, TextInput, TextArea and
+        /// NameTextEx — so 81% of the text in the game fell back to the hard-coded
+        /// 14. 1617 of those ask for something other than 14 and rendered at the
+        /// wrong size; the rest happened to want 14 anyway.
+        /// <para>
+        /// <c>labelSize</c> is the Button family's attribute: 206 Button, 50
+        /// CheckBox, 41 TabButtonEx. Not one widget in the dump carries both, so
+        /// the two are disjoint and reading each where it appears cannot conflict.
+        /// </para>
+        /// 147 widgets ask for 10 or 11px and are still floored at
+        /// <see cref="MinReadableFontSize"/> — that clamp is a deliberate phone
+        /// legibility choice, not part of this bug, so it is left in place.
+        /// </remarks>
+        static float FontSizeOf(System.Xml.Linq.XElement el)
+        {
+            if (el.Attribute("size") != null)
+            {
+                return F(el, "size", 14f);
+            }
+
+            return F(el, "labelSize", 14f);
         }
 
         static RectTransform Create(string name, Transform parent, float w, float h)
