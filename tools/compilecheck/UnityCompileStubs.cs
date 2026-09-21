@@ -139,7 +139,7 @@ namespace UnityEngine
     public enum RuntimePlatform { Android, IPhonePlayer, WindowsEditor, WindowsPlayer, OSXEditor, LinuxPlayer }
     public enum FilterMode { Point, Bilinear, Trilinear }
     public enum TextureWrapMode { Repeat, Clamp }
-    public enum TextureFormat { RGBA32, ARGB32, RGB24, ETC2_RGBA8, ETC_RGB4, ETC2_RGB, ETC2_RGBA1, DXT1, DXT5, ASTC_4x4 }
+    public enum TextureFormat { RGBA32, ARGB32, RGB24, ETC2_RGBA8, ETC_RGB4, ETC2_RGB, ETC2_RGBA1, EAC_R, EAC_RG, DXT1, DXT5, ASTC_4x4 }
     public enum SystemLanguage { Unknown, Chinese, English, Vietnamese }
     public enum LogType { Error, Warning, Log, Exception }
     public enum KeyCode { None, Escape, Space, Return, A, D, W, S, LeftArrow, RightArrow, UpArrow, DownArrow }

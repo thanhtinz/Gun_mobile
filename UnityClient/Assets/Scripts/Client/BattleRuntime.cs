@@ -618,8 +618,10 @@ namespace GunMobile.Client
                 return;
             }
 
-            var tex = new Texture2D(2, 2, TextureFormat.RGB24, false);
-            if (tex.LoadImage(bytes))
+            // Go through SpriteSheet so obfuscated art is unwrapped and repaired;
+            // a bare LoadImage silently fails on the prefixed files.
+            var tex = SpriteSheet.LoadTexture(bytes, false);
+            if (tex != null)
             {
                 img.texture = tex;
             }

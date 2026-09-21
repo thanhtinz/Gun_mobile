@@ -7,6 +7,15 @@ namespace GunMobile.Res
     /// Service/Road/map/{id}/fore.map — 8-byte header (width, height) then 1-bit collision,
     /// rows padded to a full byte. MSB of each byte is the leftmost pixel.
     /// </summary>
+    /// <remarks>
+    /// The row stride is <c>(width &gt;&gt; 3) + 1</c>, not <c>ceil(width / 8)</c>: the
+    /// original writer always appends one spare byte, so a width that is an exact
+    /// multiple of eight still carries a trailing byte (2000 px is 251 bytes, not 250).
+    /// The shift form matches the file size on all 4685 masks in the dump; the ceiling
+    /// form matches only 3755. Getting it wrong shifts every row by one byte and the
+    /// terrain silently dissolves — on map 1006 only 16% of the ground the artwork
+    /// draws is still reported solid, so shots fly straight through it.
+    /// </remarks>
     public sealed class MapCollision
     {
         public int Width { get; }
@@ -15,15 +24,20 @@ namespace GunMobile.Res
 
         readonly byte[] _bits;
 
+        /// <summary>Bytes per packed row. See the remarks on this class.</summary>
+        public static int StrideFor(int width) => (width >> 3) + 1;
+
         public MapCollision(int width, int height, byte[] bits)
         {
             Width = width;
             Height = height;
-            Stride = (width + 7) / 8;
+            Stride = StrideFor(width);
             int expected = Stride * height;
-            if (bits == null || bits.Length < expected)
+            if (bits == null || bits.Length != expected)
             {
-                throw new InvalidDataException($"fore.map payload {bits?.Length ?? 0} < {expected}");
+                throw new InvalidDataException(
+                    $"map payload is {bits?.Length ?? 0} bytes, expected {expected} " +
+                    $"for {width}x{height} (stride {Stride})");
             }
 
             _bits = bits;
